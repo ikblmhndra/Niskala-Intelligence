@@ -1,0 +1,27 @@
+[project]
+name = "cti-enrich"
+version = "0.1.0"
+description = "Article enrichment pipeline — the decomposition of the legacy nlp_scan()"
+requires-python = ">=3.12"
+dependencies = [
+    "cti-core",
+    "httpx>=0.27",
+    "openai>=1.30",
+    "trafilatura>=1.9",
+]
+
+# Heavy models live behind an extra so the API image never pulls torch/spacy.
+# Only the worker-nlp image installs cti-enrich[nlp].
+[project.optional-dependencies]
+nlp = [
+    "spacy>=3.7",
+    "sumy>=0.11",
+    "torch>=2.3",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/cti_enrich"]

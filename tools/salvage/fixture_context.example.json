@@ -1,0 +1,20 @@
+{
+  "_comment": [
+    "Data yang biasanya diambil scraper dari MongoDB. Tanpa ini, scraper yang",
+    "nyocokin ke tech stack organisasi (cisacatalogThreat, newCveThreat,",
+    "techstackNPM) ngehasilkan NOL item dan fixture-nya jadi bohong.",
+    "",
+    "Isi dari prod:",
+    "  mongosh \"$MONGO_URI\" --quiet --eval \\",
+    "    'JSON.stringify(db.getSiblingDB(\"threatintel\").techstack.distinct(\"name\"))'",
+    "",
+    "File ini juga jadi basis seed data referensi di Fase 10.1 — karena cutover",
+    "mulai dari DB kosong, techstack HARUS di-seed atau pipeline CVE mati."
+  ],
+  "techstack": ["Cisco", "Microsoft", "Fortinet", "VMware", "Apache", "Oracle"],
+  "techstack_by_client": {},
+  "monitored_accounts": [],
+  "ioc_allowlist": {"url_domains": [], "email_domains": [], "ips": []},
+  "c2_feed": [],
+  "lists": {"groups": [], "apac-country": [], "global-country": [], "apac-people": []}
+}

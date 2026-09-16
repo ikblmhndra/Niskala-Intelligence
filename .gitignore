@@ -1,0 +1,36 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+.venv/
+.venv-legacy/
+*.egg-info/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# --- Node / Next.js ---
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+
+# --- Secrets ---
+.env
+.env.local
+secrets/
+# kredensial prod — ditarik Fase 0.3, JANGAN di-commit
+legacy/config.yml
+# token API Rundeck hardcoded di dalamnya
+docs/legacy/rundeck-get-schedule.sh
+# dump Mongo: besar + berisi data produksi, simpan di luar repo
+legacy/dump/
+
+# --- Artefak lokal ---
+*.log
+.DS_Store
+
+# CATATAN: legacy/static/ SENGAJA tidak di-ignore.
+# Direktori itu ke-gitignore di repo lama dan cuma ada di satu host produksi;
+# nge-commit dia adalah tujuan utama Fase 0.1. Lihat docs/phases/PHASE_0_SALVAGE.md
