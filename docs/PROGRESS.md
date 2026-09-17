@@ -300,14 +300,23 @@ fixture teardown bener kapan waktunya).
 > Aturannya: **kalau migrasi butuh akalan di file scraper, itu bug framework.**
 > Benerin framework-nya, jangan diakalin per file.
 
-- [ ] **4.1** `tools/codemod/classify.py` — klasifikasi family via AST
-- [ ] **4.2** `tools/codemod/extract.py` — ekstraktor AST per family
-- [ ] **4.3** `tools/codemod/emit.py` — template Jinja
-- [ ] **4.4** `import_rundeck.py` — `rundeck-jobs-map.json` → `schedule` +
-      `enabled` per scraper (bukan crontab; penjadwalnya Rundeck)
-- [ ] **4.5** Generate RSS — target ~90% otomatis _(dibatasi ke job aktif)_
-- [ ] **4.6** Generate XPath/Playwright (~45) — target ~73%
-- [ ] **4.7** Generate requests+lxml (~11)
+- [x] **4.1** `tools/codemod/classify.py` — klasifikasi family via AST
+      (import-based: selenium→SELENIUM, playwright→XPATH_BROWSER,
+      defusedxml→RSS, requests+lxml→XPATH_STATIC, sisanya→BESPOKE)
+- [x] **4.2** `tools/codemod/extract.py` — ekstraktor AST per family, gagal
+      ke `needs_review` (bukan nebak) kalau kodenya nyimpang dari bentuk
+      kanonik
+- [x] **4.3** `tools/codemod/emit.py` + `templates/{rss,xpath}.py.jinja`
+- [x] **4.4** `import_rundeck.py` — `rundeck-jobs-map.json` → `schedule` +
+      `enabled` per scraper (bukan crontab; penjadwalnya Rundeck. Temuan:
+      job Rundeck pakai menit TETAP per job, bukan pola `*/N`)
+- [x] **4.5** Generate RSS — **37/47 (79%) otomatis**, +1 udah ada dari Fase 3
+      (`bitdefender`) _(job aktif)_
+- [x] **4.6** Generate XPath/Playwright — **20/23 (87%) otomatis**, +1 udah
+      ada dari Fase 3 (`trendmicro`)
+- [ ] **4.7** Generate requests+lxml (`xpath_static`) — **0/2 (0%)**, +1 udah
+      ada dari Fase 3 (`cyfirma`). N kecil banget (cuma 2 job aktif kena
+      family ini) jadi belum kelihatan pola gagalnya — masuk triage 4.10
 - [ ] **4.8** Tulis ulang 8 Selenium → `XPathScraper(render=True)` _(pekerjaan baru: semuanya memang gak pernah jalan di Linux)_
 - [ ] **4.9** Port manual ~35 scraper bespoke
 - [ ] **4.9a** Buat token API baru (GitHub PAT, NVD, twitterapi.io) khusus
@@ -316,9 +325,187 @@ fixture teardown bener kapan waktunya).
       scraper mana butuh apa: [KNOWN_BROKEN.md](KNOWN_BROKEN.md#butuh-kredensial-asli--ditunda-ke-waktu-testing-keputusan-user).
       <br>⚠️ Jangan pakai token produksi lama yang di `legacy/config.yml` —
       itu masuk daftar rotasi karena udah ke-expose ke laptop dev.
-- [ ] **4.10** Triage `migration_report.json`
-- [ ] **4.11** Catat gesekan DX yang ketemu waktu migrasi → balik benerin
-      framework. Ini output nyata dari pendekatan satu-per-satu.
+- [~] **4.10** Triage `migration_report.json` — 57 di-generate otomatis, 3
+      di-skip (udah ada dari Fase 3), 40 butuh review manual. Verifikasi
+      golden-test bulk atas 57 hasil generate (lihat 4.11): **32 pass bersih
+      lewat perbandingan byte-exact**, sisanya masuk kategori "divergensi
+      disengaja" (bukan bug) — lihat tabel di bawah. `--enable` tiap scraper
+      tetap satu-per-satu sesuai alur di ADDING_A_SCRAPER.md, belum
+      dilakukan di sini.
+- [x] **4.11** Catat gesekan DX yang ketemu waktu migrasi → balik benerin
+      framework. Ini output nyata dari pendekatan satu-per-satu. **3 bug
+      framework ketemu & dibenerin** lewat verifikasi golden-test bulk atas
+      57 hasil generate (bukan diakalin per file — sesuai aturan Fase 4):
+
+      1. **`RSSScraper` gak nge-unescape HTML entity sebelum parse XML.**
+         51 dari 52 scraper RSS lama yang punya rantai `.replace()` buat
+         entity malformed JUGA bungkus hasilnya dengan
+         `html_lib.unescape(...)` sebelum `ET.fromstring()` — tanpa langkah
+         ini, entity numerik yang sebenarnya udah valid (mis. `&#038;`) kena
+         double-escape sama `.replace("&","&amp;")` terus gak pernah
+         ke-decode. Ketauan dari `anyrun` (title `ANY.RUN &#038; SentinelOne`
+         harusnya `ANY.RUN & SentinelOne`). **Fix:** field baru
+         `RSSScraper.html_unescape: ClassVar[bool]`, di-apply di
+         `_parse_feed()` setelah `xml_fixups`, sebelum parse XML. Extractor
+         deteksi pola ini otomatis (cek apakah argumen `ET.fromstring(...)`
+         dibungkus `.unescape(...)`). Dampak: **5 scraper RSS lain ikut lolos
+         golden-test** (darkreading, eclecticiq, embeeresearch, exploitdb,
+         threatmon) yang sebelumnya keliatan gagal karena entity yang sama.
+      2. **`XPathScraper.base_url` gak pernah kedeteksi otomatis.** Field-nya
+         udah ada dari Fase 3 (`XPathScraper` udah punya `urljoin()` bawaan),
+         tapi `extract_xpath()` gak punya logic buat nemuin pola umum di 28
+         scraper lama: `"url": "https://situs.com" + article_url` di dalam
+         dict literal (href dari DOM-nya relatif, di-absolut-kan manual).
+         Ketauan dari `bizone` (URL ke-generate relatif
+         `/eng/expertise/blog/...`, harusnya absolut
+         `https://bi.zone/eng/expertise/blog/...`). **Fix:**
+         `_find_base_url_concat()` di `extract.py`, nyari `ast.Dict` dengan
+         key mengandung "url"/"link" yang value-nya `BinOp(Add, literal-http,
+         ...)`. Verifikasi: `bizone` sekarang match persis (4/4).
+      3. **BOM/CRLF sebelum deklarasi XML bikin parse gagal.** 28 scraper RSS
+         lama defensif soal ini (`.decode("utf-8-sig")` dan/atau `.lstrip()`)
+         karena deklarasi `<?xml ...?>` wajib jadi karakter pertama di
+         dokumen. Ketauan dari `munit` (`ParseError: XML or text declaration
+         not at start of entity` — fixture-nya diawali `\r\n` sebelum
+         `<?xml`). **Fix:** `RSSScraper._parse_feed()` sekarang
+         `resp.text.lstrip("﻿ \t\r\n")` sebelum parse — selalu aman
+         (no-op buat feed yang udah rapi), jadi gak perlu deteksi per-scraper
+         kayak dua bug di atas.
+
+      **Divergensi yang KETAHUAN bukan bug** (dicatat di
+      [KNOWN_BROKEN.md](KNOWN_BROKEN.md), jangan diakalin biar "lolos"
+      golden-test byte-exact):
+
+      | Scraper | Golden-test bulk | Kenapa bukan bug |
+      |---|---|---|
+      | `anyrun` | overlap URL 0% (title match sempurna) | Script lama double-concat `"https://any.run" + link` walau `<link>` RSS-nya udah absolut — bug lama, sengaja gak di-port |
+      | `qualys`, `resecurity`, `rhinosec`, `cisa`, `wiz` | 1-4 item beda per title (selisih NBSP/spasi) | Script lama gak pernah `.strip()` title (`item.find('title').text` mentah) — framework baru SELALU strip, itu perbaikan disengaja |
+      | `elastic_lab`, `eset`, `fortinet`, `starlabs`, `vectra`, `akamai`, `f5` | jumlah item ke-cap di `max_items` (default 50) | `ScraperMeta.max_items` itu cold-start guard yang disengaja (lihat §keputusan "Postgres + DB kosong") — bukan extraction gap. `akamai`/`f5` juga punya 1-2 item minor yang belum di-root-cause (bukan pola jelas kayak yang lain, dampaknya kecil) |
+      | `artic` | overlap 10/20 (subset persis) | Limitasi golden-test harness (§4.11 di atas), bukan extraction gap — scraper punya 2 URL feed, harness cuma replay 1 fixture body |
+
+      3 `ParseError` awal (checkpoint, cloudflare, munit) — **munit
+      kebenerin** (BOM/CRLF, lihat di atas). `checkpoint` & `cloudflare`
+      **bukan bug ekstraksi** — XPath/URL/`base_url`-nya struktural bener
+      (disalin apa adanya dari locator Playwright lama yang jalan), tapi
+      fixture Fase 0-nya nyimpen resource yang SALAH: `checkpointThreat`
+      nyimpen halaman tantangan bot AWS WAF (2KB, cuma script
+      `AwsWafIntegration.*`, bukan konten asli), `cloudflareThreat` nyimpen
+      RSS feed blog Cloudflare (357KB `.xml`, `https://blog.cloudflare.com/`)
+      yang gak ada hubungannya sama DOM `resource-hub` yang di-XPath. Kedua
+      situs ini butuh rekam ULANG live pas `enable` (`verify --record`,
+      ADDING_A_SCRAPER.md) — golden-test mock gak bisa "benerin" fixture yang
+      dari awal salah rekam.
+
+      20 scraper `xpath_browser` udah diverifikasi terpisah (subprocess
+      per-scraper, hindarin noise event-loop Playwright kalau di-loop satu
+      proses): **3 pass bersih** (`bizone`, `esentire`, `volexity`, +
+      `trendmicro` dari Fase 3 = 4 total), 2 gagal karena fixture salah
+      (checkpoint, cloudflare, di atas), **15 gak punya fixture sama sekali**
+      — bukan bug, situs `runtime="browser"` emang paling banyak kena "0 item
+      kedua hari perekaman" di Fase 0.5 (lihat KNOWN_BROKEN.md), tinggal
+      `verify --record` pas giliran `enable`-nya.
+
+      5 scraper RSS gak punya fixture sama sekali (doyensec, google,
+      nquiring_minds, sysdig, trustwave) — bukan bug, tinggal
+      `verify --record` pas giliran `enable`-nya (ADDING_A_SCRAPER.md).
+
+      **Ronde ke-2** ("yang gampang dulu" — beresin `needs_review`,
+      prioritas non-bespoke): 40 → **15** (13 bespoke + `newCveThreat`,
+      salah-klasifikasi XPath padahal pipeline bespoke, + `anyrunTrendThreat`,
+      butuh keputusan produk). 13 scraper baru (12 ditulis manual + 1
+      ke-auto-generate lagi via fix extractor):
+
+      - **Koreksi scope** (`run_migration.py`): 8 dari "100 job aktif" itu
+        BUKAN target migrasi sama sekali, sebelumnya nyampur jadi
+        "unresolved"/"bespoke" yang membingungkan. Sekarang eksplisit 3
+        kategori (`NOT_A_SCRAPER_STEMS`, `EXTERNAL_REPO_STEMS`,
+        `PERMANENTLY_BLOCKED`), laporan punya field `out_of_scope` sendiri:
+        - `logbook`/`sendCounter`/`trendingNewsToday`/`threatactorTrendGraylog`
+          — utility internal (laporan/counter/flush log ke Telegram/Graylog),
+          BUKAN scraper (gak ada `push_job()`). Ranahnya Fase 6 (beat task).
+        - `trendingCve`/`twitter`/`twitter30` — `/opt/TwitterScrap`, repo lain
+          yang emang udah dicatat "Scope ditunda" (gak ada di checkout ini).
+        - `techstackGO`/`techstackNPM`/`techstackPYPI` — **ketauan bahaya**:
+          ada salinan lokal di `ScraperNews/` yang KEBETULAN ke-klasifikasi
+          "bespoke", tapi salinan itu diduga FORK BASI (Rundeck nunjuk ke
+          `/opt/techstackLibrary`, bukan `/opt/ScraperNews`, lihat "Scope
+          ditunda" di atas). Auto-generate dari fork basi lebih bahaya
+          daripada di-skip — sekarang dikeluarin eksplisit dari target.
+        - `threatactorTrendTelegram` — nama job Rundeck beda ejaan dari file
+          asli (`threatActorTrendTele.py`), yang UDAH `PERMANENTLY_BLOCKED`
+          (kredensial hardcoded) — masuk situ, bukan entry baru.
+      - **Framework** (`RSSScraper`): 2 tambahan generik, bukan per-file:
+        - `_include_item(node) -> bool` — hook filter per-item SEBELUM
+          di-parse (kategori/URL/tanggal), default semua lolos. Dipakai 6
+          scraper (`akamai`, `bleepcomp`, `crowdstrike`, `f5`, `cisa`,
+          `sentinel`) yang sebelumnya gak bisa diekspresiin murni
+          deklaratif.
+        - `escape_bare_ampersands()` (dulu langkah `BARE_AMPERSAND.sub()`
+          polos) sekarang **CDATA-aware** — ngelewatin isi
+          `<![CDATA[...]]>` utuh. **Bug asli ketemu**: `wiz.py` punya title
+          CDATA berisi `"CVE-A & CVE-B"` (bare `&`, valid krn CDATA
+          dikecualikan dari entity processing) yang kena escape jadi
+          literal `&amp;` gara-gara regex whole-text yang gak ngerti
+          batas CDATA — parser XML gak decode isi CDATA, jadi salah selamanya.
+          Fix: split per-segmen CDATA, cuma escape bagian DI LUAR CDATA.
+      - **Extractor** (`extract.py`): deteksi daftar URL feed sekarang dari
+        ISI list (semua elemen literal `http...`), bukan nama variabel
+        harus ngandung "url" — `articThreat.py` makai nama `link_list`,
+        sebelumnya ke-skip padahal strukturnya kanonik. Auto-generate
+        langsung jalan setelah fix ini (gak perlu ditulis manual).
+      - **3 scraper "kelihatan ngasih banyak item" tapi ternyata rusak**
+        (ditemuin pas migrasi, dicatat di KNOWN_BROKEN.md):
+        - `huntressThreat.py` — `exit()` sebelum loop `push_job()`, dead
+          code SELAMANYA. Logic ekstraksinya valid → **diselamatkan**
+          manual ke `huntress.py` (CSS class diterjemahin ke XPath
+          `contains()`), bug `exit()`-nya sengaja gak ikut.
+        - `socradarThreat.py` — loop `range(1,5)` tapi XPath-nya gak pernah
+          pakai `{i}`, jadi SELALU cuma 1 item/run (dedup dalam-run
+          nyaring 3 iterasi sisanya). Diport manual ke `socradar.py` dengan
+          `max_items=1` — golden-test match persis 1/1.
+        - `anyrunTrendThreat.py` — ngumpulin ringkasan trend tapi **gak
+          pernah manggil `push_job()` sama sekali**, dari awal incomplete.
+          Fixture Fase 0 ngonfirmasi (`expected_items.json` isinya `[]`).
+          **Sengaja gak di-port** — butuh keputusan produk (Item type baru
+          buat ringkasan, bukan per-artikel), bukan ekstraksi mekanis.
+      - **`sentinelThreat.py` — kuirk filter kategori yang SENGAJA
+        dipertahankan** (bukan bug ekstraksi, bukan bug yang harus
+        dibuang): `skip_status` cuma di-set di dalam `for cat in
+        item.findall('category')`, jadi item TANPA `<category>` sama
+        sekali otomatis LOLOS filter (loop-nya gak pernah jalan). Beda dari
+        `bleepcomp.py`/`crowdstrike.py` yang bentuknya mirip tapi
+        default-nya "exclude". Diverifikasi lewat fixture (item "Agents at
+        Large..." gak punya category tapi tetap di expected) sebelum
+        direplikasi — golden-test match persis 1/1.
+      - **`landth.py`** — satu-satunya kasus yang extractor SENGAJA gak
+        digeneralisasi: variabel loop-nya (`recent_count`) sinkron 1:1 sama
+        `range(1,4)`, tapi ngenalin ITU secara umum (bukan cuma nama `i`)
+        beresikonya lebih besar daripada nulis manual satu file. Ditulis
+        manual, perilakunya diverifikasi identik.
+      - **`rapid7.py`, `cisa.py`** — butuh override method penuh (bukan
+        cuma field deklaratif): rapid7 parsernya beda (`lxml.etree
+        recover=True`, `resolve_entities=False`/`no_network=True` buat
+        nutup XXE manual karena gak lewat `defusedxml`), cisa punya
+        sanitasi byte custom (`remove_invalid_xml_bytes`, filter range byte
+        valid, beda dari `xml_fixups` yang cuma string replace). Keduanya
+        tetap subclass `RSSScraper`/`BaseScraper` satu file, cuma override
+        method yang emang perlu.
+      - **`cybersecnews.py`** — kebutuhannya BERTENTANGAN sama urutan
+        default framework: butuh `html.unescape()` SEBELUM smart-escape
+        (bukan sesudah) biar entity HTML bernama (`&nbsp;`/`&mdash;`, ada
+        beneran di feed-nya, diverifikasi lewat fixture) ke-decode bener.
+        Sempat dicoba jadiin urutan DEFAULT baru di `RSSScraper`, tapi itu
+        bikin REGRESI di `embeeresearch.py` (interaksi sama `xml_fixups`
+        yang nyentuh CDATA) — direvert, `cybersecnews.py` override
+        `_parse_feed()` sendiri buat urutan yang beda ini secara lokal.
+      - **`artic.py`** (auto-generate) — golden-test "gagal" (10/20) itu
+        **limitasi test harness**, bukan bug: scraper ini punya 2 URL feed
+        beda, tapi `cti_scraper.testing._build_http_transport()` cuma
+        rekam/replay SATU response buat scraper apa pun URL-nya diminta —
+        request ke feed ke-2 kebagian byte feed ke-1 lagi. `feeds` tuple
+        hasil ekstraksi udah dicek bener secara struktural. Perlu
+        peningkatan harness (per-URL fixture) buat multi-feed scraper,
+        belum digarap — dicatat di KNOWN_BROKEN.md.
 - [ ] **4.12** Backlog: job nonaktif — diarsipkan, digarap pasca-cutover
 
 **Exit criteria:** 241 modul ke-import semua · contract test hijau · ≥95% fixture identik · sisa delta ada waiver tertulis

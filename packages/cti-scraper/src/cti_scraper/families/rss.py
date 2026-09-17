@@ -10,6 +10,8 @@ default yang jalan. Hasil migrasinya di
 
 from __future__ import annotations
 
+import html
+import re
 from collections.abc import Iterator
 from datetime import date
 from email.utils import parsedate_to_datetime
@@ -23,6 +25,30 @@ import defusedxml.ElementTree as ET
 from cti_scraper.base import BaseScraper, ScrapeContext
 from cti_scraper.errors import ParseError
 from cti_scraper.items import ArticleItem
+
+BARE_AMPERSAND = re.compile(r"&(?!amp;|lt;|gt;|quot;|apos;|#[0-9]+;|#x[0-9A-Fa-f]+;)")
+"""`&` yang BUKAN awal entity valid -- 3 scraper lama (f5, rapid7,
+cybersecnews) punya regex identik ini sebagai pengganti rantai `.replace()`
+blind. Lebih presisi: cuma escape `&` yang beneran bare, entity yang udah
+valid (termasuk numerik kayak "&#038;") gak disentuh sama sekali -- gak
+butuh langkah unescape susulan kayak pola `xml_fixups`+`html_unescape`."""
+
+_CDATA_SPLIT = re.compile(r"(<!\[CDATA\[.*?\]\]>)", re.DOTALL)
+
+
+def escape_bare_ampersands(text: str) -> str:
+    """`BARE_AMPERSAND.sub()` PER-SEGMEN, ngelewatin isi `<![CDATA[...]]>`
+    utuh -- konten CDATA MEMANG dikecualikan dari entity processing XML
+    (itu tujuan CDATA), jadi `&` bare di dalamnya udah valid apa adanya.
+    Ketauan dari `wiz.py`: title CDATA yang punya "CVE-A & CVE-B" kena
+    escape jadi "&amp;" gara-gara regex whole-text yang gak CDATA-aware --
+    XML parser gak decode isi CDATA, jadi "&amp;" nyangkut literal di title
+    final, bukan balik jadi "&"."""
+    parts = _CDATA_SPLIT.split(text)
+    return "".join(
+        part if part.startswith("<![CDATA[") else BARE_AMPERSAND.sub("&amp;", part)
+        for part in parts
+    )
 
 
 class RSSScraper(BaseScraper):
@@ -47,6 +73,13 @@ class RSSScraper(BaseScraper):
     sendiri buat entity yang malformed -- kebanyakan scraper hasil migrasi
     gak butuh ini sama sekali karena defusedxml + recover di bawah udah
     nanganin kasus umum."""
+    html_unescape: ClassVar[bool] = False
+    """True kalau scraper lama bungkus `ET.fromstring(html.unescape(...))`.
+    Perlu di-apply SETELAH `xml_fixups`, SEBELUM parse XML: `xml_fixups`
+    biasanya blind-escape semua `&` jadi `&amp;` (termasuk entity numerik
+    yang udah valid kayak "&#038;", jadi double-escaped), dan unescape ini
+    ngebalikin satu layer-nya -- 51/52 scraper RSS lama yang punya
+    xml_fixups juga bungkus html.unescape(), jadi ini bukan kasus khusus."""
 
     def fetch(self, ctx: ScrapeContext) -> Iterator[ArticleItem]:
         found_total = 0
@@ -59,9 +92,16 @@ class RSSScraper(BaseScraper):
 
     def _parse_feed(self, ctx: ScrapeContext, feed_url: str) -> Iterator[ArticleItem]:
         resp = ctx.http.get(feed_url)
-        text = resp.text
+        # BOM dan/atau CRLF sebelum "<?xml ...?>" bikin parse gagal (deklarasi
+        # XML wajib jadi karakter PERTAMA) -- 28 scraper lama defensif soal ini
+        # (`.decode("utf-8-sig")` dan/atau `.lstrip()`). Selalu aman di-strip:
+        # feed yang udah rapi gak kena dampak apa-apa.
+        text = resp.text.lstrip("\ufeff \t\r\n")
         for old, new in self.xml_fixups:
             text = text.replace(old, new)
+        text = escape_bare_ampersands(text)
+        if self.html_unescape:
+            text = html.unescape(text)
 
         try:
             root = ET.fromstring(text.encode("utf-8"))
@@ -73,9 +113,20 @@ class RSSScraper(BaseScraper):
             raise ParseError(f"{feed_url}: gak ada node di item_path={self.item_path!r}")
 
         for node in nodes:
+            if not self._include_item(node):
+                continue
             item = self._parse_item(node, ctx)
             if item is not None:
                 yield item
+
+    def _include_item(self, node: Element) -> bool:
+        """Override buat filter per-item SEBELUM di-parse (mis. kategori,
+        pola URL) -- default-nya semua item lolos. `node` itu element
+        `<item>`/`<entry>` mentah, jadi bisa cek sibling kayak `<category>`
+        yang gak ada di `ArticleItem` hasil parse. Contoh: `crowdstrike.py`
+        cuma nerima kategori "Counter Adversary Operations" (filter ini
+        udah dikonfirmasi SAH lewat Fase 0.5, lihat KNOWN_BROKEN.md)."""
+        return True
 
     def _parse_item(self, node: Element, ctx: ScrapeContext) -> ArticleItem | None:
         title_el = node.find(self.title_path)

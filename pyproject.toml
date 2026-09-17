@@ -54,6 +54,11 @@ select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
 # typer.Option()/typer.Argument() di default parameter itu idiom RESMI
 # typer (dibaca introspeksi lewat Depends-style), bukan bug B008 biasa.
 "**/cli/*.py" = ["B008"]
+# Scraper hasil migrasi (Fase 4): XPath literal DOM asli kadang panjang --
+# maksa wrap di tengah string XPath cuma bikin susah dibaca, gak ada
+# manfaat. Ini file GENERATED, bukan ditulis tangan.
+"scrapers/src/cti_scrapers/feeds/*.py" = ["E501"]
+"scrapers/src/cti_scrapers/collectors/*.py" = ["E501"]
 
 [tool.mypy]
 python_version = "3.12"

@@ -1,0 +1,26 @@
+"""Google Threat Group -- hasil migrasi otomatis dari `ScraperNews/googleThreat.py`
+(codemod Fase 4, family RSS). Cek `migration_report.json` buat detail
+ekstraksi. WAJIB lewat `dry-run` + `verify` sebelum `enable` -- lihat
+docs/ADDING_A_SCRAPER.md.
+"""
+
+from __future__ import annotations
+
+from cti_scraper.base import ScraperMeta
+from cti_scraper.families.rss import RSSScraper
+from cti_scraper.schedule import spread
+
+
+class Google(RSSScraper):
+    meta = ScraperMeta(
+        id="google",
+        source="Google Threat Group",
+        schedule=spread("30 * * * *", "google"),
+        tags=("migrated",),
+        legacy_label="NEW ARTICLE FROM GOOGLE THREAT GROUP",
+        legacy_script="googleThreat",
+    )
+    feeds = ('https://blog.google/threat-analysis-group/rss/',)
+    date_path = None  # scraper lama pakai waktu-scrape, bukan tanggal artikel asli
+    xml_fixups = (('&ndash;', ''), ('&', '&amp;'),)
+    html_unescape = True  # feed lama pakai html.unescape() sebelum parse XML
