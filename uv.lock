@@ -13,6 +13,7 @@ members = [
     "cti-enrich",
     "cti-platform",
     "cti-scraper",
+    "cti-scrapers",
 ]
 
 [[package]]
@@ -797,6 +798,7 @@ dependencies = [
     { name = "cti-core" },
     { name = "cti-enrich" },
     { name = "cti-scraper" },
+    { name = "cti-scrapers" },
 ]
 
 [package.optional-dependencies]
@@ -816,6 +818,7 @@ requires-dist = [
     { name = "cti-core", editable = "packages/cti-core" },
     { name = "cti-enrich", editable = "packages/cti-enrich" },
     { name = "cti-scraper", editable = "packages/cti-scraper" },
+    { name = "cti-scrapers", editable = "scrapers" },
     { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.10" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.2" },
     { name = "pytest-asyncio", marker = "extra == 'dev'", specifier = ">=0.23" },
@@ -836,6 +839,7 @@ dependencies = [
     { name = "defusedxml" },
     { name = "httpx" },
     { name = "lxml" },
+    { name = "pydantic" },
     { name = "redis" },
     { name = "tenacity" },
     { name = "typer" },
@@ -854,11 +858,27 @@ requires-dist = [
     { name = "httpx", specifier = ">=0.27" },
     { name = "lxml", specifier = ">=5.2" },
     { name = "playwright", marker = "extra == 'browser'", specifier = ">=1.44" },
+    { name = "pydantic", specifier = ">=2.7" },
     { name = "redis", specifier = ">=5.0" },
     { name = "tenacity", specifier = ">=8.3" },
     { name = "typer", specifier = ">=0.12" },
 ]
 provides-extras = ["browser"]
+
+[[package]]
+name = "cti-scrapers"
+version = "0.1.0"
+source = { editable = "scrapers" }
+dependencies = [
+    { name = "cti-scraper" },
+    { name = "pycountry" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "cti-scraper", editable = "packages/cti-scraper" },
+    { name = "pycountry", specifier = ">=23.12" },
+]
 
 [[package]]
 name = "cuda-bindings"
