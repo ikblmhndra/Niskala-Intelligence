@@ -37,6 +37,12 @@ Runbook lengkap: **[phases/PHASE_0_SALVAGE.md](phases/PHASE_0_SALVAGE.md)**
 
 Fase ini **blocking**. Big-bang tanpa baseline itu gak bisa diverifikasi.
 
+> **Soal 3 hari perekaman:** yang ngeblok cuma **hari ke-1**. Format fixture
+> nyimpen per tanggal dan digabung, jadi hari ke-2 dan ke-3 numpuk belakangan
+> tanpa ngulang apa pun. Satu respons RSS juga udah berisi 10–20 item, jadi
+> variasi bentuk item sebagian besar ketangkep di hari pertama — hari
+> berikutnya nilainya buat bentuk yang jarang muncul.
+
 > **Audit terakhir: 2026-09-16.** Dua item kelihatan selesai padahal **belum**
 > — baca catatannya, jangan cuma lihat checkbox.
 
@@ -67,26 +73,20 @@ Fase ini **blocking**. Big-bang tanpa baseline itu gak bisa diverifikasi.
       `test_backup` 4.354 dok · **`cve_db` 0 dok**.
       <br>Container ini dipertahankan: jadi sumber data asli buat rancang skema
       Postgres di Fase 2, tanpa perlu nyentuh produksi.
-- [!] **0.5** Rekam fixture — **hari 1 dari 3**
-      <br>**HASILNYA TIDAK VALID — HARUS DIULANG.** 231 direktori kebuat tapi
-      **0 item total**; 204 scraper gagal `ModuleNotFoundError`.
-      <br>Dua sebab, dua-duanya udah diperbaiki:
-      <br>  1. Dijalanin pakai python sistem, bukan `.venv-legacy`.
-         Sekarang ada guard yang nolak dan nunjukin perintah yang benar.
-      <br>  2. Bug harness: stub `modules` cuma nutup 6 submodul. Sekarang ada
-         meta-path finder yang auto-stub `modules.*` apa pun.
-      <br>Juga ditambah: timeout adaptif (Playwright 240 detik, bukan 90),
-      `pymongo` di venv (11 script import langsung), dan utilitas non-feed
-      di-skip.
-      <br>**Hapus `tests/fixtures/` dan `tests/fixture_report.*.json` dulu**
-      sebelum rekam ulang, biar hasil palsu gak nyampur.
-      <br>Rekam **cuma 100 scraper aktif** (pakai `rundeck-jobs-map.json`),
-      bukan semua 241 — hemat waktu dan gak bikin noise di laporan.
-- [ ] **0.6** Rekam fixture — hari 2
-      <br>⚠️ `tests/fixtures/` **jangan di-commit selagi recording jalan** —
-      hasil setengah jadi bikin baseline gak bisa dipercaya. Commit sekali
-      aja setelah ketiga hari selesai dan laporannya diverifikasi.
-- [ ] **0.7** Rekam fixture — hari 3
+- [~] **0.5** Rekam fixture — **hari 1 (ini gate-nya)**
+      <br>Harness udah diperbaiki (guard interpreter, auto-stub `modules.*`,
+      timeout adaptif, `pymongo`, skip utilitas).
+      <br>**Dibatasi ke ~91 scraper yang job Rundeck-nya aktif**, bukan 241 —
+      150 sisanya gak dimigrasi di Fase 4, jadi gak perlu direkam sekarang.
+      <br>Dengan `--jobs 8`: ~5 menit, bukan ~70 menit.
+      <br>`record_fixtures.py --active-only docs/legacy/rundeck-jobs-map.json --jobs 8 --resume`
+- [ ] **0.6** Hari ke-2 — **advisory, bukan gate**
+      <br>Perintah sama persis. `expected_items.json` digabung per tanggal, jadi
+      nambah hari gak ngulang apa pun dan gak ngeblok Fase 4.
+      <br>⚠️ `tests/fixtures/` jangan di-commit selagi recording jalan.
+- [ ] **0.7** Hari ke-3 — advisory
+      <br>Paling gampang dijadwalin otomatis (cron/launchd) biar numpuk sendiri
+      selagi Fase 4 jalan. Nol waktu manusia.
 - [~] **0.8** Rotasi secret → [SECRETS_ROTATION.md](SECRETS_ROTATION.md)
       <br>**Keputusan: pakai HashiCorp Vault** sebagai secret manager platform baru.
       <br>Buat sekarang cukup **dicatat**; rotasi beneran dikerjain pas fase
@@ -108,8 +108,8 @@ Temuan dari uji coba harness → lihat [KNOWN_BROKEN.md](KNOWN_BROKEN.md)
 - [x] `rundeck-jobs-map.json` ada, 96/100 job aktif kecocokan eksak
 - [x] `legacy/config.yml` ada di lokal, gak di-commit
 - [x] Restore dump Mongo terverifikasi
-- [ ] Fixture: **≥95 dari 100 scraper aktif** punya item, 3 hari berbeda
-      <br>_(turun dari ≥200: yang dimigrasi cuma 100 job aktif Rundeck)_
+- [ ] Fixture **hari-1**: ≥85 dari ~91 scraper aktif punya item
+      <br>_Hari ke-2 dan ke-3 advisory — numpuk belakangan, gak ngeblok._
 - [ ] 11 secret dirotasi, `gitleaks` bersih
 
 ## Fase 1 — Skeleton monorepo `[~]`

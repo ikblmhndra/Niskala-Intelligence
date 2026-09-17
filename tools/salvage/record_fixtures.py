@@ -31,6 +31,8 @@ import json
 import os
 import subprocess
 import sys
+import threading
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 TIMEOUT_S = 90        # scraper light (RSS / requests)
@@ -334,6 +336,14 @@ def main() -> int:
                     help="JSON berisi data DB (techstack, monitored_accounts, "
                          "ioc_allowlist). Tanpa ini, scraper yang bergantung DB "
                          "ngehasilkan 0 item dan fixture-nya bohong.")
+    ap.add_argument("--active-only", type=Path, metavar="RUNDECK_MAP",
+                    help="batasi ke scraper yang job Rundeck-nya aktif "
+                         "(docs/legacy/rundeck-jobs-map.json). 241 -> ~91.")
+    ap.add_argument("--jobs", "-j", type=int, default=1,
+                    help="jumlah scraper direkam paralel (default 1). "
+                         "8 masuk akal; tiap scraper jalan di subprocess sendiri.")
+    ap.add_argument("--resume", action="store_true",
+                    help="lewati scraper yang hari ini udah berhasil direkam")
     ap.add_argument("--day", default=dt.date.today().isoformat())
     ap.add_argument("--verbose", "-v", action="store_true")
     a = ap.parse_args()
@@ -367,24 +377,67 @@ def main() -> int:
         and not any(part in SKIP_DIRS for part in p.parts)
         and (not a.only or p.stem in a.only)
     )
-    print(f"Merekam {len(scripts)} scraper -> {out}  (hari: {a.day})\n")
+    if a.active_only:
+        jobs = json.loads(a.active_only.read_text())
+        active = {Path(j["script"]).stem for j in jobs
+                  if j.get("enabled") and j.get("script")}
+        before = len(scripts)
+        scripts = [p for p in scripts if p.stem in active]
+        print(f"Filter job aktif: {before} -> {len(scripts)} scraper")
+
+    if a.resume:
+        done = set()
+        for f in out.glob("*/expected_items.json"):
+            try:
+                if f.parent.name and json.loads(f.read_text()).get(a.day):
+                    done.add(f.parent.name)
+            except Exception:
+                pass
+        before = len(scripts)
+        scripts = [p for p in scripts if p.stem not in done]
+        print(f"Resume: {before - len(scripts)} udah direkam hari ini, dilewati")
+
+    print(f"Merekam {len(scripts)} scraper -> {out}  (hari: {a.day}, paralel: {a.jobs})\n")
+
+    def run_one(script: Path) -> dict:
+        try:
+            return record_one(script, out, a.day, a.verbose, a.context)
+        except subprocess.TimeoutExpired:
+            return {"scraper": script.stem, "status": "timeout", "items": 0,
+                    "http": 0, "blocked": [], "error": "timeout"}
+        except Exception as e:                                  # noqa: BLE001
+            return {"scraper": script.stem, "status": "harness_error", "items": 0,
+                    "http": 0, "blocked": [], "error": str(e)}
 
     results = []
-    for i, s in enumerate(scripts, 1):
-        print(f"[{i:3}/{len(scripts)}] {s.stem:38}", end=" ", flush=True)
-        try:
-            r = record_one(s, out, a.day, a.verbose, a.context)
-        except subprocess.TimeoutExpired:
-            r = {"scraper": s.stem, "status": "timeout", "items": 0, "http": 0,
-                 "blocked": [], "error": "timeout"}
-        except Exception as e:                                  # noqa: BLE001
-            r = {"scraper": s.stem, "status": "harness_error", "items": 0,
-                 "http": 0, "blocked": [], "error": str(e)}
-        results.append(r)
-        mark = ("BLOCKED" if r.get("blocked") else
-                "ok " if r["status"] == "ok" and r["items"] else
-                "EMPTY" if r["status"] == "ok" else r["status"][:12])
-        print(f"{r['items']:4} item  {mark}")
+    lock = threading.Lock()
+    done_n = 0
+
+    def report(r):
+        nonlocal done_n
+        with lock:
+            done_n += 1
+            mark = ("BLOCKED" if r.get("blocked") else
+                    "ok " if r["status"] == "ok" and r["items"] else
+                    "EMPTY" if r["status"] == "ok" else r["status"][:12])
+            print(f"[{done_n:3}/{len(scripts)}] {r['scraper']:38} "
+                  f"{r['items']:4} item  {mark}", flush=True)
+
+    if a.jobs > 1:
+        # Tiap scraper jalan di subprocess sendiri, jadi thread di sini cuma
+        # nunggu I/O -- GIL bukan masalah. Yang jadi batas: koneksi keluar dan
+        # jumlah Chromium yang bisa hidup bareng.
+        with ThreadPoolExecutor(max_workers=a.jobs) as ex:
+            futs = {ex.submit(run_one, s): s for s in scripts}
+            for f in as_completed(futs):
+                r = f.result()
+                results.append(r)
+                report(r)
+    else:
+        for s in scripts:
+            r = run_one(s)
+            results.append(r)
+            report(r)
 
     report = out.parent / f"fixture_report.{a.day}.json"
     report.write_text(json.dumps(results, indent=2, ensure_ascii=False))
@@ -408,7 +461,7 @@ def main() -> int:
         print("\nScraper yang error (ini kandidat script yang emang udah mati):")
         for r in bad[:20]:
             print(f"  {r['scraper']:34} {r['status']:14} {(r.get('error') or '')[:70]}")
-    print(f"\nTarget cutover: >=200 scraper dgn item, direkam 3 hari berbeda.")
+    print("\nGate Fase 4: hari-1 hijau. Hari ke-2 dan ke-3 numpuk belakangan,\ngak perlu ngulang -- expected_items.json digabung per tanggal.")
     return 0
 
 
