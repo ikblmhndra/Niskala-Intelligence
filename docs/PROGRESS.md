@@ -154,8 +154,13 @@ Temuan dari uji coba harness → lihat [KNOWN_BROKEN.md](KNOWN_BROKEN.md)
 - [ ] **3.6** `runner.py` — rate limit → fetch → dedup → sink → heartbeat
 - [ ] **3.7** Family: `RssScraper`, `XPathScraper`, `ApiScraper`
 - [ ] **3.8** `spread()` — jitter jadwal biar 142 RSS gak barengan
-- [ ] **3.9** CLI: `run`, `dry-run`, `list`
-- [ ] **3.10** 5 scraper referensi (satu per family)
+- [ ] **3.9** CLI — **ini permukaan DX-nya, lihat [ADDING_A_SCRAPER.md](ADDING_A_SCRAPER.md)**
+      <br>`new` (scaffold) · `dry-run` (jalan beneran, gak nulis apa-apa) ·
+      `verify` (adu sama fixture) · `enable` · `list` · `run`
+      <br>`dry-run` yang paling penting: sekarang **gak ada cara nguji scraper
+      selain nyalain di produksi dan nungguin**.
+- [ ] **3.10** 5 scraper referensi (satu per family) — dibikin lewat CLI,
+      bukan ditulis tangan. Kalau alurnya kerasa maksa, benerin CLI-nya dulu.
 - [ ] **3.11** Harness golden test
 
 **Exit criteria:** 5 scraper referensi lolos golden test lawan fixture fase 0 · contract test jalan
@@ -164,9 +169,21 @@ Temuan dari uji coba harness → lihat [KNOWN_BROKEN.md](KNOWN_BROKEN.md)
 
 ## Fase 4 — Migrasi scraper `[ ]`
 
-> **Scope dikoreksi dari temuan Rundeck:** yang dimigrasi **100 scraper aktif**
-> dulu, bukan 241. Sisanya (133 job nonaktif) masuk backlog terpisah, digarap
-> setelah cutover. Ini motong Fase 4 dari 3–4 minggu jadi sekitar 2 minggu.
+> **Scope dikoreksi dari temuan Rundeck:** yang dimigrasi **~91 scraper aktif**
+> dulu, bukan 241. Sisanya masuk backlog terpisah, digarap setelah cutover.
+> Ini motong Fase 4 dari 3–4 minggu jadi sekitar 2 minggu.
+
+> **Pendekatan: satu per satu lewat jalur yang sama kayak nambah scraper baru**
+> ([ADDING_A_SCRAPER.md](ADDING_A_SCRAPER.md)). Codemod bikin kandidatnya, tapi
+> tiap scraper tetap lewat `dry-run` → `verify` → `enable` satu-satu.
+>
+> Alasannya bukan kehati-hatian, tapi supaya **kontraknya ke-uji**. Migrasi 91
+> scraper = 91 kali nyoba alur "nambah scraper". Kalau ada langkah yang kerasa
+> maksa di scraper ke-12, itu ketahuan pas masih murah dibenerin — bukan nanti
+> pas orang lain nambah scraper ke-92.
+>
+> Aturannya: **kalau migrasi butuh akalan di file scraper, itu bug framework.**
+> Benerin framework-nya, jangan diakalin per file.
 
 - [ ] **4.1** `tools/codemod/classify.py` — klasifikasi family via AST
 - [ ] **4.2** `tools/codemod/extract.py` — ekstraktor AST per family
@@ -179,7 +196,9 @@ Temuan dari uji coba harness → lihat [KNOWN_BROKEN.md](KNOWN_BROKEN.md)
 - [ ] **4.8** Tulis ulang 8 Selenium → `XPathScraper(render=True)` _(pekerjaan baru: semuanya memang gak pernah jalan di Linux)_
 - [ ] **4.9** Port manual ~35 scraper bespoke
 - [ ] **4.10** Triage `migration_report.json`
-- [ ] **4.11** Backlog: 133 job nonaktif — diarsipkan, digarap pasca-cutover
+- [ ] **4.11** Catat gesekan DX yang ketemu waktu migrasi → balik benerin
+      framework. Ini output nyata dari pendekatan satu-per-satu.
+- [ ] **4.12** Backlog: job nonaktif — diarsipkan, digarap pasca-cutover
 
 **Exit criteria:** 241 modul ke-import semua · contract test hijau · ≥95% fixture identik · sisa delta ada waiver tertulis
 
