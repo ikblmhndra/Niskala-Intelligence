@@ -41,6 +41,22 @@ masalah**, biarin.
 
 ---
 
+## Target: HashiCorp Vault
+
+Platform baru naruh secret di **Vault**, bukan di `.env` atau `config.yml`.
+`cti_core.config` baca dari Vault lewat env var/AppRole, dengan `.env` cuma
+buat dev lokal.
+
+**Timing:** rotasi beneran dikerjain pas fase testing, barengan integrasi Vault
+— gak perlu dirotasi dua kali. Yang wajib sekarang cuma dua:
+
+1. Daftar di bawah lengkap dan akurat
+2. Gak ada satu pun yang ke-commit ke repo baru — sudah aman, semua file yang
+   berisi kredensial ada di `.gitignore` dan commit pertama udah diverifikasi
+
+⚠️ Satu pengecualian yang gak bisa ditunda: rotasi **sebelum** repo lama
+di-import ke monorepo (Fase 1), biar blob yang keikut cuma berisi nilai mati.
+
 ## Prosedur
 
 ### 1. Token bot Telegram

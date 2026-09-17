@@ -42,33 +42,31 @@ Fase ini **blocking**. Big-bang tanpa baseline itu gak bisa diverifikasi.
 
 - [x] **0.1** Tarik `ScraperNewsWeb/static/` dari prod
       <br>**29 file (28 `.js`, 1 `.css`)** di `legacy/static/`. Sesuai harapan (~27).
-      <br>Belum di-commit — `cti-platform/` belum jadi repo git (lihat 1.6).
-- [~] **0.2** Rekam jadwal scraper
+      <br>**Sudah di-commit** (`641e6c1`). Gak lagi bergantung satu laptop.
+- [x] **0.2** Rekam jadwal scraper
       <br>**Penjadwalnya Rundeck, bukan cron.** Itu sebabnya dump crontab kosong.
-      <br>`crontab-root-manual-get.txt` isinya maintenance host Rundeck doang
-      (restart service, bersihin log) — cuma 2 `.py`, dua-duanya gak nyambung
-      ke scraper.
-      <br>`rundeck-scheduler-export.json`: **233 job, 100 `scheduleEnabled: true`.**
-      Jadwalnya per-jam dengan menit distagger (`:15`, `:30`, `:31`, `:46`) —
+      <br>`rundeck_export_full.sh` udah jalan → `rundeck-jobs-full.json` +
+      `rundeck-jobs-map.json`. **233 job, 100 aktif, 229 ada path script.**
+      <br>Jadwalnya per-jam dengan menit distagger (`:15`, `:30`, `:31`, `:46`) —
       Rundeck udah ngelakuin *spread* yang direncanain di plan.
-      <br>**Yang kurang: command/path script.** Export sekarang cuma punya
-      `name`/`group`/`scheduleEnabled`/`schedule`, jadi 61 dari 233 job gak
-      bisa dicocokin ke file scraper dari namanya doang.
-      <br>→ Jalanin **`tools/salvage/rundeck_export_full.sh`** (butuh `RD_TOKEN`).
-      Dia nyimpen `sequence.commands` yang dibuang script lama, jadi mapping
-      job → file jadi eksak.
+      <br>**96 dari 100 job aktif** kecocokan ke `ScraperNews/`: 91 langsung,
+      4 lewat `python3 -m supportFile.X`, 2 beda penamaan
+      (`threatactorTrendGraylog` vs `threatActorTrendGraylog`,
+      `threatactorTrendTelegram` vs `threatActorTrendTele.py` — di Linux yang
+      case-sensitive, dua job ini kemungkinan gagal diam-diam).
+      <br>⚠️ Job `Offset Checker` manggil `supportFile.offsetAlert` yang
+      **udah rusak** sejak dedup pindah ke Mongo — dijadwalin tapi sia-sia.
 - [x] **0.3** Ambil `config/config.yml`
       <br>`legacy/config.yml` (2.911 byte). Mode file **644, harusnya 600**.
       <br>Ngungkap 2 hal baru: key **`devo:`** (SIEM, ada token — masuk daftar
       rotasi) dan referensi **`cve_db`**.
-- [~] **0.4** `mongodump` + **tes restore**
-      <br>Dump ada: **79 MB** — `news_db` (34 collection), `threatintel` (14),
-      `admin` (3), **`cve_db` (1: `cves`)**, `test_backup` (1).
-      <br>**`cve_db` itu database KETIGA** yang belum pernah muncul di analisis
-      manapun. Kecil (4 KB), kemungkinan sisa. Perlu diputuskan: ikut ke
-      skema Postgres atau dibuang.
-      <br>**Tes restore belum dikonfirmasi.** Jalanin `backup_mongo.sh` sampai
-      selesai, atau verifikasi manual, sebelum ditandai selesai.
+- [x] **0.4** `mongodump` + **tes restore**
+      <br>**Restore terverifikasi** ke container lokal `cti-mongo-legacy`
+      (`mongodb://localhost:27017`) pakai `tools/salvage/restore_local.sh`.
+      <br>`news_db` 34 collection / 86.250 dok · `threatintel` 14 / 107.580 dok ·
+      `test_backup` 4.354 dok · **`cve_db` 0 dok**.
+      <br>Container ini dipertahankan: jadi sumber data asli buat rancang skema
+      Postgres di Fase 2, tanpa perlu nyentuh produksi.
 - [!] **0.5** Rekam fixture — **hari 1 dari 3**
       <br>**HASILNYA TIDAK VALID — HARUS DIULANG.** 231 direktori kebuat tapi
       **0 item total**; 204 scraper gagal `ModuleNotFoundError`.
@@ -85,9 +83,16 @@ Fase ini **blocking**. Big-bang tanpa baseline itu gak bisa diverifikasi.
       <br>Rekam **cuma 100 scraper aktif** (pakai `rundeck-jobs-map.json`),
       bukan semua 241 — hemat waktu dan gak bikin noise di laporan.
 - [ ] **0.6** Rekam fixture — hari 2
+      <br>⚠️ `tests/fixtures/` **jangan di-commit selagi recording jalan** —
+      hasil setengah jadi bikin baseline gak bisa dipercaya. Commit sekali
+      aja setelah ketiga hari selesai dan laporannya diverifikasi.
 - [ ] **0.7** Rekam fixture — hari 3
-- [ ] **0.8** Rotasi secret → [SECRETS_ROTATION.md](SECRETS_ROTATION.md)
-      <br>Sekarang **10 item** — token Devo dari `config.yml` nambah.
+- [~] **0.8** Rotasi secret → [SECRETS_ROTATION.md](SECRETS_ROTATION.md)
+      <br>**Keputusan: pakai HashiCorp Vault** sebagai secret manager platform baru.
+      <br>Buat sekarang cukup **dicatat**; rotasi beneran dikerjain pas fase
+      testing, sekalian integrasi Vault. Yang penting daftarnya lengkap (11 item)
+      dan gak ada yang ke-commit ke repo baru.
+      <br>⚠️ Tetap kerjain **sebelum** repo lama di-import ke monorepo.
 - [x] **0.9** Verifikasi `torch` / `bert-extractive-summarizer` gak kepake
       <br>**Terkonfirmasi nol importer.** Yang kepake cuma `sumy.LsaSummarizer`.
 - [x] **0.10** Verifikasi cakupan bug regex `\b` di `nlp.py`
@@ -98,11 +103,11 @@ Temuan dari uji coba harness → lihat [KNOWN_BROKEN.md](KNOWN_BROKEN.md)
 
 **Exit criteria fase 0:**
 - [x] `legacy/static/` ada, 28 file `.js`
-- [ ] `legacy/static/` ke-commit (butuh git init dulu)
+- [x] `legacy/static/` ke-commit (29 file)
 - [x] Penjadwal teridentifikasi: **Rundeck**, 233 job / 100 aktif
-- [ ] `rundeck-jobs-map.json` ada, mapping job → file scraper eksak
+- [x] `rundeck-jobs-map.json` ada, 96/100 job aktif kecocokan eksak
 - [x] `legacy/config.yml` ada di lokal, gak di-commit
-- [ ] Restore dump Mongo terverifikasi
+- [x] Restore dump Mongo terverifikasi
 - [ ] Fixture: **≥95 dari 100 scraper aktif** punya item, 3 hari berbeda
       <br>_(turun dari ≥200: yang dimigrasi cuma 100 job aktif Rundeck)_
 - [ ] 11 secret dirotasi, `gitleaks` bersih
@@ -114,7 +119,7 @@ Temuan dari uji coba harness → lihat [KNOWN_BROKEN.md](KNOWN_BROKEN.md)
 - [x] **1.3** `.python-version` (3.12)
 - [ ] **1.4** `uv sync` berhasil, `uv.lock` ke-commit
 - [x] **1.5** `.gitignore` + `.env.example` (semua key, tanpa nilai)
-- [ ] **1.6** `git init` + commit pertama
+- [x] **1.6** `git init` + commit pertama (`641e6c1`, 54 file)
 - [ ] **1.7** CI: ruff, mypy, pytest, gitleaks
 - [ ] **1.8** `docker-compose.yml` + Dockerfile per service
 
@@ -282,12 +287,50 @@ Temuan dari uji coba harness → lihat [KNOWN_BROKEN.md](KNOWN_BROKEN.md)
 
 ## Pertanyaan terbuka
 
-- **`/opt/HuntingScript/`** — muncul di crontab Rundeck, punya folder `offset/`
-  sendiri dan script aktivitas SharePoint. Codebase ketiga? Masuk scope revamp
-  atau sistem terpisah? _(user mau cek dulu)_
-- **`/opt/alertRundeck/`** — `serviceAlert.py` jalan tiap 5 menit + `cleanJob.sh`.
-  Kelihatannya monitoring Rundeck, bukan CTI. Konfirmasi lalu abaikan.
-- **`cve_db`** — database ketiga di dump Mongo, 1 collection (`cves`, 4 KB).
-  Belum pernah kesebut di analisis manapun. Ikut ke skema Postgres atau dibuang?
+- ~~**`/opt/HuntingScript/`**~~ dan ~~**`/opt/alertRundeck/`**~~ — **kelar:
+  Rundeck gak jadwalin keduanya.** Di luar scope.
+- _(kosong)_
+- ~~**`cve_db`**~~ — **kelar: 0 dokumen.** Database mati. Gak usah masuk skema
+  Postgres.
 - ~~**Devo (SIEM)**~~ — **di-skip**, gak masuk scope revamp. Token-nya tetap
   ada di daftar rotasi karena `config.yml` udah disalin ke laptop.
+
+---
+
+## Scope ditunda — 3 codebase di luar ScraperNews
+
+**Keputusan: dicatat dulu, belum digarap.** Bukan blocker Fase 0.
+
+Export Rundeck ngungkap 9 job (6 aktif) yang nunjuk ke kode di luar
+`/opt/ScraperNews` — dan ketiganya **gak ada di checkout ini**:
+
+| Repo | Job | Script | Jadwal | Status |
+|---|---|---|---|---|
+| `BreachForums` | Breachforums Capture  | `BFcapture.py` | `20 * * *` | nonaktif |
+| `BreachForums` | Breachforums Scraping  | `BFurl.py` | `10 * * *` | nonaktif |
+| `TwitterScrap` | Twitter CVE Trending | `trendingCve.py` | `0/15 * * *` | **aktif** |
+| `TwitterScrap` | Twitter Scrap (1 Hour) | `twitter.py` | `0 * * *` | **aktif** |
+| `TwitterScrap` | Twitter Scrap (1.30 Hour) | `twitter30.py` | `30 * * *` | **aktif** |
+| `TwitterScrap` | Twitter Chris Sanders | `investigateScenario.py` | `0 * * *` | nonaktif |
+| `techstackLibrary` | TechStack Golang | `techstackGO.py` | `46 * * *` | **aktif** |
+| `techstackLibrary` | TechStack NPM | `techstackNPM.py` | `46 * * *` | **aktif** |
+| `techstackLibrary` | TechStack PyPi | `techstackPYPI.py` | `46 * * *` | **aktif** |
+
+Yang perlu diperhatiin nanti:
+
+- **`techstackLibrary` kemungkinan sumber sebenarnya.** `techstackNPM.py` juga
+  ada di `ScraperNews/`, tapi yang dijadwalin Rundeck versi
+  `/opt/techstackLibrary`. Salinan di ScraperNews kemungkinan fork yang basi.
+  Ini juga nyambung ke duplikasi package-vuln yang udah dicatat di plan
+  (`pkg_vuln_service.py` 1109 baris vs `pkgVulnScanner.py` 419 baris) — jadi
+  fitur ini kemungkinan dibangun **tiga kali**, bukan dua.
+- **`TwitterScrap` berpotensi tabrakan sama `monitorX.py`.** ScraperNews punya
+  `monitorX.py` (427 baris, X/Twitter via twitterapi.io) yang nulis ke
+  collection `tweets`. `/opt/TwitterScrap` punya `twitter.py` + `twitter30.py`
+  yang jalan tiap jam. Perlu dicek: dua jalur ingestion ke data yang sama, atau
+  beda fungsi.
+- **`BreachForums` dua-duanya nonaktif** — prioritas paling rendah.
+
+**Kalau nanti mau digarap:** butuh isi ketiga folder itu dari prod
+(`/opt/TwitterScrap`, `/opt/techstackLibrary`, `/opt/BreachForums`) buat
+dianalisa. Detail jadwal tiap job udah ada di `docs/legacy/rundeck-jobs-map.json`.

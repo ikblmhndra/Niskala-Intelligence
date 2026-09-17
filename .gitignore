@@ -26,6 +26,8 @@ legacy/config.yml
 docs/legacy/rundeck-get-schedule.sh
 # dump Mongo: besar + berisi data produksi, simpan di luar repo
 legacy/dump/
+# berisi techstack org + akun yang dipantau, diambil dari produksi
+tools/salvage/fixture_context.json
 
 # --- Artefak lokal ---
 *.log
