@@ -73,6 +73,25 @@ class ScraperMeta:
     """Default waktu compile. `scraper_config` di DB (control plane,
     Fase 9) nge-override runtime, bukan field ini."""
 
+    credential: str | None = None
+    """Nama kredensial yang mau di-suntik `Runner`/`verify --record` ke
+    `ctx.http` sebagai default header SEBELUM `fetch()` dipanggil --
+    "github"/"nvd"/"twitter" (lihat `cti_scraper.credentials`). `fetch()`
+    gak pernah manggil ini atau lihat token mentahnya sendiri; cukup
+    `ctx.http.get(url)` biasa, header auth udah nempel. `None` (default) =
+    scraper publik, gak butuh apa-apa."""
+
+    reference_data: tuple[str, ...] = ()
+    """Nama dataset internal (Postgres KITA, bukan sumber eksternal) yang
+    `fetch()` butuh baca -- mis. "techstack", "true_positive_cves". Sama
+    filosofi kayak `credential`: `Runner` yang query DB SEBELUM manggil
+    `fetch()` (lihat `cti_scraper.reference_data`), hasilnya data BIASA
+    (list/dict) nempel di `ctx.reference[nama]`. `fetch()` gak pernah
+    pegang `Session`/koneksi DB sendiri -- itu kelas bug yang sama kayak
+    `newCveThreat.py`/`githubPOCMonitor.py` lama (`MongoClient` langsung
+    dari config di tengah script), cuma versi Postgres-nya. `()` (default)
+    = scraper gak butuh apa-apa selain sumber eksternalnya sendiri."""
+
     tags: tuple[str, ...] = ()
 
     legacy_label: str | None = None
@@ -89,13 +108,20 @@ class ScraperMeta:
 
 @dataclass
 class ScrapeContext:
-    """Semua yang `fetch()` boleh pegang. SENGAJA gak ada akses Mongo/
-    Postgres/Telegram/kredensial mentah di sini -- itu pagar keamanan,
-    bukan gaya nulis kode. Waktu ngerekam fixture Fase 0, dua scraper lama
-    (`newCveThreat.py`, `githubPOCMonitor.py`) kebukti bikin MongoClient
-    LANGSUNG dari config dan satu lagi (`threatActorTrendTele.py`) punya
-    token Telegram hardcoded -- kelas bug itu gak mungkin lagi di sini
-    karena `fetch()` gak pernah pegang objek yang bisa dipakai buat itu.
+    """Semua yang `fetch()` boleh pegang. SENGAJA gak ada akses LANGSUNG ke
+    Mongo/Postgres/Telegram/kredensial mentah di sini -- itu pagar
+    keamanan, bukan gaya nulis kode. Waktu ngerekam fixture Fase 0, dua
+    scraper lama (`newCveThreat.py`, `githubPOCMonitor.py`) kebukti bikin
+    MongoClient LANGSUNG dari config dan satu lagi
+    (`threatActorTrendTele.py`) punya token Telegram hardcoded -- kelas
+    bug itu gak mungkin lagi di sini karena `fetch()` gak pernah pegang
+    `Session`/koneksi/token mentah.
+
+    `reference` itu PENGECUALIAN TERKONTROL, bukan lubang di pagar ini:
+    isinya data BIASA (list/dict) yang `Runner` udah query dari Postgres
+    KITA SEBELUM `fetch()` dipanggil (lihat `ScraperMeta.reference_data` +
+    `cti_scraper.reference_data`) -- `fetch()` baca datanya, gak pernah
+    pegang `Session` buat query sendiri.
     """
 
     meta: ScraperMeta
@@ -105,6 +131,12 @@ class ScrapeContext:
     now: datetime = field(default_factory=datetime.utcnow)
     """Injectable buat test deterministik -- jangan panggil
     `datetime.now()` langsung di `fetch()`, pakai `ctx.now`."""
+
+    reference: dict[str, Any] = field(default_factory=dict)
+    """Diisi `Runner` dari `ScraperMeta.reference_data` SEBELUM `fetch()`
+    dipanggil -- key-nya nama dataset (mis. "techstack"), value-nya data
+    Python biasa. Kosong (`{}`) kalau scraper gak declare `reference_data`
+    apa pun (mayoritas)."""
 
     route_handler: Any = None
     """Hook TESTING doang -- bukan API buat scraper pakai. Kalau diisi

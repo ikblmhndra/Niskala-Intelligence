@@ -1,338 +1,352 @@
 {
-  "total_active_jobs": 88,
-  "out_of_scope_count": 8,
-  "generated_count": 1,
-  "skipped_existing_count": 72,
-  "needs_review_count": 15,
+  "total_active_jobs": 83,
+  "out_of_scope_count": 13,
+  "generated_count": 0,
+  "skipped_existing_count": 81,
+  "needs_review_count": 2,
   "out_of_scope": [
+    "githubAptTTPSimulation",
+    "githubSophoslab",
+    "githubTTPs",
+    "mitreGithub",
     "techstackGO",
     "techstackNPM",
     "techstackPYPI",
     "threatactorTrendGraylog",
     "threatactorTrendTelegram",
+    "topCve",
     "trendingCve",
     "twitter",
     "twitter30"
   ],
-  "generated": [
-    {
-      "legacy_script": "articThreat",
-      "family": "rss",
-      "output": "scrapers/src/cti_scrapers/feeds/artic.py"
-    }
-  ],
+  "generated": [],
   "skipped_existing": [
     {
       "legacy_script": "abnormalsecurityThreat",
-      "scraper_id": "abnormalsecurity"
+      "scraper_id": "(udah ada -- cek legacy_script)"
     },
     {
       "legacy_script": "akamaiThreat",
-      "scraper_id": "akamai"
+      "scraper_id": "(udah ada -- cek legacy_script)"
     },
     {
       "legacy_script": "anyrunThreat",
-      "scraper_id": "anyrun"
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "anyrunTrendThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
     },
     {
       "legacy_script": "aquasecThreat",
-      "scraper_id": "aquasec"
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "articThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
     },
     {
       "legacy_script": "asecAhnThreat",
-      "scraper_id": "asec_ahn"
+      "scraper_id": "(udah ada -- cek legacy_script)"
     },
     {
       "legacy_script": "bitdefenderThreat",
-      "scraper_id": "bitdefender"
+      "scraper_id": "(udah ada -- cek legacy_script)"
     },
     {
       "legacy_script": "bizoneThreat",
-      "scraper_id": "bizone"
+      "scraper_id": "(udah ada -- cek legacy_script)"
     },
     {
       "legacy_script": "blackberryThreat",
-      "scraper_id": "blackberry"
-    },
-    {
-      "legacy_script": "bleepcompThreat",
-      "scraper_id": "bleepcomp"
-    },
-    {
-      "legacy_script": "checkpointThreat",
-      "scraper_id": "checkpoint"
-    },
-    {
-      "legacy_script": "cisThreat",
-      "scraper_id": "cis"
-    },
-    {
-      "legacy_script": "cisaThreat",
-      "scraper_id": "cisa"
-    },
-    {
-      "legacy_script": "cloudflareThreat",
-      "scraper_id": "cloudflare"
-    },
-    {
-      "legacy_script": "crowdstrikeThreat",
-      "scraper_id": "crowdstrike"
-    },
-    {
-      "legacy_script": "cybersecnewsThreat",
-      "scraper_id": "cybersecnews"
-    },
-    {
-      "legacy_script": "cybleThreat",
-      "scraper_id": "cyble"
-    },
-    {
-      "legacy_script": "cyfirmaThreat",
-      "scraper_id": "cyfirma"
-    },
-    {
-      "legacy_script": "cymruThreat",
-      "scraper_id": "cymru"
-    },
-    {
-      "legacy_script": "darkreadingThreat",
-      "scraper_id": "darkreading"
-    },
-    {
-      "legacy_script": "dfirThreat",
-      "scraper_id": "dfir"
-    },
-    {
-      "legacy_script": "dfirchThreat",
-      "scraper_id": "dfirch"
-    },
-    {
-      "legacy_script": "doyensecThreat",
-      "scraper_id": "doyensec"
-    },
-    {
-      "legacy_script": "dragosThreat",
-      "scraper_id": "dragos"
-    },
-    {
-      "legacy_script": "eclecticiqThreat",
-      "scraper_id": "eclecticiq"
-    },
-    {
-      "legacy_script": "ecrimeThreat",
-      "scraper_id": "ecrime"
-    },
-    {
-      "legacy_script": "elasticLabThreat",
-      "scraper_id": "elastic_lab"
-    },
-    {
-      "legacy_script": "embeeresearchThreat",
-      "scraper_id": "embeeresearch"
-    },
-    {
-      "legacy_script": "esentireThreat",
-      "scraper_id": "esentire"
-    },
-    {
-      "legacy_script": "esetThreat",
-      "scraper_id": "eset"
-    },
-    {
-      "legacy_script": "exploitdbThreat",
-      "scraper_id": "exploitdb"
-    },
-    {
-      "legacy_script": "f5Threat",
-      "scraper_id": "f5"
-    },
-    {
-      "legacy_script": "fortinetThreat",
-      "scraper_id": "fortinet"
-    },
-    {
-      "legacy_script": "googleCloudThreat",
-      "scraper_id": "google_cloud"
-    },
-    {
-      "legacy_script": "googleThreat",
-      "scraper_id": "google"
-    },
-    {
-      "legacy_script": "groupibThreat",
-      "scraper_id": "groupib"
-    },
-    {
-      "legacy_script": "hackernewsThreat",
-      "scraper_id": "hackernews"
-    },
-    {
-      "legacy_script": "huntioThreat",
-      "scraper_id": "huntio"
-    },
-    {
-      "legacy_script": "huntressThreat",
-      "scraper_id": "huntress"
-    },
-    {
-      "legacy_script": "infostealerThreat",
-      "scraper_id": "infostealer"
-    },
-    {
-      "legacy_script": "intel471Threat",
-      "scraper_id": "intel471"
-    },
-    {
-      "legacy_script": "k7securityThreat",
-      "scraper_id": "k7security"
-    },
-    {
-      "legacy_script": "koisecThreat",
-      "scraper_id": "koisec"
-    },
-    {
-      "legacy_script": "labsqrxThreat",
-      "scraper_id": "labsqrx"
-    },
-    {
-      "legacy_script": "landthThreat",
-      "scraper_id": "landth"
-    },
-    {
-      "legacy_script": "malwarebytesThreat",
-      "scraper_id": "malwarebytes"
-    },
-    {
-      "legacy_script": "microsoftThreat",
-      "scraper_id": "microsoft"
-    },
-    {
-      "legacy_script": "munitThreat",
-      "scraper_id": "munit"
-    },
-    {
-      "legacy_script": "nquiringMindsThreat",
-      "scraper_id": "nquiring_minds"
-    },
-    {
-      "legacy_script": "prodraftThreat",
-      "scraper_id": "prodraft"
-    },
-    {
-      "legacy_script": "proofpointThreat",
-      "scraper_id": "proofpoint"
-    },
-    {
-      "legacy_script": "qualysThreat",
-      "scraper_id": "qualys"
-    },
-    {
-      "legacy_script": "rapid7Threat",
-      "scraper_id": "rapid7"
-    },
-    {
-      "legacy_script": "recordedFutureThreat",
-      "scraper_id": "recorded_future"
-    },
-    {
-      "legacy_script": "redcanaryThreat",
-      "scraper_id": "redcanary"
-    },
-    {
-      "legacy_script": "resecurityThreat",
-      "scraper_id": "resecurity"
-    },
-    {
-      "legacy_script": "rhinosecThreat",
-      "scraper_id": "rhinosec"
-    },
-    {
-      "legacy_script": "sansThreat",
-      "scraper_id": "sans"
-    },
-    {
-      "legacy_script": "securelistThreat",
-      "scraper_id": "securelist"
-    },
-    {
-      "legacy_script": "sentinelThreat",
-      "scraper_id": "sentinel"
-    },
-    {
-      "legacy_script": "socradarThreat",
-      "scraper_id": "socradar"
-    },
-    {
-      "legacy_script": "splunkThreat",
-      "scraper_id": "splunk"
-    },
-    {
-      "legacy_script": "starlabsThreat",
-      "scraper_id": "starlabs"
-    },
-    {
-      "legacy_script": "sysdigThreat",
-      "scraper_id": "sysdig"
-    },
-    {
-      "legacy_script": "tenableThreat",
-      "scraper_id": "tenable"
-    },
-    {
-      "legacy_script": "threatmonThreat",
-      "scraper_id": "threatmon"
-    },
-    {
-      "legacy_script": "trendmicroThreat",
-      "scraper_id": "trendmicro"
-    },
-    {
-      "legacy_script": "trustwaveThreat",
-      "scraper_id": "trustwave"
-    },
-    {
-      "legacy_script": "unit42Threat",
-      "scraper_id": "unit42"
-    },
-    {
-      "legacy_script": "vectraThreat",
-      "scraper_id": "vectra"
-    },
-    {
-      "legacy_script": "vmwareThreat",
-      "scraper_id": "vmware"
-    },
-    {
-      "legacy_script": "volexityThreat",
-      "scraper_id": "volexity"
-    },
-    {
-      "legacy_script": "wizThreat",
-      "scraper_id": "wiz"
-    }
-  ],
-  "needs_review": [
-    {
-      "legacy_script": "anyrunTrendThreat",
-      "family": "xpath_browser",
-      "reasons": [
-        "XPath ter-ekstrak 0 (butuh 1 atau 2 dgn placeholder {i})"
-      ]
+      "scraper_id": "(udah ada -- cek legacy_script)"
     },
     {
       "legacy_script": "blackorbirdGithub",
-      "family": "bespoke",
-      "reasons": [
-        "bespoke/selenium -- porting manual, subclass BaseScraper langsung"
-      ]
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "bleepcompThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "checkpointThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "cisThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "cisaThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
     },
     {
       "legacy_script": "cisacatalogThreat",
-      "family": "bespoke",
-      "reasons": [
-        "bespoke/selenium -- porting manual, subclass BaseScraper langsung"
-      ]
+      "scraper_id": "(udah ada -- cek legacy_script)"
     },
+    {
+      "legacy_script": "cloudflareThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "crowdstrikeThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "cybersecnewsThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "cybleThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "cyfirmaThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "cymruThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "darkreadingThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "dfirThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "dfirchThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "doyensecThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "dragosThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "eclecticiqThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "ecrimeThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "elasticLabThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "embeeresearchThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "esentireThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "esetThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "exploitdbThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "f5Threat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "fortinetThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "githubPOCMonitor",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "githubUnit42",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "googleCloudThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "googleThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "groupibThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "hackernewsThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "huntioThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "huntressThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "infostealerThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "intel471Threat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "k7securityThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "koisecThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "labsqrxThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "landthThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "malwarebytesThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "microsoftThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "munitThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "newCveThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "nquiringMindsThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "prodraftThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "proofpointThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "qualysThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "ransomwareLiveThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "rapid7Threat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "recordedFutureThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "redcanaryThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "resecurityThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "rhinosecThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "sansThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "securelistThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "sentinelThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "socradarThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "sophosThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "splunkThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "starlabsThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "sysdigThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "tenableThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "threatmonThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "trendmicroThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "trustwaveThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "unit42Threat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "vectraThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "vmwareThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "volexityThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "wizThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    }
+  ],
+  "needs_review": [
     {
       "legacy_script": "deepdarkCTI",
       "family": "bespoke",
@@ -341,77 +355,7 @@
       ]
     },
     {
-      "legacy_script": "githubAptTTPSimulation",
-      "family": "bespoke",
-      "reasons": [
-        "bespoke/selenium -- porting manual, subclass BaseScraper langsung"
-      ]
-    },
-    {
-      "legacy_script": "githubPOCMonitor",
-      "family": "bespoke",
-      "reasons": [
-        "bespoke/selenium -- porting manual, subclass BaseScraper langsung"
-      ]
-    },
-    {
-      "legacy_script": "githubSophoslab",
-      "family": "bespoke",
-      "reasons": [
-        "bespoke/selenium -- porting manual, subclass BaseScraper langsung"
-      ]
-    },
-    {
-      "legacy_script": "githubTTPs",
-      "family": "bespoke",
-      "reasons": [
-        "bespoke/selenium -- porting manual, subclass BaseScraper langsung"
-      ]
-    },
-    {
-      "legacy_script": "githubUnit42",
-      "family": "bespoke",
-      "reasons": [
-        "bespoke/selenium -- porting manual, subclass BaseScraper langsung"
-      ]
-    },
-    {
-      "legacy_script": "mitreGithub",
-      "family": "bespoke",
-      "reasons": [
-        "bespoke/selenium -- porting manual, subclass BaseScraper langsung"
-      ]
-    },
-    {
       "legacy_script": "monitorX",
-      "family": "bespoke",
-      "reasons": [
-        "bespoke/selenium -- porting manual, subclass BaseScraper langsung"
-      ]
-    },
-    {
-      "legacy_script": "newCveThreat",
-      "family": "xpath_static",
-      "reasons": [
-        "XPath ter-ekstrak 1 (butuh 1 atau 2 dgn placeholder {i})"
-      ]
-    },
-    {
-      "legacy_script": "ransomwareLiveThreat",
-      "family": "bespoke",
-      "reasons": [
-        "bespoke/selenium -- porting manual, subclass BaseScraper langsung"
-      ]
-    },
-    {
-      "legacy_script": "sophosThreat",
-      "family": "bespoke",
-      "reasons": [
-        "bespoke/selenium -- porting manual, subclass BaseScraper langsung"
-      ]
-    },
-    {
-      "legacy_script": "topCve",
       "family": "bespoke",
       "reasons": [
         "bespoke/selenium -- porting manual, subclass BaseScraper langsung"

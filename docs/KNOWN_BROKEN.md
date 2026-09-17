@@ -168,22 +168,47 @@ diff padahal bukan regresi.
 | `cisaThreat`, `wizThreat` | Sama pola kayak qualys/resecurity/rhinosec di atas | Sama alasan — title gak di-`.strip()` di script lama |
 | `articThreat` | Golden-test 10/20 (subset persis, gak ada item nyasar) | **Limitasi test harness**, bukan bug scraper — lihat bagian di bawah |
 
-## Limitasi golden-test harness — scraper multi-feed
+## Limitasi golden-test harness — scraper yang mukul >1 URL per run
 
 `cti_scraper.testing._build_http_transport()` (dipakai golden test SEMUA
-scraper RSS `runtime="light"`) balikin `fixture.primary_body` yang SAMA buat
-request APA PUN, gak peduli URL-nya. Ini oke buat scraper satu-feed (mayoritas),
-tapi scraper yang punya lebih dari satu `feeds` (mis. `artic.py`, dua URL
-Arctic Wolf) bakal dapet byte yang SAMA di kedua request — efeknya scraper
-mem-parsing feed yang sama dua kali, dan `article_keys()` (return `set`)
-ngilangin duplikatnya sendiri, jadi golden-test keliatan "kurang item"
-walau `feeds` tuple hasil ekstraksi udah bener secara struktural.
+scraper `runtime="light"`) balikin `fixture.primary_body` yang SAMA buat
+request APA PUN, gak peduli URL-nya — `Fixture.primary_body` sendiri cuma
+baca `input_files[0]`. Ini oke buat scraper satu-request (mayoritas), tapi
+GAGAL buat dua pola:
 
-**Bukan bug scraper** — `artic.py` diverifikasi manual (dua URL feed-nya
-persis sama isi `articThreat.py` asli). Kalau mau golden-test scraper
-multi-feed akurat, `Fixture`/`_build_http_transport` perlu direkam & di-mock
-PER-URL (bukan satu body buat semua) — belum digarap, item baru buat
-backlog testing harness, bukan Fase 4.
+- **Multi-feed** (`artic.py`, dua URL Arctic Wolf) — kedua request dapet
+  byte yang SAMA, scraper mem-parsing feed yang sama dua kali,
+  `article_keys()` (return `set`) ngilangin duplikatnya sendiri, golden-test
+  keliatan "kurang item" walau `feeds` tuple-nya bener.
+- **Multi-request BERANTAI** (`blackorbird.py`, `unit42_github.py` —
+  commit-watcher GitHub: request pertama daftar commit, request KEDUA detail
+  commit spesifik pakai SHA dari respons pertama) — request kedua dapet byte
+  respons PERTAMA lagi (daftar commit, bukan detail), parsing-nya crash
+  (`KeyError`/`TypeError`) walau live beneran jalan sempurna. Sempet
+  ketauan `_RecordingTransport` (`verify --record`) UDAH BENER rekam
+  byte terpisah per-URL (`*.input.1.json` s/d `*.input.14.json` buat
+  `unit42_github`) -- yang belum bisa cuma REPLAY-nya, `MockTransport` di
+  `_build_http_transport` cuma pernah nyoba file index 0.
+
+**Bukan bug scraper** — keduanya diverifikasi via `dry-run` (jaringan
+ASLI, token GitHub valid): `blackorbird` `status=ok items_found=1`,
+`unit42_github` `status=ok items_found=3`, keduanya sesuai ekspektasi.
+`verify --record` juga sukses ngerekam byte lengkap (per-URL, bukan cuma
+satu). Kalau mau golden-test scraper multi-request akurat,
+`Fixture`/`_build_http_transport` perlu mock PER-URL (baca dari
+`input_files[i]` yang sesuai, bukan selalu index 0) — belum digarap,
+item baru buat backlog testing harness, bukan Fase 4.
+
+**Kelas ketiga, gak bisa golden-test SAMA SEKALI lewat harness ini**:
+scraper yang declare `ScraperMeta.reference_data` (`new_cve.py`,
+`github_poc_monitor.py`) butuh `ctx.reference` diisi dari Postgres KITA
+SEBELUM `fetch()` jalan -- `cti_scraper.testing.make_fixture_context()`
+gak nyentuh ini sama sekali (dibangun sebelum `reference_data` ada).
+Diverifikasi via `dry-run`/`run` LIVE lawan Postgres lokal (docker-compose)
++ API asli sebagai gantinya -- lihat PROGRESS.md Fase 4.9 buat hasil
+lengkapnya. Kalau mau golden-test scraper jenis ini, harness butuh cara
+nyuntik `reference` tiruan juga, bukan cuma HTTP transport -- belum
+digarap, backlog yang sama kayak limitasi multi-request di atas.
 
 ## Cara nambah ke daftar ini
 

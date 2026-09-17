@@ -62,7 +62,17 @@ def dry_run(scraper_id: str) -> None:
     from cti_scraper.runner import Runner
 
     cls = registry.get(scraper_id)
-    result = Runner(cls, dry_run=True).execute(trigger="manual")
+
+    if cls.meta.reference_data:
+        # Reference data (techstack, dst) dibaca dari Postgres KITA, bukan
+        # sumber eksternal -- dry-run tetap butuh session buat baca ini
+        # walau gak nulis apa-apa (sink/dedup tetap di-skip di bawah).
+        from cti_core.db.engine import sync_session
+
+        with sync_session() as session:
+            result = Runner(cls, session=session, dry_run=True).execute(trigger="manual")
+    else:
+        result = Runner(cls, dry_run=True).execute(trigger="manual")
 
     typer.echo(
         f"status={result.status} items_found={result.items_found} duration_ms={result.duration_ms}"
@@ -193,13 +203,36 @@ def _record_baseline(cls: type[BaseScraper], fixtures_dir: Path) -> None:
 
     import structlog
 
+    default_headers = None
+    if meta.credential is not None:
+        from cti_scraper.credentials import resolve_credential_headers
+
+        default_headers = resolve_credential_headers(meta.credential)
+
+    reference: dict[str, object] = {}
+    if meta.reference_data:
+        from cti_core.db.engine import sync_session
+
+        from cti_scraper.reference_data import resolve_reference_data
+
+        with sync_session() as session:
+            reference = resolve_reference_data(meta.reference_data, session)
+
     transport = _RecordingTransport()
     http = ScraperHttpClient(
-        timeout_s=meta.timeout_s, rate_limit=meta.rate_limit, transport=transport
+        timeout_s=meta.timeout_s,
+        rate_limit=meta.rate_limit,
+        transport=transport,
+        default_headers=default_headers,
     )
     now = datetime.now(UTC)
     ctx = ScrapeContext(
-        meta=meta, run_id="record-baseline", http=http, log=structlog.get_logger(), now=now
+        meta=meta,
+        run_id="record-baseline",
+        http=http,
+        log=structlog.get_logger(),
+        now=now,
+        reference=reference,
     )
     items = list(cls().fetch(ctx))
 

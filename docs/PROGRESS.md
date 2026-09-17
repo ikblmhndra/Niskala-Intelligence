@@ -282,7 +282,7 @@ fixture teardown bener kapan waktunya).
 
 ---
 
-## Fase 4 — Migrasi scraper `[ ]`
+## Fase 4 — Migrasi scraper `[~]`
 
 > **Scope dikoreksi dari temuan Rundeck:** yang dimigrasi **~91 scraper aktif**
 > dulu, bukan 241. Sisanya masuk backlog terpisah, digarap setelah cutover.
@@ -318,20 +318,147 @@ fixture teardown bener kapan waktunya).
       ada dari Fase 3 (`cyfirma`). N kecil banget (cuma 2 job aktif kena
       family ini) jadi belum kelihatan pola gagalnya — masuk triage 4.10
 - [ ] **4.8** Tulis ulang 8 Selenium → `XPathScraper(render=True)` _(pekerjaan baru: semuanya memang gak pernah jalan di Linux)_
-- [ ] **4.9** Port manual ~35 scraper bespoke
-- [ ] **4.9a** Buat token API baru (GitHub PAT, NVD, twitterapi.io) khusus
-      buat testing 9 scraper yang butuh kredensial asli — **user yang bikin,
-      pas mau testing scraper itu** (bukan sekarang). Daftar lengkap +
-      scraper mana butuh apa: [KNOWN_BROKEN.md](KNOWN_BROKEN.md#butuh-kredensial-asli--ditunda-ke-waktu-testing-keputusan-user).
+- [x] **4.9a** Buat token API baru (GitHub PAT, NVD, twitterapi.io) khusus
+      buat testing scraper yang butuh kredensial asli — **user udah bikin +
+      isi ke `.env`** (`GITHUB__TOKEN`/`NVD__API_KEY`/`TWITTER__API_KEY`,
+      dikonfirmasi kebaca bener lewat `Settings`, gak pernah ditampilin di
+      chat). Dipakai buat verifikasi live `blackorbird`/`unit42_github`/
+      `new_cve`/`github_poc_monitor` (4.9) — token twitterapi.io masih
+      nunggu `monitorX` gak lagi ke-block klarifikasi TwitterScrap.
       <br>⚠️ Jangan pakai token produksi lama yang di `legacy/config.yml` —
       itu masuk daftar rotasi karena udah ke-expose ke laptop dev.
-- [~] **4.10** Triage `migration_report.json` — 57 di-generate otomatis, 3
-      di-skip (udah ada dari Fase 3), 40 butuh review manual. Verifikasi
-      golden-test bulk atas 57 hasil generate (lihat 4.11): **32 pass bersih
-      lewat perbandingan byte-exact**, sisanya masuk kategori "divergensi
-      disengaja" (bukan bug) — lihat tabel di bawah. `--enable` tiap scraper
-      tetap satu-per-satu sesuai alur di ADDING_A_SCRAPER.md, belum
-      dilakukan di sini.
+- [x] **4.10** Triage `migration_report.json` — SELESAI setelah 3 ronde.
+      Akhir: dari 96 job aktif mentah Rundeck, **13 di luar scope** (bukan
+      scraper/repo lain/diblokir), **83 target migrasi**: 76 udah punya
+      scraper (57 auto-generate + 13 tulisan tangan ronde 2 + 3 referensi
+      Fase 3 + `ransomware_live`/`cisa_kev`/`sophos`, lihat di bawah), **7
+      sisa** butuh porting bespoke penuh (4.9) — semua udah ditriage &
+      dikategorikan, bukan cuma "belum sempat dicek".
+
+      **Ronde ke-3** (nuntasin 4.10 — baca SEMUA 13 item `needs_review`
+      yang tersisa dari ronde 2, bukan cuma yang gampang):
+
+      - **Bug skip-check ketemu**: `run_migration.py` dulu cuma ngecek
+        file udah ada di `feeds/` lewat nama hasil `legacy_stem_to_id()` --
+        gak nangkep scraper bespoke Fase 3 yang nama file-nya gak ngikut
+        konvensi itu. Akibatnya `ransomwareLiveThreat` (udah lengkap di
+        `collectors/ransomware_live.py`) dan `cisacatalogThreat` (udah
+        lengkap di `collectors/cisa_kev.py`) **nyangkut terus di
+        "needs_review: bespoke" walau UDAH SELESAI dari Fase 3**. Fix:
+        `_find_already_covered()` scan field `legacy_script="..."` di
+        SEMUA scraper yang ada (`feeds/` + `collectors/`), bukan nebak
+        nama file — bener buat family apa pun.
+      - **`sophosThreat.py` — misklasifikasi ketauan & dibenerin**:
+        classifier nge-tag "bespoke" gara-gara pakai `xmltodict.parse()`,
+        padahal strukturnya KANONIK 100% (satu feed, loop item, gak ada
+        filter). Ditulis manual ke `sophos.py` (declaratif murni, `RSSScraper`
+        biasa) — golden-test match persis 4/4.
+      - **5 item lagi ternyata BUKAN scraper** (pola sama kayak
+        logbook/sendCounter/offsetAlert/trendingNewsToday/threatactorTrendGraylog
+        yang ketauan ronde 2): `githubSophoslab`, `githubTTPs`,
+        `mitreGithub`, `githubAptTTPSimulation` — "GitHub commit watcher"
+        yang cuma poll `api.github.com/.../commits` terus alert Telegram
+        (`send_alert_report`/`send_report_file`), **nol panggilan
+        dbMongo/push_job di keempatnya** — gak pernah nulis apa pun ke DB,
+        murni notifikasi sepihak. `topCve` malah gak fetch keluar sama
+        sekali — baca `cve_tracker` LOKAL (hasil scraper lain), agregat,
+        kirim digest Telegram. Dipindah ke `NOT_A_SCRAPER_STEMS`, keluar
+        dari target migrasi (ranahnya Fase 6 beat task).
+      - **7 sisa dikategorikan buat 4.9**:
+
+        | Scraper | Kategori | Status |
+        |---|---|---|
+        | `anyrunTrendThreat` | Rusak, butuh keputusan produk | **SELESAI** → `any_run_trends.py`, fitur baru penuh (lihat 4.9) |
+        | `blackorbirdGithub`, `githubUnit42` | GitHub commit-watcher yang NULIS artikel | **SELESAI** → `blackorbird.py`, `unit42_github.py` (lihat 4.9) |
+        | `newCveThreat`, `githubPOCMonitor` | Subsistem CVE | **SELESAI** → `new_cve.py`, `github_poc_monitor.py` (lihat 4.9) |
+        | `deepdarkCTI` | **PINDAH ke Fase 5** | Extract IOC dari diff commit GitHub (`fastfire/deepdarkCTI`) butuh `iocExtractor.extract_iocs()`-equivalent — itu SCOPE Fase 5 (`cti_enrich/ioc/`, item 5.9). Bukan lagi tugas Fase 4 — lihat Fase 5 buat detail |
+        | `monitorX` | **PINDAH ke Fase 5** | Pertanyaan tabrakan sama `TwitterScrap` **udah terjawab TIDAK** (user tarik repo-nya, dibaca lengkap — lihat "Scope ditunda" di bawah), jadi bukan itu blocker-nya lagi. Blocker sebenarnya: `monitorX.py` manggil `articleValidator()` (LLM, filter cyber-relevance + extract field insiden `victim_name`/`confirmed_incident`/dst) — SCOPE Fase 5 (`cti_enrich/llm/`, item 5.10). Model `Tweet` (`cti_core/db/models/tweet.py`) juga ketauan belum lengkap — ada `confidence_score`/`confirmed_incident` tapi kolom LLM lain (`industries_impacted`, `victim_countries`, `actor_countries`, `victim_name`, `incident_confidence`, `incident_indicators`) belum ada. Bukan lagi tugas Fase 4 — lihat Fase 5 buat detail |
+- [x] **4.9** Port manual scraper bespoke — **5 dari 5 target Fase 4 beres**
+      (`blackorbird`, `unit42_github`, `new_cve`, `github_poc_monitor`,
+      `any_run_trends`), + 2 udah dari Fase 3 (`ransomware_live`, `cisa_kev`).
+      `deepdarkCTI` & `monitorX` **DIPINDAH ke Fase 5** (item 5.9/5.10 di
+      bawah) -- keduanya genuinely butuh modul yang belum ada
+      (`cti_enrich/ioc/`, `cti_enrich/llm/`), bukan kerjaan scraper lagi.
+      Klarifikasi TwitterScrap (dulu dikira blocker `monitorX`) UDAH KELAR
+      -- user tarik repo-nya, dibaca lengkap, TERNYATA BUKAN tabrakan
+      (lihat "Scope ditunda" di bawah).
+
+      **`any_run_trends.py`** (`anyrunTrendThreat` lama): satu-satunya
+      scraper Fase 4 yang beneran FITUR BARU, bukan migrasi -- script lama
+      gak pernah nulis apa pun (`featured_message` dihitung terus dibuang,
+      fixture Fase 0 `expected_items.json` isinya `[]`, lihat KNOWN_BROKEN.md).
+      Keputusan user: lanjutin jadi beneran. Baru dari nol: tabel
+      `malware_trends` (migrasi `21d5ede00400`, diverifikasi upgrade/
+      downgrade + `alembic check` bersih), `MalwareTrendRepo`,
+      `MalwareTrendItem` + sink (upsert `(source, snapshot_date, rank)`,
+      `dedup_key()` scraper di-override `None` -- pola sama kayak `CveItem`,
+      posisi ranking bisa geser dalam hari yang sama antar-run). **Bug
+      ketemu & dibenerin waktu tulis**: lupa prefix `xpath=` di
+      `page.locator()` (beda dari family `XPathScraper` yang lewat lxml,
+      ini manggil Playwright langsung) -- ketauan lewat `dry-run` pertama
+      (`Locator.text_content: Unexpected token "/"`), langsung ketauan
+      jelas. **Perbaikan lain**: href hasil scrape RELATIF
+      (`/malware-trends/kali365/`) -- script lama gak masalah karena
+      hasilnya emang gak pernah dipakai, sekarang beneran jadi link yang
+      diklik orang, jadi digabung `urljoin` ke absolut. Diverifikasi live
+      penuh: `dry-run` 10/10 item, `run` nulis ke Postgres, re-run
+      ke-upsert di tempat yang sama (row count tetap 10, bukan dobel).
+
+      **Framework baru** (dipicu kebutuhan nyata, bukan dibangun duluan):
+      - **`ScraperMeta.credential`** + `cti_scraper.credentials` -- scraper
+        yang butuh API key (GitHub/NVD/Twitter) declare nama kredensialnya,
+        `Runner`/`verify --record` yang nyuntik header ke `ctx.http`
+        SEBELUM `fetch()` dipanggil. `fetch()` gak pernah pegang token
+        mentah -- persis nutup kelas bug yang didokumentasiin
+        `ScrapeContext` (`newCveThreat.py`/`githubPOCMonitor.py` lama bikin
+        `MongoClient` langsung dari config). Standarin GitHub ke
+        `Authorization: Bearer` (script lama campur `token`/`Bearer`,
+        GitHub nerima dua-duanya). **Bug lama ketauan**: NVD API key gak
+        PERNAH kepake di `newCveThreat.py` (field ada di config, gak ada
+        satu pun `apiKey` di request) -- sekarang beneran kepasang, rate
+        limit naik dari 5 ke 50 req/30dtk.
+      - **`ScraperMeta.reference_data`** + `cti_scraper.reference_data` --
+        pola SIMETRIS buat data internal Postgres (techstack, CVE true-
+        positive) yang beberapa scraper butuh baca tapi BUKAN sumber
+        eksternal. `Runner` query DB SEBELUM `fetch()`, `fetch()` cuma
+        baca `ctx.reference[nama]` (data biasa, list/dict) -- `Session`
+        gak pernah nyampe ke `fetch()`. CLI `dry-run`/`verify --record`
+        ikut dibenerin biar buka session read-only kalau scraper-nya
+        declare `reference_data`.
+      - **`CveTrackerRepo`** (`cti_core/db/repositories/cve.py`) + sink
+        `CveItem`/`CvePocItem` baru di `sinks.py` -- satu-satunya jalur
+        tulis `cve_tracker`, dipakai DUA scraper (`new_cve.py` upsert
+        penuh, `github_poc_monitor.py` push POC) biar gak drift lagi kayak
+        `newCveThreat.py`/`githubPOCMonitor.py`/`cve_service.py` lama.
+      - **Migrasi skema baru** (`3f6cadc03383`): `cve_pocs.poc_type`
+        ("poc"/"exploit") -- kolom ketinggalan pas `CvePoc` ditulis Fase 2,
+        ditambah begitu `github_poc_monitor.py` beneran butuh. Diverifikasi
+        upgrade/downgrade/upgrade + `alembic check` = 0 diff, sama standar
+        kayak migrasi Fase 2.
+      - **`CveItem.cve_modified_date`** ditambah ke Item (field DB-nya
+        udah ada dari Fase 2, ketinggalan di draft Item Fase 3).
+
+      **Verifikasi**: fixture Fase 0 gak kepake (golden-test harness belum
+      dukung `reference_data`/multi-request berantai, lihat KNOWN_BROKEN.md)
+      -- keempat scraper diverifikasi lewat `dry-run`/`run` LIVE lawan API
+      asli + Postgres lokal beneran (docker-compose): `blackorbird`
+      (`items_found=1`), `unit42_github` (`items_found=3`), `new_cve`
+      (272 CVE ke-upsert, spot-check data lengkap & bener), `github_poc_monitor`
+      (diverifikasi DUA jalur: 189 kandidat broad-search di-filter techstack
+      dengan bener/ketolak semua pas techstack gak cocok, terus 10 POC
+      ke-attach bener pas techstack DAN CVE tracked cocok -- `poc_available`
+      jadi `True`, `poc_type` ke-klasifikasi bener). 497 test hijau, `ruff
+      check .` + `mypy --strict` (scope `cti-core`+`cti-scraper`) bersih,
+      9 integration test hijau lawan schema baru.
+
+      **Temuan minor, gak di-fix (biaya > manfaat)**: `_cve_poc_sink` bisa
+      no-op diam-diam kalau POC ketemu buat CVE yang gak ke-track sama
+      sekali (`items_new` di `RunResult` tetep ke-hitung sukses walau
+      `add_pocs()` gak nemu baris buat ditempelin) -- setara perilaku
+      Fase-1 script lama (juga gak nulis DB buat CVE yang gak dikenal,
+      cuma alert). Bakal makin jarang kejadian begitu Fase 10 seed
+      techstack/CVE beneran, gak worth bangun mekanisme "sink partial-
+      success reporting" buat satu edge case ini sekarang.
 - [x] **4.11** Catat gesekan DX yang ketemu waktu migrasi → balik benerin
       framework. Ini output nyata dari pendekatan satu-per-satu. **3 bug
       framework ketemu & dibenerin** lewat verifikasi golden-test bulk atas
@@ -522,8 +649,22 @@ fixture teardown bener kapan waktunya).
 - [ ] **5.6** `routing.py` — **fungsi murni**, tiap cabang ada test _(fix `best_practice` yang gak pernah ke-route)_
 - [ ] **5.7** Stage `persist` — **satu-satunya penulis**
 - [ ] **5.8** Stage `alert` — terpisah dari persist
-- [ ] **5.9** SATU IOC extractor (buang 4 fork)
-- [ ] **5.10** SATU LLM client (buang 2 fork)
+- [ ] **5.9** SATU IOC extractor (buang 4 fork). **Dipindah dari Fase 4**:
+      begitu ini ada, port `deepdarkCTI` (`fastfire/deepdarkCTI` di GitHub --
+      extract IOC dari diff commit, filter path `c2/`/`ioc/`/`phishing/`/
+      `ransomware/`/`tor/`/`darkweb/`) jadi scraper bespoke `BaseScraper`,
+      `credential="github"` (pola sama kayak `blackorbird.py`). `IOCRepo`
+      (`packages/cti-core/.../repositories/ioc.py`) udah siap dari Fase 2,
+      tinggal dipanggil.
+- [ ] **5.10** SATU LLM client (buang 2 fork). **Dipindah dari Fase 4**:
+      begitu ini ada, port `monitorX` (X/Twitter via twitterapi.io, akun
+      dari `monitored_accounts` DB, `articleValidator()`-equivalent buat
+      filter cyber-relevance + extract field insiden). Model `Tweet`
+      (`cti_core/db/models/tweet.py`) butuh kolom tambahan dulu
+      (`industries_impacted`, `victim_countries`, `actor_countries`,
+      `victim_name`, `incident_confidence`, `incident_indicators` -- belum
+      ada, cuma `confidence_score`/`confirmed_incident`) -- migrasi baru,
+      sama pola kayak `cve_pocs.poc_type` di Fase 4.
 - [ ] **5.11** SATU `send_alert(topic, msg)` (buang 14 fungsi)
 - [ ] **5.12** Fix regex zero-day `nlp.py:421`
 
@@ -651,13 +792,23 @@ Yang perlu diperhatiin nanti:
   Ini juga nyambung ke duplikasi package-vuln yang udah dicatat di plan
   (`pkg_vuln_service.py` 1109 baris vs `pkgVulnScanner.py` 419 baris) — jadi
   fitur ini kemungkinan dibangun **tiga kali**, bukan dua.
-- **`TwitterScrap` berpotensi tabrakan sama `monitorX.py`.** ScraperNews punya
-  `monitorX.py` (427 baris, X/Twitter via twitterapi.io) yang nulis ke
-  collection `tweets`. `/opt/TwitterScrap` punya `twitter.py` + `twitter30.py`
-  yang jalan tiap jam. Perlu dicek: dua jalur ingestion ke data yang sama, atau
-  beda fungsi.
+- **`TwitterScrap` DIBACA, TERNYATA BUKAN tabrakan.** User tarik repo dari
+  produksi, dibaca lengkap (4.9): `twitter.py`/`twitter30.py`/`trendingCve.py`
+  pakai API Twitter RESMI (bearer token), daftar akun dari file teks statis
+  (`supportFile/usernames_*.txt`), dan **gak nulis DB sama sekali** — murni
+  klasifikasi konten (APAC/CVE/OT/zero-day) yang berakhir di Telegram alert
+  doang. `monitorX.py` pakai API BEDA (twitterapi.io), akun dari DB
+  (`monitored_accounts`), dan itu SATU-SATUNYA yang beneran nulis ke
+  `tweets`. Dua jalur independen, gak ada overlap — `trendingCve`/`twitter`/
+  `twitter30` dipindah ke `NOT_A_SCRAPER_STEMS` (`run_migration.py`), bukan
+  scraper dalam pengertian framework baru (Fase 6 beat task kalau mau
+  dilanjutin). `investigateScenario.py` (nonaktif) dan `newTwitter.py`
+  (gak ada di Rundeck sama sekali, Selenium peninggalan) gak masuk scope
+  Fase 4 sama sekali.
+- **`techstackLibrary` masih belum ditarik** — `monitorX` sendiri sekarang
+  ketunda karena alasan LAIN (LLM client, lihat Fase 4.9), bukan ini.
 - **`BreachForums` dua-duanya nonaktif** — prioritas paling rendah.
 
-**Kalau nanti mau digarap:** butuh isi ketiga folder itu dari prod
-(`/opt/TwitterScrap`, `/opt/techstackLibrary`, `/opt/BreachForums`) buat
-dianalisa. Detail jadwal tiap job udah ada di `docs/legacy/rundeck-jobs-map.json`.
+**Kalau nanti mau digarap:** `techstackLibrary`/`BreachForums` masih perlu
+ditarik dari prod (`TwitterScrap` udah, per catatan di atas). Detail jadwal
+tiap job udah ada di `docs/legacy/rundeck-jobs-map.json`.

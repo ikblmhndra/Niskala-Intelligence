@@ -30,10 +30,14 @@ class ScraperHttpClient:
         user_agent: str = DEFAULT_USER_AGENT,
         bucket: TokenBucket | None = None,
         transport: httpx.BaseTransport | None = None,
+        default_headers: dict[str, str] | None = None,
     ) -> None:
+        """`default_headers` -- header auth per-scraper (lihat
+        `cti_scraper.credentials`), nempel di SETIAP request client ini.
+        Scraper publik (mayoritas) gak pernah set ini."""
         self._client = httpx.Client(
             timeout=timeout_s,
-            headers={"User-Agent": user_agent},
+            headers={"User-Agent": user_agent, **(default_headers or {})},
             follow_redirects=True,
             transport=transport,
         )

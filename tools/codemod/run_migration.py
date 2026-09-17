@@ -12,13 +12,14 @@ bukan keputusan final.
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
 from classify import Family, classify_dir
-from emit import emit_rss, emit_xpath, legacy_stem_to_id
+from emit import emit_rss, emit_xpath
 from extract import extract_rss, extract_xpath
 from import_rundeck import build_schedule_map
 
@@ -27,6 +28,7 @@ MONOREPO_ROOT = CTI_PLATFORM_ROOT.parent  # .../cti-revamp (ScraperNews & cti-pl
 SCRAPERS_SRC = MONOREPO_ROOT / "ScraperNews"
 RUNDECK_MAP = CTI_PLATFORM_ROOT / "docs" / "legacy" / "rundeck-jobs-map.json"
 OUT_DIR = CTI_PLATFORM_ROOT / "scrapers" / "src" / "cti_scrapers" / "feeds"
+COLLECTORS_DIR = CTI_PLATFORM_ROOT / "scrapers" / "src" / "cti_scrapers" / "collectors"
 REPORT_PATH = CTI_PLATFORM_ROOT / "tools" / "codemod" / "migration_report.json"
 
 # Job aktif Rundeck yang jadwalnya lewat Rundeck tapi BUKAN scraper -- gak
@@ -40,12 +42,42 @@ REPORT_PATH = CTI_PLATFORM_ROOT / "tools" / "codemod" / "migration_report.json"
 #     diam-diam, lihat KNOWN_BROKEN.md
 #   - threatactorTrendGraylog -- baca supportFile/ThreatActorName.txt lokal,
 #     flush ke Graylog; bukan scraper (gak ada request keluar buat data baru)
+#
+# Triage 4.10 ronde ke-2 nemuin 5 lagi kategori sama persis:
+#   - githubSophoslab, githubTTPs, mitreGithub, githubAptTTPSimulation --
+#     "GitHub commit watcher": poll api.github.com/.../commits, alert
+#     Telegram (send_alert_report/send_report_file) kalau ada commit baru.
+#     Diverifikasi: NOL panggilan dbMongo/push_job di keempatnya -- gak
+#     pernah nulis apa pun ke DB, murni notifikasi sepihak. (Beda dari
+#     blackorbirdGithub & githubUnit42, family sama tapi KEDUANYA manggil
+#     dbMongo.upsert_article() -- itu tetap bespoke, lihat needs_review.)
+#   - topCve -- "sumber data"-nya collection cve_tracker LOKAL (baca lewat
+#     dbMongo, bukan fetch ke luar), agregat + kirim digest Telegram. Gak
+#     ada langkah "scrape" sama sekali, ini laporan atas hasil scraper lain.
+#
+# TwitterScrap ditarik user dari produksi (dulu EXTERNAL_REPO_STEMS, "gak
+# ada di checkout") -- setelah beneran dibaca, `trendingCve`/`twitter`/
+# `twitter30` (aktif di Rundeck) sama-sama Telegram-only: API Twitter
+# RESMI (bearer token), daftar akun dari file teks statis
+# (`supportFile/usernames_*.txt`), NOL panggilan dbMongo/upsert di
+# ketiganya -- pindah ke sini, bukan EXTERNAL_REPO_STEMS lagi. Dua file
+# lain di repo itu (`investigateScenario.py` nonaktif, `newTwitter.py`
+# malah gak ada di Rundeck sama sekali, Selenium peninggalan lama) gak
+# masuk himpunan manapun, gak pernah nyampe filter job aktif.
 NOT_A_SCRAPER_STEMS = {
     "logbook",
     "sendCounter",
     "offsetAlert",
     "trendingNewsToday",
     "threatactorTrendGraylog",
+    "githubSophoslab",
+    "githubTTPs",
+    "mitreGithub",
+    "githubAptTTPSimulation",
+    "topCve",
+    "trendingCve",
+    "twitter",
+    "twitter30",
 }
 
 # Job aktif Rundeck yang script-nya di REPO LAIN, gak ada sama sekali di
@@ -55,10 +87,10 @@ NOT_A_SCRAPER_STEMS = {
 # KEMUNGKINAN FORK BASI -- job Rundeck yang beneran jalan nunjuk ke
 # /opt/techstackLibrary, bukan /opt/ScraperNews. Auto-generate dari fork basi
 # lebih bahaya daripada di-skip; tunggu isi /opt/techstackLibrary ditarik.
+# (TwitterScrap UDAH ditarik & dicek -- pindah ke NOT_A_SCRAPER_STEMS di
+# atas, bukan di sini lagi. BreachForums masih di luar checkout tapi
+# dua-duanya nonaktif, gak masuk himpunan job aktif sama sekali.)
 EXTERNAL_REPO_STEMS = {
-    "trendingCve",  # /opt/TwitterScrap
-    "twitter",  # /opt/TwitterScrap
-    "twitter30",  # /opt/TwitterScrap
     "techstackGO",  # /opt/techstackLibrary -- salinan ScraperNews/ diduga basi
     "techstackNPM",  # /opt/techstackLibrary -- salinan ScraperNews/ diduga basi
     "techstackPYPI",  # /opt/techstackLibrary -- salinan ScraperNews/ diduga basi
@@ -79,6 +111,29 @@ def _rel(p: Path) -> str:
         return str(p)
 
 
+_LEGACY_SCRIPT_RE = re.compile(r'legacy_script\s*=\s*"([^"]+)"')
+
+
+def _find_already_covered(*dirs: Path) -> set[str]:
+    """Scan `legacy_script="..."` di semua file scraper yang UDAH ada (baik
+    hasil generate `feeds/` maupun bespoke tulisan tangan `collectors/`),
+    balikin himpunan stem yang udah ke-cover. Dulu skip-check cuma ngecek
+    `feeds/` lewat nama file hasil `legacy_stem_to_id()` -- itu gak nangkep
+    scraper bespoke Fase 3 (`ransomware_live.py`, `cisa_kev.py`) yang
+    filenya gak ngikut konvensi id otomatis, jadi keduanya kebaca terus
+    "butuh review" padahal udah lengkap. Scan berbasis `legacy_script` field
+    langsung, bukan nebak nama file, jadi bener buat family manapun."""
+    covered: set[str] = set()
+    for d in dirs:
+        if not d.exists():
+            continue
+        for path in d.glob("*.py"):
+            match = _LEGACY_SCRIPT_RE.search(path.read_text())
+            if match:
+                covered.add(match.group(1))
+    return covered
+
+
 def main() -> int:
     jobs = json.loads(RUNDECK_MAP.read_text())
     active_stems = {
@@ -97,6 +152,8 @@ def main() -> int:
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
 
+    already_covered = _find_already_covered(OUT_DIR, COLLECTORS_DIR)
+
     generated: list[dict[str, str]] = []
     skipped: list[dict[str, str]] = []
     review: list[dict[str, object]] = []
@@ -105,12 +162,12 @@ def main() -> int:
         stem = c.path.stem
         schedule = schedule_map.get(stem, "0 * * * *")
 
+        if stem in already_covered:
+            skipped.append({"legacy_script": stem, "scraper_id": "(udah ada -- cek legacy_script)"})
+            continue
+
         if c.family == Family.RSS:
             ex = extract_rss(c.path)
-            candidate_id = legacy_stem_to_id(stem)
-            if (OUT_DIR / f"{candidate_id}.py").exists():
-                skipped.append({"legacy_script": stem, "scraper_id": candidate_id})
-                continue
             if ex.needs_review:
                 review.append(
                     {"legacy_script": stem, "family": c.family.value, "reasons": ex.needs_review}
@@ -122,10 +179,6 @@ def main() -> int:
         elif c.family in (Family.XPATH_STATIC, Family.XPATH_BROWSER):
             runtime = "browser" if c.family == Family.XPATH_BROWSER else "light"
             ex = extract_xpath(c.path, runtime=runtime)
-            candidate_id = legacy_stem_to_id(stem)
-            if (OUT_DIR / f"{candidate_id}.py").exists():
-                skipped.append({"legacy_script": stem, "scraper_id": candidate_id})
-                continue
             if ex.needs_review:
                 review.append(
                     {"legacy_script": stem, "family": c.family.value, "reasons": ex.needs_review}

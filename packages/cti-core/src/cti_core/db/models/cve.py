@@ -96,6 +96,12 @@ class CvePoc(Base):
     )
     url: Mapped[str] = mapped_column(Text, nullable=False)
     source: Mapped[str | None] = mapped_column(String(100))
+    poc_type: Mapped[str | None] = mapped_column(String(20))
+    """"poc" atau "exploit" -- klasifikasi regex sederhana atas nama/deskripsi
+    repo (lihat `githubPOCMonitor.py` lama, `github_poc_monitor.py` baru).
+    Kolom ketinggalan pas Fase 2 (model ini ditulis SEBELUM `githubPOCMonitor.py`
+    beneran di-port, jadi belum ketauan field ini dipakai) -- ditambah Fase 4
+    pas port beneran butuh, bukan dirombak ulang."""
 
     cve: Mapped[CveTracker] = relationship(back_populates="pocs")
 

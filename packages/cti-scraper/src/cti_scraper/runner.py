@@ -111,13 +111,33 @@ class Runner:
     def _run_body(self, run_id: str, log: structlog.typing.FilteringBoundLogger) -> RunResult:
         result = RunResult(run_id=run_id, scraper_id=self.meta.id, status="ok")
 
+        default_headers = None
+        if self.meta.credential is not None:
+            from cti_scraper.credentials import resolve_credential_headers
+
+            default_headers = resolve_credential_headers(self.meta.credential)
+
         http = ScraperHttpClient(
             timeout_s=self.meta.timeout_s,
             rate_limit=self.meta.rate_limit,
             bucket=self.bucket,
             transport=self.transport,
+            default_headers=default_headers,
         )
-        ctx = ScrapeContext(meta=self.meta, run_id=run_id, http=http, log=log)
+
+        reference: dict[str, object] = {}
+        if self.meta.reference_data:
+            if self.session is None:
+                raise RunnerConfigError(
+                    f"scraper '{self.meta.id}' declare reference_data={self.meta.reference_data} "
+                    "tapi gak ada `session` -- baca-baca DB internal tetap butuh session "
+                    "walau dry_run=True (cuma sink/dedup yang di-skip pas dry-run)"
+                )
+            from cti_scraper.reference_data import resolve_reference_data
+
+            reference = resolve_reference_data(self.meta.reference_data, self.session)
+
+        ctx = ScrapeContext(meta=self.meta, run_id=run_id, http=http, log=log, reference=reference)
         scraper = self.scraper_cls()
         dedup = None if self.dry_run else DedupStore(self.session)  # type: ignore[arg-type]
 

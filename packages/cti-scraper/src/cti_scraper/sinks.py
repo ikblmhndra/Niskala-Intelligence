@@ -2,10 +2,10 @@
 bespoke: `yield` tipe item yang beda, sink yang nentuin tujuannya. Gak ada
 `if scraper.is_special` di mana pun di framework.
 
-Fase 3 cuma daftarin sink buat `ArticleItem` dan `RansomwareVictimItem` --
-yang lain (`CveItem`, `PackageVulnItem`) dipasang pas Fase 4/7 beneran
-butuh (port `newCveThreat.py` / `pkg_vuln_service.py`), sesuai keputusan
-"gak bangun lebih dulu dari kebutuhan" yang sama kayak model Fase 2.
+Fase 3 cuma daftarin sink buat `ArticleItem` dan `RansomwareVictimItem`.
+`CveItem` dipasang Fase 4 pas beneran nge-port `newCveThreat.py` (`PackageVulnItem`
+masih nunggu Fase 7, `pkg_vuln_service.py`) -- sesuai keputusan "gak bangun
+lebih dulu dari kebutuhan" yang sama kayak model Fase 2.
 """
 
 from __future__ import annotations
@@ -15,7 +15,14 @@ from typing import TYPE_CHECKING, Any
 
 from sqlalchemy.orm import Session
 
-from cti_scraper.items import ArticleItem, Item, RansomwareVictimItem
+from cti_scraper.items import (
+    ArticleItem,
+    CveItem,
+    CvePocItem,
+    Item,
+    MalwareTrendItem,
+    RansomwareVictimItem,
+)
 
 if TYPE_CHECKING:
     from cti_scraper.base import ScraperMeta
@@ -38,9 +45,11 @@ class NoSinkRegistered(Exception):
 
 def sink_for(item_type: type[Item]) -> Callable[[Sink], Sink]:
     """Daftarin fungsi buat satu tipe Item. Dipanggil sebagai decorator di
-    level modul (lihat contoh di bawah) -- scraper bespoke yang butuh
-    tujuan baru daftarin sink-nya di FILE SCRAPER-NYA SENDIRI, tetap satu
-    file, gak nambah file baru di package ini."""
+    level modul (lihat contoh di bawah). Preseden yang kepake: sink
+    didaftarin DI SINI (`sinks.py`), terpusat satu tempat biar dispatch
+    table gampang ditemuin -- bukan di file scraper masing-masing yang
+    nge-yield tipe itu (`ArticleItem`/`RansomwareVictimItem`/`CveItem`
+    semuanya di sini walau scraper-nya tersebar di banyak file)."""
 
     def deco(fn: Sink) -> Sink:
         _SINKS[item_type] = fn
@@ -102,8 +111,74 @@ def _ransomware_sink(item: RansomwareVictimItem, meta: ScraperMeta, session: Ses
     )
 
 
+@sink_for(CveItem)
+def _cve_sink(item: CveItem, meta: ScraperMeta, session: Session) -> None:
+    """Upsert ke `cve_tracker`, key `(cve_id, client_id)`. `references`/
+    `affected` SELALU diganti utuh, bukan di-merge -- MITRE ngasih daftar
+    lengkap tiap panggilan, bukan delta (lihat `CveTrackerRepo.upsert`)."""
+    from cti_core.db.repositories.cve import CveTrackerRepo
+
+    repo = CveTrackerRepo(session)
+    repo.upsert(
+        cve_id=item.cve_id,
+        client_id=item.client_id,
+        tech=item.tech,
+        link=item.link,
+        summary=item.summary,
+        published=item.published,
+        cve_modified_date=item.cve_modified_date,
+        solutions=item.solutions,
+        cve_score=item.cve_score,
+        cve_severity=item.cve_severity,
+        cvss_vector=item.cvss_vector,
+        references=item.references,
+        affected=item.affected,
+    )
+
+
+@sink_for(CvePocItem)
+def _cve_poc_sink(item: CvePocItem, meta: ScraperMeta, session: Session) -> None:
+    """Nambahin ke `cve_tracker.pocs` -- kalau `cve_id`-nya gak ketemu di
+    `cve_tracker` sama sekali (belum pernah di-track `new_cve`), POC ini
+    gak punya baris buat ditempelin, `add_pocs()` no-op diam-diam. Itu
+    setara perilaku `githubPOCMonitor.py` lama: fase 1-nya (broad search)
+    JUGA gak nulis DB buat CVE yang gak dikenal, cuma Telegram alert
+    (di luar scope scraper) -- bukan regresi baru."""
+    from cti_core.db.repositories.cve import CveTrackerRepo
+
+    repo = CveTrackerRepo(session)
+    repo.add_pocs(
+        cve_id=item.cve_id,
+        pocs=[{"url": item.url, "source": item.source, "poc_type": item.poc_type}],
+    )
+
+
+@sink_for(MalwareTrendItem)
+def _malware_trend_sink(item: MalwareTrendItem, meta: ScraperMeta, session: Session) -> None:
+    """Upsert ke `malware_trends`, key `(source, snapshot_date, rank)` --
+    posisi ranking yang sama bisa ke-upsert ulang beberapa kali dalam satu
+    hari (leaderboard bisa geser antar-run), makanya `dedup_key()`
+    scraper-nya di-override `None` (lihat `any_run_trends.py`) biar sink
+    ini SELALU kepanggil, bukan cuma sekali per hari."""
+    from cti_core.db.repositories.malware_trend import MalwareTrendRepo
+
+    repo = MalwareTrendRepo(session)
+    repo.upsert(
+        source=item.source,
+        snapshot_date=item.snapshot_date,
+        rank=item.rank,
+        malware_name=item.malware_name,
+        malware_type=item.malware_type,
+        url=item.url,
+        report_count=item.report_count,
+    )
+
+
 def reset() -> None:
     """Testing doang."""
     _SINKS.clear()
     _SINKS[ArticleItem] = _article_sink
     _SINKS[RansomwareVictimItem] = _ransomware_sink
+    _SINKS[CveItem] = _cve_sink
+    _SINKS[CvePocItem] = _cve_poc_sink
+    _SINKS[MalwareTrendItem] = _malware_trend_sink

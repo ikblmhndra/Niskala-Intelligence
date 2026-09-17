@@ -20,6 +20,7 @@ from cti_core.db.models.cve import (
     CveTracker,
 )
 from cti_core.db.models.ioc import IOC, IOCFeedback, IOCSource, IOCTag, IOCThreatActor
+from cti_core.db.models.malware_trend import MalwareTrend
 from cti_core.db.models.package import (
     MonitoredPackage,
     PackageDepEdge,
@@ -52,6 +53,7 @@ __all__ = [
     "IOCSource",
     "IOCTag",
     "IOCThreatActor",
+    "MalwareTrend",
     "MonitoredAccount",
     "MonitoredPackage",
     "PackageDepEdge",
