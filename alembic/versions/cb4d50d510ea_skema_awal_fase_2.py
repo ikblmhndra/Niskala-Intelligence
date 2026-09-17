@@ -1,8 +1,8 @@
 """skema awal fase 2
 
-Revision ID: 95d44de9a462
+Revision ID: cb4d50d510ea
 Revises:
-Create Date: 2026-09-17 08:44:29.522931
+Create Date: 2026-09-17 09:40:36.850071
 
 """
 
@@ -14,7 +14,7 @@ from sqlalchemy.dialects import postgresql
 from alembic import op
 
 # revision identifiers, used by Alembic.
-revision: str = "95d44de9a462"
+revision: str = "cb4d50d510ea"
 down_revision: str | None = None
 branch_labels: str | Sequence[str] | None = None
 depends_on: str | Sequence[str] | None = None
@@ -260,7 +260,7 @@ def upgrade() -> None:
     op.create_table(
         "scraper_runs",
         sa.Column("id", sa.BigInteger(), autoincrement=True, nullable=False),
-        sa.Column("run_id", sa.String(length=30), nullable=False),
+        sa.Column("run_id", sa.String(length=36), nullable=False),
         sa.Column("scraper_id", sa.String(length=100), nullable=False),
         sa.Column("trigger", sa.String(length=20), nullable=False),
         sa.Column("status", sa.String(length=20), nullable=False),
@@ -630,7 +630,7 @@ def upgrade() -> None:
     op.create_table(
         "scraper_items",
         sa.Column("id", sa.BigInteger(), autoincrement=True, nullable=False),
-        sa.Column("run_id", sa.String(length=30), nullable=False),
+        sa.Column("run_id", sa.String(length=36), nullable=False),
         sa.Column("scraper_id", sa.String(length=100), nullable=False),
         sa.Column("url_hash", sa.String(length=64), nullable=False),
         sa.Column("title", sa.Text(), nullable=False),

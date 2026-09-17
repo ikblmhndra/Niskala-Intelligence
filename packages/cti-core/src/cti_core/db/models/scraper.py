@@ -40,8 +40,11 @@ class ScraperRun(Base):
     __tablename__ = "scraper_runs"
 
     id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
-    run_id: Mapped[str] = mapped_column(String(30), nullable=False, unique=True, index=True)
-    """ULID/UUID -- dikembaliin ke caller waktu trigger manual."""
+    run_id: Mapped[str] = mapped_column(String(36), nullable=False, unique=True, index=True)
+    """UUID4 (36 char dgn hyphen) -- dikembaliin ke caller waktu trigger
+    manual. Ketauan dari testing (bukan ditebak): draft pertama kolom ini
+    String(30), padahal `uuid.uuid4()` di runner.py ngasilin 36 karakter --
+    StringDataRightTruncation pas run pertama beneran ke Postgres."""
     scraper_id: Mapped[str] = mapped_column(String(100), nullable=False, index=True)
     trigger: Mapped[str] = mapped_column(String(20), nullable=False, default="beat")
     """beat | manual | retry."""
@@ -72,7 +75,10 @@ class ScraperItem(Base):
 
     id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
     run_id: Mapped[str] = mapped_column(
-        ForeignKey("scraper_runs.run_id", ondelete="CASCADE"), nullable=False, index=True
+        String(36),
+        ForeignKey("scraper_runs.run_id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
     )
     scraper_id: Mapped[str] = mapped_column(String(100), nullable=False, index=True)
     url_hash: Mapped[str] = mapped_column(String(64), nullable=False)

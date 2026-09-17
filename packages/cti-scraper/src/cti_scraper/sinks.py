@@ -1,0 +1,109 @@
+"""Registry dispatch berdasarkan TIPE item. Ini jalan keluar scraper
+bespoke: `yield` tipe item yang beda, sink yang nentuin tujuannya. Gak ada
+`if scraper.is_special` di mana pun di framework.
+
+Fase 3 cuma daftarin sink buat `ArticleItem` dan `RansomwareVictimItem` --
+yang lain (`CveItem`, `PackageVulnItem`) dipasang pas Fase 4/7 beneran
+butuh (port `newCveThreat.py` / `pkg_vuln_service.py`), sesuai keputusan
+"gak bangun lebih dulu dari kebutuhan" yang sama kayak model Fase 2.
+"""
+
+from __future__ import annotations
+
+from collections.abc import Callable
+from typing import TYPE_CHECKING, Any
+
+from sqlalchemy.orm import Session
+
+from cti_scraper.items import ArticleItem, Item, RansomwareVictimItem
+
+if TYPE_CHECKING:
+    from cti_scraper.base import ScraperMeta
+
+# Argumen pertama `Any`, BUKAN `Item` -- tiap sink konkret nerima subclass
+# spesifik (`ArticleItem`, `RansomwareVictimItem`, dst), dan `dict[type[Item],
+# Sink]` di bawah dispatch pakai `type(item)` yang JAMIN kecocokan di
+# runtime. Callable kontravarian bikin mypy nolak assign
+# `Callable[[ArticleItem,...]]` ke slot `Callable[[Item,...]]` walau itu
+# aman -- `Any` di sini jujur soal "kebenaran dijamin tabel dispatch, bukan
+# signature," bukan nutupin bug.
+Sink = Callable[[Any, "ScraperMeta", Session], None]
+
+_SINKS: dict[type[Item], Sink] = {}
+
+
+class NoSinkRegistered(Exception):
+    """Item type di-`yield` scraper tapi belum ada yang tau cara nyimpennya."""
+
+
+def sink_for(item_type: type[Item]) -> Callable[[Sink], Sink]:
+    """Daftarin fungsi buat satu tipe Item. Dipanggil sebagai decorator di
+    level modul (lihat contoh di bawah) -- scraper bespoke yang butuh
+    tujuan baru daftarin sink-nya di FILE SCRAPER-NYA SENDIRI, tetap satu
+    file, gak nambah file baru di package ini."""
+
+    def deco(fn: Sink) -> Sink:
+        _SINKS[item_type] = fn
+        return fn
+
+    return deco
+
+
+def dispatch(item: Item, meta: ScraperMeta, session: Session) -> None:
+    sink = _SINKS.get(type(item))
+    if sink is None:
+        raise NoSinkRegistered(
+            f"gak ada sink buat {type(item).__name__} (dari scraper '{meta.id}') "
+            f"-- daftarin lewat @sink_for({type(item).__name__}) sebelum scraper "
+            "yang nge-yield tipe ini dijalanin."
+        )
+    sink(item, meta, session)
+
+
+@sink_for(ArticleItem)
+def _article_sink(item: ArticleItem, meta: ScraperMeta, session: Session) -> None:
+    """Fase 3: nulis LANGSUNG ke `articles` lewat `ArticleRepo`. Begitu
+    Fase 5 (enrichment) dan Fase 6 (Celery) ada, jalur produksi bakal
+    nge-`send_task` ke queue `enrich` di sini alih-alih nulis langsung --
+    tapi kontraknya (tipe apa masuk sini) gak berubah."""
+    from cti_core.db.repositories.article import ArticleRepo
+
+    repo = ArticleRepo(session)
+    repo.upsert(
+        url=item.url,
+        title=item.title,
+        source=meta.source,
+        scraper_id=meta.id,
+    )
+
+
+@sink_for(RansomwareVictimItem)
+def _ransomware_sink(item: RansomwareVictimItem, meta: ScraperMeta, session: Session) -> None:
+    """Nulis langsung ke `ransomware_victims`, MELEWATI pipeline
+    enrichment artikel -- inilah bukti "yield tipe beda = tujuan beda",
+    bukan special-case di runner."""
+    from cti_core.db.repositories.ransomware import RansomwareVictimRepo
+
+    repo = RansomwareVictimRepo(session)
+    repo.upsert(
+        offset_key=item.dedup_key(),
+        group_name=item.group_name,
+        victim=item.victim,
+        country_code=item.country_code,
+        industry=item.industry,
+        published=item.published,
+        discovered=item.discovered,
+        domain=item.domain,
+        description=item.description,
+        post_url=item.post_url,
+        ransom=item.ransom,
+        data_size=item.data_size,
+        screenshot=item.screenshot,
+    )
+
+
+def reset() -> None:
+    """Testing doang."""
+    _SINKS.clear()
+    _SINKS[ArticleItem] = _article_sink
+    _SINKS[RansomwareVictimItem] = _ransomware_sink

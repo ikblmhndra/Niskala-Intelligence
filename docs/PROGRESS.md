@@ -17,7 +17,7 @@ Plan lengkap: `~/.claude/plans/oke-bro-jadi-gini-sparkling-fern.md`
 | 0 | [Salvage & prep](phases/PHASE_0_SALVAGE.md) | `[~]` 0.2 & 0.5 gagal, ulangi | 3–5 hari | `static/` aman, crontab terekam, fixture terekam, secret dirotasi |
 | 1 | Skeleton monorepo | `[~]` | 1 minggu | `uv sync` hijau, CI jalan |
 | 2 | `cti-core` + skema Postgres | `[x]` | 2–3 minggu | Alembic up, repo + model ada test |
-| 3 | Framework scraper | `[ ]` | 2 minggu | 5 scraper referensi lolos golden test |
+| 3 | Framework scraper | `[x]` | 2 minggu | 5 scraper referensi lolos golden test |
 | 4 | Migrasi scraper (**100 aktif**) | `[ ]` | ~2 minggu | ≥95% fixture identik, semua modul ke-import |
 | 5 | `cti-enrich` | `[ ]` | 2–3 minggu | Output cocok dgn baseline, tiap cabang routing ada test |
 | 6 | Celery + beat | `[ ]` | 1–2 minggu | 5 loop web pindah, beat singleton terverifikasi |
@@ -224,26 +224,61 @@ fixture teardown bener kapan waktunya).
 
 ---
 
-## Fase 3 — Framework scraper `[ ]`
+## Fase 3 — Framework scraper `[x]` SELESAI
 
-- [ ] **3.1** `items.py` — `ArticleItem`, `RansomwareVictimItem`, `CveItem`, dst
-- [ ] **3.2** `base.py` — `BaseScraper` + `ScraperMeta` + `ScrapeContext`
-- [ ] **3.3** `registry.py` — auto-discovery via `__init_subclass__` + `pkgutil`
-- [ ] **3.4** `sinks.py` — sink registry (jalan keluar scraper bespoke)
-- [ ] **3.5** `dedup.py` — two-phase reserve/commit + TTL + cold-start guard
-- [ ] **3.6** `runner.py` — rate limit → fetch → dedup → sink → heartbeat
-- [ ] **3.7** Family: `RssScraper`, `XPathScraper`, `ApiScraper`
-- [ ] **3.8** `spread()` — jitter jadwal biar 142 RSS gak barengan
-- [ ] **3.9** CLI — **ini permukaan DX-nya, lihat [ADDING_A_SCRAPER.md](ADDING_A_SCRAPER.md)**
-      <br>`new` (scaffold) · `dry-run` (jalan beneran, gak nulis apa-apa) ·
-      `verify` (adu sama fixture) · `enable` · `list` · `run`
-      <br>`dry-run` yang paling penting: sekarang **gak ada cara nguji scraper
-      selain nyalain di produksi dan nungguin**.
-- [ ] **3.10** 5 scraper referensi (satu per family) — dibikin lewat CLI,
-      bukan ditulis tangan. Kalau alurnya kerasa maksa, benerin CLI-nya dulu.
-- [ ] **3.11** Harness golden test
+- [x] **3.1** `items.py` — `ArticleItem`, `RansomwareVictimItem`, `CveItem`,
+      `PackageVulnItem`. Sink cuma dipasang buat 2 pertama (sesuai
+      kebutuhan 5 referensi); `CveItem`/`PackageVulnItem` nunggu Fase 4/7.
+- [x] **3.2** `base.py` — `BaseScraper` + `ScraperMeta` + `ScrapeContext`.
+      Lupa nulis `meta` di subclass = `ConfigError` di waktu IMPORT (fail
+      loud), bukan diam-diam gak kedaftar.
+- [x] **3.3** `registry.py` — auto-discovery via `__init_subclass__` +
+      `pkgutil`. Modul yang gagal import GAGAL KERAS (fail loud) — ini yang
+      nangkep kelas bug "lupa import lxml.html" di CI/boot, bukan diam-diam
+      mati selamanya kayak sistem lama.
+- [x] **3.4** `sinks.py` — dispatch berdasarkan TIPE item, bukan nama
+      scraper. `RansomwareVictimItem` kebukti beneran lewatin pipeline
+      artikel dan nulis langsung ke `ransomware_victims`.
+- [x] **3.5** `dedup.py` + `cti_core.db.repositories.scraper_seen.py` —
+      reserve/commit/release two-phase. Diverifikasi ke Postgres beneran:
+      run pertama scraper live 15 item baru, run kedua 15 di-drop semua.
+- [x] **3.6** `runner.py` — rate limit → fetch → dedup → sink → heartbeat.
+- [x] **3.7** Family: `RSSScraper`, `XPathScraper` (runtime light+browser
+      SATU class), `ApiScraper`.
+- [x] **3.8** `spread()` — jitter deterministik. Diverifikasi: 142 scraper
+      simulasi tersebar 5-13 per menit dari 15 slot (bukan numpuk di :00).
+- [x] **3.9** CLI (`cti-scraper`) — `list`, `dry-run`, `run`, `verify`
+      (+`--record` buat baseline baru), `enable`, `disable`. Semua
+      diverifikasi jalan lawan Postgres+situs asli, bukan diasumsikan.
+- [x] **3.10** 5 scraper referensi — **bukan "satu per family" tapi "satu
+      per jalur kode berbeda"**, disengaja lebih luas dari 3 family:
+      `bitdefender` (RSS), `cyfirma` (XPath light), `trendmicro` (XPath
+      browser, Playwright+route-interception), `ransomware_live` (BaseScraper
+      langsung, item bespoke), `cisa_kev` (BaseScraper langsung, ArticleItem
+      tapi logic gak muat di ApiScraper.field_map). `ApiScraper` sendiri
+      dipakai internal ketiganya lewat family class, diuji contract test.
+- [x] **3.11** Harness golden test (`cti_scraper.testing`) — byte fixture
+      Fase 0 disuntik lewat `httpx.MockTransport` (light) atau Playwright
+      `page.route()` (browser, MockTransport gak ngaruh ke navigasi
+      Playwright). Ketauan pas jalan, bukan ditebak: `RansomwareVictimItem`
+      butuh normalisasi tanggal (fixture lama kadang nyimpen datetime
+      penuh, item baru bertipe `date` bersih -- itu perbaikan, bukan bug).
 
-**Exit criteria:** 5 scraper referensi lolos golden test lawan fixture fase 0 · contract test jalan
+**Exit criteria — SEMUA terverifikasi jalan lawan Postgres+jaringan asli:**
+- [x] 5 scraper referensi lolos golden test lawan fixture Fase 0
+- [x] Contract test jalan (31 test, semua scraper kedaftar otomatis dicek)
+- [x] `dry-run bitdefender` narik 15 item beneran dari bitdefender.com asli
+- [x] `run bitdefender` 2x: run-1 15 baru, run-2 15 di-drop (dedup nyata)
+- [x] `enable`/`disable` nulis `scraper_config` beneran
+
+**Bug nyata ketemu+dibenerin selagi jalan (bukan diasumsikan aman):**
+1. `RansomwareVictimItem.dedup_key()` draft pertama 4 bagian, format asli 5
+   bagian (`group:victim:country:industry:tanggal`) — ketauan dari golden
+   test gagal, bukan review kode.
+2. `ScraperRun.run_id` di Fase 2 `String(30)`, tapi `uuid.uuid4()` di
+   runner.py ngasilin 36 karakter — `StringDataRightTruncation` pas run
+   pertama BENERAN ke Postgres (bukan pas test unit, karena test unit gak
+   nyentuh Postgres asli). Migrasi Fase 2 diregenerate ulang.
 
 ---
 

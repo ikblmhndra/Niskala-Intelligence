@@ -8,6 +8,7 @@ dependencies = [
     "cti-scraper",
     "cti-enrich",
     "cti-alerts",
+    "cti-scrapers",
 ]
 
 [project.optional-dependencies]
@@ -27,18 +28,20 @@ package = false
 [tool.uv.workspace]
 # apps/api dan apps/worker masuk workspace pas Fase 6/7 nulis kode beneran di
 # sana (sekarang direktori kosong -- uv gagal resolve member tanpa pyproject.toml).
-members = ["packages/*"]
+members = ["packages/*", "scrapers"]
 
 [tool.uv.sources]
 cti-core = { workspace = true }
 cti-scraper = { workspace = true }
 cti-enrich = { workspace = true }
 cti-alerts = { workspace = true }
+cti-scrapers = { workspace = true }
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 asyncio_mode = "auto"
 filterwarnings = ["error::DeprecationWarning:cti_.*"]
+markers = ["playwright: butuh Chromium ke-install (uv sync --extra browser di cti-scraper)"]
 
 [tool.ruff]
 line-length = 100
@@ -46,6 +49,11 @@ target-version = "py312"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
+
+[tool.ruff.lint.per-file-ignores]
+# typer.Option()/typer.Argument() di default parameter itu idiom RESMI
+# typer (dibaca introspeksi lewat Depends-style), bukan bug B008 biasa.
+"**/cli/*.py" = ["B008"]
 
 [tool.mypy]
 python_version = "3.12"

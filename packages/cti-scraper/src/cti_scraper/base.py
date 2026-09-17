@@ -1,0 +1,223 @@
+"""Kontrak inti scraper. Lihat docs/ADDING_A_SCRAPER.md buat cara pakai
+dari sudut pandang orang yang nambah scraper -- dokumen ini fokus KENAPA
+bentuknya begini.
+"""
+
+from __future__ import annotations
+
+import abc
+from collections.abc import Iterator
+from contextlib import contextmanager
+from dataclasses import dataclass, field
+from datetime import datetime
+from typing import TYPE_CHECKING, Any, ClassVar, Literal
+
+if TYPE_CHECKING:
+    from playwright.sync_api import Page
+
+import structlog
+
+from cti_scraper.http import DEFAULT_USER_AGENT, ScraperHttpClient
+from cti_scraper.items import Item
+
+Runtime = Literal["light", "browser"]
+
+
+class ConfigError(Exception):
+    """Kesalahan SETUP (runtime mismatch, dependency belum ke-install) --
+    beda dari `cti_scraper.errors.ScraperError` yang soal hasil fetch. Ini
+    harus keliatan pas dev/CI, bukan diam-diam gagal di produksi."""
+
+
+@dataclass(frozen=True, slots=True)
+class ScraperMeta:
+    """Semua yang platform butuh tau soal scraper TANPA nge-jalanin dia.
+    Dibaca beat (jadwal), router Celery (runtime -> queue), control plane
+    API (semuanya), dan contract test CI (validasi)."""
+
+    id: str
+    """Slug stabil. Namespace dedup DAN key control plane. JANGAN PERNAH
+    diubah setelah deploy pertama -- itu ngereset seluruh dedup state
+    scraper ini, dan dia bakal nge-yield ulang semua yang kelihatan
+    sekarang."""
+
+    source: str
+    """Nama tampilan, mis. "GBHackers". Ditulis ke Article.source."""
+
+    schedule: str
+    """Ekspresi cron. Buat family declarative (RssScraper dkk) pakai
+    `cti_scraper.schedule.spread()` biar N scraper gak nembak bareng di
+    tick yang sama -- lihat modul itu."""
+
+    runtime: Runtime = "light"
+    """'light' -> httpx/lxml, gak butuh Chromium. 'browser' -> Playwright,
+    dibutuhin `ctx.page()`. Nentuin image mana yang nyalain scraper ini
+    (Fase 9) dan queue Celery mana (Fase 6) -- BUKAN preferensi kosmetik."""
+
+    rate_limit: str = "20/minute"
+    """Token-bucket budget. Di-key per DOMAIN registrable, bukan per
+    scraper -- dua scraper yang mukul host sama berbagi budget yang sama."""
+
+    timeout_s: float = 30.0
+    max_retries: int = 3
+    """Retry cuma buat TransientFetchError. ParseError TIDAK PERNAH
+    di-retry -- itu artinya situs berubah, bukan blip jaringan."""
+
+    dedup_ttl_days: int = 180
+    max_items: int = 50
+    """Batas keras per run. Parser yang tiba-tiba nge-yield 10rb item
+    (bug, atau situsnya berubah format) gak boleh bisa banjirin queue
+    enrichment."""
+
+    enabled: bool = True
+    """Default waktu compile. `scraper_config` di DB (control plane,
+    Fase 9) nge-override runtime, bukan field ini."""
+
+    tags: tuple[str, ...] = ()
+
+    legacy_label: str | None = None
+    """Label `push_job` lama, mis. "NEW ARTICLE FROM GBHACKER" -- kompat
+    mundur `scraper_health_service` selama migrasi. Hapus 1 rilis setelah
+    cutover, lihat plan §8.5."""
+
+    legacy_script: str | None = None
+    """Nama file lama, mis. "gbHackerThreat" -- dipakai migrasi
+    `threatintel.offsets` doang, gak dipakai runtime."""
+
+    notes: str = ""
+
+
+@dataclass
+class ScrapeContext:
+    """Semua yang `fetch()` boleh pegang. SENGAJA gak ada akses Mongo/
+    Postgres/Telegram/kredensial mentah di sini -- itu pagar keamanan,
+    bukan gaya nulis kode. Waktu ngerekam fixture Fase 0, dua scraper lama
+    (`newCveThreat.py`, `githubPOCMonitor.py`) kebukti bikin MongoClient
+    LANGSUNG dari config dan satu lagi (`threatActorTrendTele.py`) punya
+    token Telegram hardcoded -- kelas bug itu gak mungkin lagi di sini
+    karena `fetch()` gak pernah pegang objek yang bisa dipakai buat itu.
+    """
+
+    meta: ScraperMeta
+    run_id: str
+    http: ScraperHttpClient
+    log: structlog.typing.FilteringBoundLogger
+    now: datetime = field(default_factory=datetime.utcnow)
+    """Injectable buat test deterministik -- jangan panggil
+    `datetime.now()` langsung di `fetch()`, pakai `ctx.now`."""
+
+    route_handler: Any = None
+    """Hook TESTING doang -- bukan API buat scraper pakai. Kalau diisi
+    (lihat `cti_scraper.testing`), `page()` masang `page.route("**/*", ...)`
+    pakai handler ini SEBELUM diserahin ke scraper, jadi `page.goto()` di
+    scraper gak pernah nyentuh jaringan beneran -- byte-nya dari fixture
+    Fase 0. Produksi selalu `None`; jalur network asli gak berubah."""
+
+    @contextmanager
+    def page(self, **kwargs: Any) -> Iterator[Page]:
+        """Playwright page. Raise `ConfigError` kalau `meta.runtime` bukan
+        'browser' -- declaring `runtime='browser'` itu yang nge-route ke
+        image yang punya Chromium (Fase 9), jadi mismatch ini harus
+        keliatan pas dev, bukan `ImportError` jam 3 pagi di produksi."""
+        if self.meta.runtime != "browser":
+            raise ConfigError(
+                f"scraper '{self.meta.id}' manggil ctx.page() tapi "
+                f"meta.runtime='{self.meta.runtime}' -- ganti jadi 'browser'"
+            )
+        try:
+            from playwright.sync_api import sync_playwright
+        except ImportError as e:
+            raise ConfigError(
+                "playwright belum ke-install -- jalanin "
+                "`uv sync --extra browser` di packages/cti-scraper"
+            ) from e
+
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            try:
+                pg = browser.new_page(**kwargs)
+                pg.set_extra_http_headers({"User-Agent": DEFAULT_USER_AGENT})
+                if self.route_handler is not None:
+                    pg.route("**/*", self.route_handler)
+                yield pg
+            finally:
+                browser.close()
+
+
+class BaseScraper(abc.ABC):
+    """Subclass ini di SATU file di bawah `cti_scrapers/` dan selesai.
+
+    Framework (lewat `runner.Runner`) pegang, urut begini:
+      1. baca `scraper_config` DB buat override enable/schedule/rate_limit
+      2. akuisisi token rate-limit per-domain
+      3. buka `ScraperRun` (heartbeat: started_at)
+      4. panggil `fetch()`, tarik maksimum `meta.max_items`
+      5. validasi tiap item (Pydantic udah nanganin ini otomatis)
+      6. dedup RESERVE (bukan commit) per item
+      7. serahin item yang ke-reserve ke sink yang kedaftar buat tipenya
+      8. dedup COMMIT kalau sink sukses / RELEASE kalau sink gagal
+      9. tutup `ScraperRun` (items_found/items_new/status/traceback)
+     10. retry+backoff di `TransientFetchError`
+
+    Yang kamu pegang: `fetch()`. Itu doang.
+    """
+
+    meta: ClassVar[ScraperMeta]
+    __abstract__: ClassVar[bool] = False
+    """Set `True` di family base (RSSScraper dkk) yang sengaja belum
+    konkret. JANGAN diwarisin diam-diam -- tiap subclass konkret harus
+    nulis `meta`-nya sendiri (lihat __init_subclass__ di bawah)."""
+
+    def __init_subclass__(cls, **kwargs: Any) -> None:
+        super().__init_subclass__(**kwargs)
+        if cls.__dict__.get("__abstract__", False):
+            return  # family base, sengaja gak didaftarin
+
+        if "meta" not in cls.__dict__:
+            # GAGAL SEKARANG, di waktu import -- bukan diam-diam gak
+            # kedaftar. Lupa nulis `meta` itu kesalahan yang harus keliatan
+            # pas file scraper-nya di-import, bukan pas orang lain nyariin
+            # kenapa scraper dia gak pernah jalan.
+            raise ConfigError(
+                f"{cls.__module__}.{cls.__qualname__} subclass BaseScraper tapi "
+                "gak nulis `meta` sendiri, dan gak di-mark __abstract__=True. "
+                "Scraper konkret: tambahin `meta = ScraperMeta(...)`. Family "
+                "base baru: set `__abstract__: ClassVar[bool] = True`."
+            )
+
+        from cti_scraper.registry import register
+
+        register(cls)
+
+    @abc.abstractmethod
+    def fetch(self, ctx: ScrapeContext) -> Iterator[Item]:
+        """Yield nol atau lebih Item. JANGAN dedup, persist, alert, atau
+        nyatet run di sini -- semua itu tanggung jawab framework.
+
+        Pakai `ctx.http` buat HTTP (client bersama, UA/timeout/retry udah
+        diset) dan `ctx.page()` buat Playwright (runtime='browser' doang).
+
+        Raise `TransientFetchError` (`cti_scraper.errors`) buat apa pun
+        yang worth di-retry (5xx, timeout, connection reset). Raise
+        `ParseError` kalau dokumennya kebaca tapi strukturnya gak sesuai
+        yang diharap -- itu situs berubah, bukan blip, dan framework bakal
+        nyatet run `status='parse_error'` lalu eskalasi ke health sweep,
+        BUKAN nyoba tiga kali ulang buat kegagalan yang gak bakal beda.
+
+        Yield nol item itu SAH dan kecatat `status='empty'` -- beberapa
+        run kosong berturut-turut itu yang dipakai health sweep buat
+        mbedain "sumber lagi sepi" dari "selector rusak", sesuatu yang
+        sistem lama gak bisa lakuin sama sekali.
+        """
+
+    def dedup_key(self, item: Item) -> str | None:
+        """Override cuma kalau key bawaan item salah buat sumber ini.
+        Return `None` buat skip dedup sepenuhnya (mis. collector snapshot
+        penuh yang emang mau nulis ulang tiap run)."""
+        return item.dedup_key()
+
+    def on_run_error(self, exc: BaseException, ctx: ScrapeContext) -> None:
+        """Hook buat cleanup spesifik-sumber. JANGAN nelen exception di
+        sini -- framework tetap nyatet dan mengklasifikasikan apa pun yang
+        terjadi, hook ini cuma buat efek samping (mis. tutup file handle)."""
+        return None
