@@ -41,14 +41,27 @@ masalah**, biarin.
 
 ---
 
-## Target: HashiCorp Vault
+## Arsitektur secret: sekarang vs produksi
 
-Platform baru naruh secret di **Vault**, bukan di `.env` atau `config.yml`.
-`cti_core.config` baca dari Vault lewat env var/AppRole, dengan `.env` cuma
-buat dev lokal.
+Dua fase, disengaja beda:
 
-**Timing:** rotasi beneran dikerjain pas fase testing, barengan integrasi Vault
-— gak perlu dirotasi dua kali. Yang wajib sekarang cuma dua:
+| | Sekarang (dev / pra-produksi) | Produksi |
+|---|---|---|
+| Sumber | `.env`, satu file, dikontrol terpusat | **HashiCorp Vault** |
+| `SECRETS_BACKEND` | `env` (default) | `vault` |
+| Yang baca | `cti_core.settings` langsung dari env var | `cti_core.settings` lewat client Vault |
+| Status Vault | **sudah di `docker-compose.yml`**, opt-in via `docker compose --profile vault up` — mode dev (in-memory, gak persisten), sudah dites: unseal otomatis, KV v2 nyala di path `cti/`, tulis/baca kekonfirmasi | belum — integrasi `cti_core` baca Vault dikerjain di fase testing |
+
+**Kenapa dipisah gini:** integrasi Vault (client, path convention, AppRole/token
+auth) itu kerjaan Fase 2/testing yang nyata, bukan yang bisa diselesaikan
+sekarang tanpa app code. Naruh Vault di stack SEKARANG artinya integrasinya
+bisa mulai diuji kapan aja tanpa nunggu momen "migrasi besar", dan bentuk
+path-nya (`cti/telegram`, `cti/mongo`, dst — cocok sama nama section di
+`.env.example`) udah bisa dirancang dari sekarang.
+
+**Timing rotasi token asli:** dikerjain pas fase testing, barengan integrasi
+Vault beneran — gak perlu dirotasi dua kali (sekali buat `.env`, sekali lagi
+buat Vault). Yang wajib sekarang cuma dua:
 
 1. Daftar di bawah lengkap dan akurat
 2. Gak ada satu pun yang ke-commit ke repo baru — sudah aman, semua file yang

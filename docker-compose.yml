@@ -1,0 +1,65 @@
+# Stack lokal buat CTI platform.
+#
+# Skema secret sekarang vs nanti — lihat docs/SECRETS_ROTATION.md:
+#   SEKARANG (dev/pra-produksi): satu sumber .env, dikontrol terpusat di sini.
+#   NANTI (produksi):            Vault jadi sumber secret asli, .env cuma
+#                                 nyimpen VAULT_ADDR + VAULT_TOKEN.
+#
+# Vault udah masuk stack DARI SEKARANG (service di bawah) supaya integrasinya
+# bisa mulai diuji kapan aja, tapi dia OPT-IN lewat profile "vault" — kerja
+# harian (`docker compose up`) gak butuh dia nyala.
+#
+# Layanan apps/api, apps/worker, apps/web belum ditambahin: kodenya belum ada
+# (Fase 2/6/7/8). Ditambahin pas fase itu jalan.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-cti}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-cti}
+      POSTGRES_DB: ${POSTGRES_DB:-cti}
+    ports: ["${POSTGRES_PORT:-5432}:5432"]
+    volumes: [postgres-data:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-cti}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    ports: ["${REDIS_PORT:-6379}:6379"]
+    volumes: [redis-data:/data]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # --- Vault: siap dari sekarang, dipakai beneran nanti ---------------------
+  # Mode dev: penyimpanan in-memory (data hilang tiap restart -- disengaja,
+  # karena belum ada secret asli yang disimpan di sini), auto-unseal, root
+  # token deterministik dari VAULT_DEV_ROOT_TOKEN. Jangan pernah jalanin mode
+  # ini di produksi -- itu kenapa dia di belakang profile terpisah.
+  vault:
+    image: hashicorp/vault:1.17
+    restart: unless-stopped
+    profiles: ["vault"]          # nyala manual: docker compose --profile vault up -d
+    cap_add: [IPC_LOCK]
+    environment:
+      VAULT_DEV_ROOT_TOKEN_ID: ${VAULT_DEV_ROOT_TOKEN:-cti-dev-root}
+      VAULT_DEV_LISTEN_ADDRESS: 0.0.0.0:8200
+    ports: ["${VAULT_PORT:-8200}:8200"]
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8200/v1/sys/health?standbyok=true"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres-data: {}
+  redis-data: {}

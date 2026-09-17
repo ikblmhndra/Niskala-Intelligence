@@ -87,12 +87,19 @@ Fase ini **blocking**. Big-bang tanpa baseline itu gak bisa diverifikasi.
 - [ ] **0.7** Hari ke-3 — advisory
       <br>Paling gampang dijadwalin otomatis (cron/launchd) biar numpuk sendiri
       selagi Fase 4 jalan. Nol waktu manusia.
-- [~] **0.8** Rotasi secret → [SECRETS_ROTATION.md](SECRETS_ROTATION.md)
-      <br>**Keputusan: pakai HashiCorp Vault** sebagai secret manager platform baru.
-      <br>Buat sekarang cukup **dicatat**; rotasi beneran dikerjain pas fase
-      testing, sekalian integrasi Vault. Yang penting daftarnya lengkap (11 item)
-      dan gak ada yang ke-commit ke repo baru.
-      <br>⚠️ Tetap kerjain **sebelum** repo lama di-import ke monorepo.
+- [x] **0.8** Arsitektur secret diputuskan + Vault masuk stack
+      <br>**Keputusan final:** `.env` satu sumber terpusat sekarang, Vault
+      dipakai beneran pas produksi. Bukan cuma dicatat — **sudah diverifikasi
+      jalan**: `docker-compose.yml` punya service `vault` (profile opt-in),
+      dites nyala → healthy → unseal otomatis → KV v2 aktif di `cti/` →
+      tulis/baca sukses → dimatiin lagi (dev-mode, gak ada state yang perlu
+      dipertahankan).
+      <br>Yang **belum** dan sengaja ditunda ke fase testing: `cti_core`
+      belum baca dari Vault (`SECRETS_BACKEND=env` masih satu-satunya jalur),
+      dan token asli (11 item di [SECRETS_ROTATION.md](SECRETS_ROTATION.md))
+      belum dirotasi — dirotasi sekali aja pas integrasi Vault beneran jalan.
+      <br>⚠️ Rotasi tetap wajib **sebelum** repo lama di-import ke monorepo
+      (Fase 1) — itu satu-satunya bagian yang gak bisa ditunda.
 - [x] **0.9** Verifikasi `torch` / `bert-extractive-summarizer` gak kepake
       <br>**Terkonfirmasi nol importer.** Yang kepake cuma `sumy.LsaSummarizer`.
 - [x] **0.10** Verifikasi cakupan bug regex `\b` di `nlp.py`
@@ -110,7 +117,8 @@ Temuan dari uji coba harness → lihat [KNOWN_BROKEN.md](KNOWN_BROKEN.md)
 - [x] Restore dump Mongo terverifikasi
 - [ ] Fixture **hari-1**: ≥85 dari ~91 scraper aktif punya item
       <br>_Hari ke-2 dan ke-3 advisory — numpuk belakangan, gak ngeblok._
-- [ ] 11 secret dirotasi, `gitleaks` bersih
+- [x] Arsitektur secret diputuskan + Vault terverifikasi di stack
+- [ ] 11 secret dirotasi, `gitleaks` bersih _(ditunda ke fase testing, disengaja)_
 
 ## Fase 1 — Skeleton monorepo `[~]`
 
@@ -121,7 +129,13 @@ Temuan dari uji coba harness → lihat [KNOWN_BROKEN.md](KNOWN_BROKEN.md)
 - [x] **1.5** `.gitignore` + `.env.example` (semua key, tanpa nilai)
 - [x] **1.6** `git init` + commit pertama (`641e6c1`, 54 file)
 - [ ] **1.7** CI: ruff, mypy, pytest, gitleaks
-- [ ] **1.8** `docker-compose.yml` + Dockerfile per service
+- [~] **1.8** `docker-compose.yml`
+      <br>**postgres + redis + vault (opt-in) sudah ada dan dites jalan.**
+      `docker compose up -d` (postgres+redis) atau
+      `docker compose --profile vault up -d` (+vault).
+      <br>Belum ada: Dockerfile + service `api`/`worker`/`web` — nunggu kode
+      fase-nya masing-masing (2/6/7/8), biar gak nulis Dockerfile buat app
+      yang belum ada.
 
 **Exit criteria:** `uv sync` hijau · `pytest` jalan (boleh 0 test) · CI hijau
 
