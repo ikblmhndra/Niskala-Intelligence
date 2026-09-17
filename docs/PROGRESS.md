@@ -16,7 +16,7 @@ Plan lengkap: `~/.claude/plans/oke-bro-jadi-gini-sparkling-fern.md`
 |---|---|---|---|---|
 | 0 | [Salvage & prep](phases/PHASE_0_SALVAGE.md) | `[~]` 0.2 & 0.5 gagal, ulangi | 3–5 hari | `static/` aman, crontab terekam, fixture terekam, secret dirotasi |
 | 1 | Skeleton monorepo | `[~]` | 1 minggu | `uv sync` hijau, CI jalan |
-| 2 | `cti-core` + skema Postgres | `[ ]` | 2–3 minggu | Alembic up, repo + model ada test |
+| 2 | `cti-core` + skema Postgres | `[x]` | 2–3 minggu | Alembic up, repo + model ada test |
 | 3 | Framework scraper | `[ ]` | 2 minggu | 5 scraper referensi lolos golden test |
 | 4 | Migrasi scraper (**100 aktif**) | `[ ]` | ~2 minggu | ≥95% fixture identik, semua modul ke-import |
 | 5 | `cti-enrich` | `[ ]` | 2–3 minggu | Output cocok dgn baseline, tiap cabang routing ada test |
@@ -167,20 +167,60 @@ Temuan dari uji coba harness → lihat [KNOWN_BROKEN.md](KNOWN_BROKEN.md)
 
 ---
 
-## Fase 2 — `cti-core` + skema Postgres `[ ]`
+## Fase 2 — `cti-core` + skema Postgres `[x]` SELESAI
 
-- [ ] **2.1** `config.py` — pydantic-settings, `extra="forbid"`
-- [ ] **2.2** `db/engine.py` — session async (asyncpg) + sync (psycopg3)
-- [ ] **2.3** Model SQLAlchemy: artikel + relasi normalisasi
-- [ ] **2.4** Model: IOC, CVE, ransomware, tweet, techstack, package
-- [ ] **2.5** Model: user, role, client, audit
-- [ ] **2.6** Model: `scraper_runs` (heartbeat per-run), `scraper_seen`, `scraper_config`
-- [ ] **2.7** Alembic init + migrasi pertama
-- [ ] **2.8** Repository layer
-- [ ] **2.9** `urlkit.py` — `canonicalize_url()` + `url_hash()`
-- [ ] **2.10** `logging.py` — structlog JSON
+- [x] **2.1** `config.py` — pydantic-settings, `extra="forbid"`
+      <br>Bug nyata ketemu+dibenerin: `extra="forbid"` gak nurun ke nested
+      `BaseModel` (typo `TELEGRAM__BOTTOKEN` diam-diam ke-drop) — lihat
+      `_StrictModel` di config.py dan `test_config.py`.
+- [x] **2.2** `db/engine.py` — sesi async (asyncpg, FastAPI) + sync
+      (psycopg3, Celery/CLI), satu model dipakai dua-duanya. Timestamp
+      `ScraperRun` di-set eksplisit di Python, bukan `server_default` +
+      implicit-reload — itu bakal meledak di jalur async.
+- [x] **2.3** Model SQLAlchemy: `Article` + 4 tabel anak (countries+peran,
+      industries, threat_actors, ttps). `confidence_score` SATU kolom,
+      `overrides` (JSONB) buat koreksi analis yang gak boleh ketimpa scraper.
+- [x] **2.4** Model: IOC (+sources/tags/threat_actors/feedback), CVE
+      tracker (+references/affected/pocs/false_positives/tickets),
+      ransomware victim, tweet + monitored_accounts, techstack, package
+      vuln (+aliases/dep_edges). 35 tabel total.
+- [x] **2.5** Model: user/role/client(+countries)/user_clients/audit_log.
+      `client_id` jadi PRIMARY KEY string (natural key), bukan surrogate.
+- [x] **2.6** Model: `ScraperRun` (heartbeat per-run — INI yang bikin
+      nol-item vs crash bisa dibedain, gantiin `scraper_health.py` lama),
+      `ScraperItem`, `ScraperConfig`, `ScraperSeen` (dedup two-phase,
+      kolom `dedup_key` sengaja beda nama dari `Article.url_hash` — beda
+      namespace, lihat docstring model).
+- [x] **2.7** Alembic init + migrasi pertama — **diverifikasi ke Postgres
+      beneran** (docker compose), bukan diasumsikan: `alembic upgrade head`
+      sukses, 35 tabel kebentuk, `alembic downgrade base` bersih balik ke 0,
+      `alembic upgrade head` lagi sukses, `alembic check` bilang "No new
+      upgrade operations detected" (migrasi match persis model).
+- [x] **2.8** Repository layer — `ArticleRepo`/`AsyncArticleRepo` (upsert
+      dgn field mesin vs overrides, nolak nulis field identitas/typo),
+      `IOCRepo`/`AsyncIOCRepo` (upsert+sources, feedback TP/FP),
+      `ScraperRunRepo`/`AsyncScraperRunRepo` (heartbeat start/finish).
+      Sisanya (CVE, tweet, dst) nyusul pas Fase 7 butuh.
+- [x] **2.9** `urlkit.py` — `canonicalize_url()` + `url_hash()`. 75 test
+      lolos (target ~60). Bug nyata ketemu+dibenerin: decode-lalu-encode
+      path SEKALIGUS ketimbun `%2F` (slash sbg data) sama `/` (pemisah
+      segment) — dibenerin proses per-segmen.
+- [x] **2.10** `logging.py` — structlog JSON, gantiin `print()` polos.
 
-**Exit criteria:** `alembic upgrade head` jalan di container kosong · repo ada unit test · `canonicalize_url` lolos tabel ~60 kasus
+**Exit criteria — SEMUA terverifikasi jalan, bukan diasumsikan:**
+- [x] `alembic upgrade head` jalan di container Postgres kosong (35 tabel)
+- [x] `alembic check` konfirmasi migrasi match persis model (0 diff)
+- [x] `alembic downgrade base` → `upgrade head` lagi, reversibel penuh
+- [x] Repo ada 96 unit+integration test, semua hijau (2x run, gak flaky)
+- [x] `canonicalize_url` lolos 75 test (target ~60)
+- [x] Integration test lawan Postgres BENERAN (testcontainers), bukan mock
+
+**Bug test-isolation ketemu+dibenerin di jalan:** fixture integrasi yang
+ngubah `os.environ` global (scope semula "session") bocor ke
+`tests/unit/test_config.py` kalau `tests/integration/` kebetulan jalan
+duluan (urutan alfabetis). Dibenerin: scope turun ke "package" + tambah
+`__init__.py` di kedua folder test (syarat resmi pytest biar package-scope
+fixture teardown bener kapan waktunya).
 
 ---
 
