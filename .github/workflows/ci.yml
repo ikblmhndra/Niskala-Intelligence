@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+        with: { enable-cache: true }
+      - run: uv python install
+      - run: uv sync --extra dev --locked
+      - run: uv run ruff check .
+      - run: uv run ruff format --check .
+
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+        with: { enable-cache: true }
+      - run: uv python install
+      - run: uv sync --extra dev --locked
+      # mypy --strict cuma di cti-core + cti-scraper (lihat plan §12) --
+      # cti_scrapers/feeds/ (hasil migrasi) sengaja gak digate strict di sini,
+      # golden test yang jadi gate-nya (Fase 4).
+      - run: uv run mypy packages/cti-core/src packages/cti-scraper/src
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+        with: { enable-cache: true }
+      - run: uv python install
+      - run: uv sync --extra dev --locked
+      - run: uv run pytest tests/ -v --cov --cov-report=xml
+      - uses: codecov/codecov-action@v4
+        if: always()
+        with: { files: coverage.xml }
+        continue-on-error: true   # jangan gagalin CI kalau upload doang yang gagal
+
+  secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

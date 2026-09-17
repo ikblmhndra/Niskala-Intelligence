@@ -135,17 +135,33 @@ Temuan dari uji coba harness → lihat [KNOWN_BROKEN.md](KNOWN_BROKEN.md)
 - [x] **1.1** Struktur direktori `cti-platform/`
 - [x] **1.2** `pyproject.toml` workspace root + 4 package member
 - [x] **1.3** `.python-version` (3.12)
-- [ ] **1.4** `uv sync` berhasil, `uv.lock` ke-commit
+- [x] **1.4** `uv sync` berhasil, `uv.lock` ke-commit
+      <br>4 package (`cti-core`, `cti-scraper`, `cti-enrich`, `cti-alerts`)
+      resolve tanpa konflik. `apps/api`/`apps/worker` DIKELUARIN dari
+      workspace members buat sementara -- direktori masih kosong, baru
+      masuk lagi pas Fase 6/7 nulis kode beneran di sana.
+      <br>Dikonfirmasi: **gak ada `pymongo`** di dependency tree manapun --
+      konsisten sama keputusan pindah ke Postgres.
 - [x] **1.5** `.gitignore` + `.env.example` (semua key, tanpa nilai)
 - [x] **1.6** `git init` + commit pertama (`641e6c1`, 54 file)
-- [ ] **1.7** CI: ruff, mypy, pytest, gitleaks
-- [~] **1.8** `docker-compose.yml`
-      <br>**postgres + redis + vault (opt-in) sudah ada dan dites jalan.**
-      `docker compose up -d` (postgres+redis) atau
-      `docker compose --profile vault up -d` (+vault).
-      <br>Belum ada: Dockerfile + service `api`/`worker`/`web` — nunggu kode
-      fase-nya masing-masing (2/6/7/8), biar gak nulis Dockerfile buat app
-      yang belum ada.
+- [x] **1.7** CI: ruff, mypy, pytest, gitleaks
+      <br>`.github/workflows/ci.yml` (4 job) + `.gitleaks.toml`. **Keempat
+      check dijalanin lokal dan dipastiin hijau sebelum di-commit** --
+      bukan cuma ditulis, karena `tools/salvage/record_fixtures.py` yang
+      ditulis lewat patch manual belum pernah lewat `ruff format`
+      (3 lint error + 1 file gak ke-format, sekarang beres).
+      <br>`mypy --strict` cuma di `cti-core`+`cti-scraper` sesuai plan §12 --
+      `cti_scrapers/feeds/` hasil migrasi digate golden test (Fase 4), bukan mypy.
+      <br>Ditambah 1 test nyata (`test_workspace_skeleton.py`): keempat
+      package ke-import. Bukan placeholder buat nutup exit-code pytest --
+      pytest exit 5 kalau 0 test, dan test ini genuinely berguna: kalau
+      salah satu package berhenti bisa di-import, ketahuan di sini duluan.
+- [~] **1.8** `docker-compose.yml` — **cukup buat Fase 1, belum final**
+      <br>postgres + redis + vault (opt-in) pakai image resmi, gak butuh
+      Dockerfile custom. Dites jalan (lihat commit `3829d5c`).
+      <br>Belum ada, disengaja: Dockerfile + service `api`/`worker`/`web` --
+      nunggu kode fase-nya masing-masing (2/6/7/8). Checklist ini ditutup
+      total pas Fase 9 (`docker compose up -d` full stack).
 
 **Exit criteria:** `uv sync` hijau · `pytest` jalan (boleh 0 test) · CI hijau
 

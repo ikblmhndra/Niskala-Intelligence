@@ -23,9 +23,11 @@ Pakai:
                          --out ../../tests/fixtures
     ./record_fixtures.py --scrapers-dir ... --only gbHackerThreat --verbose
 """
+
 from __future__ import annotations
 
 import argparse
+import contextlib
 import datetime as dt
 import json
 import os
@@ -35,19 +37,32 @@ import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
-TIMEOUT_S = 90        # scraper light (RSS / requests)
-TIMEOUT_BROWSER_S = 240   # Playwright: launch chromium + render + tunggu selector
+TIMEOUT_S = 90  # scraper light (RSS / requests)
+TIMEOUT_BROWSER_S = 240  # Playwright: launch chromium + render + tunggu selector
 
 # Script yang bukan feed scraper — jangan direkam.
 SKIP = {
-    "nlp_worker", "testing_nlp_worker", "iocSyncer", "test",
-    "seleniumTemplate", "enrichmentTemplate", "xmlTemplate",
-    "requestsTemplate", "playwrightTemplate", "undetectedChromeTemplate",
+    "nlp_worker",
+    "testing_nlp_worker",
+    "iocSyncer",
+    "test",
+    "seleniumTemplate",
+    "enrichmentTemplate",
+    "xmlTemplate",
+    "requestsTemplate",
+    "playwrightTemplate",
+    "undetectedChromeTemplate",
     "nameThreat",
     # Utilitas / service, bukan feed scraper -- gak punya baseline buat di-diff
-    "addCveTrackerUi", "getCveTracker", "topCve", "pkgVulnScanner",
+    "addCveTrackerUi",
+    "getCveTracker",
+    "topCve",
+    "pkgVulnScanner",
     "threatActorTrend",
-    "cyborgHuntingIdea", "deepdarkCTI_sync", "export_db", "import_db",
+    "cyborgHuntingIdea",
+    "deepdarkCTI_sync",
+    "export_db",
+    "import_db",
 }
 
 # BAHAYA NYATA, bukan cuma "gak berguna direkam" -- file ini punya token
@@ -63,8 +78,15 @@ SKIP = {
 # verifikasi ulang isi filenya.
 DANGEROUS_LIVE_SIDE_EFFECTS = {"threatActorTrendTele"}
 SKIP |= DANGEROUS_LIVE_SIDE_EFFECTS
-SKIP_DIRS = {"backup_script", "stopped_script", "modules", "scripts",
-             "supportFile", "offset", "chromedriver_mac64_arm64"}
+SKIP_DIRS = {
+    "backup_script",
+    "stopped_script",
+    "modules",
+    "scripts",
+    "supportFile",
+    "offset",
+    "chromedriver_mac64_arm64",
+}
 
 
 # ---------------------------------------------------------------- child mode
@@ -81,17 +103,19 @@ def _child(script_path: str) -> int:
     used_context = bool(ctx)
 
     script = Path(script_path).resolve()
-    recorded: dict[str, dict] = {}   # url -> {body: b64, content_type}
+    recorded: dict[str, dict] = {}  # url -> {body: b64, content_type}
     items: list[dict] = []
     labels: set[str] = set()
 
     # --- pengganti palsu buat modul yang butuh config/Mongo ------------------
     def push_job(article_data, script_name):
-        items.append({
-            "title": str(article_data.get("title", "")),
-            "url": str(article_data.get("url", "")),
-            "posted_on": str(article_data.get("posted_on", "")),
-        })
+        items.append(
+            {
+                "title": str(article_data.get("title", "")),
+                "url": str(article_data.get("url", "")),
+                "posted_on": str(article_data.get("posted_on", "")),
+            }
+        )
         labels.add(str(script_name))
 
     fake_queue = types.ModuleType("modules.jobQueue")
@@ -104,17 +128,29 @@ def _child(script_path: str) -> int:
     fake_offset.is_new_and_mark = lambda script_name, key: True
 
     fake_db = types.ModuleType("modules.dbMongo")
-    for fn in ("upsert_article", "log_scraper_run", "update_cve_mention",
-               "upsert_ioc_from_feed", "upsert_threat_feed",
-               "upsert_ta_group_from_feed", "insert_logbook_entry",
-               "upsert_tweet", "insert_database", "set_openai_cache"):
+    for fn in (
+        "upsert_article",
+        "log_scraper_run",
+        "update_cve_mention",
+        "upsert_ioc_from_feed",
+        "upsert_threat_feed",
+        "upsert_ta_group_from_feed",
+        "insert_logbook_entry",
+        "upsert_tweet",
+        "insert_database",
+        "set_openai_cache",
+    ):
         setattr(fake_db, fn, lambda *a, **k: None)
     fake_db.upsert_ransomware_victim = lambda d: (
-        items.append({"kind": "ransomware_victim", **{
-            k: str(v) for k, v in d.items() if k != "saved_at"}}) or True)
+        items.append(
+            {"kind": "ransomware_victim", **{k: str(v) for k, v in d.items() if k != "saved_at"}}
+        )
+        or True
+    )
     fake_db.get_existing_ransomware_keys = lambda: set()
     fake_db.get_ioc_allowlist = lambda: ctx.get(
-        "ioc_allowlist", {"url_domains": [], "email_domains": [], "ips": []})
+        "ioc_allowlist", {"url_domains": [], "email_domains": [], "ips": []}
+    )
     fake_db.get_c2_feed_set = lambda: set(ctx.get("c2_feed", []))
     fake_db.list_existing = lambda t: ctx.get("lists", {}).get(t, [])
     fake_db.list_monitored_accounts = lambda: ctx.get("monitored_accounts", [])
@@ -123,12 +159,23 @@ def _child(script_path: str) -> int:
     fake_db.get_cve_mentions = lambda ym: []
 
     fake_tele = types.ModuleType("modules.telegramAlert")
-    for fn in ("send_alert", "send_alert_tech_stack", "send_alert_darkweb",
-               "send_alert_report", "send_alert_databreach", "send_file",
-               "send_alert_ransomware_act", "send_alert_poc", "send_alert_zeroday",
-               "send_alert_tech_stack_unrelated", "send_alert_debug",
-               "send_alert_news_of_the_day", "send_report_file",
-               "send_alert_ot", "send_alert_sec_best_practice"):
+    for fn in (
+        "send_alert",
+        "send_alert_tech_stack",
+        "send_alert_darkweb",
+        "send_alert_report",
+        "send_alert_databreach",
+        "send_file",
+        "send_alert_ransomware_act",
+        "send_alert_poc",
+        "send_alert_zeroday",
+        "send_alert_tech_stack_unrelated",
+        "send_alert_debug",
+        "send_alert_news_of_the_day",
+        "send_report_file",
+        "send_alert_ot",
+        "send_alert_sec_best_practice",
+    ):
         setattr(fake_tele, fn, lambda *a, **k: None)
 
     fake_tech = types.ModuleType("modules.techstackStore")
@@ -141,15 +188,17 @@ def _child(script_path: str) -> int:
     fake_modules = types.ModuleType("modules")
     fake_modules.__path__ = []
 
-    sys.modules.update({
-        "modules": fake_modules,
-        "modules.jobQueue": fake_queue,
-        "modules.offsetStore": fake_offset,
-        "modules.dbMongo": fake_db,
-        "modules.telegramAlert": fake_tele,
-        "modules.techstackStore": fake_tech,
-        "modules.graylogLogging": fake_graylog,
-    })
+    sys.modules.update(
+        {
+            "modules": fake_modules,
+            "modules.jobQueue": fake_queue,
+            "modules.offsetStore": fake_offset,
+            "modules.dbMongo": fake_db,
+            "modules.telegramAlert": fake_tele,
+            "modules.techstackStore": fake_tech,
+            "modules.graylogLogging": fake_graylog,
+        }
+    )
 
     # Stub eksplisit di atas cuma nutup 6 submodul. Scraper lain ngimport
     # modules.articleValidator / cveValidator / nlp / iocExtractor /
@@ -163,21 +212,39 @@ def _child(script_path: str) -> int:
     class _AnyCallable:
         """Atribut apa pun bisa dipanggil, balikin None. Bisa dipakai sebagai
         context manager, iterator, dan boolean(False) juga."""
-        def __init__(self, *a, **k): pass
-        def __call__(self, *a, **k): return None
-        def __getattr__(self, n): return _AnyCallable()
-        def __getitem__(self, n): return _AnyCallable()
-        def __iter__(self): return iter(())
-        def __bool__(self): return False
-        def __enter__(self): return self
-        def __exit__(self, *a): return False
+
+        def __init__(self, *a, **k):
+            pass
+
+        def __call__(self, *a, **k):
+            return None
+
+        def __getattr__(self, n):
+            return _AnyCallable()
+
+        def __getitem__(self, n):
+            return _AnyCallable()
+
+        def __iter__(self):
+            return iter(())
+
+        def __bool__(self):
+            return False
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            return False
 
     class _StubLoader(importlib.abc.Loader):
         def create_module(self, spec):
             m = types.ModuleType(spec.name)
-            m.__getattr__ = lambda n: _AnyCallable()   # PEP 562
+            m.__getattr__ = lambda n: _AnyCallable()  # PEP 562
             return m
-        def exec_module(self, module): pass
+
+        def exec_module(self, module):
+            pass
 
     class _StubFinder(importlib.abc.MetaPathFinder):
         def find_spec(self, fullname, path=None, target=None):
@@ -196,6 +263,7 @@ def _child(script_path: str) -> int:
     # yang gak bergantung nemuin semua script yang bypass modules.dbMongo.
     try:
         import pymongo
+
         pymongo.MongoClient = _AnyCallable
     except ImportError:
         pass
@@ -206,6 +274,7 @@ def _child(script_path: str) -> int:
     # kedua buat script lain yang belum ketemu dengan pola sama.
     try:
         import telegram
+
         telegram.Bot = _AnyCallable
     except ImportError:
         pass
@@ -223,15 +292,20 @@ def _child(script_path: str) -> int:
 
     try:
         import requests
+
         _orig_send = requests.adapters.HTTPAdapter.send
 
         def send(self, request, **kw):
             resp = _orig_send(self, request, **kw)
-            try:
-                _store(request.url, resp.content,
-                       resp.headers.get("Content-Type", ""), resp.status_code)
-            except Exception:
-                pass
+            # Best-effort: nyimpen byte cuma buat fixture. Kalau gagal, jangan
+            # sampai bikin request scraper aslinya ikut gagal.
+            with contextlib.suppress(Exception):
+                _store(
+                    request.url,
+                    resp.content,
+                    resp.headers.get("Content-Type", ""),
+                    resp.status_code,
+                )
             return resp
 
         requests.adapters.HTTPAdapter.send = send
@@ -244,16 +318,19 @@ def _child(script_path: str) -> int:
 
         class _Page:
             """Proxy yang nyimpen HTML final tiap kali selesai goto()."""
+
             def __init__(self, inner):
                 object.__setattr__(self, "_inner", inner)
 
             def goto(self, url, *a, **kw):
                 r = self._inner.goto(url, *a, **kw)
-                try:
-                    _store(url, self._inner.content().encode("utf-8"), "text/html",
-                           getattr(r, "status", 200) or 200)
-                except Exception:
-                    pass
+                with contextlib.suppress(Exception):  # best-effort, sama alasannya
+                    _store(
+                        url,
+                        self._inner.content().encode("utf-8"),
+                        "text/html",
+                        getattr(r, "status", 200) or 200,
+                    )
                 return r
 
             def __getattr__(self, n):
@@ -264,6 +341,7 @@ def _child(script_path: str) -> int:
 
         _orig_new_page = pw.sync_api.Browser.new_page if hasattr(pw, "sync_api") else None
         from playwright.sync_api import Browser as _B
+
         _orig = _B.new_page
 
         def new_page(self, **kw):
@@ -281,15 +359,23 @@ def _child(script_path: str) -> int:
         runpy.run_path(str(script), run_name="__main__")
     except SystemExit:
         pass
-    except BaseException as e:            # noqa: BLE001 — script lama emang rapuh
+    except BaseException as e:
         status = type(e).__name__
         error = f"{type(e).__name__}: {e}"
 
     print("<<<FIXTURE_JSON>>>")
-    print(json.dumps({
-        "status": status, "error": error, "used_context": used_context,
-        "items": items, "labels": sorted(labels), "http": recorded,
-    }))
+    print(
+        json.dumps(
+            {
+                "status": status,
+                "error": error,
+                "used_context": used_context,
+                "items": items,
+                "labels": sorted(labels),
+                "http": recorded,
+            }
+        )
+    )
     return 0
 
 
@@ -308,8 +394,9 @@ def _ext_for(ctype: str, url: str) -> str:
     return ".txt"
 
 
-def record_one(script: Path, out_root: Path, day: str, verbose: bool,
-               context: Path | None = None) -> dict:
+def record_one(
+    script: Path, out_root: Path, day: str, verbose: bool, context: Path | None = None
+) -> dict:
     import base64
 
     sid = script.stem
@@ -317,16 +404,22 @@ def record_one(script: Path, out_root: Path, day: str, verbose: bool,
     if context:
         env["CTI_FIXTURE_CONTEXT"] = str(context)
     src = script.read_text(errors="ignore")
-    timeout = (TIMEOUT_BROWSER_S if ("playwright" in src or "selenium" in src)
-               else TIMEOUT_S)
+    timeout = TIMEOUT_BROWSER_S if ("playwright" in src or "selenium" in src) else TIMEOUT_S
     proc = subprocess.run(
         [sys.executable, str(Path(__file__).resolve()), "--_child", str(script)],
-        capture_output=True, text=True, timeout=timeout, env=env,
+        capture_output=True,
+        text=True,
+        timeout=timeout,
+        env=env,
     )
     marker = "<<<FIXTURE_JSON>>>"
     if marker not in proc.stdout:
-        return {"scraper": sid, "status": "harness_error",
-                "error": (proc.stderr or proc.stdout)[-400:], "items": 0}
+        return {
+            "scraper": sid,
+            "status": "harness_error",
+            "error": (proc.stderr or proc.stdout)[-400:],
+            "items": 0,
+        }
 
     data = json.loads(proc.stdout.split(marker, 1)[1].strip())
     d = out_root / sid
@@ -345,22 +438,35 @@ def record_one(script: Path, out_root: Path, day: str, verbose: bool,
     http_status = {u: b.get("status_code", 0) for u, b in data["http"].items()}
     blocked = [u for u, c in http_status.items() if c in (401, 403, 429) or c >= 500]
 
-    (d / "meta.json").write_text(json.dumps({
-        "scraper": sid, "legacy_script": sid,
-        "legacy_labels": data["labels"],
-        "source_urls": list(data["http"].keys()),
-        "http_status": http_status,
-        "blocked_urls": blocked,
-        "used_db_context": data.get("used_context", False),
-        "last_recorded": day, "last_status": data["status"],
-    }, indent=2, ensure_ascii=False))
+    (d / "meta.json").write_text(
+        json.dumps(
+            {
+                "scraper": sid,
+                "legacy_script": sid,
+                "legacy_labels": data["labels"],
+                "source_urls": list(data["http"].keys()),
+                "http_status": http_status,
+                "blocked_urls": blocked,
+                "used_db_context": data.get("used_context", False),
+                "last_recorded": day,
+                "last_status": data["status"],
+            },
+            indent=2,
+            ensure_ascii=False,
+        )
+    )
 
     if verbose and data["error"]:
         print(f"      {data['error'][:160]}", file=sys.stderr)
 
-    return {"scraper": sid, "status": data["status"],
-            "items": len(data["items"]), "http": len(data["http"]),
-            "blocked": blocked, "error": data["error"]}
+    return {
+        "scraper": sid,
+        "status": data["status"],
+        "items": len(data["items"]),
+        "http": len(data["http"]),
+        "blocked": blocked,
+        "error": data["error"],
+    }
 
 
 _DUMMY_CONFIG_YML = """\
@@ -404,24 +510,38 @@ myprovider: {api_key: ""}
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description=__doc__,
-                                 formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
+    )
     ap.add_argument("--_child", dest="child", help=argparse.SUPPRESS)
     ap.add_argument("--scrapers-dir", type=Path, help="root ScraperNews/")
     ap.add_argument("--out", type=Path, help="tujuan fixture")
     ap.add_argument("--only", action="append", help="rekam scraper tertentu saja")
-    ap.add_argument("--context", type=Path,
-                    help="JSON berisi data DB (techstack, monitored_accounts, "
-                         "ioc_allowlist). Tanpa ini, scraper yang bergantung DB "
-                         "ngehasilkan 0 item dan fixture-nya bohong.")
-    ap.add_argument("--active-only", type=Path, metavar="RUNDECK_MAP",
-                    help="batasi ke scraper yang job Rundeck-nya aktif "
-                         "(docs/legacy/rundeck-jobs-map.json). 241 -> ~91.")
-    ap.add_argument("--jobs", "-j", type=int, default=1,
-                    help="jumlah scraper direkam paralel (default 1). "
-                         "8 masuk akal; tiap scraper jalan di subprocess sendiri.")
-    ap.add_argument("--resume", action="store_true",
-                    help="lewati scraper yang hari ini udah berhasil direkam")
+    ap.add_argument(
+        "--context",
+        type=Path,
+        help="JSON berisi data DB (techstack, monitored_accounts, "
+        "ioc_allowlist). Tanpa ini, scraper yang bergantung DB "
+        "ngehasilkan 0 item dan fixture-nya bohong.",
+    )
+    ap.add_argument(
+        "--active-only",
+        type=Path,
+        metavar="RUNDECK_MAP",
+        help="batasi ke scraper yang job Rundeck-nya aktif "
+        "(docs/legacy/rundeck-jobs-map.json). 241 -> ~91.",
+    )
+    ap.add_argument(
+        "--jobs",
+        "-j",
+        type=int,
+        default=1,
+        help="jumlah scraper direkam paralel (default 1). "
+        "8 masuk akal; tiap scraper jalan di subprocess sendiri.",
+    )
+    ap.add_argument(
+        "--resume", action="store_true", help="lewati scraper yang hari ini udah berhasil direkam"
+    )
     ap.add_argument("--day", default=dt.date.today().isoformat())
     ap.add_argument("--verbose", "-v", action="store_true")
     a = ap.parse_args()
@@ -433,8 +553,8 @@ def main() -> int:
     # karena dijalanin pakai python sistem tanpa dependensi scraper lama.
     # Fixture kosong lebih bahaya daripada gagal: kelihatan kayak baseline.
     import importlib.util
-    missing = [m for m in ("requests", "defusedxml", "lxml")
-               if importlib.util.find_spec(m) is None]
+
+    missing = [m for m in ("requests", "defusedxml", "lxml") if importlib.util.find_spec(m) is None]
     if missing:
         venv = Path(__file__).resolve().parents[2] / ".venv-legacy" / "bin" / "python"
         print(f"error: interpreter ini gak punya: {', '.join(missing)}\n", file=sys.stderr)
@@ -450,7 +570,8 @@ def main() -> int:
     out.mkdir(parents=True, exist_ok=True)
 
     scripts = sorted(
-        p for p in root.glob("*.py")
+        p
+        for p in root.glob("*.py")
         if p.stem not in SKIP
         and not any(part in SKIP_DIRS for part in p.parts)
         and (not a.only or p.stem in a.only)
@@ -470,8 +591,7 @@ def main() -> int:
 
     if a.active_only:
         jobs = json.loads(a.active_only.read_text())
-        active = {Path(j["script"]).stem for j in jobs
-                  if j.get("enabled") and j.get("script")}
+        active = {Path(j["script"]).stem for j in jobs if j.get("enabled") and j.get("script")}
         before = len(scripts)
         scripts = [p for p in scripts if p.stem in active]
         print(f"Filter job aktif: {before} -> {len(scripts)} scraper")
@@ -494,11 +614,23 @@ def main() -> int:
         try:
             return record_one(script, out, a.day, a.verbose, a.context)
         except subprocess.TimeoutExpired:
-            return {"scraper": script.stem, "status": "timeout", "items": 0,
-                    "http": 0, "blocked": [], "error": "timeout"}
-        except Exception as e:                                  # noqa: BLE001
-            return {"scraper": script.stem, "status": "harness_error", "items": 0,
-                    "http": 0, "blocked": [], "error": str(e)}
+            return {
+                "scraper": script.stem,
+                "status": "timeout",
+                "items": 0,
+                "http": 0,
+                "blocked": [],
+                "error": "timeout",
+            }
+        except Exception as e:
+            return {
+                "scraper": script.stem,
+                "status": "harness_error",
+                "items": 0,
+                "http": 0,
+                "blocked": [],
+                "error": str(e),
+            }
 
     results = []
     lock = threading.Lock()
@@ -508,11 +640,19 @@ def main() -> int:
         nonlocal done_n
         with lock:
             done_n += 1
-            mark = ("BLOCKED" if r.get("blocked") else
-                    "ok " if r["status"] == "ok" and r["items"] else
-                    "EMPTY" if r["status"] == "ok" else r["status"][:12])
-            print(f"[{done_n:3}/{len(scripts)}] {r['scraper']:38} "
-                  f"{r['items']:4} item  {mark}", flush=True)
+            mark = (
+                "BLOCKED"
+                if r.get("blocked")
+                else "ok "
+                if r["status"] == "ok" and r["items"]
+                else "EMPTY"
+                if r["status"] == "ok"
+                else r["status"][:12]
+            )
+            print(
+                f"[{done_n:3}/{len(scripts)}] {r['scraper']:38} {r['items']:4} item  {mark}",
+                flush=True,
+            )
 
     if a.jobs > 1:
         # Tiap scraper jalan di subprocess sendiri, jadi thread di sini cuma
@@ -538,7 +678,7 @@ def main() -> int:
     empty = [r for r in results if r["status"] == "ok" and not r["items"] and not r.get("blocked")]
     bad = [r for r in results if r["status"] != "ok"]
 
-    print(f"\n{'='*64}")
+    print(f"\n{'=' * 64}")
     print(f"  ada item : {len(good):3}")
     print(f"  kosong   : {len(empty):3}   <- feed sepi, parser rusak, atau butuh --context?")
     print(f"  diblokir : {len(blocked):3}   <- 403/429/5xx: rekam dari IP prod")
@@ -552,7 +692,10 @@ def main() -> int:
         print("\nScraper yang error (ini kandidat script yang emang udah mati):")
         for r in bad[:20]:
             print(f"  {r['scraper']:34} {r['status']:14} {(r.get('error') or '')[:70]}")
-    print("\nGate Fase 4: hari-1 hijau. Hari ke-2 dan ke-3 numpuk belakangan,\ngak perlu ngulang -- expected_items.json digabung per tanggal.")
+    print(
+        "\nGate Fase 4: hari-1 hijau. Hari ke-2 dan ke-3 numpuk belakangan,\n"
+        "gak perlu ngulang -- expected_items.json digabung per tanggal."
+    )
     return 0
 
 

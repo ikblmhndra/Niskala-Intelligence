@@ -25,7 +25,9 @@ dev = [
 package = false
 
 [tool.uv.workspace]
-members = ["packages/*", "apps/api", "apps/worker"]
+# apps/api dan apps/worker masuk workspace pas Fase 6/7 nulis kode beneran di
+# sana (sekarang direktori kosong -- uv gagal resolve member tanpa pyproject.toml).
+members = ["packages/*"]
 
 [tool.uv.sources]
 cti-core = { workspace = true }

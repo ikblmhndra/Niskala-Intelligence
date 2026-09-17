@@ -1,0 +1,13 @@
+# Konfigurasi gitleaks -- lihat docs/SECRETS_ROTATION.md.
+# Pakai default rule set gitleaks; extend cuma buat noise yang udah ketahuan
+# dari repo lama (kalau ada, tambahin allowlist path di sini pas ketemu).
+title = "cti-platform gitleaks config"
+
+[extend]
+useDefault = true
+
+[allowlist]
+paths = [
+  '''\.venv-legacy/''',
+  '''tests/fixtures/''',
+]
