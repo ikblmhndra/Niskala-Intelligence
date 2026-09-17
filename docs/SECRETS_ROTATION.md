@@ -70,6 +70,34 @@ buat Vault). Yang wajib sekarang cuma dua:
 ⚠️ Satu pengecualian yang gak bisa ditunda: rotasi **sebelum** repo lama
 di-import ke monorepo (Fase 1), biar blob yang keikut cuma berisi nilai mati.
 
+## ⚠️ Bahaya operasional yang ketemu di lapangan (bukan cuma di git history)
+
+Waktu ngerekam fixture Fase 0.5, ketemu sesuatu yang lebih serius dari
+"secret ke-commit": **script yang bisa BENERAN NGIRIM pesan/nulis data
+produksi kalau dijalanin sembarangan**, independen dari config apa pun yang
+disuapin.
+
+| File | Bahaya | Status |
+|---|---|---|
+| `ScraperNews/threatActorTrendTele.py` | Token bot Telegram + token API Graylog **hardcoded di source** (bukan dari config.yml). Kalau ke-eksekusi, ngirim pesan BENERAN ke chat/thread Telegram asli dan query BENERAN ke `privy.graylog.cloud`. | **Diblokir permanen** di `record_fixtures.py` (`DANGEROUS_LIVE_SIDE_EFFECTS`), menang bahkan lawan `--only`. Diverifikasi: gak pernah ke-eksekusi di run manapun. |
+| `ScraperNews/newCveThreat.py` | Bikin `MongoClient` langsung dari `config.yml`, manggil `bulk_write` — bisa nulis ke `news_db.cve_tracker` produksi kalau dikasih config asli. | Ditambal di sumbernya: `pymongo.MongoClient` ditambal jadi inert di harness perekam, apa pun config yang disuapin. |
+| `ScraperNews/githubPOCMonitor.py` | Sama — `MongoClient` langsung dari `config.yml`. | Sama, ditambal di level `pymongo.MongoClient`. |
+
+**Kenapa ini nyaris kejadian:** `threatActorTrendTele.py` gak pernah kepanggil
+di run normal cuma karena kebetulan nama file (`threatActorTrendTele.py`)
+beda dari nama script di job Rundeck (`threatactorTrendTelegram.py`) — bukan
+karena ada yang sengaja ngelindungin. Kalau nanti ketidakcocokan nama itu
+dibenerin (memang salah satu item perbaikan), atau siapa pun manggil
+`--only threatActorTrendTele` buat tes satu-satu, token itu bakal beneran
+kepake. Makanya pertahanannya ditaruh di `SKIP` — menang lawan `--only`
+apa pun — bukan cuma diandalkan dari ketidakcocokan nama.
+
+**Pelajaran buat framework baru (Fase 3):** `BaseScraper` gak boleh kasih
+scraper akses langsung ke `MongoClient`/`telegram.Bot`/kredensial mentah sama
+sekali — cuma lewat sink yang disediakan framework. Kelas bug ini (script
+bypass abstraksi dan pegang kredensial langsung) gak boleh mungkin secara
+struktural di platform baru, bukan cuma "jangan dilakuin".
+
 ## Prosedur
 
 ### 1. Token bot Telegram

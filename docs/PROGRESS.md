@@ -73,20 +73,30 @@ Fase ini **blocking**. Big-bang tanpa baseline itu gak bisa diverifikasi.
       `test_backup` 4.354 dok · **`cve_db` 0 dok**.
       <br>Container ini dipertahankan: jadi sumber data asli buat rancang skema
       Postgres di Fase 2, tanpa perlu nyentuh produksi.
-- [~] **0.5** Rekam fixture — **hari 1 (ini gate-nya)**
-      <br>Harness udah diperbaiki (guard interpreter, auto-stub `modules.*`,
-      timeout adaptif, `pymongo`, skip utilitas).
-      <br>**Dibatasi ke ~91 scraper yang job Rundeck-nya aktif**, bukan 241 —
-      150 sisanya gak dimigrasi di Fase 4, jadi gak perlu direkam sekarang.
-      <br>Dengan `--jobs 8`: ~5 menit, bukan ~70 menit.
-      <br>`record_fixtures.py --active-only docs/legacy/rundeck-jobs-map.json --jobs 8 --resume`
-- [ ] **0.6** Hari ke-2 — **advisory, bukan gate**
-      <br>Perintah sama persis. `expected_items.json` digabung per tanggal, jadi
-      nambah hari gak ngulang apa pun dan gak ngeblok Fase 4.
-      <br>⚠️ `tests/fixtures/` jangan di-commit selagi recording jalan.
-- [ ] **0.7** Hari ke-3 — advisory
-      <br>Paling gampang dijadwalin otomatis (cron/launchd) biar numpuk sendiri
-      selagi Fase 4 jalan. Nol waktu manusia.
+- [x] **0.5** Rekam fixture — **hari 1-2, ditutup**
+      <br>Harness diperbaiki bertahap: guard interpreter, auto-stub `modules.*`,
+      timeout adaptif, dependency ketinggalan (`yaml`/`pycountry`/`packaging`/
+      `telegram`), config dummy otomatis buat 9 scraper yang buka
+      `config/config.yml` langsung.
+      <br>⚠️ **Ketemu risiko nyata waktu ngerjain ini**: `newCveThreat.py` +
+      `githubPOCMonitor.py` bikin `MongoClient` langsung dari config (bisa
+      nulis ke Mongo produksi), dan `threatActorTrendTele.py` punya token bot
+      Telegram + Graylog **hardcoded di source** (bisa ngirim pesan asli).
+      Ketiganya ditambal di level harness (`pymongo.MongoClient` +
+      `telegram.Bot` dibikin inert, `threatActorTrendTele` diblokir permanen
+      di `SKIP` — menang lawan `--only` eksplisit, udah diverifikasi paksa).
+      Detail: [SECRETS_ROTATION.md](SECRETS_ROTATION.md#-bahaya-operasional-yang-ketemu-di-lapangan-bukan-cuma-di-git-history).
+      <br>**Hasil final: 53 dari 96 job aktif (55%) punya baseline valid.**
+      Di bawah target awal, tapi sesuai keputusan: **sisanya gak ngeblok** —
+      masuk `verify` satu-per-satu pas Fase 4 (baseline direkam live saat itu,
+      lihat [ADDING_A_SCRAPER.md](ADDING_A_SCRAPER.md)). Rincian lengkap:
+      [KNOWN_BROKEN.md](KNOWN_BROKEN.md#hasil-final-perekaman-fase-05-2026-09-16--17).
+      <br>9 di antaranya butuh **token API asli** (GitHub/NVD/Twitter) —
+      **user bikin token baru pas mau testing scraper itu, bukan sekarang.**
+- [x] **0.6-0.7** Hari ke-2/3 — **gak diperlukan lagi**
+      <br>Target "3 hari" awalnya buat nangkep variasi bentuk item. Karena
+      sisa yang belum ada baseline sekarang ditangani `verify` on-demand
+      (bukan snapshot statis), gak ada nilai tambah nunggu hari ke-3.
 - [x] **0.8** Arsitektur secret diputuskan + Vault masuk stack
       <br>**Keputusan final:** `.env` satu sumber terpusat sekarang, Vault
       dipakai beneran pas produksi. Bukan cuma dicatat — **sudah diverifikasi
@@ -115,8 +125,8 @@ Temuan dari uji coba harness → lihat [KNOWN_BROKEN.md](KNOWN_BROKEN.md)
 - [x] `rundeck-jobs-map.json` ada, 96/100 job aktif kecocokan eksak
 - [x] `legacy/config.yml` ada di lokal, gak di-commit
 - [x] Restore dump Mongo terverifikasi
-- [ ] Fixture **hari-1**: ≥85 dari ~91 scraper aktif punya item
-      <br>_Hari ke-2 dan ke-3 advisory — numpuk belakangan, gak ngeblok._
+- [x] Fixture: 53/96 (55%) baseline valid + jalur `verify`-menangkap-baseline
+      buat sisanya — **gate dipenuhi lewat kombinasi, bukan angka tunggal**
 - [x] Arsitektur secret diputuskan + Vault terverifikasi di stack
 - [ ] 11 secret dirotasi, `gitleaks` bersih _(ditunda ke fase testing, disengaja)_
 
@@ -209,6 +219,12 @@ Temuan dari uji coba harness → lihat [KNOWN_BROKEN.md](KNOWN_BROKEN.md)
 - [ ] **4.7** Generate requests+lxml (~11)
 - [ ] **4.8** Tulis ulang 8 Selenium → `XPathScraper(render=True)` _(pekerjaan baru: semuanya memang gak pernah jalan di Linux)_
 - [ ] **4.9** Port manual ~35 scraper bespoke
+- [ ] **4.9a** Buat token API baru (GitHub PAT, NVD, twitterapi.io) khusus
+      buat testing 9 scraper yang butuh kredensial asli — **user yang bikin,
+      pas mau testing scraper itu** (bukan sekarang). Daftar lengkap +
+      scraper mana butuh apa: [KNOWN_BROKEN.md](KNOWN_BROKEN.md#butuh-kredensial-asli--ditunda-ke-waktu-testing-keputusan-user).
+      <br>⚠️ Jangan pakai token produksi lama yang di `legacy/config.yml` —
+      itu masuk daftar rotasi karena udah ke-expose ke laptop dev.
 - [ ] **4.10** Triage `migration_report.json`
 - [ ] **4.11** Catat gesekan DX yang ketemu waktu migrasi → balik benerin
       framework. Ini output nyata dari pendekatan satu-per-satu.

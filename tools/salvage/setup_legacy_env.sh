@@ -23,7 +23,7 @@ info "pasang dependency fetch/parse"
 VIRTUAL_ENV="$VENV" uv pip install --quiet \
   requests defusedxml lxml lxml_html_clean beautifulsoup4 \
   xmltodict feedparser python-dateutil cpe deep-translator \
-  pymongo \
+  pymongo pyyaml pycountry packaging python-telegram-bot \
   playwright
 
 info "pasang Chromium buat scraper Playwright (~45 file)"

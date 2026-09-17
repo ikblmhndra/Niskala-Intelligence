@@ -100,3 +100,63 @@ for r in json.load(open(sys.argv[1])):
     if r['status'] not in ('ok',): print(r['scraper'], r['status'], (r.get('error') or '')[:80])
 " fixture_report.<tanggal>.json
 ```
+
+---
+
+## Hasil final perekaman Fase 0.5 (2026-09-16 & 17)
+
+**53 dari 96 job aktif (55%) punya baseline valid** (`ada_item`). Di bawah
+target awal (≥85), tapi sesuai keputusan: sisanya **gak ngeblok** — masuk
+alur `dry-run`/`verify` satu-per-satu pas gilirannya di Fase 4
+(lihat [ADDING_A_SCRAPER.md](ADDING_A_SCRAPER.md) — `verify` ngerekam
+baseline live kalau belum ada).
+
+| Kategori | Jumlah | Tindakan |
+|---|---|---|
+| Ada item, baseline valid | **53** | Siap jadi gate golden-test |
+| Ada direktori, 0 item kedua hari | 38 | Cek satu-satu pas Fase 4 (tabel di bawah) |
+| Gak ada direktori sama sekali | 5 | Rekam pas Fase 4, gak ada yang aneh, cuma belum kebagian giliran |
+
+### Butuh kredensial ASLI — ditunda ke waktu testing (keputusan user)
+
+9 scraper gak bisa dikasih baseline valid dengan config dummy — dites pakai
+token kosong, semuanya kena block/error dari API-nya (GitHub 401/403, NVD
+kosong, twitterapi.io butuh key berbayar). **User akan buat token baru nanti
+pas mau testing scraper ini, bukan sekarang:**
+
+| Scraper | Butuh | Hasil dgn token kosong |
+|---|---|---|
+| `githubTTPs`, `mitreGithub`, `blackorbirdGithub`, `githubAptTTPSimulation`, `githubSophoslab`, `deepdarkCTI`, `githubUnit42` | GitHub PAT | Diblokir 401/403 (rate limit anonim) |
+| `githubPOCMonitor` | GitHub PAT + akses baca `cve_tracker` (buat filter FP) | Diblokir + `ConnectionError` |
+| `newCveThreat` | NVD API key | `TypeError: NoneType` (respons kosong) |
+| `monitorX` | Key twitterapi.io | `TypeError` (respons bukan JSON yang diharap) |
+
+⚠️ **`newCveThreat.py` dan `githubPOCMonitor.py` bikin `MongoClient` langsung
+dari config — JANGAN kasih config asli ke harness perekam.** `pymongo.MongoClient`
+udah ditambal jadi inert di `record_fixtures.py`, jadi aman walau dua file
+ini dites — tapi kalau nanti diverifikasi manual di luar harness (bukan lewat
+`record_fixtures.py`), pastikan tetap lewat `dry-run` yang frameworknya
+nyediain sink aman, bukan jalanin script mentahnya langsung.
+
+### Error asli, bukan dependency — cek satu-satu
+
+| Scraper | Error | Dugaan |
+|---|---|---|
+| `landthThreat` | `IndexError: list index out of range` | Kemungkinan bug beneran — pola sama kayak `securityaffairsThreat` |
+| `techstackGO`, `techstackNPM`, `techstackPYPI` | `ValueError: time data '...571293679Z' does not match format` | **Bug asli.** `%f` di `strptime` cuma baca 6 digit mikrodetik, API balikin 9 digit (nanodetik). Perlu ganti ke `datetime.fromisoformat` atau potong presisinya. |
+| `groupibThreat`, `cisThreat`, `cymruThreat`, `anyrunTrendThreat`, `k7securityThreat` | `TimeoutError: Page.goto 30000ms` | Bisa situs lambat, bisa juga efek `--jobs 8` (8 Chromium bareng di laptop) — coba serial dulu sebelum simpulin situsnya emang lambat |
+| `intel471Threat` | timeout (90s) | Sama kemungkinannya |
+| `prodraftThreat` | `TargetClosedError` (Playwright) | Browser crash di tengah run; coba ulang dulu |
+
+### Nol item, belum jelas sah atau rusak
+
+Satu udah kebukti **sah**: `crowdstrikeThreat` nyaring kategori
+`"Counter Adversary Operations"` — feed-nya punya 1 item hari itu, cuma gak
+lolos filter. Bukan bug. `threatActorTrendGraylog` juga kemungkinan sah (baca
+`supportFile/ThreatActorName.txt` yang bisa aja lagi kosong).
+
+Sisanya belum dicek: `anyrunTrendThreat`, `doyensecThreat`, `googleThreat`,
+`huntressThreat`, `abnormalsecurityThreat`, `aquasecThreat`,
+`nquiringMindsThreat`, `dragosThreat`, `blackberryThreat`, `huntioThreat`,
+`sysdigThreat`, `trustwaveThreat`, `splunkThreat`, `koisecThreat`,
+`proofpointThreat`, `sansThreat`.

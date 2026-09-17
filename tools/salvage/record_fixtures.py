@@ -46,9 +46,23 @@ SKIP = {
     "nameThreat",
     # Utilitas / service, bukan feed scraper -- gak punya baseline buat di-diff
     "addCveTrackerUi", "getCveTracker", "topCve", "pkgVulnScanner",
-    "threatActorTrend", "threatActorTrendTele", "threatActorTrendGraylog",
+    "threatActorTrend",
     "cyborgHuntingIdea", "deepdarkCTI_sync", "export_db", "import_db",
 }
+
+# BAHAYA NYATA, bukan cuma "gak berguna direkam" -- file ini punya token
+# Graylog DAN bot Telegram ASLI HARDCODED DI SOURCE (bukan dari config.yml,
+# bukan lewat modules.telegramAlert yang di-stub), ngirim ke
+# privy.graylog.cloud dan chat/thread Telegram BENERAN. Kena grep terpisah
+# dari SKIP di atas biar gak ketimbun kalau SKIP direvisi nanti.
+# JANGAN DIHAPUS dari sini sebelum token-nya dirotasi (lihat SECRETS_ROTATION.md).
+#
+# CATATAN: threatActorTrendGraylog.py (beda file, nama mirip) SUDAH DICEK dan
+# AMAN -- dia lewat modules.graylogLogging yang di atas di-stub jadi no-op,
+# gak hardcode kredensial sendiri. Jangan ikut ditambahin ke sini tanpa
+# verifikasi ulang isi filenya.
+DANGEROUS_LIVE_SIDE_EFFECTS = {"threatActorTrendTele"}
+SKIP |= DANGEROUS_LIVE_SIDE_EFFECTS
 SKIP_DIRS = {"backup_script", "stopped_script", "modules", "scripts",
              "supportFile", "offset", "chromedriver_mac64_arm64"}
 
@@ -152,6 +166,7 @@ def _child(script_path: str) -> int:
         def __init__(self, *a, **k): pass
         def __call__(self, *a, **k): return None
         def __getattr__(self, n): return _AnyCallable()
+        def __getitem__(self, n): return _AnyCallable()
         def __iter__(self): return iter(())
         def __bool__(self): return False
         def __enter__(self): return self
@@ -171,6 +186,29 @@ def _child(script_path: str) -> int:
             return None
 
     sys.meta_path.insert(0, _StubFinder())
+
+    # Bahaya nyata, bukan cuma masalah dependency: newCveThreat.py dan
+    # githubPOCMonitor.py bikin MongoClient LANGSUNG dari config.yml,
+    # ngelewatin modules.dbMongo yang di atas udah di-stub. Kalau config.yml
+    # asli disuapin ke sini, dua script itu bisa BENERAN NULIS ke Mongo
+    # produksi (newCveThreat malah manggil bulk_write). Tambal di sumbernya:
+    # pymongo.MongoClient jadi inert apa pun config yang dikasih -- pertahanan
+    # yang gak bergantung nemuin semua script yang bypass modules.dbMongo.
+    try:
+        import pymongo
+        pymongo.MongoClient = _AnyCallable
+    except ImportError:
+        pass
+
+    # Sama alasannya kayak pymongo di atas: threatActorTrendTele.py bikin
+    # telegram.Bot(token='<hardcoded>') LANGSUNG, gak lewat modules.telegramAlert
+    # yang di-stub. File itu udah masuk SKIP permanen, tapi ini pertahanan
+    # kedua buat script lain yang belum ketemu dengan pola sama.
+    try:
+        import telegram
+        telegram.Bot = _AnyCallable
+    except ImportError:
+        pass
 
     # --- rekam byte HTTP -----------------------------------------------------
     import base64
@@ -325,6 +363,46 @@ def record_one(script: Path, out_root: Path, day: str, verbose: bool,
             "blocked": blocked, "error": data["error"]}
 
 
+_DUMMY_CONFIG_YML = """\
+# Dibuat otomatis oleh record_fixtures.py -- SEMUA NILAI PALSU.
+# newCveThreat.py & githubPOCMonitor.py bikin MongoClient langsung dari sini,
+# tapi pymongo.MongoClient sudah ditambal jadi inert di _child(), jadi
+# kredensial mongodb/news_db di bawah TIDAK PERNAH dipakai buat koneksi
+# beneran -- cuma biar dict-nya lengkap dan gak KeyError.
+mongodb: {user: dummy, pass: dummy, ip: 127.0.0.1, cluster: dummy, collection: dummy}
+news_db: {user: dummy, pass: dummy, ip: 127.0.0.1, db: dummy}
+llm: {provider: openai, api_key: "", model: gpt-4o}
+openai: {project_id: "", token_usage: 0}
+telegram:
+  bot_token: ""
+  chat_id: "0"
+  thread_id_apac: 0
+  thread_id_apac_indo: 0
+  thread_id_group: 0
+  thread_id_breach: 0
+  thread_id_report: 0
+  thread_id_darkweb: 0
+  thread_id_ransomware_activity: 0
+  thread_id_github_exploit: 0
+  thread_id_zero_day: 0
+  thread_id_techstack_related: 0
+  thread_id_techstack_unrelated: 0
+  thread_id_ot: 0
+  thread_id_sec_best: 0
+  thread_id_debug: 0
+  thread_id_group_debug: 0
+  thread_id_notd: 0
+twitter: {api_key: "", accounts_file: "", state_file: ""}
+github: {token: ""}
+nvd: {key: ""}
+azure: {tenant_id: "", client_id: "", client_secret: ""}
+graylog: {url: "http://127.0.0.1:1/gelf"}
+otx: {}
+abuseipdb: {}
+myprovider: {api_key: ""}
+"""
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -377,6 +455,19 @@ def main() -> int:
         and not any(part in SKIP_DIRS for part in p.parts)
         and (not a.only or p.stem in a.only)
     )
+    # Sembilan scraper buka config/config.yml LANGSUNG (bukan lewat modules.*
+    # yang di atas udah di-stub) buat baca token GitHub / kredensial Mongo.
+    # File itu gak pernah ada di checkout ini (gitignored). Bikin versi dummy
+    # kalau belum ada -- aman dipakai walau nilainya bukan yang asli, karena
+    # pymongo.MongoClient dan telegram.Bot udah ditambal jadi inert di atas;
+    # config ini cuma ngisi bentuk dict-nya biar gak KeyError, bukan nyambung
+    # ke apa pun beneran.
+    cfg_path = a.scrapers_dir / "config" / "config.yml"
+    if not cfg_path.exists():
+        cfg_path.parent.mkdir(parents=True, exist_ok=True)
+        cfg_path.write_text(_DUMMY_CONFIG_YML)
+        print(f"Config dummy dibuat: {cfg_path} (nilai palsu, MongoClient sudah inert)\n")
+
     if a.active_only:
         jobs = json.loads(a.active_only.read_text())
         active = {Path(j["script"]).stem for j in jobs
