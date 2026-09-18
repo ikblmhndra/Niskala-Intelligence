@@ -20,8 +20,8 @@ Plan lengkap: `~/.claude/plans/oke-bro-jadi-gini-sparkling-fern.md`
 | 3 | Framework scraper | `[x]` | 2 minggu | 5 scraper referensi lolos golden test |
 | 4 | Migrasi scraper (**100 aktif**) | `[x]` | ~2 minggu | ≥95% fixture identik, semua modul ke-import |
 | 5 | `cti-enrich` | `[x]` | 2–3 minggu | Output cocok dgn baseline, tiap cabang routing ada test |
-| 6 | Celery + beat | `[~]` inti kelar, 5 loop + lock + backpressure nyusul | 1–2 minggu | 5 loop web pindah, beat singleton terverifikasi |
-| 7 | `apps/api` | `[ ]` | 4–6 minggu | Semua endpoint ada snapshot test |
+| 6 | Celery + beat | `[~]` inti kelar, lock+backpressure nyusul | 1–2 minggu | ~~5 loop web pindah~~ (→ 7.8) · beat singleton terverifikasi |
+| 7 | `apps/api` | `[ ]` | 4–6 minggu | Semua endpoint ada snapshot test · 5 loop jadi beat task (7.8) |
 | 8 | `apps/web` (Next.js) | `[ ]` | 4–6 minggu | Semua tab lama ada padanannya |
 | 9 | Control plane scraper | `[ ]` | 1 minggu | Scraper mati kedeteksi dlm 3 interval |
 | 10 | Cutover | `[ ]` | 1 minggu | Semua checklist cutover hijau |
@@ -863,7 +863,7 @@ ke Postgres lokal + kirim completion beneran ke LLM gateway dev + Telegram.
 
 ---
 
-## Fase 6 — Celery + beat `[~]` inti kelar, 3 item nyusul
+## Fase 6 — Celery + beat `[~]` inti kelar, 6.7/6.8 nunggu trigger nyata
 
 **2026-09-18 — "inti" Fase 6 (arahan: mulai dari core dulu, 5 loop web
 nyusul belakangan).** Dibangun di `apps/worker` (package baru `cti-worker`,
@@ -901,10 +901,13 @@ masuk uv workspace) + `cti_core.celery_client` (producer-side, biar
 - [x] **6.5** Token bucket Redis (`TokenBucket`, dibangun Fase 3, belum
       pernah disambung ke Redis client beneran) sekarang disambung
       `redis.Redis.from_url(settings.redis.url)` di `tasks/scrape.py`.
-- [ ] **6.6** Pindahkan 5 loop web → beat task -- **ditunda**, ranahnya
-      dipindah waktu `apps/api` (Fase 7) ditulis karena loop-loop itu
-      sekarang masih hidup di `ScraperNewsWeb/app/main.py` (repo lama),
-      belum ada padanan di `apps/api` (masih kosong) buat "dipindah dari"nya.
+- [x] **6.6** ~~Pindahkan 5 loop web → beat task~~ -- **dipindah ke 7.8**,
+      biar progress rapih. Alasan sama kayak 6.7/6.8 di bawah: loop-loop itu
+      (PIR alert, ATT&CK sync, IOC decay, daily recap, CVE enrichment)
+      logikanya nempel di service `ScraperNewsWeb/app/services/*` yang
+      MEMANG bakal di-port ke Postgres bareng 56 service lain di Fase 7 --
+      misah-misahin kerjaan cuma bikin dobel, digabung natural pas Fase 7
+      jalan (bukan item Fase 6 yang genuinely selesai).
 - [ ] **6.7** Lock singleton (cegah beat double-fire) -- **ditunda**, belum
       ada kebutuhan nyata (1 proses beat lokal) sampai deployment multi-node
       masuk Fase 10.
@@ -986,10 +989,11 @@ masuk uv workspace) + `cti_core.celery_client` (producer-side, biar
 
 **Exit criteria (draft plan):** 5 loop web hilang dari `main.py` · uvicorn
 jalan multi-worker · beat singleton terverifikasi (restart, cek gak
-double-fire) -- **belum tercapai**, 6.6/6.7/6.8 masih `[ ]` per keputusan
-"inti dulu" di atas. Yang UDAH terverifikasi: rantai penuh scrape → sink →
-enrich queue → enrich task → persist jalan LIVE tanpa satu pun langkah
-disintesis/di-mock.
+double-fire) -- **belum tercapai**: "5 loop hilang" sekarang jadi exit
+criteria **7.8** (lihat 6.6 di atas), "beat singleton" masih `[ ]` di 6.7
+nunggu deployment multi-node (Fase 10). Yang UDAH terverifikasi: rantai
+penuh scrape → sink → enrich queue → enrich task → persist jalan LIVE tanpa
+satu pun langkah disintesis/di-mock.
 
 ---
 
@@ -1002,8 +1006,14 @@ disintesis/di-mock.
 - [ ] **7.5** Buang duplikasi (pkg_vuln, cve_email, ioc, llm)
 - [ ] **7.6** Snapshot test tiap endpoint
 - [ ] **7.7** Ekspor skema OpenAPI
+- [ ] **7.8** *(dipindah dari 6.6)* Pindahkan 5 loop `ScraperNewsWeb/app/main.py`
+      (PIR alert, ATT&CK sync, IOC decay, daily recap, CVE enrichment) jadi
+      Celery beat task -- infra beat/worker-nya udah ada dari Fase 6
+      (`apps/worker/src/cti_worker/beat.py`), tinggal port logika service-nya
+      (bagian dari 7.4) + daftarin jadwalnya. Setelah ini `apps/api` bisa
+      di-scale horizontal (multi-worker uvicorn gak lagi gandain loop).
 
-**Exit criteria:** semua endpoint ada snapshot test · gak ada import `cti_scraper`/`cti_enrich` dari API
+**Exit criteria:** semua endpoint ada snapshot test · gak ada import `cti_scraper`/`cti_enrich` dari API · 5 loop web hilang dari `main.py`, jadi beat task (7.8)
 
 ---
 
