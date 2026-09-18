@@ -47,8 +47,14 @@ def test_create_token_defaults_client_ids() -> None:
 
 
 def test_decode_token_rejects_tampered_token() -> None:
+    """Tamper di TENGAH signature, bukan karakter terakhir -- base64url HMAC
+    256-bit nyisain 2 bit padding gak signifikan di char terakhir, jadi
+    tukar char di posisi itu (mis. "A"<->"B") kadang gak beneran ngubah
+    bytes-nya, bikin test ini flaky (ketauan lewat run beneran, bukan
+    dugaan)."""
     token = create_token("alice", "analyst")
-    tampered = token[:-1] + ("A" if token[-1] != "A" else "B")
+    mid = len(token) // 2
+    tampered = token[:mid] + ("A" if token[mid] != "A" else "B") + token[mid + 1 :]
     with pytest.raises(JWTError):
         decode_token(tampered)
 

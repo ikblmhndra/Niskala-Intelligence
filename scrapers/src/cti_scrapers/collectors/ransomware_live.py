@@ -19,6 +19,7 @@ bulan depan. Diperbaiki pas migrasi beneran (Fase 4), bukan di sini.
 
 from __future__ import annotations
 
+import datetime
 from collections.abc import Iterator
 
 from cti_scraper.base import BaseScraper, ScrapeContext, ScraperMeta
@@ -26,10 +27,12 @@ from cti_scraper.errors import ParseError
 from cti_scraper.items import RansomwareVictimItem
 
 
-def _iso_date(value: object) -> str | None:
-    """ "2026-09-16T00:00:00" -> "2026-09-16". Value kosong/None -> None."""
-    text = str(value or "").split("T")[0]
-    return text or None
+def _iso_date(value: object) -> datetime.date | None:
+    """API balikin separator campur ("...T...:00" atau "... ...:00.ffffff",
+    lihat fixture Fase 0) -- ambil bagian tanggal doang, buang jam/zona.
+    Value kosong/None -> None."""
+    text = str(value or "").split("T")[0].split(" ")[0]
+    return datetime.date.fromisoformat(text) if text else None
 
 
 class RansomwareLive(BaseScraper):

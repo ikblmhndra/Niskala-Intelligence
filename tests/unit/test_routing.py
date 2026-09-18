@@ -3,6 +3,9 @@ criteria: "tiap cabang routing ada test"), plus kasus tepi yang jadi alasan
 `route()` didesain kayak gini (double alert OT, sub-routing Indonesia,
 `related_tech_cve_status` cuma valid di cabang Global)."""
 
+import dataclasses
+from typing import TypedDict, Unpack
+
 from cti_enrich.routing import RoutingInput, route
 
 _BASE_MSG = (
@@ -14,24 +17,41 @@ _BASE_MSG = (
 )
 
 
-def _inp(**overrides) -> RoutingInput:
-    defaults = dict(
-        msg_data_base=_BASE_MSG,
-        industries_impacted=["General"],
-        mentioned_group=[],
-        mentioned_countries=[],
-        mentioned_apac_people=[],
-        cve_list_title=[],
-        report_status=False,
-        ot_status=False,
-        related_tech_status=False,
-        related_tech_cve_status=False,
-        databreach_list=[],
-        zero_day_list=[],
-        ttp_string="",
-    )
-    defaults.update(overrides)
-    return RoutingInput(**defaults)
+class _RoutingOverrides(TypedDict, total=False):
+    msg_data_base: str
+    industries_impacted: list[str]
+    mentioned_group: list[str]
+    mentioned_countries: list[str]
+    mentioned_apac_people: list[str]
+    cve_list_title: list[str]
+    report_status: bool
+    ot_status: bool
+    related_tech_status: bool
+    related_tech_cve_status: bool
+    databreach_list: list[str]
+    zero_day_list: list[str]
+    ttp_string: str
+
+
+_DEFAULT_INPUT = RoutingInput(
+    msg_data_base=_BASE_MSG,
+    industries_impacted=["General"],
+    mentioned_group=[],
+    mentioned_countries=[],
+    mentioned_apac_people=[],
+    cve_list_title=[],
+    report_status=False,
+    ot_status=False,
+    related_tech_status=False,
+    related_tech_cve_status=False,
+    databreach_list=[],
+    zero_day_list=[],
+    ttp_string="",
+)
+
+
+def _inp(**overrides: Unpack[_RoutingOverrides]) -> RoutingInput:
+    return dataclasses.replace(_DEFAULT_INPUT, **overrides)
 
 
 def test_global_article_no_mentions_routes_global() -> None:
