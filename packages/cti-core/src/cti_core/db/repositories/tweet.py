@@ -3,16 +3,24 @@ upsert_tweet`/`tweet_exists` (`$setOnInsert`-only, gak pernah update tweet
 yang udah ada -- dipertahankan di sini: sekali masuk, field mesin TIDAK
 di-refresh, beda dari `ArticleRepo.upsert` yang emang didesain buat re-scrape.
 Alasannya sama kayak lama: tweet gak berubah isinya setelah diposting,
-beda dari artikel yang bisa di-edit penulisnya)."""
+beda dari artikel yang bisa di-edit penulisnya).
+
+`AsyncTweetRepo`/`AsyncMonitoredAccountRepo` (Fase 7.3, router `tweets.py`/
+`monitored_accounts.py`) BARU -- permukaan BACA (tweet) + CRUD penuh
+(monitored account, jalur tulis BARU karena tabelnya emang cuma dibaca
+scraper `monitorX.py` sebelum ini). Jalur tulis `tweets` sendiri TETAP
+`TweetRepo` sync di atas (Celery/CLI monitor, Fase 5), gak disentuh."""
 
 from __future__ import annotations
 
+import datetime
 from typing import Any
 
-from sqlalchemy import select
+from sqlalchemy import Select, func, select
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Session
 
-from cti_core.db.models.tweet import Tweet
+from cti_core.db.models.tweet import MonitoredAccount, Tweet
 
 
 class TweetRepo:
@@ -53,3 +61,168 @@ class TweetRepo:
         if not rows:
             return None
         return max(rows, key=int)
+
+
+def _apply_tweet_filters(
+    stmt: Select[tuple[Any, ...]],
+    *,
+    search: str | None,
+    author: str | None,
+    lang: str | None,
+    posted_on_start: datetime.datetime | None = None,
+    posted_on_end: datetime.datetime | None = None,
+    apac_only: bool,
+    ot_only: bool,
+    confirmed_only: bool,
+) -> Select[tuple[Any, ...]]:
+    """`apac_indicator`/`ot_status` ada DI DALAM `scan_results` JSONB
+    (bukan kolom top-level) -- lihat docstring `Tweet.scan_results`
+    (Fase 5). `.as_boolean()` operator JSONB Postgres, ekuivalen
+    `query["apac_indicator"] = True` Mongo lama. Dipakai `list_filtered`
+    DAN `get_stats` -- dua-duanya kena filter yang sama persis (port
+    perilaku lama)."""
+    if search:
+        stmt = stmt.where(Tweet.text.ilike(f"%{search}%"))
+    if author:
+        stmt = stmt.where(Tweet.author_username.ilike(f"%{author}%"))
+    if lang:
+        stmt = stmt.where(Tweet.lang == lang)
+    if posted_on_start is not None:
+        stmt = stmt.where(Tweet.posted_on >= posted_on_start)
+    if posted_on_end is not None:
+        stmt = stmt.where(Tweet.posted_on <= posted_on_end)
+    if apac_only:
+        stmt = stmt.where(Tweet.scan_results["apac_indicator"].as_boolean())
+    if ot_only:
+        stmt = stmt.where(Tweet.scan_results["ot_status"].as_boolean())
+    if confirmed_only:
+        stmt = stmt.where(Tweet.confirmed_incident.is_(True))
+    return stmt
+
+
+class AsyncTweetRepo:
+    def __init__(self, session: AsyncSession) -> None:
+        self.session = session
+
+    async def list_filtered(
+        self,
+        *,
+        page: int = 1,
+        page_size: int = 20,
+        search: str | None = None,
+        author: str | None = None,
+        lang: str | None = None,
+        posted_on_start: datetime.datetime | None = None,
+        posted_on_end: datetime.datetime | None = None,
+        apac_only: bool = False,
+        ot_only: bool = False,
+        confirmed_only: bool = False,
+    ) -> tuple[list[Tweet], int]:
+        stmt = _apply_tweet_filters(
+            select(Tweet),
+            search=search,
+            author=author,
+            lang=lang,
+            posted_on_start=posted_on_start,
+            posted_on_end=posted_on_end,
+            apac_only=apac_only,
+            ot_only=ot_only,
+            confirmed_only=confirmed_only,
+        )
+        total = (
+            await self.session.execute(select(func.count()).select_from(stmt.subquery()))
+        ).scalar_one()
+        list_stmt = (
+            stmt.order_by(Tweet.posted_on.desc().nulls_last())
+            .offset((page - 1) * page_size)
+            .limit(page_size)
+        )
+        result = await self.session.execute(list_stmt)
+        return list(result.scalars().all()), total
+
+    async def get_stats(
+        self,
+        *,
+        search: str | None = None,
+        author: str | None = None,
+        lang: str | None = None,
+        posted_on_start: datetime.datetime | None = None,
+        posted_on_end: datetime.datetime | None = None,
+        apac_only: bool = False,
+        ot_only: bool = False,
+        confirmed_only: bool = False,
+    ) -> dict[str, object]:
+        base_filter = _apply_tweet_filters(
+            select(Tweet.id, Tweet.author_username),
+            search=search,
+            author=author,
+            lang=lang,
+            posted_on_start=posted_on_start,
+            posted_on_end=posted_on_end,
+            apac_only=apac_only,
+            ot_only=ot_only,
+            confirmed_only=confirmed_only,
+        ).subquery()
+
+        total = (
+            await self.session.execute(select(func.count()).select_from(base_filter))
+        ).scalar_one()
+        top_stmt = (
+            select(base_filter.c.author_username, func.count())
+            .group_by(base_filter.c.author_username)
+            .order_by(func.count().desc())
+            .limit(10)
+        )
+        top_authors = (await self.session.execute(top_stmt)).all()
+        return {
+            "total": total,
+            "top_authors": [{"author": a, "count": c} for a, c in top_authors],
+        }
+
+
+class AsyncMonitoredAccountRepo:
+    def __init__(self, session: AsyncSession) -> None:
+        self.session = session
+
+    async def list_all(self) -> list[MonitoredAccount]:
+        result = await self.session.execute(
+            select(MonitoredAccount).order_by(MonitoredAccount.username)
+        )
+        return list(result.scalars().all())
+
+    async def get(self, username: str) -> MonitoredAccount | None:
+        result = await self.session.execute(
+            select(MonitoredAccount).where(MonitoredAccount.username == username)
+        )
+        return result.scalar_one_or_none()
+
+    async def create(
+        self, username: str, display_name: str = "", notes: str = ""
+    ) -> MonitoredAccount:
+        username = username.lstrip("@").strip().lower()
+        if await self.get(username) is not None:
+            raise ValueError(f"@{username} already monitored")
+        account = MonitoredAccount(
+            username=username, display_name=display_name.strip(), notes=notes.strip()
+        )
+        self.session.add(account)
+        await self.session.flush()
+        return account
+
+    async def remove(self, username: str) -> bool:
+        username = username.lstrip("@").strip().lower()
+        account = await self.get(username)
+        if account is None:
+            return False
+        await self.session.delete(account)
+        await self.session.flush()
+        return True
+
+    async def toggle(self, username: str, active: bool) -> bool:
+        username = username.lstrip("@").strip().lower()
+        account = await self.get(username)
+        if account is None:
+            return False
+        account.active = active
+        await self.session.flush()
+        return True

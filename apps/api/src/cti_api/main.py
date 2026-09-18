@@ -28,8 +28,11 @@ from cti_api.routers import clients as clients_router
 from cti_api.routers import cve as cve_router
 from cti_api.routers import health as health_router
 from cti_api.routers import iocs as iocs_router
+from cti_api.routers import monitored_accounts as monitored_accounts_router
+from cti_api.routers import ransomware as ransomware_router
 from cti_api.routers import roles as roles_router
 from cti_api.routers import techstack as techstack_router
+from cti_api.routers import tweets as tweets_router
 from cti_api.services.roles import ensure_system_roles
 
 log = get_logger()
@@ -67,6 +70,9 @@ def create_app() -> FastAPI:
     app.include_router(iocs_router.router)
     app.include_router(techstack_router.router)
     app.include_router(cve_router.router)
+    app.include_router(tweets_router.router)
+    app.include_router(monitored_accounts_router.router)
+    app.include_router(ransomware_router.router)
     return app
 
 

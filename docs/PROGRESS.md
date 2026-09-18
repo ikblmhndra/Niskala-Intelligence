@@ -1112,10 +1112,10 @@ tinggal pkg_vuln+cve_email), 7.6 (snapshot test), 7.7 (ekspor OpenAPI), 7.8.
       **OIDC bagian dari 7.2 ini BELUM diport** (`oidc.enabled=False`
       default, 184 baris `oidc_service.py` nunggu giliran terpisah, bukan
       bagian "inti").
-- [~] **7.3** Port 27 router ke repository Postgres -- **6/27 kelar**
+- [~] **7.3** Port 27 router ke repository Postgres -- **9/27 kelar**
       (`clients`, `roles`, `articles` [baca doang], `iocs` [baca+kurasi],
-      `techstack` [CRUD inti], `cve` [baca+false-positive+purge]),
-      verified LIVE via curl
+      `techstack` [CRUD inti], `cve` [baca+false-positive+purge],
+      `tweets`, `monitored_accounts`, `ransomware`), verified LIVE via curl
       (create/update/delete, RBAC superadmin-only buat mutasi, 422
       permission gak dikenal, 400 hapus role sistem/client default).
       `clients`/`roles` nyaris gratis: repo-nya (`AsyncClientRepo`/
@@ -1272,8 +1272,56 @@ tinggal pkg_vuln+cve_email), 7.6 (snapshot test), 7.7 (ekspor OpenAPI), 7.8.
       (Postgres real, termasuk isolasi per-client dan cascade FP-delete
       pas purge beneran jalan).
 
-      Sisa 21 router (ta_groups/tweets/dst) nyusul bertahap, per-router
-      verified live, bukan sekali gas semua.
+      **2026-09-18 -- survei 21 router sisa + rencana 5 bagian** (diminta
+      user sebelum lanjut, biar gak nemu gap bertumpuk di tengah jalan):
+      Bagian 1 quick-wins (`tweets`/`monitored_accounts`/`ransomware`/
+      `changelog`/`filtered_articles`, model udah siap) → Bagian 2 domain
+      baru self-contained (`rfi`/`pir`/`source_reliability`) → Bagian 3
+      ATT&CK/TA (`attack` [prasyarat, sama pola `techstack`→`cve`] →
+      `ta_groups` → `mitre` → `crossref`) → Bagian 4 fitur besar mandiri
+      (`pkg_vuln`/`newsletter`/`stix`/`mindmap`) → Bagian 5 dashboard
+      agregator (`intelligence`/`recap`/`exec_dashboard`, PALING BELAKANGAN
+      karena nyedot data dari hampir semua domain lain). Detail lengkap +
+      alasan urutan ada di riwayat percakapan; ringkasan tiap bagian nyusul
+      di sini pas masing-masing dikerjain.
+
+      **Bagian 1 (2026-09-18) -- 3/5 kelar** (`tweets`, `monitored_accounts`,
+      `ransomware`). `Tweet`/`MonitoredAccount`/`RansomwareVictim` model
+      udah lengkap dari Fase 4/5 -- tinggal nambah query layer async, pola
+      sama kayak `cve`/`techstack`. `MonitoredAccount` ketauan kurang
+      `display_name`/`notes` pas porting beneran (migrasi `22b43affdcac`,
+      sama pola gap-gap sebelumnya). `apac_indicator`/`ot_status` tweet
+      ada DI DALAM `scan_results` JSONB (bukan kolom top-level) -- filter
+      pakai operator JSONB Postgres `.as_boolean()`, ekuivalen persis
+      `query["apac_indicator"] = True` Mongo lama.
+
+      **`changelog` dan `filtered_articles` SENGAJA di-skip** dari Bagian 1
+      (bukan "quick win" beneran begitu diperiksa): `changelog` baca file
+      `CHANGELOG.md` langsung dari disk -- monorepo baru ini GAK PUNYA file
+      itu (commit message aja, gak ada convention changelog manual), bikin
+      satu itu keputusan produk/dokumentasi, bukan keputusan porting
+      mekanis. `filtered_articles` baca `scraper_runs` dengan `accepted=False`
+      (artikel yang DITOLAK pipeline enrichment) -- skema Postgres (Fase 5)
+      cuma nulis artikel yang DITERIMA ke tabel `articles`, gak ada tabel
+      "artikel ditolak" sama sekali. Butuh keputusan desain (tabel log
+      baru? just skip?) sebelum bisa diport, bukan sekadar tambah kolom.
+
+      Bug nyata ketemu lewat test integrasi (bukan dugaan):
+      `AsyncRansomwareVictimRepo.list_filtered` declare `date_start`/
+      `date_end` sebagai `str`, dibandingin langsung ke kolom `Date` --
+      asyncpg GAK auto-cast varchar ke date (beda dari psycopg2/sync),
+      query gagal `UndefinedFunctionError` di runtime. Fix: `datetime.date`
+      typed, sama pola kayak `articles`/`cve` (harusnya emang gitu dari
+      awal, kelewat pas ngetik cepat). Live-reverified abis fix: endpoint
+      yang tadinya 500 sekarang 200.
+
+      Verified LIVE via curl: tweets list/stats/filter (apac/ot/confirmed/
+      author/search/date), monitored-accounts CRUD penuh (normalisasi
+      `@username` lowercase, 409 duplikat), ransomware victims/filters/
+      related-articles. 26 test integrasi baru (Postgres real). Full suite:
+      690 passed, mypy 218 file bersih, ruff bersih.
+
+      Sisa 18 router (Bagian 1 sisa 2 + Bagian 2-5) nyusul bertahap.
 
       **Bug infra ketemu pas kerjain ini (di luar scope router itu
       sendiri, tapi ketauan justru dari nge-`mypy` `apps/api` doang):**

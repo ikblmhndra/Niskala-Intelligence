@@ -31,6 +31,11 @@ class MonitoredAccount(TimestampMixin, Base):
     id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
     username: Mapped[str] = mapped_column(String(100), nullable=False, unique=True, index=True)
     active: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    display_name: Mapped[str] = mapped_column(String(200), nullable=False, default="")
+    notes: Mapped[str] = mapped_column(Text, nullable=False, default="")
+    """Kolom yang kepake router `monitored_accounts.py` (Fase 7.3) tapi
+    belum ada di skema Fase 5 -- tabelnya waktu itu cuma dibaca scraper
+    (`monitorX.py`), belum ada jalur TULIS lewat API."""
 
 
 class Tweet(TimestampMixin, Base):
