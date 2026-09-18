@@ -1112,14 +1112,48 @@ tinggal pkg_vuln+cve_email), 7.6 (snapshot test), 7.7 (ekspor OpenAPI), 7.8.
       **OIDC bagian dari 7.2 ini BELUM diport** (`oidc.enabled=False`
       default, 184 baris `oidc_service.py` nunggu giliran terpisah, bukan
       bagian "inti").
-- [~] **7.3** Port 27 router ke repository Postgres -- **2/27 kelar**
-      (`clients`, `roles`), verified LIVE via curl (create/update/delete,
-      RBAC superadmin-only buat mutasi, 422 permission gak dikenal, 400
-      hapus role sistem/client default). Keduanya nyaris gratis: repo-nya
-      (`AsyncClientRepo`/`AsyncRoleRepo`) udah lengkap dari 7.2. Sisa 25
-      router (articles yang paling besar/penting -- ~1000 baris gabungan
-      4 service pendukung -- lalu cve/iocs/ta_groups/dst) nyusul bertahap,
-      per-router verified live, bukan sekali gas semua.
+- [~] **7.3** Port 27 router ke repository Postgres -- **3/27 kelar**
+      (`clients`, `roles`, `articles` [baca doang]), verified LIVE via curl
+      (create/update/delete, RBAC superadmin-only buat mutasi, 422
+      permission gak dikenal, 400 hapus role sistem/client default).
+      `clients`/`roles` nyaris gratis: repo-nya (`AsyncClientRepo`/
+      `AsyncRoleRepo`) udah lengkap dari 7.2.
+
+      **`articles`** (2026-09-18) -- router paling besar/penting, cuma
+      permukaan BACA (`GET /api/articles` list+filter+paginate, `GET
+      /api/filters`, `GET /api/articles/{id}`). `AsyncArticleRepo` (Fase 2)
+      sebelumnya cuma punya `upsert`/`get_by_url(_hash)`/`set_overrides` --
+      ditambah `list_filtered()` (translate query dict Mongo lama ke SQL
+      join atas tabel anak ternormalisasi: `article_industries`/
+      `article_countries`[+role]/`article_threat_actors`) dan
+      `get_filter_options()` (distinct value per tabel, ganti `col.distinct()`
+      Mongo). Tiga field negara Mongo lama (`mentioned_countries`/
+      `victim_countries`/`actor_countries`, tiga array terpisah) sekarang
+      SATU tabel `article_countries` + kolom `role` -- `country` (param
+      umum) = role `"mentioned"`, cocok 1:1 sama nama field lama.
+      **Sengaja di-skip/ditunda** (didokumentasiin di docstring router,
+      bukan didiemin): `/api/dashboard` (agregasi berat + `normalize_country()`
+      lama -- SEKARANG kejadian di enrichment `cti_enrich.countries`,
+      bukan query-time), `/api/articles/dedup-groups` (butuh scikit-learn,
+      belum dependency `cti-api`), `/api/articles/{id}/confidence`
+      +`/confidence/recompute` (butuh router `source_reliability` ke-port
+      duluan), `/api/articles/backfill-iocs` (hack migrasi era Mongo,
+      kemungkinan besar OBSOLETE -- `persist.py` Fase 5 udah nulis IOC
+      lewat jalur normal), `/api/country-groups` (peta nama->varian buat
+      data FREE-TEXT lama; skema baru `country_code` udah ISO alpha-2 dari
+      enrichment, gak ada lagi varian nama yang perlu di-grup di layer API).
+
+      Sisa 24 router (cve/iocs/ta_groups/dst) nyusul bertahap, per-router
+      verified live, bukan sekali gas semua.
+
+      **Bug nyata ketemu lewat test integrasi** (bukan dugaan):
+      `AsyncArticleRepo.set_enrichment` (baru, port dari versi sync buat
+      dipakai test) `MissingGreenlet` -- ganti koleksi relationship
+      (`article.countries = [...]`) di sesi ASYNC butuh state koleksi LAMA
+      buat ngitung diff cascade delete-orphan, itu lazy-load implisit yang
+      gak jalan sinkron di luar `await` (versi sync `ArticleRepo` gak kena
+      ini). Fix: `await session.refresh(article, attribute_names=[...])`
+      eksplisit sebelum assign ulang.
 
       **Bug infra ketemu pas kerjain ini (di luar scope router itu
       sendiri, tapi ketauan justru dari nge-`mypy` `apps/api` doang):**

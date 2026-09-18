@@ -16,9 +16,9 @@ import datetime
 from collections.abc import Sequence
 from typing import Any
 
-from sqlalchemy import select
+from sqlalchemy import Select, func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, aliased
 
 from cti_core.db.models.article import (
     Article,
@@ -30,6 +30,83 @@ from cti_core.db.models.article import (
 from cti_core.urlkit import url_hash as compute_url_hash
 
 _RESERVED_OVERRIDE_KEYS = frozenset({"_meta"})
+
+
+def _apply_list_filters(
+    stmt: Select[tuple[Article]],
+    *,
+    posted_on_start: datetime.date | None,
+    posted_on_end: datetime.date | None,
+    industries: Sequence[str] | None,
+    countries: Sequence[str] | None,
+    victim_countries: Sequence[str] | None,
+    actor_countries: Sequence[str] | None,
+    sources: Sequence[str] | None,
+    news_types: Sequence[str] | None,
+    threat_actors: Sequence[str] | None,
+    search: str | None,
+    title_keywords: Sequence[str] | None,
+) -> Select[tuple[Article]]:
+    """Filter bersama buat query list DAN count -- port dari `article_service.
+    get_articles()` (Mongo query dict) ke SQL. Tiga field negara Mongo lama
+    (`mentioned_countries`/`victim_countries`/`actor_countries`, tiga ARRAY
+    terpisah) sekarang SATU tabel `article_countries` + kolom `role` (Fase 2)
+    -- `countries` (param umum) = role "mentioned", cocok 1:1 sama field
+    lama yang namanya sama."""
+    if posted_on_start is not None:
+        stmt = stmt.where(Article.posted_on >= posted_on_start)
+    if posted_on_end is not None:
+        stmt = stmt.where(Article.posted_on <= posted_on_end)
+    if industries:
+        stmt = stmt.join(Article.industries).where(ArticleIndustry.industry.in_(industries))
+    if countries:
+        mentioned = _country_alias()
+        stmt = stmt.join(mentioned, Article.id == mentioned.article_id).where(
+            mentioned.role == "mentioned", mentioned.country_code.in_(countries)
+        )
+    if victim_countries:
+        victim = _country_alias()
+        stmt = stmt.join(victim, Article.id == victim.article_id).where(
+            victim.role == "victim", victim.country_code.in_(victim_countries)
+        )
+    if actor_countries:
+        actor = _country_alias()
+        stmt = stmt.join(actor, Article.id == actor.article_id).where(
+            actor.role == "actor", actor.country_code.in_(actor_countries)
+        )
+    if sources:
+        stmt = stmt.where(Article.source.in_(sources))
+    if news_types:
+        stmt = stmt.where(Article.news_type.in_(news_types))
+    if threat_actors:
+        # Mongo lama: regex `^...$` case-insensitive -- exact match, BUKAN
+        # substring. `func.lower(...).in_(...)` ekuivalen persis.
+        lowered = [t.lower() for t in threat_actors]
+        stmt = stmt.join(Article.threat_actors).where(
+            func.lower(ArticleThreatActor.threat_actor).in_(lowered)
+        )
+    keyword_or = (
+        [Article.title.ilike(f"%{kw}%") for kw in title_keywords] if title_keywords else None
+    )
+    search_or = (
+        [Article.title.ilike(f"%{search}%"), Article.source.ilike(f"%{search}%")]
+        if search
+        else None
+    )
+    if keyword_or and search_or:
+        stmt = stmt.where(or_(*keyword_or), or_(*search_or))
+    elif keyword_or:
+        stmt = stmt.where(or_(*keyword_or))
+    elif search_or:
+        stmt = stmt.where(or_(*search_or))
+    return stmt
+
+
+def _country_alias() -> Any:
+    """Alias baru tiap dipanggil -- filter negara bisa dipakai 3x sekaligus
+    (mentioned + victim + actor) dalam SATU query; tanpa alias, tiga JOIN
+    ke tabel yang sama bakal nabrak nama."""
+    return aliased(ArticleCountry)
 
 
 def _merge_overrides(article: Article) -> dict[str, Any]:
@@ -177,6 +254,41 @@ class AsyncArticleRepo:
         await self.session.flush()
         return existing
 
+    async def set_enrichment(
+        self,
+        article: Article,
+        *,
+        countries: Sequence[tuple[str, str]] = (),
+        industries: Sequence[str] = (),
+        threat_actors: Sequence[str] = (),
+        ttps: Sequence[tuple[str, str]] = (),
+    ) -> Article:
+        """Logic sama persis `ArticleRepo.set_enrichment` -- dipakai test
+        integrasi Fase 7 (setup fixture artikel via jalur async), bukan
+        Fase 5 (itu tetap lewat `ArticleRepo` sync, Celery task).
+
+        `refresh()` 4 relationship dulu SEBELUM di-assign ulang -- ganti
+        koleksi (`article.countries = [...]`) di sesi ASYNC butuh state
+        koleksi LAMA buat ngitung diff (cascade delete-orphan), dan itu
+        lazy-load implisit yang gak bisa jalan sinkron di luar `await`
+        (`MissingGreenlet`). Versi sync (`ArticleRepo`) gak kena ini --
+        lazy-load implisit sinkron biasa jalan di sana."""
+        await self.session.refresh(
+            article, attribute_names=["countries", "industries", "threat_actors", "ttps"]
+        )
+        article.countries = [
+            ArticleCountry(country_code=code, role=role) for code, role in dict.fromkeys(countries)
+        ]
+        article.industries = [ArticleIndustry(industry=i) for i in dict.fromkeys(industries)]
+        article.threat_actors = [
+            ArticleThreatActor(threat_actor=t) for t in dict.fromkeys(threat_actors)
+        ]
+        article.ttps = [
+            ArticleTTP(ttp_id=tid, ttp_name=tname) for tid, tname in dict.fromkeys(ttps)
+        ]
+        await self.session.flush()
+        return article
+
     async def get_by_url_hash(self, url_hash_value: str) -> Article | None:
         result = await self.session.execute(
             select(Article).where(Article.url_hash == url_hash_value)
@@ -193,3 +305,105 @@ class AsyncArticleRepo:
 
     def to_dict(self, article: Article) -> dict[str, Any]:
         return _merge_overrides(article)
+
+    async def get_by_id(self, article_id: int) -> Article | None:
+        result = await self.session.execute(select(Article).where(Article.id == article_id))
+        return result.scalar_one_or_none()
+
+    async def list_filtered(
+        self,
+        *,
+        page: int = 1,
+        page_size: int = 20,
+        posted_on_start: datetime.date | None = None,
+        posted_on_end: datetime.date | None = None,
+        industries: Sequence[str] | None = None,
+        countries: Sequence[str] | None = None,
+        victim_countries: Sequence[str] | None = None,
+        actor_countries: Sequence[str] | None = None,
+        sources: Sequence[str] | None = None,
+        news_types: Sequence[str] | None = None,
+        threat_actors: Sequence[str] | None = None,
+        search: str | None = None,
+        title_keywords: Sequence[str] | None = None,
+    ) -> tuple[list[Article], int]:
+        """Port `article_service.get_articles()`. Filter di-`join()` ke
+        tabel anak -- `.distinct()` WAJIB begitu ada join one-to-many
+        (satu artikel bisa punya banyak baris industry/country/TA yang
+        cocok, tanpa distinct dia muncul dobel di halaman)."""
+        base = _apply_list_filters(
+            select(Article),
+            posted_on_start=posted_on_start,
+            posted_on_end=posted_on_end,
+            industries=industries,
+            countries=countries,
+            victim_countries=victim_countries,
+            actor_countries=actor_countries,
+            sources=sources,
+            news_types=news_types,
+            threat_actors=threat_actors,
+            search=search,
+            title_keywords=title_keywords,
+        )
+        has_join = bool(
+            industries or countries or victim_countries or actor_countries or threat_actors
+        )
+
+        count_stmt = select(func.count()).select_from(base.distinct().subquery())
+        total = (await self.session.execute(count_stmt)).scalar_one()
+
+        list_stmt = base.order_by(Article.posted_on.desc().nulls_last(), Article.id.desc())
+        if has_join:
+            list_stmt = list_stmt.distinct()
+        list_stmt = list_stmt.offset((page - 1) * page_size).limit(page_size)
+        result = await self.session.execute(list_stmt)
+        articles = list(result.scalars().unique().all())
+        return articles, total
+
+    async def get_filter_options(self) -> dict[str, Any]:
+        """Port `article_service.get_filter_options()`. Distinct langsung
+        dari kolom/tabel anak yang udah ternormalisasi -- gak butuh
+        `col.distinct()` Mongo-style, ini query SQL biasa per tabel."""
+        industries_q = (
+            select(ArticleIndustry.industry).distinct().order_by(ArticleIndustry.industry)
+        )
+        countries_q = (
+            select(ArticleCountry.country_code)
+            .where(ArticleCountry.role == "mentioned")
+            .distinct()
+            .order_by(ArticleCountry.country_code)
+        )
+        sources_q = (
+            select(Article.source).where(Article.source != "").distinct().order_by(Article.source)
+        )
+        news_types_q = (
+            select(Article.news_type)
+            .where(Article.news_type.is_not(None))
+            .distinct()
+            .order_by(Article.news_type)
+        )
+        threat_actors_q = (
+            select(ArticleThreatActor.threat_actor)
+            .distinct()
+            .order_by(ArticleThreatActor.threat_actor)
+        )
+        date_range_q = select(func.min(Article.posted_on), func.max(Article.posted_on))
+
+        industries = (await self.session.execute(industries_q)).scalars().all()
+        countries = (await self.session.execute(countries_q)).scalars().all()
+        sources = (await self.session.execute(sources_q)).scalars().all()
+        news_types = (await self.session.execute(news_types_q)).scalars().all()
+        threat_actors = (await self.session.execute(threat_actors_q)).scalars().all()
+        min_date, max_date = (await self.session.execute(date_range_q)).one()
+
+        return {
+            "industries": list(industries),
+            "countries": list(countries),
+            "sources": list(sources),
+            "news_types": list(news_types),
+            "threat_actors": list(threat_actors),
+            "date_range": {
+                "min": min_date.isoformat() if min_date else "",
+                "max": max_date.isoformat() if max_date else "",
+            },
+        }
