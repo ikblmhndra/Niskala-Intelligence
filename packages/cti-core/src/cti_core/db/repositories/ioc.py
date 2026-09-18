@@ -6,14 +6,16 @@ terpisah di sistem lama (`dbMongo.upsert_ioc_from_feed` sync vs
 from __future__ import annotations
 
 import datetime
+from collections.abc import Sequence
 
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Session
 
-from cti_core.db.models.ioc import IOC, IOCFeedback, IOCSource
+from cti_core.db.models.ioc import IOC, IOCFeedback, IOCSource, IOCTag, IOCThreatActor
 
 _VALID_VERDICTS = frozenset({"tp", "fp"})
+_VALID_TYPES = frozenset({"ip", "url", "domain", "email", "sha256", "sha1", "md5", "cve"})
 
 
 class IOCRepo:
@@ -128,3 +130,97 @@ class AsyncIOCRepo:
     async def get(self, *, type: str, value: str) -> IOC | None:
         result = await self.session.execute(select(IOC).where(IOC.type == type, IOC.value == value))
         return result.scalar_one_or_none()
+
+    async def get_by_id(self, ioc_id: int) -> IOC | None:
+        result = await self.session.execute(select(IOC).where(IOC.id == ioc_id))
+        return result.scalar_one_or_none()
+
+    async def list_filtered(
+        self,
+        *,
+        page: int = 1,
+        page_size: int = 50,
+        ioc_type: str | None = None,
+        search: str | None = None,
+        tags: Sequence[str] | None = None,
+        sort_by: str | None = None,
+    ) -> tuple[list[IOC], int]:
+        """Port `ioc_service.get_iocs()`. `actionability` (filter lama)
+        SENGAJA gak diport -- itu field turunan `confidence_service`
+        (skoring, ditunda bareng `articles`'s confidence -- lihat
+        PROGRESS.md Fase 7.3), gak ada kolomnya di skema baru."""
+        stmt = select(IOC)
+        if ioc_type and ioc_type in _VALID_TYPES:
+            stmt = stmt.where(IOC.type == ioc_type)
+        if search:
+            stmt = stmt.where(IOC.value.ilike(f"%{search}%"))
+        if tags:
+            stmt = stmt.join(IOC.tags).where(IOCTag.tag.in_(tags)).distinct()
+
+        count_stmt = select(func.count()).select_from(stmt.subquery())
+        total = (await self.session.execute(count_stmt)).scalar_one()
+
+        order_col = IOC.confidence_score if sort_by == "confidence" else IOC.last_seen_at
+        list_stmt = (
+            stmt.order_by(order_col.desc()).offset((page - 1) * page_size).limit(page_size)
+        )
+        result = await self.session.execute(list_stmt)
+        return list(result.scalars().unique().all()), total
+
+    async def get_stats(self) -> dict[str, object]:
+        total = (await self.session.execute(select(func.count()).select_from(IOC))).scalar_one()
+        by_type_stmt = (
+            select(IOC.type, func.count()).group_by(IOC.type).order_by(func.count().desc())
+        )
+        by_type = (await self.session.execute(by_type_stmt)).all()
+        return {
+            "total": total,
+            "by_type": [{"type": t, "count": c} for t, c in by_type],
+        }
+
+    async def add_tags(self, ioc: IOC, tags: Sequence[str]) -> IOC:
+        existing = {t.tag for t in ioc.tags}
+        for tag in tags:
+            if tag not in existing:
+                ioc.tags.append(IOCTag(tag=tag))
+                existing.add(tag)
+        await self.session.flush()
+        return ioc
+
+    async def add_threat_actors(self, ioc: IOC, threat_actors: Sequence[str]) -> IOC:
+        existing = {t.threat_actor for t in ioc.threat_actors}
+        for actor in threat_actors:
+            if actor not in existing:
+                ioc.threat_actors.append(IOCThreatActor(threat_actor=actor))
+                existing.add(actor)
+        await self.session.flush()
+        return ioc
+
+    async def remove_threat_actor(self, ioc: IOC, actor: str) -> bool:
+        match = next((t for t in ioc.threat_actors if t.threat_actor == actor), None)
+        if match is None:
+            return False
+        # `.remove()` dari koleksi (bukan `session.delete()` langsung) --
+        # `cascade="all, delete-orphan"` (model) yang urus DELETE pas
+        # flush, DAN koleksi in-memory `ioc.threat_actors` langsung
+        # ke-update tanpa staleness (lihat bug `update_client_ids`,
+        # `AsyncUserRepo`, Fase 7.2 -- `session.delete()` langsung pada
+        # child gak nyabut dia dari koleksi parent yang udah ke-load).
+        ioc.threat_actors.remove(match)
+        await self.session.flush()
+        return True
+
+    async def delete(self, ioc_id: int) -> bool:
+        ioc = await self.get_by_id(ioc_id)
+        if ioc is None:
+            return False
+        await self.session.delete(ioc)
+        await self.session.flush()
+        return True
+
+    async def bulk_delete(self, ioc_ids: Sequence[int]) -> int:
+        count = 0
+        for ioc_id in ioc_ids:
+            if await self.delete(ioc_id):
+                count += 1
+        return count

@@ -1112,8 +1112,9 @@ tinggal pkg_vuln+cve_email), 7.6 (snapshot test), 7.7 (ekspor OpenAPI), 7.8.
       **OIDC bagian dari 7.2 ini BELUM diport** (`oidc.enabled=False`
       default, 184 baris `oidc_service.py` nunggu giliran terpisah, bukan
       bagian "inti").
-- [~] **7.3** Port 27 router ke repository Postgres -- **3/27 kelar**
-      (`clients`, `roles`, `articles` [baca doang]), verified LIVE via curl
+- [~] **7.3** Port 27 router ke repository Postgres -- **4/27 kelar**
+      (`clients`, `roles`, `articles` [baca doang], `iocs` [baca+kurasi]),
+      verified LIVE via curl
       (create/update/delete, RBAC superadmin-only buat mutasi, 422
       permission gak dikenal, 400 hapus role sistem/client default).
       `clients`/`roles` nyaris gratis: repo-nya (`AsyncClientRepo`/
@@ -1143,9 +1144,6 @@ tinggal pkg_vuln+cve_email), 7.6 (snapshot test), 7.7 (ekspor OpenAPI), 7.8.
       data FREE-TEXT lama; skema baru `country_code` udah ISO alpha-2 dari
       enrichment, gak ada lagi varian nama yang perlu di-grup di layer API).
 
-      Sisa 24 router (cve/iocs/ta_groups/dst) nyusul bertahap, per-router
-      verified live, bukan sekali gas semua.
-
       **Bug nyata ketemu lewat test integrasi** (bukan dugaan):
       `AsyncArticleRepo.set_enrichment` (baru, port dari versi sync buat
       dipakai test) `MissingGreenlet` -- ganti koleksi relationship
@@ -1154,6 +1152,52 @@ tinggal pkg_vuln+cve_email), 7.6 (snapshot test), 7.7 (ekspor OpenAPI), 7.8.
       gak jalan sinkron di luar `await` (versi sync `ArticleRepo` gak kena
       ini). Fix: `await session.refresh(article, attribute_names=[...])`
       eksplisit sebelum assign ulang.
+
+      **`iocs`** (2026-09-18) -- permukaan BACA + kurasi manual (tag/TA/
+      feedback/allowlist), **BUKAN** jalur tulis IOC baru: `upsert_ioc`/
+      `persist_iocs_from_extraction` (`ioc_service.py` lama) SENGAJA gak
+      diport -- itu udah digantikan `IOCRepo.upsert()` (Fase 5, dipanggil
+      `cti_enrich.stages.persist` via Celery task `enrich.article`,
+      live-verified Fase 6). `AsyncIOCRepo` (Fase 2, sebelumnya cuma
+      `upsert`/`get`/`add_feedback`) ditambah `list_filtered`/`get_stats`/
+      `add_tags`/`add_threat_actors`/`remove_threat_actor`/`delete`/
+      `bulk_delete`. `ioc_allowlist_entries` (Fase 5, tabel dibaca doang
+      buat `extract_iocs` -- sekarang jalur TULIS-nya juga ada,
+      `AsyncIocAllowlistRepo` baru) ketahuan kurang kolom `added_by`
+      (dipakai router lama buat audit trail) -- migrasi `9faf52bcc2a1`
+      nambahin (`server_default='system'` buat 9 baris seed Fase 5 yang
+      udah ada, dicabut lagi abis backfill).
+
+      **Sengaja di-skip/ditunda**: `_sweep_delete_matching()` (legacy:
+      nambah allowlist entry retroaktif nge-hapus baris IOC lama yang
+      cocok) -- filtering IOC udah kejadian di EXTRACTION time sekarang
+      (`extract_iocs.py`, cache TTL 300s), entry baru otomatis efektif
+      buat artikel BARU; bersihin baris LAMA yang kepalang ke-extract itu
+      fitur admin terpisah, bukan bagian inti nambah allowlist entry.
+      `GET /fp-analytics`+`/apply-suggestions` (butuh `fp_analytics_service`,
+      statistik berat), `GET /ta-links/{type}/{value}` (butuh router
+      `ta_groups`/`attack` ke-port duluan), `decay_sweep()` (item **7.8**,
+      salah satu dari 5 loop Celery beat), recompute confidence/actionability
+      pas feedback (`confidence_service`, ditunda bareng `articles`).
+
+      **Bug proaktif dicegah** (pola sama kayak `update_client_ids` Fase
+      7.2 dan `set_enrichment` di atas): `remove_threat_actor` pakai
+      `.remove()` dari koleksi `ioc.threat_actors` (cascade delete-orphan
+      yang urus DELETE pas flush), BUKAN `session.delete()` langsung ke
+      child -- ditulis dari awal biar gak kena staleness in-memory
+      collection, bukan ketauan lewat test gagal kayak kasus sebelumnya.
+      Diverifikasi eksplisit test integrasi: `ioc.threat_actors` di objek
+      yang sama langsung ke-update tanpa fetch ulang.
+
+      Verified LIVE via curl: list/filter/stats/detail (dengan sources),
+      tag/threat-actor add+remove, feedback (tp_count nambah), allowlist
+      add (idempoten by type+value)/list/delete (404 kalau gak ada),
+      delete single + bulk (count akurat), RBAC 401/403 (termasuk
+      ketauan satu user test dari sesi sebelumnya udah ke-promote admin --
+      bukan bug, state nyata dari testing Fase 7.2 yang persist).
+
+      Sisa 23 router (cve/ta_groups/dst) nyusul bertahap, per-router
+      verified live, bukan sekali gas semua.
 
       **Bug infra ketemu pas kerjain ini (di luar scope router itu
       sendiri, tapi ketauan justru dari nge-`mypy` `apps/api` doang):**

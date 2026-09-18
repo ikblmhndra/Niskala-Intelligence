@@ -29,6 +29,10 @@ class IocAllowlistEntry(TimestampMixin, Base):
     `iocExtractor._get_allowlist()`/`_filter_iocs()` lama."""
     value: Mapped[str] = mapped_column(String(300), nullable=False)
     note: Mapped[str | None] = mapped_column(String(300))
+    added_by: Mapped[str] = mapped_column(String(200), nullable=False, default="system")
+    """Kolom yang kepake router `iocs.py` (Fase 7.3) buat audit trail --
+    gak ada di skema Fase 5 karena tabel ini awalnya cuma dibaca
+    (`cti_enrich.stages.extract_iocs`), belum ada jalur TULIS lewat API."""
 
 
 class ThreatFeedEntry(TimestampMixin, Base):
