@@ -1112,10 +1112,11 @@ tinggal pkg_vuln+cve_email), 7.6 (snapshot test), 7.7 (ekspor OpenAPI), 7.8.
       **OIDC bagian dari 7.2 ini BELUM diport** (`oidc.enabled=False`
       default, 184 baris `oidc_service.py` nunggu giliran terpisah, bukan
       bagian "inti").
-- [~] **7.3** Port 27 router ke repository Postgres -- **9/27 kelar**
+- [~] **7.3** Port 27 router ke repository Postgres -- **11/27 kelar**
       (`clients`, `roles`, `articles` [baca doang], `iocs` [baca+kurasi],
       `techstack` [CRUD inti], `cve` [baca+false-positive+purge],
-      `tweets`, `monitored_accounts`, `ransomware`), verified LIVE via curl
+      `tweets`, `monitored_accounts`, `ransomware`, `changelog`,
+      `filtered_articles`), verified LIVE via curl
       (create/update/delete, RBAC superadmin-only buat mutasi, 422
       permission gak dikenal, 400 hapus role sistem/client default).
       `clients`/`roles` nyaris gratis: repo-nya (`AsyncClientRepo`/
@@ -1321,7 +1322,67 @@ tinggal pkg_vuln+cve_email), 7.6 (snapshot test), 7.7 (ekspor OpenAPI), 7.8.
       related-articles. 26 test integrasi baru (Postgres real). Full suite:
       690 passed, mypy 218 file bersih, ruff bersih.
 
-      Sisa 18 router (Bagian 1 sisa 2 + Bagian 2-5) nyusul bertahap.
+      **Bagian 1 (2026-09-18) -- 5/5 KELAR.** User eksplisit minta kerjain
+      `changelog`/`filtered_articles` juga (bukan skip permanen kayak
+      opsi default), dua-duanya ternyata butuh keputusan produk/desain
+      dulu (ditanyain ke user via `AskUserQuestion`, bukan diputus sendiri):
+
+      - **`changelog`**: user pilih "bikin `CHANGELOG.md` beneran". File
+        baru di root repo (`CHANGELOG.md`, format `## [versi] - tanggal`,
+        entry pertama `[0.1.0]` ngerangkum Fase 0-7.3 sejauh ini). Router
+        port apa adanya (baca+parse regex) -- path file dicari lewat
+        walk-up ke root repo (pola sama `_find_repo_root()` di
+        `tests/integration/conftest.py`), bukan hitung `.parent` tetap N
+        kali kayak legacy (rapuh kalau struktur `apps/api` berubah).
+
+      - **`filtered_articles`**: user pilih "bikin tabel baru + wire ke
+        pipeline Fase 5" (opsi yang LEBIH BESAR, nyentuh balik kode yang
+        udah live-verified). Tabel baru `rejected_articles` (migrasi
+        `8c208279c67f`) + `RejectedArticleRepo` (sync, jalur tulis) +
+        `AsyncRejectedArticleRepo` (baca+restore, Fase 7.3). `cti_enrich.
+        pipeline.run_pipeline()` sekarang manggil `persist_rejected()`
+        (fungsi baru, `stages/persist.py`) pas `classify_result.
+        related_cyber == False` -- SEBELUMNYA (Fase 5 awal) artikel yang
+        ditolak diam-diam ilang, gak ke-log di mana pun yang bisa
+        di-query. `reason` (alasan LLM nolak) DITANGKEP -- ini genuinely
+        LEBIH KAYA dari legacy (Mongo `scraper_runs` cuma nyimpen boolean
+        `accepted`, gak ada alasan). `restore()` SENGAJA bukan `upsert()`
+        biasa -- kalau artikel udah ADA (misal ke-restore manual tapi
+        juga keterima normal lewat run enrichment lain), `upsert()` bakal
+        NIMPA `news_type` artikel asli jadi "Manually Restored", itu
+        salah; `restore()` cek exists-by-URL dulu, no-op kalau udah ada
+        (port perilaku lama persis).
+
+        **Verified LIVE end-to-end, bukan cuma test**: `run_pipeline()`
+        beneran dipanggil lawan LLM gateway asli dengan judul yang jelas
+        gak nyambung cyber ("10 Best Pasta Recipes...") -- LLM nolak,
+        `persist_rejected()` nulis baris, `GET /api/filtered-articles`
+        nampilin `reason` asli dari LLM, `POST /restore` beneran
+        nge-insert ke `articles` dengan `news_type="Manually Restored"`
+        dan langsung ke-query balik lewat `/api/articles?search=pasta`.
+
+        **Ketemu (bukan diakibatkan perubahan ini)**: re-test jalur
+        ACCEPTED (judul yang genuinely cyber-related) gagal di
+        `extract_ttps` dengan `JSONDecodeError` berulang -- ditelusuri
+        lebih lanjut, ternyata gateway LLM dev
+        (`172.25.0.77:20128`) sekarang ngebalikin respons dari persona
+        lain ("Kiro", nolak ngikutin instruksi format JSON) alih-alih
+        model reasoning yang biasa dipakai sepanjang Fase 5/6/7 -- indikasi
+        gateway/model di baliknya keganti/kereset di luar kendali sesi
+        ini. **BUKAN regresi dari perubahan Fase 7.3** -- `git diff
+        pipeline.py` dicek eksplisit, cuma nyentuh docstring + cabang
+        reject, nol baris di cabang accepted (`fetch_text`/`summarize`/
+        `extract_ttps`/`score`/`persist` sama sekali gak diubah). Dilaporin
+        ke user sebagai temuan operasional terpisah, bukan dibenerin
+        diam-diam di sini.
+
+        7 test unit (`changelog`, parsing regex + walk-up path) + 7 test
+        integrasi (`RejectedArticleRepo` sync + dedup by url_hash) + 5 test
+        integrasi (`AsyncRejectedArticleRepo`: list/filter/restore/restore
+        no-op) -- semua Postgres real. Full suite abis Bagian 1 lengkap:
+        **701 passed**, mypy 223 file bersih, ruff bersih.
+
+      Sisa 16 router (Bagian 2-5) nyusul bertahap.
 
       **Bug infra ketemu pas kerjain ini (di luar scope router itu
       sendiri, tapi ketauan justru dari nge-`mypy` `apps/api` doang):**

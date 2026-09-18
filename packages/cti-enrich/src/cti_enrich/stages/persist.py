@@ -22,14 +22,14 @@ from __future__ import annotations
 import datetime
 from typing import TYPE_CHECKING
 
-from cti_core.db.repositories.article import ArticleRepo
+from cti_core.db.repositories.article import ArticleRepo, RejectedArticleRepo
 from cti_core.db.repositories.ioc import IOCRepo
 
 from cti_enrich.countries import country_code
 from cti_enrich.stages.classify import resolve_industries
 
 if TYPE_CHECKING:
-    from cti_core.db.models.article import Article
+    from cti_core.db.models.article import Article, RejectedArticle
     from sqlalchemy.orm import Session
 
     from cti_enrich.routing import RoutingResult
@@ -145,3 +145,33 @@ def persist(
             )
 
     return article
+
+
+def persist_rejected(
+    *,
+    session: Session,
+    url: str,
+    title: str,
+    source: str,
+    scraper_id: str | None,
+    posted_on: datetime.date | None,
+    classify_result: ClassifyResult,
+) -> RejectedArticle:
+    """Tulis `rejected_articles` -- dipanggil `pipeline.py` pas
+    `classify_result.related_cyber == False` (satu-satunya jalur reject
+    sekarang). BARU di Fase 7.3 (router `filtered_articles.py`, keputusan
+    eksplisit user buat gak diem-diemin) -- Fase 5 gak nulis apa pun buat
+    artikel yang ditolak, cuma `return` dari `run_pipeline()`.
+
+    Fungsi TERPISAH dari `persist()` (bukan cabang if/else di situ) --
+    `persist()` kontraknya "artikel yang keterima, full enrichment", nulis
+    row REJECTED gak punya country/industry/TTP/IOC apa pun buat diisi,
+    nyampur dua kontrak beda di satu fungsi cuma bikin bingung."""
+    return RejectedArticleRepo(session).upsert(
+        url=url,
+        title=title,
+        source=source,
+        scraper_id=scraper_id,
+        posted_on=posted_on,
+        reason=classify_result.reason,
+    )

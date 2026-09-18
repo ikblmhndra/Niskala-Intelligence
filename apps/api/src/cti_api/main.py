@@ -24,8 +24,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from cti_api import __version__
 from cti_api.routers import articles as articles_router
 from cti_api.routers import auth as auth_router
+from cti_api.routers import changelog as changelog_router
 from cti_api.routers import clients as clients_router
 from cti_api.routers import cve as cve_router
+from cti_api.routers import filtered_articles as filtered_articles_router
 from cti_api.routers import health as health_router
 from cti_api.routers import iocs as iocs_router
 from cti_api.routers import monitored_accounts as monitored_accounts_router
@@ -73,6 +75,8 @@ def create_app() -> FastAPI:
     app.include_router(tweets_router.router)
     app.include_router(monitored_accounts_router.router)
     app.include_router(ransomware_router.router)
+    app.include_router(changelog_router.router)
+    app.include_router(filtered_articles_router.router)
     return app
 
 

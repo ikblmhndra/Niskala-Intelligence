@@ -190,3 +190,38 @@ class ArticleTTP(Base):
     ttp_name: Mapped[str] = mapped_column(String(300), nullable=False)
 
     article: Mapped[Article] = relationship(back_populates="ttps")
+
+
+class RejectedArticle(Base):
+    """Log artikel yang DITOLAK `cti_enrich.pipeline.run_pipeline()`
+    (`classify_result.related_cyber == False`) -- gantiin `filtered_articles_
+    service.py` lama yang baca `scraper_runs.accepted == False` (Mongo).
+
+    BARU di Fase 7.3 (router `filtered_articles.py`) -- tabel ini gak ada
+    di skema Fase 5 sama sekali (`persist.py` cuma nulis artikel yang
+    DITERIMA). Router lama ini ditemuin butuh tabel baru pas porting,
+    bukan sekadar nambah kolom -- keputusan eksplisit user (lihat
+    docs/PROGRESS.md) buat bikin tabel ini + wire ke pipeline, bukan skip.
+
+    `reason` (alasan LLM classify nolak artikel ini) TERSEDIA sekarang
+    (`ClassifyResult.reason`) -- legacy gak punya ini sama sekali (Mongo
+    `scraper_runs` cuma nyimpen boolean `accepted`), jadi field ini genuinely
+    LEBIH KAYA dari yang lama, bukan port 1:1."""
+
+    __tablename__ = "rejected_articles"
+    __table_args__ = (UniqueConstraint("url_hash", name="uq_rejected_articles_url_hash"),)
+
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
+    url: Mapped[str] = mapped_column(Text, nullable=False)
+    url_hash: Mapped[str] = mapped_column(String(64), nullable=False)
+    """sha256(canonicalize_url(url)) -- sama fungsi `cti_core.urlkit.url_hash`
+    yang dipakai `Article.url_hash`, biar dedup konsisten (feed yang sama
+    nolak artikel yang sama berkali-kali gak numpuk baris)."""
+    title: Mapped[str] = mapped_column(Text, nullable=False)
+    source: Mapped[str] = mapped_column(String(200), nullable=False, index=True)
+    scraper_id: Mapped[str | None] = mapped_column(String(100), index=True)
+    posted_on: Mapped[datetime.date | None] = mapped_column(Date)
+    reason: Mapped[str | None] = mapped_column(Text)
+    rejected_at: Mapped[datetime.datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )

@@ -26,6 +26,7 @@ from cti_core.db.models.article import (
     ArticleIndustry,
     ArticleThreatActor,
     ArticleTTP,
+    RejectedArticle,
 )
 from cti_core.urlkit import url_hash as compute_url_hash
 
@@ -407,3 +408,104 @@ class AsyncArticleRepo:
                 "max": max_date.isoformat() if max_date else "",
             },
         }
+
+
+class RejectedArticleRepo:
+    """Sync -- dipakai `cti_enrich.stages.persist.persist_rejected()`
+    (Celery task `enrich.article`, sama proses tulis kayak `ArticleRepo`)."""
+
+    def __init__(self, session: Session) -> None:
+        self.session = session
+
+    def upsert(
+        self,
+        *,
+        url: str,
+        title: str,
+        source: str,
+        scraper_id: str | None = None,
+        posted_on: datetime.date | None = None,
+        reason: str | None = None,
+    ) -> RejectedArticle:
+        h = compute_url_hash(url)
+        existing = self.session.execute(
+            select(RejectedArticle).where(RejectedArticle.url_hash == h)
+        ).scalar_one_or_none()
+
+        if existing is None:
+            row = RejectedArticle(
+                url=url,
+                url_hash=h,
+                title=title,
+                source=source,
+                scraper_id=scraper_id,
+                posted_on=posted_on,
+                reason=reason,
+            )
+            self.session.add(row)
+            self.session.flush()
+            return row
+
+        existing.title = title
+        existing.source = source
+        existing.scraper_id = scraper_id
+        existing.posted_on = posted_on
+        existing.reason = reason
+        self.session.flush()
+        return existing
+
+
+class AsyncRejectedArticleRepo:
+    """Async -- dipakai `apps/api` (Fase 7.3, router `filtered_articles.py`).
+    Permukaan BACA + `restore()` doang -- jalur TULIS baru tetap
+    `RejectedArticleRepo` sync di atas (Celery task)."""
+
+    def __init__(self, session: AsyncSession) -> None:
+        self.session = session
+
+    async def list_filtered(
+        self, *, page: int = 1, page_size: int = 20, search: str | None = None
+    ) -> tuple[list[RejectedArticle], int]:
+        stmt = select(RejectedArticle)
+        if search:
+            stmt = stmt.where(
+                or_(
+                    RejectedArticle.title.ilike(f"%{search}%"),
+                    RejectedArticle.source.ilike(f"%{search}%"),
+                )
+            )
+        total = (
+            await self.session.execute(select(func.count()).select_from(stmt.subquery()))
+        ).scalar_one()
+        list_stmt = (
+            stmt.order_by(RejectedArticle.rejected_at.desc())
+            .offset((page - 1) * page_size)
+            .limit(page_size)
+        )
+        result = await self.session.execute(list_stmt)
+        return list(result.scalars().all()), total
+
+    async def get_by_id(self, rejected_id: int) -> RejectedArticle | None:
+        result = await self.session.execute(
+            select(RejectedArticle).where(RejectedArticle.id == rejected_id)
+        )
+        return result.scalar_one_or_none()
+
+    async def restore(
+        self, rejected: RejectedArticle, article_repo: AsyncArticleRepo
+    ) -> Article:
+        """Port `restore_filtered_article()` -- kalau artikel udah ADA
+        (by URL), gak disentuh, apa adanya (legacy juga gak nimpa yang
+        udah ada, `find_one` check terus `return True` doang). BUKAN
+        `upsert()` biasa -- `upsert()` bakal NIMPA artikel asli yang udah
+        diterima normal kalau kebetulan url_hash sama, itu salah."""
+        existing = await article_repo.get_by_url(rejected.url)
+        if existing is not None:
+            return existing
+        return await article_repo.upsert(
+            url=rejected.url,
+            title=rejected.title,
+            source=rejected.source,
+            posted_on=rejected.posted_on,
+            news_type="Manually Restored",
+        )

@@ -5,9 +5,13 @@ routing, DI-SKIP kalau security_tech_best_practice] -> persist -> alert`.
 
 Dua short-circuit dipertahankan APA ADANYA dari kode lama:
 
-1. `related_cyber == False` -> return lebih awal, gak ada apa pun lagi yang
-   jalan (nlp.py:280-288) -- gak ada fetch/summarize/persist buat artikel
-   yang GPT bilang gak relevan.
+1. `related_cyber == False` -> return lebih awal, gak ada fetch/summarize/
+   enrichment PENUH yang jalan (nlp.py:280-288, port apa adanya). BEDA dari
+   kode lama di satu hal (Fase 7.3, keputusan eksplisit user): sekarang
+   `persist_rejected()` TETAP nyatet baris ringan ke `rejected_articles`
+   sebelum return -- Fase 5 awal artikel yang ditolak diam-diam ilang
+   (gak ke-log di mana pun yang bisa di-query), sekarang bisa direview/
+   di-restore manual lewat router `filtered_articles.py`.
 2. `security_tech_best_practice == True` -> LEWATIN `extract_ttps`
    (hemat 1 panggilan LLM) DAN `score` (gak ada NER/regex group-country
    matching) sama sekali, nlp.py:343-367 `return` sebelum Phase 4-6 mulai.
@@ -36,15 +40,18 @@ from cti_enrich.stages.alert import build_message_base, route_alerts
 from cti_enrich.stages.classify import ClassifyResult, classify, resolve_industries
 from cti_enrich.stages.extract_ttps import TtpResult, extract_ttps
 from cti_enrich.stages.fetch_text import fetch_text
-from cti_enrich.stages.persist import persist
+from cti_enrich.stages.persist import persist, persist_rejected
 from cti_enrich.stages.summarize import summarize
 
 
 @dataclass
 class PipelineOutcome:
     accepted: bool
-    """False kalau `related_cyber == False` -- artikel di-skip, gak ada
-    field lain yang berarti."""
+    """False kalau `related_cyber == False` -- artikel gak lanjut ke
+    fetch/summarize/enrichment penuh, tapi TETAP di-log ke
+    `rejected_articles` (Fase 7.3, `persist_rejected()`) buat review manual
+    lewat router `filtered_articles.py` -- bukan diam-diam ilang kayak
+    Fase 5 awal."""
     article_id: int | None = None
     news_type: str | None = None
     classify_result: ClassifyResult | None = None
@@ -61,6 +68,15 @@ def run_pipeline(
 ) -> PipelineOutcome:
     classify_result = classify(title)
     if not classify_result.related_cyber:
+        persist_rejected(
+            session=session,
+            url=url,
+            title=title,
+            source=source,
+            scraper_id=scraper_id,
+            posted_on=posted_on,
+            classify_result=classify_result,
+        )
         return PipelineOutcome(accepted=False, classify_result=classify_result)
 
     text = fetch_text(url)
