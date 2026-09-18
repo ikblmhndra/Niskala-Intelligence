@@ -1508,7 +1508,27 @@ tinggal pkg_vuln+cve_email), 7.6 (snapshot test), 7.7 (ekspor OpenAPI), 7.8.
 
 - ~~**`/opt/HuntingScript/`**~~ dan ~~**`/opt/alertRundeck/`**~~ — **kelar:
   Rundeck gak jadwalin keduanya.** Di luar scope.
-- _(kosong)_
+- **Simpen raw response LLM buat audit trail produksi** (2026-09-18,
+  diusulkan user pas nemuin gateway LLM dev ngebalikin persona "Kiro" yang
+  nolak instruksi JSON, lihat catatan bug Fase 7.3 Bagian 1 di atas) --
+  BELUM dikerjain, dicatet dulu biar gak lupa.
+
+  Precedent udah ada di skema: `Article.raw_enrichment` (JSONB, Fase 2)
+  komentarnya eksplisit bilang "output LLM mentah... cadangan/audit
+  trail", tapi `persist.py` gak PERNAH nulis ke kolom itu -- infra-nya
+  ada, belum disambung. `RejectedArticle` (baru, Fase 7.3) cuma nyimpen
+  `reason` (ringkasan satu baris dari LLM), bukan raw completion penuh --
+  justru buat kasus kayak "Kiro persona" itu ARTIKEL YANG DITOLAK yang
+  paling kepake diaudit (biar keliatan LLM-nya lagi ngaco jawabnya),
+  bukan yang diterima.
+
+  Scope kalau dikerjain: (1) `classify()`/`extract_ttps()` (`cti_enrich.
+  stages`) balikin raw completion, bukan cuma hasil ke-parse, (2)
+  `persist.py::persist()` isi `Article.raw_enrichment`, (3) migrasi baru
+  nambah kolom serupa di `RejectedArticle`, (4) `persist_rejected()` isi
+  itu. Nyentuh jalur enrichment yang udah live-verified Fase 5/6/7 --
+  butuh re-test kayak yang dilakuin pas `filtered_articles` kemarin,
+  bukan sekadar tambah kolom pasif.
 - ~~**`cve_db`**~~ — **kelar: 0 dokumen.** Database mati. Gak usah masuk skema
   Postgres.
 - ~~**Devo (SIEM)**~~ — **di-skip**, gak masuk scope revamp. Token-nya tetap
