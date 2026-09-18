@@ -58,14 +58,16 @@ class ClientCountry(Base):
     client: Mapped[Client] = relationship(back_populates="countries")
 
 
-class Role(Base):
+class Role(TimestampMixin, Base):
     """System role (superadmin/admin/analyst, di-seed startup) atau custom."""
 
     __tablename__ = "roles"
 
     name: Mapped[str] = mapped_column(String(50), primary_key=True)
+    display_name: Mapped[str] = mapped_column(String(100), nullable=False)
     permissions: Mapped[list[str]] = mapped_column(JSONB, nullable=False, default=list)
     is_system: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    created_by: Mapped[str] = mapped_column(String(200), nullable=False, default="system")
 
 
 class User(TimestampMixin, Base):
@@ -109,8 +111,34 @@ class AuditLogEntry(Base):
     id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
     username: Mapped[str] = mapped_column(String(200), nullable=False, index=True)
     action: Mapped[str] = mapped_column(String(100), nullable=False, index=True)
+    target_id: Mapped[str] = mapped_column(String(200), nullable=False, default="")
+    """Objek yang kena aksi (mis. username target `reset_password`/`create_user`)
+    -- string kosong kalau aksi gak punya target tunggal (mis. `login`).
+    Kolom eksplisit, bukan dilebur ke `detail` -- field ini yang paling
+    sering dipakai buat filter "riwayat perubahan user X", nge-JSONB-in dia
+    berarti tiap query filter butuh operator JSONB alih-alih index biasa."""
     detail: Mapped[dict[str, Any]] = mapped_column(JSONB, nullable=False, default=dict)
     ip_address: Mapped[str | None] = mapped_column(String(64))
     at: Mapped[datetime.datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, server_default=func.now(), index=True
+    )
+
+
+class PasswordPolicy(Base):
+    """Singleton (satu baris, `id=1`) -- kebijakan kompleksitas password yang
+    bisa diubah admin lewat UI. Kolom eksplisit (bukan JSONB) karena
+    bentuknya udah pasti/tetap (5 field, gak pernah nambah dinamis) --
+    beda kasus sama `detail`/`errors` yang memang cair (lihat catatan
+    JSONB di docstring modul, dan §3 plan)."""
+
+    __tablename__ = "password_policies"
+
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, default=1)
+    min_length: Mapped[int] = mapped_column(nullable=False, default=8)
+    require_upper: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    require_lower: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    require_number: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    require_symbol: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    updated_at: Mapped[datetime.datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False
     )

@@ -21,7 +21,7 @@ Plan lengkap: `~/.claude/plans/oke-bro-jadi-gini-sparkling-fern.md`
 | 4 | Migrasi scraper (**100 aktif**) | `[x]` | ~2 minggu | ≥95% fixture identik, semua modul ke-import |
 | 5 | `cti-enrich` | `[x]` | 2–3 minggu | Output cocok dgn baseline, tiap cabang routing ada test |
 | 6 | Celery + beat | `[x]` inti; sisanya dipindah 7.8/10.1d/10.1e | 1–2 minggu | ~~5 loop web pindah~~ (→ 7.8) · ~~beat singleton terverifikasi~~ (→ 10.1d) |
-| 7 | `apps/api` | `[ ]` | 4–6 minggu | Semua endpoint ada snapshot test · 5 loop jadi beat task (7.8) |
+| 7 | `apps/api` | `[~]` 7.1/7.2 auth kelar, sisanya nyusul | 4–6 minggu | Semua endpoint ada snapshot test · 5 loop jadi beat task (7.8) |
 | 8 | `apps/web` (Next.js) | `[ ]` | 4–6 minggu | Semua tab lama ada padanannya |
 | 9 | Control plane scraper | `[ ]` | 1 minggu | Scraper mati kedeteksi dlm 3 interval |
 | 10 | Cutover | `[ ]` | 1 minggu | Semua checklist cutover hijau |
@@ -1000,10 +1000,118 @@ queue → enrich task → persist jalan tanpa satu pun langkah disintesis/di-moc
 
 ---
 
-## Fase 7 — `apps/api` `[ ]`
+## Fase 7 — `apps/api` `[~]` 7.1/7.2 (inti auth) kelar, sisanya nyusul
 
-- [ ] **7.1** Bootstrap FastAPI (tanpa background loop)
-- [ ] **7.2** Auth: JWT + OIDC + RBAC + multi-tenant
+**2026-09-18 — 7.1 + 7.2 (auth vertical slice), diverifikasi LIVE lewat
+HTTP beneran (curl), bukan cuma pytest.** Package baru `apps/api`
+(`cti-api`), masuk uv workspace. OIDC (bagian dari 7.2) **belum** diport --
+`oidc.enabled=False` default (Fase 2), toggle-nya nunggu giliran; auth
+lokal (username+password, JWT) yang jadi fokus "inti" duluan.
+
+**cti-core (shared, dipakai `apps/api`):**
+- `db/models/auth.py` -- tambah kolom yang kepake legacy tapi belum ada di
+  skema Fase 2 (ketauan pas porting beneran, bukan dugaan): `Role.display_name`/
+  `created_by`/`created_at`/`updated_at` (sekarang `TimestampMixin`),
+  `AuditLogEntry.target_id`, model baru `PasswordPolicy` (singleton row
+  `id=1`, kolom eksplisit -- bentuknya tetap/gak cair, beda kasus dari
+  JSONB `detail`). Migrasi `5a456e9251a0`.
+- `db/repositories/auth.py` -- `AsyncUserRepo`/`AsyncRoleRepo`/
+  `AsyncClientRepo`/`AsyncAuditLogRepo`/`AsyncPasswordPolicyRepo`. Async-only
+  (bukan dual sync+async) -- satu-satunya konsumer `apps/api`, gak ada
+  Celery/CLI yang nyentuh tabel ini (pola sama kayak `CveTrackerRepo`/
+  `TweetRepo`, sync-only karena konsumen tunggal arah kebalikannya).
+
+**apps/api (`cti_api`) -- port dari `ScraperNewsWeb/app/{auth.py,
+services/{auth,role,client,audit,policy,rate_limit}_service.py,
+routers/auth.py, models/auth.py}`:**
+- `main.py` -- `create_app()` factory, lifespan (`ensure_default_client` +
+  `ensure_system_roles`, idempoten tiap startup), CORS. **TANPA** 5
+  background loop (`_pir_alert_loop` dkk -- itu **7.8**) dan **TANPA**
+  Jinja2/StaticFiles (frontend server-rendered lama diganti Next.js
+  terpisah Fase 8, `apps/api` murni JSON API).
+- `security.py` -- hash password (bcrypt) + JWT encode/decode, baca
+  `cti_core.config.Settings.auth` (bukan `os.getenv()` manual + `RuntimeError`
+  kayak `main.py` lama -- container udah gagal start duluan lewat Pydantic
+  kalau `JWT_SECRET`/`SESSION_SECRET_KEY` kosong, Fase 2).
+- `rate_limit.py` -- **BUKAN port langsung** dari `rate_limit_service.py`
+  lama (dict in-memory per-proses). Sengaja diganti ke Redis fixed-window
+  (`INCR`+`EXPIRE`): goal eksplisit plan §4/§7 "API bisa di-scale horizontal"
+  -- limiter in-memory salah per-proses begitu >1 worker uvicorn (limit
+  efektif N kali lipat, silent). Redis udah infra baku platform ini.
+- `deps.py` -- `get_current_user`/`require_auth`/`require_admin`/
+  `require_superadmin`/`effective_client_id` (port 1:1 `app/auth.py`), plus
+  `get_db`/`get_redis` (keduanya `@lru_cache`/lazy -- BUKAN singleton
+  modul-level yang konek pas import, biar gampang di-override test/beda env).
+- `services/roles.py` -- 26 permission (`ALL_PERMISSIONS`) + 3 role sistem
+  (`SYSTEM_ROLES`) + `ensure_system_roles()`. `services/policy.py` --
+  validasi kompleksitas password.
+- `routers/auth.py` -- 13 endpoint (`policy` get/put, `login`, `logout`,
+  `change-password`, `init`, `me`, `users` get/post, `reset-password`,
+  `clients` put, `role` put, `audit-log`). Alur/aturan bisnis dipertahankan
+  APA ADANYA (termasuk satu kemungkinan bug legacy yang SENGAJA gak
+  "diperbaiki" diam-diam: `flag_force_pw_change_all_non_admin` cuma
+  exclude role=="admin", "superadmin" ikut ke-flag -- didokumentasiin di
+  docstring repo, bukan didaftar sebagai bug resmi kayak §7 plan).
+- `routers/health.py` -- `GET /healthz`.
+
+**Verifikasi LIVE (2026-09-18), curl asli lawan uvicorn + Postgres + Redis
+lokal:** `/healthz` · `/api/auth/policy` get/put (min_length berubah,
+persist) · `/api/auth/init` (bootstrap superadmin, 409 kalau user udah
+ada) · `/api/auth/login` (benar/salah password, cookie `cti_auth` keset) ·
+`/api/auth/me` · RBAC (401 tanpa token, 403 non-admin ke endpoint admin) ·
+`/api/auth/users` create/list · `/api/auth/users/{u}/role` put · rate
+limit login (429 persis di request ke-11 per IP, window 60s) · audit log
+kecatat benar (`create_user`/`login` dengan `target_id`) · `change-password`
++ login ulang pakai password baru · `/api/auth/users/{u}/clients` put.
+
+**Bug ketemu pas kerjain ini:**
+- `AsyncUserRepo.update_client_ids` -- `session.delete()` pada child
+  (`UserClient`) gak otomatis nyabut dia dari koleksi `user.clients` yang
+  UDAH ke-load di memori (beda dari `parent.children.remove(child)`).
+  Tanpa expire, caller yang baca `user.clients` di sesi yang sama abis ini
+  masih liat client_ids LAMA walau row DB udah bener. Ketauan dari test
+  integrasi (bukan dugaan), fix: `session.expire(user, ["clients"])`
+  abis flush. Re-verified via HTTP live (`PUT /users/{u}/clients` + `GET
+  /users`) setelah fix.
+- **Gap infra test, bukan bug kode**: `pytest.ini_options` (`asyncio_mode
+  = "auto"`) default scope event loop pytest-asyncio itu "function" (loop
+  BARU tiap test) -- `cti_core.db.engine.get_async_engine()` di-`@lru_cache`
+  SEKALI per proses (disengaja, Fase 2: satu connection pool). Begitu ada
+  LEBIH DARI SATU test async dalam satu run (sebelumnya cuma 1 di seluruh
+  suite, `test_async_article_repo_upsert_works` -- gak pernah kebuka),
+  connection asyncpg dari test pertama bawa referensi ke event loop yang
+  udah ditutup test-runner, `RuntimeError: Event loop is closed` pas
+  teardown test kedua dst. Fix: `asyncio_default_fixture_loop_scope` +
+  `asyncio_default_test_loop_scope = "session"` di root `pyproject.toml`
+  -- satu event loop buat seluruh sesi pytest, cocok sama engine yang
+  di-cache proses-wide. Regresi-tested: full suite (596 test, unit+integration+contract)
+  lulus abis perubahan ini.
+- Skema Fase 2 (`db/models/auth.py`) kurang lengkap buat kebutuhan nyata
+  router: `Role` gak ada `display_name`/`created_by`/timestamp,
+  `AuditLogEntry` gak ada `target_id`, `PasswordPolicy` belum ada model
+  sama sekali. Ketauan pas porting router lama beneran butuh field-field
+  itu -- migrasi `5a456e9251a0` nambahin, bukan didesain ulang skemanya.
+
+**Test:** `tests/unit/test_auth_security.py` (7 test -- hash/verify
+password, JWT roundtrip, token ditolak kalau di-tamper/salah secret),
+`tests/unit/test_password_policy.py` (9 test -- tiap aturan kompleksitas +
+hint), `tests/integration/test_auth_repositories.py` (24 test, Postgres
+REAL via testcontainers -- kelima repo). Full suite abis semua ini: **596
+passed**, `ruff check .` bersih, `mypy` bersih buat semua modul yang
+disentuh (`apps/api` + `db/repositories/auth.py` + `db/models/auth.py`).
+
+**Belum dikerjain (masih `[ ]`):** OIDC/SSO (`services/oidc_service.py`,
+184 baris, nunggu `oidc.enabled=True` beneran dipakai), 7.3 (27 router
+lain), 7.4 (56 service lain, termasuk logika 7.8), 7.5 (buang duplikasi
+pkg_vuln/cve_email/ioc/llm -- versi kanonik IOC+LLM udah disatukan Fase 5,
+tinggal pkg_vuln+cve_email), 7.6 (snapshot test), 7.7 (ekspor OpenAPI), 7.8.
+
+- [x] **7.1** ~~Bootstrap FastAPI (tanpa background loop)~~ -- `apps/api`
+      + `main.py` (`create_app()`, lifespan, CORS), lihat catatan di atas.
+- [x] **7.2** Auth: JWT + RBAC + multi-tenant -- lihat catatan di atas.
+      **OIDC bagian dari 7.2 ini BELUM diport** (`oidc.enabled=False`
+      default, 184 baris `oidc_service.py` nunggu giliran terpisah, bukan
+      bagian "inti").
 - [ ] **7.3** Port 27 router ke repository Postgres
 - [ ] **7.4** Port 56 service
 - [ ] **7.5** Buang duplikasi (pkg_vuln, cve_email, ioc, llm)

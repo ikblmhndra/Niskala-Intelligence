@@ -10,6 +10,7 @@ dependencies = [
     "cti-alerts",
     "cti-scrapers",
     "cti-worker",
+    "cti-api",
 ]
 
 [project.optional-dependencies]
@@ -27,9 +28,7 @@ dev = [
 package = false
 
 [tool.uv.workspace]
-# apps/api masih direktori kosong -- uv gagal resolve member tanpa
-# pyproject.toml, masuk workspace pas Fase 7 nulis kode beneran di sana.
-members = ["packages/*", "scrapers", "apps/worker"]
+members = ["packages/*", "scrapers", "apps/worker", "apps/api"]
 
 [tool.uv.sources]
 cti-core = { workspace = true }
@@ -38,10 +37,23 @@ cti-enrich = { workspace = true }
 cti-alerts = { workspace = true }
 cti-scrapers = { workspace = true }
 cti-worker = { workspace = true }
+cti-api = { workspace = true }
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 asyncio_mode = "auto"
+# "session" (bukan default "function") -- `cti_core.db.engine.get_async_engine()`
+# di-@lru_cache SEKALI per proses (Fase 2, disengaja: satu pool koneksi,
+# bukan bikin ulang tiap panggilan). Event loop asyncio default
+# pytest-asyncio scope-nya "function" (loop BARU tiap test) -- engine yang
+# dicache lintas-loop bikin `RuntimeError: Event loop is closed` pas
+# teardown connection dari test KEDUA dan seterusnya (asyncpg connection
+# bawa referensi ke loop tempat dia dibikin). Ketauan Fase 7 (7.1/7.2)
+# waktu test integrasi auth pertama kali punya LEBIH DARI SATU test
+# async dalam satu run -- sebelumnya cuma ada 1 test async di seluruh
+# suite (`test_async_article_repo_upsert_works`), jadi gak pernah kebuka.
+asyncio_default_fixture_loop_scope = "session"
+asyncio_default_test_loop_scope = "session"
 filterwarnings = ["error::DeprecationWarning:cti_.*"]
 markers = ["playwright: butuh Chromium ke-install (uv sync --extra browser di cti-scraper)"]
 
@@ -66,6 +78,11 @@ select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
 # sama source asli makin susah dicek, gak ada manfaat.
 "packages/cti-enrich/src/cti_enrich/stages/classify.py" = ["E501"]
 "packages/cti-enrich/src/cti_enrich/stages/extract_ttps.py" = ["E501"]
+# `Depends(...)` di default parameter itu idiom RESMI FastAPI (dependency
+# injection dibaca lewat introspeksi signature) -- sama alasan kayak
+# ignore `typer.Option()` di atas, bukan bug B008 biasa.
+"apps/api/src/cti_api/deps.py" = ["B008"]
+"apps/api/src/cti_api/routers/*.py" = ["B008"]
 
 [tool.mypy]
 python_version = "3.12"
