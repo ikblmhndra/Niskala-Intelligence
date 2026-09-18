@@ -2,8 +2,8 @@
   "total_active_jobs": 83,
   "out_of_scope_count": 13,
   "generated_count": 0,
-  "skipped_existing_count": 81,
-  "needs_review_count": 2,
+  "skipped_existing_count": 83,
+  "needs_review_count": 0,
   "out_of_scope": [
     "githubAptTTPSimulation",
     "githubSophoslab",
@@ -111,6 +111,10 @@
     },
     {
       "legacy_script": "darkreadingThreat",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
+      "legacy_script": "deepdarkCTI",
       "scraper_id": "(udah ada -- cek legacy_script)"
     },
     {
@@ -230,6 +234,10 @@
       "scraper_id": "(udah ada -- cek legacy_script)"
     },
     {
+      "legacy_script": "monitorX",
+      "scraper_id": "(udah ada -- cek legacy_script)"
+    },
+    {
       "legacy_script": "munitThreat",
       "scraper_id": "(udah ada -- cek legacy_script)"
     },
@@ -346,20 +354,5 @@
       "scraper_id": "(udah ada -- cek legacy_script)"
     }
   ],
-  "needs_review": [
-    {
-      "legacy_script": "deepdarkCTI",
-      "family": "bespoke",
-      "reasons": [
-        "bespoke/selenium -- porting manual, subclass BaseScraper langsung"
-      ]
-    },
-    {
-      "legacy_script": "monitorX",
-      "family": "bespoke",
-      "reasons": [
-        "bespoke/selenium -- porting manual, subclass BaseScraper langsung"
-      ]
-    }
-  ]
+  "needs_review": []
 }

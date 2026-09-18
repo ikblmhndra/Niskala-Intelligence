@@ -1,0 +1,48 @@
+"""Dua daftar kuratif lagi yang `stages/score.py` (Fase 5) butuh buat
+regex-match title/body artikel, gantiin Mongo `threatintel.groups` dan
+`news_db.apac-people` -- POLA SAMA kayak `techstack.py`/`tweet.py::
+MonitoredAccount`/`ioc_reference.py`: "web kurasi, scraper (di sini:
+pipeline enrichment) patuh".
+
+CATATAN: dua tabel ini kosong sampai di-seed. Data kuratif ASLI (nama grup
+threat actor, nama tokoh APAC yang dipantau) ada di dump Mongo arsip
+(`legacy/dump/threatintel/groups.bson`, `legacy/dump/news_db/apac-people.bson`)
+-- migrasi isinya BELUM dikerjain di sini (butuh tooling baca BSON yang
+belum ke-setup), lihat docs/PROGRESS.md item terkait Fase 5. Tanpa data ini
+ke-seed, `mentioned_group`/`mentioned_apac_people` bakal selalu kosong --
+bukan bug pipeline, tapi cold-start yang sama kayak `techstack` sebelum
+Fase 10 seed (lihat plan §"Konsekuensi Postgres + DB kosong").
+
+`country_list` lama (Mongo `apac-country`+`global-country`, ~150 nama
+kuratif) SENGAJA gak ikut di-port jadi tabel baru -- diganti
+`pycountry.countries` (seluruh negara anggota ISO 3166-1, superset dari
+daftar lama) di `stages/score.py`, sekalian nyelesain kebutuhan konversi
+nama->kode ISO yang `ArticleCountry.country_code` (Fase 2) minta. Lihat
+docstring `score.py::_country_list`."""
+
+from __future__ import annotations
+
+from sqlalchemy import BigInteger, String, UniqueConstraint
+from sqlalchemy.orm import Mapped, mapped_column
+
+from cti_core.db.base import Base, TimestampMixin
+
+
+class ThreatActorGroup(TimestampMixin, Base):
+    __tablename__ = "threat_actor_groups"
+    __table_args__ = (UniqueConstraint("name", name="uq_threat_actor_group_name"),)
+
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
+    name: Mapped[str] = mapped_column(String(200), nullable=False, index=True)
+
+
+class MonitoredPerson(TimestampMixin, Base):
+    """Tokoh APAC yang dipantau (pejabat/figur publik) -- gantiin
+    `news_db.apac-people`. Bukan `Client`/`User` -- ini murni dictionary
+    nama buat NER/regex matching, bukan akun."""
+
+    __tablename__ = "monitored_people"
+    __table_args__ = (UniqueConstraint("name", name="uq_monitored_person_name"),)
+
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
+    name: Mapped[str] = mapped_column(String(200), nullable=False, index=True)

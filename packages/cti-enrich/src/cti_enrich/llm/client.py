@@ -1,0 +1,100 @@
+"""SATU LLM client OpenAI-compatible -- gantiin 2 fork yang nyaris identik:
+`ScraperNews/modules/llm_client.py` dan `ScraperNewsWeb/app/services/llm_client.py`
+(33 baris, beda PERSIS satu hal: versi web bikin `OpenAI(**kwargs)` polos, TANPA
+`timeout`/`max_retries` -- bisa nge-hang selamanya karena jalan di dalam event loop
+FastAPI. Versi module lama pasang `timeout=60.0, max_retries=2`. Port ini pertahanin
+proteksi itu (sekarang dari `LlmSettings`, bukan hardcode).
+
+Beda dari KEDUA fork lama: `base_url` custom (`LlmSettings.url`) didukung buat
+provider apa pun, bukan cuma 3 URL tetap (openai/deepseek/gemini) -- ini yang
+dipakai dev nunjuk ke gateway lokal (9router) yang OpenAI-compatible tapi bukan
+openai.com asli. `store_param()` juga jadi off begitu `url` custom di-set, karena
+gateway pihak ketiga gak jamin dukung param `store` OpenAI (lihat catatan di bawah).
+"""
+
+from __future__ import annotations
+
+import json
+import re
+from typing import Any
+
+from cti_core.config import LlmSettings, get_settings
+from openai import OpenAI
+
+_RE_THINK_BLOCK = re.compile(r"<think>.*?</think>", re.DOTALL | re.IGNORECASE)
+_RE_CODE_FENCE = re.compile(r"^```(?:json)?\s*|\s*```$", re.IGNORECASE)
+
+_DEFAULT_MODELS = {
+    "openai": "gpt-4o",
+    "deepseek": "deepseek-chat",
+    "gemini": "gemini-2.0-flash",
+}
+_DEFAULT_BASE_URLS = {
+    "openai": None,
+    "deepseek": "https://api.deepseek.com",
+    "gemini": "https://generativelanguage.googleapis.com/v1beta/openai/",
+}
+
+
+def get_llm_client(*, settings: LlmSettings | None = None) -> tuple[OpenAI, str]:
+    """Return (OpenAI-compatible client, resolved model name)."""
+    settings = settings or get_settings().llm
+    provider = settings.provider.lower()
+    if provider not in _DEFAULT_MODELS:
+        raise ValueError(f"Unknown LLM provider '{provider}'. Valid: {list(_DEFAULT_MODELS)}")
+
+    base_url = settings.url or _DEFAULT_BASE_URLS[provider]
+    kwargs: dict[str, Any] = {
+        "api_key": settings.api_key,
+        "timeout": settings.timeout_s,
+        "max_retries": settings.max_retries,
+    }
+    if base_url:
+        kwargs["base_url"] = base_url
+    return OpenAI(**kwargs), settings.model or _DEFAULT_MODELS[provider]
+
+
+def store_param(settings: LlmSettings | None = None) -> dict[str, Any]:
+    """`{'store': True}` cuma buat OpenAI ASLI (provider openai TANPA `url`
+    custom) -- provider lain, dan gateway custom kayak 9router, gak jamin
+    dukung param ini walau ngaku provider="openai"."""
+    settings = settings or get_settings().llm
+    if settings.provider.lower() == "openai" and not settings.url:
+        return {"store": True}
+    return {}
+
+
+def parse_json_response(content: str | dict[str, Any] | None) -> dict[str, Any]:
+    """Parse a chat completion's content as JSON, tolerating things raw
+    `json.loads()` chokes on: a `<think>...</think>` reasoning preamble
+    (some reasoning models emit this even with `response_format=json_object`
+    -- confirmed live against the dev gateway in `.env`), a ```json
+    markdown fence, and an empty/`None` content (the gateway occasionally
+    hands back a blank message -- confirmed live during Fase 5's corpus
+    test). Replaces the old `.replace("json","")` hack in
+    `articleValidator.py:141-146` -- that string-replace corrupted any
+    response whose JSON *content* happened to contain the literal substring
+    "json" (e.g. a title mentioning "JSON Web Token"); this strips only the
+    known wrapper shapes, never touches the payload itself.
+
+    `content` is typed to also accept a plain `dict` -- confirmed live: the
+    dev gateway, in `response_format=json_object` mode, occasionally hands
+    back an ALREADY-PARSED object instead of a JSON string (a proxy-side
+    convenience, not part of the OpenAI response spec). Passed through as-is
+    rather than fed to the regex/`json.loads` path below, which expects a
+    string and would raise a confusing `TypeError` otherwise."""
+    if isinstance(content, dict):
+        return content
+    if not content:
+        raise json.JSONDecodeError("empty response content from LLM", "", 0)
+    text = _RE_THINK_BLOCK.sub("", content).strip()
+    text = _RE_CODE_FENCE.sub("", text).strip()
+    try:
+        data: dict[str, Any] = json.loads(text)
+        return data
+    except json.JSONDecodeError:
+        start, end = text.find("{"), text.rfind("}")
+        if start == -1 or end == -1 or end < start:
+            raise
+        data = json.loads(text[start : end + 1])
+        return data

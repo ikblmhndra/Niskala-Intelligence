@@ -20,6 +20,7 @@ from cti_core.db.models.cve import (
     CveTracker,
 )
 from cti_core.db.models.ioc import IOC, IOCFeedback, IOCSource, IOCTag, IOCThreatActor
+from cti_core.db.models.ioc_reference import IocAllowlistEntry, ThreatFeedEntry
 from cti_core.db.models.malware_trend import MalwareTrend
 from cti_core.db.models.package import (
     MonitoredPackage,
@@ -30,6 +31,7 @@ from cti_core.db.models.package import (
 from cti_core.db.models.ransomware import RansomwareVictim
 from cti_core.db.models.scraper import ScraperConfig, ScraperItem, ScraperRun, ScraperSeen
 from cti_core.db.models.techstack import TechStackEntry
+from cti_core.db.models.threat_reference import MonitoredPerson, ThreatActorGroup
 from cti_core.db.models.tweet import MonitoredAccount, Tweet
 
 __all__ = [
@@ -53,9 +55,11 @@ __all__ = [
     "IOCSource",
     "IOCTag",
     "IOCThreatActor",
+    "IocAllowlistEntry",
     "MalwareTrend",
     "MonitoredAccount",
     "MonitoredPackage",
+    "MonitoredPerson",
     "PackageDepEdge",
     "PackageVuln",
     "PackageVulnAlias",
@@ -66,6 +70,8 @@ __all__ = [
     "ScraperRun",
     "ScraperSeen",
     "TechStackEntry",
+    "ThreatActorGroup",
+    "ThreatFeedEntry",
     "Tweet",
     "User",
     "UserClient",

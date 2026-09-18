@@ -1,0 +1,147 @@
+"""Stage: SATU-SATUNYA penulis (plan §5: "persist satu-satunya penulis, dan
+route_alerts terpisah TOTAL dari persist") -- gabungan `dbMongo.upsert_article`
++ `iocExtractor` hasil masuk field `iocs` + `update_cve_mention` dari
+`nlp.py`. Dipanggil SEBELUM `stages/alert.py` (lihat `pipeline.py`) -- beda
+dari `_sendAlert()` lama yang nulis DB di tengah/akhir proses kirim
+Telegram, di sini urutannya kebalik: artikel HARUS udah tersimpan sebelum
+alert dicoba, jadi kegagalan Telegram gak pernah bisa bikin artikel gak
+kesimpen (lihat `cti_alerts.telegram` docstring).
+
+Country role (`ArticleCountry.role`): map dari TIGA field lama
+(`mentioned_countries`/`victim_countries`/`actor_countries`) ke skema
+ternormalisasi. `actor` = SELALU dari GPT (`classify_result.actor_countries`,
+konsisten kode lama -- gak pernah regex fallback). `victim` = GPT
+(`classify_result.victim_countries`) kalau ada, else fallback ke negara
+hasil regex/NER (`score_result.mentioned_countries`, cabang Regional/TA
+Group -- port `nlp.py:612/657`; cabang Global gak punya fallback ini,
+`victim_countries` GPT langsung dipakai apa adanya). `mentioned` = sisa
+`score_result.mentioned_countries` yang belum kepakai victim/actor."""
+
+from __future__ import annotations
+
+import datetime
+from typing import TYPE_CHECKING
+
+from cti_core.db.repositories.article import ArticleRepo
+from cti_core.db.repositories.ioc import IOCRepo
+
+from cti_enrich.countries import country_code
+from cti_enrich.stages.classify import resolve_industries
+
+if TYPE_CHECKING:
+    from cti_core.db.models.article import Article
+    from sqlalchemy.orm import Session
+
+    from cti_enrich.routing import RoutingResult
+    from cti_enrich.stages.classify import ClassifyResult
+    from cti_enrich.stages.extract_ttps import TtpResult
+    from cti_enrich.stages.score import ScoreResult
+
+_IOC_TYPE_MAP = {
+    "ips": "ip",
+    "urls": "url",
+    "urls_with_path": "url",
+    "domains": "domain",
+    "emails": "email",
+    "sha256": "sha256",
+    "sha1": "sha1",
+    "md5": "md5",
+    "cves": "cve",
+}
+
+
+def _country_roles(
+    classify_result: ClassifyResult, score_result: ScoreResult | None, *, is_global_branch: bool
+) -> list[tuple[str, str]]:
+    victims = classify_result.victim_countries or (
+        [] if is_global_branch or score_result is None else score_result.mentioned_countries
+    )
+    actors = classify_result.actor_countries
+    assigned = set(victims) | set(actors)
+    mentioned = (
+        []
+        if score_result is None
+        else [c for c in score_result.mentioned_countries if c not in assigned]
+    )
+
+    pairs: list[tuple[str, str]] = []
+    for name in victims:
+        code = country_code(name)
+        if code:
+            pairs.append((code, "victim"))
+    for name in actors:
+        code = country_code(name)
+        if code:
+            pairs.append((code, "actor"))
+    for name in mentioned:
+        code = country_code(name)
+        if code:
+            pairs.append((code, "mentioned"))
+    return pairs
+
+
+def persist(
+    *,
+    session: Session,
+    url: str,
+    title: str,
+    source: str,
+    scraper_id: str | None,
+    posted_on: datetime.date | None,
+    classify_result: ClassifyResult,
+    score_result: ScoreResult | None,
+    routing_result: RoutingResult,
+    ttp_result: TtpResult | None,
+    ioc_data: dict[str, list[str]],
+    c2_indicator: bool,
+) -> Article:
+    article_repo = ArticleRepo(session)
+    article = article_repo.upsert(
+        url=url,
+        title=title,
+        source=source,
+        scraper_id=scraper_id,
+        posted_on=posted_on,
+        news_type=routing_result.news_type,
+        confidence_score=round(classify_result.confidence * 100)
+        if classify_result.confidence
+        else None,
+        confirmed_incident=bool(classify_result.confirmed_incident),
+        incident_confidence=(
+            round(classify_result.incident_confidence * 100)
+            if classify_result.incident_confidence is not None
+            else None
+        ),
+        victim_name=classify_result.victim_name,
+        c2_indicator=c2_indicator,
+    )
+
+    industries = resolve_industries(classify_result.industries_impacted)
+
+    article_repo.set_enrichment(
+        article,
+        countries=_country_roles(
+            classify_result, score_result, is_global_branch=routing_result.is_global_branch
+        ),
+        industries=industries,
+        threat_actors=routing_result.threat_actors,
+        ttps=[(t.technique_id, t.technique_name) for t in ttp_result.techniques]
+        if ttp_result
+        else [],
+    )
+
+    ioc_repo = IOCRepo(session)
+    for key, values in ioc_data.items():
+        ioc_type = _IOC_TYPE_MAP.get(key)
+        if not ioc_type:
+            continue
+        for value in values:
+            ioc_repo.upsert(
+                type=ioc_type,
+                value=value,
+                source_url=url,
+                source_name=source,
+                article_id=article.id,
+            )
+
+    return article

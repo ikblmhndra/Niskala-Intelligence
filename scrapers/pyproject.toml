@@ -5,6 +5,8 @@ description = "Scraper konkret -- satu file per scraper. Lihat docs/ADDING_A_SCR
 requires-python = ">=3.12"
 dependencies = [
     "cti-scraper",
+    "cti-enrich",
+    "cti-alerts",
     "pycountry>=23.12",
 ]
 

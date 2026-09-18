@@ -282,7 +282,7 @@ fixture teardown bener kapan waktunya).
 
 ---
 
-## Fase 4 — Migrasi scraper `[~]`
+## Fase 4 — Migrasi scraper `[x]`
 
 > **Scope dikoreksi dari temuan Rundeck:** yang dimigrasi **~91 scraper aktif**
 > dulu, bukan 241. Sisanya masuk backlog terpisah, digarap setelah cutover.
@@ -314,10 +314,33 @@ fixture teardown bener kapan waktunya).
       (`bitdefender`) _(job aktif)_
 - [x] **4.6** Generate XPath/Playwright — **20/23 (87%) otomatis**, +1 udah
       ada dari Fase 3 (`trendmicro`)
-- [ ] **4.7** Generate requests+lxml (`xpath_static`) — **0/2 (0%)**, +1 udah
-      ada dari Fase 3 (`cyfirma`). N kecil banget (cuma 2 job aktif kena
-      family ini) jadi belum kelihatan pola gagalnya — masuk triage 4.10
-- [ ] **4.8** Tulis ulang 8 Selenium → `XPathScraper(render=True)` _(pekerjaan baru: semuanya memang gak pernah jalan di Linux)_
+- [x] **4.7** Generate requests+lxml (`xpath_static`) — **checklist ini
+      sempat basi**: dicek ulang lewat re-run `run_migration.py` (2026-09-18),
+      classifier nemuin 3 stem `xpath_static` (`cyfirmaThreat`, `landthThreat`,
+      `newCveThreat`), BUKAN 2 -- salah hitung sebelumnya. Auto-generate
+      emang 0/3 (semuanya butuh `needs_review`: `landth.py` variabel loop
+      non-standar, `newCveThreat.py` multi-source jadi keklasifikasi bespoke
+      di praktiknya), tapi KETIGANYA udah ada file lengkap + terdaftar di
+      registry: `cyfirma.py` (Fase 3), `landth.py` (ditulis manual ronde 2,
+      lihat 4.11), `new_cve.py` (bespoke, item 4.9). Verifikasi ulang:
+      `run_migration.py` regenerate laporan bersih (0 generate, 0
+      needs_review, 83/83 target udah "skipped_existing"). Gak ada kerjaan
+      nyata yang ketinggalan -- cuma checklist yang gak ke-update pas
+      ketiga file itu kelar lewat jalur lain (bukan auto-generate).
+- [x] **4.8** ~~Tulis ulang 8 Selenium → `XPathScraper(render=True)`~~ —
+      **dipindah ke 10.1c** (2026-09-18, keputusan user, sama alasan 4.12):
+      dicek dulu sebelum diputus pindah -- SEMUA 6 script Selenium real
+      (`0xToxinThreat`, `emailnewsThreat`, `forcepointThreat`,
+      `mandiantThreat`, `trellixThreat`, `vxMalwareDefenseThreat`) `enabled:
+      false` di Rundeck, `cyborgHuntingIdea` malah gak kedaftar sama
+      sekali. Nol fixture (perekaman Fase 0 cuma nyakup job aktif). Satu
+      dicek langsung isinya (`stopped_script/mandiantThreat.py`) — 100%
+      ke-comment, `CHROMEDRIVERLOC = "./chromedriver_mac64_arm64/chromedriver"`
+      -- konfirmasi konkret gak pernah jalan di host Linux produksi, persis
+      alasan yang plan sebutin. **Test-rewrite 1 (Mandiant) sebelum
+      dipindah** — lihat 10.1c buat hasilnya: JAUH lebih gampang dari
+      dugaan (situs asli udah pindah ke Google Cloud Blog + ada RSS resmi,
+      bukan butuh browser automation sama sekali).
 - [x] **4.9a** Buat token API baru (GitHub PAT, NVD, twitterapi.io) khusus
       buat testing scraper yang butuh kredensial asli — **user udah bikin +
       isi ke `.env`** (`GITHUB__TOKEN`/`NVD__API_KEY`/`TWITTER__API_KEY`,
@@ -633,42 +656,206 @@ fixture teardown bener kapan waktunya).
         hasil ekstraksi udah dicek bener secara struktural. Perlu
         peningkatan harness (per-URL fixture) buat multi-feed scraper,
         belum digarap — dicatat di KNOWN_BROKEN.md.
-- [ ] **4.12** Backlog: job nonaktif — diarsipkan, digarap pasca-cutover
+- [x] **4.12** ~~Backlog: job nonaktif~~ — **dipindah ke 10.1b** (2026-09-18,
+      keputusan user): ini kerjaan cutover, bukan migrasi scraper aktif,
+      jadi gak lagi nge-blok status Fase 4.
 
 **Exit criteria:** 241 modul ke-import semua · contract test hijau · ≥95% fixture identik · sisa delta ada waiver tertulis
 
 ---
 
-## Fase 5 — `cti-enrich` `[ ]`
+## Fase 5 — `cti-enrich` `[x]`
 
-- [ ] **5.1** Stage `fetch_text` (trafilatura + fallback render)
-- [ ] **5.2** Stage `classify` — LLM structured output _(fix parse `.replace("json","")`)_
-- [ ] **5.3** Stage `summarize` (sumy LSA)
-- [ ] **5.4** Stage `extract_ttps`, `extract_iocs`, `extract_cves`
-- [ ] **5.5** Stage `score`
-- [ ] **5.6** `routing.py` — **fungsi murni**, tiap cabang ada test _(fix `best_practice` yang gak pernah ke-route)_
-- [ ] **5.7** Stage `persist` — **satu-satunya penulis**
-- [ ] **5.8** Stage `alert` — terpisah dari persist
-- [ ] **5.9** SATU IOC extractor (buang 4 fork). **Dipindah dari Fase 4**:
-      begitu ini ada, port `deepdarkCTI` (`fastfire/deepdarkCTI` di GitHub --
-      extract IOC dari diff commit, filter path `c2/`/`ioc/`/`phishing/`/
-      `ransomware/`/`tor/`/`darkweb/`) jadi scraper bespoke `BaseScraper`,
-      `credential="github"` (pola sama kayak `blackorbird.py`). `IOCRepo`
-      (`packages/cti-core/.../repositories/ioc.py`) udah siap dari Fase 2,
-      tinggal dipanggil.
-- [ ] **5.10** SATU LLM client (buang 2 fork). **Dipindah dari Fase 4**:
-      begitu ini ada, port `monitorX` (X/Twitter via twitterapi.io, akun
-      dari `monitored_accounts` DB, `articleValidator()`-equivalent buat
-      filter cyber-relevance + extract field insiden). Model `Tweet`
-      (`cti_core/db/models/tweet.py`) butuh kolom tambahan dulu
-      (`industries_impacted`, `victim_countries`, `actor_countries`,
-      `victim_name`, `incident_confidence`, `incident_indicators` -- belum
-      ada, cuma `confidence_score`/`confirmed_incident`) -- migrasi baru,
-      sama pola kayak `cve_pocs.poc_type` di Fase 4.
-- [ ] **5.11** SATU `send_alert(topic, msg)` (buang 14 fungsi)
-- [ ] **5.12** Fix regex zero-day `nlp.py:421`
+- [x] **5.1** Stage `fetch_text` (`stages/fetch_text.py`) — trafilatura (HTTP
+      langsung) + fallback Playwright-render lalu trafilatura lagi. GANTI
+      `sumy.HtmlParser`-buat-ekstraksi + `newspaper3k` lama jadi SATU library
+      dua jalur (keduanya udah scaffold Fase 1). Live-verified thehackernews.com.
+- [x] **5.2** Stage `classify` (`stages/classify.py`) — prompt disalin
+      verbatim, **fix**: `response_format={"type":"json_object"}` +
+      `llm.client.parse_json_response()` gantiin `.replace("json","")` hack
+      (`articleValidator.py:141-146`). Live-verified via gateway 9router
+      (model reasoning yang balikin `<think>` block -- `parse_json_response`
+      nyaring itu juga, ketauan pas testing live, bukan ditebak).
+      **3 bug robustness lagi ketemu+dibenerin pas korpus test 200-artikel
+      (2026-09-18)** -- ketiganya spesifik ke gateway dev (9router, model
+      reasoning), gak ada di source lama karena OpenAI asli gak butuh:
+      1. Gak ada `max_tokens` eksplisit -- server motong respons DI TENGAH
+         blok `<think>`, JSON jawaban gak pernah lahir. `finish_reason`
+         konfirmasi "length" bukan "stop". Fix: `_MAX_TOKENS=3000`
+         (classify)/`2000` (extract_ttps, sama risiko).
+      2. Respons kosong/rusak transien (~15-20% dari sampel awal, ilang
+         total setelah fix #1+#3, sisa 0/30 di re-test) -- fix: 1 retry
+         (`_MAX_ATTEMPTS=2`) di `classify()`/`extract_ttps()`, sama
+         semangat retry `TransientFetchError` di scraper framework.
+      3. Gateway kadang balikin `content` UDAH KE-PARSE (dict), bukan
+         string JSON, di mode `response_format=json_object` -- bukan
+         bagian spec OpenAI, quirk proxy. `parse_json_response()` sekarang
+         terima `str | dict | None`, dict di-passthrough langsung.
+- [x] **5.3** Stage `summarize` (`stages/summarize.py`) — sumy LSA,
+      `PlaintextParser` gantiin `HtmlParser` (ekstraksi udah pindah ke 5.1).
+      Butuh corpus NLTK `punkt_tab` -- auto-download sekali per proses
+      (`_ensure_nltk_data()`), gak perlu langkah manual terpisah.
+- [x] **5.4** Stage `extract_ttps` (port apa adanya, udah bener dari
+      sononya), `extract_iocs` (`stages/extract_iocs.py`, TTL cache
+      allowlist/C2 dipertahankan), `extract_cves` (regex title/body)
+- [x] **5.5** Stage `score` (`stages/score.py`) — keyword list + regex +
+      spaCy NER title/body, `checkCVE`/`checkTechStack` (HTTP MITRE) port ke
+      `_check_cve_vendor`. **Perubahan disengaja**: `country_list` dari
+      `pycountry` (seluruh ISO 3166-1) gantiin ~150 nama kuratif Mongo
+      `apac-country`/`global-country` yang gak pernah ke-port ke Postgres --
+      lihat docstring modul buat alasan lengkap (juga nyelesain kebutuhan
+      konversi nama->kode `ArticleCountry.country_code`).
+- [x] **5.6** `routing.py` — **fungsi murni**, 17 test (`tests/unit/
+      test_routing.py`), 1-per-cabang + kasus tepi (double alert OT,
+      sub-routing Indonesia, `related_tech_cve_status` cuma valid di cabang
+      Global). **Fix**: zero-day regex `nlp.py:421` (`r"\\b...\\b"` raw-string
+      jadi literal backslash, gak pernah match) -- versi bener
+      `r"\b(zero|0)[-.]day\b"` dipakai di `stages/score.py`.
+- [x] **5.7** Stage `persist` (`stages/persist.py`) — **satu-satunya
+      penulis**, `ArticleRepo.set_enrichment()` (baru, Fase 5) buat
+      countries/industries/threat_actors/ttps + `IOCRepo` per-IOC. Country
+      role (victim/actor/mentioned) di-derive dari 3 field lama, lihat
+      docstring modul.
+- [x] **5.8** Stage `alert` (`stages/alert.py`) — **terpisah total** dari
+      persist, `pipeline.py` manggil persist DULU baru alert (kebalik dari
+      `_sendAlert()` lama yang gabung keduanya).
+- [x] **5.9** SATU IOC extractor (`cti_enrich/ioc/extractor.py`) — port
+      byte-identik, diverifikasi lawan korpus REAL (bukan cuma sintetis):
+      **0 mismatch di 7899 title + 55 body artikel asli** (live-fetched)
+      lawan `iocExtractor.py` asli. Unit test resmi ditambahin
+      (`tests/unit/test_ioc_extractor.py`, 12 test).
+      **BUG SERIUS ketemu+dibenerin (2026-09-18, korpus test 200-artikel)**:
+      `_RE_DOMAIN_DEFANGED` -- ReDoS/catastrophic backtracking. Artikel real
+      (elastic.co/security-labs/.../operation-bleeding-bear, ~12KB prosa
+      natural) bikin `extract_iocs()` GANTUNG TANPA BATAS (proses dibunuh
+      manual setelah >5 menit, CPU 98%). Root cause: `(?:...)* ` gak
+      dibatasi + `\s*` di dua sisi tiap repetisi -- prosa Inggris biasa
+      ("kata. kata. kata.") ambigu banget buat regex ini walau HASIL AKHIRNYA
+      gak pernah match. **Bug ini ADA di `iocExtractor.py` asli juga** (regex
+      sama persis, byte-identik) -- bukan sesuatu yang ke-introduce port ini,
+      TAPI kelas bug DoS/availability, beda dari "logic beda" yang wajib
+      dipertahankan verbatim, jadi diputuskan dibenerin: `(?:...)*` ->
+      `(?:...){0,10}` (gak ada domain defanged asli >10 label). Diverifikasi
+      ULANG abis fix: 0 mismatch tetap di korpus 7899 title + 55 body yang
+      sama, PLUS test regresi ReDoS baru (`test_domain_defanged_regex_does_
+      not_catastrophically_backtrack`, timeout keras 5 detik pakai
+      `signal.alarm`) biar gak bisa balik diam-diam.
+      Butuh tabel baru `ioc_allowlist_entries`/`threat_feed_entries`
+      (migrasi `5b7fe9a443b8`, verified upgrade/check/downgrade/upgrade) --
+      dua-duanya KOSONG, belum di-seed (lihat "Belum dikerjain" di bawah).
+      **`deepdark_cti.py` scraper SEKARANG UDAH DITULIS** (`scrapers/src/
+      cti_scrapers/feeds/deepdark_cti.py`) -- `IocFeedItem` baru (SATU per
+      commit, bukan per-IOC) + sink `_ioc_feed_sink` (upsert IOC + dual-write
+      `threat_feed_entries` kalau kategori "c2" + alert Telegram "darkweb").
+      Live-verified: `dry-run` + `run` jalan bersih lawan GitHub API asli,
+      registry discovery + 539 test + mypy --strict + ruff semua bersih.
+      **TEMUAN + FIX**: `_IOC_PATH_PREFIXES` asli (`c2/`, `ioc/`, dst,
+      asumsi struktur folder) gak PERNAH match repo `fastfire/deepdarkCTI`
+      SAAT INI -- dikonfirmasi lewat GitHub Contents API, repo-nya sekarang
+      flat (`phishing.md`, `ransomware_gang.md`, dst di root). Bukan bug
+      portingan (logic identik source asli), assumption source asli soal
+      struktur repo yang udah basi. **Keputusan user**: sesuaikan ke skema
+      flat -- `_category_for()` sekarang cocokin KATA di nama file (dipisah
+      `_`/`-`) lawan 6 kategori asli, bukan folder prefix. Live-verified
+      IOC beneran ke-extract & tersimpan dari commit real (`.onion` URL dari
+      `ransomware_gang.md`, kategori "ransomware").
+- [x] **5.10** SATU LLM client (`cti_enrich/llm/client.py`) — port + fix
+      nyata: fork `ScraperNewsWeb` gak pasang `timeout`/`max_retries` sama
+      sekali (dikonfirmasi baca langsung file-nya), fork `ScraperNews` yang
+      dipertahankan. **Tambahan gak ada di source manapun**: `LlmSettings.url`
+      buat gateway custom (9router, dev), karena provider="openai" gak lagi
+      selalu berarti api.openai.com asli. **`monitor_x.py` scraper SEKARANG
+      UDAH DITULIS** (`scrapers/src/cti_scrapers/feeds/monitor_x.py`) --
+      `TweetItem` baru + sink `_tweet_sink` (insert-only, `TweetRepo`).
+      Migrasi kolom `Tweet` (`industries_impacted`, `victim_countries`,
+      `actor_countries`, `victim_name`, `incident_confidence`,
+      `incident_indicators`) selesai (`a6f893e1319d`, verified roundtrip).
+      Reuse `cti_enrich.stages.score.score_with_lists()` (title-pass doang,
+      `_scan_tweet` lama emang gak ada NER) dan `classify()` langsung --
+      refactor `score.py` jadi `score()` (wrapper Session) +
+      `score_with_lists()` (murni) biar scraper (`fetch()` gak boleh pegang
+      Session) bisa reuse logic yang sama tanpa DB access langsung. Dua
+      resolver `reference_data` baru: `monitored_accounts`,
+      `tweet_last_seen_ids` (gantiin `state.json` lokal, MAX tweet_id per
+      akun dari Postgres). **Live-verified logic penuh** (scan+classify+
+      persist, pakai tweet sintetis -- hasil match GPT: victim=Philippines,
+      actor=China, mentioned_group=[APT41]) TAPI **panggilan API
+      twitterapi.io beneran ke-block**: `TWITTER__API_KEY` di `.env` balikin
+      `401 Unauthorized {"error":"Invalid API key"}` pas dites lawan endpoint
+      asli. **Bug asli ketemu+diperbaiki dalam proses ini**: draft pertama
+      `_fetch_tweets_for_account` gak cek `resp.status_code` (kode lama PUNYA
+      cek ini, `monitorX.py:280-281`, sempat kelewat pas port) -- tanpa cek,
+      respons error 401 ke-`.get("tweets", [])` jadi `[]` diam-diam, keliatan
+      kayak "gak ada tweet baru" padahal auth-nya gagal. Udah diperbaiki:
+      sekarang log warning eksplisit tiap status non-200.
+- [x] **5.11** SATU `send_alert(topic, msg)` (`cti_alerts/telegram.py`) —
+      12 topic (bukan 9 placeholder awal, lihat `.env.example`), termasuk
+      sub-routing global/apac/apac_indo/apt/data_breach_indo yang di kode
+      lama implisit di `_send_alert()`. Live-verified kirim ke bot Telegram
+      dev user. **Beda dari kode lama**: gak nelan exception (`except:
+      pass`) -- aman karena persist selalu duluan (lihat 5.8).
+- [x] **5.12** Fix regex zero-day `nlp.py:421` — lihat 5.6.
 
-**Exit criteria:** 200 artikel historis menghasilkan output setara · tiap cabang routing ada test · IOC extractor byte-identik dgn fork lama di korpus 500 artikel
+**Pipeline penuh** (`cti_enrich/pipeline.py`, `run_pipeline()`) live-verified
+3 jalur: `related_cyber=False` (reject dini), `security_tech_best_practice=True`
+(short-circuit, skip extract_ttps+score), dan jalur penuh (classify->fetch_text
+->summarize->extract_ttps->score->routing->persist->alert) — ketiganya nulis
+ke Postgres lokal + kirim completion beneran ke LLM gateway dev + Telegram.
+539 test lulus (`pytest tests/`, termasuk contract test yang otomatis nyakup
+`deepdark_cti`/`monitor_x` dari registry), `mypy --strict` bersih 73 file,
+`ruff` bersih.
+
+**2026-09-18 update:**
+- **`TWITTER__API_KEY` diganti user -- WORKS.** Live-verified lawan
+  twitterapi.io asli (200, tweet beneran balik). `monitor_x.py` sekarang
+  end-to-end teruji, bukan cuma logic-nya doang.
+- **Seed data KELAR** -- `tools/seed/fase5_reference_data.py` (baru, baca
+  BSON pakai `pymongo` ad-hoc lewat `uv run --with pymongo`, SENGAJA gak
+  masuk dependency package manapun karena ini script sekali-pakai/migrasi).
+  Sumbernya, dikonfirmasi langsung (catatan lama soal lokasi file KELIRU --
+  `apac-people.bson` ada di `threatintel/`, bukan `news_db/`):
+  - `legacy/dump/threatintel/groups.bson` -> **3991** `threat_actor_groups` (malpedia)
+  - `legacy/dump/threatintel/apac-people.bson` -> **30** `monitored_people`
+    (isinya demonym/nasionalitas -- "Afghan", "Australian", dst -- BUKAN
+    nama orang walau nama koleksinya "apac-people")
+  - `legacy/dump/news_db/ioc_allowlist.bson` -> **9** `ioc_allowlist_entries`
+
+  Idempoten (upsert by unique constraint), diverifikasi re-run kedua = 0
+  baris baru. Live-verified `score()` (`"Lazarus Group"` -> match, `"Afghan"`
+  -> match) dan `extract_iocs()` (`wiz.io` ke-filter allowlist bener).
+- `update_cve_mention` (tracking mention CVE/bulan) gak diport -- itu makan
+  buat `cveEmailAutomation` (laporan mingguan CVE), yang di-scope keluar
+  Fase 5 (territory Fase 7/apps-api, sama kayak `GRAPH__*` credential).
+- **Exit criteria "200 artikel historis" -- KELAR.** `tools/` scratch
+  script (bukan dikomit, sekali-pakai) jalanin stage individual
+  (`classify->fetch_text->summarize->extract_ttps->score->routing`, TANPA
+  `persist()`/`route_alerts()` biar gak nulis 200 baris test/kirim 200
+  alert Telegram beneran) atas 200 artikel real dari
+  `legacy/dump/news_db/articles.bson`, dibandingin lawan `news_type` yang
+  kesimpen dulu. Angka final (200 artikel, SEMUA lewat kode final --
+  gabungan 2 batch: 30 artikel `docs[100:130]` + 170 artikel
+  `docs[130:300]`, non-overlap, ronde awal yang kepake kode SEBELUM 4 fix
+  di bawah SENGAJA gak dihitung biar angkanya jujur ngukur kode final):
+  - **Error rate: 13/200 (6.5%)** -- SEMUANYA gagal parsing/timeout LLM
+    (gateway dev 9router, bukan pipeline logic) setelah 3x retry, bukan
+    crash/bug. Turun jauh dari ~15-20% di percobaan awal (lihat 4 fix di
+    5.2/5.9), tapi gak bisa dikejar ke nol -- itu batas reliability
+    gateway LLM dev yang dipakai, dilaporkan apa adanya.
+  - **Acceptance rate (`related_cyber=True`): 193/200 (96.5%)**
+  - **`news_type` exact match vs hasil lama (dari yang accepted): 106/193
+    (55%)** -- ANGKA INI SECARA JUJUR gak bisa 100%: (1) LLM beda (gateway
+    dev 9router, bukan GPT-4o asli yang kemungkinan dipakai produksi dulu),
+    (2) teks body di-fetch LIVE SEKARANG, bisa beda dari yang di-fetch
+    dulu (halaman berubah/link rot), (3) **`techstack` BELUM di-seed**
+    (Fase 10 scope, lihat 10.1) -- `related_tech_status` SELALU `False`
+    buat sekarang, jadi cabang "Tech Stack Article"/"Unrelated Tech Stack
+    Article" sistematis gak pernah kepilih walau title/body-nya cocok;
+    pola ini keliatan jelas di data (banyak `old=Tech Stack Article`/
+    `Unrelated Tech Stack Article` -> `new=global`). Bukan bug routing,
+    konsekuensi LANGSUNG dari gap seed data yang udah dicatat.
+  - **IOC extractor byte-identik: 0 mismatch di 7899 title + 51-55 body
+    artikel real** (dua kali verifikasi, sebelum & sesudah fix ReDoS) --
+    lihat detail lengkap di 5.9, jauh ngelewatin syarat "korpus 500 artikel".
 
 > **Disiplin:** port logika apa adanya. Perbaiki **hanya** bug yang sudah
 > disebut. Kalau enrichment dan scraping berubah semantik barengan, diff
@@ -733,7 +920,32 @@ fixture teardown bener kapan waktunya).
 
 ## Fase 10 — Cutover `[ ]`
 
-- [ ] **10.1** Seed data referensi: `techstack` _(pipeline CVE mati tanpa ini)_, `monitored_accounts`, `ioc_allowlist`, user/role/client
+- [ ] **10.1** Seed data referensi: `techstack`, `monitored_accounts`,
+      user/role/client -- masih kosong, ini yang genuinely nunggu Fase 10.
+      `ioc_allowlist`/`threat_actor_groups`/`monitored_people` **UDAH
+      KELAR duluan Fase 5** (2026-09-18, `tools/seed/fase5_reference_data.py`)
+      -- lihat catatan lengkap di Fase 5.
+- [ ] **10.1b** **Dipindah dari 4.12** (2026-09-18, biar Fase 4 gak keblok
+      kerjaan yang sifatnya emang cutover, bukan migrasi): job nonaktif
+      diarsipkan, digarap di sini bareng seed data lain -- bukan lagi
+      dependency buat nutup Fase 4.
+- [ ] **10.1c** **Dipindah dari 4.8** (2026-09-18): rewrite 6 scraper
+      Selenium nonaktif (`0xToxinThreat`, `emailnewsThreat`,
+      `forcepointThreat`, `mandiantThreat`, `trellixThreat`,
+      `vxMalwareDefenseThreat`) + `cyborgHuntingIdea` (gak kedaftar
+      Rundeck). **1 dari 7 UDAH DIKERJAIN sebagai test case** (sebelum
+      pindah, biar tau seberapa berat sisanya): `mandiant.py` --
+      `mandiant.com/resources/blog` (target XPath lama) SEKARANG REDIRECT
+      ke `cloud.google.com` (Mandiant diakuisisi Google, konten
+      threat-intel pindah ke Google Cloud Blog topic "Threat
+      Intelligence"). Ternyata situs barunya nyediain RSS resmi
+      (`feeds.feedburner.com/threatintelligence/...`) -- jadi BUKAN
+      `runtime="browser"` sama sekali, `RSSScraper` 20 baris biasa.
+      Live-verified: `dry-run`/`run` 20 item, persisted bersih, 544 test
+      lulus, `ruff`+`mypy --strict` bersih. **Pelajaran buat sisa 6**: gak
+      bisa ditebak dari kode lama doang -- tiap situs kudu dicek satu-satu
+      (bisa jadi gampang kayak Mandiant, bisa jadi beneran butuh browser
+      automation, gak ada cara tau tanpa ngecek langsung).
 - [ ] **10.2** Verifikasi cold-start guard
 - [ ] **10.3** Stop cron lama + systemd unit lama
 - [ ] **10.4** Arsipkan dump Mongo final

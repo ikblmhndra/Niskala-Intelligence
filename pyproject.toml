@@ -59,6 +59,11 @@ select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
 # manfaat. Ini file GENERATED, bukan ditulis tangan.
 "scrapers/src/cti_scrapers/feeds/*.py" = ["E501"]
 "scrapers/src/cti_scrapers/collectors/*.py" = ["E501"]
+# Prompt LLM disalin verbatim dari articleValidator.py/cveValidator.py
+# (Fase 5) -- maksa wrap di tengah kalimat instruksi cuma bikin diff-nya
+# sama source asli makin susah dicek, gak ada manfaat.
+"packages/cti-enrich/src/cti_enrich/stages/classify.py" = ["E501"]
+"packages/cti-enrich/src/cti_enrich/stages/extract_ttps.py" = ["E501"]
 
 [tool.mypy]
 python_version = "3.12"

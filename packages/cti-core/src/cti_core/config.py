@@ -77,6 +77,10 @@ class OidcSettings(_StrictModel):
 class LlmSettings(_StrictModel):
     provider: Literal["openai", "deepseek", "gemini"] = "openai"
     api_key: str = ""
+    url: str = ""
+    """Override `base_url` client OpenAI-compatible -- kosong = endpoint
+    default provider. Dipakai dev buat nunjuk ke gateway lokal (mis. 9router)
+    alih-alih API provider asli."""
     model: str = "gpt-4o"
     timeout_s: float = 60.0
     max_retries: int = 2

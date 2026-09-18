@@ -10,6 +10,7 @@ lebih dulu dari kebutuhan" yang sama kayak model Fase 2.
 
 from __future__ import annotations
 
+import contextlib
 from collections.abc import Callable
 from typing import TYPE_CHECKING, Any
 
@@ -19,9 +20,11 @@ from cti_scraper.items import (
     ArticleItem,
     CveItem,
     CvePocItem,
+    IocFeedItem,
     Item,
     MalwareTrendItem,
     RansomwareVictimItem,
+    TweetItem,
 )
 
 if TYPE_CHECKING:
@@ -174,6 +177,105 @@ def _malware_trend_sink(item: MalwareTrendItem, meta: ScraperMeta, session: Sess
     )
 
 
+def _format_commit_message(item: IocFeedItem, new_ioc_count: int) -> str:
+    """Port bagian format `deepdarkCTI.py:108-135` (badan pesan Telegram
+    darkweb) -- `files_changed[].patch_preview` udah difilter+diformat di
+    `fetch()` (lihat `deepdarkCTI.py` scraper), sink cuma nyusun jadi teks."""
+    msg = f"""
+=== <b>DEEPDARKCTI GITHUB MONITOR</b> ===
+<b>Commit Message</b>: {item.commit_message}
+<b>Author</b>: {item.commit_author}
+<b>Date</b>: {item.commit_date.strftime("%B %d, %Y, %H:%M:%S")}
+<b>Files changed:</b>"""
+    for f in item.files_changed:
+        msg += f"""
+    <b>Filename</b>: {f["filename"]}
+    <b>Additions</b>: {f["additions"]}
+    <b>Deletions</b>: {f["deletions"]}\n"""
+        if f.get("patch_preview"):
+            msg += f"    <b>Patch</b>: \n{f['patch_preview']}\n"
+        else:
+            msg += "    <b>Patch</b>: No patch available\n"
+    if new_ioc_count:
+        msg += f"    <b>New IOCs ingested</b>: {new_ioc_count}\n"
+    return msg
+
+
+@sink_for(IocFeedItem)
+def _ioc_feed_sink(item: IocFeedItem, meta: ScraperMeta, session: Session) -> None:
+    """Upsert tiap IOC ke `iocs` (+ `threat_feed_entries` kalau kategori
+    "c2" -- gantiin `dbMongo.upsert_threat_feed`), lalu SATU alert Telegram
+    topic "darkweb" -- gantiin `deepdarkCTI.py`'s inline upsert +
+    `send_alert_darkweb`. Kegagalan alert (topic belum dikonfig, dst)
+    TIDAK boleh gagalin IOC yang udah kesimpen -- persis prinsip Fase 5
+    "persist sebelum alert" (lihat `cti_alerts.telegram` docstring)."""
+    from cti_alerts.telegram import send_alert
+    from cti_core.db.models.ioc_reference import ThreatFeedEntry
+    from cti_core.db.repositories.ioc import IOCRepo
+    from sqlalchemy import select
+
+    ioc_repo = IOCRepo(session)
+    new_count = 0
+    for entry in item.iocs:
+        ioc = ioc_repo.upsert(
+            type=entry["type"],
+            value=entry["value"],
+            source_url=item.commit_url,
+            source_name="deepdarkCTI",
+            context=entry["category"],
+        )
+        if ioc.seen_count == 1:
+            new_count += 1
+
+        if entry["category"] == "c2" and entry["type"] in ("ip", "domain"):
+            exists = session.execute(
+                select(ThreatFeedEntry).where(
+                    ThreatFeedEntry.feed == "deepdarkcti_c2",
+                    ThreatFeedEntry.type == entry["type"],
+                    ThreatFeedEntry.value == entry["value"],
+                )
+            ).scalar_one_or_none()
+            if exists is None:
+                session.add(
+                    ThreatFeedEntry(feed="deepdarkcti_c2", type=entry["type"], value=entry["value"])
+                )
+                session.flush()
+
+    # IOC udah kesimpen di atas -- gagal alert gak boleh gagalin run.
+    with contextlib.suppress(Exception):
+        send_alert("darkweb", _format_commit_message(item, new_count))
+
+
+@sink_for(TweetItem)
+def _tweet_sink(item: TweetItem, meta: ScraperMeta, session: Session) -> None:
+    """Insert-only ke `tweets` -- gantiin `monitorX.py::upsert_tweet`
+    (`$setOnInsert`, gak pernah update tweet yang udah ada)."""
+    from cti_core.db.repositories.tweet import TweetRepo
+
+    repo = TweetRepo(session)
+    repo.insert(
+        tweet_id=item.tweet_id,
+        url=item.url,
+        text=item.text,
+        author_username=item.author_username,
+        author_name=item.author_name,
+        author_avatar=item.author_avatar,
+        author_followers=item.author_followers,
+        posted_on=item.posted_on,
+        lang=item.lang,
+        media_urls=item.media_urls,
+        scan_results=item.scan_results,
+        confidence_score=item.confidence_score,
+        confirmed_incident=item.confirmed_incident,
+        industries_impacted=item.industries_impacted,
+        victim_countries=item.victim_countries,
+        actor_countries=item.actor_countries,
+        victim_name=item.victim_name,
+        incident_confidence=item.incident_confidence,
+        incident_indicators=item.incident_indicators,
+    )
+
+
 def reset() -> None:
     """Testing doang."""
     _SINKS.clear()
@@ -182,3 +284,5 @@ def reset() -> None:
     _SINKS[CveItem] = _cve_sink
     _SINKS[CvePocItem] = _cve_poc_sink
     _SINKS[MalwareTrendItem] = _malware_trend_sink
+    _SINKS[IocFeedItem] = _ioc_feed_sink
+    _SINKS[TweetItem] = _tweet_sink

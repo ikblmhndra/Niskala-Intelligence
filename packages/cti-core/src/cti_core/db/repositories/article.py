@@ -13,13 +13,20 @@ re-scrape gak pernah update artikel yang udah ada):
 from __future__ import annotations
 
 import datetime
+from collections.abc import Sequence
 from typing import Any
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Session
 
-from cti_core.db.models.article import Article
+from cti_core.db.models.article import (
+    Article,
+    ArticleCountry,
+    ArticleIndustry,
+    ArticleThreatActor,
+    ArticleTTP,
+)
 from cti_core.urlkit import url_hash as compute_url_hash
 
 _RESERVED_OVERRIDE_KEYS = frozenset({"_meta"})
@@ -90,6 +97,40 @@ class ArticleRepo:
         """Satu-satunya jalur analis nulis koreksi manual -- lihat plan §5.6.
         Dipanggil dari layer web (Fase 7), bukan dari scraper/enrichment."""
         article.overrides = {**article.overrides, **overrides}
+        self.session.flush()
+        return article
+
+    def set_enrichment(
+        self,
+        article: Article,
+        *,
+        countries: Sequence[tuple[str, str]] = (),
+        industries: Sequence[str] = (),
+        threat_actors: Sequence[str] = (),
+        ttps: Sequence[tuple[str, str]] = (),
+    ) -> Article:
+        """Ganti SEMUA child row (countries/industries/threat_actors/ttps)
+        dari SATU hasil enrichment -- Fase 5 (`cti_enrich.pipeline`), satu-
+        satunya caller. `countries`: `(country_code ISO alpha-2, role)`,
+        `role` salah satu `victim|actor|mentioned` (lihat `ArticleCountry`).
+        `ttps`: `(ttp_id, ttp_name)`.
+
+        Assign ulang list relationship (bukan merge/diff) -- `cascade="all,
+        delete-orphan"` (Fase 2) yang hapus baris lama, sama filosofi
+        `CveTrackerRepo.upsert`: hasil enrichment TERBARU kebenaran, bukan
+        delta yang ditumpuk. Dedup di sini (bukan percaya caller) karena
+        `UniqueConstraint` per (article, kolom[, role]) bakal nolak baris
+        kembar kalau caller kirim duplikat."""
+        article.countries = [
+            ArticleCountry(country_code=code, role=role) for code, role in dict.fromkeys(countries)
+        ]
+        article.industries = [ArticleIndustry(industry=i) for i in dict.fromkeys(industries)]
+        article.threat_actors = [
+            ArticleThreatActor(threat_actor=t) for t in dict.fromkeys(threat_actors)
+        ]
+        article.ttps = [
+            ArticleTTP(ttp_id=tid, ttp_name=tname) for tid, tname in dict.fromkeys(ttps)
+        ]
         self.session.flush()
         return article
 

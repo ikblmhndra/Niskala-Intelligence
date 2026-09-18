@@ -8,6 +8,8 @@ dependencies = [
     "httpx>=0.27",
     "openai>=1.30",
     "trafilatura>=1.9",
+    "playwright>=1.44",
+    "pycountry>=24.6",
 ]
 
 # Heavy models live behind an extra so the API image never pulls torch/spacy.
@@ -16,7 +18,9 @@ dependencies = [
 nlp = [
     "spacy>=3.7",
     "sumy>=0.11",
+    "nltk>=3.9",
     "torch>=2.3",
+    "en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl",
 ]
 
 [build-system]
@@ -25,3 +29,6 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/cti_enrich"]
+
+[tool.hatch.metadata]
+allow-direct-references = true

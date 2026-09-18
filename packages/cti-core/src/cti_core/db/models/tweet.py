@@ -19,7 +19,7 @@ import datetime
 from typing import Any
 
 from sqlalchemy import BigInteger, Boolean, DateTime, Integer, SmallInteger, String, Text, func
-from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy.dialects.postgresql import ARRAY, JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 
 from cti_core.db.base import Base, TimestampMixin
@@ -60,3 +60,25 @@ class Tweet(TimestampMixin, Base):
 
     confidence_score: Mapped[int | None] = mapped_column(SmallInteger)
     confirmed_incident: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+
+    industries_impacted: Mapped[list[str]] = mapped_column(
+        ARRAY(String(150)), nullable=False, default=list
+    )
+    victim_countries: Mapped[list[str]] = mapped_column(
+        ARRAY(String(100)), nullable=False, default=list
+    )
+    actor_countries: Mapped[list[str]] = mapped_column(
+        ARRAY(String(100)), nullable=False, default=list
+    )
+    victim_name: Mapped[str | None] = mapped_column(String(300))
+    incident_confidence: Mapped[int | None] = mapped_column(SmallInteger)
+    incident_indicators: Mapped[list[str]] = mapped_column(
+        ARRAY(String(50)), nullable=False, default=list
+    )
+    """Fase 5: field LLM (`cti_enrich.stages.classify.classify()`, SATU
+    client yang sama dipakai `nlp_scan()`) yang ketinggalan pas Fase 2 --
+    dulu cuma `confidence_score`/`confirmed_incident` yang ke-port. Array
+    Postgres (bukan JSONB) karena ini daftar string pendek yang gak butuh
+    query per-elemen, beda sama `Article.countries` yang emang perlu
+    dinormalisasi -- lihat catatan `scan_results` di atas soal alasan
+    serupa (satu tweet, sekali pakai, gak ada "semua tweet yang..." query)."""

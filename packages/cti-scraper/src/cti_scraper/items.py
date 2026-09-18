@@ -149,3 +149,63 @@ class PackageVulnItem(Item):
 
     def dedup_key(self) -> str:
         return f"{self.ecosystem}:{self.package}:{self.vuln_id}"
+
+
+class IocFeedItem(Item):
+    """Nulis ke `iocs` (+ `threat_feed_entries` kalau ada IOC kategori
+    "c2") DAN kirim SATU alert Telegram topic "darkweb" -- gantiin
+    `deepdarkCTI.py` (Fase 5). SATU Item = SATU commit GitHub, BUKAN satu
+    IOC -- satu commit bisa ngandung banyak IOC baru sekaligus, semuanya
+    numpuk di `iocs` di bawah. `dedup_key()` = SHA commit, persis
+    granularitas `offset/deepdarkCTI_offset.txt` lama."""
+
+    commit_sha: str
+    commit_message: str
+    commit_author: str
+    commit_date: datetime.datetime
+    commit_url: str
+    files_changed: list[dict[str, Any]] = Field(default_factory=list)
+    """[{filename, additions, deletions, patch_preview}] -- badan pesan
+    Telegram, udah final formatnya di titik ekstraksi (`fetch()`), sink
+    cuma nyusun jadi teks."""
+    iocs: list[dict[str, str]] = Field(default_factory=list)
+    """[{type, value, category}] -- `type` udah salah satu dari 8 nilai
+    kanonik `IOC.type` (lihat `cti_enrich.stages.persist._IOC_TYPE_MAP`),
+    `category` = folder asal (c2/ioc/phishing/ransomware/tor/darkweb)."""
+
+    def dedup_key(self) -> str:
+        return self.commit_sha
+
+
+class TweetItem(Item):
+    """Nulis ke `tweets` -- gantiin `monitorX.py::build_tweet_doc` +
+    `upsert_tweet` (Fase 5). `dedup_key()` = tweet_id, SELALU dedup normal
+    (bukan `None` kayak `MalwareTrendItem`) -- tweet gak berubah isinya
+    setelah diposting, beda dari artikel yang bisa di-edit."""
+
+    tweet_id: str
+    url: str
+    text: str
+    author_username: str
+    author_name: str | None = None
+    author_avatar: str | None = None
+    author_followers: int | None = None
+    posted_on: datetime.datetime | None = None
+    lang: str | None = None
+    media_urls: list[str] = Field(default_factory=list)
+
+    scan_results: dict[str, Any] = Field(default_factory=dict)
+    """apac_indicator, mentioned_group, mentioned_apac_country,
+    mentioned_apac_people, cve_list, zero_day_list, databreach_list,
+    ot_status, report_status -- lihat `Tweet.scan_results` (Fase 2)."""
+    confidence_score: int | None = None
+    confirmed_incident: bool = False
+    industries_impacted: list[str] = Field(default_factory=list)
+    victim_countries: list[str] = Field(default_factory=list)
+    actor_countries: list[str] = Field(default_factory=list)
+    victim_name: str | None = None
+    incident_confidence: int | None = None
+    incident_indicators: list[str] = Field(default_factory=list)
+
+    def dedup_key(self) -> str:
+        return self.tweet_id

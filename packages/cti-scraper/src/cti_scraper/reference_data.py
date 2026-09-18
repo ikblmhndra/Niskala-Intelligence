@@ -68,10 +68,62 @@ def _resolve_true_positive_cves(session: Session) -> list[dict[str, Any]]:
     return [{"cve_id": cve_id, "poc_urls": urls} for cve_id, urls in sorted(merged.items())]
 
 
+def _resolve_threat_actor_groups(session: Session) -> list[str]:
+    """Setara `list_threat_actor_groups()` (`cti_core.db.repositories.
+    threat_reference`) -- dipisah di sini biar scraper bespoke (mis.
+    `monitorX`) bisa minta lewat `ScraperMeta.reference_data` kayak
+    techstack, tanpa `fetch()` pegang Session (lihat docstring modul)."""
+    from cti_core.db.repositories.threat_reference import list_threat_actor_groups
+
+    return list_threat_actor_groups(session)
+
+
+def _resolve_monitored_people(session: Session) -> list[str]:
+    from cti_core.db.repositories.threat_reference import list_monitored_people
+
+    return list_monitored_people(session)
+
+
+def _resolve_monitored_accounts(session: Session) -> list[str]:
+    """Setara `list_monitored_accounts()` lama -- username X/Twitter aktif
+    dari `monitored_accounts` (pola "web kurasi, scraper patuh", Fase 2)."""
+    from cti_core.db.models.tweet import MonitoredAccount
+    from sqlalchemy import select
+
+    rows = (
+        session.execute(select(MonitoredAccount.username).where(MonitoredAccount.active.is_(True)))
+        .scalars()
+        .all()
+    )
+    return list(rows)
+
+
+def _resolve_tweet_last_seen_ids(session: Session) -> dict[str, str]:
+    """{username: tweet_id terbesar yang UDAH tersimpan} -- gantiin
+    `monitorX.py`'s `state.json` lokal (`load_state`/`save_state`). Query
+    SEKALI di sini (bukan per-akun di `fetch()`) karena ini reference data,
+    diresolve Runner SEBELUM `fetch()` jalan -- `fetch()` gak pegang
+    Session (lihat docstring modul)."""
+    from cti_core.db.models.tweet import Tweet
+    from sqlalchemy import select
+
+    rows = session.execute(select(Tweet.author_username, Tweet.tweet_id)).all()
+    result: dict[str, str] = {}
+    for username, tweet_id in rows:
+        current = result.get(username)
+        if current is None or int(tweet_id) > int(current):
+            result[username] = tweet_id
+    return result
+
+
 _RESOLVERS = {
     "techstack": _resolve_techstack,
     "techstack_by_client": _resolve_techstack_by_client,
     "true_positive_cves": _resolve_true_positive_cves,
+    "threat_actor_groups": _resolve_threat_actor_groups,
+    "monitored_people": _resolve_monitored_people,
+    "monitored_accounts": _resolve_monitored_accounts,
+    "tweet_last_seen_ids": _resolve_tweet_last_seen_ids,
 }
 
 
@@ -85,8 +137,7 @@ def resolve_reference_data(names: tuple[str, ...], session: Session) -> dict[str
         resolver = _RESOLVERS.get(name)
         if resolver is None:
             raise ConfigError(
-                f"reference_data '{name}' gak dikenal -- pilihan yang ada: "
-                f"{sorted(_RESOLVERS)}"
+                f"reference_data '{name}' gak dikenal -- pilihan yang ada: {sorted(_RESOLVERS)}"
             )
         result[name] = resolver(session)
     return result
