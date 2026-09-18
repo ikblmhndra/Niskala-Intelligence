@@ -1112,7 +1112,31 @@ tinggal pkg_vuln+cve_email), 7.6 (snapshot test), 7.7 (ekspor OpenAPI), 7.8.
       **OIDC bagian dari 7.2 ini BELUM diport** (`oidc.enabled=False`
       default, 184 baris `oidc_service.py` nunggu giliran terpisah, bukan
       bagian "inti").
-- [ ] **7.3** Port 27 router ke repository Postgres
+- [~] **7.3** Port 27 router ke repository Postgres -- **2/27 kelar**
+      (`clients`, `roles`), verified LIVE via curl (create/update/delete,
+      RBAC superadmin-only buat mutasi, 422 permission gak dikenal, 400
+      hapus role sistem/client default). Keduanya nyaris gratis: repo-nya
+      (`AsyncClientRepo`/`AsyncRoleRepo`) udah lengkap dari 7.2. Sisa 25
+      router (articles yang paling besar/penting -- ~1000 baris gabungan
+      4 service pendukung -- lalu cve/iocs/ta_groups/dst) nyusul bertahap,
+      per-router verified live, bukan sekali gas semua.
+
+      **Bug infra ketemu pas kerjain ini (di luar scope router itu
+      sendiri, tapi ketauan justru dari nge-`mypy` `apps/api` doang):**
+      gak ada paket workspace (`cti-core`, `cti-scraper`, `cti-enrich`,
+      `cti-alerts`, `cti-scrapers`, `cti-worker`, `cti-api`) yang punya
+      marker `py.typed` (PEP 561) -- tanpa itu, mypy DIAM-DIAM nge-`Any`-in
+      semua import lintas-paket kalau paket sumbernya gak ikut jadi target
+      check eksplisit (bukan cuma di-`import`). Semua "mypy bersih" Fase
+      6/7 sebelumnya kebetulan lolos karena SELALU nyertain file
+      `cti_core` yang relevan eksplisit di command-nya (`mypy apps/worker
+      packages/cti-core/src/cti_core/celery_client.py`, dst) -- begitu
+      `mypy apps/api` doang, dua "Returning Any" muncul di
+      `services/policy.py` walau kodenya gak berubah. Fix: `touch
+      py.typed` di 7 paket sekaligus. Full repo-wide check abis fix: 0
+      error baru ketemu (bug ini gak nyembunyiin bug LAIN, tapi infra-nya
+      sendiri rapuh -- scoped mypy check ke depan sekarang bener-bener
+      independen per paket).
 - [ ] **7.4** Port 56 service
 - [ ] **7.5** Buang duplikasi (pkg_vuln, cve_email, ioc, llm)
 - [ ] **7.6** Snapshot test tiap endpoint

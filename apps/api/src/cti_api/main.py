@@ -23,7 +23,9 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from cti_api import __version__
 from cti_api.routers import auth as auth_router
+from cti_api.routers import clients as clients_router
 from cti_api.routers import health as health_router
+from cti_api.routers import roles as roles_router
 from cti_api.services.roles import ensure_system_roles
 
 log = get_logger()
@@ -55,6 +57,8 @@ def create_app() -> FastAPI:
 
     app.include_router(health_router.router)
     app.include_router(auth_router.router)
+    app.include_router(clients_router.router)
+    app.include_router(roles_router.router)
     return app
 
 
