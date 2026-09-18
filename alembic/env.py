@@ -15,6 +15,7 @@ from cti_core.db.base import Base
 # adalah "DROP TABLE" karena metadata-nya kosong.
 from cti_core.db.models import (  # noqa: F401
     article,
+    attack,
     auth,
     cve,
     ioc,
@@ -24,7 +25,9 @@ from cti_core.db.models import (  # noqa: F401
     rfi,
     scraper,
     source_reliability,
+    ta,
     techstack,
+    threat_reference,
     tweet,
 )
 from sqlalchemy import engine_from_config, pool

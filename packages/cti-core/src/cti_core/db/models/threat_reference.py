@@ -18,7 +18,13 @@ kuratif) SENGAJA gak ikut di-port jadi tabel baru -- diganti
 `pycountry.countries` (seluruh negara anggota ISO 3166-1, superset dari
 daftar lama) di `stages/score.py`, sekalian nyelesain kebutuhan konversi
 nama->kode ISO yang `ArticleCountry.country_code` (Fase 2) minta. Lihat
-docstring `score.py::_country_list`."""
+docstring `score.py::_country_list`.
+
+`source` (Fase 7.3, router `ta_groups`) -- kolom ketinggalan pas Fase 5
+sama alasannya kayak `MonitoredAccount.display_name`/`notes`: tabel ini
+awalnya cuma dibaca `score.py`, belum ada jalur TULIS lewat API. Port
+`ta_service.list_groups()`/`add_group()`/`get_ta_stats()` (grouping by
+source, "manual" vs sumber lain) butuh kolom ini."""
 
 from __future__ import annotations
 
@@ -34,6 +40,7 @@ class ThreatActorGroup(TimestampMixin, Base):
 
     id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String(200), nullable=False, index=True)
+    source: Mapped[str] = mapped_column(String(50), nullable=False, default="manual")
 
 
 class MonitoredPerson(TimestampMixin, Base):

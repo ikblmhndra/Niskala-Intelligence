@@ -2,7 +2,20 @@
 `cve_tickets`. Ditulis dua sisi di sistem lama (scraper `newCveThreat.py`
 dkk, web `cve_service.py`) -- lihat plan §1. Multi-tenant lewat `client_id`
 (unique bareng `cve_id`), pola yang sama kayak app lama v3.8.0.
-"""
+
+`cisa_kev`/`active_exploitation`/`threat_actors`/`ttps` (Fase 7.3, router
+`crossref`, Bagian 3) -- field ini ADA di dokumen Mongo `cve_tracker`
+lama, tapi ditulis loop enrichment CVE (`app/main.py::_cve_enrichment_loop`,
+proses cross-reference CVE vs CISA KEV + artikel/TA) yang BELUM diport --
+itu salah satu dari 5 loop yang dipindah ke Celery beat (Fase 7.8, lihat
+docs/PROGRESS.md). Kolomnya ditambah SEKARANG (gap ketauan pas porting
+`crossref`, pola sama kayak nambah kolom pas nemu gap di router lain)
+supaya query `crossref` BENER begitu 7.8 ngisi datanya -- buat sekarang
+kolomnya bakal selalu kosong/false, bukan bug, cuma cold-start yang sama
+kayak `techstack` sebelum seed. `threat_actors`/`ttps` dinormalisasi jadi
+tabel anak (`CveThreatActor`/`CveTTP`), sama pola kayak
+`ArticleThreatActor`/`ArticleTTP` -- `crossref` butuh set-intersection
+per-value (`pir_ttps & cve_ttps`), bukan sekadar baca utuh."""
 
 from __future__ import annotations
 
@@ -47,6 +60,8 @@ class CveTracker(TimestampMixin, Base):
     cve_modified_date: Mapped[datetime.date | None] = mapped_column(Date)
 
     poc_available: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    cisa_kev: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    active_exploitation: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     detected_on: Mapped[datetime.datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, server_default=func.now()
     )
@@ -59,6 +74,12 @@ class CveTracker(TimestampMixin, Base):
         back_populates="cve", cascade="all, delete-orphan", lazy="selectin"
     )
     pocs: Mapped[list[CvePoc]] = relationship(
+        back_populates="cve", cascade="all, delete-orphan", lazy="selectin"
+    )
+    threat_actors: Mapped[list[CveThreatActor]] = relationship(
+        back_populates="cve", cascade="all, delete-orphan", lazy="selectin"
+    )
+    ttps: Mapped[list[CveTTP]] = relationship(
         back_populates="cve", cascade="all, delete-orphan", lazy="selectin"
     )
 
@@ -104,6 +125,31 @@ class CvePoc(Base):
     pas port beneran butuh, bukan dirombak ulang."""
 
     cve: Mapped[CveTracker] = relationship(back_populates="pocs")
+
+
+class CveThreatActor(Base):
+    __tablename__ = "cve_threat_actors"
+
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
+    cve_tracker_id: Mapped[int] = mapped_column(
+        ForeignKey("cve_tracker.id", ondelete="CASCADE"), nullable=False
+    )
+    threat_actor: Mapped[str] = mapped_column(String(200), nullable=False, index=True)
+
+    cve: Mapped[CveTracker] = relationship(back_populates="threat_actors")
+
+
+class CveTTP(Base):
+    __tablename__ = "cve_ttps"
+
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
+    cve_tracker_id: Mapped[int] = mapped_column(
+        ForeignKey("cve_tracker.id", ondelete="CASCADE"), nullable=False
+    )
+    ttp_id: Mapped[str] = mapped_column(String(20), nullable=False, index=True)
+    ttp_name: Mapped[str] = mapped_column(String(200), nullable=False, default="")
+
+    cve: Mapped[CveTracker] = relationship(back_populates="ttps")
 
 
 class CveFalsePositive(Base):

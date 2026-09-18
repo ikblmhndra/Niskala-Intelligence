@@ -127,6 +127,16 @@ class AsyncPIRRepo:
         )
         return result.scalar_one_or_none()
 
+    async def list_active_unscoped(self) -> list[PIRRequirement]:
+        """Lintas client, TANPA filter -- port apa adanya dari
+        `cross_reference_service.get_cve_crossrefs()`
+        (`db[PIR_COLLECTION].find({"status": "active"})`, gak nge-scope
+        client). Dipakai `crossref` (Bagian 3) doang."""
+        result = await self.session.execute(
+            select(PIRRequirement).where(PIRRequirement.status == "active").limit(500)
+        )
+        return list(result.scalars().all())
+
     async def create(self, data: dict[str, Any], *, client_id: str) -> PIRRequirement:
         pir = PIRRequirement(
             title=data["title"],

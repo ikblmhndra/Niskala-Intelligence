@@ -78,6 +78,9 @@ select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
 # sama source asli makin susah dicek, gak ada manfaat.
 "packages/cti-enrich/src/cti_enrich/stages/classify.py" = ["E501"]
 "packages/cti-enrich/src/cti_enrich/stages/extract_ttps.py" = ["E501"]
+# Sama alasan -- prompt LLM disalin verbatim dari `ta_profile_service.py`
+# lama (Fase 7.3, router `ta_groups`).
+"apps/api/src/cti_api/services/ta_profile.py" = ["E501"]
 # `Depends(...)` di default parameter itu idiom RESMI FastAPI (dependency
 # injection dibaca lewat introspeksi signature) -- sama alasan kayak
 # ignore `typer.Option()` di atas, bukan bug B008 biasa.

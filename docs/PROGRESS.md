@@ -1112,11 +1112,12 @@ tinggal pkg_vuln+cve_email), 7.6 (snapshot test), 7.7 (ekspor OpenAPI), 7.8.
       **OIDC bagian dari 7.2 ini BELUM diport** (`oidc.enabled=False`
       default, 184 baris `oidc_service.py` nunggu giliran terpisah, bukan
       bagian "inti").
-- [~] **7.3** Port 27 router ke repository Postgres -- **14/27 kelar**
+- [~] **7.3** Port 27 router ke repository Postgres -- **18/27 kelar**
       (`clients`, `roles`, `articles` [baca doang], `iocs` [baca+kurasi],
       `techstack` [CRUD inti], `cve` [baca+false-positive+purge],
       `tweets`, `monitored_accounts`, `ransomware`, `changelog`,
-      `filtered_articles`, `rfi`, `pir`, `source_reliability`), verified LIVE via curl
+      `filtered_articles`, `rfi`, `pir`, `source_reliability`, `attack`,
+      `ta_groups`, `mitre`, `crossref`), verified LIVE via curl
       (create/update/delete, RBAC superadmin-only buat mutasi, 422
       permission gak dikenal, 400 hapus role sistem/client default).
       `clients`/`roles` nyaris gratis: repo-nya (`AsyncClientRepo`/
@@ -1472,9 +1473,105 @@ tinggal pkg_vuln+cve_email), 7.6 (snapshot test), 7.7 (ekspor OpenAPI), 7.8.
       suite: **729 passed**, mypy 77 file (`cti-core`+`apps/api`) bersih,
       ruff bersih.
 
-      Sisa 13 router (Bagian 3-5): `attack`/`ta_groups`/`mitre`/`crossref`
-      (Bagian 3) → `pkg_vuln`/`newsletter`/`stix`/`mindmap` (Bagian 4) →
-      `intelligence`/`recap`/`exec_dashboard` (Bagian 5).
+      **Bagian 3 (2026-09-19) -- 4/4 KELAR** (`attack`, `ta_groups`,
+      `mitre`, `crossref`) -- user bilang "gas lanjut bagian 3". Rantai
+      ATT&CK/TA sesuai urutan dependency yang direncanakan: `attack`
+      (prasyarat) → `ta_groups` → `mitre` → `crossref`.
+
+      **`attack`** -- katalog MITRE ATT&CK (technique/tactic/mitigation/
+      group/software/relationship), 6 tabel baru + `attack_sync_log`.
+      `sync_domain()` fetch bundel STIX (JSON, bisa puluhan MB) dari
+      GitHub `mitre/cti` per domain (enterprise/ics/mobile), upsert
+      batched `INSERT ... ON CONFLICT (stix_id) DO UPDATE` (500/batch,
+      port angka yang sama dari `_bulk_write()` lama). `domains` (ARRAY)
+      butuh merge-dedup manual di klausa `SET` (`array_agg DISTINCT`
+      gabungan array lama+baru) -- tanpa itu re-sync domain yang sama
+      numpuk entry duplikat, `$addToSet` Mongo lama otomatis nyegah ini.
+      `stix_id` (bukan `attack_id`/`group_id`) yang jadi kunci upsert,
+      persis `_id: obj["id"]` Mongo lama -- kode manusia-readable
+      ("T1059"/"G0016") SENGAJA gak diberi UNIQUE constraint (gak
+      dijamin unik lintas domain bundel MITRE). `POST /sync`/
+      `GET /sync/{domain}` pakai FastAPI `BackgroundTasks` port apa
+      adanya -- BUKAN salah satu dari 5 loop Fase 7.8 (itu loop
+      KONTINYU, ini aksi admin sekali-pakai), butuh session sendiri
+      (`async_session()` langsung) karena session request-scoped ke-close
+      begitu response terkirim. Full-text search Mongo (`$text`) -> ILIKE,
+      konsisten sama router lain. Verified LIVE: sync domain `mobile`
+      beneran (137 technique/22 group/127 software/1889 relationship dari
+      GitHub asli), re-sync gak numpuk `domains` duplikat (delta=0),
+      semua endpoint query (techniques/tactics/mitigations/groups/
+      software/navigator-layer) jalan atas data hasil sync itu.
+
+      **`ta_groups`** -- daftar nama TA utama REUSE `ThreatActorGroup`
+      (`threat_reference.py`, Fase 5, dipakai bareng `cti_enrich.stages.
+      score` buat `mentioned_group` matching) alih-alih bikin tabel baru
+      terpisah -- ketauan pas baca model itu, itu PERSIS collection yang
+      sama kayak `TA_GROUPS_COLLECTION` lama. Nambah kolom `source` yang
+      ketinggalan (tabelnya awalnya cuma dibaca, belum ada jalur tulis).
+      3 tabel baru: `ta_whitelist` (suppression list, bukan whitelist
+      beneran -- nama TA yang DITOLAK jadi group), `ta_watchlist`
+      (per-client), `ta_profiles` (JSONB, profil terstruktur hasil LLM).
+      Timeline (`get_ta_timeline`) + dormancy detection cross-reference
+      artikel+tweet+ransomware victim per bulan.
+
+      **Bug real ketemu dari test integrasi** (bukan hipotesis): query
+      `get_timeline` pakai `func.to_char(Article.posted_on, "YYYY-MM")`
+      DUA KALI terpisah (SELECT + GROUP BY) -- SQLAlchemy generate dua
+      bind parameter beda (`$1`/`$4`) walau nilainya sama, Postgres nolak
+      ("must appear in GROUP BY clause") karena validasinya SINTAKS,
+      bukan nilai. Fix: assign `func.to_char(...)` ke variabel, dipakai
+      ULANG objek yang sama di SELECT dan GROUP BY.
+
+      LLM client-nya SENGAJA gak reuse `cti_enrich.llm.client` walau itu
+      "SATU LLM client" kanonik Fase 5 -- `apps/api` punya exit criteria
+      eksplisit (atas, Fase 7): "gak ada import `cti_scraper`/`cti_enrich`
+      dari API". Duplikat sempit (~15 baris) `OpenAI(**kwargs)` di
+      `services/ta_profile.py`, `LlmSettings`/`get_settings()`-nya tetap
+      dari `cti_core`.
+
+      CVE crossref (`exploited_vulnerabilities` LLM vs `cve_tracker`
+      real) butuh kolom yang belum ada: `cisa_kev`/`active_exploitation`
+      (bool) + `threat_actors`/`ttps` (tabel anak baru `CveThreatActor`/
+      `CveTTP`, pola sama `ArticleThreatActor`/`ArticleTTP`). Field ini
+      ADA di dokumen Mongo lama tapi ditulis loop enrichment CVE
+      (`_cve_enrichment_loop`, Fase 7.8, BELUM diport) -- kolomnya
+      ditambah sekarang (gap ketauan pas porting) supaya query crossref
+      udah bener begitu 7.8 ngisi datanya, buat sekarang selalu
+      kosong/false (bukan bug, cold-start biasa).
+
+      **Verified LIVE dengan LLM gateway asli:** `POST /api/ta/profile/
+      generate` kena isu "Kiro persona" yang udah didokumentasikan di
+      Bagian 1 (gateway dev balikin response non-JSON) -- `HTTP 200` dari
+      gateway tapi `json.loads` gagal ("Expecting value"). Bukan bug baru
+      di sini, konsisten sama temuan operasional yang udah dilaporkan.
+
+      **`mitre`** -- heatmap TA/industri x TTP, baca `articles`/
+      `article_ttps`/dst (Fase 2, ternormalisasi) -- BUKAN katalog
+      `attack_techniques` (`attack` di atas): heatmap ngukur TTP yang
+      BENERAN keobservasi di pemberitaan (ekstraksi LLM Fase 5), beda
+      sumber data dari katalog referensi MITRE, gak saling gantiin (sama
+      pola `source_score_service.py` vs `source_score_db_service.py` di
+      Bagian 2). `d3fend_service.py` (`urllib` sync-in-thread) diganti
+      `httpx.AsyncClient`, port perilaku sama (cache in-memory, gagal ->
+      list kosong) -- verified LIVE manggil API publik D3FEND asli, 15
+      countermeasure buat T1059.
+
+      **`crossref`** -- nyambungin CVE/PIR/TA lewat overlap threat_actors/
+      TTPs, dikerjain TERAKHIR (butuh `cve`/`pir`/`ta_groups` semua udah
+      ada). SEMUA query lintas client, TANPA filter `client_id` -- port
+      apa adanya, kode lama juga gak nge-scope endpoint ini. `pir_id`
+      sekarang `int` path param, gak perlu try/except `ObjectId(...)`.
+      Verified LIVE: crossref CVE real (severity/KEV data bener), PIR
+      overlap TA/TTP, TA cross-ref narik artikel+PIR+profil.
+
+      23 test integrasi baru (`AsyncAttackSyncRepo`/`AsyncAttackQueryRepo`
+      lewat live sync, `AsyncTARepo`/`AsyncTAProfileRepo`,
+      `AsyncMitreHeatmapRepo`, `cti_api.services.crossref`). Full suite:
+      **752 passed**, mypy 90 file bersih, ruff bersih.
+
+      Sisa 9 router (Bagian 4-5): `pkg_vuln`/`newsletter`/`stix`/`mindmap`
+      (Bagian 4) → `intelligence`/`recap`/`exec_dashboard` (Bagian 5,
+      PALING BELAKANGAN).
 - [ ] **7.4** Port 56 service
 - [ ] **7.5** Buang duplikasi (pkg_vuln, cve_email, ioc, llm)
 - [ ] **7.6** Snapshot test tiap endpoint

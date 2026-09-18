@@ -32,7 +32,15 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Session
 
 from cti_core.db.models.article import Article
-from cti_core.db.models.cve import CveAffected, CveFalsePositive, CvePoc, CveReference, CveTracker
+from cti_core.db.models.cve import (
+    CveAffected,
+    CveFalsePositive,
+    CvePoc,
+    CveReference,
+    CveThreatActor,
+    CveTracker,
+    CveTTP,
+)
 
 _SORT_FIELDS = {
     "tech": CveTracker.tech,
@@ -62,9 +70,7 @@ class CveTrackerRepo:
         `cascade="all, delete-orphan"` (lihat model), jadi assign list baru
         otomatis buang baris anak yang lama."""
         existing = self.session.execute(
-            select(CveTracker).where(
-                CveTracker.cve_id == cve_id, CveTracker.client_id == client_id
-            )
+            select(CveTracker).where(CveTracker.cve_id == cve_id, CveTracker.client_id == client_id)
         ).scalar_one_or_none()
 
         if existing is None:
@@ -155,6 +161,14 @@ class AsyncCveFalsePositiveRepo:
         )
         return list(result.scalars().all())
 
+    async def list_all_cve_ids(self) -> list[str]:
+        """Lintas client, TANPA filter -- port apa adanya dari
+        `cross_reference_service.py` (`db[FP_COLLECTION].distinct("cve_id")`,
+        gak pernah nge-scope client). Dipakai `crossref` (Bagian 3) doang,
+        endpoint FP utama (`cve.py`) tetap per-client via `list_cve_ids`."""
+        result = await self.session.execute(select(CveFalsePositive.cve_id).distinct())
+        return list(result.scalars().all())
+
     async def mark(self, cve_id: str, client_id: str, marked_by: str | None = None) -> None:
         existing = await self.session.execute(
             select(CveFalsePositive).where(
@@ -163,9 +177,7 @@ class AsyncCveFalsePositiveRepo:
         )
         if existing.scalar_one_or_none() is not None:
             return
-        self.session.add(
-            CveFalsePositive(cve_id=cve_id, client_id=client_id, marked_by=marked_by)
-        )
+        self.session.add(CveFalsePositive(cve_id=cve_id, client_id=client_id, marked_by=marked_by))
         await self.session.flush()
 
     async def unmark(self, cve_id: str, client_id: str) -> None:
@@ -185,9 +197,7 @@ class AsyncCveFalsePositiveRepo:
         existing = set(await self.list_cve_ids(client_id))
         to_add = [cid for cid in cve_ids if cid not in existing]
         for cid in to_add:
-            self.session.add(
-                CveFalsePositive(cve_id=cid, client_id=client_id, marked_by=marked_by)
-            )
+            self.session.add(CveFalsePositive(cve_id=cid, client_id=client_id, marked_by=marked_by))
         await self.session.flush()
         return len(to_add)
 
@@ -195,6 +205,89 @@ class AsyncCveFalsePositiveRepo:
 class AsyncCveTrackerRepo:
     def __init__(self, session: AsyncSession) -> None:
         self.session = session
+
+    async def get_by_cve_id_any_client(self, cve_id: str) -> CveTracker | None:
+        """Case-insensitive, lintas client, ambil SATU baris pertama yang
+        cocok -- port apa adanya dari `cross_reference_service.get_cve_crossrefs()`
+        (`find_one` tanpa client filter). Kalau CVE yang sama ke-track di
+        lebih dari satu client, baris yang kepilih arbitrer (tergantung
+        urutan default DB) -- sama ambiguitas kayak kode lama."""
+        result = await self.session.execute(
+            select(CveTracker).where(func.lower(CveTracker.cve_id) == cve_id.lower())
+        )
+        return result.scalars().first()
+
+    async def get_by_threat_actor_exact(
+        self, actor_name: str, *, exclude_cve_ids: Sequence[str]
+    ) -> list[CveTracker]:
+        """Exact-match (case-insensitive) `threat_actors`, urut `cve_score`
+        desc, limit 30 -- port `cross_reference_service.get_ta_crossrefs()`."""
+        stmt = (
+            select(CveTracker)
+            .join(CveThreatActor)
+            .where(func.lower(CveThreatActor.threat_actor) == actor_name.lower())
+        )
+        if exclude_cve_ids:
+            stmt = stmt.where(CveTracker.cve_id.notin_(exclude_cve_ids))
+        stmt = stmt.order_by(CveTracker.cve_score.desc().nulls_last()).limit(30)
+        result = await self.session.execute(stmt)
+        return list(result.scalars().unique().all())
+
+    async def search_crossref(
+        self,
+        *,
+        threat_actors: Sequence[str],
+        ttp_ids: Sequence[str],
+        tech_list: Sequence[str],
+        exclude_cve_ids: Sequence[str],
+    ) -> list[CveTracker]:
+        """CVE yang overlap TA/TTP/industri PIR -- port
+        `cross_reference_service.get_pir_crossrefs()`. Kosongin ketiga
+        kriteria (`threat_actors`/`ttp_ids`/`tech_list`) -> gak ada OR
+        clause -> query balik ke `cve_id NOT IN fp` doang (match-all),
+        port perilaku sama persis `cve_conditions = []` -> `$or` gak
+        keisi di kode lama."""
+        conditions = []
+        if threat_actors:
+            lowered = [t.lower() for t in threat_actors]
+            conditions.append(
+                CveTracker.id.in_(
+                    select(CveThreatActor.cve_tracker_id).where(
+                        func.lower(CveThreatActor.threat_actor).in_(lowered)
+                    )
+                )
+            )
+        if ttp_ids:
+            conditions.append(
+                CveTracker.id.in_(select(CveTTP.cve_tracker_id).where(CveTTP.ttp_id.in_(ttp_ids)))
+            )
+        if tech_list:
+            conditions.append(CveTracker.tech.in_(tech_list))
+
+        stmt = select(CveTracker)
+        if exclude_cve_ids:
+            stmt = stmt.where(CveTracker.cve_id.notin_(exclude_cve_ids))
+        if conditions:
+            stmt = stmt.where(or_(*conditions))
+        stmt = stmt.order_by(CveTracker.cve_score.desc().nulls_last()).limit(50)
+        result = await self.session.execute(stmt)
+        return list(result.scalars().unique().all())
+
+    async def get_by_cve_ids(self, cve_ids: Sequence[str]) -> list[CveTracker]:
+        """Lintas client, TANPA filter `client_id` -- port apa adanya dari
+        `cross_reference_service.py`/`ta_profile_service.py` lama
+        (`cve_col.find({"cve_id": {"$in": ...}})`, gak pernah nge-scope
+        client). Dipakai `crossref`/`ta_groups` (Bagian 3), bukan
+        endpoint CVE utama yang emang per-client. Kalau CVE yang sama ada
+        di lebih dari satu client, caller yang mutusin gimana nanganin
+        duplikat -- sama ambiguitas yang ada di kode lama, bukan
+        diselesaikan diam-diam di sini."""
+        if not cve_ids:
+            return []
+        result = await self.session.execute(
+            select(CveTracker).where(CveTracker.cve_id.in_(cve_ids))
+        )
+        return list(result.scalars().all())
 
     async def list_filtered(
         self,
@@ -295,9 +388,7 @@ class AsyncCveTrackerRepo:
         )
         return [t for t in result.scalars().all() if t]
 
-    async def get_article_mentions(
-        self, cve_ids: Sequence[str]
-    ) -> dict[str, list[dict[str, str]]]:
+    async def get_article_mentions(self, cve_ids: Sequence[str]) -> dict[str, list[dict[str, str]]]:
         """Port `get_article_mentions()` -- CVE ID nyebut di judul artikel
         mana aja. Query SATU kali (OR ilike per cve_id), bukan N query."""
         result: dict[str, list[dict[str, str]]] = {cid: [] for cid in cve_ids}

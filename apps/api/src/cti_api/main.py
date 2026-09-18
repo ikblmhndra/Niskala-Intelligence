@@ -23,19 +23,23 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from cti_api import __version__
 from cti_api.routers import articles as articles_router
+from cti_api.routers import attack as attack_router
 from cti_api.routers import auth as auth_router
 from cti_api.routers import changelog as changelog_router
 from cti_api.routers import clients as clients_router
+from cti_api.routers import crossref as crossref_router
 from cti_api.routers import cve as cve_router
 from cti_api.routers import filtered_articles as filtered_articles_router
 from cti_api.routers import health as health_router
 from cti_api.routers import iocs as iocs_router
+from cti_api.routers import mitre as mitre_router
 from cti_api.routers import monitored_accounts as monitored_accounts_router
 from cti_api.routers import pir as pir_router
 from cti_api.routers import ransomware as ransomware_router
 from cti_api.routers import rfi as rfi_router
 from cti_api.routers import roles as roles_router
 from cti_api.routers import source_reliability as source_reliability_router
+from cti_api.routers import ta_groups as ta_groups_router
 from cti_api.routers import techstack as techstack_router
 from cti_api.routers import tweets as tweets_router
 from cti_api.services.roles import ensure_system_roles
@@ -83,6 +87,10 @@ def create_app() -> FastAPI:
     app.include_router(rfi_router.router)
     app.include_router(pir_router.router)
     app.include_router(source_reliability_router.router)
+    app.include_router(attack_router.router)
+    app.include_router(ta_groups_router.router)
+    app.include_router(mitre_router.router)
+    app.include_router(crossref_router.router)
     return app
 
 

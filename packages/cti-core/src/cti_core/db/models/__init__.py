@@ -10,15 +10,26 @@ from cti_core.db.models.article import (
     ArticleTTP,
     RejectedArticle,
 )
+from cti_core.db.models.attack import (
+    AttackGroup,
+    AttackMitigation,
+    AttackRelationship,
+    AttackSoftware,
+    AttackSyncLog,
+    AttackTactic,
+    AttackTechnique,
+)
 from cti_core.db.models.auth import AuditLogEntry, Client, ClientCountry, Role, User, UserClient
 from cti_core.db.models.cve import (
     CveAffected,
     CveFalsePositive,
     CvePoc,
     CveReference,
+    CveThreatActor,
     CveTicket,
     CveTicketItem,
     CveTracker,
+    CveTTP,
 )
 from cti_core.db.models.ioc import IOC, IOCFeedback, IOCSource, IOCTag, IOCThreatActor
 from cti_core.db.models.ioc_reference import IocAllowlistEntry, ThreatFeedEntry
@@ -34,6 +45,7 @@ from cti_core.db.models.ransomware import RansomwareVictim
 from cti_core.db.models.rfi import RFIRequest
 from cti_core.db.models.scraper import ScraperConfig, ScraperItem, ScraperRun, ScraperSeen
 from cti_core.db.models.source_reliability import SourceReliabilityEntry
+from cti_core.db.models.ta import TAProfile, TAWatchlistEntry, TAWhitelistEntry
 from cti_core.db.models.techstack import TechStackEntry
 from cti_core.db.models.threat_reference import MonitoredPerson, ThreatActorGroup
 from cti_core.db.models.tweet import MonitoredAccount, Tweet
@@ -45,6 +57,13 @@ __all__ = [
     "ArticleIndustry",
     "ArticleTTP",
     "ArticleThreatActor",
+    "AttackGroup",
+    "AttackMitigation",
+    "AttackRelationship",
+    "AttackSoftware",
+    "AttackSyncLog",
+    "AttackTactic",
+    "AttackTechnique",
     "AuditLogEntry",
     "Client",
     "ClientCountry",
@@ -52,6 +71,8 @@ __all__ = [
     "CveFalsePositive",
     "CvePoc",
     "CveReference",
+    "CveTTP",
+    "CveThreatActor",
     "CveTicket",
     "CveTicketItem",
     "CveTracker",
@@ -78,6 +99,9 @@ __all__ = [
     "ScraperRun",
     "ScraperSeen",
     "SourceReliabilityEntry",
+    "TAProfile",
+    "TAWatchlistEntry",
+    "TAWhitelistEntry",
     "TechStackEntry",
     "ThreatActorGroup",
     "ThreatFeedEntry",
