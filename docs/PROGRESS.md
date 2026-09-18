@@ -20,7 +20,7 @@ Plan lengkap: `~/.claude/plans/oke-bro-jadi-gini-sparkling-fern.md`
 | 3 | Framework scraper | `[x]` | 2 minggu | 5 scraper referensi lolos golden test |
 | 4 | Migrasi scraper (**100 aktif**) | `[x]` | ~2 minggu | ≥95% fixture identik, semua modul ke-import |
 | 5 | `cti-enrich` | `[x]` | 2–3 minggu | Output cocok dgn baseline, tiap cabang routing ada test |
-| 6 | Celery + beat | `[~]` inti kelar, lock+backpressure nyusul | 1–2 minggu | ~~5 loop web pindah~~ (→ 7.8) · beat singleton terverifikasi |
+| 6 | Celery + beat | `[x]` inti; sisanya dipindah 7.8/10.1d/10.1e | 1–2 minggu | ~~5 loop web pindah~~ (→ 7.8) · ~~beat singleton terverifikasi~~ (→ 10.1d) |
 | 7 | `apps/api` | `[ ]` | 4–6 minggu | Semua endpoint ada snapshot test · 5 loop jadi beat task (7.8) |
 | 8 | `apps/web` (Next.js) | `[ ]` | 4–6 minggu | Semua tab lama ada padanannya |
 | 9 | Control plane scraper | `[ ]` | 1 minggu | Scraper mati kedeteksi dlm 3 interval |
@@ -863,7 +863,7 @@ ke Postgres lokal + kirim completion beneran ke LLM gateway dev + Telegram.
 
 ---
 
-## Fase 6 — Celery + beat `[~]` inti kelar, 6.7/6.8 nunggu trigger nyata
+## Fase 6 — Celery + beat `[x]` inti kelar, sisanya dipindah ke 7.8/10.1d/10.1e
 
 **2026-09-18 — "inti" Fase 6 (arahan: mulai dari core dulu, 5 loop web
 nyusul belakangan).** Dibangun di `apps/worker` (package baru `cti-worker`,
@@ -908,13 +908,15 @@ masuk uv workspace) + `cti_core.celery_client` (producer-side, biar
       MEMANG bakal di-port ke Postgres bareng 56 service lain di Fase 7 --
       misah-misahin kerjaan cuma bikin dobel, digabung natural pas Fase 7
       jalan (bukan item Fase 6 yang genuinely selesai).
-- [ ] **6.7** Lock singleton (cegah beat double-fire) -- **ditunda**, belum
-      ada kebutuhan nyata (1 proses beat lokal) sampai deployment multi-node
-      masuk Fase 10.
-- [ ] **6.8** Guard backpressure antrian `enrich` -- **ditunda**, belum ada
-      indikasi nyata `enrich` numpuk lebih cepat dari yang bisa diproses;
-      revisit kalau `worker-nlp` image (Fase 9/10, concurrency dibatasi RAM
-      spaCy) bikin ini masalah beneran.
+- [x] **6.7** ~~Lock singleton (cegah beat double-fire)~~ -- **dipindah ke
+      10.1d**. Soft-depend, bukan blocker teknis (infra Redis+Celery udah
+      lengkap, lock bisa dibangun kapan aja) -- cuma gak ada gunanya diuji
+      sekarang, baru 1 proses beat lokal yang jalan. Nyambung langsung ke
+      checklist cutover "Beat terverifikasi singleton" di bawah.
+- [x] **6.8** ~~Guard backpressure antrian `enrich`~~ -- **dipindah ke
+      10.1e**. Sama, soft-depend: nyambung ke pemisahan image `worker-nlp`
+      (Fase 9/10, concurrency dibatasi RAM spaCy/sumy) yang diprediksi
+      baru beneran bikin antrian numpuk -- belum ada indikasi nyata sekarang.
 
 **Task lain:**
 - `apps/worker/src/cti_worker/tasks/scrape.py::run_scraper` (`scrape.run`)
@@ -989,11 +991,12 @@ masuk uv workspace) + `cti_core.celery_client` (producer-side, biar
 
 **Exit criteria (draft plan):** 5 loop web hilang dari `main.py` · uvicorn
 jalan multi-worker · beat singleton terverifikasi (restart, cek gak
-double-fire) -- **belum tercapai**: "5 loop hilang" sekarang jadi exit
-criteria **7.8** (lihat 6.6 di atas), "beat singleton" masih `[ ]` di 6.7
-nunggu deployment multi-node (Fase 10). Yang UDAH terverifikasi: rantai
-penuh scrape → sink → enrich queue → enrich task → persist jalan LIVE tanpa
-satu pun langkah disintesis/di-mock.
+double-fire) -- ketiganya dipindah jadi exit criteria fase lain (5 loop →
+**7.8**, beat singleton → **10.1d**, lihat 6.6/6.7 di atas) karena
+nunggu kondisi yang belum ada di deployment lokal sekarang (`apps/api`
+buat 5 loop, deployment multi-node buat beat singleton). Yang UDAH
+terverifikasi LIVE di Fase 6 sendiri: rantai penuh scrape → sink → enrich
+queue → enrich task → persist jalan tanpa satu pun langkah disintesis/di-mock.
 
 ---
 
@@ -1071,6 +1074,22 @@ satu pun langkah disintesis/di-mock.
       bisa ditebak dari kode lama doang -- tiap situs kudu dicek satu-satu
       (bisa jadi gampang kayak Mandiant, bisa jadi beneran butuh browser
       automation, gak ada cara tau tanpa ngecek langsung).
+- [ ] **10.1d** **Dipindah dari 6.7** (2026-09-18, keputusan user): lock
+      singleton buat Celery beat (cegah dua proses beat sama-sama fire
+      schedule yang sama pas deploy multi-node). Redis udah kepake luas
+      (broker Celery, `TokenBucket`) -- pola paling gampang: `SET NX PX`
+      di `redis.Redis` yang sama, lock diperpanjang tiap beat tick (bukan
+      lock sekali pas start, biar proses yang macet ketauan lewat TTL
+      abis, bukan nyangkut lock permanen). Ini yang dicek checklist
+      cutover "Beat terverifikasi singleton" di bawah.
+- [ ] **10.1e** **Dipindah dari 6.8** (2026-09-18, keputusan user): guard
+      backpressure antrian `enrich` -- baru relevan begitu `worker-nlp`
+      (image terpisah, concurrency dibatasi RAM spaCy/sumy, plan §10)
+      beneran jalan dan kelihatan antrian numpuk lebih cepat dari yang
+      bisa diproses. Opsi paling murah: cek `queue.enrich` depth via
+      Redis (`LLEN`) sebelum `_article_sink` dispatch, log warning/tolak
+      dispatch kalau ngelewatin ambang -- keputusan ambang & aksi pasti
+      nunggu angka nyata dari `worker-nlp` produksi, bukan ditebak sekarang.
 - [ ] **10.2** Verifikasi cold-start guard
 - [ ] **10.3** Stop cron lama + systemd unit lama
 - [ ] **10.4** Arsipkan dump Mongo final
@@ -1085,7 +1104,7 @@ satu pun langkah disintesis/di-mock.
 - [ ] Backup Mongo <24 jam, sudah dites restore
 - [ ] Stack lama bisa dinyalakan lagi <5 menit (sudah dilatih)
 - [ ] Health sweep terbukti bisa deteksi scraper mati (tes di staging)
-- [ ] Beat terverifikasi singleton
+- [ ] Beat terverifikasi singleton (10.1d)
 - [ ] Data referensi ter-seed
 
 ---
