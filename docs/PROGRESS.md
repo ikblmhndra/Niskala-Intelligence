@@ -18,9 +18,9 @@ Plan lengkap: `~/.claude/plans/oke-bro-jadi-gini-sparkling-fern.md`
 | 1 | Skeleton monorepo | `[~]` | 1 minggu | `uv sync` hijau, CI jalan |
 | 2 | `cti-core` + skema Postgres | `[x]` | 2–3 minggu | Alembic up, repo + model ada test |
 | 3 | Framework scraper | `[x]` | 2 minggu | 5 scraper referensi lolos golden test |
-| 4 | Migrasi scraper (**100 aktif**) | `[ ]` | ~2 minggu | ≥95% fixture identik, semua modul ke-import |
-| 5 | `cti-enrich` | `[ ]` | 2–3 minggu | Output cocok dgn baseline, tiap cabang routing ada test |
-| 6 | Celery + beat | `[ ]` | 1–2 minggu | 5 loop web pindah, beat singleton terverifikasi |
+| 4 | Migrasi scraper (**100 aktif**) | `[x]` | ~2 minggu | ≥95% fixture identik, semua modul ke-import |
+| 5 | `cti-enrich` | `[x]` | 2–3 minggu | Output cocok dgn baseline, tiap cabang routing ada test |
+| 6 | Celery + beat | `[~]` inti kelar, 5 loop + lock + backpressure nyusul | 1–2 minggu | 5 loop web pindah, beat singleton terverifikasi |
 | 7 | `apps/api` | `[ ]` | 4–6 minggu | Semua endpoint ada snapshot test |
 | 8 | `apps/web` (Next.js) | `[ ]` | 4–6 minggu | Semua tab lama ada padanannya |
 | 9 | Control plane scraper | `[ ]` | 1 minggu | Scraper mati kedeteksi dlm 3 interval |
@@ -863,18 +863,133 @@ ke Postgres lokal + kirim completion beneran ke LLM gateway dev + Telegram.
 
 ---
 
-## Fase 6 — Celery + beat `[ ]`
+## Fase 6 — Celery + beat `[~]` inti kelar, 3 item nyusul
 
-- [ ] **6.1** `app.py` + config (`acks_late`, `visibility_timeout` > task terlama)
-- [ ] **6.2** Queue: `scrape.light`, `scrape.browser`, `enrich`, `io`, `control`
-- [ ] **6.3** Router dinamis baca `runtime` dari registry
-- [ ] **6.4** Beat schedule di-generate dari registry
-- [ ] **6.5** Token bucket Redis per-domain
-- [ ] **6.6** Pindahkan 5 loop web → beat task
-- [ ] **6.7** Lock singleton (cegah double-fire)
-- [ ] **6.8** Guard backpressure antrian enrich
+**2026-09-18 — "inti" Fase 6 (arahan: mulai dari core dulu, 5 loop web
+nyusul belakangan).** Dibangun di `apps/worker` (package baru `cti-worker`,
+masuk uv workspace) + `cti_core.celery_client` (producer-side, biar
+`cti_scraper.sinks` -- sebuah package -- gak perlu depend ke `apps/worker`
+-- sebuah app):
 
-**Exit criteria:** 5 loop web hilang dari `main.py` · uvicorn jalan multi-worker · beat singleton terverifikasi (restart, cek gak double-fire)
+- [x] **6.1** `apps/worker/src/cti_worker/celery_app.py` -- app Celery
+      SATU, dua "image" (scrape vs enrich) dibedain lewat `-Q` + extra
+      `nlp` yang ke-install/nggak, bukan app terpisah. `task_acks_late=True`
+      + `broker_transport_options={"visibility_timeout": 3600}` ditambahin
+      belakangan (exit criteria 6.1 minta ini eksplisit) -- ack cuma
+      setelah task selesai (worker mati di tengah run gak bikin task hilang
+      diam-diam), visibility_timeout 3600s jauh di atas task terlama yang
+      keukur LIVE (`enrich.article` ~10-13s, `scrape.run` ~1-2s).
+- [x] **6.2** Queue: `scrape.rss` / `scrape.api` / `scrape.browser` /
+      `enrich` (nama beda dari draft plan `scrape.light`/`io`/`control` --
+      dipetakan ke family scraper riil yang udah ada dari Fase 3/4, bukan
+      istilah generik yang gak ke-pakai). `notify`/`maintenance` didefinisiin
+      di `queues.py` tapi belum ada consumer -- placeholder buat 6.6.
+- [x] **6.3** `apps/worker/src/cti_worker/queues.py::queue_for()` --
+      baca `ScraperMeta.runtime` ("browser" → `scrape.browser`) +
+      `credential` (`is not None` → `scrape.api`, else `scrape.rss`).
+      Dipakai beat (opsi per-entry) DAN bakal dipakai trigger manual Fase 9.
+- [x] **6.4** `apps/worker/src/cti_worker/beat.py::build_beat_schedule()`
+      -- generate dari `cti_scraper.registry.discover()`, `ScraperMeta.schedule`
+      (cron 5-field) → `celery.schedules.crontab`. **Verified LIVE**: build
+      berhasil buat SEMUA scraper aktif riil di registry, gak ada yang gagal
+      parse. Nemu 1 bug nyata pas verifikasi: `crontab()` Celery nolak
+      sintaks cron valid `"0/N"` (cuma terima `*/N`) -- scraper `eset`
+      (jadwal dipulihin dari Rundeck Fase 4) pakai `"0 0/1 * * *"`. Fix:
+      `_normalize_field()` regex `0/N` → `*/N` (aman, N=0 = minimum field
+      manapun); `N/M` non-zero SENGAJA dibiarin apa adanya, gak ada kasus
+      itu di scraper aktif sekarang.
+- [x] **6.5** Token bucket Redis (`TokenBucket`, dibangun Fase 3, belum
+      pernah disambung ke Redis client beneran) sekarang disambung
+      `redis.Redis.from_url(settings.redis.url)` di `tasks/scrape.py`.
+- [ ] **6.6** Pindahkan 5 loop web → beat task -- **ditunda**, ranahnya
+      dipindah waktu `apps/api` (Fase 7) ditulis karena loop-loop itu
+      sekarang masih hidup di `ScraperNewsWeb/app/main.py` (repo lama),
+      belum ada padanan di `apps/api` (masih kosong) buat "dipindah dari"nya.
+- [ ] **6.7** Lock singleton (cegah beat double-fire) -- **ditunda**, belum
+      ada kebutuhan nyata (1 proses beat lokal) sampai deployment multi-node
+      masuk Fase 10.
+- [ ] **6.8** Guard backpressure antrian `enrich` -- **ditunda**, belum ada
+      indikasi nyata `enrich` numpuk lebih cepat dari yang bisa diproses;
+      revisit kalau `worker-nlp` image (Fase 9/10, concurrency dibatasi RAM
+      spaCy) bikin ini masalah beneran.
+
+**Task lain:**
+- `apps/worker/src/cti_worker/tasks/scrape.py::run_scraper` (`scrape.run`)
+  -- eksekusi `Runner` (Fase 3), `result.status in ("fetch_error",
+  "rate_limited")` → raise `_RetryableRunError` biar `autoretry_for` Celery
+  yang urus backoff (`Runner` sendiri SENGAJA gak retry, lihat docstring
+  `runner.py`). `max_retries=3`, `retry_backoff=True`.
+- `apps/worker/src/cti_worker/tasks/enrich.py::enrich_article` (`enrich.article`,
+  `queue="enrich"`) -- panggil `cti_enrich.pipeline.run_pipeline()` (Fase 5)
+  lewat import LAZY (worker scrape-only, image tanpa extra `nlp`, tetep
+  bisa start & register nama task ini walau manggil beneran bakal
+  `ImportError` -- `-Q` yang jamin worker itu gak pernah di-assign task
+  ini, plan §4). Retry cuma buat `json.JSONDecodeError` residual yang lolos
+  dari retry internal `classify()`/`extract_ttps()` (Fase 5, ~6.5% residual
+  korpus test) -- `max_retries=2`. `OpenAIQuotaExhausted` SENGAJA gak
+  di-retry (kuota abis butuh tindakan manusia, retry cuma nge-spam queue).
+- `packages/cti-scraper/src/cti_scraper/sinks.py::_article_sink` -- ganti
+  dari nulis `ArticleRepo` LANGSUNG (Fase 3) jadi `send_task("enrich.article",
+  ...)`. Tulis-DB-nya sekarang di dalam task `enrich.article` (lewat
+  `run_pipeline` → `persist.py`), bukan di sink lagi -- kontrak tipe yang
+  masuk sink (`ArticleItem`) gak berubah, cuma titik tulisnya pindah dari
+  SINKRON ke ASINKRON.
+- `packages/cti-core/src/cti_core/celery_client.py::get_celery_client()`
+  -- Celery client MINIMAL (cuma tau broker URL, `send_task` by string
+  name) buat dipanggil dari `cti_scraper.sinks` TANPA `cti_scraper` (sebuah
+  package) depend ke `apps/worker` (sebuah app) -- dependency inversion,
+  producer gak perlu tau implementasi task, cuma nama + kwargs-nya.
+
+**Verifikasi LIVE end-to-end (2026-09-18), bukan cuma unit test:**
+1. `uv run celery -A cti_worker.celery_app worker -Q scrape.rss,scrape.api,scrape.browser,enrich --pool=solo` --
+   start bersih, register `scrape.run` + `enrich.article`, beat schedule
+   ke-build buat semua scraper aktif riil.
+   (Catatan dev macOS: `--pool=solo` wajib lokal -- default prefork
+   nge-crash `ValueError: not enough values to unpack` karena spawn-based
+   multiprocessing macOS gak cocok sama asumsi prefork Celery; BUKAN
+   masalah produksi karena Docker/Linux pakai `fork`.)
+2. Dispatch manual `scrape.run("mandiant")` (scraper hasil rewrite 4.8) 2x
+   -- run pertama `items_new=0` (dedup bener-bener kerja, semua 20 item
+   udah `scraper_seen` dari testing sesi sebelumnya); abis `scraper_seen`
+   di-clear buat scraper ini, run kedua `items_new=20`.
+3. Ke-20 item nge-trigger `send_task("enrich.article", ...)` dari
+   `_article_sink` -- worker yang SAMA (consume `enrich` juga) nangkep,
+   jalanin `run_pipeline()` penuh (fetch_text → classify LLM → summarize →
+   extract_ttps → extract_iocs → score → persist → route_alerts) buat
+   tiap artikel, termasuk kirim alert Telegram beneran buat yang lolos
+   filter.
+4. Query Postgres `SELECT ... WHERE source ILIKE '%mandiant%' ORDER BY
+   created_at DESC` -- **20 baris Article baru** ke-persist, `news_type`
+   ke-klasifikasi (`global`, `apac`, `Zero Day Article`,
+   `Security Technology & Best Practices`, sebagian `None` = ditolak
+   klasifikasi -- konsisten sama rate penolakan yang udah didokumentasiin
+   Fase 5).
+5. Full suite abis semua perubahan: `pytest tests/ -q` → **556 passed**,
+   `ruff check .` → clean, `mypy apps/worker + celery_client.py + sinks.py`
+   → clean (0 issues, 9 source file).
+
+**Bug ketemu pas kerjain ini:**
+- `pytest tests/` sempat KEBACA hang abis `_article_sink` diubah --
+  root cause BUKAN kode baru, tapi `.env` punya `REDIS__URL=redis://redis:6379/0`
+  (hostname Docker-network, gak resolve dari host) dan `get_celery_client().send_task()`
+  block nunggu retry koneksi. Fix: export `REDIS__URL=redis://localhost:6379/0`
+  buat run host-side (pola sama kayak override `DATABASE__URL`/`DATABASE__SYNC_URL`
+  yang udah dipakai sepanjang sesi). Abis di-override, 556 test lulus ~16s --
+  suite lama emang gak nge-exercise real dispatch path dengan cara yang
+  kebuka sama perubahan ini.
+- mypy `untyped-decorator` di `@app.task(...)` -- stub Celery gak preserve
+  signature fungsi yang di-decorate. Inline `# type: ignore[misc]` gak
+  stabil posisinya buat decorator multi-baris (kadang "unused-ignore",
+  kadang "invalid syntax"). Fix proper: `[[tool.mypy.overrides]]` scoped
+  ke `cti_worker.tasks.scrape` + `cti_worker.tasks.enrich` doang di root
+  `pyproject.toml`, bukan disable strict buat seluruh `apps/worker`.
+
+**Exit criteria (draft plan):** 5 loop web hilang dari `main.py` · uvicorn
+jalan multi-worker · beat singleton terverifikasi (restart, cek gak
+double-fire) -- **belum tercapai**, 6.6/6.7/6.8 masih `[ ]` per keputusan
+"inti dulu" di atas. Yang UDAH terverifikasi: rantai penuh scrape → sink →
+enrich queue → enrich task → persist jalan LIVE tanpa satu pun langkah
+disintesis/di-mock.
 
 ---
 

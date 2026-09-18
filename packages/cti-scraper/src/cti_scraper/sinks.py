@@ -74,18 +74,27 @@ def dispatch(item: Item, meta: ScraperMeta, session: Session) -> None:
 
 @sink_for(ArticleItem)
 def _article_sink(item: ArticleItem, meta: ScraperMeta, session: Session) -> None:
-    """Fase 3: nulis LANGSUNG ke `articles` lewat `ArticleRepo`. Begitu
-    Fase 5 (enrichment) dan Fase 6 (Celery) ada, jalur produksi bakal
-    nge-`send_task` ke queue `enrich` di sini alih-alih nulis langsung --
-    tapi kontraknya (tipe apa masuk sini) gak berubah."""
-    from cti_core.db.repositories.article import ArticleRepo
+    """Fase 6: `send_task` ke queue `enrich` (`enrich.article`, lihat
+    `apps/worker/src/cti_worker/tasks/enrich.py`) -- GANTI nulis langsung
+    lewat `ArticleRepo` (perilaku Fase 3). `session` di sini TETAP
+    dipakai Runner buat commit/rollback dedup lease (lihat `runner.py::
+    _handle_item`), tapi sink ini sendiri gak nyentuh Postgres -- cuma
+    ngirim pesan Redis. `ArticleRepo.upsert()` yang beneran nulis
+    `articles` sekarang jalan di task Celery terpisah (`cti_enrich.
+    pipeline.run_pipeline` -> `stages/persist.py`), bukan di sini.
+    Kontraknya (tipe apa yang boleh masuk sini) gak berubah dari Fase 3."""
+    from cti_core.celery_client import get_celery_client
 
-    repo = ArticleRepo(session)
-    repo.upsert(
-        url=item.url,
-        title=item.title,
-        source=meta.source,
-        scraper_id=meta.id,
+    get_celery_client().send_task(
+        "enrich.article",
+        kwargs={
+            "title": item.title,
+            "url": item.url,
+            "posted_on": item.posted_on.isoformat() if item.posted_on else None,
+            "source": meta.source,
+            "scraper_id": meta.id,
+        },
+        queue="enrich",
     )
 
 

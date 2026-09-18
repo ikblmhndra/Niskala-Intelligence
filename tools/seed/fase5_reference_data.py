@@ -12,8 +12,9 @@ kosong tanpa ini) dan `ioc_allowlist` (dipakai `extract_iocs` stage).
 
 Sumber:
   - `legacy/dump/threatintel/groups.bson`       -> ThreatActorGroup (3991 baris, malpedia)
-  - `legacy/dump/threatintel/apac-people.bson`   -> MonitoredPerson (30 baris -- demonym/nasionalitas,
-                                                     BUKAN nama orang, walau nama koleksinya "apac-people")
+  - `legacy/dump/threatintel/apac-people.bson`   -> MonitoredPerson (30 baris --
+                                                     demonym/nasionalitas, BUKAN nama orang,
+                                                     walau nama koleksinya "apac-people")
   - `legacy/dump/news_db/ioc_allowlist.bson`     -> IocAllowlistEntry (9 baris)
 
 Idempoten -- boleh dijalankan berkali-kali, upsert by unique constraint
@@ -33,12 +34,11 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "packages/cti-core/src"))
 
 import bson
-from sqlalchemy import select
-from sqlalchemy.orm import Session
-
 from cti_core.db.engine import sync_session
 from cti_core.db.models.ioc_reference import IocAllowlistEntry
 from cti_core.db.models.threat_reference import MonitoredPerson, ThreatActorGroup
+from sqlalchemy import select
+from sqlalchemy.orm import Session
 
 DUMP_ROOT = Path(__file__).resolve().parents[2] / "legacy" / "dump"
 GROUPS_BSON = DUMP_ROOT / "threatintel" / "groups.bson"

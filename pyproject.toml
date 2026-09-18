@@ -9,6 +9,7 @@ dependencies = [
     "cti-enrich",
     "cti-alerts",
     "cti-scrapers",
+    "cti-worker",
 ]
 
 [project.optional-dependencies]
@@ -26,9 +27,9 @@ dev = [
 package = false
 
 [tool.uv.workspace]
-# apps/api dan apps/worker masuk workspace pas Fase 6/7 nulis kode beneran di
-# sana (sekarang direktori kosong -- uv gagal resolve member tanpa pyproject.toml).
-members = ["packages/*", "scrapers"]
+# apps/api masih direktori kosong -- uv gagal resolve member tanpa
+# pyproject.toml, masuk workspace pas Fase 7 nulis kode beneran di sana.
+members = ["packages/*", "scrapers", "apps/worker"]
 
 [tool.uv.sources]
 cti-core = { workspace = true }
@@ -36,6 +37,7 @@ cti-scraper = { workspace = true }
 cti-enrich = { workspace = true }
 cti-alerts = { workspace = true }
 cti-scrapers = { workspace = true }
+cti-worker = { workspace = true }
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -69,3 +71,13 @@ select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
 python_version = "3.12"
 strict = true
 ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+# `@app.task(...)` (Celery) gak preserve signature fungsi yang di-decorate
+# di stub resminya -- "untyped-decorator" bakal muncul di SETIAP task,
+# bukan sesuatu yang bisa dibenerin per-file pakai inline `# type: ignore`
+# (posisi baris-nya gak stabil buat decorator multi-baris). Cuma 2 modul
+# task (`tasks/scrape.py`, `tasks/enrich.py`) yang kena -- bukan disable
+# strict buat seluruh `apps/worker`.
+module = ["cti_worker.tasks.scrape", "cti_worker.tasks.enrich"]
+disable_error_code = ["untyped-decorator"]
