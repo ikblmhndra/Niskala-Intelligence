@@ -1112,9 +1112,10 @@ tinggal pkg_vuln+cve_email), 7.6 (snapshot test), 7.7 (ekspor OpenAPI), 7.8.
       **OIDC bagian dari 7.2 ini BELUM diport** (`oidc.enabled=False`
       default, 184 baris `oidc_service.py` nunggu giliran terpisah, bukan
       bagian "inti").
-- [~] **7.3** Port 27 router ke repository Postgres -- **5/27 kelar**
+- [~] **7.3** Port 27 router ke repository Postgres -- **6/27 kelar**
       (`clients`, `roles`, `articles` [baca doang], `iocs` [baca+kurasi],
-      `techstack` [CRUD inti]), verified LIVE via curl
+      `techstack` [CRUD inti], `cve` [baca+false-positive+purge]),
+      verified LIVE via curl
       (create/update/delete, RBAC superadmin-only buat mutasi, 422
       permission gak dikenal, 400 hapus role sistem/client default).
       `clients`/`roles` nyaris gratis: repo-nya (`AsyncClientRepo`/
@@ -1227,7 +1228,51 @@ tinggal pkg_vuln+cve_email), 7.6 (snapshot test), 7.7 (ekspor OpenAPI), 7.8.
       nama sama di dua client beda-beda baris, update tech client lain
       ditolak).
 
-      Sisa 22 router (cve/ta_groups/dst) nyusul bertahap, per-router
+      **`cve`** (2026-09-18) -- permukaan BACA + false-positive + purge
+      orphaned. `CveTracker`/`CveFalsePositive` (Fase 2) udah lengkap,
+      cuma kurang layer BACA (`AsyncCveTrackerRepo`/
+      `AsyncCveFalsePositiveRepo` baru) -- jalur TULIS CVE baru TETAP
+      `CveTrackerRepo` sync yang udah ada (Celery task, Fase 4), gak
+      disentuh. `adjusted_risk_score`/`tech_exposure`/`hosting_type`
+      lewat `AsyncTechStackRepo.get_risk_context()` (**inilah kenapa
+      `techstack` dikerjain duluan** -- kebukti kepetakan bener pas live
+      test, satu entri Linux `exposure=public`/`hosting=saas` ngubah
+      `adjusted_risk_score`-nya).
+
+      **Sengaja di-skip/ditunda** (masing-masing alasan beda, didokumentasiin
+      di docstring router): `GET /export` (Excel, `openpyxl` belum
+      dependency), `POST /draft-email` (email/Graph), `POST /cisa-lookup`+
+      `/epss-lookup`+`/exploit-lookup` (API eksternal CISA/FIRST.org/
+      exploit-db), `GET /{id}/mindmap` (`mermaid_service`), `GET /prioritize`
+      (konsep "campaign" belum ada modelnya). **`ticket`/`acknowledge`
+      (termasuk `ack_filter`) SENGAJA ditunda karena alasan DESAIN, bukan
+      cuma "belum sempat"**: `CveTicket` Pydantic lama itu record
+      remediation KAYA per-CVE (14+ field -- affected_asset, owner_email,
+      remediation_status, dst), sedang model Postgres `CveTicket`/
+      `CveTicketItem` (Fase 2) didesain buat konsep BEDA (satu ticket_id +
+      status, bisa nyakup banyak cve_id, gak ada kolom `client_id`/
+      `acknowledged_by` sama sekali) -- butuh keputusan desain sendiri
+      soal bentuk final tabelnya, bukan sekadar nambah kolom kayak
+      gap-gap sebelumnya.
+
+      **Insiden kecil pas kerjain ini**: nulis file repo baru pakai
+      `cat > ...` (bukan Edit/append) TIMPA `CveTrackerRepo` (sync) yang
+      udah ada dari Fase 4 -- ketauan LANGSUNG dari `mypy` full-repo
+      (`cti_scraper.sinks` gagal import). Dipulihin dari `git show
+      HEAD:...` + digabung manual sama kelas baru, di-reverifikasi mypy
+      211 file bersih + full suite + live curl ulang abis fix. Pelajaran:
+      file yang udah ada isinya HARUS di-Edit/append, bukan di-overwrite
+      `cat >`, walau niatnya nambah bukan ganti.
+
+      Verified LIVE via curl: list/stats/tech-list (dengan data real 4
+      CVE termasuk yang ada POC dari github_poc_monitor), false-positive
+      mark/unmark/bulk (exclude dari list default, `include_fp=true`
+      nampilin lagi), filter tech/severity/search, purge-orphaned dry-run
+      (0 delete karena tech aktif cocok techstack). 22 test integrasi baru
+      (Postgres real, termasuk isolasi per-client dan cascade FP-delete
+      pas purge beneran jalan).
+
+      Sisa 21 router (ta_groups/tweets/dst) nyusul bertahap, per-router
       verified live, bukan sekali gas semua.
 
       **Bug infra ketemu pas kerjain ini (di luar scope router itu

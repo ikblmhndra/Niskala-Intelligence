@@ -1,19 +1,47 @@
-"""CveTrackerRepo -- satu-satunya jalur tulis `cve_tracker` (+ tabel anak
+"""`CveTrackerRepo` -- satu-satunya jalur tulis `cve_tracker` (+ tabel anak
 `cve_references`/`cve_affected`/`cve_pocs`). Gantiin dua penulis terpisah
 di sistem lama (`newCveThreat.py` upsert penuh per-client, `githubPOCMonitor.py`
 push POC ke array) -- di sini `upsert()` buat yang pertama, `add_pocs()`
 buat yang kedua, dua-duanya lewat repo yang sama biar gak drift lagi.
-"""
+
+`AsyncCveTrackerRepo`/`AsyncCveFalsePositiveRepo` (Fase 7.3, router `cve.py`)
+BARU -- permukaan BACA + false-positive doang, satu-satunya jalur TULIS CVE
+baru tetap `CveTrackerRepo` sync di atas (Celery task, Fase 4).
+
+**Sengaja gak nyentuh `CveTicket`/`CveTicketItem`** (acknowledge/ticket
+workflow) -- ketauan pas baca `cve_service.py`/`cve_ticket_service.py`
+lama: `CveTicket` (Pydantic lama) itu record remediation KAYA per-CVE
+(affected_asset, owner_email, remediation_status, escalation_required, dst
+-- 14+ field), sedangkan model Postgres `CveTicket`/`CveTicketItem` (Fase 2)
+didesain buat konsep BEDA (satu ticket_id + status, bisa nyakup BANYAK
+cve_id lewat `CveTicketItem`, gak ada kolom `client_id`/`acknowledged_by`/
+`acknowledge_time` sama sekali). Ini bukan "tambah kolom" kayak gap-gap
+sebelumnya (`Role.display_name`, dst) -- butuh keputusan desain sendiri
+soal bentuk final tabel, gak pantas diputus buru-buru di tengah porting
+router lain. `ack_filter` (parameter list/stats lama) ikut di-skip karena
+semantiknya nempel ticket ini."""
 
 from __future__ import annotations
 
+import datetime
 from collections.abc import Sequence
 from typing import Any
 
-from sqlalchemy import select
+from sqlalchemy import Select, func, or_, select
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Session
 
-from cti_core.db.models.cve import CveAffected, CvePoc, CveReference, CveTracker
+from cti_core.db.models.article import Article
+from cti_core.db.models.cve import CveAffected, CveFalsePositive, CvePoc, CveReference, CveTracker
+
+_SORT_FIELDS = {
+    "tech": CveTracker.tech,
+    "severity": CveTracker.cve_score,
+    "published": CveTracker.published,
+}
+"""`epss` (sort key lama) SENGAJA gak dipetakan -- gak ada kolom
+`epss_score` di skema (fitur EPSS lookup ditunda, lihat router `cve.py`),
+fallback ke `published` sama kayak default lama kalau key gak dikenal."""
 
 
 class CveTrackerRepo:
@@ -61,9 +89,11 @@ class CveTrackerRepo:
         Skip URL yang udah tercatat (setara `existing_poc_urls` di
         `githubPOCMonitor.py` lama). Balikin jumlah baris yang KE-UPDATE
         (bukan jumlah POC)."""
-        rows = self.session.execute(
-            select(CveTracker).where(CveTracker.cve_id == cve_id)
-        ).scalars().all()
+        rows = (
+            self.session.execute(select(CveTracker).where(CveTracker.cve_id == cve_id))
+            .scalars()
+            .all()
+        )
 
         updated = 0
         for row in rows:
@@ -80,3 +110,241 @@ class CveTrackerRepo:
 
         self.session.flush()
         return updated
+
+
+def _apply_filters(
+    stmt: Select[tuple[CveTracker]],
+    *,
+    client_id: str,
+    tech: Sequence[str] | None,
+    severity: Sequence[str] | None,
+    search: str | None,
+    date_start: datetime.date | None,
+    date_end: datetime.date | None,
+    exclude_cve_ids: Sequence[str] | None,
+) -> Select[tuple[CveTracker]]:
+    stmt = stmt.where(CveTracker.client_id == client_id)
+    if exclude_cve_ids:
+        stmt = stmt.where(CveTracker.cve_id.notin_(exclude_cve_ids))
+    if tech:
+        stmt = stmt.where(CveTracker.tech.in_(tech))
+    if severity:
+        stmt = stmt.where(CveTracker.cve_severity.in_([s.upper() for s in severity]))
+    if search:
+        stmt = stmt.where(
+            or_(
+                CveTracker.cve_id.ilike(f"%{search}%"),
+                CveTracker.summary.ilike(f"%{search}%"),
+                CveTracker.tech.ilike(f"%{search}%"),
+            )
+        )
+    if date_start is not None:
+        stmt = stmt.where(CveTracker.published >= date_start)
+    if date_end is not None:
+        stmt = stmt.where(CveTracker.published <= date_end)
+    return stmt
+
+
+class AsyncCveFalsePositiveRepo:
+    def __init__(self, session: AsyncSession) -> None:
+        self.session = session
+
+    async def list_cve_ids(self, client_id: str) -> list[str]:
+        result = await self.session.execute(
+            select(CveFalsePositive.cve_id).where(CveFalsePositive.client_id == client_id)
+        )
+        return list(result.scalars().all())
+
+    async def mark(self, cve_id: str, client_id: str, marked_by: str | None = None) -> None:
+        existing = await self.session.execute(
+            select(CveFalsePositive).where(
+                CveFalsePositive.cve_id == cve_id, CveFalsePositive.client_id == client_id
+            )
+        )
+        if existing.scalar_one_or_none() is not None:
+            return
+        self.session.add(
+            CveFalsePositive(cve_id=cve_id, client_id=client_id, marked_by=marked_by)
+        )
+        await self.session.flush()
+
+    async def unmark(self, cve_id: str, client_id: str) -> None:
+        result = await self.session.execute(
+            select(CveFalsePositive).where(
+                CveFalsePositive.cve_id == cve_id, CveFalsePositive.client_id == client_id
+            )
+        )
+        row = result.scalar_one_or_none()
+        if row is not None:
+            await self.session.delete(row)
+            await self.session.flush()
+
+    async def bulk_mark(
+        self, cve_ids: Sequence[str], client_id: str, marked_by: str | None = None
+    ) -> int:
+        existing = set(await self.list_cve_ids(client_id))
+        to_add = [cid for cid in cve_ids if cid not in existing]
+        for cid in to_add:
+            self.session.add(
+                CveFalsePositive(cve_id=cid, client_id=client_id, marked_by=marked_by)
+            )
+        await self.session.flush()
+        return len(to_add)
+
+
+class AsyncCveTrackerRepo:
+    def __init__(self, session: AsyncSession) -> None:
+        self.session = session
+
+    async def list_filtered(
+        self,
+        *,
+        client_id: str,
+        page: int = 1,
+        page_size: int = 20,
+        tech: Sequence[str] | None = None,
+        severity: Sequence[str] | None = None,
+        search: str | None = None,
+        date_start: datetime.date | None = None,
+        date_end: datetime.date | None = None,
+        exclude_cve_ids: Sequence[str] | None = None,
+        sort_by: str = "published",
+        sort_dir: str = "desc",
+    ) -> tuple[list[CveTracker], int]:
+        base = _apply_filters(
+            select(CveTracker),
+            client_id=client_id,
+            tech=tech,
+            severity=severity,
+            search=search,
+            date_start=date_start,
+            date_end=date_end,
+            exclude_cve_ids=exclude_cve_ids,
+        )
+        total = (
+            await self.session.execute(select(func.count()).select_from(base.subquery()))
+        ).scalar_one()
+
+        order_col = _SORT_FIELDS.get(sort_by, CveTracker.published)
+        order = order_col.desc() if sort_dir == "desc" else order_col.asc()
+        list_stmt = (
+            base.order_by(order.nulls_last()).offset((page - 1) * page_size).limit(page_size)
+        )
+        result = await self.session.execute(list_stmt)
+        return list(result.scalars().all()), total
+
+    async def get_stats(
+        self,
+        *,
+        client_id: str,
+        tech: Sequence[str] | None = None,
+        severity: Sequence[str] | None = None,
+        search: str | None = None,
+        date_start: datetime.date | None = None,
+        date_end: datetime.date | None = None,
+        exclude_cve_ids: Sequence[str] | None = None,
+    ) -> dict[str, int]:
+        """`severity` SENGAJA cuma dipakai buat query `total` -- port perilaku
+        lama: bucket critical/high/medium/low tetap ngitung SEMUA severity
+        biar tetap bermakna dibandingin (filter severity bikin bucket lain
+        selalu 0, gak ada gunanya)."""
+        base_no_severity = _apply_filters(
+            select(CveTracker),
+            client_id=client_id,
+            tech=tech,
+            severity=None,
+            search=search,
+            date_start=date_start,
+            date_end=date_end,
+            exclude_cve_ids=exclude_cve_ids,
+        )
+        base_with_severity = _apply_filters(
+            select(CveTracker),
+            client_id=client_id,
+            tech=tech,
+            severity=severity,
+            search=search,
+            date_start=date_start,
+            date_end=date_end,
+            exclude_cve_ids=exclude_cve_ids,
+        )
+
+        async def _count(stmt: Select[tuple[CveTracker]]) -> int:
+            result = await self.session.execute(select(func.count()).select_from(stmt.subquery()))
+            return result.scalar_one()
+
+        total = await _count(base_with_severity)
+        critical = await _count(base_no_severity.where(CveTracker.cve_score >= 9.0))
+        high = await _count(
+            base_no_severity.where(CveTracker.cve_score >= 7.0, CveTracker.cve_score < 9.0)
+        )
+        medium = await _count(
+            base_no_severity.where(CveTracker.cve_score >= 4.0, CveTracker.cve_score < 7.0)
+        )
+        low = await _count(
+            base_no_severity.where(CveTracker.cve_score > 0, CveTracker.cve_score < 4.0)
+        )
+        return {"total": total, "critical": critical, "high": high, "medium": medium, "low": low}
+
+    async def get_tech_list(self, client_id: str) -> list[str]:
+        result = await self.session.execute(
+            select(CveTracker.tech)
+            .where(CveTracker.client_id == client_id, CveTracker.tech.is_not(None))
+            .distinct()
+            .order_by(CveTracker.tech)
+        )
+        return [t for t in result.scalars().all() if t]
+
+    async def get_article_mentions(
+        self, cve_ids: Sequence[str]
+    ) -> dict[str, list[dict[str, str]]]:
+        """Port `get_article_mentions()` -- CVE ID nyebut di judul artikel
+        mana aja. Query SATU kali (OR ilike per cve_id), bukan N query."""
+        result: dict[str, list[dict[str, str]]] = {cid: [] for cid in cve_ids}
+        if not cve_ids:
+            return result
+        stmt = select(Article.title, Article.url).where(
+            or_(*[Article.title.ilike(f"%{cid}%") for cid in cve_ids])
+        )
+        rows = (await self.session.execute(stmt)).all()
+        for title, url in rows:
+            for cid in cve_ids:
+                if cid.upper() in title.upper():
+                    result[cid].append({"title": title, "url": url})
+        return result
+
+    async def purge_orphaned(
+        self, *, client_id: str, active_tech_names: Sequence[str], dry_run: bool = True
+    ) -> dict[str, Any]:
+        """Port `purge_orphaned_cves()`. `active_tech_names` kosong = SEMUA
+        CVE client ini dianggap orphan (port perilaku lama persis --
+        client tanpa tech stack sama sekali gak punya CVE yang "sah")."""
+        stmt = select(CveTracker).where(CveTracker.client_id == client_id)
+        if active_tech_names:
+            stmt = stmt.where(CveTracker.tech.notin_(active_tech_names))
+        rows = (await self.session.execute(stmt)).scalars().all()
+
+        by_tech: dict[str, int] = {}
+        cve_ids: list[str] = []
+        for row in rows:
+            t = row.tech or "(no tech)"
+            by_tech[t] = by_tech.get(t, 0) + 1
+            cve_ids.append(row.cve_id)
+
+        if dry_run or not rows:
+            return {
+                "dry_run": True,
+                "would_delete": len(cve_ids),
+                "by_tech": by_tech,
+                "cve_ids": cve_ids,
+            }
+
+        for row in rows:
+            await self.session.delete(row)
+        fp_stmt = select(CveFalsePositive).where(
+            CveFalsePositive.client_id == client_id, CveFalsePositive.cve_id.in_(cve_ids)
+        )
+        for fp in (await self.session.execute(fp_stmt)).scalars().all():
+            await self.session.delete(fp)
+        await self.session.flush()
+        return {"dry_run": False, "deleted": len(cve_ids), "by_tech": by_tech, "cve_ids": cve_ids}
