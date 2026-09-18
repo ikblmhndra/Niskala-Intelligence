@@ -28,6 +28,7 @@ from cti_api.routers import clients as clients_router
 from cti_api.routers import health as health_router
 from cti_api.routers import iocs as iocs_router
 from cti_api.routers import roles as roles_router
+from cti_api.routers import techstack as techstack_router
 from cti_api.services.roles import ensure_system_roles
 
 log = get_logger()
@@ -63,6 +64,7 @@ def create_app() -> FastAPI:
     app.include_router(roles_router.router)
     app.include_router(articles_router.router)
     app.include_router(iocs_router.router)
+    app.include_router(techstack_router.router)
     return app
 
 

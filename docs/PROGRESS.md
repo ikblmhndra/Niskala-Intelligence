@@ -1112,9 +1112,9 @@ tinggal pkg_vuln+cve_email), 7.6 (snapshot test), 7.7 (ekspor OpenAPI), 7.8.
       **OIDC bagian dari 7.2 ini BELUM diport** (`oidc.enabled=False`
       default, 184 baris `oidc_service.py` nunggu giliran terpisah, bukan
       bagian "inti").
-- [~] **7.3** Port 27 router ke repository Postgres -- **4/27 kelar**
-      (`clients`, `roles`, `articles` [baca doang], `iocs` [baca+kurasi]),
-      verified LIVE via curl
+- [~] **7.3** Port 27 router ke repository Postgres -- **5/27 kelar**
+      (`clients`, `roles`, `articles` [baca doang], `iocs` [baca+kurasi],
+      `techstack` [CRUD inti]), verified LIVE via curl
       (create/update/delete, RBAC superadmin-only buat mutasi, 422
       permission gak dikenal, 400 hapus role sistem/client default).
       `clients`/`roles` nyaris gratis: repo-nya (`AsyncClientRepo`/
@@ -1196,7 +1196,38 @@ tinggal pkg_vuln+cve_email), 7.6 (snapshot test), 7.7 (ekspor OpenAPI), 7.8.
       ketauan satu user test dari sesi sebelumnya udah ke-promote admin --
       bukan bug, state nyata dari testing Fase 7.2 yang persist).
 
-      Sisa 23 router (cve/ta_groups/dst) nyusul bertahap, per-router
+      **`techstack`** (2026-09-18) -- **prasyarat buat `cve.py`**, sengaja
+      dikerjain SEBELUM CVE (bukan gantian urutan tanpa alasan): `cve_service.
+      get_cves()` legacy nyari active tech stack + `get_tech_risk_context()`
+      buat `adjusted_risk_score` (exposure/hosting multiplier) di HAMPIR
+      SETIAP fungsi -- gak mungkin diport bermakna tanpa `AsyncTechStackRepo`
+      ada duluan. `TechStackEntry` (Fase 2) udah dibaca `cti_scraper.
+      reference_data`/`cti_enrich.stages.score` (pola "web kurasi, scraper
+      patuh" yang UDAH live sejak Fase 3/4/5) -- router ini yang jadi jalur
+      admin ngisi/ubah datanya, `AsyncTechStackRepo` baru (belum ada
+      sebelumnya, cuma dibaca lewat query ad-hoc di enrichment).
+
+      **Sengaja di-skip/ditunda ke `cve.py`** (bukan tanggung jawab
+      `techstack_entries` sendiri, semua NULIS ke `cve_tracker`):
+      `POST /backfill-cves` (copy CVE existing dari client lain),
+      `POST /{id}/backfill-historical` (trigger fetch 180 hari NVD+detail
+      MITRE per-CVE -- `httpx` ke API eksternal, belum ada di dependency
+      `cti-api`), cascade-delete CVE pas tech dihapus (`delete_techstack`
+      lama nge-hapus `cve_tracker`/`cve_false_positives`/`cve_tickets`
+      terkait -- di sini `DELETE /{id}` MURNI hapus baris techstack).
+      `_client_filter` fallback OR Mongo lama (`client_id=="default"` ATAU
+      field gak ada) juga di-skip -- `client_id` NOT NULL di skema Postgres
+      sejak awal, kasus "field gak ada" gak mungkin kejadian.
+
+      Verified LIVE via curl: list (data seed lama "WordPress"/"Linux"
+      ke-detect), tambah tech + duplikat case-insensitive ditolak, patch
+      exposure/hosting (404 kalau value gak valid ATAU tech beda client),
+      search filter, delete + delete-lagi (idempoten, `success:false`),
+      401 tanpa token. 11 test integrasi baru (termasuk isolasi per-client:
+      nama sama di dua client beda-beda baris, update tech client lain
+      ditolak).
+
+      Sisa 22 router (cve/ta_groups/dst) nyusul bertahap, per-router
       verified live, bukan sekali gas semua.
 
       **Bug infra ketemu pas kerjain ini (di luar scope router itu
