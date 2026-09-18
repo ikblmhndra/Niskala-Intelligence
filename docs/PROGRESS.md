@@ -1112,11 +1112,11 @@ tinggal pkg_vuln+cve_email), 7.6 (snapshot test), 7.7 (ekspor OpenAPI), 7.8.
       **OIDC bagian dari 7.2 ini BELUM diport** (`oidc.enabled=False`
       default, 184 baris `oidc_service.py` nunggu giliran terpisah, bukan
       bagian "inti").
-- [~] **7.3** Port 27 router ke repository Postgres -- **11/27 kelar**
+- [~] **7.3** Port 27 router ke repository Postgres -- **14/27 kelar**
       (`clients`, `roles`, `articles` [baca doang], `iocs` [baca+kurasi],
       `techstack` [CRUD inti], `cve` [baca+false-positive+purge],
       `tweets`, `monitored_accounts`, `ransomware`, `changelog`,
-      `filtered_articles`), verified LIVE via curl
+      `filtered_articles`, `rfi`, `pir`, `source_reliability`), verified LIVE via curl
       (create/update/delete, RBAC superadmin-only buat mutasi, 422
       permission gak dikenal, 400 hapus role sistem/client default).
       `clients`/`roles` nyaris gratis: repo-nya (`AsyncClientRepo`/
@@ -1382,7 +1382,7 @@ tinggal pkg_vuln+cve_email), 7.6 (snapshot test), 7.7 (ekspor OpenAPI), 7.8.
         no-op) -- semua Postgres real. Full suite abis Bagian 1 lengkap:
         **701 passed**, mypy 223 file bersih, ruff bersih.
 
-      Sisa 16 router (Bagian 2-5) nyusul bertahap.
+      Sisa 13 router (Bagian 3-5) nyusul bertahap.
 
       **Bug infra ketemu pas kerjain ini (di luar scope router itu
       sendiri, tapi ketauan justru dari nge-`mypy` `apps/api` doang):**
@@ -1400,6 +1400,81 @@ tinggal pkg_vuln+cve_email), 7.6 (snapshot test), 7.7 (ekspor OpenAPI), 7.8.
       error baru ketemu (bug ini gak nyembunyiin bug LAIN, tapi infra-nya
       sendiri rapuh -- scoped mypy check ke depan sekarang bener-bener
       independen per paket).
+
+      **Bagian 2 (2026-09-18) -- 3/3 KELAR** (`rfi`, `pir`,
+      `source_reliability`) -- user bilang "gas lanjut bagian 2" langsung
+      abis Bagian 1. Tiga domain baru self-contained, model Postgres baru
+      semua: `rfi_requests`, `pir_requirements`+`pir_notes`,
+      `source_reliability_entries` (migrasi `f5a204cd523a`).
+
+      **`pir` matching TIDAK punya query builder sendiri** -- kode lama
+      py DUA salinan identik (`pir_service.py::_build_query` DAN
+      `scripts/export_pir_docx.py::_build_article_query`). Di sini
+      kriteria PIR (`threat_actors`/`industries`/`countries`/`news_types`/
+      `keywords`/`ttps`) di-map ke parameter `AsyncArticleRepo.
+      list_filtered()` yang UDAH ADA dari router `articles` -- nambah SATU
+      param baru (`ttps`, filter `ArticleTTP.ttp_id`) ke situ, bukan bikin
+      builder baru. `criteria.keywords` -> `title_keywords` (OR-match
+      `Article.title` doang -- skema baru gak nyimpen `body`/`content` per
+      artikel, beda dari Mongo lama yang nyari lintas 4 field, tapi ini
+      SUBSET yang faithful terhadap apa yang beneran ada, bukan
+      pengurangan scope sembunyi-sembunyi).
+
+      Docx export (`GET /{id}/export/docx`) port `build_docx()` dari
+      `scripts/export_pir_docx.py` verbatim ke `services/pir_docx.py` --
+      nambah dependency baru `python-docx` di `apps/api/pyproject.toml`.
+      Verified LIVE: hasil file beneran kebuka valid Word doc (`file`
+      command konfirmasi "Microsoft OOXML"), bukan cuma HTTP 200 doang.
+
+      **Dua asimetri port apa adanya dari kode lama, didokumentasikan di
+      docstring `cti_core.db.repositories.rfi`/`pir`, BUKAN keputusan baru
+      di sini:**
+      1. Baca-vs-tulis: banyak `GET` di `rfi`/`pir` (articles/note/export/
+         export-docx/options) SAMA SEKALI gak `require_auth` di kode lama --
+         sama pola kayak `articles.py`/`filtered_articles.py` sebelumnya.
+      2. Client-scoping: `list`/`create` di-filter `client_id`, tapi
+         `get`(PIR)/`update`/`delete`/notes/export SAMA SEKALI gak (RFI:
+         `get` scoped, `update`/`delete` TIDAK). Siapa pun yang tahu ID
+         bisa update/delete lintas client -- keliatan konsisten di DUA
+         file (bukan typo satu tempat), jadi diikutin apa adanya + di-flag
+         jelas biar user bisa minta diperbaiki belakangan kalau mau.
+
+      **Kuirk port apa adanya dari `_compute_coverage()` lama:** PIR
+      dengan kriteria KOSONG semua match-all buat `coverage_count`/
+      `last_match`, tapi `recent_coverage` di-hardcode 0 (bukan dihitung
+      beneran) -- efeknya PIR tanpa kriteria SELALU `is_gap=true`.
+      Kemungkinan sengaja (dorong analis isi kriteria), bukan lupa nulis
+      kode -- test `test_compute_coverage_empty_criteria_recent_always_zero`
+      ngunci perilaku ini.
+
+      **Bug real ketemu + dibenerin dari live-test (BUKAN dari test suite
+      -- integration test lolos duluan karena gak assert `updated_at`
+      abis path UPDATE beneran):** `PUT /api/pir/{id}`, `PUT /api/pir/{id}/
+      note`, `PUT /api/rfi/{id}` semua 500 `MissingGreenlet` pas nyerialisasi
+      `.updated_at` abis `session.commit()`. Sebab: kolom `updated_at`
+      (`onupdate=func.now()`, nilai dihitung SERVER pas UPDATE) gak
+      selalu eager-fetch via RETURNING kayak kolom sejenis pas INSERT --
+      `POST` (create) jalan mulus, `PUT` (update) yang genuinely UPDATE
+      baris yang UDAH ADA yang kena. Fix: `await session.refresh(obj)`
+      eksplisit sebelum serialize, di tiga tempat itu. Ketauan justru dari
+      nyoba UPDATE beneran (bukan cuma create-lalu-baca) waktu live-test
+      manual -- pengingat kenapa live verification tetap dijalanin walau
+      integration test udah 729 passed.
+
+      10 test integrasi `AsyncRFIRepo` + 9 test `AsyncPIRRepo` + 8 test
+      `AsyncSourceReliabilityRepo` + 1 test baru `AsyncArticleRepo.
+      list_filtered(ttps=...)` -- semua Postgres real (testcontainers).
+      Live-verified via curl: RFI create/list/update/delete, PIR create/
+      list/coverage/articles/note-save+get/export-json/export-docx/update/
+      delete, SR add/list/labels/ungraded-sources/update/delete -- token
+      JWT superadmin asli, lewat `apps/api` uvicorn ngobrol ke Postgres+
+      Redis docker-compose lokal (bukan testcontainers efemeral). Full
+      suite: **729 passed**, mypy 77 file (`cti-core`+`apps/api`) bersih,
+      ruff bersih.
+
+      Sisa 13 router (Bagian 3-5): `attack`/`ta_groups`/`mitre`/`crossref`
+      (Bagian 3) → `pkg_vuln`/`newsletter`/`stix`/`mindmap` (Bagian 4) →
+      `intelligence`/`recap`/`exec_dashboard` (Bagian 5).
 - [ ] **7.4** Port 56 service
 - [ ] **7.5** Buang duplikasi (pkg_vuln, cve_email, ioc, llm)
 - [ ] **7.6** Snapshot test tiap endpoint

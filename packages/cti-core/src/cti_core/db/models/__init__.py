@@ -8,6 +8,7 @@ from cti_core.db.models.article import (
     ArticleIndustry,
     ArticleThreatActor,
     ArticleTTP,
+    RejectedArticle,
 )
 from cti_core.db.models.auth import AuditLogEntry, Client, ClientCountry, Role, User, UserClient
 from cti_core.db.models.cve import (
@@ -28,8 +29,11 @@ from cti_core.db.models.package import (
     PackageVuln,
     PackageVulnAlias,
 )
+from cti_core.db.models.pir import PIRNote, PIRRequirement
 from cti_core.db.models.ransomware import RansomwareVictim
+from cti_core.db.models.rfi import RFIRequest
 from cti_core.db.models.scraper import ScraperConfig, ScraperItem, ScraperRun, ScraperSeen
+from cti_core.db.models.source_reliability import SourceReliabilityEntry
 from cti_core.db.models.techstack import TechStackEntry
 from cti_core.db.models.threat_reference import MonitoredPerson, ThreatActorGroup
 from cti_core.db.models.tweet import MonitoredAccount, Tweet
@@ -60,15 +64,20 @@ __all__ = [
     "MonitoredAccount",
     "MonitoredPackage",
     "MonitoredPerson",
+    "PIRNote",
+    "PIRRequirement",
     "PackageDepEdge",
     "PackageVuln",
     "PackageVulnAlias",
+    "RFIRequest",
     "RansomwareVictim",
+    "RejectedArticle",
     "Role",
     "ScraperConfig",
     "ScraperItem",
     "ScraperRun",
     "ScraperSeen",
+    "SourceReliabilityEntry",
     "TechStackEntry",
     "ThreatActorGroup",
     "ThreatFeedEntry",

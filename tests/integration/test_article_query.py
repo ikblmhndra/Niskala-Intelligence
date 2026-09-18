@@ -191,6 +191,19 @@ async def test_list_filtered_by_search_matches_title_or_source(
     assert by_source[0].id == ids["a4"]
 
 
+async def test_list_filtered_by_ttps(async_db_session: AsyncSession) -> None:
+    """`ttps` (Fase 7.3, router `pir`) -- filter `ArticleTTP.ttp_id`."""
+    repo = AsyncArticleRepo(async_db_session)
+    ids = await _seed(repo)
+
+    articles, total = await repo.list_filtered(ttps=["T1574"])
+    assert total == 1
+    assert articles[0].id == ids["a1"]
+
+    _, total_missing = await repo.list_filtered(ttps=["T9999"])
+    assert total_missing == 0
+
+
 async def test_list_filtered_by_title_keyword_or(async_db_session: AsyncSession) -> None:
     repo = AsyncArticleRepo(async_db_session)
     ids = await _seed(repo)
@@ -208,9 +221,7 @@ async def test_list_filtered_combines_keyword_and_search_with_and(
 
     # keyword "APT41" (cocok a1/a4) AND search "philippine" (cocok a1 doang
     # by title) -- irisan harus a1 doang.
-    articles, total = await repo.list_filtered(
-        title_keywords=["APT41"], search="philippine"
-    )
+    articles, total = await repo.list_filtered(title_keywords=["APT41"], search="philippine")
     assert total == 1
     assert articles[0].id == ids["a1"]
 

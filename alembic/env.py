@@ -19,8 +19,11 @@ from cti_core.db.models import (  # noqa: F401
     cve,
     ioc,
     package,
+    pir,
     ransomware,
+    rfi,
     scraper,
+    source_reliability,
     techstack,
     tweet,
 )

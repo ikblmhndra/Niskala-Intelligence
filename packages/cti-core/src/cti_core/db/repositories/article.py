@@ -47,6 +47,7 @@ def _apply_list_filters(
     threat_actors: Sequence[str] | None,
     search: str | None,
     title_keywords: Sequence[str] | None,
+    ttps: Sequence[str] | None = None,
 ) -> Select[tuple[Article]]:
     """Filter bersama buat query list DAN count -- port dari `article_service.
     get_articles()` (Mongo query dict) ke SQL. Tiga field negara Mongo lama
@@ -86,6 +87,8 @@ def _apply_list_filters(
         stmt = stmt.join(Article.threat_actors).where(
             func.lower(ArticleThreatActor.threat_actor).in_(lowered)
         )
+    if ttps:
+        stmt = stmt.join(Article.ttps).where(ArticleTTP.ttp_id.in_(ttps))
     keyword_or = (
         [Article.title.ilike(f"%{kw}%") for kw in title_keywords] if title_keywords else None
     )
@@ -327,11 +330,18 @@ class AsyncArticleRepo:
         threat_actors: Sequence[str] | None = None,
         search: str | None = None,
         title_keywords: Sequence[str] | None = None,
+        ttps: Sequence[str] | None = None,
     ) -> tuple[list[Article], int]:
         """Port `article_service.get_articles()`. Filter di-`join()` ke
         tabel anak -- `.distinct()` WAJIB begitu ada join one-to-many
         (satu artikel bisa punya banyak baris industry/country/TA yang
-        cocok, tanpa distinct dia muncul dobel di halaman)."""
+        cocok, tanpa distinct dia muncul dobel di halaman).
+
+        `ttps` (Fase 7.3, router `pir`) filter `ArticleTTP.ttp_id` --
+        ditambah di sini alih-alih duplikat query builder terpisah di
+        `pir`, biar SATU sumber logic filter artikel (beda dari kode
+        lama: `pir_service._build_query` DAN `export_pir_docx.py
+        _build_article_query` adalah dua salinan yang sama persis)."""
         base = _apply_list_filters(
             select(Article),
             posted_on_start=posted_on_start,
@@ -345,9 +355,15 @@ class AsyncArticleRepo:
             threat_actors=threat_actors,
             search=search,
             title_keywords=title_keywords,
+            ttps=ttps,
         )
         has_join = bool(
-            industries or countries or victim_countries or actor_countries or threat_actors
+            industries
+            or countries
+            or victim_countries
+            or actor_countries
+            or threat_actors
+            or ttps
         )
 
         count_stmt = select(func.count()).select_from(base.distinct().subquery())
