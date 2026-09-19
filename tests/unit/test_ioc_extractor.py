@@ -1,14 +1,18 @@
-"""cti_enrich.ioc.extractor -- port byte-identik dari `iocExtractor.py`
+"""cti_core.ioc.extractor -- port byte-identik dari `iocExtractor.py`
 (diverifikasi terpisah, otomatis, lawan korpus 7899 title + 55 body artikel
 real dari dump arsip -- lihat docs/PROGRESS.md item 5.9). Test di sini
-nyakup tiap tipe IOC + satu regresi yang genuinely penting: ReDoS."""
+nyakup tiap tipe IOC + satu regresi yang genuinely penting: ReDoS.
+
+Pindah dari `cti_enrich.ioc` ke `cti_core.ioc` Fase 7.3 Bagian 4 (router
+`newsletter` butuh extractor ini, `apps/api` gak boleh import `cti_enrich`)
+-- lihat docstring `cti_core/ioc/extractor.py`."""
 
 from __future__ import annotations
 
 import signal
 
 import pytest
-from cti_enrich.ioc.extractor import extract_iocs
+from cti_core.ioc.extractor import extract_iocs
 
 
 def test_extracts_ip() -> None:

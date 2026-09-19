@@ -23,6 +23,7 @@ from cti_core.db.models.auth import AuditLogEntry, Client, ClientCountry, Role, 
 from cti_core.db.models.cve import (
     CveAffected,
     CveFalsePositive,
+    CveNewsletterMention,
     CvePoc,
     CveReference,
     CveThreatActor,
@@ -34,12 +35,9 @@ from cti_core.db.models.cve import (
 from cti_core.db.models.ioc import IOC, IOCFeedback, IOCSource, IOCTag, IOCThreatActor
 from cti_core.db.models.ioc_reference import IocAllowlistEntry, ThreatFeedEntry
 from cti_core.db.models.malware_trend import MalwareTrend
-from cti_core.db.models.package import (
-    MonitoredPackage,
-    PackageDepEdge,
-    PackageVuln,
-    PackageVulnAlias,
-)
+from cti_core.db.models.mindmap import MindmapDoc
+from cti_core.db.models.newsletter import Newsletter, NewsletterPaywallHint
+from cti_core.db.models.package import MonitoredPackage, PackageDepGraph, PackageVuln
 from cti_core.db.models.pir import PIRNote, PIRRequirement
 from cti_core.db.models.ransomware import RansomwareVictim
 from cti_core.db.models.rfi import RFIRequest
@@ -69,6 +67,7 @@ __all__ = [
     "ClientCountry",
     "CveAffected",
     "CveFalsePositive",
+    "CveNewsletterMention",
     "CvePoc",
     "CveReference",
     "CveTTP",
@@ -82,14 +81,16 @@ __all__ = [
     "IOCThreatActor",
     "IocAllowlistEntry",
     "MalwareTrend",
+    "MindmapDoc",
     "MonitoredAccount",
     "MonitoredPackage",
     "MonitoredPerson",
+    "Newsletter",
+    "NewsletterPaywallHint",
     "PIRNote",
     "PIRRequirement",
-    "PackageDepEdge",
+    "PackageDepGraph",
     "PackageVuln",
-    "PackageVulnAlias",
     "RFIRequest",
     "RansomwareVictim",
     "RejectedArticle",

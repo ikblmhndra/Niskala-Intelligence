@@ -35,6 +35,7 @@ from cti_core.db.models.article import Article
 from cti_core.db.models.cve import (
     CveAffected,
     CveFalsePositive,
+    CveNewsletterMention,
     CvePoc,
     CveReference,
     CveThreatActor,
@@ -206,6 +207,13 @@ class AsyncCveTrackerRepo:
     def __init__(self, session: AsyncSession) -> None:
         self.session = session
 
+    async def list_all_distinct_cve_ids(self) -> list[str]:
+        """Lintas client, TANPA filter -- port `newsletter_service.
+        _get_tp_cve_ids()` (Fase 7.3 Bagian 4), yang butuh SEMUA cve_id
+        yang lagi ditrack buat nyaring "true positive" CVE mentions."""
+        result = await self.session.execute(select(CveTracker.cve_id).distinct())
+        return list(result.scalars().all())
+
     async def get_by_cve_id_any_client(self, cve_id: str) -> CveTracker | None:
         """Case-insensitive, lintas client, ambil SATU baris pertama yang
         cocok -- port apa adanya dari `cross_reference_service.get_cve_crossrefs()`
@@ -216,6 +224,29 @@ class AsyncCveTrackerRepo:
             select(CveTracker).where(func.lower(CveTracker.cve_id) == cve_id.lower())
         )
         return result.scalars().first()
+
+    async def add_newsletter_mention(
+        self, cve_id: str, *, title: str, url: str, source: str, mention_date: str
+    ) -> bool:
+        """Port `cve_service.upsert_newsletter_mention()` -- `$push` dedup
+        by url ke `cve_tracker.newsletter_mentions` (array Mongo) jadi
+        insert ke tabel anak `cve_newsletter_mentions`, unique constraint
+        (cve_tracker_id, url) yang jaga dedup-nya (bukan cek manual kayak
+        `add_pocs`). Sama kayak `get_by_cve_id_any_client`, lintas client,
+        ambil baris PERTAMA yang cocok -- kalau gak ketemu, no-op (return
+        False), port apa adanya (`update_one` Mongo juga diam-diam no-op
+        kalau filter gak match)."""
+        cve = await self.get_by_cve_id_any_client(cve_id)
+        if cve is None:
+            return False
+        existing_urls = {m.url for m in cve.newsletter_mentions}
+        if url in existing_urls:
+            return False
+        cve.newsletter_mentions.append(
+            CveNewsletterMention(title=title, url=url, source=source, mention_date=mention_date)
+        )
+        await self.session.flush()
+        return True
 
     async def get_by_threat_actor_exact(
         self, actor_name: str, *, exclude_cve_ids: Sequence[str]

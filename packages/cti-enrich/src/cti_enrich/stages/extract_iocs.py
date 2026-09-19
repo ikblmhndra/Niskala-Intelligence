@@ -14,9 +14,8 @@ from __future__ import annotations
 import time
 
 from cti_core.db.repositories.ioc_reference import get_c2_feed, get_ioc_allowlist
+from cti_core.ioc.extractor import extract_iocs as _extract_iocs
 from sqlalchemy.orm import Session
-
-from cti_enrich.ioc.extractor import extract_iocs as _extract_iocs
 
 _ALLOWLIST_TTL = 300.0
 _C2_FEED_TTL = 3600.0

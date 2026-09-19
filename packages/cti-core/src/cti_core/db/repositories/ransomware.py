@@ -55,6 +55,22 @@ class AsyncRansomwareVictimRepo:
     def __init__(self, session: AsyncSession) -> None:
         self.session = session
 
+    async def list_by_group_exact(
+        self, group_name: str, *, limit: int = 100
+    ) -> list[RansomwareVictim]:
+        """Exact-match (case-insensitive) `group_name` -- port
+        `mermaid_service.build_ransomware_mindmap()` (Fase 7.3, router
+        `mindmap`, Bagian 4). BEDA dari `list_filtered(group=...)` yang
+        SUBSTRING match (buat UI search box) -- di sini butuh exact match
+        persis kayak regex `^...$` Mongo lama."""
+        result = await self.session.execute(
+            select(RansomwareVictim)
+            .where(func.lower(RansomwareVictim.group_name) == group_name.lower())
+            .order_by(RansomwareVictim.published.desc().nulls_last())
+            .limit(limit)
+        )
+        return list(result.scalars().all())
+
     async def list_filtered(
         self,
         *,
@@ -97,14 +113,20 @@ class AsyncRansomwareVictimRepo:
 
     async def get_filter_options(self) -> dict[str, list[str]]:
         groups = (
-            await self.session.execute(select(RansomwareVictim.group_name).distinct())
-        ).scalars().all()
+            (await self.session.execute(select(RansomwareVictim.group_name).distinct()))
+            .scalars()
+            .all()
+        )
         countries = (
-            await self.session.execute(select(RansomwareVictim.country_code).distinct())
-        ).scalars().all()
+            (await self.session.execute(select(RansomwareVictim.country_code).distinct()))
+            .scalars()
+            .all()
+        )
         industries = (
-            await self.session.execute(select(RansomwareVictim.industry).distinct())
-        ).scalars().all()
+            (await self.session.execute(select(RansomwareVictim.industry).distinct()))
+            .scalars()
+            .all()
+        )
         return {
             "groups": sorted(g for g in groups if g),
             "countries": sorted(c for c in countries if c),

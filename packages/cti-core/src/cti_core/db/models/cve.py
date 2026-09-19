@@ -15,7 +15,12 @@ kolomnya bakal selalu kosong/false, bukan bug, cuma cold-start yang sama
 kayak `techstack` sebelum seed. `threat_actors`/`ttps` dinormalisasi jadi
 tabel anak (`CveThreatActor`/`CveTTP`), sama pola kayak
 `ArticleThreatActor`/`ArticleTTP` -- `crossref` butuh set-intersection
-per-value (`pir_ttps & cve_ttps`), bukan sekadar baca utuh."""
+per-value (`pir_ttps & cve_ttps`), bukan sekadar baca utuh.
+
+`CveNewsletterMention` (Fase 7.3, router `newsletter`, Bagian 4) --
+gantiin `cve_tracker.newsletter_mentions` (array Mongo, `$push` dedup by
+url). Ini DITULIS sama fitur yang lagi diport sendiri (newsletter), beda
+dari `cisa_kev`/`threat_actors` dkk di atas yang nunggu loop terpisah."""
 
 from __future__ import annotations
 
@@ -82,6 +87,9 @@ class CveTracker(TimestampMixin, Base):
     ttps: Mapped[list[CveTTP]] = relationship(
         back_populates="cve", cascade="all, delete-orphan", lazy="selectin"
     )
+    newsletter_mentions: Mapped[list[CveNewsletterMention]] = relationship(
+        back_populates="cve", cascade="all, delete-orphan", lazy="selectin"
+    )
 
 
 class CveReference(Base):
@@ -125,6 +133,25 @@ class CvePoc(Base):
     pas port beneran butuh, bukan dirombak ulang."""
 
     cve: Mapped[CveTracker] = relationship(back_populates="pocs")
+
+
+class CveNewsletterMention(Base):
+    __tablename__ = "cve_newsletter_mentions"
+    __table_args__ = (UniqueConstraint("cve_tracker_id", "url", name="uq_cve_newsletter_mention"),)
+
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
+    cve_tracker_id: Mapped[int] = mapped_column(
+        ForeignKey("cve_tracker.id", ondelete="CASCADE"), nullable=False
+    )
+    title: Mapped[str] = mapped_column(Text, nullable=False, default="")
+    url: Mapped[str] = mapped_column(Text, nullable=False)
+    source: Mapped[str] = mapped_column(String(200), nullable=False, default="")
+    mention_date: Mapped[str] = mapped_column(String(40), nullable=False, default="")
+    added_at: Mapped[datetime.datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+
+    cve: Mapped[CveTracker] = relationship(back_populates="newsletter_mentions")
 
 
 class CveThreatActor(Base):

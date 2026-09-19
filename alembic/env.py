@@ -19,6 +19,8 @@ from cti_core.db.models import (  # noqa: F401
     auth,
     cve,
     ioc,
+    mindmap,
+    newsletter,
     package,
     pir,
     ransomware,

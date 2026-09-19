@@ -64,9 +64,7 @@ class TestAsyncCveTrackerRepo:
         await _seed(async_db_session, "default")
         await _seed(async_db_session, "acme")
 
-        cves, total = await AsyncCveTrackerRepo(async_db_session).list_filtered(
-            client_id="default"
-        )
+        cves, total = await AsyncCveTrackerRepo(async_db_session).list_filtered(client_id="default")
         assert total == 3
         assert len(cves) == 3
 
@@ -255,9 +253,7 @@ class TestAsyncCveFalsePositiveRepo:
         repo = AsyncCveFalsePositiveRepo(async_db_session)
         await repo.mark("CVE-2026-0001", "default")
 
-        count = await repo.bulk_mark(
-            ["CVE-2026-0001", "CVE-2026-0002", "CVE-2026-0003"], "default"
-        )
+        count = await repo.bulk_mark(["CVE-2026-0001", "CVE-2026-0002", "CVE-2026-0003"], "default")
         assert count == 2
         assert set(await repo.list_cve_ids("default")) == {
             "CVE-2026-0001",
@@ -273,3 +269,69 @@ class TestAsyncCveFalsePositiveRepo:
 
         assert await repo.list_cve_ids("default") == ["CVE-2026-0001"]
         assert await repo.list_cve_ids("acme") == []
+
+
+class TestNewsletterMentions:
+    """`AsyncCveTrackerRepo.add_newsletter_mention`/`list_all_distinct_cve_ids`
+    -- Fase 7.3 (router `newsletter`, Bagian 4)."""
+
+    async def test_add_newsletter_mention(self, async_db_session: AsyncSession) -> None:
+        await _seed(async_db_session)
+        repo = AsyncCveTrackerRepo(async_db_session)
+
+        added = await repo.add_newsletter_mention(
+            "CVE-2026-0001",
+            title="Actively exploited in the wild",
+            url="https://example.com/article",
+            source="gbhacker",
+            mention_date="2026-09-19",
+        )
+        assert added is True
+
+        cve = await repo.get_by_cve_id_any_client("CVE-2026-0001")
+        assert cve is not None
+        assert len(cve.newsletter_mentions) == 1
+        assert cve.newsletter_mentions[0].url == "https://example.com/article"
+
+    async def test_add_newsletter_mention_dedups_by_url(
+        self, async_db_session: AsyncSession
+    ) -> None:
+        await _seed(async_db_session)
+        repo = AsyncCveTrackerRepo(async_db_session)
+
+        await repo.add_newsletter_mention(
+            "CVE-2026-0001",
+            title="t1",
+            url="https://example.com/x",
+            source="s",
+            mention_date="2026-09-19",
+        )
+        added_again = await repo.add_newsletter_mention(
+            "CVE-2026-0001",
+            title="t2",
+            url="https://example.com/x",
+            source="s",
+            mention_date="2026-09-20",
+        )
+        assert added_again is False
+
+        cve = await repo.get_by_cve_id_any_client("CVE-2026-0001")
+        assert cve is not None
+        assert len(cve.newsletter_mentions) == 1
+
+    async def test_add_newsletter_mention_unknown_cve_is_noop(
+        self, async_db_session: AsyncSession
+    ) -> None:
+        repo = AsyncCveTrackerRepo(async_db_session)
+        added = await repo.add_newsletter_mention(
+            "CVE-9999-9999", title="t", url="https://example.com/x", source="s", mention_date=""
+        )
+        assert added is False
+
+    async def test_list_all_distinct_cve_ids(self, async_db_session: AsyncSession) -> None:
+        await _seed(async_db_session, "default")
+        await _seed(async_db_session, "acme")
+        repo = AsyncCveTrackerRepo(async_db_session)
+
+        ids = await repo.list_all_distinct_cve_ids()
+        assert set(ids) == {"CVE-2026-0001", "CVE-2026-0002", "CVE-2026-0003"}

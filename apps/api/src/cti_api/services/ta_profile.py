@@ -2,14 +2,8 @@
 cross-ref CVE-nya) -- `generate_ta_profile()`/`get_ta_profile()`. Fase
 7.3 (router `ta_groups`, Bagian 3).
 
-**Klien LLM SENGAJA gak reuse `cti_enrich.llm.client.get_llm_client()`**
-walau itu udah "SATU LLM client" kanonik (Fase 5 konsolidasi) -- `apps/api`
-punya exit criteria eksplisit (Fase 7, docs/PROGRESS.md): "gak ada import
-`cti_scraper`/`cti_enrich` dari API". Konstruksi client di bawah ini
-duplikat SEMPIT (~15 baris) dari `cti_enrich.llm.client`, disengaja demi
-jaga batas paket itu -- bukan lupa reuse. `LlmSettings`/`get_settings()`
-sendiri (sumber config-nya) TETAP dari `cti_core`, cuma pembungkus
-`OpenAI(**kwargs)`-nya yang diulang."""
+Klien LLM lewat `cti_api.services.llm_client.get_llm_client()` -- lihat
+docstring modul itu soal kenapa gak langsung reuse `cti_enrich.llm.client`."""
 
 from __future__ import annotations
 
@@ -19,13 +13,13 @@ import json
 import re
 from typing import Any
 
-from cti_core.config import get_settings
 from cti_core.db.models.article import Article, ArticleThreatActor
 from cti_core.db.repositories.cve import AsyncCveTrackerRepo
 from cti_core.db.repositories.ta import AsyncTAProfileRepo, build_ta_name_pattern
-from openai import OpenAI
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from cti_api.services.llm_client import get_llm_client
 
 _SYSTEM_PROMPT = """You are a Senior Cyber Threat Intelligence Analyst. Your task is to produce a structured,
 analyst-grade threat actor profile based on the input provided (report text, article,
@@ -174,18 +168,6 @@ Use this exact schema:
 }"""
 
 
-def _get_llm_client() -> tuple[OpenAI, str]:
-    settings = get_settings().llm
-    kwargs: dict[str, Any] = {
-        "api_key": settings.api_key,
-        "timeout": settings.timeout_s,
-        "max_retries": settings.max_retries,
-    }
-    if settings.url:
-        kwargs["base_url"] = settings.url
-    return OpenAI(**kwargs), settings.model
-
-
 def _build_user_message(actor_name: str, news: list[dict[str, Any]]) -> str:
     if not news:
         return actor_name
@@ -199,7 +181,7 @@ def _build_user_message(actor_name: str, news: list[dict[str, Any]]) -> str:
 
 
 def _call_llm(actor_name: str, news: list[dict[str, Any]]) -> dict[str, Any]:
-    client, model_name = _get_llm_client()
+    client, model_name = get_llm_client()
     user_msg = _build_user_message(actor_name, news)
     completion = client.chat.completions.create(
         model=model_name,

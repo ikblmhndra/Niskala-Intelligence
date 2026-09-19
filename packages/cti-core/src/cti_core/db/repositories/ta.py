@@ -34,6 +34,15 @@ class AsyncTARepo:
     def __init__(self, session: AsyncSession) -> None:
         self.session = session
 
+    async def get_by_name_ci(self, name: str) -> ThreatActorGroup | None:
+        """Fase 7.3 (router `mindmap`, Bagian 4) -- gate "TA ini beneran
+        di-track" sebelum generate mindmap, port `build_threat_actor_mindmap()`
+        lama (yang nyari `ta_groups` doc dulu sebelum baca profile)."""
+        result = await self.session.execute(
+            select(ThreatActorGroup).where(func.lower(ThreatActorGroup.name) == name.lower())
+        )
+        return result.scalar_one_or_none()
+
     async def list_groups(
         self,
         *,

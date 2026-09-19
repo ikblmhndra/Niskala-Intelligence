@@ -10,8 +10,10 @@ Bandingkan sama script lama:
 - Dedup `offset/deepdarkCTI_offset.txt` (list SHA manual) -- gak dibutuhin,
   `IocFeedItem.dedup_key()` = SHA commit, dedup framework yang urus.
 - Ekstraksi IOC pake `iocExtractor.extract_iocs()` langsung (module lokal)
-  -- di sini `cti_enrich.ioc.extractor.extract_iocs()` (Fase 5, SATU
-  ekstraktor kanonik yang byte-identik sama fork asli ini).
+  -- di sini `cti_core.ioc.extractor.extract_iocs()` (Fase 5, SATU
+  ekstraktor kanonik yang byte-identik sama fork asli ini; pindah dari
+  `cti_enrich.ioc` ke `cti_core.ioc` Fase 7.3 Bagian 4, lihat docstring
+  modulnya -- import di sini ikut nyesuain, gak ada perubahan perilaku).
 - Upsert IOC (`dbMongo.upsert_ioc_from_feed`) + dual-write C2 feed
   (`dbMongo.upsert_threat_feed`) + alert Telegram (`send_alert_darkweb`) --
   SEMUA pindah ke sink `_ioc_feed_sink` (`cti_scraper/sinks.py`), `fetch()`
@@ -28,7 +30,7 @@ from collections.abc import Iterator
 from datetime import datetime
 from typing import Any
 
-from cti_enrich.ioc.extractor import extract_iocs
+from cti_core.ioc.extractor import extract_iocs
 from cti_scraper.base import BaseScraper, ScrapeContext, ScraperMeta
 from cti_scraper.items import IocFeedItem
 from cti_scraper.schedule import spread

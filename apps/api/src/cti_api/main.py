@@ -32,13 +32,17 @@ from cti_api.routers import cve as cve_router
 from cti_api.routers import filtered_articles as filtered_articles_router
 from cti_api.routers import health as health_router
 from cti_api.routers import iocs as iocs_router
+from cti_api.routers import mindmap as mindmap_router
 from cti_api.routers import mitre as mitre_router
 from cti_api.routers import monitored_accounts as monitored_accounts_router
+from cti_api.routers import newsletter as newsletter_router
 from cti_api.routers import pir as pir_router
+from cti_api.routers import pkg_vuln as pkg_vuln_router
 from cti_api.routers import ransomware as ransomware_router
 from cti_api.routers import rfi as rfi_router
 from cti_api.routers import roles as roles_router
 from cti_api.routers import source_reliability as source_reliability_router
+from cti_api.routers import stix as stix_router
 from cti_api.routers import ta_groups as ta_groups_router
 from cti_api.routers import techstack as techstack_router
 from cti_api.routers import tweets as tweets_router
@@ -86,11 +90,15 @@ def create_app() -> FastAPI:
     app.include_router(filtered_articles_router.router)
     app.include_router(rfi_router.router)
     app.include_router(pir_router.router)
+    app.include_router(pkg_vuln_router.router)
     app.include_router(source_reliability_router.router)
     app.include_router(attack_router.router)
     app.include_router(ta_groups_router.router)
     app.include_router(mitre_router.router)
     app.include_router(crossref_router.router)
+    app.include_router(newsletter_router.router)
+    app.include_router(mindmap_router.router)
+    app.include_router(stix_router.router)
     return app
 
 

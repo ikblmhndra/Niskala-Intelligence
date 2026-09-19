@@ -314,6 +314,16 @@ class AsyncArticleRepo:
         result = await self.session.execute(select(Article).where(Article.id == article_id))
         return result.scalar_one_or_none()
 
+    async def get_by_ids(self, article_ids: Sequence[int]) -> dict[int, Article]:
+        """Fase 7.3 (router `newsletter`, Bagian 4) -- port
+        `fetch_articles_by_ids()`, dulu ObjectId string, sekarang `int`
+        (Article.id) langsung, gak butuh validasi format kayak
+        `ObjectId.is_valid()` lama."""
+        if not article_ids:
+            return {}
+        result = await self.session.execute(select(Article).where(Article.id.in_(article_ids)))
+        return {a.id: a for a in result.scalars().all()}
+
     async def list_filtered(
         self,
         *,

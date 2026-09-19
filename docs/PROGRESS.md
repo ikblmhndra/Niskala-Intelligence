@@ -1569,9 +1569,116 @@ tinggal pkg_vuln+cve_email), 7.6 (snapshot test), 7.7 (ekspor OpenAPI), 7.8.
       `AsyncMitreHeatmapRepo`, `cti_api.services.crossref`). Full suite:
       **752 passed**, mypy 90 file bersih, ruff bersih.
 
-      Sisa 9 router (Bagian 4-5): `pkg_vuln`/`newsletter`/`stix`/`mindmap`
-      (Bagian 4) → `intelligence`/`recap`/`exec_dashboard` (Bagian 5,
-      PALING BELAKANGAN).
+      **Bagian 4 (2026-09-19) -- 4/4 KELAR** (`newsletter`, `mindmap`,
+      `stix`, `pkg_vuln`) -- user bilang "gas fase 4 bro". Urutan kerja:
+      newsletter → mindmap → stix → pkg_vuln (terbesar, dikerjain
+      terakhir).
+
+      **Byproduct arsitektur**: `cti_enrich/ioc/extractor.py` (SATU IOC
+      extractor kanonik, Fase 5) dipindah ke `cti_core/ioc/extractor.py`
+      -- modul itu nol dependency internal `cti_enrich`, jadi relokasi
+      mekanis, zero behavior-change, yang ngebolehin `apps/api` (exit
+      criteria: gak boleh import `cti_scraper`/`cti_enrich`) DAN
+      `cti_enrich` sama-sama impor SATU ekstraktor yang sama, gak perlu
+      fork lagi. `cti-alerts/mailer.py` (baru) ngelengkapin janji
+      `pyproject.toml` package itu sendiri ("Telegram sender + Graph/SMTP
+      mailer") -- `send_newsletter_email()` Graph-only (POST
+      `/users/{sender}/messages`, bikin DRAFT bukan `/sendMail`, analis
+      review manual di Outlook -- persis kode lama), SMTP DIBUANG
+      (`SmtpSettings` gak pernah ada di skema config baru, `.env` cuma
+      punya kredensial Graph).
+
+      **`newsletter`** -- fetch artikel (Playwright + `trafilatura`,
+      deteksi paywall keyword-based), ringkasan per-artikel via LLM,
+      korelasi CVE (tabel anak baru `CveNewsletterMention`, ganti
+      Mongo array-push-dedup jadi `UniqueConstraint(cve_tracker_id, url)`
+      asli). `include_clusters` (analisis cluster kampanye,
+      `cluster_service.py` 784 baris TF-IDF/Jaccard) SENGAJA belum
+      diport -- di luar 27 router, sama alasan kayak `mindmap`'s builder
+      `cluster` di bawah. **Bug real ketemu dari test integrasi**:
+      `AsyncNewsletterRepo.list_all()` non-deterministic -- Postgres
+      `now()` itu waktu TRANSAKSI bukan waktu STATEMENT, jadi banyak
+      baris yang di-insert dalam satu transaksi test dapet `created_at`
+      identik, `ORDER BY created_at DESC` doang gak cukup. Fix: tambah
+      `Newsletter.id.desc()` sebagai tie-breaker kedua. Endpoint kirim
+      email (`/resend`, `/draft-email`) SENGAJA belum di-live-test --
+      butuh izin eksplisit user dulu (kirim email beneran/draft ke
+      mailbox asli), cuma diverifikasi lewat unit test mock. Sisa
+      pipeline (fetch Playwright, ekstraksi IOC, render HTML) verified
+      LIVE (artikel Wikipedia asli, 11231 karakter ke-ekstrak).
+
+      **`mindmap`** -- generate diagram Mermaid per domain (newsletter/
+      threat_actor/cve/pir/ransomware), cache generik `(feature_type,
+      doc_id) -> syntax` + custom-edit override. `doc_id` per
+      feature_type dipetakan ke identifier yang SAMA dipakai router lain
+      buat domain itu (`cve_id` string, nama TA, `PIRRequirement.id`/
+      `Newsletter.id`, `group_name`) -- BUKAN internal PK Postgres,
+      simplifikasi dari dual ObjectId-lalu-fallback-nama kode lama,
+      konsisten sama pola yang udah ada di router lain. Builder
+      `cluster` (butuh `cluster_service.py` yang sama kayak di atas)
+      SENGAJA belum diport. Verified LIVE: generate + cache-hit
+      (ganti data CVE abis generate pertama, syntax gak ikut berubah
+      tanpa `/regenerate` eksplisit) pakai data real dev Postgres.
+
+      **`stix`** -- export bundle STIX 2.1 (article/TA/IOC/PIR), builder
+      STATELESS (baca-transform doang, gak ada tabel baru sama sekali).
+      Asimetri auth port apa adanya: cuma `/article/{id}` yang
+      `require_auth`, 3 endpoint lain publik. `article_id` sekarang
+      `int` (bukan ObjectId hex), `AsyncPIRRepo.list_active_unscoped()`
+      (dipakai bareng `crossref` Bagian 3) ditambah `order_by(priority)`
+      biar cocok sama `.sort("priority", 1)` lama. Verified LIVE:
+      export artikel real (Unc6671/T-technique beneran, 13 objek STIX +
+      relationship `uses`), TA-not-found -> 404, IOC bundle + filter
+      type, PIR bundle keurut priority.
+
+      **`pkg_vuln`** -- terbesar (1109 baris service lama), monitoring
+      vulnerability paket (osv.dev + deps.dev). **Ketemu skema Fase 2
+      yang udah ada duluan** (`models/package.py`,
+      `MonitoredPackage`/`PackageVuln`/`PackageVulnAlias`/
+      `PackageDepEdge`) -- ditulis SEBELUM `pkg_vuln_service.py` lama
+      dibaca detail, 3 tabel kosong (gak pernah ke-wire router/service/
+      test manapun), DIGANTI TOTAL (bukan alter bertahap, aman karena
+      kosong): `PackageVuln.monitored_package_id` FK STRICT gak bisa
+      nampung kasus nyata (`resolve_package_deps(scan_transitive=True)`
+      scan dependensi TRANSITIF yang BUKAN package dimonitor, `update_one`
+      TANPA `upsert=True` lama diem2 no-op kalau gak ketemu tapi vuln-nya
+      tetap kesimpen) -- diganti `package_name`/`ecosystem`/`client_id`
+      DENORMALIZED, port apa adanya dari bentuk Mongo lama. Field yang
+      ilang total di sketsa (rollup `vuln_count`/`*_count`/
+      `highest_severity` dkk, `cvss_score`/`adjusted_score`/`published`/
+      dst) ditambahin lengkap. `_enrich_vulns_composite()` (EPSS dari
+      FIRST.org + KEV dari CISA) SENGAJA belum diport -- `epss_service.py`/
+      `cisa_kev_service.py` SAMA yang udah didokumentasikan belum ke-port
+      di `routers/cve.py` (`/cisa-lookup`/`/epss-lookup`), bukan concern
+      `pkg_vuln` doang; kolom `epss_*`/`kev*` tetap ada di skema, `adjusted_
+      score` dihitung dari `cvss_score` doang saat scan (formula sama,
+      cuma belum "boosted" pass kedua). Fire-and-forget
+      `asyncio.create_task(scan_package(...))` lama (dipanggil dari 4
+      tempat beda: `add_package`/`update_package`/`import_lockfile`/
+      `resolve_package_deps`) DIPINDAH ke router pakai `BackgroundTasks`
+      + `async_session()` sendiri, pola sama `attack.py` Bagian 3 --
+      service jadi murni CRUD+orkestrasi eksternal, gak nge-spawn task
+      sendiri. `scan_all_packages()` SEKUENSIAL (bukan `asyncio.gather`
+      batch-10 + `sleep(2)` lama) -- satu `AsyncSession` gak aman
+      concurrent, throttling lama ikut dibuang (gak ada concurrency yang
+      perlu ditahan). Ketemu dependency baru yang kelewat pas nulis
+      endpoint upload lockfile: `python-multipart` (FastAPI butuh ini
+      buat `UploadFile`), ditambah ke `apps/api/pyproject.toml`.
+      Verified LIVE end-to-end pakai osv.dev/deps.dev BENERAN: `lodash@
+      4.17.15` narik 6 CVE asli (CVE-2020-8203/CVE-2021-23337/dst,
+      3 HIGH/3 MEDIUM), `flask@2.0.0` narik 4 CVE asli, `resolve-deps`
+      narik OSSF Scorecard asli (skor 5.4, checks asli) + dep graph,
+      import-lockfile (package asli + package fiktif yang bener2 gak ada
+      di registry -- gak crash, 0 vuln doang), ack toggle, delete
+      cascade ke vuln anak-nya.
+
+      75 test baru (22 unit parser lockfile/CVSS murni + 53 integrasi
+      Postgres real: newsletter/mailer/mindmap/stix/pkg_vuln). Full
+      suite: **827 passed**, mypy 108 file (`cti-core`+`cti-api`)
+      bersih, ruff bersih.
+
+      Sisa 3 router (Bagian 5, PALING BELAKANGAN, dashboard agregat --
+      `intelligence`/`recap`/`exec_dashboard`).
 - [ ] **7.4** Port 56 service
 - [ ] **7.5** Buang duplikasi (pkg_vuln, cve_email, ioc, llm)
 - [ ] **7.6** Snapshot test tiap endpoint

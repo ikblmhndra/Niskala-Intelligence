@@ -131,9 +131,15 @@ class AsyncPIRRepo:
         """Lintas client, TANPA filter -- port apa adanya dari
         `cross_reference_service.get_cve_crossrefs()`
         (`db[PIR_COLLECTION].find({"status": "active"})`, gak nge-scope
-        client). Dipakai `crossref` (Bagian 3) doang."""
+        client). Dipakai `crossref` (Bagian 3) DAN `stix.build_pir_stix_bundle`
+        (Bagian 4, yang terakhir ini butuh urutan priority ascending --
+        `order_by` ditambahin buat match `.sort("priority", 1)` lama;
+        gak ganggu `crossref` yang gak peduli urutan)."""
         result = await self.session.execute(
-            select(PIRRequirement).where(PIRRequirement.status == "active").limit(500)
+            select(PIRRequirement)
+            .where(PIRRequirement.status == "active")
+            .order_by(PIRRequirement.priority.asc())
+            .limit(500)
         )
         return list(result.scalars().all())
 

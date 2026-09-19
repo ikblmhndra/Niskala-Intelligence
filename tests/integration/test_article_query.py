@@ -295,3 +295,18 @@ async def test_get_by_id_returns_article(async_db_session: AsyncSession) -> None
     fetched = await repo.get_by_id(ids["a1"])
     assert fetched is not None
     assert fetched.title.startswith("China-linked APT41")
+
+
+async def test_get_by_ids_returns_dict_keyed_by_id(async_db_session: AsyncSession) -> None:
+    """Fase 7.3 (router `newsletter`, Bagian 4) -- port `fetch_articles_by_ids()`."""
+    repo = AsyncArticleRepo(async_db_session)
+    ids = await _seed(repo)
+
+    rows = await repo.get_by_ids([ids["a1"], ids["a3"], 999999])
+    assert set(rows.keys()) == {ids["a1"], ids["a3"]}
+    assert rows[ids["a1"]].title.startswith("China-linked APT41")
+
+
+async def test_get_by_ids_empty_list_returns_empty_dict(async_db_session: AsyncSession) -> None:
+    repo = AsyncArticleRepo(async_db_session)
+    assert await repo.get_by_ids([]) == {}

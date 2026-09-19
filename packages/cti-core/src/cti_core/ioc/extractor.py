@@ -12,10 +12,22 @@ yang ditambahin di sini). Cuma nama privat yang disesuaikan gaya modul ini.
 
 `allowlist` tetap parameter murni (`dict[str, set[str]]`), BUKAN dependency
 ke Postgres session -- resolusi allowlist (baca dari tabel `ioc_allowlist`)
-itu tanggung jawab caller (`stages/extract_iocs.py`), bukan modul ini. Ini
-yang bikin fungsi ini tetap importable standalone (mis. langsung dari
-scraper `deepdarkCTI` nanti) tanpa perlu DB session.
-"""
+itu tanggung jawab caller (`stages/extract_iocs.py` DAN, Fase 7.3 Bagian 4,
+`cti_api.services.newsletter`), bukan modul ini.
+
+**Pindah dari `cti_enrich.ioc` ke `cti_core.ioc` (Fase 7.3 Bagian 4, router
+`newsletter`)** -- modul ini ZERO dependency internal (cuma `ipaddress`/`re`
+stdlib) dari awal, sengaja didesain importable standalone (lihat alinea di
+atas). `newsletter_service.py` lama py FORK sendiri dari extractor ini
+(disebut di atas) yang justru mau dieliminasi Fase 5 -- tapi `apps/api`
+punya exit criteria (Fase 7, docs/PROGRESS.md): "gak ada import
+`cti_scraper`/`cti_enrich` dari API", jadi gak bisa `from cti_enrich.ioc
+import ...` langsung dari router `newsletter`. Karena modulnya beneran gak
+punya dependency ke `cti_enrich` apa pun, pindah ke `cti_core` (base
+package yang UDAH dipakai `cti_enrich` DAN `cti_api` dua-duanya) itu
+mekanis murni -- bukan rewrite, nol perubahan perilaku -- dan nyelesain
+DUA masalah sekaligus (SATU extractor beneran, gak ngelanggar boundary
+API)."""
 
 from __future__ import annotations
 
