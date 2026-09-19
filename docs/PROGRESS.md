@@ -1112,7 +1112,15 @@ tinggal pkg_vuln+cve_email), 7.6 (snapshot test), 7.7 (ekspor OpenAPI), 7.8.
       **OIDC bagian dari 7.2 ini BELUM diport** (`oidc.enabled=False`
       default, 184 baris `oidc_service.py` nunggu giliran terpisah, bukan
       bagian "inti").
-- [~] **7.3** Port 27 router ke repository Postgres -- **18/27 kelar**
+- [x] **7.3** Port 27 router ke repository Postgres -- **SELESAI** (5/5
+      Bagian survei 2026-09-18 kelar). `ScraperNewsWeb/app/routers/`
+      isinya 28 file: `auth` (Fase 7.2, udah kelar duluan), `oidc`
+      (`oidc.enabled=False` default, sengaja ditunda, lihat catatan
+      7.2), `scraper_health` (diganti control plane, Fase 9, beda fase)
+      -- sisa **25 router**, SEMUANYA ketutup lintas 6 sebelum survei +
+      Bagian 1-5 (rincian tiap bagian di bawah). "27" di estimasi awal
+      survei sedikit meleset (25 aktual), bukan ada router yang
+      kelewat -- daftar file di atas cross-check lengkap.
       (`clients`, `roles`, `articles` [baca doang], `iocs` [baca+kurasi],
       `techstack` [CRUD inti], `cve` [baca+false-positive+purge],
       `tweets`, `monitored_accounts`, `ransomware`, `changelog`,
@@ -1677,8 +1685,94 @@ tinggal pkg_vuln+cve_email), 7.6 (snapshot test), 7.7 (ekspor OpenAPI), 7.8.
       suite: **827 passed**, mypy 108 file (`cti-core`+`cti-api`)
       bersih, ruff bersih.
 
-      Sisa 3 router (Bagian 5, PALING BELAKANGAN, dashboard agregat --
-      `intelligence`/`recap`/`exec_dashboard`).
+      **Bagian 5 (2026-09-19) -- 3/3 KELAR** (`intelligence`, `recap`,
+      `exec_dashboard`) -- user bilang "gas bagian 5 bro", TERAKHIR
+      dari 5 bagian karena nyedot data dari hampir semua domain lain
+      (persis alasan urutan yang direncanakan sejak survei 2026-09-18).
+
+      **`intelligence` -- 3 dari 7 endpoint lama SENGAJA belum diport**:
+      `/clusters`, `/clusters/recent`, `/clusters/evolution`,
+      `/clusters/{id}/trends`, `/intelligence/geopolitical` (5
+      sebenarnya) SEMUA transitif butuh `cluster_service.py` (784 baris
+      TF-IDF/Jaccard, di luar 27 router) -- `campaign_trend_service.py`/
+      `geopolitical_service.py` ikut kena karena masing-masing baca
+      output cluster (`CLUSTERS_COLLECTION`) atau nerima `campaigns`
+      sebagai parameter. Sama alasan persis kayak deferred `cluster`
+      di `newsletter`/`mindmap`/`exec_dashboard` (Bagian 4-5). Yang
+      PORTABLE (`/spikes`, `/intelligence/risk-matrix`, `/source-scores`)
+      -- ketiganya baca `articles` langsung, gak ada dependency cluster.
+
+      **Repo baru `AsyncDashboardRepo`** (`cti_core.db.repositories.
+      dashboard`) -- ~20 method agregasi lintas `articles`/`cve_tracker`/
+      `iocs`, dipakai bareng `intelligence`/`exec_dashboard`/`recap`.
+      Bucket bulanan pakai `func.to_char(Article.posted_on, 'YYYY-MM')`
+      ganti `$substr` Mongo lama -- HARUS diassign ke variabel & dipakai
+      ULANG objek yang sama di SELECT+GROUP BY, bug real yang sama
+      persis kayak `AsyncTARepo.get_timeline()` (Bagian 3) kalau lupa.
+      **Semua query SEKUENSIAL**, bukan `asyncio.gather` kayak lama --
+      dashboard-v2 aja manggil ~15 query terpisah, satu `AsyncSession`
+      emang gak aman concurrent (constraint yang sama berkali-kali
+      ketemu sesi ini).
+
+      **2 bug REAL ketemu & DIPERBAIKI (bukan asimetri desain)**, dua-duanya
+      typo/field-salah yang bikin sebagian output LLM/skor mati diam-diam:
+      1. `risk_matrix_service.py` lama baca `doc.get("attack_techniques")`
+         buat komponen skor TTP -- field itu TIDAK PERNAH ada di dokumen
+         artikel manapun (field TTP artikel asli namanya `ttps`), jadi
+         komponen `unique_ttps * 2` di formula skor SELALU 0. Di sini
+         pakai `ttps` asli.
+      2. `exec_brief_service.py` lama baca `ta.get('name')`/`('count')`/
+         `('velocity')` dari entry `ta_velocity`, tapi `_compute_ta_
+         velocity()` beneran ngehasilin key `actor`/`total`/`velocity_pct`
+         -- section "TOP THREAT ACTORS BY VELOCITY" di brief eksekutif
+         SELALU nge-render "Unknown: 0 incidents". Di sini pakai key yang
+         beneran dihasilin.
+
+      **`_get_recent_clusters()`/`recent_clusters_summary` (exec_dashboard
+      v2) DAN `_collect_campaigns()` (recap) SENGAJA balikin `[]`** --
+      cluster_service lagi, TAPI kode lama sendiri udah bungkus dua-duanya
+      `try/except -> []`, jadi cuma selalu hit fallback yang udah ada,
+      bukan kontrak baru yang dilanggar.
+
+      **`recap`** -- digest harian (artikel+tweet+IOC+CVE+TA baru) + LLM
+      forecast 1-3 hari, cache per-tanggal (`daily_recaps`, tabel baru).
+      Artikel diurutin heuristik `source_score.get_source_reliability()`
+      (nama sumber) gantiin field `source_reliability` per-dokumen lama
+      yang gak ada analognya di skema baru (grading itu sekarang query
+      terpisah `AsyncSourceReliabilityRepo`, bukan kolom artikel).
+      `AsyncTARepo.list_added_on()` (baru) pakai `created_at::date`
+      gantiin kolom `added_date` yang emang gak pernah ada di skema
+      (`ThreatActorGroup` cuma punya `TimestampMixin.created_at`,
+      semantiknya sama). **Verified LIVE dengan LLM gateway asli**:
+      `POST /api/recap/generate` jalan bersih (gak kena isu "Kiro
+      persona" yang beberapa kali muncul Bagian 1/3/4) -- recap hari
+      sepi (0 artikel/tweet/CVE, 89 IOC, 3991 TA baru dari seed data)
+      dihasilin JUJUR ("no notable activity", sesuai rule system prompt),
+      bukan dikarang. Cache-hit + `/list`/`/{date}` + validasi format
+      tanggal semua diverifikasi LIVE juga.
+
+      **`exec_dashboard`** -- `GET /dashboard` (v1) **SENGAJA TANPA
+      AUTH**, port apa adanya (`/dashboard-v2` dan `POST /brief` tetap
+      di-gate) -- asimetri yang gak biasa (bukan pola baca-publik/tulis-
+      digate yang udah sering ketemu, ini "v1 publik, v2+brief di-gate")
+      tapi dipertahankan sesuai kode lama. `_get_critical_cves()` cuma
+      filter `cisa_kev` (cabang `epss_score >= 0.5` gak ada kolomnya,
+      sama alasan `pkg_vuln`/`cve.py`). **Verified LIVE**: v1+v2+brief
+      ketiganya jalan atas data dev Postgres real (15 insiden, 6 TA unik,
+      leaderboard Unc6671/Turla/Apt41/dst, top TTPs T1005/T1190/T1570),
+      `POST /api/exec/brief` ngehasilin brief markdown 5-section lengkap
+      dari LLM gateway asli, ground di data real (nyebut UNC6671, CVE
+      WordPress, risk score per sektor -- bukan generik).
+
+      22 test baru (`AsyncDashboardRepo` x9, `exec_dashboard`/`spike`/
+      `risk_matrix` service x5, `AsyncRecapRepo` x3, `recap` service x5
+      dengan LLM di-mock). Full suite: **849 passed**, mypy 120 file
+      (`cti-core`+`cti-api`) bersih, ruff bersih.
+
+      **Fase 7.3 SELESAI -- 25/25 router** (lihat catatan di atas soal
+      angka "27" awal). Lanjut ke sisa Fase 7 (**7.4** port 56 service,
+      **7.5** buang duplikasi, **7.6** snapshot test, **7.7** ekspor
+      OpenAPI, **7.8** 5 loop jadi Celery beat) sebelum Fase 8 (`apps/web`).
 - [ ] **7.4** Port 56 service
 - [ ] **7.5** Buang duplikasi (pkg_vuln, cve_email, ioc, llm)
 - [ ] **7.6** Snapshot test tiap endpoint

@@ -135,6 +135,17 @@ class AsyncIOCRepo:
         result = await self.session.execute(select(IOC).where(IOC.id == ioc_id))
         return result.scalar_one_or_none()
 
+    async def list_first_seen_on(self, day: datetime.date, *, limit: int = 200) -> list[IOC]:
+        """Port `_collect_iocs()` (`recap_service.py`, Fase 7.3 router
+        `recap`, Bagian 5) -- IOC yang PERTAMA ketemu tanggal ini."""
+        result = await self.session.execute(
+            select(IOC)
+            .where(func.date(IOC.first_seen_at) == day)
+            .order_by(IOC.first_seen_at)
+            .limit(limit)
+        )
+        return list(result.scalars().all())
+
     async def list_filtered(
         self,
         *,
@@ -161,9 +172,7 @@ class AsyncIOCRepo:
         total = (await self.session.execute(count_stmt)).scalar_one()
 
         order_col = IOC.confidence_score if sort_by == "confidence" else IOC.last_seen_at
-        list_stmt = (
-            stmt.order_by(order_col.desc()).offset((page - 1) * page_size).limit(page_size)
-        )
+        list_stmt = stmt.order_by(order_col.desc()).offset((page - 1) * page_size).limit(page_size)
         result = await self.session.execute(list_stmt)
         return list(result.scalars().unique().all()), total
 

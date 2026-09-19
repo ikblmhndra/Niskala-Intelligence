@@ -214,6 +214,28 @@ class AsyncCveTrackerRepo:
         result = await self.session.execute(select(CveTracker.cve_id).distinct())
         return list(result.scalars().all())
 
+    async def list_registered_on(
+        self, day: datetime.date, *, exclude_cve_ids: Sequence[str], limit: int = 50
+    ) -> list[CveTracker]:
+        """Port `_collect_cves()` (`recap_service.py`, Fase 7.3 router
+        `recap`, Bagian 5) -- CVE yang PERTAMA ke-track/kedetek/dipublish
+        tanggal ini (OR tiga kolom tanggal, port apa adanya dari kode
+        lama), lintas client (recap emang digest GLOBAL, bukan per-client).
+        `exclude_cve_ids` global juga (bukan per-client) -- `recap` gak
+        pernah nge-scope client sama sekali."""
+        stmt = select(CveTracker).where(
+            or_(
+                func.date(CveTracker.registered_date) == day,
+                func.date(CveTracker.detected_on) == day,
+                CveTracker.published == day,
+            )
+        )
+        if exclude_cve_ids:
+            stmt = stmt.where(CveTracker.cve_id.not_in(exclude_cve_ids))
+        stmt = stmt.limit(limit)
+        result = await self.session.execute(stmt)
+        return list(result.scalars().all())
+
     async def get_by_cve_id_any_client(self, cve_id: str) -> CveTracker | None:
         """Case-insensitive, lintas client, ambil SATU baris pertama yang
         cocok -- port apa adanya dari `cross_reference_service.get_cve_crossrefs()`

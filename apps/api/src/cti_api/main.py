@@ -29,8 +29,10 @@ from cti_api.routers import changelog as changelog_router
 from cti_api.routers import clients as clients_router
 from cti_api.routers import crossref as crossref_router
 from cti_api.routers import cve as cve_router
+from cti_api.routers import exec_dashboard as exec_dashboard_router
 from cti_api.routers import filtered_articles as filtered_articles_router
 from cti_api.routers import health as health_router
+from cti_api.routers import intelligence as intelligence_router
 from cti_api.routers import iocs as iocs_router
 from cti_api.routers import mindmap as mindmap_router
 from cti_api.routers import mitre as mitre_router
@@ -39,6 +41,7 @@ from cti_api.routers import newsletter as newsletter_router
 from cti_api.routers import pir as pir_router
 from cti_api.routers import pkg_vuln as pkg_vuln_router
 from cti_api.routers import ransomware as ransomware_router
+from cti_api.routers import recap as recap_router
 from cti_api.routers import rfi as rfi_router
 from cti_api.routers import roles as roles_router
 from cti_api.routers import source_reliability as source_reliability_router
@@ -99,6 +102,9 @@ def create_app() -> FastAPI:
     app.include_router(newsletter_router.router)
     app.include_router(mindmap_router.router)
     app.include_router(stix_router.router)
+    app.include_router(intelligence_router.router)
+    app.include_router(recap_router.router)
+    app.include_router(exec_dashboard_router.router)
     return app
 
 

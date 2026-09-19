@@ -24,6 +24,7 @@ from cti_core.db.models import (  # noqa: F401
     package,
     pir,
     ransomware,
+    recap,
     rfi,
     scraper,
     source_reliability,

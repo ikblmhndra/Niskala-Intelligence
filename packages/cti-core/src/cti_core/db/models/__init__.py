@@ -40,6 +40,7 @@ from cti_core.db.models.newsletter import Newsletter, NewsletterPaywallHint
 from cti_core.db.models.package import MonitoredPackage, PackageDepGraph, PackageVuln
 from cti_core.db.models.pir import PIRNote, PIRRequirement
 from cti_core.db.models.ransomware import RansomwareVictim
+from cti_core.db.models.recap import DailyRecap
 from cti_core.db.models.rfi import RFIRequest
 from cti_core.db.models.scraper import ScraperConfig, ScraperItem, ScraperRun, ScraperSeen
 from cti_core.db.models.source_reliability import SourceReliabilityEntry
@@ -75,6 +76,7 @@ __all__ = [
     "CveTicket",
     "CveTicketItem",
     "CveTracker",
+    "DailyRecap",
     "IOCFeedback",
     "IOCSource",
     "IOCTag",

@@ -1,0 +1,179 @@
+"""Port `ScraperNewsWeb/app/services/spike_service.py`. Fase 7.3 (router
+`intelligence`, Bagian 5). Deteksi lonjakan (z-score) per TA/negara/
+industri + total harian, window terakhir (7 hari) vs baseline (sisa
+`lookback_days`). Cache in-memory TTL 900 detik, port apa adanya (bukan
+Redis -- kode lama juga cuma dict proses, gak lintas worker)."""
+
+from __future__ import annotations
+
+import datetime
+import statistics
+import time
+from collections import defaultdict
+from typing import Any
+
+from cti_core.db.repositories.dashboard import AsyncDashboardRepo
+from sqlalchemy.ext.asyncio import AsyncSession
+
+_CACHE: dict[str, tuple[dict[str, Any], float]] = {}
+_CACHE_TTL = 900
+
+
+async def get_spikes(
+    session: AsyncSession,
+    lookback_days: int = 30,
+    z_threshold: float = 2.0,
+    *,
+    exclude_news_types: list[str] | None = None,
+    confirmed_only: bool = False,
+) -> dict[str, Any]:
+    cache_key = f"{lookback_days}|{z_threshold}|{sorted(exclude_news_types or [])}|{confirmed_only}"
+    now = time.monotonic()
+    cached = _CACHE.get(cache_key)
+    if cached is not None:
+        data, ts = cached
+        if now - ts < _CACHE_TTL:
+            return data
+
+    result = await _compute_spikes(
+        session, lookback_days, z_threshold, exclude_news_types, confirmed_only
+    )
+    _CACHE[cache_key] = (result, now)
+    return result
+
+
+async def _compute_spikes(
+    session: AsyncSession,
+    lookback_days: int,
+    z_threshold: float,
+    exclude_news_types: list[str] | None,
+    confirmed_only: bool,
+) -> dict[str, Any]:
+    repo = AsyncDashboardRepo(session)
+    cutoff = datetime.date.today() - datetime.timedelta(days=lookback_days)
+    recent_cutoff = datetime.date.today() - datetime.timedelta(days=7)
+
+    # Sekuensial, bukan asyncio.gather -- satu AsyncSession gak aman
+    # dipakai concurrent (beda dari `$facet` Mongo lama yang emang satu
+    # pipeline). Sama constraint yang udah didokumentasikan di
+    # `AsyncPIRRepo.list_pirs()`/`pkg_vuln.scan_all_packages()`.
+    by_actor = await repo.daily_entity_counts(
+        dimension="threat_actor",
+        posted_on_start=cutoff,
+        exclude_news_types=exclude_news_types,
+        confirmed_only=confirmed_only,
+    )
+    by_country = await repo.daily_entity_counts(
+        dimension="country",
+        posted_on_start=cutoff,
+        exclude_news_types=exclude_news_types,
+        confirmed_only=confirmed_only,
+    )
+    by_industry = await repo.daily_entity_counts(
+        dimension="industry",
+        posted_on_start=cutoff,
+        exclude_news_types=exclude_news_types,
+        confirmed_only=confirmed_only,
+    )
+    daily_total = await repo.daily_totals(
+        posted_on_start=cutoff,
+        exclude_news_types=exclude_news_types,
+        confirmed_only=confirmed_only,
+    )
+
+    return {
+        "threat_actors": _detect_entity_spikes(by_actor, recent_cutoff, z_threshold),
+        "countries": _detect_entity_spikes(by_country, recent_cutoff, z_threshold),
+        "industries": _detect_entity_spikes(by_industry, recent_cutoff, z_threshold),
+        "overall": _detect_overall_spikes(daily_total, recent_cutoff, z_threshold),
+        "generated_at": datetime.datetime.now(datetime.UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "parameters": {
+            "lookback_days": lookback_days,
+            "z_threshold": z_threshold,
+            "recent_window": "last 7 days",
+        },
+    }
+
+
+def _build_series(
+    raw: list[tuple[datetime.date, str, int]],
+) -> dict[str, dict[datetime.date, int]]:
+    series: dict[str, dict[datetime.date, int]] = defaultdict(dict)
+    for date, entity, count in raw:
+        series[entity][date] = count
+    return series
+
+
+def _detect_entity_spikes(
+    raw: list[tuple[datetime.date, str, int]], recent_cutoff: datetime.date, z_threshold: float
+) -> list[dict[str, Any]]:
+    series = _build_series(raw)
+    spikes = []
+
+    for entity, daily in series.items():
+        dates = sorted(daily)
+        baseline_vals = [daily[d] for d in dates if d < recent_cutoff]
+        recent_dates = [d for d in dates if d >= recent_cutoff]
+
+        if len(baseline_vals) < 5:
+            continue
+
+        mean = statistics.mean(baseline_vals)
+        if mean < 0.5:
+            continue
+
+        try:
+            std = statistics.stdev(baseline_vals)
+        except statistics.StatisticsError:
+            std = 0.0
+        std = std or 0.5
+
+        for date in recent_dates:
+            count = daily[date]
+            z_score = (count - mean) / std
+            if z_score >= z_threshold:
+                spikes.append(
+                    {
+                        "entity": entity,
+                        "date": date.isoformat(),
+                        "count": count,
+                        "baseline_mean": round(mean, 2),
+                        "z_score": round(z_score, 2),
+                        "severity": "high" if z_score >= 3.0 else "medium",
+                    }
+                )
+
+    spikes.sort(key=lambda x: float(x["z_score"]), reverse=True)  # type: ignore[arg-type]
+    return spikes[:20]
+
+
+def _detect_overall_spikes(
+    daily_total: list[tuple[datetime.date, int]], recent_cutoff: datetime.date, z_threshold: float
+) -> list[dict[str, Any]]:
+    baseline_vals = [count for date, count in daily_total if date < recent_cutoff]
+    recent = [(date, count) for date, count in daily_total if date >= recent_cutoff]
+
+    if len(baseline_vals) < 5:
+        return []
+
+    mean = statistics.mean(baseline_vals)
+    try:
+        std = statistics.stdev(baseline_vals)
+    except statistics.StatisticsError:
+        std = 0.0
+    std = std or 1.0
+
+    surges = []
+    for date, count in recent:
+        z = (count - mean) / std
+        if z >= z_threshold:
+            surges.append(
+                {
+                    "date": date.isoformat(),
+                    "count": count,
+                    "baseline_mean": round(mean, 2),
+                    "z_score": round(z, 2),
+                    "severity": "high" if z >= 3.0 else "medium",
+                }
+            )
+    return surges

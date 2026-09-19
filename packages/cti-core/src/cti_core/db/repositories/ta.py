@@ -43,6 +43,17 @@ class AsyncTARepo:
         )
         return result.scalar_one_or_none()
 
+    async def list_added_on(self, day: datetime.date) -> list[ThreatActorGroup]:
+        """Port `_collect_new_threat_actors()` (`recap_service.py`, Fase
+        7.3 router `recap`, Bagian 5) -- filter `added_date == day` lama.
+        Tabel ini gak punya kolom `added_date` terpisah (lihat docstring
+        model), `created_at::date` (dari `TimestampMixin`) udah nyimpen
+        semantik yang sama persis: tanggal grup ini PERTAMA ditambahin."""
+        result = await self.session.execute(
+            select(ThreatActorGroup).where(func.date(ThreatActorGroup.created_at) == day)
+        )
+        return list(result.scalars().all())
+
     async def list_groups(
         self,
         *,
