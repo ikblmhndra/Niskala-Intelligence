@@ -9,12 +9,10 @@ udah didokumentasikan berkali-kali sesi ini (`AsyncPIRRepo.list_pirs()`,
 ~15 query terpisah -- lebih lambat dari `asyncio.gather` 15-way lama,
 tapi satu-satunya cara aman lewat SQLAlchemy async session.
 
-**`_get_recent_clusters()`/`recent_clusters_summary` SENGAJA balikin
-list kosong** -- `cluster_service.py` (784 baris TF-IDF/Jaccard) di luar
-27 router, sama alasan persis kayak `newsletter.include_clusters`/
-`mindmap`'s builder `cluster`. Kode lama sendiri udah bungkus panggilan
-ini `try/except -> []`, jadi ini bukan mengubah kontrak -- cuma
-selalu hit jalur fallback yang udah ada.
+`_get_recent_clusters()`/`recent_clusters_summary` (Fase 7.4 Grup A,
+2026-09-23) sekarang manggil `cti_api.services.campaign.get_recent_
+campaigns()` beneran -- `try/except -> []` tetap dipertahankan (port
+apa adanya, bukan cuma buat nutup gap lagi).
 
 **`_get_critical_cves()` cuma filter `cisa_kev`** -- cabang `epss_score
 >= 0.5` gak ada (kolom `epss_score` gak ada di `CveTracker`, lihat
@@ -32,6 +30,7 @@ from cti_core.db.repositories.cve import AsyncCveFalsePositiveRepo
 from cti_core.db.repositories.dashboard import AsyncDashboardRepo
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from cti_api.services import campaign as campaign_service
 from cti_api.services import spike as spike_service
 
 NON_INCIDENT_TYPES = {
@@ -311,8 +310,23 @@ async def _get_critical_cves(session: AsyncSession, client_id: str) -> list[dict
         return []
 
 
-async def _get_recent_clusters(client_id: str) -> list[dict[str, Any]]:
-    return []
+async def _get_recent_clusters(session: AsyncSession, client_id: str) -> list[dict[str, Any]]:
+    try:
+        campaigns = await campaign_service.get_recent_campaigns(
+            session, days=30, client_id=client_id, min_size=2
+        )
+        return [
+            {
+                "cluster_id": str(c.get("cluster_id", "")),
+                "summary_title": c.get("summary_title") or "",
+                "size": c.get("size") or 0,
+                "threat_actors": c.get("dominant_tas") or [],
+                "last_seen": c.get("last_seen") or "",
+            }
+            for c in campaigns[:10]
+        ]
+    except Exception:
+        return []
 
 
 async def _get_pending_fp_queue(session: AsyncSession) -> list[dict[str, Any]]:
@@ -461,7 +475,7 @@ async def get_exec_dashboard_v2(
         await _get_critical_cves(session, client_id) if sections.get("critical_cve_feed") else []
     )
     recent_clusters_summary = (
-        await _get_recent_clusters(client_id) if sections.get("cluster_list") else []
+        await _get_recent_clusters(session, client_id) if sections.get("cluster_list") else []
     )
     pending_fp_queue = (
         await _get_pending_fp_queue(session) if sections.get("fp_feedback_queue") else []

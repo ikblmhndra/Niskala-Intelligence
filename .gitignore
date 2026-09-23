@@ -33,6 +33,8 @@ tools/salvage/fixture_context.json
 # --- Artefak lokal ---
 *.log
 .DS_Store
+# cache/build output graphify (AST cache 26M+, regenerable via `graphify update .`)
+graphify-out/
 
 # CATATAN: legacy/static/ SENGAJA tidak di-ignore.
 # Direktori itu ke-gitignore di repo lama dan cuma ada di satu host produksi;

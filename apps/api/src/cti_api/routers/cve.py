@@ -12,12 +12,14 @@ placeholder Fase 2, lihat docstring model), `POST /draft-email`
 cve_export` -- SEKALIAN merbaiki bug lama: export gak pernah nge-scope
 `client_id`, lihat docstring modul itu).
 
+Fase 7.4 Grup A (2026-09-23) nambahin `GET /prioritize` -- ternyata
+`cve_priority_service.py` (`cti_api.services.cve_priority`) BUKAN cuma
+internal helper "mesin cluster" (`cti_api.services.campaign`), tapi juga
+backing endpoint ad-hoc standalone ini, lihat docstring service-nya.
+
 **Masih belum diport**: `GET /{id}/mindmap` (`mermaid_service`, generate
 diagram -- SUDAH tercakup fungsional lewat `GET /api/mindmap/cve/{cve_id}`
-generik, Bagian 4, endpoint spesifik lama gak perlu diduplikat),
-`GET /prioritize` (`cve_priority_service`, ternyata bagian dari "mesin
-cluster" `cluster_service.py`, Grup A -- bukan fitur CVE berdiri
-sendiri, lihat plan §Fase 7.4)."""
+generik, Bagian 4, endpoint spesifik lama gak perlu diduplikat)."""
 
 from __future__ import annotations
 
@@ -54,6 +56,7 @@ from cti_api.schemas.techstack import EXPOSURE_MULTIPLIER, HOSTING_MULTIPLIER
 from cti_api.services import cve_email as cve_email_service
 from cti_api.services import cve_export as cve_export_service
 from cti_api.services import cve_lookup as cve_lookup_service
+from cti_api.services import cve_priority as cve_priority_service
 
 router = APIRouter(prefix="/api/cve", tags=["cve"])
 
@@ -634,3 +637,21 @@ async def acknowledge(
     )
     await session.commit()
     return {"ok": True}
+
+
+@router.get("/prioritize")
+async def prioritize_cves(
+    cves: str = Query(..., description="Comma-separated CVE IDs"),
+    session: AsyncSession = Depends(get_db),
+    user: AuthedUser = Depends(require_auth),
+    x_client_id: str | None = Header(None),
+) -> dict[str, object]:
+    """Ad-hoc CVE prioritization di luar konteks campaign apa pun."""
+    cid = effective_client_id(user, x_client_id)
+    cve_list = [c.strip() for c in cves.split(",") if c.strip()]
+    if not cve_list:
+        raise HTTPException(status_code=400, detail="cves query param required")
+    if len(cve_list) > 100:
+        raise HTTPException(status_code=400, detail="Max 100 CVEs per request")
+    result = await cve_priority_service.prioritize_campaign_cves(session, cve_list, client_id=cid)
+    return {"cves": result, "total": len(result)}

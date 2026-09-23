@@ -20,6 +20,7 @@ from cti_core.db.models.attack import (
     AttackTechnique,
 )
 from cti_core.db.models.auth import AuditLogEntry, Client, ClientCountry, Role, User, UserClient
+from cti_core.db.models.cluster import Cluster
 from cti_core.db.models.cve import (
     CveAffected,
     CveFalsePositive,
@@ -65,6 +66,7 @@ __all__ = [
     "AuditLogEntry",
     "Client",
     "ClientCountry",
+    "Cluster",
     "CveAffected",
     "CveFalsePositive",
     "CveNewsletterMention",

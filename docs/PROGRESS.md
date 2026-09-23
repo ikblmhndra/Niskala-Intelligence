@@ -1773,7 +1773,7 @@ tinggal pkg_vuln+cve_email), 7.6 (snapshot test), 7.7 (ekspor OpenAPI), 7.8.
       angka "27" awal). Lanjut ke sisa Fase 7 (**7.4** port 56 service,
       **7.5** buang duplikasi, **7.6** snapshot test, **7.7** ekspor
       OpenAPI, **7.8** 5 loop jadi Celery beat) sebelum Fase 8 (`apps/web`).
-- [~] **7.4** Port 56 service -- **survei + urutan kerja kelar
+- [x] **7.4** Port 56 service -- **survei + urutan kerja kelar
       (2026-09-19, user minta "cek dulu servicenya, urutkan mana duluan
       mana belakangan")**: ~37/56 service TERNYATA udah keport sebagai
       efek samping porting 27 router (Fase 7.3). 19 sisa dipetakan jadi
@@ -2029,9 +2029,142 @@ tinggal pkg_vuln+cve_email), 7.6 (snapshot test), 7.7 (ekspor OpenAPI), 7.8.
       LLM/Graph di-mock buat `cve_email`). Full suite: **951 passed**,
       mypy 131 file bersih, ruff bersih. SATU commit nutup Grup C.
 
-      Lanjut Grup A ("mesin cluster") -- butuh keputusan arsitektur
-      (TF-IDF/sklearn di `apps/api` langsung atau di worker) sebelum
-      ngoding, plan lengkap udah ada §Fase 7.4.
+      **Grup A (2026-09-23) -- KELAR, nutup Fase 7.4 seutuhnya**
+      (A+B+C+D+E semua beres). Didahuluin 1 keputusan arsitektur
+      (`AskUserQuestion`, dijawab "Recommended"): komputasi TF-IDF/
+      sklearn taruh LANGSUNG di `apps/api` (bukan Celery worker),
+      konsisten sama presedan `dedup_service` (Grup D) -- CPU-bound
+      dibungkus `asyncio.to_thread()`, bukan diproses di worker
+      terpisah.
+
+      **Temuan arsitektur paling penting sesi ini: `cluster_service.py`
+      itu DUA PIPELINE INDEPENDEN, bukan satu.** `get_clusters()`
+      (Pipeline 1: greedy TF-IDF fixed-centroid, threshold default
+      0.35, PERSISTED ke tabel `clusters` + cache in-process 900s) dan
+      `get_recent_campaigns()` (Pipeline 2: union-find TF-IDF,
+      threshold FIXED 0.75 -- gak bisa diubah caller, NEVER di-cache/
+      di-persist, dihitung ulang tiap call, enrichment jauh lebih kaya:
+      severity scoring, CVE prioritization, diamond model, kill chain,
+      PIR matching, campaign links, geopolitical feed). Dua fungsi ini
+      keliatan mirip dari nama tapi beda total secara algoritma DAN
+      beda konsumen -- distinction ini yang nentuin seluruh layout file
+      port-nya (`cluster.py` = Pipeline 1, `campaign.py` = Pipeline 2,
+      5 service lain jadi shared building block: `cluster_tokenize.py`,
+      `campaign_analysis.py` [kill chain + campaign links + severity
+      factors], `cve_priority.py`, `diamond_model.py`, ditambah 2
+      consumer `campaign_trend.py`/`geopolitical.py`).
+
+      **Skema baru: tabel `clusters`** (`cluster_id` unik, `cluster_
+      name`, `first_seen`/`last_seen` [Date asli], `last_count`/
+      `peak_count`, `daily_counts` JSONB list -- dipangkas 90 hari
+      kebelakang tiap upsert). Cuma buat Pipeline 1 (Pipeline 2 gak
+      pernah nulis DB sama sekali, sesuai desain lama).
+
+      **4 repo method baru** (dipakai sekali doang tapi genuinely gak
+      ada sebelumnya): `AsyncIOCRepo.list_by_article_ids`/`list_by_ids`
+      (nyatuin 2 jalur ekstraksi CVE-mention lama jadi 1 query lewat
+      `IOC.type="cve"` + reverse lookup `IOCSource.article_id`),
+      `AsyncPIRRepo.list_active_by_client` (beda dari `list_active_
+      unscoped` yang udah ada), `AsyncTARepo.list_all_names`,
+      `AsyncSourceReliabilityRepo.list_low_reliability_source_names`.
+      Method yang SEMANTIKNYA udah persis sama yang ada (TA profile,
+      CVE criticality, tech stack) numpang langsung, gak dibikin
+      duplikat.
+
+      **1 param mati DIBUANG** -- `cve_priority_service.prioritize_
+      campaign_cves()`'s `campaign_context: dict` dibaca lengkap,
+      TERNYATA gak pernah dipakai sama sekali di badan fungsi manapun.
+      Beda dari "diam-diam ubah perilaku" (efeknya nol baik dibuang
+      maupun dipertahankan) -- didrop, dicatet eksplisit di docstring.
+
+      **1 bug DITEMUKAN, SENGAJA DIPERTAHANKAN (bukan diperbaiki
+      diam-diam)** -- `mindmap.py`'s `build_cluster_mindmap()` baca
+      field-field yang cuma ada di output Pipeline 2 (severity/diamond
+      model/kill chain) padahal manggil Pipeline 1 (`get_clusters()`,
+      gak punya field itu) -- 6 branch mindmap (Adversary/Capability/
+      Infrastructure/Victim Industries/Victim Countries/CVEs) SELALU
+      kosong di produksi, cuma "Stats" yang keisi. Ini bug lama yang
+      genuinely ada di kode legacy. Diport APA ADANYA (gak dibenerin)
+      karena benerinnya butuh KEPUTUSAN PRODUK (pindah ke Pipeline 2 --
+      ubah semantik "mindmap dari cluster ID stabil, persisted" jadi
+      "dari campaign yang cuma idup pas dihitung", atau nambahin field
+      yang hilang ke Pipeline 1 -- ubah kontrak `clusters` table),
+      bukan keputusan porting yang bisa diambil sepihak. Didokumentasikan
+      panjang di docstring `mindmap.py` + di-assert eksplisit di test
+      (`test_build_cluster_mindmap_stats_branch_populated` verifikasi
+      branch header yang HARUSNYA muncul emang gak muncul).
+
+      **1 bug DITEMUKAN & DIPERBAIKI (beda dari kasus mindmap di
+      atas)** -- `recap.py`'s `_collect_campaigns()` (producer) dan
+      `_build_user_message()` (consumer prompt LLM "active campaigns")
+      pakai nama field yang GAK NYAMBUNG (`theme` vs yang diharapkan
+      consumer, dst) -- akibatnya section itu di prompt LLM SELALU
+      nunjukin placeholder "(unlabeled) — 0 articles", walau campaign
+      beneran ada. Beda dari kasus mindmap: ini bukan pilihan
+      desain/pipeline, cuma nama key yang salah ketik/gak sinkron --
+      di-fix jadi rename key yang unambiguous, dites eksplisit
+      (`test_collect_campaigns_maps_fields_for_build_user_message`)
+      supaya gak pernah balik lagi.
+
+      **4 titik "unlock" ke-wire semua**: `newsletter`'s
+      `include_clusters` (query Pipeline 2, map ke bentuk field legacy,
+      top 5), `mindmap`'s builder `"cluster"` (baca Pipeline 1, bug di
+      atas dipertahankan), `exec_dashboard`'s `recent_clusters_
+      summary` (dari stub `[]` jadi query Pipeline 2 real, try/except
+      jaga-jaga), `recap`'s `active_campaigns` (bug fix di atas).
+      Plus endpoint baru: `intelligence.py`'s `GET /clusters` +
+      `/clusters/recent` + `/clusters/evolution` + `/clusters/{id}/
+      trends` + `/intelligence/geopolitical`, dan `cve.py`'s
+      `GET /prioritize`.
+
+      8 file service baru (`cluster_tokenize`/`cluster`/`campaign_
+      analysis`/`cve_priority`/`diamond_model`/`campaign`/`campaign_
+      trend`/`geopolitical`), 80 test baru (42 unit murni + sisanya
+      integrasi Postgres real + wiring 4 unlock point). Full suite:
+      **1031 passed**, mypy 184 file bersih, ruff bersih.
+
+      **Verified LIVE terhadap dev DB real** (uvicorn lokal, data asli
+      -- 20 artikel real bertanggal, termasuk konten threat-intel
+      genuine APT41/Philippines, BREEZE COMET, UNC6671 dari Mandiant/
+      GBHackers): `GET /clusters` (Pipeline 1, `days=90`) NEMU 1
+      cluster REAL dari data asli (2 artikel Mandiant UNC6671/Russia-
+      targeting yang emang mirip topiknya, confidence "low" -- bukan
+      data sintetis yang disuntik), `/clusters/evolution` +
+      `/clusters/{cluster_id}/trends` jalan lawan cluster real itu,
+      `/intelligence/geopolitical` (kosong, valid -- Pipeline 2 emang
+      gak nemu campaign yang lolos threshold 0.75 di dataset ini),
+      `GET /cve/prioritize` lawan 4 CVE real dari `cve_tracker` (skor
+      terurut bener, termasuk kasus unknown-CVE dapet default 20/low),
+      `exec-dashboard-v2?role=analyst` (`recent_clusters_summary` key
+      ada, kosong -- konsisten sama Pipeline 2 gak nemu campaign),
+      `mindmap/cluster/{id}` (404 bersih -- cluster real ini di luar
+      window `days=30` yang di-hardcode `mindmap.py`, port apa adanya
+      dari legacy, BUKAN bug baru). **Cluster row hasil komputasi real
+      di atas SENGAJA DIBIARKAN** di tabel `clusters` (bukan data
+      sintetis yang disuntik, dihitung dari artikel asli yang emang
+      ada di DB) -- presedan sama kayak Grup D's "confidence recompute
+      dibiarkan nempel di 38 artikel real".
+
+      **`newsletter`'s `include_clusters=true` SENGAJA BELUM live-
+      tested** -- baru ketauan pas nyoba: `/newsletter/preview` juga
+      manggil LLM client asli (summarization), sama kelas biaya kayak
+      `POST /draft-email` Grup C. Panggilan yang kepalang jalan
+      di-KILL manual pas retry macet (belum sempat ngirim token dalam
+      jumlah besar) -- wiring `include_clusters` divalidasi lewat
+      mocked integration test aja (`test_newsletter_clusters.py`, 2
+      test, `campaign_service.get_recent_campaigns` di-patch). Sama
+      logika kayak `draft-email`: **live-test endpoint LLM-consuming
+      ini (newsletter preview/draft-email DAN `recap generate`, yang
+      juga kepanggil `get_llm_client()`) dicatat jadi TODO bareng
+      sebelum deploy ke production**, jangan dianggap "fully verified"
+      sebelum itu kejadian.
+
+      SATU commit nutup Grup A, sekaligus nutup Fase 7.4 seutuhnya
+      (Grup E udah diputus keluar scope sejak survei 2026-09-19, gak
+      butuh kerjaan lagi). Lanjut **7.5** (buang duplikasi sisa: pkg_
+      vuln/cve_email/ioc/llm client), **7.6** (snapshot test tiap
+      endpoint), **7.7** (ekspor skema OpenAPI), **7.8** (5 loop jadi
+      Celery beat) -- belum dimulai, nunggu arahan user.
 - [ ] **7.5** Buang duplikasi (pkg_vuln, cve_email, ioc, llm)
 - [ ] **7.6** Snapshot test tiap endpoint
 - [ ] **7.7** Ekspor skema OpenAPI

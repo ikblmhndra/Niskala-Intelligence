@@ -93,8 +93,38 @@ async def test_get_exec_dashboard_v2_includes_tier2_and_role_sections(
     assert "ta_velocity" in result
     assert result["view_config"]["sections"]["critical_cve_feed"] is True
     assert any(c["cve_id"] == "CVE-2026-6666" for c in result["critical_cves"])
-    # cluster_list deferred -- selalu kosong (lihat docstring service)
+    # role "soc" -- `cluster_list` section gak aktif (lihat
+    # `build_view_config`), jadi `_get_recent_clusters()` gak kepanggil
+    # sama sekali di test ini (bukan lagi karena deferred stub, Fase
+    # 7.4 Grup A -- lihat test_exec_dashboard_recent_clusters_* di bawah
+    # buat cakupan `cluster_list` role "analyst"/admin beneran).
     assert result["recent_clusters_summary"] == []
+
+
+async def test_exec_dashboard_recent_clusters_populated_for_analyst_role(
+    async_db_session: AsyncSession,
+) -> None:
+    """Fase 7.4 Grup A -- `cluster_list` aktif buat role "analyst",
+    `_get_recent_clusters()` manggil `campaign.get_recent_campaigns()`
+    beneran sekarang."""
+    await _ensure_clients(async_db_session)
+    repo = AsyncArticleRepo(async_db_session)
+    titles = [
+        "Apt41 threat group breaches manufacturing networks alpha",
+        "Apt41 threat group breaches manufacturing networks beta",
+    ]
+    for i, title in enumerate(titles):
+        a = await repo.upsert(
+            url=f"https://example.com/cluster-{i}", title=title, source=f"S{i}", posted_on=_TODAY
+        )
+        await repo.set_enrichment(a, threat_actors=["Apt41"])
+
+    result = await exec_dashboard_service.get_exec_dashboard_v2(
+        async_db_session, days=90, client_id="default", role="analyst"
+    )
+    assert result["view_config"]["sections"]["cluster_list"] is True
+    assert len(result["recent_clusters_summary"]) == 1
+    assert result["recent_clusters_summary"][0]["threat_actors"] == ["Apt41"]
 
 
 async def test_build_view_config_role_gating() -> None:

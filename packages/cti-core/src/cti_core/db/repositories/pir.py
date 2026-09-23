@@ -143,6 +143,24 @@ class AsyncPIRRepo:
         )
         return list(result.scalars().all())
 
+    async def list_active_by_client(self, client_id: str) -> list[PIRRequirement]:
+        """PIR aktif, DI-SCOPE client -- port `cluster_service._match_pirs()`
+        (Fase 7.4 Grup A). Legacy: `$or [{client_id: "default"}, {client_id
+        gak ada}]` khusus client "default" -- asimetri "default ATAU
+        field gak ada" itu artefak migrasi era Mongo (PIR lama sebelum
+        `client_id` ditambahin), gak relevan lagi di skema baru
+        (`PIRRequirement.client_id` NOT NULL, gak ada row "tanpa
+        client_id"). Beda dari `list_active_unscoped()` di atas (lintas
+        SEMUA client, dipakai `crossref`/`stix`) -- `_match_pirs` legacy
+        MEMANG scope per-client, bukan lintas client."""
+        result = await self.session.execute(
+            select(PIRRequirement)
+            .where(PIRRequirement.client_id == client_id, PIRRequirement.status == "active")
+            .order_by(PIRRequirement.priority.asc())
+            .limit(500)
+        )
+        return list(result.scalars().all())
+
     async def create(self, data: dict[str, Any], *, client_id: str) -> PIRRequirement:
         pir = PIRRequirement(
             title=data["title"],

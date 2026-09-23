@@ -6,11 +6,12 @@ lama -- lihat docstring modul itu). LLM lewat `cti_api.services.
 llm_client` (lihat docstring modul itu soal kenapa gak langsung reuse
 `cti_enrich.llm.client`).
 
-**`include_clusters`/`campaign_clusters` SENGAJA belum diport** -- butuh
-`cluster_service.py` (784 baris, TF-IDF + Jaccard clustering, fitur
-BERDIRI SENDIRI di luar 27 router). Parameter diterima (kompat sama
-body request lama) tapi diabaikan -- `campaign_clusters` context SELALU
-`[]`, lihat docstring `db/models/newsletter.py`.
+`include_clusters`/`campaign_clusters` (Fase 7.4 Grup A, 2026-09-23)
+sekarang jalan -- `cti_api.services.campaign.get_recent_campaigns()`
+("mesin cluster" Pipeline 2), diambil 5 campaign teratas, field yang
+dikirim ke template newsletter dipangkas (`name`/`size`/`first_seen`/
+`last_seen`/`dominant_tas`/`dominant_industries`/`dominant_countries`/
+`attack_techniques`/`cve_ids`).
 
 Body artikel di-fetch pakai Playwright (real headless browser) + IOC
 regex-scan + LLM summarization -- proses ini genuinely lambat/network-
@@ -35,6 +36,7 @@ from cti_core.ioc.extractor import extract_iocs
 from jinja2 import Environment, FileSystemLoader
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from cti_api.services import campaign as campaign_service
 from cti_api.services.llm_client import get_llm_client
 
 _TEMPLATE_DIR = Path(__file__).parent.parent / "templates"
@@ -354,9 +356,13 @@ async def build_newsletter_context(
     all_articles = [highlight, *apac, *global_news, *indonesia]
 
     enriched = await _enrich_articles(session, all_articles)
-    # `include_clusters`/`cluster_days` diterima buat kompat sama body
-    # request lama, tapi diabaikan -- lihat docstring modul.
-    _ = (include_clusters, cluster_days)
+
+    raw_clusters: list[dict[str, Any]] = []
+    if include_clusters:
+        campaigns = await campaign_service.get_recent_campaigns(
+            session, days=cluster_days, min_size=3
+        )
+        raw_clusters = campaigns[:5]
 
     highlight_enriched = _inject_analyst_note(enriched[0], notes)
     apac_count = len(apac)
@@ -372,6 +378,21 @@ async def build_newsletter_context(
     now = datetime.datetime.now(datetime.UTC)
     iso_cal = now.isocalendar()
 
+    campaign_clusters = [
+        {
+            "name": c.get("summary_title") or c.get("cluster_id", ""),
+            "size": c.get("size", 0),
+            "first_seen": c.get("first_seen", ""),
+            "last_seen": c.get("last_seen", ""),
+            "dominant_tas": c.get("dominant_tas", [])[:5],
+            "dominant_industries": c.get("dominant_industries", [])[:3],
+            "dominant_countries": c.get("dominant_countries", [])[:3],
+            "attack_techniques": c.get("attack_techniques", [])[:5],
+            "cve_ids": c.get("cve_ids", [])[:5],
+        }
+        for c in raw_clusters
+    ]
+
     return {
         "week": iso_cal[1],
         "year": iso_cal[0],
@@ -383,7 +404,7 @@ async def build_newsletter_context(
         "custom_css": custom_css,
         "custom_intro": custom_intro,
         "custom_footer": custom_footer,
-        "campaign_clusters": [],
+        "campaign_clusters": campaign_clusters,
     }
 
 

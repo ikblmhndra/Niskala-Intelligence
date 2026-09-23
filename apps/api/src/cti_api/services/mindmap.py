@@ -1,11 +1,22 @@
 """Port `ScraperNewsWeb/app/services/mermaid_service.py`. Fase 7.3
-(router `mindmap`, Bagian 4).
+(router `mindmap`, Bagian 4) ngeport 5 dari 6 builder lama (`newsletter`/
+`threat_actor`/`cve`/`pir`/`ransomware`) penuh.
 
-**Builder `cluster` SENGAJA belum diport** -- butuh `cluster_service.py`
-(784 baris, TF-IDF + Jaccard clustering), fitur BERDIRI SENDIRI di luar
-27 router, sama alasan kayak `include_clusters` di `newsletter.py`
-(lihat docstring modul itu). 5 dari 6 builder lama (`newsletter`/
-`threat_actor`/`cve`/`pir`/`ransomware`) diport penuh.
+Builder `cluster` (Fase 7.4 Grup A, 2026-09-23) sekarang diport -- APA
+ADANYA, TERMASUK BUG-nya: `build_cluster_mindmap()` legacy manggil
+`get_clusters()` (Pipeline 1, greedy TF-IDF persisted -- cuma punya
+field `cluster_name`/`article_count`/`source_count`/`sources`/
+`first_date`/`last_date`), tapi baca field (`dominant_tas`/`iocs`/
+`cve_ids`/`dominant_industries`/`dominant_countries`/`attack_techniques`)
+yang CUMA ADA di Pipeline 2 (`get_recent_campaigns()`, union-find, gak
+pernah persist). Hasilnya: branch "Adversary"/"Capability"/
+"Infrastructure"/"CVEs" SELALU kosong, cuma "Stats" yang kepake --
+begini juga perilaku aslinya. Ini genuinely bug penamaan fungsi salah
+di kode lama (ketauan pas baca 2 fungsi cluster_service.py bareng),
+BUKAN diselesaikan di sini -- pilih Pipeline mana + resolve cluster_id
+gimana itu keputusan produk (dua pipeline beda algoritma & rentang
+hari default, cluster_id yang sama dari Pipeline 1 belum tentu match
+grouping Pipeline 2), di luar scope port murni.
 
 **`doc_id` per feature_type dipetakan ke identifier yang SAMA dipakai
 router lain buat domain itu, BUKAN internal PK Postgres:**
@@ -19,7 +30,9 @@ router lain buat domain itu, BUKAN internal PK Postgres:**
 - `pir`/`newsletter`: `PIRRequirement.id`/`Newsletter.id` (int, dikirim
   sebagai string di path) -- ini emang identifier asli keduanya sekarang.
 - `ransomware`: `group_name` (string) -- sama kayak kode lama, gak pernah
-  ada ID lain buat domain ini."""
+  ada ID lain buat domain ini.
+- `cluster`: `cluster_id` (string, hash pendek `cti_api.services.
+  cluster_tokenize.cluster_id()`)."""
 
 from __future__ import annotations
 
@@ -35,6 +48,8 @@ from cti_core.db.repositories.pir import AsyncPIRRepo
 from cti_core.db.repositories.ransomware import AsyncRansomwareVictimRepo
 from cti_core.db.repositories.ta import AsyncTAProfileRepo, AsyncTARepo
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from cti_api.services import cluster as cluster_service
 
 _TECHNIQUE_RE = re.compile(r"\b(T\d{4}(?:\.\d{3})?)\b")
 
@@ -245,12 +260,46 @@ async def build_ransomware_mindmap(
     return f"Ransomware: {group_name}", build_syntax(group_name, branches)
 
 
+async def build_cluster_mindmap(session: AsyncSession, doc_id: str) -> tuple[str, str] | None:
+    clusters = await cluster_service.get_clusters(session, days=30)
+    cluster = next((c for c in clusters if c["cluster_id"] == doc_id), None)
+    if cluster is None:
+        return None
+
+    name = cluster.get("cluster_name", doc_id)
+    branches = [
+        _branch(2, "Adversary", cluster.get("dominant_tas", [])[:5]),
+        _branch(2, "Capability", cluster.get("attack_techniques", [])[:8]),
+        _branch(
+            2,
+            "Infrastructure",
+            [f"{i['type']}: {i['value']}"[:50] for i in cluster.get("iocs", [])[:8]],
+        ),
+        _branch(2, "Victim Industries", cluster.get("dominant_industries", [])[:5]),
+        _branch(2, "Victim Countries", cluster.get("dominant_countries", [])[:5]),
+        _branch(2, "CVEs", cluster.get("cve_ids", [])[:6]),
+        _branch(
+            2,
+            "Stats",
+            [
+                f"{cluster.get('article_count', 0)} articles",
+                f"{cluster.get('source_count', 0)} sources",
+                f"First: {cluster.get('first_date', '')}",
+                f"Last: {cluster.get('last_date', '')}",
+            ],
+        ),
+    ]
+
+    return name, build_syntax(name, branches)
+
+
 BUILDERS = {
     "newsletter": build_newsletter_mindmap,
     "threat_actor": build_threat_actor_mindmap,
     "cve": build_cve_mindmap,
     "pir": build_pir_mindmap,
     "ransomware": build_ransomware_mindmap,
+    "cluster": build_cluster_mindmap,
 }
 
 

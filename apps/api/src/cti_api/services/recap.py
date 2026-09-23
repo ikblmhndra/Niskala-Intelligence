@@ -2,11 +2,23 @@
 `recap`, Bagian 5). Recap harian (news + X intel yang masuk hari itu) +
 forecast 1-3 hari, di-generate LLM, cached per tanggal.
 
-`_collect_campaigns()` SENGAJA balikin `[]` -- `cluster_service.py`
-(784 baris) di luar 27 router, sama alasan persis kayak `newsletter`/
-`mindmap`/`exec_dashboard`. Kode lama sendiri udah bungkus panggilan ini
-`try/except -> []`, jadi selalu hit fallback yang udah ada, bukan
-kontrak baru.
+`_collect_campaigns()` (Fase 7.4 Grup A, 2026-09-23) sekarang manggil
+`cti_api.services.campaign.get_recent_campaigns()` beneran. `try/except
+-> []` tetap dipertahankan (port apa adanya).
+
+**1 bug legacy DITEMUKAN & DIPERBAIKI, bukan port apa adanya**:
+`_build_user_message()` (di bawah) baca field `theme`/`label`/
+`article_ids`/`threat_actors` dari tiap campaign dict -- field itu SAMA
+SEKALI GAK ADA di output `get_recent_campaigns()` (yang punya
+`cluster_name`/`summary_title`/`member_article_ids`/`dominant_tas`).
+Ketauan lewat baca `recap_service.py` ASLI: `_collect_campaigns()`
+legacy JUGA manggil `get_recent_campaigns()` LANGSUNG tanpa mapping
+apa pun -- artinya section "active campaigns" di prompt LLM legacy
+SELALU nampilin "(unlabeled) — 0 articles" buat SEMUA campaign, dari
+awal fitur ini ditulis. Bukan asimetri yang dipertahankan (gak ada niat
+desain di balik field yang gak pernah match), diperbaiki di sini:
+`_collect_campaigns()` nge-map field yang bener sebelum dikirim ke
+`_build_user_message()`.
 
 Artikel gak punya field `cves` langsung di skema baru (array mention CVE
 per-artikel ala Mongo) -- anotasi "CVEs: ..." per baris artikel di prompt
@@ -32,6 +44,7 @@ from cti_core.db.repositories.ta import AsyncTARepo
 from cti_core.db.repositories.tweet import AsyncTweetRepo
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from cti_api.services import campaign as campaign_service
 from cti_api.services.llm_client import get_llm_client
 from cti_api.services.source_score import get_source_reliability
 
@@ -120,8 +133,20 @@ async def _collect_new_threat_actors(session: AsyncSession, day: datetime.date) 
     return await AsyncTARepo(session).list_added_on(day)
 
 
-async def _collect_campaigns() -> list[dict[str, Any]]:
-    return []
+async def _collect_campaigns(session: AsyncSession) -> list[dict[str, Any]]:
+    try:
+        campaigns = await campaign_service.get_recent_campaigns(session, days=7, min_size=3)
+    except Exception:
+        return []
+    return [
+        {
+            "theme": c.get("cluster_name") or c.get("summary_title") or "",
+            "article_ids": c.get("member_article_ids") or [],
+            "size": c.get("size") or 0,
+            "threat_actors": c.get("dominant_tas") or [],
+        }
+        for c in campaigns
+    ]
 
 
 def _build_user_message(
@@ -273,7 +298,7 @@ async def generate_daily_recap(
     tweets = await _collect_tweets(session, day)
     iocs = await _collect_iocs(session, day)
     cves = await _collect_cves(session, day)
-    campaigns = await _collect_campaigns()
+    campaigns = await _collect_campaigns(session)
     new_tas = await _collect_new_threat_actors(session, day)
 
     user_msg = _build_user_message(date_iso, articles, tweets, iocs, cves, campaigns, new_tas)

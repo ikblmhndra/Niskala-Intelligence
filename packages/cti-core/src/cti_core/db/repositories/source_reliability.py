@@ -91,6 +91,18 @@ class AsyncSourceReliabilityRepo:
         result = await self.session.execute(select(SourceReliabilityEntry))
         return {e.source_name.lower(): e for e in result.scalars().all()}
 
+    async def list_low_reliability_source_names(self) -> set[str]:
+        """Nama source grade D/E/F, lowercase -- port `_fetch_low_
+        reliability_sources()` (`cluster_service.py`, Fase 7.4 Grup A),
+        dipakai `exclude_low_reliability` pas clustering (cegah source
+        gak reliable jadi anchor cluster baru)."""
+        result = await self.session.execute(
+            select(SourceReliabilityEntry.source_name).where(
+                SourceReliabilityEntry.reliability_grade.in_(["D", "E", "F"])
+            )
+        )
+        return {n.lower() for n in result.scalars().all() if n}
+
     async def get_by_id(self, entry_id: int) -> SourceReliabilityEntry | None:
         result = await self.session.execute(
             select(SourceReliabilityEntry).where(SourceReliabilityEntry.id == entry_id)

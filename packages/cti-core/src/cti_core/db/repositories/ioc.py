@@ -155,6 +155,14 @@ class AsyncIOCRepo:
         result = await self.session.execute(select(IOC).where(IOC.id == ioc_id))
         return result.scalar_one_or_none()
 
+    async def list_by_ids(self, ioc_ids: Sequence[int]) -> list[IOC]:
+        """Batch get -- port `_ioc_confidence_factor()`'s `$in` lookup
+        (`campaign_scoring_service.py`, Fase 7.4 Grup A)."""
+        if not ioc_ids:
+            return []
+        result = await self.session.execute(select(IOC).where(IOC.id.in_(ioc_ids)))
+        return list(result.scalars().all())
+
     async def list_first_seen_on(self, day: datetime.date, *, limit: int = 200) -> list[IOC]:
         """Port `_collect_iocs()` (`recap_service.py`, Fase 7.3 router
         `recap`, Bagian 5) -- IOC yang PERTAMA ketemu tanggal ini."""
@@ -202,6 +210,21 @@ class AsyncIOCRepo:
         (`fp_analytics_service.get_fp_analytics()`, Fase 7.4 Grup D)."""
         result = await self.session.execute(select(IOC).where(IOC.feedback.any()))
         return list(result.scalars().all())
+
+    async def list_by_article_ids(self, article_ids: Sequence[int]) -> list[IOC]:
+        """IOC (semua tipe, TERMASUK `type="cve"`) yang nyantol ke salah
+        satu `article_ids` lewat `IOCSource` -- port `cluster_service.py`'s
+        `ioc_map` building (Fase 7.4 Grup A, `get_recent_campaigns()`).
+        Gantiin DUA sumber legacy sekaligus: koleksi `iocs` (IOC jaringan/
+        hash) DAN `article.cves` (array terpisah, `iocExtractor.py`'s
+        regex CVE match yang sama persis) -- di skema baru CVE mention
+        cuma IOC biasa dengan `type="cve"`, gak ada array duplikat lagi."""
+        if not article_ids:
+            return []
+        result = await self.session.execute(
+            select(IOC).join(IOC.sources).where(IOCSource.article_id.in_(article_ids)).distinct()
+        )
+        return list(result.scalars().unique().all())
 
     async def get_stats(self) -> dict[str, object]:
         total = (await self.session.execute(select(func.count()).select_from(IOC))).scalar_one()

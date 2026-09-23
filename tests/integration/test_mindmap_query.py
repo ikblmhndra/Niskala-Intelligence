@@ -6,6 +6,7 @@ from __future__ import annotations
 import datetime
 
 import pytest
+from cti_api.services import cluster as cluster_service
 from cti_api.services import mindmap as mindmap_service
 from cti_core.db.models.cve import CveAffected, CvePoc, CveTracker
 from cti_core.db.models.ransomware import RansomwareVictim
@@ -239,4 +240,52 @@ async def test_get_or_generate_caches_after_first_call(async_db_session: AsyncSe
 
 async def test_get_or_generate_unknown_doc_returns_none(async_db_session: AsyncSession) -> None:
     result = await mindmap_service.get_or_generate(async_db_session, "cve", "CVE-9999-9999")
+    assert result is None
+
+
+# ── builder `cluster` (Fase 7.4 Grup A) ──────────────────────────────────────
+
+
+async def test_build_cluster_mindmap_stats_branch_populated(
+    async_db_session: AsyncSession,
+) -> None:
+    """Port apa adanya TERMASUK bug legacy -- `build_cluster_mindmap()`
+    baca Pipeline 1 (`get_clusters`), cuma field Stats yang keisi
+    (article_count/source_count/first_date/last_date), Adversary/
+    Capability/Infrastructure/CVEs SELALU kosong (field itu cuma ada di
+    Pipeline 2). Lihat docstring modul."""
+    await _ensure_clients(async_db_session)
+    repo = AsyncArticleRepo(async_db_session)
+    titles = [
+        "Apt41 threat group breaches manufacturing networks alpha",
+        "Apt41 threat group breaches manufacturing networks beta",
+    ]
+    for i, title in enumerate(titles):
+        await repo.upsert(
+            url=f"https://example.com/cluster-mm-{i}",
+            title=title,
+            source=f"S{i}",
+            posted_on=datetime.date.today(),
+        )
+
+    clusters = await cluster_service.get_clusters(async_db_session, days=30)
+    assert len(clusters) == 1
+    cluster_id = clusters[0]["cluster_id"]
+
+    result = await mindmap_service.build_cluster_mindmap(async_db_session, cluster_id)
+    assert result is not None
+    _name, syntax = result
+    assert "2 articles" in syntax
+    assert "2 sources" in syntax
+    # branch Adversary/Capability/Infrastructure/CVEs gak pernah muncul --
+    # `_branch()` balikin string kosong kalau item-nya kosong (field itu
+    # emang gak ada di output Pipeline 1)
+    assert "Adversary" not in syntax
+    assert "CVEs" not in syntax
+
+
+async def test_build_cluster_mindmap_unknown_id_returns_none(
+    async_db_session: AsyncSession,
+) -> None:
+    result = await mindmap_service.build_cluster_mindmap(async_db_session, "nonexistent")
     assert result is None

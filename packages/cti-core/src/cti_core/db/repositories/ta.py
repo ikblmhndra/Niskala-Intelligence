@@ -82,6 +82,13 @@ class AsyncTARepo:
         )
         return list(rows), total
 
+    async def list_all_names(self) -> list[str]:
+        """Semua nama TA group, lowercase -- port `_fetch_ta_names()`
+        (`cluster_service.py`, Fase 7.4 Grup A), dipakai deteksi TA
+        disebut di judul artikel pas clustering."""
+        result = await self.session.execute(select(ThreatActorGroup.name))
+        return [n.lower() for n in result.scalars().all() if n]
+
     async def add_group(self, name: str) -> dict[str, Any]:
         wl = await self.session.execute(
             select(TAWhitelistEntry).where(TAWhitelistEntry.name == name.lower())
