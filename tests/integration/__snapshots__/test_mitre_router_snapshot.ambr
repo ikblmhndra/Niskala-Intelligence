@@ -1,0 +1,90 @@
+# serializer version: 1
+# name: test_d3fend_countermeasures
+  dict({
+    'countermeasures': list([
+      dict({
+        'name': 'Network Traffic Analysis',
+        'technique_id': 'D3-NTA',
+      }),
+    ]),
+    'technique_id': 'T1566',
+  })
+# ---
+# name: test_mitre_heatmap_empty
+  dict({
+    'matrix': list([
+    ]),
+    'max_val': 0,
+    'rows': list([
+    ]),
+    'ttps': list([
+    ]),
+  })
+# ---
+# name: test_mitre_ttp_articles_empty
+  dict({
+    'articles': list([
+    ]),
+    'page': 1,
+    'page_size': 20,
+    'total': 0,
+  })
+# ---
+# name: test_navigator_export_empty
+  dict({
+    'description': 'Generated from scraped articles over the last 90 days.',
+    'domain': 'enterprise-attack',
+    'gradient': dict({
+      'colors': list([
+        '#ffe766',
+        '#ff6666',
+      ]),
+      'maxValue': 100,
+      'minValue': 0,
+    }),
+    'legendItems': list([
+    ]),
+    'metadata': list([
+    ]),
+    'name': 'CTI Platform — Threat Actor View (90d)',
+    'selectTechniquesAcrossTactics': True,
+    'showTacticRowBackground': True,
+    'tacticRowBackground': '#1a1a2e',
+    'techniques': list([
+    ]),
+    'versions': dict({
+      'attack': '14',
+      'layer': '4.5',
+      'navigator': '4.9',
+    }),
+  })
+# ---
+# name: test_navigator_layer_empty
+  dict({
+    'description': 'Generated from scraped articles over the last 90 days.',
+    'domain': 'enterprise-attack',
+    'gradient': dict({
+      'colors': list([
+        '#ffe766',
+        '#ff6666',
+      ]),
+      'maxValue': 100,
+      'minValue': 0,
+    }),
+    'legendItems': list([
+    ]),
+    'metadata': list([
+    ]),
+    'name': 'CTI Platform — Threat Actor View (90d)',
+    'selectTechniquesAcrossTactics': True,
+    'showTacticRowBackground': True,
+    'tacticRowBackground': '#1a1a2e',
+    'techniques': list([
+    ]),
+    'versions': dict({
+      'attack': '14',
+      'layer': '4.5',
+      'navigator': '4.9',
+    }),
+  })
+# ---

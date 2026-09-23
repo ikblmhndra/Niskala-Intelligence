@@ -1,0 +1,38 @@
+# serializer version: 1
+# name: test_draft_email
+  dict({
+    'email_id': 'graph-msg-2',
+    'method': 'graph',
+    'newsletter_id': int,
+    'subject': '[CTI Newsletter] Threat Intelligence Digest — Week 39, 2026',
+    'week': 39,
+    'year': 2026,
+  })
+# ---
+# name: test_newsletter_history_empty
+  dict({
+    'newsletters': list([
+    ]),
+    'page': 1,
+    'page_size': 20,
+    'total': 0,
+  })
+# ---
+# name: test_preview_newsletter
+  dict({
+    'newsletter_id': int,
+    'week': 39,
+    'year': 2026,
+  })
+# ---
+# name: test_resend_newsletter
+  dict({
+    'email_id': 'graph-msg-1',
+    'method': 'graph',
+    'subject': '[CTI Newsletter] Threat Intelligence Digest — Week 39, 2026',
+  })
+# ---
+# name: test_source_hints
+  dict({
+  })
+# ---

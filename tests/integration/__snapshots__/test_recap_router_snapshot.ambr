@@ -1,0 +1,47 @@
+# serializer version: 1
+# name: test_recap_generate
+  dict({
+    'recap': dict({
+      'cached': False,
+      'counts': dict({
+        'articles': 0,
+        'campaigns': 0,
+        'cves': 0,
+        'iocs': 0,
+        'new_threat_actors': 0,
+        'tweets': 0,
+      }),
+      'date': '2026-09-22',
+      'forecast': dict({
+        'outlook': 'stable',
+      }),
+      'generated_at': str,
+      'headline': 'Quiet day',
+      'id': int,
+      'model': 'test-model',
+      'raw_llm': None,
+      'token_usage': dict({
+      }),
+      'yesterday': dict({
+        'summary': 'No major incidents.',
+      }),
+    }),
+  })
+# ---
+# name: test_recap_get_not_found
+  dict({
+    'detail': 'No recap for 2026-01-01',
+  })
+# ---
+# name: test_recap_latest_none
+  dict({
+    'date': '2026-09-22',
+    'recap': None,
+  })
+# ---
+# name: test_recap_list_empty
+  dict({
+    'recaps': list([
+    ]),
+  })
+# ---

@@ -1,0 +1,222 @@
+# serializer version: 1
+# name: test_get_pirs
+  list([
+    dict({
+      'coverage_count': 1,
+      'created_at': str,
+      'criteria': dict({
+        'countries': list([
+        ]),
+        'industries': list([
+        ]),
+        'keywords': list([
+        ]),
+        'news_types': list([
+        ]),
+        'threat_actors': list([
+          'Apt41',
+        ]),
+        'ttps': list([
+        ]),
+      }),
+      'description': 'Monitor APT41 activity',
+      'end_date': None,
+      'id': int,
+      'is_gap': False,
+      'last_match': '2026-09-22',
+      'owner': 'analyst1',
+      'priority': 'P1',
+      'recent_coverage': 1,
+      'start_date': None,
+      'status': 'active',
+      'title': 'Track APT41',
+      'updated_at': str,
+    }),
+  ])
+# ---
+# name: test_pir_articles
+  dict({
+    'articles': list([
+      dict({
+        'has_note': False,
+        'id': int,
+        'impacted_industries': list([
+        ]),
+        'mentioned_countries': list([
+        ]),
+        'news_type': 'apac',
+        'posted_on': str,
+        'source': 'gbhacker',
+        'threat_actors': list([
+          'Apt41',
+        ]),
+        'title': 'APT41 hits government network',
+        'url': 'https://example.com/apt41-recent',
+      }),
+    ]),
+    'page': 1,
+    'page_size': 15,
+    'total': 1,
+  })
+# ---
+# name: test_pir_export
+  dict({
+    'articles': list([
+      dict({
+        '_id': str,
+        'analyst_note': dict({
+        }),
+        'impacted_industries': list([
+        ]),
+        'mentioned_countries': list([
+        ]),
+        'news_type': 'apac',
+        'posted_on': str,
+        'source': 'gbhacker',
+        'threat_actors': list([
+          'Apt41',
+        ]),
+        'title': 'APT41 hits government network',
+        'url': 'https://example.com/apt41-recent',
+      }),
+    ]),
+    'exported_at': str,
+    'pir': dict({
+      'coverage_count': 1,
+      'created_at': str,
+      'criteria': dict({
+        'countries': list([
+        ]),
+        'industries': list([
+        ]),
+        'keywords': list([
+        ]),
+        'news_types': list([
+        ]),
+        'threat_actors': list([
+          'Apt41',
+        ]),
+        'ttps': list([
+        ]),
+      }),
+      'description': 'Monitor APT41 activity',
+      'end_date': None,
+      'id': int,
+      'is_gap': False,
+      'last_match': '2026-09-22',
+      'owner': 'analyst1',
+      'priority': 'P1',
+      'recent_coverage': 1,
+      'start_date': None,
+      'status': 'active',
+      'title': 'Track APT41',
+      'updated_at': str,
+    }),
+    'total_articles': 1,
+  })
+# ---
+# name: test_pir_get_note_empty
+  dict({
+    'analyst': '',
+    'note': '',
+    'pir_id': int,
+    'updated_at': str,
+    'url': 'https://example.com/apt41-recent',
+  })
+# ---
+# name: test_pir_options
+  dict({
+    'countries': list([
+    ]),
+    'industries': list([
+    ]),
+    'news_types': list([
+      'apac',
+    ]),
+    'threat_actors': list([
+      'Apt41',
+    ]),
+    'ttps': list([
+    ]),
+  })
+# ---
+# name: test_pir_save_note
+  dict({
+    'analyst': 'analyst1',
+    'note': 'confirmed real campaign',
+    'pir_id': int,
+    'updated_at': str,
+    'url': 'https://example.com/apt41-recent',
+  })
+# ---
+# name: test_post_pir
+  dict({
+    'coverage_count': 0,
+    'created_at': str,
+    'criteria': dict({
+      'countries': list([
+      ]),
+      'industries': list([
+      ]),
+      'keywords': list([
+      ]),
+      'news_types': list([
+      ]),
+      'threat_actors': list([
+        'Lazarus',
+      ]),
+      'ttps': list([
+      ]),
+    }),
+    'description': '',
+    'end_date': None,
+    'id': int,
+    'is_gap': False,
+    'last_match': None,
+    'owner': '',
+    'priority': 'P2',
+    'recent_coverage': 0,
+    'start_date': None,
+    'status': 'active',
+    'title': 'Track Lazarus',
+    'updated_at': str,
+  })
+# ---
+# name: test_put_pir
+  dict({
+    'coverage_count': 0,
+    'created_at': str,
+    'criteria': dict({
+      'countries': list([
+      ]),
+      'industries': list([
+      ]),
+      'keywords': list([
+      ]),
+      'news_types': list([
+      ]),
+      'threat_actors': list([
+        'Apt41',
+      ]),
+      'ttps': list([
+      ]),
+    }),
+    'description': 'Monitor APT41 activity',
+    'end_date': None,
+    'id': int,
+    'is_gap': False,
+    'last_match': None,
+    'owner': 'analyst1',
+    'priority': 'P1',
+    'recent_coverage': 0,
+    'start_date': None,
+    'status': 'archived',
+    'title': 'Track APT41',
+    'updated_at': str,
+  })
+# ---
+# name: test_remove_pir
+  dict({
+    'deleted': True,
+  })
+# ---

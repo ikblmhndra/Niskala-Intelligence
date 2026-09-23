@@ -1,0 +1,84 @@
+# serializer version: 1
+# name: test_add_sr_entry
+  dict({
+    'entry': dict({
+      'added_date': str,
+      'admiralty_code': 'A1',
+      'analyst_name': 'analyst1',
+      'credibility_code': '1',
+      'id': int,
+      'last_updated': str,
+      'notes': 'Highly reliable vendor',
+      'reliability_grade': 'A',
+      'source_name': 'mandiant',
+    }),
+    'success': True,
+  })
+# ---
+# name: test_delete_sr_entry
+  dict({
+    'success': True,
+  })
+# ---
+# name: test_list_sr_entries
+  dict({
+    'entries': list([
+      dict({
+        'added_date': str,
+        'admiralty_code': 'B2',
+        'analyst_name': 'analyst1',
+        'credibility_code': '2',
+        'id': int,
+        'last_updated': str,
+        'notes': 'Consistently accurate',
+        'reliability_grade': 'B',
+        'source_name': 'gbhacker',
+      }),
+    ]),
+    'page': 1,
+    'page_size': 50,
+    'total': 1,
+  })
+# ---
+# name: test_sr_labels
+  dict({
+    'credibility': dict({
+      '1': 'Confirmed by other sources',
+      '2': 'Probably true',
+      '3': 'Possibly true',
+      '4': 'Doubtful',
+      '5': 'Improbable',
+      '6': 'Cannot be judged',
+    }),
+    'reliability': dict({
+      'A': 'Completely reliable',
+      'B': 'Usually reliable',
+      'C': 'Fairly reliable',
+      'D': 'Not usually reliable',
+      'E': 'Unreliable',
+      'F': 'Cannot be judged',
+    }),
+  })
+# ---
+# name: test_sr_stats
+  dict({
+    'by_grade': list([
+      dict({
+        'count': 1,
+        'grade': 'B',
+      }),
+    ]),
+    'total': 1,
+  })
+# ---
+# name: test_ungraded_sources_empty
+  dict({
+    'sources': list([
+    ]),
+  })
+# ---
+# name: test_update_sr_entry
+  dict({
+    'success': True,
+  })
+# ---

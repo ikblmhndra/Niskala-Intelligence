@@ -1,0 +1,187 @@
+# serializer version: 1
+# name: test_article_dedup_groups
+  dict({
+    'duplicates_suppressed': 1,
+    'groups': list([
+      dict({
+        '_dup_count': 2,
+        '_dup_sources': list([
+          'SourceA',
+        ]),
+        '_dup_urls': list([
+          'https://a.example/apt41-1',
+        ]),
+        'id': int,
+        'impacted_industries': list([
+        ]),
+        'news_type': '',
+        'posted_on': str,
+        'source': 'SourceB',
+        'threat_actors': list([
+        ]),
+        'title': 'Apt41 hits manufacturing sector hard!',
+        'url': 'https://b.example/apt41-1',
+      }),
+    ]),
+    'total_articles': 2,
+    'total_groups': 1,
+  })
+# ---
+# name: test_compute_article_confidence
+  dict({
+    'article_id': int,
+    'confidence_score': 50,
+  })
+# ---
+# name: test_dashboard_stats
+  dict({
+    'by_news_type': list([
+    ]),
+    'timeline': list([
+      dict({
+        'count': 1,
+        'date': '2026-09-01',
+      }),
+    ]),
+    'top_countries': list([
+    ]),
+    'top_industries': list([
+    ]),
+    'top_sources': list([
+      dict({
+        'count': 1,
+        'name': 'gbhacker',
+      }),
+    ]),
+    'top_threat_actors': list([
+    ]),
+    'top_ttps': list([
+    ]),
+    'total_articles': 1,
+    'total_countries': 0,
+    'total_sources': 1,
+    'total_threat_actors': 0,
+  })
+# ---
+# name: test_get_article_by_id
+  dict({
+    'actor_countries': list([
+    ]),
+    'confidence_score': None,
+    'id': int,
+    'impacted_industries': list([
+    ]),
+    'iocs': dict({
+    }),
+    'mentioned_countries': list([
+    ]),
+    'month': '2026-09',
+    'news_type': '',
+    'posted_on': str,
+    'source': 'gbhacker',
+    'threat_actors': list([
+    ]),
+    'title': 'Apt41 breaches government network',
+    'ttps': list([
+    ]),
+    'url': 'https://example.com/apt41-solo',
+    'victim_countries': list([
+    ]),
+    'week': '2026-W36',
+    'year': 2026,
+  })
+# ---
+# name: test_list_articles
+  dict({
+    'articles': list([
+      dict({
+        'actor_countries': list([
+        ]),
+        'confidence_score': None,
+        'id': int,
+        'impacted_industries': list([
+        ]),
+        'iocs': dict({
+        }),
+        'mentioned_countries': list([
+        ]),
+        'month': '2026-09',
+        'news_type': '',
+        'posted_on': str,
+        'source': 'gbhacker',
+        'threat_actors': list([
+        ]),
+        'title': 'Apt41 breaches government network',
+        'ttps': list([
+        ]),
+        'url': 'https://example.com/apt41-solo',
+        'victim_countries': list([
+        ]),
+        'week': '2026-W36',
+        'year': 2026,
+      }),
+    ]),
+    'page': 1,
+    'page_size': 20,
+    'total': 1,
+  })
+# ---
+# name: test_list_articles_dedup
+  dict({
+    'articles': list([
+      dict({
+        'actor_countries': list([
+        ]),
+        'confidence_score': None,
+        'id': int,
+        'impacted_industries': list([
+        ]),
+        'iocs': dict({
+        }),
+        'mentioned_countries': list([
+        ]),
+        'month': '2026-09',
+        'news_type': '',
+        'posted_on': str,
+        'source': 'SourceB',
+        'threat_actors': list([
+        ]),
+        'title': 'Apt41 hits manufacturing sector hard!',
+        'ttps': list([
+        ]),
+        'url': 'https://b.example/apt41-1',
+        'victim_countries': list([
+        ]),
+        'week': '2026-W39',
+        'year': 2026,
+      }),
+    ]),
+    'page': 1,
+    'page_size': 20,
+    'total': 2,
+  })
+# ---
+# name: test_list_filters
+  dict({
+    'countries': list([
+    ]),
+    'date_range': dict({
+      'max': '2026-09-01',
+      'min': '2026-09-01',
+    }),
+    'industries': list([
+    ]),
+    'news_types': list([
+    ]),
+    'sources': list([
+      'gbhacker',
+    ]),
+    'threat_actors': list([
+    ]),
+  })
+# ---
+# name: test_recompute_confidence_all
+  dict({
+    'updated': 1,
+  })
+# ---

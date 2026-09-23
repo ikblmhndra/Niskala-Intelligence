@@ -1,0 +1,361 @@
+# serializer version: 1
+# name: test_article_clusters
+  dict({
+    'clusters': list([
+      dict({
+        'article_count': 3,
+        'articles': list([
+          dict({
+            'id': int,
+            'posted_on': str,
+            'source': 'Source2',
+            'title': 'Apt41 threat group breaches manufacturing sector networks Japan',
+            'url': 'https://example.com/p1-apt41-2',
+          }),
+          dict({
+            'id': int,
+            'posted_on': str,
+            'source': 'Source1',
+            'title': 'Apt41 threat group breaches manufacturing sector networks Europe',
+            'url': 'https://example.com/p1-apt41-1',
+          }),
+          dict({
+            'id': int,
+            'posted_on': str,
+            'source': 'Source0',
+            'title': 'Apt41 threat group breaches manufacturing sector networks United',
+            'url': 'https://example.com/p1-apt41-0',
+          }),
+        ]),
+        'cluster_id': '95bb28b8020d8f92',
+        'cluster_name': 'Apt41 Threat Group Breaches Manufacturing Sector Networks',
+        'confidence': 'medium',
+        'first_date': str,
+        'last_date': str,
+        're_emerged': False,
+        'source_count': 3,
+        'sources': list([
+          'Source0',
+          'Source1',
+          'Source2',
+        ]),
+      }),
+    ]),
+    'total': 1,
+  })
+# ---
+# name: test_campaign_evolution
+  dict({
+    'campaigns': list([
+      dict({
+        'cluster_id': '95bb28b8020d8f92',
+        'cluster_name': 'Apt41 Threat Group Breaches Manufacturing Sector Networks',
+        'growth_rate': 100.0,
+        'predicted_peak': None,
+        'recent_avg': 3.0,
+        'slope': 0.0,
+        'timeline': list([
+          dict({
+            'count': 3,
+            'date': str,
+          }),
+        ]),
+        'trend_direction': 'stable',
+      }),
+    ]),
+    'total': 1,
+  })
+# ---
+# name: test_cluster_trends
+  dict({
+    'cluster_id': '95bb28b8020d8f92',
+    'cluster_name': 'Apt41 Threat Group Breaches Manufacturing Sector Networks',
+    'growth_rate': 100.0,
+    'predicted_peak': None,
+    'recent_avg': 3.0,
+    'slope': 0.0,
+    'timeline': list([
+      dict({
+        'count': 3,
+        'date': str,
+      }),
+    ]),
+    'trend_direction': 'stable',
+  })
+# ---
+# name: test_early_warning
+  dict({
+    'countries': list([
+    ]),
+    'generated_at': str,
+    'industries': list([
+    ]),
+    'overall': list([
+    ]),
+    'parameters': dict({
+      'lookback_days': 30,
+      'recent_window': 'last 7 days',
+      'z_threshold': 2.0,
+    }),
+    'threat_actors': list([
+    ]),
+  })
+# ---
+# name: test_geopolitical_summary
+  dict({
+    'campaign_count': 0,
+    'days': 30,
+    'geopolitical_alerts': list([
+    ]),
+    'motivation_breakdown': dict({
+    }),
+    'nation_state_activity': dict({
+    }),
+    'sector_threat_trends': dict({
+    }),
+  })
+# ---
+# name: test_recent_campaigns
+  dict({
+    'campaign_links': list([
+    ]),
+    'campaigns': list([
+      dict({
+        'acceleration': 0.6667,
+        'attack_techniques': list([
+        ]),
+        'cluster_id': 'f24e21b838e54dcf',
+        'cluster_name': 'Apt41 Threat Group Breaches Manufacturing Networks',
+        'cve_ids': list([
+        ]),
+        'days_active': 0,
+        'diamond_model': dict({
+          'adversary': dict({
+            'actor_types': list([
+            ]),
+            'sophistication': None,
+            'sponsoring_nations': list([
+            ]),
+            'threat_actors': list([
+              'Apt41',
+            ]),
+          }),
+          'capability': dict({
+            'attack_techniques': dict({
+            }),
+            'cve_exploited': list([
+            ]),
+            'malware': list([
+            ]),
+            'tools': list([
+            ]),
+          }),
+          'infrastructure': dict({
+            'c2_indicators': list([
+            ]),
+            'domains': list([
+            ]),
+            'ips': list([
+            ]),
+            'urls': list([
+            ]),
+          }),
+          'meta': dict({
+            'confidence': 'low',
+            'direction': 'inbound',
+            'timestamps': dict({
+              'first_seen': '2026-09-24',
+              'last_seen': '2026-09-24',
+            }),
+          }),
+          'victim': dict({
+            'countries': list([
+            ]),
+            'industries': list([
+            ]),
+            'organization_types': list([
+            ]),
+          }),
+        }),
+        'dominant_countries': list([
+        ]),
+        'dominant_industries': list([
+        ]),
+        'dominant_tas': list([
+          'Apt41',
+        ]),
+        'first_seen': '2026-09-24',
+        'iocs': list([
+        ]),
+        'kill_chain': dict({
+          'chain_visualization': list([
+            dict({
+              'covered': False,
+              'phase': 'initial_access',
+              'techniques': list([
+              ]),
+            }),
+            dict({
+              'covered': False,
+              'phase': 'execution',
+              'techniques': list([
+              ]),
+            }),
+            dict({
+              'covered': False,
+              'phase': 'persistence',
+              'techniques': list([
+              ]),
+            }),
+            dict({
+              'covered': False,
+              'phase': 'privilege_escalation',
+              'techniques': list([
+              ]),
+            }),
+            dict({
+              'covered': False,
+              'phase': 'defense_evasion',
+              'techniques': list([
+              ]),
+            }),
+            dict({
+              'covered': False,
+              'phase': 'credential_access',
+              'techniques': list([
+              ]),
+            }),
+            dict({
+              'covered': False,
+              'phase': 'discovery',
+              'techniques': list([
+              ]),
+            }),
+            dict({
+              'covered': False,
+              'phase': 'lateral_movement',
+              'techniques': list([
+              ]),
+            }),
+            dict({
+              'covered': False,
+              'phase': 'collection',
+              'techniques': list([
+              ]),
+            }),
+            dict({
+              'covered': False,
+              'phase': 'exfiltration',
+              'techniques': list([
+              ]),
+            }),
+            dict({
+              'covered': False,
+              'phase': 'command_and_control',
+              'techniques': list([
+              ]),
+            }),
+            dict({
+              'covered': False,
+              'phase': 'impact',
+              'techniques': list([
+              ]),
+            }),
+          ]),
+          'completeness_label': 'limited',
+          'completeness_score': 0,
+          'operational_risk': 'low',
+          'phases_covered': list([
+          ]),
+          'phases_missing': list([
+            'initial_access',
+            'execution',
+            'persistence',
+            'privilege_escalation',
+            'defense_evasion',
+            'credential_access',
+            'discovery',
+            'lateral_movement',
+            'collection',
+            'exfiltration',
+            'command_and_control',
+            'impact',
+          ]),
+        }),
+        'last_seen': '2026-09-24',
+        'matched_pirs': list([
+        ]),
+        'member_article_ids': list([
+          int,
+          int,
+        ]),
+        'new_iocs_24h': 0,
+        'prioritized_cves': list([
+        ]),
+        'related_campaigns': list([
+        ]),
+        'severity_breakdown': dict({
+          'campaign_velocity': 9.0,
+          'cve_criticality': 0.0,
+          'ioc_confidence': 10.0,
+          'raw': dict({
+            'campaign_velocity': 60.0,
+            'cve_criticality': 0.0,
+            'ioc_confidence': 50.0,
+            'source_quality': 50.0,
+            'ta_sophistication': 50.0,
+          }),
+          'source_quality': 7.5,
+          'ta_sophistication': 15.0,
+        }),
+        'severity_label': 'medium',
+        'severity_score': 42,
+        'size': 2,
+        'summary_title': 'Apt41 threat group breaches manufacturing networks beta',
+        'titles': list([
+          'Apt41 threat group breaches manufacturing networks beta',
+          'Apt41 threat group breaches manufacturing networks alpha',
+        ]),
+        'velocity_alert': False,
+        'velocity_articles_per_day': 2.0,
+        'velocity_label': 'active',
+      }),
+    ]),
+    'total': 1,
+  })
+# ---
+# name: test_risk_matrix
+  dict({
+    'countries': list([
+    ]),
+    'generated_at': str,
+    'industries': list([
+    ]),
+    'matrix': list([
+    ]),
+  })
+# ---
+# name: test_source_scores
+  dict({
+    'sources': list([
+      dict({
+        'known': False,
+        'reliability_grade': 'F',
+        'reliability_label': 'Cannot be judged',
+        'source': 'Source0',
+      }),
+      dict({
+        'known': False,
+        'reliability_grade': 'F',
+        'reliability_label': 'Cannot be judged',
+        'source': 'Source1',
+      }),
+      dict({
+        'known': False,
+        'reliability_grade': 'F',
+        'reliability_label': 'Cannot be judged',
+        'source': 'Source2',
+      }),
+    ]),
+  })
+# ---

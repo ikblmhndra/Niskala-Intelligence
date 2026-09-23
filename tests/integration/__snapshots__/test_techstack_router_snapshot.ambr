@@ -1,0 +1,46 @@
+# serializer version: 1
+# name: test_get_techstack
+  dict({
+    'items': list([
+      dict({
+        'added_date': str,
+        'exposure': 'internal',
+        'hosting_type': 'cloud',
+        'id': int,
+        'name': 'WordPress',
+        'source': 'manual',
+      }),
+    ]),
+    'page': 1,
+    'page_size': 50,
+    'total': 1,
+  })
+# ---
+# name: test_patch_exposure
+  dict({
+    'success': True,
+  })
+# ---
+# name: test_patch_hosting
+  dict({
+    'success': True,
+  })
+# ---
+# name: test_post_techstack
+  dict({
+    'item': dict({
+      'added_date': str,
+      'exposure': 'internal',
+      'hosting_type': 'on_prem',
+      'id': int,
+      'name': 'nginx',
+      'source': 'manual',
+    }),
+    'success': True,
+  })
+# ---
+# name: test_remove_techstack
+  dict({
+    'success': True,
+  })
+# ---

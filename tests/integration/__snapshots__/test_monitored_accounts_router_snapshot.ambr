@@ -1,0 +1,33 @@
+# serializer version: 1
+# name: test_delete_account
+  dict({
+    'ok': True,
+  })
+# ---
+# name: test_get_accounts
+  list([
+    dict({
+      'active': True,
+      'added_at': str,
+      'display_name': 'Threat Intel Feed',
+      'id': int,
+      'notes': 'APAC focus',
+      'username': 'threatintel',
+    }),
+  ])
+# ---
+# name: test_patch_toggle
+  dict({
+    'ok': True,
+  })
+# ---
+# name: test_post_account
+  dict({
+    'active': True,
+    'added_at': str,
+    'display_name': 'CTI Source',
+    'id': int,
+    'notes': 'Verified feed',
+    'username': 'cti_source',
+  })
+# ---

@@ -1,0 +1,282 @@
+# serializer version: 1
+# name: test_ack_statuses_empty
+  dict({
+  })
+# ---
+# name: test_acknowledge
+  dict({
+    'ok': True,
+  })
+# ---
+# name: test_bulk_acknowledge
+  dict({
+    'acknowledged': 2,
+    'ok': True,
+  })
+# ---
+# name: test_bulk_exploit_lookup
+  dict({
+    'checked': 2,
+    'details': list([
+      dict({
+        'cve_id': 'CVE-2026-7001',
+        'error': None,
+        'found': 0,
+      }),
+      dict({
+        'cve_id': 'CVE-2026-7002',
+        'error': None,
+        'found': 0,
+      }),
+    ]),
+    'errors': 0,
+    'total_found': 0,
+    'with_exploits': 0,
+  })
+# ---
+# name: test_bulk_false_positive
+  dict({
+    'marked': 2,
+    'ok': True,
+  })
+# ---
+# name: test_cisa_kev_lookup
+  dict({
+    'catalog_size': 1,
+    'checked': 2,
+    'matched': 1,
+    'matched_cves': list([
+      'CVE-2026-7001',
+    ]),
+  })
+# ---
+# name: test_cve_stats
+  dict({
+    'critical': 1,
+    'high': 0,
+    'low': 1,
+    'medium': 0,
+    'total': 2,
+  })
+# ---
+# name: test_draft_email
+  dict({
+    'cve_count': 1,
+    'email_id': 'graph-msg-123',
+    'method': 'graph',
+    'subject': '[ACTION REQUIRED] 1 CVE(s) in Wordpress',
+  })
+# ---
+# name: test_epss_lookup
+  dict({
+    'checked': 2,
+    'no_data': 1,
+    'scored': 1,
+  })
+# ---
+# name: test_export_cves
+  dict({
+    'data_row_count': 16,
+    'headers': list([
+      None,
+      None,
+      None,
+      None,
+      None,
+      None,
+      None,
+      None,
+      'PT Privy Identitas Digital',
+      None,
+      None,
+      None,
+      None,
+      None,
+      None,
+      None,
+      'Nomor Formulir :',
+      None,
+      None,
+      None,
+      None,
+      None,
+    ]),
+  })
+# ---
+# name: test_get_cve_ticket_empty
+  dict({
+  })
+# ---
+# name: test_list_cves
+  dict({
+    'cves': list([
+      dict({
+        'active_exploitation': False,
+        'adjusted_risk_score': 3.1,
+        'affected': list([
+        ]),
+        'cisa_kev': False,
+        'cve_id': 'CVE-2026-7002',
+        'cve_score': 3.1,
+        'cve_severity': 'LOW',
+        'cvss_vector': '',
+        'detected_on': '2026-09-05T00:00:00+00:00',
+        'epss_percentile': None,
+        'epss_score': None,
+        'false_positive': False,
+        'hosting_type': 'on_prem',
+        'id': int,
+        'last_updated': str,
+        'link': '',
+        'news_mentions': list([
+        ]),
+        'news_mentions_count': 0,
+        'poc_available': False,
+        'pocs': list([
+        ]),
+        'published': '2026-09-05',
+        'reference': list([
+        ]),
+        'solutions': '',
+        'summary': 'Config parsing bug',
+        'tech': 'nginx',
+        'tech_exposure': 'internal',
+      }),
+      dict({
+        'active_exploitation': False,
+        'adjusted_risk_score': 9.8,
+        'affected': list([
+        ]),
+        'cisa_kev': True,
+        'cve_id': 'CVE-2026-7001',
+        'cve_score': 9.8,
+        'cve_severity': 'CRITICAL',
+        'cvss_vector': '',
+        'detected_on': '2026-09-01T00:00:00+00:00',
+        'epss_percentile': None,
+        'epss_score': None,
+        'false_positive': False,
+        'hosting_type': 'on_prem',
+        'id': int,
+        'last_updated': str,
+        'link': '',
+        'news_mentions': list([
+        ]),
+        'news_mentions_count': 0,
+        'poc_available': False,
+        'pocs': list([
+        ]),
+        'published': '2026-09-01',
+        'reference': list([
+        ]),
+        'solutions': '',
+        'summary': 'Stored XSS in a WordPress plugin',
+        'tech': 'WordPress',
+        'tech_exposure': 'internal',
+      }),
+    ]),
+    'page': 1,
+    'page_size': 20,
+    'total': 2,
+  })
+# ---
+# name: test_next_ticket_id
+  dict({
+    'ticket_id': str,
+  })
+# ---
+# name: test_prioritize_cves
+  dict({
+    'cves': list([
+      dict({
+        'actively_exploited': False,
+        'cisa_kev': True,
+        'cve_id': 'CVE-2026-7001',
+        'cvss_score': 9.8,
+        'in_tech_stack': True,
+        'patch_urgency': '7d',
+        'poc_available': False,
+        'priority_label': 'high_priority',
+        'priority_score': 69.4,
+        'severity': 'CRITICAL',
+      }),
+      dict({
+        'actively_exploited': False,
+        'cisa_kev': False,
+        'cve_id': 'CVE-2026-7002',
+        'cvss_score': 3.1,
+        'in_tech_stack': False,
+        'patch_urgency': 'monitor',
+        'poc_available': False,
+        'priority_label': 'low',
+        'priority_score': 9.3,
+        'severity': 'LOW',
+      }),
+    ]),
+    'total': 2,
+  })
+# ---
+# name: test_purge_orphaned_dry_run
+  dict({
+    'by_tech': dict({
+      'WordPress': 1,
+      'nginx': 1,
+    }),
+    'cve_ids': list([
+      'CVE-2026-7001',
+      'CVE-2026-7002',
+    ]),
+    'dry_run': True,
+    'would_delete': 2,
+  })
+# ---
+# name: test_remove_false_positive
+  dict({
+    'ok': True,
+  })
+# ---
+# name: test_set_false_positive
+  dict({
+    'ok': True,
+  })
+# ---
+# name: test_single_exploit_lookup
+  dict({
+    'cve_id': 'CVE-2026-7001',
+    'error': None,
+    'found': 1,
+  })
+# ---
+# name: test_tech_list
+  list([
+    'WordPress',
+    'nginx',
+  ])
+# ---
+# name: test_update_cve_ticket_then_get[get_after_put]
+  dict({
+    'acknowledge_time': str,
+    'acknowledged_by': '',
+    'active_exploitation': '',
+    'actual_remediation_date': '',
+    'affected_asset': 'web-01',
+    'affected_version': '',
+    'asset_owner': 'IT Team',
+    'closure_date': '',
+    'comments': '',
+    'cve_id': 'CVE-2026-7001',
+    'escalation_required': False,
+    'fixed_version': '',
+    'owner_email': '',
+    'owner_team': '',
+    'remediation_date_plan': '2026-09-15',
+    'remediation_status': 'in_progress',
+    'risk_acceptance': '',
+    'ticket_id': str,
+  })
+# ---
+# name: test_update_cve_ticket_then_get[put_response]
+  dict({
+    'ok': True,
+  })
+# ---

@@ -1,0 +1,133 @@
+# serializer version: 1
+# name: test_export_article_stix
+  dict({
+    'id': str,
+    'objects': list([
+      dict({
+        'created': str,
+        'id': str,
+        'identity_class': 'system',
+        'modified': str,
+        'name': 'CTI Platform',
+        'spec_version': '2.1',
+        'type': 'identity',
+      }),
+      dict({
+        'created': str,
+        'external_references': list([
+          dict({
+            'source_name': 'gbhacker',
+            'url': 'https://example.com/apt41-stix',
+          }),
+        ]),
+        'id': str,
+        'modified': str,
+        'name': 'APT41 breaches government network',
+        'object_refs': list([
+          'identity--b67d2b96-5e1e-4b78-9e5f-8f3a1c2d4e7a',
+          'threat-actor--bc598bc4-4bf0-5aa5-b155-8dcbbe03e918',
+          'attack-pattern--66c00a85-4d58-5f9c-9772-6e90212a2914',
+        ]),
+        'published': str,
+        'report_types': list([
+          'threat-report',
+        ]),
+        'spec_version': '2.1',
+        'type': 'report',
+      }),
+      dict({
+        'created': str,
+        'id': str,
+        'modified': str,
+        'name': 'Apt41',
+        'spec_version': '2.1',
+        'type': 'threat-actor',
+      }),
+      dict({
+        'created': str,
+        'external_references': list([
+          dict({
+            'external_id': 'T1566',
+            'source_name': 'mitre-attack',
+            'url': 'https://attack.mitre.org/techniques/T1566/',
+          }),
+        ]),
+        'id': str,
+        'modified': str,
+        'name': 'T1566 Phishing',
+        'spec_version': '2.1',
+        'type': 'attack-pattern',
+        'x_tactic': 'unknown',
+      }),
+      dict({
+        'created': str,
+        'id': str,
+        'modified': str,
+        'relationship_type': 'uses',
+        'source_ref': 'threat-actor--bc598bc4-4bf0-5aa5-b155-8dcbbe03e918',
+        'spec_version': '2.1',
+        'target_ref': 'attack-pattern--66c00a85-4d58-5f9c-9772-6e90212a2914',
+        'type': 'relationship',
+      }),
+    ]),
+    'spec_version': '2.1',
+    'type': 'bundle',
+  })
+# ---
+# name: test_export_ioc_stix
+  dict({
+    'id': str,
+    'objects': list([
+      dict({
+        'created': str,
+        'id': str,
+        'identity_class': 'system',
+        'modified': str,
+        'name': 'CTI Platform',
+        'spec_version': '2.1',
+        'type': 'identity',
+      }),
+      dict({
+        'created': str,
+        'id': str,
+        'indicator_types': list([
+          'malicious-activity',
+        ]),
+        'modified': str,
+        'name': 'domain: evil.example',
+        'pattern': "[domain-name:value = 'evil.example']",
+        'pattern_type': 'stix',
+        'spec_version': '2.1',
+        'type': 'indicator',
+        'valid_from': '2026-09-23T00:00:00Z',
+        'x_last_seen': '2026-09-23',
+        'x_seen_count': 1,
+      }),
+    ]),
+    'spec_version': '2.1',
+    'type': 'bundle',
+  })
+# ---
+# name: test_export_pir_stix_empty
+  dict({
+    'id': str,
+    'objects': list([
+      dict({
+        'created': str,
+        'id': str,
+        'identity_class': 'system',
+        'modified': str,
+        'name': 'CTI Platform',
+        'spec_version': '2.1',
+        'type': 'identity',
+      }),
+    ]),
+    'spec_version': '2.1',
+    'type': 'bundle',
+  })
+# ---
+# name: test_export_ta_stix_not_found
+  dict({
+    'detail': "No TA profile found for actor 'UnknownActor'. Generate one first via the TA Profiles endpoint.",
+  })
+# ---

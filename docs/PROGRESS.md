@@ -2238,7 +2238,97 @@ udah dibenerin Fase 7.3 Bagian 4; `llm` nyusul dibenerin Fase 7.5
       kontrak fallback `_extract_json` gak berubah pasca refactor).
       Full suite: **1049 passed** (dari 1031), mypy 183 file bersih
       (turun dari 184 -- 1 file duplikat kehapus), ruff bersih.
-- [ ] **7.6** Snapshot test tiap endpoint
+- [x] **7.6** Snapshot test tiap endpoint -- **(2026-09-23/24) 27/27
+      router, 179 endpoint, 183 test baru (`syrupy`).**
+
+      **Pola infra baru, gak ada presedennya sebelum ini** -- SEMUA test
+      integrasi sebelumnya manggil fungsi service/repo LANGSUNG lewat
+      `async_db_session` (skip router: routing, dependency injection
+      auth, validasi Pydantic, `response_model` serialization gak pernah
+      kena test). Fase ini nambah `api_client`/`api_session` (`tests/
+      integration/conftest.py`) -- `httpx.AsyncClient` + `ASGITransport`
+      langsung ke `create_app()`, `get_db` di-override numpang session
+      yang sama, request BENERAN lewat HTTP.
+
+      **3 masalah infra ketemu & dibenerin sebelum bisa dipercaya:**
+      1. Router SERING manggil `session.commit()` sendiri (pola "unit of
+         work per request") -- `AsyncSession(bind=connection)` polos
+         bakal KETUTUP beneran kena commit, isolasi rollback-per-test
+         jadi gak ngefek. Fix: `join_transaction_mode="create_savepoint"`
+         (recipe resmi SQLAlchemy 2.0).
+      2. `expire_on_commit=False` WAJIB dipasang di session test itu juga
+         -- production (`cti_core.db.engine`) udah pasang ini, dan tanpa
+         itu akses attribute abis commit (`entry.id` di `iocs.py`) trigger
+         `MissingGreenlet` yang ketubruk event listener savepoint di atas.
+         Ketauan lewat reproduksi langsung, bukan dugaan.
+      3. **6 service (`cluster`/`article_dashboard`/`risk_matrix`/
+         `fp_analytics`/`spike`/`d3fend`) punya cache in-process module-
+         level (900s TTL)** -- dirancang buat produksi (satu proses long-
+         lived), tapi bikin test SALING NUMPANG hasil basi kalau dua test
+         beda manggil endpoint yang sama dengan parameter default yang
+         sama. Ketauan pas full-suite run: 2 test Fase 7.6 sendiri DAN 1
+         test PRA-ADA (`test_mindmap_query.py`) sama-sama kena. Fix:
+         fixture `autouse=True` (`_clear_in_process_caches`,
+         `conftest.py`) yang clear SEMUA 6 cache itu sebelum tiap test
+         integrasi -- proteksi nutup seluruh suite, bukan cuma titik yang
+         kebetulan ketauan gagal.
+
+      **Endpoint eksternal (LLM/Graph/osv.dev/D3FEND/MITRE GitHub) di-
+      mock di titik yang SAMA kayak test service-layer yang udah ada**
+      (`cve_lookup._fetch_cisa_kev` dkk, `pkg_vuln._package_exists_on_
+      registry`, `AsyncAttackSyncRepo.sync_domain`, `ta_profile._call_llm`,
+      `exec_brief._call_llm`, `recap._call_llm`, `newsletter._enrich_
+      articles`, `mitre.get_d3fend_countermeasures`) -- gak ada panggilan
+      jaringan asli dari test manapun di fase ini. `BackgroundTasks`
+      FastAPI (`attack.py`/`pkg_vuln.py`) KETAUAN beneran ke-`await`
+      SEBELUM `httpx.ASGITransport` balikin response (efektif sinkron di
+      test), jadi endpoint-nya bisa dites langsung tanpa perlu nunggu.
+
+      **Field non-deterministik dinormalisasi lewat `syrupy.matchers.
+      path_type`** (diganti placeholder TIPE, bukan dihapus dari
+      perbandingan -- drift shape/tipe tetap ketahuan): `id` auto-
+      increment (Postgres SEQUENCE gak ke-reset rollback transaksi test,
+      jadi nilai literalnya gak pernah stabil lintas run/urutan test),
+      field lain yang JUGA int tapi namanya bukan `id` polos (`article_id`,
+      `pir_id`, dst -- ketauan lewat full-suite run, pattern awal `id$`
+      cuma nangkep field bernama PERSIS "id") timestamp wall-clock
+      (`last_updated`/`generated_at`/dst), dan `ticket_id`/next-ticket-id
+      (nempel bulan-tahun kalender asli, presedan dari cve.py duluan).
+
+      **1 bug non-determinism GENUINE ketemu di kode APLIKASI (bukan
+      test)**: `cluster_service`'s field `sources` di respons `/api/
+      clusters` dibangun dari Python `set` (unik doang, gak di-sort) --
+      urutan iterasi `set` string di-randomize per PROSES Python
+      (`PYTHONHASHSEED`), jadi 2 run `pytest` beda bisa ngasih urutan
+      `sources` yang beda walau isinya sama. Bukan dibenerin di kode
+      (di luar scope minimal Fase 7.6), tapi dinormalisasi di level test
+      (`sorted()` sebelum dibandingin) -- dicatat di sini biar gak
+      ketebak lagi kalau nanti nyari root cause snapshot yang "kadang
+      beda kadang enggak".
+
+      **1 bug pra-ada, TIDAK terkait Fase 7.6, ketemu gak sengaja**:
+      `test_recap_service.py::test_collect_iocs_and_cves_and_new_tas`
+      pakai `datetime.date.today()` (timezone LOKAL mesin, WIB/UTC+7 di
+      dev environment ini) buat filter kolom yang di-stamp Postgres
+      `server_default=func.now()` (UTC) -- flaky tiap hari jam 00:00-
+      07:00 WIB (tanggal lokal udah besok, UTC masih hari ini). Bukan
+      regresi dari Fase 7.6 (kejadian juga kalau file itu dites sendirian,
+      gak connect ke perubahan apa pun di sini) -- di-flag jadi task
+      terpisah (`task_a3ad146d`), BUKAN dibenerin di sini (scope beda).
+
+      Endpoint yang genuinely gak cocok snapshot literal: export biner
+      (`GET /api/cve/export`, `/api/pir/{id}/export/docx`) dites lewat
+      assert struktur (header/kolom/row-count), bukan byte mentah;
+      `changelog.py` baca `CHANGELOG.md` ASLI dari disk (isinya SENGAJA
+      berubah tiap rilis) dites lewat assert struktur juga, bukan
+      snapshot literal yang bakal basi tiap entry baru ditambah.
+
+      Full suite abis semua ini: **1231 passed** (dari 1049 sebelum Fase
+      7.6, +183 -- 1 pra-ada yang flaky di atas gak dihitung, bukan
+      kegagalan baru), mypy 28 file test bersih, ruff bersih. Determinism
+      diverifikasi lewat run ulang berkali-kali (per-file, gabungan
+      27 file, DAN full suite project) -- bukan cuma "generate sekali terus
+      percaya".
 - [ ] **7.7** Ekspor skema OpenAPI
 - [ ] **7.8** *(dipindah dari 6.6)* Pindahkan 5 loop `ScraperNewsWeb/app/main.py`
       (PIR alert, ATT&CK sync, IOC decay, daily recap, CVE enrichment) jadi

@@ -1,0 +1,284 @@
+# serializer version: 1
+# name: test_attack_navigator_layer
+  dict({
+    'description': 'ATT&CK DB export',
+    'domain': 'enterprise-attack',
+    'gradient': dict({
+      'colors': list([
+        '#ffffff',
+        '#0C969C',
+      ]),
+      'maxValue': 1,
+      'minValue': 0,
+    }),
+    'legendItems': list([
+    ]),
+    'links': list([
+    ]),
+    'metadata': list([
+    ]),
+    'name': 'CTI Platform — ATT&CK DB',
+    'selectSubtechniquesWithParent': False,
+    'selectTechniquesAcrossTactics': True,
+    'showTacticRowBackground': True,
+    'tacticRowBackground': '#162B2C',
+    'techniques': list([
+      dict({
+        'color': '#0C969C',
+        'enabled': True,
+        'links': list([
+        ]),
+        'metadata': list([
+        ]),
+        'score': 1,
+        'techniqueID': 'T1566',
+      }),
+    ]),
+    'versions': dict({
+      'attack': '16',
+      'layer': '4.5',
+      'navigator': '4.5',
+    }),
+  })
+# ---
+# name: test_attack_status
+  list([
+    dict({
+      'domain_key': 'enterprise',
+      'label': 'Enterprise ATT&CK',
+      'last_sync': None,
+      'status': 'never',
+      'stix_domain': 'enterprise-attack',
+      'version': None,
+    }),
+    dict({
+      'domain_key': 'ics',
+      'label': 'ICS ATT&CK',
+      'last_sync': None,
+      'status': 'never',
+      'stix_domain': 'ics-attack',
+      'version': None,
+    }),
+    dict({
+      'domain_key': 'mobile',
+      'label': 'Mobile ATT&CK',
+      'last_sync': None,
+      'status': 'never',
+      'stix_domain': 'mobile-attack',
+      'version': None,
+    }),
+  ])
+# ---
+# name: test_attack_sync
+  dict({
+    'domains': list([
+      'enterprise',
+    ]),
+    'status': 'started',
+  })
+# ---
+# name: test_attack_sync_single
+  dict({
+    'domain': 'enterprise',
+    'status': 'started',
+  })
+# ---
+# name: test_distinct_tactics
+  list([
+    'initial-access',
+  ])
+# ---
+# name: test_get_group
+  dict({
+    'aliases': list([
+    ]),
+    'created': '',
+    'created_at': str,
+    'description': '',
+    'domains': list([
+      'enterprise-attack',
+    ]),
+    'group_id': 'G0096',
+    'modified': '',
+    'name': 'APT41',
+    'software': list([
+    ]),
+    'techniques': list([
+    ]),
+    'updated_at': str,
+    'url': '',
+  })
+# ---
+# name: test_get_software_item
+  dict({
+    'aliases': list([
+    ]),
+    'created_at': str,
+    'description': '',
+    'domains': list([
+      'enterprise-attack',
+    ]),
+    'groups': list([
+    ]),
+    'modified': '',
+    'name': 'Mimikatz',
+    'platforms': list([
+    ]),
+    'software_id': 'S0002',
+    'software_type': 'tool',
+    'techniques': list([
+    ]),
+    'updated_at': str,
+    'url': '',
+  })
+# ---
+# name: test_get_technique
+  dict({
+    'attack_id': 'T1566',
+    'created': '',
+    'created_at': str,
+    'data_sources': list([
+    ]),
+    'description': 'Adversaries send phishing messages.',
+    'detection': '',
+    'domains': list([
+      'enterprise-attack',
+    ]),
+    'groups': list([
+    ]),
+    'is_subtechnique': False,
+    'mitigations': list([
+    ]),
+    'modified': '',
+    'name': 'Phishing',
+    'parent_id': None,
+    'platforms': list([
+    ]),
+    'software': list([
+    ]),
+    'sub_techniques': list([
+    ]),
+    'tactics': list([
+      'initial-access',
+    ]),
+    'updated_at': str,
+    'url': '',
+    'version': '',
+  })
+# ---
+# name: test_list_groups
+  dict({
+    'groups': list([
+      dict({
+        'aliases': list([
+        ]),
+        'created': '',
+        'created_at': str,
+        'domains': list([
+          'enterprise-attack',
+        ]),
+        'group_id': 'G0096',
+        'modified': '',
+        'name': 'APT41',
+        'updated_at': str,
+        'url': '',
+      }),
+    ]),
+    'page': 1,
+    'page_size': 50,
+    'total': 1,
+  })
+# ---
+# name: test_list_mitigations
+  dict({
+    'mitigations': list([
+      dict({
+        'created_at': str,
+        'description': '',
+        'domains': list([
+          'enterprise-attack',
+        ]),
+        'mitigation_id': 'M1049',
+        'modified': '',
+        'name': 'Antivirus/Antimalware',
+        'updated_at': str,
+        'url': '',
+      }),
+    ]),
+    'page': 1,
+    'page_size': 50,
+    'total': 1,
+  })
+# ---
+# name: test_list_software
+  dict({
+    'page': 1,
+    'page_size': 50,
+    'software': list([
+      dict({
+        'aliases': list([
+        ]),
+        'created_at': str,
+        'domains': list([
+          'enterprise-attack',
+        ]),
+        'modified': '',
+        'name': 'Mimikatz',
+        'platforms': list([
+        ]),
+        'software_id': 'S0002',
+        'software_type': 'tool',
+        'updated_at': str,
+        'url': '',
+      }),
+    ]),
+    'total': 1,
+  })
+# ---
+# name: test_list_tactics
+  list([
+    dict({
+      'created_at': str,
+      'description': '',
+      'domains': list([
+        'enterprise-attack',
+      ]),
+      'name': 'Initial Access',
+      'shortname': 'initial-access',
+      'tactic_id': 'TA0001',
+      'updated_at': str,
+      'url': '',
+    }),
+  ])
+# ---
+# name: test_list_techniques
+  dict({
+    'page': 1,
+    'page_size': 50,
+    'techniques': list([
+      dict({
+        'attack_id': 'T1566',
+        'created': '',
+        'created_at': str,
+        'data_sources': list([
+        ]),
+        'domains': list([
+          'enterprise-attack',
+        ]),
+        'is_subtechnique': False,
+        'modified': '',
+        'name': 'Phishing',
+        'parent_id': None,
+        'platforms': list([
+        ]),
+        'tactics': list([
+          'initial-access',
+        ]),
+        'updated_at': str,
+        'url': '',
+        'version': '',
+      }),
+    ]),
+    'total': 1,
+  })
+# ---

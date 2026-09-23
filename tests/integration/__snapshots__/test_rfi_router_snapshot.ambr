@@ -1,0 +1,65 @@
+# serializer version: 1
+# name: test_get_rfi_by_id
+  dict({
+    'created_at': str,
+    'due_date': None,
+    'id': int,
+    'linked_pir': None,
+    'question': "What is APT41's latest TTP?",
+    'requester': 'SOC Team',
+    'response': '',
+    'status': 'open',
+    'updated_at': str,
+  })
+# ---
+# name: test_get_rfis
+  dict({
+    'page': 1,
+    'page_size': 20,
+    'rfis': list([
+      dict({
+        'created_at': str,
+        'due_date': None,
+        'id': int,
+        'linked_pir': None,
+        'question': "What is APT41's latest TTP?",
+        'requester': 'SOC Team',
+        'response': '',
+        'status': 'open',
+        'updated_at': str,
+      }),
+    ]),
+    'total': 1,
+  })
+# ---
+# name: test_post_rfi
+  dict({
+    'created_at': str,
+    'due_date': None,
+    'id': int,
+    'linked_pir': None,
+    'question': 'Are we exposed to CVE-2026-0001?',
+    'requester': 'Exec Team',
+    'response': '',
+    'status': 'open',
+    'updated_at': str,
+  })
+# ---
+# name: test_put_rfi
+  dict({
+    'created_at': str,
+    'due_date': None,
+    'id': int,
+    'linked_pir': None,
+    'question': "What is APT41's latest TTP?",
+    'requester': 'SOC Team',
+    'response': 'No, unaffected.',
+    'status': 'answered',
+    'updated_at': str,
+  })
+# ---
+# name: test_remove_rfi
+  dict({
+    'deleted': True,
+  })
+# ---

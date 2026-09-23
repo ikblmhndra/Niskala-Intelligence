@@ -1,0 +1,131 @@
+# serializer version: 1
+# name: test_add_user
+  dict({
+    'client_ids': list([
+      'default',
+    ]),
+    'role': 'analyst',
+    'username': 'newanalyst',
+  })
+# ---
+# name: test_audit_log
+  dict({
+    'logs': list([
+      dict({
+        'action': 'login',
+        'detail': dict({
+        }),
+        'ip': '127.0.0.1',
+        'target_id': '',
+        'timestamp': str,
+        'user': 'analyst1',
+      }),
+    ]),
+    'page': 1,
+    'page_size': 50,
+    'total': 1,
+  })
+# ---
+# name: test_change_password
+  dict({
+    'ok': True,
+  })
+# ---
+# name: test_get_pw_policy
+  dict({
+    'hint': 'Min 8 chars · uppercase · lowercase · number · symbol',
+    'min_length': 8,
+    'require_lower': True,
+    'require_number': True,
+    'require_symbol': True,
+    'require_upper': True,
+  })
+# ---
+# name: test_get_users
+  list([
+    dict({
+      'client_ids': list([
+        'default',
+      ]),
+      'created_at': str,
+      'force_pw_change': False,
+      'last_sign_in': None,
+      'role': 'analyst',
+      'username': 'analyst1',
+    }),
+  ])
+# ---
+# name: test_init_admin
+  dict({
+    'client_ids': list([
+      'default',
+    ]),
+    'role': 'superadmin',
+    'username': 'bootstrap-admin',
+  })
+# ---
+# name: test_login_invalid_credentials
+  dict({
+    'detail': 'Invalid credentials',
+  })
+# ---
+# name: test_login_success
+  dict({
+    'access_token': str,
+    'client_countries': list([
+    ]),
+    'client_ids': list([
+      'default',
+    ]),
+    'force_pw_change': False,
+    'role': 'analyst',
+    'token_type': 'bearer',
+    'username': 'analyst1',
+  })
+# ---
+# name: test_logout
+  dict({
+    'ok': True,
+  })
+# ---
+# name: test_me
+  dict({
+    'client_countries': list([
+    ]),
+    'client_ids': list([
+      'default',
+    ]),
+    'clients_map': dict({
+      'default': list([
+      ]),
+    }),
+    'role': 'superadmin',
+    'username': 'tester',
+  })
+# ---
+# name: test_reset_user_password
+  dict({
+    'ok': True,
+  })
+# ---
+# name: test_update_pw_policy
+  dict({
+    'flagged_users': 0,
+    'hint': 'Min 10 chars · uppercase · lowercase · number',
+    'ok': True,
+  })
+# ---
+# name: test_update_user_client_list
+  dict({
+    'client_ids': list([
+      'default',
+    ]),
+    'ok': True,
+  })
+# ---
+# name: test_update_user_role
+  dict({
+    'ok': True,
+    'role': 'admin',
+  })
+# ---

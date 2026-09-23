@@ -1,0 +1,196 @@
+# serializer version: 1
+# name: test_add_ioc_tags
+  dict({
+    'ok': True,
+  })
+# ---
+# name: test_add_ioc_threat_actors
+  dict({
+    'ok': True,
+  })
+# ---
+# name: test_apply_fp_suggestions_empty
+  dict({
+    'added': 0,
+    'skipped': 0,
+  })
+# ---
+# name: test_bulk_delete_iocs
+  dict({
+    'deleted': 2,
+  })
+# ---
+# name: test_delete_ioc_by_id
+  dict({
+    'ok': True,
+  })
+# ---
+# name: test_ioc_allowlist_add
+  dict({
+    'added_at': str,
+    'added_by': 'tester',
+    'id': int,
+    'type': 'ip',
+    'value': '10.0.0.1',
+  })
+# ---
+# name: test_ioc_allowlist_list_empty
+  dict({
+    'entries': list([
+    ]),
+  })
+# ---
+# name: test_ioc_allowlist_remove
+  dict({
+    'ok': True,
+  })
+# ---
+# name: test_ioc_detail
+  dict({
+    'actionability_label': None,
+    'actionability_score': None,
+    'auto_suppressed': False,
+    'confidence_score': 50,
+    'first_seen': str,
+    'fp_count': 0,
+    'id': int,
+    'last_seen': str,
+    'recommended_action': None,
+    'seen_count': 1,
+    'sources': list([
+      dict({
+        'article_id': None,
+        'context': None,
+        'first_seen': str,
+        'source_name': 'A',
+        'url': 'https://a.example/report',
+      }),
+    ]),
+    'suppression_reason': None,
+    'tags': list([
+    ]),
+    'threat_actors': list([
+    ]),
+    'tp_count': 0,
+    'type': 'ip',
+    'value': '45.33.32.156',
+  })
+# ---
+# name: test_ioc_feedback
+  dict({
+    'actionability_label': 'investigate',
+    'actionability_score': 62,
+    'auto_suppressed': False,
+    'confidence_score': 100,
+    'first_seen': str,
+    'fp_count': 0,
+    'id': int,
+    'last_seen': str,
+    'recommended_action': 'Verify in environment, check for matches in last 30 days',
+    'seen_count': 1,
+    'sources': list([
+      dict({
+        'article_id': None,
+        'context': None,
+        'first_seen': str,
+        'source_name': 'A',
+        'url': 'https://a.example/report',
+      }),
+    ]),
+    'suppression_reason': None,
+    'tags': list([
+    ]),
+    'threat_actors': list([
+    ]),
+    'tp_count': 1,
+    'type': 'ip',
+    'value': '45.33.32.156',
+  })
+# ---
+# name: test_ioc_fp_analytics
+  dict({
+    'fp_by_source': dict({
+    }),
+    'fp_by_type': dict({
+    }),
+    'fp_trend': list([
+    ]),
+    'suggested_allowlist': list([
+    ]),
+  })
+# ---
+# name: test_ioc_stats
+  dict({
+    'by_type': list([
+      dict({
+        'count': 1,
+        'type': 'domain',
+      }),
+      dict({
+        'count': 1,
+        'type': 'ip',
+      }),
+    ]),
+    'total': 2,
+  })
+# ---
+# name: test_ioc_ta_links_empty
+  dict({
+    'threat_actors': list([
+    ]),
+  })
+# ---
+# name: test_list_iocs
+  dict({
+    'iocs': list([
+      dict({
+        'actionability_label': None,
+        'actionability_score': None,
+        'auto_suppressed': False,
+        'confidence_score': 50,
+        'first_seen': str,
+        'fp_count': 0,
+        'id': int,
+        'last_seen': str,
+        'recommended_action': None,
+        'seen_count': 1,
+        'suppression_reason': None,
+        'tags': list([
+        ]),
+        'threat_actors': list([
+        ]),
+        'tp_count': 0,
+        'type': 'domain',
+        'value': 'evil.example',
+      }),
+      dict({
+        'actionability_label': None,
+        'actionability_score': None,
+        'auto_suppressed': False,
+        'confidence_score': 50,
+        'first_seen': str,
+        'fp_count': 0,
+        'id': int,
+        'last_seen': str,
+        'recommended_action': None,
+        'seen_count': 1,
+        'suppression_reason': None,
+        'tags': list([
+        ]),
+        'threat_actors': list([
+        ]),
+        'tp_count': 0,
+        'type': 'ip',
+        'value': '45.33.32.156',
+      }),
+    ]),
+    'page': 1,
+    'page_size': 50,
+    'total': 2,
+  })
+# ---
+# name: test_remove_ioc_threat_actor
+  dict({
+    'ok': True,
+  })
+# ---

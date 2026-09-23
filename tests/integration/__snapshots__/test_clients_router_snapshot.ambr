@@ -1,0 +1,38 @@
+# serializer version: 1
+# name: test_edit_client
+  dict({
+    'client_id': 'acme',
+    'countries': list([
+      'US',
+      'CA',
+    ]),
+    'created_at': str,
+    'name': 'Acme Corporation',
+  })
+# ---
+# name: test_get_clients
+  list([
+    dict({
+      'client_id': 'default',
+      'countries': list([
+      ]),
+      'created_at': str,
+      'name': 'Default',
+    }),
+  ])
+# ---
+# name: test_post_client
+  dict({
+    'client_id': 'acme',
+    'countries': list([
+      'US',
+    ]),
+    'created_at': str,
+    'name': 'Acme Corp',
+  })
+# ---
+# name: test_remove_client
+  dict({
+    'deleted': True,
+  })
+# ---

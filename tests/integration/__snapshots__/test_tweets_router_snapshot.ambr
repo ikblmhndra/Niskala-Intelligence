@@ -1,0 +1,64 @@
+# serializer version: 1
+# name: test_list_tweets
+  dict({
+    'page': 1,
+    'page_size': 20,
+    'total': 1,
+    'tweets': list([
+      dict({
+        'actor_countries': list([
+        ]),
+        'apac_indicator': True,
+        'author_avatar': '',
+        'author_followers': 0,
+        'author_name': 'Threat Intel',
+        'author_username': 'threatintel',
+        'confidence': 80,
+        'confirmed_incident': False,
+        'cve_list': list([
+        ]),
+        'databreach_list': list([
+        ]),
+        'fetched_at': str,
+        'id': int,
+        'incident_confidence': None,
+        'incident_indicators': list([
+        ]),
+        'industries_impacted': list([
+        ]),
+        'lang': 'en',
+        'media_urls': list([
+        ]),
+        'mentioned_apac_country': list([
+        ]),
+        'mentioned_apac_people': list([
+        ]),
+        'mentioned_group': list([
+          'Apt41',
+        ]),
+        'ot_status': False,
+        'posted_on': '2026-09-01T00:00:00+00:00',
+        'report_status': False,
+        'text': 'APT41 targeting manufacturing sector',
+        'tweet_id': '1234567890',
+        'url': 'https://twitter.com/example/status/1234567890',
+        'victim_countries': list([
+        ]),
+        'victim_name': None,
+        'zero_day_list': list([
+        ]),
+      }),
+    ]),
+  })
+# ---
+# name: test_tweet_stats
+  dict({
+    'top_authors': list([
+      dict({
+        'author': 'threatintel',
+        'count': 1,
+      }),
+    ]),
+    'total': 1,
+  })
+# ---

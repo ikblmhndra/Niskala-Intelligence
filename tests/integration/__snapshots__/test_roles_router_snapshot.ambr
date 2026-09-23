@@ -1,0 +1,218 @@
+# serializer version: 1
+# name: test_add_role
+  dict({
+    'created_at': str,
+    'created_by': 'tester',
+    'display_name': 'Custom Role',
+    'is_system': False,
+    'name': 'custom_role',
+    'permissions': list([
+    ]),
+  })
+# ---
+# name: test_get_all_permissions
+  list([
+    dict({
+      'description': 'View news articles and feeds',
+      'key': 'view_news',
+    }),
+    dict({
+      'description': 'Export data as CSV / reports',
+      'key': 'export_data',
+    }),
+    dict({
+      'description': 'View threat intelligence reports',
+      'key': 'view_intel',
+    }),
+    dict({
+      'description': 'Create and edit intelligence reports',
+      'key': 'manage_intel',
+    }),
+    dict({
+      'description': 'View threat actor profiles',
+      'key': 'view_ta',
+    }),
+    dict({
+      'description': 'View and search IOC database',
+      'key': 'view_ioc',
+    }),
+    dict({
+      'description': 'Add and delete IOCs',
+      'key': 'manage_ioc',
+    }),
+    dict({
+      'description': 'View CVE and vulnerability data',
+      'key': 'view_cve',
+    }),
+    dict({
+      'description': 'Send CVE email reports',
+      'key': 'send_cve_email',
+    }),
+    dict({
+      'description': 'View STIX intelligence bundles',
+      'key': 'view_stix',
+    }),
+    dict({
+      'description': 'Access WiseMap CTI mind maps',
+      'key': 'wisemap_access',
+    }),
+    dict({
+      'description': 'Create and manage RFIs',
+      'key': 'manage_rfi',
+    }),
+    dict({
+      'description': 'Create and manage PIRs',
+      'key': 'manage_pir',
+    }),
+    dict({
+      'description': 'Access newsletter',
+      'key': 'view_newsletter',
+    }),
+    dict({
+      'description': 'Create and send newsletters',
+      'key': 'manage_newsletter',
+    }),
+    dict({
+      'description': 'View monitored Twitter/X feeds',
+      'key': 'view_tweets',
+    }),
+    dict({
+      'description': 'Configure monitored accounts',
+      'key': 'manage_tweets',
+    }),
+    dict({
+      'description': 'View audit log',
+      'key': 'view_audit_log',
+    }),
+    dict({
+      'description': 'Add, edit, and delete users',
+      'key': 'manage_users',
+    }),
+    dict({
+      'description': "Reset other users' passwords",
+      'key': 'reset_password',
+    }),
+    dict({
+      'description': 'Add and delete client tenants',
+      'key': 'manage_clients',
+    }),
+    dict({
+      'description': 'Edit password policy',
+      'key': 'manage_policy',
+    }),
+    dict({
+      'description': 'Create and delete custom roles',
+      'key': 'manage_roles',
+    }),
+    dict({
+      'description': 'Configure scraper health settings',
+      'key': 'manage_scraper',
+    }),
+    dict({
+      'description': 'Add and edit news sources',
+      'key': 'manage_sources',
+    }),
+    dict({
+      'description': 'Edit changelog entries',
+      'key': 'manage_changelog',
+    }),
+  ])
+# ---
+# name: test_get_roles
+  list([
+    dict({
+      'created_at': str,
+      'created_by': 'system',
+      'display_name': 'Admin',
+      'is_system': True,
+      'name': 'admin',
+      'permissions': list([
+        'view_news',
+        'export_data',
+        'view_intel',
+        'manage_intel',
+        'view_ta',
+        'view_ioc',
+        'manage_ioc',
+        'view_cve',
+        'send_cve_email',
+        'view_stix',
+        'wisemap_access',
+        'manage_rfi',
+        'manage_pir',
+        'view_newsletter',
+        'manage_newsletter',
+        'view_tweets',
+        'manage_tweets',
+        'view_audit_log',
+        'manage_users',
+        'reset_password',
+        'manage_policy',
+        'manage_scraper',
+        'manage_sources',
+        'manage_changelog',
+      ]),
+    }),
+    dict({
+      'created_at': str,
+      'created_by': 'system',
+      'display_name': 'Analyst',
+      'is_system': True,
+      'name': 'analyst',
+      'permissions': list([
+        'view_news',
+        'export_data',
+        'manage_rfi',
+        'manage_pir',
+        'view_intel',
+        'view_ta',
+        'view_ioc',
+        'view_cve',
+        'view_newsletter',
+        'view_tweets',
+        'view_stix',
+        'wisemap_access',
+      ]),
+    }),
+    dict({
+      'created_at': str,
+      'created_by': 'system',
+      'display_name': 'Super Admin',
+      'is_system': True,
+      'name': 'superadmin',
+      'permissions': list([
+        'view_news',
+        'export_data',
+        'view_intel',
+        'manage_intel',
+        'view_ta',
+        'view_ioc',
+        'manage_ioc',
+        'view_cve',
+        'send_cve_email',
+        'view_stix',
+        'wisemap_access',
+        'manage_rfi',
+        'manage_pir',
+        'view_newsletter',
+        'manage_newsletter',
+        'view_tweets',
+        'manage_tweets',
+        'view_audit_log',
+        'manage_users',
+        'reset_password',
+        'manage_clients',
+        'manage_policy',
+        'manage_roles',
+        'manage_scraper',
+        'manage_sources',
+        'manage_changelog',
+      ]),
+    }),
+  ])
+# ---
+# name: test_remove_role
+  dict({
+    'ok': True,
+  })
+# ---

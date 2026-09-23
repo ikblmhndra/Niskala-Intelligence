@@ -1,0 +1,47 @@
+# serializer version: 1
+# name: test_list_victims
+  dict({
+    'page': 1,
+    'page_size': 50,
+    'total': 1,
+    'victims': list([
+      dict({
+        'country_code': 'US',
+        'data_size': None,
+        'description': None,
+        'discovered': None,
+        'domain': None,
+        'group_name': 'LockBit',
+        'id': int,
+        'industry': 'Manufacturing',
+        'post_url': 'http://lockbit.example/post/1',
+        'published': '2026-09-01',
+        'ransom': None,
+        'screenshot': None,
+        'victim': 'Acme Corp',
+      }),
+    ]),
+  })
+# ---
+# name: test_related_articles_empty
+  dict({
+    'articles': list([
+    ]),
+    'page': 1,
+    'page_size': 20,
+    'total': 0,
+  })
+# ---
+# name: test_victim_filters
+  dict({
+    'countries': list([
+      'US',
+    ]),
+    'groups': list([
+      'LockBit',
+    ]),
+    'industries': list([
+      'Manufacturing',
+    ]),
+  })
+# ---

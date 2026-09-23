@@ -1,0 +1,63 @@
+# serializer version: 1
+# name: test_get_mindmap_generates
+  dict({
+    'custom_syntax': None,
+    'display_syntax': '''
+      mindmap
+          root((CVE-2026-9001))
+              Overview
+                  Severity: CRITICAL 9.8
+                  Tech: WordPress
+  
+    ''',
+    'doc_id': 'CVE-2026-9001',
+    'edited_at': None,
+    'feature_type': 'cve',
+    'generated_at': str,
+    'mermaid_syntax': '''
+      mindmap
+          root((CVE-2026-9001))
+              Overview
+                  Severity: CRITICAL 9.8
+                  Tech: WordPress
+  
+    ''',
+    'title': 'CVE-2026-9001',
+  })
+# ---
+# name: test_regenerate_mindmap
+  dict({
+    'custom_syntax': None,
+    'display_syntax': '''
+      mindmap
+          root((CVE-2026-9001))
+              Overview
+                  Severity: CRITICAL 9.8
+                  Tech: WordPress
+  
+    ''',
+    'doc_id': 'CVE-2026-9001',
+    'feature_type': 'cve',
+    'generated_at': str,
+    'mermaid_syntax': '''
+      mindmap
+          root((CVE-2026-9001))
+              Overview
+                  Severity: CRITICAL 9.8
+                  Tech: WordPress
+  
+    ''',
+    'title': 'CVE-2026-9001',
+  })
+# ---
+# name: test_save_mindmap_edit
+  dict({
+    'display_syntax': '''
+      mindmap
+        root((custom))
+    ''',
+    'doc_id': 'CVE-2026-9001',
+    'edited_at': str,
+    'feature_type': 'cve',
+  })
+# ---

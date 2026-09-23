@@ -1,0 +1,128 @@
+# serializer version: 1
+# name: test_dashboard_v1
+  dict({
+    'active_sectors': 0,
+    'country_trend': list([
+    ]),
+    'cve_exposure': list([
+    ]),
+    'heatmap_max': 0,
+    'months': list([
+    ]),
+    'news_type_breakdown': list([
+    ]),
+    'prev_active_sectors': 0,
+    'prev_total': 0,
+    'prev_unique_ta': 0,
+    'sector_heatmap': list([
+    ]),
+    'sector_trend': list([
+    ]),
+    'ta_leaderboard': list([
+    ]),
+    'top_countries': list([
+    ]),
+    'top_sectors': list([
+    ]),
+    'total_incidents': 0,
+    'unique_ta_count': 0,
+  })
+# ---
+# name: test_dashboard_v2
+  dict({
+    'active_sectors': 0,
+    'confirmed_incident_rate': None,
+    'country_trend': list([
+    ]),
+    'critical_cves': list([
+    ]),
+    'cve_exposure': list([
+    ]),
+    'cve_exposure_v2': list([
+    ]),
+    'heatmap_max': 0,
+    'industry_spikes': list([
+    ]),
+    'months': list([
+    ]),
+    'news_type_breakdown': list([
+    ]),
+    'newstype_trend': dict({
+      'months': list([
+      ]),
+      'series': list([
+      ]),
+    }),
+    'pending_fp_queue': list([
+    ]),
+    'prev_active_sectors': 0,
+    'prev_ta_names': list([
+    ]),
+    'prev_total': 0,
+    'prev_unique_ta': 0,
+    'recent_clusters_summary': list([
+    ]),
+    'sector_actor_matrix': dict({
+      'actors': list([
+      ]),
+      'matrix': list([
+      ]),
+      'max_val': 0,
+      'sectors': list([
+      ]),
+    }),
+    'sector_cooccurrence': list([
+    ]),
+    'sector_heatmap': list([
+    ]),
+    'sector_risk_scores': list([
+    ]),
+    'sector_trend': list([
+    ]),
+    'source_reliability_spread': dict({
+    }),
+    'ta_confidence': dict({
+    }),
+    'ta_leaderboard': list([
+    ]),
+    'ta_velocity': list([
+    ]),
+    'top_countries': list([
+    ]),
+    'top_sectors': list([
+    ]),
+    'top_ttps': list([
+    ]),
+    'total_incidents': 0,
+    'unique_ta_count': 0,
+    'victim_country_trend': list([
+    ]),
+    'view_config': dict({
+      'role': 'superadmin',
+      'sections': dict({
+        'cluster_list': True,
+        'critical_cve_feed': True,
+        'exec_brief_button': True,
+        'fp_feedback_queue': True,
+        'ioc_enrichment_hits': True,
+        'kpis': True,
+        'live_ioc_stream': True,
+        'sector_risk': True,
+        'sigma_export_quick': True,
+        'source_reliability_spread': True,
+        'spike_alerts': True,
+        'ta_leaderboard': True,
+      }),
+    }),
+  })
+# ---
+# name: test_exec_brief
+  dict({
+    'brief': '''
+      # Executive Brief
+      
+      All quiet.
+    ''',
+    'generated_at': str,
+  })
+# ---

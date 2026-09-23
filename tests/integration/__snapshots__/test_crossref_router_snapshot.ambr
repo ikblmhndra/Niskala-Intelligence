@@ -1,0 +1,24 @@
+# serializer version: 1
+# name: test_cve_crossref_not_found
+  dict({
+    'detail': 'CVE not found',
+  })
+# ---
+# name: test_pir_crossref_not_found
+  dict({
+    'detail': 'PIR not found',
+  })
+# ---
+# name: test_ta_crossref_empty
+  dict({
+    'active_pirs': list([
+    ]),
+    'actor_name': 'Apt41',
+    'has_profile': False,
+    'matched_cves': list([
+    ]),
+    'profile_summary': None,
+    'recent_articles': list([
+    ]),
+  })
+# ---

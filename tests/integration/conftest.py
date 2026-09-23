@@ -10,8 +10,9 @@ from __future__ import annotations
 
 import os
 import pathlib
-from collections.abc import AsyncIterator, Iterator
+from collections.abc import AsyncIterator, Callable, Iterator
 
+import httpx
 import pytest
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Session
@@ -128,6 +129,148 @@ async def async_db_session(_migrated_schema: None) -> AsyncIterator[AsyncSession
         finally:
             await session.close()
             await transaction.rollback()
+
+
+@pytest.fixture
+async def api_session(_migrated_schema: None) -> AsyncIterator[AsyncSession]:
+    """Varian `async_db_session` khusus test lewat HTTP (`api_client`
+    di bawah) -- handler router SERING manggil `session.commit()` sendiri
+    (pola "unit of work per request", beda dari test service-layer yang
+    cuma numpang `session.flush()`). `AsyncSession(bind=connection)` polos
+    bakal KETUTUP BENERAN kena `commit()` dari app code -- `transaction.
+    rollback()` pas teardown jadi gak ngefek, data leak ke Postgres
+    efemeral yang dipakai bareng semua test lain dalam run ini.
+
+    Fix: `join_transaction_mode="create_savepoint"` (SQLAlchemy 2.0,
+    recipe resmi buat "joining a session into an external transaction").
+    `commit()` dari app code cuma nutup SAVEPOINT internal, transaksi luar
+    (yang di-rollback pas teardown di sini) tetep idup -- isolasi antar
+    test tetep kejaga walau endpoint yang dites beneran commit.
+
+    `expire_on_commit=False` WAJIB -- production (`cti_core.db.engine.
+    _async_sessionmaker()`) udah pasang ini eksplisit (router pola umum:
+    akses attribute objek abis `session.commit()`, mis. `entry.id` di
+    `iocs.py`'s `ioc_allowlist_add`). Default SQLAlchemy (`True`) bikin
+    attribute EXPIRE abis commit -- akses berikutnya trigger lazy-reload
+    yang butuh jembatan async/greenlet, dan itu KETUBRUK event listener
+    auto-restart-savepoint di atas (`MissingGreenlet` -- ketauan lewat
+    reproduksi langsung, bukan dugaan). Fixture ini WAJIB nge-mirror
+    config production, bukan cuma soal SQLAlchemy internals."""
+    from cti_core.db.engine import get_async_engine
+
+    engine = get_async_engine()
+    async with engine.connect() as connection:
+        await connection.begin()
+        session = AsyncSession(
+            bind=connection, join_transaction_mode="create_savepoint", expire_on_commit=False
+        )
+        try:
+            yield session
+        finally:
+            await session.close()
+            await connection.rollback()
+
+
+class _FakeRedis:
+    """Redis in-memory MINIMAL -- cuma `incr`/`expire` (dipakai
+    `is_rate_limited()`, `rate_limit.py`). `api_client` gak numpang
+    testcontainer Redis beneran (beda dari Postgres) -- satu-satunya
+    pemakai saat ini (`POST /api/auth/login`'s rate limit) gak butuh
+    semantik Redis penuh, dan ini ngejaga suite tetep jalan tanpa Redis
+    server apa pun (CI-friendly, sama filosofi container efemeral
+    Postgres di atas)."""
+
+    def __init__(self) -> None:
+        self._counts: dict[str, int] = {}
+
+    async def incr(self, key: str) -> int:
+        self._counts[key] = self._counts.get(key, 0) + 1
+        return self._counts[key]
+
+    async def expire(self, key: str, seconds: int) -> bool:
+        return True
+
+
+@pytest.fixture
+async def api_client(api_session: AsyncSession) -> AsyncIterator[httpx.AsyncClient]:
+    """HTTP client ASGI langsung ke `create_app()` -- request beneran
+    lewat routing/dependency-injection/response_model serialization
+    FastAPI (bukan manggil fungsi service langsung kayak test lain), tapi
+    `get_db` di-override numpang `api_session` (isolasi transaksi per-test
+    tetep kejaga, lihat docstring fixture itu), `get_redis` di-override
+    `_FakeRedis` (lihat docstring kelas itu).
+
+    Lifespan `create_app()` (`ensure_default()`/`ensure_system_roles()`)
+    SENGAJA gak jalan -- `httpx.ASGITransport` gak ngirim event
+    lifespan startup/shutdown kayak server ASGI beneran. Client "default"
+    di-ensure manual di sini pake `api_session` yang sama (paling umum
+    dibutuhin endpoint multi-tenant); test yang butuh system roles
+    (`ensure_system_roles`) panggil sendiri kalau perlu."""
+    from cti_api.deps import get_db, get_redis
+    from cti_api.main import create_app
+    from cti_core.db.repositories.auth import AsyncClientRepo
+
+    await AsyncClientRepo(api_session).ensure_default()
+
+    app = create_app()
+
+    async def _override_get_db() -> AsyncIterator[AsyncSession]:
+        yield api_session
+
+    app.dependency_overrides[get_db] = _override_get_db
+    app.dependency_overrides[get_redis] = lambda: _FakeRedis()
+    transport = httpx.ASGITransport(app=app)
+    async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+        yield client
+    app.dependency_overrides.clear()
+
+
+@pytest.fixture
+def auth_header() -> Callable[..., dict[str, str]]:
+    """Factory `dict` header `Authorization: Bearer <jwt>` -- JWT ASLI
+    lewat `create_token()` (bukan override dependency auth), jadi jalur
+    `decode_token()`/`get_current_user()` beneran kepake, gak di-skip."""
+
+    def _make(
+        username: str = "tester", role: str = "superadmin", client_ids: list[str] | None = None
+    ) -> dict[str, str]:
+        from cti_api.security import create_token
+
+        token = create_token(username, role, client_ids or ["default"])
+        return {"Authorization": f"Bearer {token}"}
+
+    return _make
+
+
+@pytest.fixture(autouse=True)
+def _clear_in_process_caches() -> None:
+    """6 service (`cluster`/`article_dashboard`/`risk_matrix`/
+    `fp_analytics`/`spike`/`d3fend`) punya cache module-level (900s TTL,
+    key dari parameter query kayak `days`/`threshold`) -- didesain buat
+    ngirit query di PRODUKSI (satu proses long-lived), tapi di TEST jadi
+    sumber flaky: dua test beda yang manggil endpoint sama dengan
+    parameter default sama (mis. `days=30`) bakal SALING numpang hasil
+    cache, walau masing-masing seed data DB-nya beda (ketauan lewat full-
+    suite run: `test_build_cluster_mindmap_stats_branch_populated` dan
+    beberapa snapshot test Fase 7.6 saling ganggu gara-gara ini -- bukan
+    hipotesis, kejadian beneran). Autouse (bukan manual per-test) biar
+    proteksinya nutup SEMUA test integrasi, bukan cuma yang inget clear
+    manual -- lebih murah dari nebak-nebak titik mana yang butuh."""
+    from cti_api.services import (
+        article_dashboard,
+        cluster,
+        d3fend,
+        fp_analytics,
+        risk_matrix,
+        spike,
+    )
+
+    cluster._CACHE.clear()
+    article_dashboard._dashboard_cache.clear()
+    risk_matrix._CACHE.clear()
+    fp_analytics._fp_analytics_cache = None
+    spike._CACHE.clear()
+    d3fend._cache.clear()
 
 
 @pytest.fixture(autouse=True)

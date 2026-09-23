@@ -1,0 +1,158 @@
+# serializer version: 1
+# name: test_ack_vuln
+  dict({
+    'acknowledged': True,
+    'success': True,
+  })
+# ---
+# name: test_get_deps_not_found
+  dict({
+    'detail': 'No dependency graph found — resolve first',
+  })
+# ---
+# name: test_get_packages
+  dict({
+    'items': list([
+      dict({
+        'added_date': str,
+        'client_id': 'default',
+        'critical_count': 1,
+        'dep_direct_count': 0,
+        'dep_indirect_count': 0,
+        'dep_resolved_at': None,
+        'dep_total_count': 0,
+        'ecosystem': 'npm',
+        'high_count': 0,
+        'highest_severity': 'CRITICAL',
+        'id': int,
+        'last_scan': None,
+        'latest_version': None,
+        'low_count': 0,
+        'medium_count': 0,
+        'name': 'lodash',
+        'scorecard_date': None,
+        'scorecard_score': None,
+        'source': 'manual',
+        'version': '4.17.20',
+        'vuln_count': 1,
+      }),
+    ]),
+    'page': 1,
+    'page_size': 50,
+    'total': 1,
+  })
+# ---
+# name: test_get_pkg_stats
+  dict({
+    'critical': 1,
+    'high': 0,
+    'kev_count': 0,
+    'low': 0,
+    'medium': 0,
+    'packages': 1,
+    'total_vulns': 1,
+    'unacknowledged': 1,
+  })
+# ---
+# name: test_get_vulns
+  dict({
+    'items': list([
+      dict({
+        'ack_by': None,
+        'ack_date': None,
+        'acknowledged': False,
+        'adjusted_score': None,
+        'adjusted_severity': None,
+        'advisory_id': 'GHSA-1234',
+        'affected_version_ranges': list([
+        ]),
+        'aliases': list([
+        ]),
+        'client_id': 'default',
+        'cvss_score': None,
+        'details': '',
+        'ecosystem': 'npm',
+        'epss_percentile': None,
+        'epss_score': None,
+        'fixed_version': None,
+        'id': int,
+        'kev': False,
+        'kev_date_added': None,
+        'modified': None,
+        'package_name': 'lodash',
+        'pinned_version': '4.17.20',
+        'published': None,
+        'references': list([
+        ]),
+        'severity': 'CRITICAL',
+        'source': 'osv.dev',
+        'summary': '',
+      }),
+    ]),
+    'page': 1,
+    'page_size': 50,
+    'total': 1,
+  })
+# ---
+# name: test_import_lockfile
+  dict({
+    'added': 1,
+    'errors': list([
+    ]),
+    'packages': list([
+      dict({
+        'ecosystem': 'npm',
+        'name': 'lodash',
+        'version': '4.17.20',
+      }),
+    ]),
+    'parsed': 1,
+    'skipped': 0,
+  })
+# ---
+# name: test_patch_package
+  dict({
+    'changed': True,
+    'ecosystem': 'npm',
+    'id': int,
+    'name': 'lodash',
+    'rescan': True,
+    'success': True,
+    'version': '4.17.21',
+  })
+# ---
+# name: test_post_package
+  dict({
+    'ecosystem': 'npm',
+    'id': int,
+    'name': 'express',
+    'success': True,
+    'version': None,
+  })
+# ---
+# name: test_remove_package
+  dict({
+    'deleted': 'lodash',
+    'success': True,
+  })
+# ---
+# name: test_resolve_deps
+  dict({
+    'ecosystem': 'npm',
+    'package': 'lodash',
+    'started': True,
+  })
+# ---
+# name: test_scan_all
+  dict({
+    'started': True,
+  })
+# ---
+# name: test_scan_one_package
+  dict({
+    'ecosystem': 'npm',
+    'package': 'lodash',
+    'started': True,
+    'version': '4.17.20',
+  })
+# ---
