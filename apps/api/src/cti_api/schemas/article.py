@@ -48,3 +48,27 @@ class ArticleListResponse(BaseModel):
     total: int
     page: int
     page_size: int
+
+
+class TopItem(BaseModel):
+    name: str
+    count: int
+
+
+class TimelinePoint(BaseModel):
+    date: str
+    count: int
+
+
+class DashboardStats(BaseModel):
+    total_articles: int
+    total_sources: int
+    total_countries: int
+    total_threat_actors: int
+    top_countries: list[TopItem]
+    top_sources: list[TopItem]
+    top_threat_actors: list[TopItem]
+    top_industries: list[TopItem]
+    top_ttps: list[TopItem]
+    by_news_type: list[TopItem]
+    timeline: list[TimelinePoint]

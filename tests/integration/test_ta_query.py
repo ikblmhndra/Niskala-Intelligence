@@ -119,6 +119,18 @@ async def test_watchlist_scoped_by_client(async_db_session: AsyncSession) -> Non
     assert await repo.get_watchlist_names("default") == []
 
 
+async def test_get_watchlist_names_unscoped_ignores_client(async_db_session: AsyncSession) -> None:
+    """Fase 7.4 Grup D -- port `get_ioc_ta_links()`'s watchlist check
+    LINTAS SEMUA client (asimetri legacy dipertahankan apa adanya)."""
+    await _ensure_clients(async_db_session)
+    repo = AsyncTARepo(async_db_session)
+    await repo.add_to_watchlist("Apt41", "default")
+    await repo.add_to_watchlist("OtherGroup", "acme")
+
+    names = await repo.get_watchlist_names_unscoped()
+    assert sorted(names) == ["Apt41", "OtherGroup"]
+
+
 async def test_save_and_get_profile(async_db_session: AsyncSession) -> None:
     repo = AsyncTAProfileRepo(async_db_session)
     profile_data = {

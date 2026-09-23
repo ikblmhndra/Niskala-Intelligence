@@ -83,6 +83,14 @@ class AsyncSourceReliabilityRepo:
         )
         return result.scalar_one_or_none()
 
+    async def get_all_ratings(self) -> dict[str, SourceReliabilityEntry]:
+        """`{source_name.lower(): entry}` -- preload semua entry buat
+        lookup cepat (`confidence.recompute_all_confidence`, Fase 7.4 Grup
+        D), port optimasi `ratings = {r["source_name"].lower(): r ...}`
+        legacy biar gak N+1 query per artikel."""
+        result = await self.session.execute(select(SourceReliabilityEntry))
+        return {e.source_name.lower(): e for e in result.scalars().all()}
+
     async def get_by_id(self, entry_id: int) -> SourceReliabilityEntry | None:
         result = await self.session.execute(
             select(SourceReliabilityEntry).where(SourceReliabilityEntry.id == entry_id)

@@ -1788,8 +1788,8 @@ tinggal pkg_vuln+cve_email), 7.6 (snapshot test), 7.7 (ekspor OpenAPI), 7.8.
       lookup eksternal CVE (KELAR, lihat bawah), **Grup C** ticket/email/
       export CVE (butuh keputusan desain, belum dikerjain), **Grup D**
       standalone tanpa blocker (`confidence_service`/`fp_analytics_
-      service`/`dedup_service` + 2 endpoint ketinggalan -- belum
-      dikerjain), **Grup E** keluar scope (`wisemap_service.py` 391
+      service`/`dedup_service` + 2 endpoint ketinggalan -- KELAR, lihat
+      bawah), **Grup E** keluar scope (`wisemap_service.py` 391
       baris + `wisemap_cti.py` ternyata DEAD CODE -- nol referensi
       router manapun, `oidc_service`/`scraper_health_service` beda
       fase/udah dideferred).
@@ -1859,9 +1859,106 @@ tinggal pkg_vuln+cve_email), 7.6 (snapshot test), 7.7 (ekspor OpenAPI), 7.8.
       manual terpisah kayak di atas). Full suite: **862 passed**, mypy
       121 file bersih, ruff bersih.
 
-      Lanjut Grup D (`confidence_service`/`fp_analytics_service`/
-      `dedup_service` + 2 endpoint ketinggalan) -- standalone, gak ada
-      blocker, plan lengkap udah ada.
+      **Grup D (2026-09-23) -- 4/4 KELAR** (`confidence_service`,
+      `fp_analytics_service`, `dedup_service`, + 2 endpoint yang
+      ketinggalan pas Fase 7.3 -- `articles.py`'s `/dashboard` dan
+      `iocs.py`'s `/ta-links/{type}/{value}`) -- semua nempel ke router
+      `articles.py`/`iocs.py` yang UDAH ADA, bukan router baru.
+      `confidence.py`+`fp_analytics.py`+`dedup.py`+`article_dashboard.py`
+      (services) + `ioc_ta_links.py`.
+
+      **3 kolom baru `IOC`** (`actionability_score`/`actionability_label`/
+      `recommended_action`, semua nullable) -- migrasi gak butuh
+      `server_default` (nullable, bukan JSONB NOT NULL kayak kolom Grup B).
+
+      **Confidence artikel ditulis lewat `AsyncArticleRepo.set_overrides()`,
+      BUKAN kolom `confidence_score` langsung** -- keputusan sengaja:
+      docstring `Article.overrides` (Fase 2) nyebut `confidence_score`
+      sebagai CONTOH field yang dilacak lewat overrides, walau tulisan
+      Mongo lama (`compute_and_store`) `$set` langsung tanpa konsep
+      override sama sekali. Ngikutin dokumentasi skema yang UDAH ADA,
+      bukan port literal.
+
+      **`compute_ioc_actionability`'s `campaign_score` PERMANEN 0** --
+      butuh `CLUSTERS_COLLECTION` (mesin cluster, Grup A, BELUM diport).
+      Legacy sendiri fallback `try/except -> 0` kalau lookup gagal; di
+      sini fallback yang sama, cuma permanen sampai Grup A ada. TIDAK
+      mengubah kontrak, cuma selalu hit jalur yang udah ada.
+
+      **Dependency baru `scikit-learn`** (`apps/api`, buat
+      `dedup_service`'s TF-IDF+cosine similarity) -- kelas keputusan
+      sama kayak kenapa `cti-enrich` naruh torch/spacy di belakang extra
+      `[nlp]` (compute-heavy). `uv sync` polos WIPE lagi extra
+      `cti-enrich[nlp]` (udah kejadian & didokumentasikan pas Bagian 4)
+      -- di-restore manual abis nambah dependency.
+
+      **1 method repo baru per file, gak ada yang berat**:
+      `AsyncIOCRepo.apply_confidence_and_actionability()`+
+      `list_with_feedback()`, `AsyncTARepo.get_watchlist_names_unscoped()`
+      (asimetri legacy: watchlist check LINTAS SEMUA client, bukan
+      `client_id`-scoped kayak model barunya -- dipertahankan apa
+      adanya, pola sama kayak `AsyncPIRRepo.list_active_unscoped()`),
+      `AsyncAttackQueryRepo.get_group_by_name_or_alias_ci()` (case-
+      insensitive nama ATAU alias -- scan Python di tabel kecil ~150
+      baris, gak ada cara bersih match ARRAY(String) Postgres case-
+      insensitive tanpa unnest per-baris yang sama beratnya),
+      `AsyncSourceReliabilityRepo.get_all_ratings()` (preload semua
+      rating sekali biar `recompute_all_confidence` gak N+1 query per
+      artikel), 6 method baru `AsyncDashboardRepo` (`distinct_source_
+      count`/`unique_mentioned_country_count`/`top_countries`/
+      `top_sources`/`top_industries`/`article_timeline` -- semua terima
+      `posted_on_start`/`posted_on_end` OPSIONAL dua-duanya, beda dari
+      method exec_dashboard lain yang `posted_on_start` wajib).
+
+      **`/api/dashboard`'s `top_countries` SENGAJA gak re-normalize nama
+      negara** kayak `normalize_country()` Python-side lama -- masalah
+      itu (negara FREE-TEXT butuh grouping manual) UDAH BERES di data
+      model (`ArticleCountry.country_code` udah ISO alpha-2 kanonik dari
+      enrichment, Fase 2/5), bukan lagi query-time. Query SQL `GROUP BY`
+      langsung, tanpa post-process Python.
+
+      **`/articles?dedup=true` gak nambah field baru ke `ArticleOut`** --
+      ketauan dari baca legacy Pydantic model: `model_config =
+      {"extra": "ignore"}`, jadi `_dup_count`/`_dup_sources`/`_dup_urls`
+      dari `find_dedup_groups()` SELALU didrop diam-diam pas serialize
+      ke `ArticleOut` di endpoint list -- cuma listnya yang efektif
+      terfilter (dedup), metadata dup gak pernah nyampe response.
+      `/articles/dedup-groups` (endpoint terpisah, raw dict response)
+      yang beneran nampilin `_dup_count` dkk.
+
+      **1 gap ketemu LEWAT LIVE TEST, langsung diperbaiki** --
+      `iocs.py`'s `_serialize_summary()`/`_serialize_detail()` gak
+      pernah include `actionability_score`/`actionability_label`/
+      `recommended_action` walau kolomnya udah ada & udah kehitung --
+      ketauan pas live-test `POST /{ioc_id}/feedback` (endpoint yang
+      justru INTINYA nampilin actionability baru), bukan dari baca kode
+      doang. Ditambahin ke serializer.
+
+      **Verified LIVE terhadap dev DB real** (uvicorn lokal, Postgres+
+      Redis via `localhost` override, token JWT di-mint langsung lewat
+      `create_token()` -- gak ada password admin1 yang diketahui):
+      `/api/dashboard` (38 artikel real, agregasi negara/sumber/TA/TTP/
+      timeline semua ke luar bener), `/api/articles/dedup-groups`
+      (jalan lewat scikit-learn beneran, gak crash), `POST /{ioc_id}/
+      feedback` (IOC id=7 real, confidence 50->89->86 abis 2 feedback,
+      actionability `monitor` + recommended action bener), `GET
+      /ta-links/domain/...` (nemu TA `Breeze comet` dari artikel
+      linked beneran), `POST /articles/{id}/confidence` +
+      `/confidence/recompute` (38/38 artikel keupdate, override
+      ke-merge bener pas dibaca ulang). Data feedback sintetis di IOC
+      id=7 DIBERSIHIN abis verifikasi (`DELETE ioc_feedback` + reset
+      counter/confidence/actionability) -- confidence recompute di 38
+      artikel real DIBIARIN (bukan data sintetis, hasil legit fitur
+      "recompute" yang emang gunanya nimpa skor lama).
+
+      59 test baru (2 file unit murni -- `compute_score`/
+      `compute_ioc_confidence`/`compute_ioc_actionability`/
+      `find_dedup_groups` -- + 7 file integrasi Postgres real). Full
+      suite: **921 passed**, mypy 126 file bersih, ruff bersih. SATU
+      commit nutup Grup D.
+
+      Lanjut Grup C (CVE ticket/email/export) -- butuh keputusan desain
+      skema `CveTicket`/`CveTicketItem` bareng user dulu sebelum ngoding.
 - [ ] **7.5** Buang duplikasi (pkg_vuln, cve_email, ioc, llm)
 - [ ] **7.6** Snapshot test tiap endpoint
 - [ ] **7.7** Ekspor skema OpenAPI

@@ -689,6 +689,27 @@ class AsyncAttackQueryRepo:
         )
         return [self._row_dict(r, exclude=("description", "stix_id")) for r in rows], total
 
+    async def get_group_by_name_or_alias_ci(self, name: str) -> AttackGroup | None:
+        """Port `ioc_service.get_ioc_ta_links()`'s regex `$or` lama
+        (case-insensitive match nama ATAU salah satu alias) -- Fase 7.4
+        Grup D. Tabel `attack_groups` kecil (~150 baris), jadi scan alias
+        di Python aman; gak ada cara bersih buat case-insensitive match di
+        ARRAY(String) Postgres tanpa unnest per-baris yang sama beratnya."""
+        needle = name.strip().lower()
+        if not needle:
+            return None
+        exact = await self.session.execute(
+            select(AttackGroup).where(func.lower(AttackGroup.name) == needle)
+        )
+        grp = exact.scalars().first()
+        if grp is not None:
+            return grp
+        all_groups = (await self.session.execute(select(AttackGroup))).scalars().all()
+        for g in all_groups:
+            if any((a or "").strip().lower() == needle for a in (g.aliases or [])):
+                return g
+        return None
+
     async def get_group(self, group_id: str) -> dict[str, Any] | None:
         result = await self.session.execute(
             select(AttackGroup).where(AttackGroup.group_id == group_id)

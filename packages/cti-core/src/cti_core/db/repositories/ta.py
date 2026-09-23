@@ -231,6 +231,15 @@ class AsyncTARepo:
         )
         return list(result.scalars().all())
 
+    async def get_watchlist_names_unscoped(self) -> list[str]:
+        """Port `ioc_service.get_ioc_ta_links()` (Fase 7.4 Grup D) -- legacy
+        cek watchlist LINTAS SEMUA client (`ta_db[TA_WATCHLIST_COLLECTION].
+        distinct("name")`, tanpa filter client), beda dari model baru yang
+        `client_id`-scoped (Fase 2). Asimetri legacy dipertahankan apa
+        adanya -- sama pola kayak `AsyncPIRRepo.list_active_unscoped()`."""
+        result = await self.session.execute(select(TAWatchlistEntry.name))
+        return list(result.scalars().all())
+
     async def add_to_watchlist(self, name: str, client_id: str) -> dict[str, Any]:
         existing = await self.session.execute(
             select(TAWatchlistEntry).where(

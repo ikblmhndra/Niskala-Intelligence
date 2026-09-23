@@ -50,6 +50,14 @@ class IOC(TimestampMixin, Base):
     confidence_score: Mapped[int] = mapped_column(SmallInteger, nullable=False, default=50)
     confidence_decayed_at: Mapped[datetime.datetime | None] = mapped_column(DateTime(timezone=True))
 
+    actionability_score: Mapped[int | None] = mapped_column(SmallInteger)
+    """0-100, dihitung `confidence_service.compute_ioc_actionability()` --
+    cuma keisi pas ada feedback (`submit_feedback`), null kalau belum
+    pernah dihitung. Fase 7.4 Grup D."""
+    actionability_label: Mapped[str | None] = mapped_column(String(20))
+    """block_now | investigate | monitor | archive."""
+    recommended_action: Mapped[str | None] = mapped_column(Text)
+
     tp_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     fp_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
 

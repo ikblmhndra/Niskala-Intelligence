@@ -147,6 +147,93 @@ class AsyncDashboardRepo:
         rows = (await self.session.execute(stmt)).all()
         return [(nt, cnt) for nt, cnt in rows]
 
+    # ── article dashboard (Fase 7.4 Grup D, router `articles` /dashboard) ───
+    # Port `article_service._fetch_dashboard_stats()`. Beda dari exec_dashboard
+    # di atas: `posted_on_start`/`posted_on_end` DUA-DUANYA opsional (bisa
+    # kosong buat "sepanjang waktu"), makanya gak bisa numpang `daily_totals()`
+    # (butuh `posted_on_start` wajib, `posted_on_end` diabaikan).
+    #
+    # `top_countries` SENGAJA gak re-normalize nama negara kayak
+    # `normalize_country()` lama (legacy: `mentioned_countries` FREE-TEXT,
+    # butuh grouping ulang manual di Python) -- `ArticleCountry.country_code`
+    # (Fase 2) UDAH ISO alpha-2 kanonik dari enrichment, masalah yang
+    # legacy kerjain di query-time udah beres duluan di data model.
+
+    async def distinct_source_count(self, **filters: Any) -> int:
+        stmt = _apply_article_filters(
+            select(func.count(func.distinct(Article.source))).where(Article.source != ""),
+            **filters,
+        )
+        return int((await self.session.execute(stmt)).scalar_one())
+
+    async def unique_mentioned_country_count(self, **filters: Any) -> int:
+        stmt = _apply_article_filters(
+            select(func.count(func.distinct(ArticleCountry.country_code)))
+            .select_from(Article)
+            .join(ArticleCountry)
+            .where(ArticleCountry.role == "mentioned"),
+            **filters,
+        )
+        return int((await self.session.execute(stmt)).scalar_one())
+
+    async def top_countries(
+        self, *, limit: int = 10, role: str = "mentioned", **filters: Any
+    ) -> list[tuple[str, int]]:
+        stmt = (
+            _apply_article_filters(
+                select(ArticleCountry.country_code, func.count())
+                .select_from(Article)
+                .join(ArticleCountry)
+                .where(ArticleCountry.role == role),
+                **filters,
+            )
+            .group_by(ArticleCountry.country_code)
+            .order_by(func.count().desc())
+            .limit(limit)
+        )
+        rows = (await self.session.execute(stmt)).all()
+        return [(c, cnt) for c, cnt in rows]
+
+    async def top_sources(self, *, limit: int = 10, **filters: Any) -> list[tuple[str, int]]:
+        stmt = (
+            _apply_article_filters(
+                select(Article.source, func.count()).where(Article.source != ""), **filters
+            )
+            .group_by(Article.source)
+            .order_by(func.count().desc())
+            .limit(limit)
+        )
+        rows = (await self.session.execute(stmt)).all()
+        return [(s, cnt) for s, cnt in rows]
+
+    async def top_industries(self, *, limit: int = 10, **filters: Any) -> list[tuple[str, int]]:
+        stmt = (
+            _apply_article_filters(
+                select(ArticleIndustry.industry, func.count())
+                .select_from(Article)
+                .join(ArticleIndustry),
+                **filters,
+            )
+            .group_by(ArticleIndustry.industry)
+            .order_by(func.count().desc())
+            .limit(limit)
+        )
+        rows = (await self.session.execute(stmt)).all()
+        return [(i, cnt) for i, cnt in rows]
+
+    async def article_timeline(self, **filters: Any) -> list[tuple[datetime.date, int]]:
+        stmt = (
+            _apply_article_filters(
+                select(Article.posted_on, func.count()).where(Article.posted_on.is_not(None)),
+                **filters,
+            )
+            .group_by(Article.posted_on)
+            .order_by(Article.posted_on)
+            .limit(365)
+        )
+        rows = (await self.session.execute(stmt)).all()
+        return [(d, cnt) for d, cnt in rows]
+
     # ── exec_dashboard v2 -- tier 2/3 ───────────────────────────────────────
 
     async def ttp_counts(self, *, limit: int = 15, **filters: Any) -> list[tuple[str, str, int]]:

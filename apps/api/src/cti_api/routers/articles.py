@@ -1,17 +1,18 @@
-"""Port dari `ScraperNewsWeb/app/routers/articles.py` -- cuma permukaan
-BACA (list/filter/detail) buat sekarang. **Belum diport** (nyusul, masing-
-masing butuh porting terpisah dulu): `/api/dashboard` (agregasi berat,
-butuh normalisasi negara yang SEKARANG udah kejadian di enrichment --
-lihat catatan `cti_enrich.countries`, bukan lagi query-time kayak
-`normalize_country()` lama), `/api/articles/dedup-groups` (butuh
-scikit-learn, belum ada di dependency `cti-api`), `/api/articles/{id}/confidence`
-+ `/confidence/recompute` (butuh `source_reliability` router/data ke-port
-duluan), `/api/articles/backfill-iocs` (hack migrasi era Mongo, kemungkinan
-besar OBSOLETE di skema baru -- `persist.py` Fase 5 udah nulis IOC lewat
-jalur normal, bukan backfill URL-match belakangan). `/api/country-groups`
-juga SENGAJA di-skip -- itu peta nama->varian buat data negara yang dulu
-FREE-TEXT; skema baru (`ArticleCountry.country_code`) udah ISO alpha-2 dari
-enrichment, gak ada lagi varian nama yang perlu di-grup di layer API."""
+"""Port dari `ScraperNewsWeb/app/routers/articles.py`. Fase 7.3 (Bagian 1)
+ngeport permukaan BACA (list/filter/detail); Fase 7.4 Grup D (2026-09-19
+survei, 2026-09-23 dikerjain) nambahin `/dashboard`, `/dedup-groups` +
+param `dedup`, `/{id}/confidence`, `/confidence/recompute` -- 4 endpoint
+yang tadinya ketinggalan karena blocker (normalisasi negara, dependency
+scikit-learn, router `source_reliability`) yang sekarang semua udah
+resolve, lihat `cti_api.services.confidence`/`dedup`/`article_dashboard`.
+
+**Masih belum diport**: `/api/articles/backfill-iocs` (hack migrasi era
+Mongo, kemungkinan besar OBSOLETE di skema baru -- `persist.py` Fase 5
+udah nulis IOC lewat jalur normal, bukan backfill URL-match belakangan).
+`/api/country-groups` SENGAJA di-skip -- itu peta nama->varian buat data
+negara yang dulu FREE-TEXT; skema baru (`ArticleCountry.country_code`)
+udah ISO alpha-2 dari enrichment, gak ada lagi varian nama yang perlu
+di-grup di layer API."""
 
 from __future__ import annotations
 
@@ -19,17 +20,27 @@ import datetime
 
 from cti_core.db.models.article import Article
 from cti_core.db.repositories.article import AsyncArticleRepo
-from fastapi import APIRouter, Depends, HTTPException, Query
+from cti_core.db.repositories.auth import AsyncAuditLogRepo
+from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from cti_api.deps import get_db, require_auth
-from cti_api.schemas.article import TTP, ArticleListResponse, ArticleOut, FilterOptions
+from cti_api.deps import AuthedUser, get_db, request_ip, require_auth
+from cti_api.schemas.article import (
+    TTP,
+    ArticleListResponse,
+    ArticleOut,
+    DashboardStats,
+    FilterOptions,
+)
+from cti_api.services import article_dashboard, confidence
+from cti_api.services import dedup as dedup_service
 
 router = APIRouter(prefix="/api", tags=["articles"])
-"""`list_articles`/`list_filters` SENGAJA gak pakai `require_auth` --
-port apa adanya dari legacy (`routers/articles.py` asli juga gak ngasih
-dependency itu ke keduanya, cuma endpoint detail `{article_id}` yang
-di-gate). Asimetri ini ada di kode lama, bukan keputusan baru di sini."""
+"""`list_articles`/`list_filters`/`dashboard_stats`/`article_dedup_groups`
+SENGAJA gak pakai `require_auth` -- port apa adanya dari legacy
+(`routers/articles.py` asli juga gak ngasih dependency itu ke keempatnya,
+cuma endpoint detail `{article_id}` dan tulis-confidence yang di-gate).
+Asimetri ini ada di kode lama, bukan keputusan baru di sini."""
 
 
 def _serialize(article: Article, machine_fields: dict[str, object]) -> ArticleOut:
@@ -62,6 +73,18 @@ def _serialize(article: Article, machine_fields: dict[str, object]) -> ArticleOu
     )
 
 
+@router.get("/articles/dedup-groups")
+async def article_dedup_groups(
+    days: int = Query(7, ge=1, le=30),
+    threshold: float = Query(0.75, ge=0.5, le=0.99),
+    limit: int = Query(500, ge=50, le=2000),
+    session: AsyncSession = Depends(get_db),
+) -> dict[str, object]:
+    return await dedup_service.get_dedup_groups(
+        session, days=days, threshold=threshold, limit=limit
+    )
+
+
 @router.get("/articles", response_model=ArticleListResponse)
 async def list_articles(
     page: int = Query(1, ge=1),
@@ -77,6 +100,8 @@ async def list_articles(
     victim_country: list[str] | None = Query(None),
     actor_country: list[str] | None = Query(None),
     title_keyword: list[str] | None = Query(None),
+    dedup: bool = Query(False),
+    dedup_threshold: float = Query(0.75, ge=0.5, le=0.99),
     session: AsyncSession = Depends(get_db),
 ) -> ArticleListResponse:
     repo = AsyncArticleRepo(session)
@@ -95,6 +120,19 @@ async def list_articles(
         search=search,
         title_keywords=title_keyword,
     )
+    if dedup and articles:
+        # `find_dedup_groups` operasi di dict, bukan ORM -- stash objek
+        # `Article` aslinya balik ke tiap dict biar `_serialize()` bisa
+        # dipanggil abis dedup, tanpa perlu query ulang/mapping id->article.
+        machine_dicts = []
+        for a in articles:
+            d = dict(repo.to_dict(a))
+            d["_article"] = a
+            machine_dicts.append(d)
+        deduped = dedup_service.find_dedup_groups(machine_dicts, dedup_threshold)
+        parsed = [_serialize(d["_article"], d) for d in deduped]
+        return ArticleListResponse(articles=parsed, total=total, page=page, page_size=page_size)
+
     parsed = [_serialize(a, repo.to_dict(a)) for a in articles]
     return ArticleListResponse(articles=parsed, total=total, page=page, page_size=page_size)
 
@@ -103,6 +141,62 @@ async def list_articles(
 async def list_filters(session: AsyncSession = Depends(get_db)) -> FilterOptions:
     options = await AsyncArticleRepo(session).get_filter_options()
     return FilterOptions(**options)
+
+
+@router.get("/dashboard", response_model=DashboardStats)
+async def dashboard_stats(
+    posted_on_start: datetime.date | None = None,
+    posted_on_end: datetime.date | None = None,
+    session: AsyncSession = Depends(get_db),
+) -> DashboardStats:
+    result = await article_dashboard.get_dashboard_stats(
+        session, posted_on_start=posted_on_start, posted_on_end=posted_on_end
+    )
+    return DashboardStats(**result)
+
+
+@router.post(
+    "/articles/{article_id}/confidence",
+    dependencies=[Depends(require_auth)],
+)
+async def compute_article_confidence(
+    article_id: int,
+    request: Request,
+    session: AsyncSession = Depends(get_db),
+    user: AuthedUser = Depends(require_auth),
+) -> dict[str, object]:
+    score = await confidence.compute_and_store_article_confidence(session, article_id)
+    if score is None:
+        raise HTTPException(status_code=404, detail="Article not found")
+    await AsyncAuditLogRepo(session).write(
+        username=user["username"],
+        action="compute_confidence",
+        target_id=str(article_id),
+        detail={"score": score},
+        ip_address=request_ip(request),
+    )
+    await session.commit()
+    return {"article_id": article_id, "confidence_score": score}
+
+
+@router.post(
+    "/articles/confidence/recompute",
+    dependencies=[Depends(require_auth)],
+)
+async def recompute_confidence_all(
+    request: Request,
+    session: AsyncSession = Depends(get_db),
+    user: AuthedUser = Depends(require_auth),
+) -> dict[str, int]:
+    result = await confidence.recompute_all_confidence(session)
+    await AsyncAuditLogRepo(session).write(
+        username=user["username"],
+        action="recompute_confidence_all",
+        detail=result,
+        ip_address=request_ip(request),
+    )
+    await session.commit()
+    return result
 
 
 @router.get(

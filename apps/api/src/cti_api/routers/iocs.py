@@ -8,16 +8,19 @@ gak diport -- itu jalur TULIS lama yang udah digantikan `IOCRepo.upsert()`
 live-verified Fase 6). Router ini cuma permukaan BACA + kurasi manual
 (tag/TA/feedback/allowlist), bukan jalur tulis IOC baru.
 
-**Belum diport** (nyusul terpisah): `GET /fp-analytics` +
-`/fp-analytics/apply-suggestions` (butuh `fp_analytics_service`, statistik
-berat), `GET /ta-links/{type}/{value}` (butuh router `ta_groups`/`attack`
-ke-port duluan buat watchlist + ATT&CK group matching), `decay_sweep()`
-(item **7.8**, Celery beat -- salah satu dari 5 loop). Recompute
-confidence/actionability pas `feedback` SENGAJA gak diikutin -- itu
-`confidence_service`, ditunda bareng `articles` punya alasan yang sama."""
+Fase 7.4 Grup D (2026-09-19 survei, 2026-09-23 dikerjain) nambahin `GET
+/fp-analytics` + `/fp-analytics/apply-suggestions`, `GET /ta-links/{type}/
+{value}`, dan ngelengkapin `/{ioc_id}/feedback` biar recompute confidence+
+actionability (persis `submit_feedback()` lama) -- tiga blocker (statistik
+FP, router `ta_groups`/`attack`, `confidence_service`) sekarang semua udah
+resolve.
+
+**Masih belum diport**: `decay_sweep()` (item **7.8**, Celery beat --
+salah satu dari 5 loop)."""
 
 from __future__ import annotations
 
+import datetime
 from typing import Literal
 
 from cti_core.db.models.ioc import IOC
@@ -29,6 +32,8 @@ from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from cti_api.deps import AuthedUser, get_db, request_ip, require_admin, require_auth
+from cti_api.services import confidence, fp_analytics
+from cti_api.services import ioc_ta_links as ioc_ta_links_service
 
 router = APIRouter(prefix="/api/iocs", tags=["iocs"])
 
@@ -68,6 +73,9 @@ def _serialize_summary(ioc: IOC) -> dict[str, object]:
         "tp_count": ioc.tp_count,
         "fp_count": ioc.fp_count,
         "confidence_score": ioc.confidence_score,
+        "actionability_score": ioc.actionability_score,
+        "actionability_label": ioc.actionability_label,
+        "recommended_action": ioc.recommended_action,
         "auto_suppressed": ioc.auto_suppressed,
         "suppression_reason": ioc.suppression_reason,
     }
@@ -115,6 +123,48 @@ async def ioc_stats(
     session: AsyncSession = Depends(get_db), _user: AuthedUser = Depends(require_auth)
 ) -> dict[str, object]:
     return await AsyncIOCRepo(session).get_stats()
+
+
+@router.get("/fp-analytics")
+async def ioc_fp_analytics(
+    force: bool = Query(False),
+    session: AsyncSession = Depends(get_db),
+    _user: AuthedUser = Depends(require_auth),
+) -> dict[str, object]:
+    return await fp_analytics.get_fp_analytics(session, force=force)
+
+
+@router.post("/fp-analytics/apply-suggestions")
+async def apply_fp_suggestions(
+    request: Request,
+    session: AsyncSession = Depends(get_db),
+    user: AuthedUser = Depends(require_admin),
+) -> dict[str, int]:
+    analytics = await fp_analytics.get_fp_analytics(session)
+    suggestions = analytics.get("suggested_allowlist", [])
+    allowlist_repo = AsyncIocAllowlistRepo(session)
+    added = 0
+    skipped = 0
+    for s in suggestions:
+        al_type = s.get("allowlist_type")
+        value = s.get("value", "")
+        if not al_type or not value:
+            continue
+        if al_type == "email_domain" and "@" in value:
+            value = value.split("@")[-1]
+        try:
+            await allowlist_repo.create(entry_type=al_type, value=value, added_by=user["username"])
+            added += 1
+        except ValueError:
+            skipped += 1
+    await AsyncAuditLogRepo(session).write(
+        username=user["username"],
+        action="apply_fp_suggestions",
+        detail={"added": added, "skipped": skipped},
+        ip_address=request_ip(request),
+    )
+    await session.commit()
+    return {"added": added, "skipped": skipped}
 
 
 @router.get("/allowlist")
@@ -284,6 +334,9 @@ async def ioc_feedback(
     session: AsyncSession = Depends(get_db),
     user: AuthedUser = Depends(require_auth),
 ) -> dict[str, object]:
+    """Port `submit_feedback()` -- feedback + recompute confidence+
+    actionability + peringatan FP-rate sumber, SATU alur (Fase 7.4 Grup D
+    ngelengkapin ini; sebelumnya cuma `add_feedback()` doang)."""
     repo = AsyncIOCRepo(session)
     ioc = await repo.get_by_id(ioc_id)
     if ioc is None:
@@ -291,14 +344,46 @@ async def ioc_feedback(
     ioc = await repo.add_feedback(
         ioc, verdict=body.verdict, submitted_by=user["username"], note=body.note
     )
+    now = datetime.datetime.now(datetime.UTC)
+    ioc = await confidence.recompute_ioc_confidence_and_actionability(session, ioc, now=now)
+
     await AsyncAuditLogRepo(session).write(
         username=user["username"],
         action="ioc_feedback",
         target_id=str(ioc_id),
         detail={"verdict": body.verdict, "note": body.note or ""},
     )
+
+    fp_analytics.invalidate_fp_cache()
+    result = _serialize_detail(ioc)
+    if body.verdict == "fp":
+        analytics = await fp_analytics.get_fp_analytics(session, force=True)
+        for src in ioc.sources:
+            sr = analytics.get("fp_by_source", {}).get(src.source_name)
+            if sr and sr["total_iocs"] >= 5 and sr["fp_rate"] > 0.5:
+                result["source_fp_warning"] = {
+                    "source_name": src.source_name,
+                    "fp_rate": sr["fp_rate"],
+                    "fp_count": sr["fp_count"],
+                    "total_iocs": sr["total_iocs"],
+                }
+                break
+
     await session.commit()
-    return _serialize_detail(ioc)
+    return result
+
+
+@router.get("/ta-links/{ioc_type}/{value:path}")
+async def ioc_ta_links(
+    ioc_type: str,
+    value: str,
+    session: AsyncSession = Depends(get_db),
+    _user: AuthedUser = Depends(require_auth),
+) -> dict[str, object]:
+    result = await ioc_ta_links_service.get_ioc_ta_links(session, ioc_type, value)
+    if result is None:
+        raise HTTPException(status_code=404, detail="IOC not found")
+    return result
 
 
 @router.get("/{ioc_type}/{value:path}")

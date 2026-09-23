@@ -127,6 +127,26 @@ class AsyncIOCRepo:
         await self.session.flush()
         return ioc
 
+    async def apply_confidence_and_actionability(
+        self,
+        ioc: IOC,
+        *,
+        confidence_score: int,
+        actionability_score: int,
+        actionability_label: str,
+        recommended_action: str,
+        decayed_at: datetime.datetime,
+    ) -> IOC:
+        """Port bagian akhir `ioc_service.submit_feedback()` (Fase 7.4 Grup
+        D) -- recompute confidence+actionability abis feedback baru masuk."""
+        ioc.confidence_score = confidence_score
+        ioc.confidence_decayed_at = decayed_at
+        ioc.actionability_score = actionability_score
+        ioc.actionability_label = actionability_label
+        ioc.recommended_action = recommended_action
+        await self.session.flush()
+        return ioc
+
     async def get(self, *, type: str, value: str) -> IOC | None:
         result = await self.session.execute(select(IOC).where(IOC.type == type, IOC.value == value))
         return result.scalar_one_or_none()
@@ -175,6 +195,13 @@ class AsyncIOCRepo:
         list_stmt = stmt.order_by(order_col.desc()).offset((page - 1) * page_size).limit(page_size)
         result = await self.session.execute(list_stmt)
         return list(result.scalars().unique().all()), total
+
+    async def list_with_feedback(self) -> list[IOC]:
+        """IOC yang punya minimal satu feedback (tp/fp) -- port filter
+        `{"feedback_log": {"$exists": True, "$ne": []}}`
+        (`fp_analytics_service.get_fp_analytics()`, Fase 7.4 Grup D)."""
+        result = await self.session.execute(select(IOC).where(IOC.feedback.any()))
+        return list(result.scalars().all())
 
     async def get_stats(self) -> dict[str, object]:
         total = (await self.session.execute(select(func.count()).select_from(IOC))).scalar_one()
