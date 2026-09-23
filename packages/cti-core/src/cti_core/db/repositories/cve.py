@@ -47,10 +47,11 @@ _SORT_FIELDS = {
     "tech": CveTracker.tech,
     "severity": CveTracker.cve_score,
     "published": CveTracker.published,
+    "epss": CveTracker.epss_score,
 }
-"""`epss` (sort key lama) SENGAJA gak dipetakan -- gak ada kolom
-`epss_score` di skema (fitur EPSS lookup ditunda, lihat router `cve.py`),
-fallback ke `published` sama kayak default lama kalau key gak dikenal."""
+"""`epss` (sort key lama) sekarang kepetakan -- kolom `epss_score` udah
+ada (Grup B survei 7.4, `POST /epss-lookup`). Key gak dikenal tetap
+fallback ke `published`, port apa adanya."""
 
 
 class CveTrackerRepo:
@@ -269,6 +270,109 @@ class AsyncCveTrackerRepo:
         )
         await self.session.flush()
         return True
+
+    async def list_true_positive_cve_ids(self, client_id: str = "default") -> list[str]:
+        """Port `get_fp_cve_ids()`-based filtering lama (`epss_service.py`/
+        `cisa_kev_service.py`/`exploit_db_service.py::lookup_all_true_
+        positives()`, dipanggil TANPA argumen -- default client "default",
+        sama kayak `newsletter._get_tp_cve_ids()` (Fase 7.3 Bagian 4)."""
+        all_ids = await self.list_all_distinct_cve_ids()
+        fp_ids = set(await AsyncCveFalsePositiveRepo(self.session).list_cve_ids(client_id))
+        return [cid for cid in all_ids if cid not in fp_ids]
+
+    async def list_by_cve_ids_any_client(self, cve_ids: Sequence[str]) -> list[CveTracker]:
+        """Semua baris (lintas client) buat sekumpulan cve_id, case-
+        insensitive -- beda dari `get_by_cve_id_any_client` (satu baris
+        pertama doang). Dipakai EPSS/CISA-KEV/exploit-db lookup yang
+        niatnya `update_many` lintas SEMUA client sekaligus (properti
+        CVE itu sendiri, bukan spesifik client) -- lihat docstring
+        `cti_api.services.cve_lookup`."""
+        if not cve_ids:
+            return []
+        upper_ids = {cid.upper() for cid in cve_ids}
+        result = await self.session.execute(
+            select(CveTracker).where(func.upper(CveTracker.cve_id).in_(upper_ids))
+        )
+        return list(result.scalars().all())
+
+    async def apply_epss_scores(self, scores: dict[str, dict[str, Any]]) -> None:
+        """`scores`: `{cve_id_upper: {epss, percentile, date}}`. Update
+        SEMUA baris (lintas client) buat tiap cve_id -- port
+        `save_epss_scores()` lama (`update_many` per cve_id)."""
+        if not scores:
+            return
+        rows = await self.list_by_cve_ids_any_client(list(scores.keys()))
+        now = datetime.datetime.now(datetime.UTC)
+        for cve in rows:
+            data = scores.get(cve.cve_id.upper())
+            if data is None:
+                continue
+            cve.epss_score = data["epss"]
+            cve.epss_percentile = data["percentile"]
+            cve.epss_date = data["date"]
+            cve.epss_checked_at = now
+        await self.session.flush()
+
+    async def apply_cisa_kev_hits(
+        self, catalog: dict[str, dict[str, Any]], tp_cve_ids: Sequence[str]
+    ) -> list[str]:
+        """Cross-reference `tp_cve_ids` vs katalog KEV penuh, update SEMUA
+        baris (lintas client) yang cocok -- port `lookup_all_true_
+        positives()` lama. Balikin daftar cve_id yang match (buat summary
+        `matched_cves`)."""
+        matched = sorted({cid.upper() for cid in tp_cve_ids if cid.upper() in catalog})
+        if not matched:
+            return []
+        rows = await self.list_by_cve_ids_any_client(matched)
+        now = datetime.datetime.now(datetime.UTC)
+        for cve in rows:
+            vuln = catalog.get(cve.cve_id.upper())
+            if vuln is None:
+                continue
+            cve.cisa_kev = True
+            cve.active_exploitation = True
+            cve.cisa_kev_checked_at = now
+            cve.cisa_kev_detail = {
+                "date_added": vuln.get("dateAdded", ""),
+                "due_date": vuln.get("dueDate", ""),
+                "vendor": vuln.get("vendorProject", ""),
+                "product": vuln.get("product", ""),
+                "name": vuln.get("vulnerabilityName", ""),
+                "description": vuln.get("shortDescription", ""),
+                "action": vuln.get("requiredAction", ""),
+            }
+        await self.session.flush()
+        return matched
+
+    async def apply_exploit_hits(self, cve_id: str, exploits: list[dict[str, Any]]) -> None:
+        """Update SEMUA baris (lintas client) buat SATU cve_id -- port
+        `save_exploit_hits()` lama. **Dedup POC per-baris** (cek existing
+        URL PER client row) -- kode lama cek dedup dari SATU dokumen
+        (`find_one`, ambil sembarang) lalu `$push` hasil yang sama ke
+        SEMUA baris lewat `update_many`, jadi kalau ada >1 client nge-
+        track CVE yang sama, baris client lain bisa kebagian POC
+        duplikat (existing URL beda per baris tapi dedup-nya dihitung
+        cuma dari satu baris). Di sini dedup dihitung ULANG per baris --
+        koreksi kecil, bukan ubah niat (niatnya emang "jangan taro POC
+        dobel", bukan "dedup dari baris tertentu")."""
+        rows = await self.list_by_cve_ids_any_client([cve_id])
+        now = datetime.datetime.now(datetime.UTC)
+        for cve in rows:
+            cve.exploit_db_checked_at = now
+            cve.exploit_db_hits = exploits
+            existing_urls = {p.url for p in cve.pocs}
+            new_urls = {e["url"] for e in exploits} - existing_urls
+            if new_urls:
+                cve.poc_available = True
+                for e in exploits:
+                    if e["url"] in new_urls:
+                        cve.pocs.append(
+                            CvePoc(url=e["url"], source="exploit-db", poc_type="exploit")
+                        )
+                        new_urls.discard(
+                            e["url"]
+                        )  # port apa adanya: exploit-db bisa balikin URL kembar
+        await self.session.flush()
 
     async def get_by_threat_actor_exact(
         self, actor_name: str, *, exclude_cve_ids: Sequence[str]

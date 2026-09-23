@@ -1773,7 +1773,95 @@ tinggal pkg_vuln+cve_email), 7.6 (snapshot test), 7.7 (ekspor OpenAPI), 7.8.
       angka "27" awal). Lanjut ke sisa Fase 7 (**7.4** port 56 service,
       **7.5** buang duplikasi, **7.6** snapshot test, **7.7** ekspor
       OpenAPI, **7.8** 5 loop jadi Celery beat) sebelum Fase 8 (`apps/web`).
-- [ ] **7.4** Port 56 service
+- [~] **7.4** Port 56 service -- **survei + urutan kerja kelar
+      (2026-09-19, user minta "cek dulu servicenya, urutkan mana duluan
+      mana belakangan")**: ~37/56 service TERNYATA udah keport sebagai
+      efek samping porting 27 router (Fase 7.3). 19 sisa dipetakan jadi
+      5 grup (B → D → C → A, plan lengkap di
+      `~/.claude/plans/oke-bro-jadi-gini-sparkling-fern.md` §"Fase 7.4"):
+      **Grup A** "mesin cluster" (`cluster_service.py` 784 baris TERNYATA
+      punya 5 dependency internal -- `campaign_scoring_service`/
+      `killchain_service`/`cve_priority_service`/`campaign_link_service`/
+      `diamond_model_service` -- total 1510 baris, bukan 784; plus
+      `campaign_trend_service`/`geopolitical_service` consumer-nya, 1773
+      baris total, butuh keputusan taruh sklearn di mana), **Grup B**
+      lookup eksternal CVE (KELAR, lihat bawah), **Grup C** ticket/email/
+      export CVE (butuh keputusan desain, belum dikerjain), **Grup D**
+      standalone tanpa blocker (`confidence_service`/`fp_analytics_
+      service`/`dedup_service` + 2 endpoint ketinggalan -- belum
+      dikerjain), **Grup E** keluar scope (`wisemap_service.py` 391
+      baris + `wisemap_cti.py` ternyata DEAD CODE -- nol referensi
+      router manapun, `oidc_service`/`scraper_health_service` beda
+      fase/udah dideferred).
+
+      **Grup B (2026-09-19) -- 3/3 KELAR** (`epss_service`,
+      `cisa_kev_service`, `exploit_db_service`, 299 baris gabung 1 file
+      `cti_api.services.cve_lookup`) -- paling kecil, paling gak ada
+      dependency baru, LANGSUNG nutup kolom yang UDAH ADA tapi SELALU
+      kosong di kode yang baru dibangun Bagian 4/5 (`PackageVuln.epss_*`/
+      `kev_date_added`, `exec_dashboard`'s cabang `epss_score >= 0.5`).
+      4 endpoint baru nempel di router `cve.py` yang udah ada
+      (`POST /cisa-lookup`/`/epss-lookup`/`/exploit-lookup`/
+      `/{id}/exploit-lookup`), bukan router baru. 8 kolom baru
+      `CveTracker` (`epss_score`/`epss_percentile`/`epss_date`/
+      `epss_checked_at`, `cisa_kev_checked_at`+`cisa_kev_detail` JSONB,
+      `exploit_db_checked_at`+`exploit_db_hits` JSONB) -- migrasi butuh
+      `server_default` di 2 kolom JSONB NOT NULL karena `cve_tracker`
+      UDAH ada isinya (4 baris), bukan tabel baru kosong.
+
+      Fungsi service (`run_epss_lookup`/`run_cisa_kev_lookup`/`run_
+      exploit_db_bulk_lookup`/`run_exploit_db_single_lookup`) sengaja
+      `session`-pertama -- FONDASI Fase 7.8 ("CVE enrichment", salah
+      satu dari 5 loop Celery beat): begitu 7.8 dikerjain, tinggal
+      bungkus fungsi yang SAMA jadi task beat, gak perlu nulis ulang.
+
+      **EPSS/CISA-KEV/exploit-db itu properti CVE ITU SENDIRI, bukan
+      spesifik client** -- lookup lama `update_many` lintas SEMUA baris
+      client yang nge-track cve_id yang sama, method repo baru
+      (`apply_epss_scores`/`apply_cisa_kev_hits`/`apply_exploit_hits`)
+      port perilaku itu, BEDA dari `add_newsletter_mention` (Bagian 4)
+      yang baris pertama doang.
+
+      **1 bug legacy ketemu & DIPERBAIKI, bukan silent fix** --
+      `exploit_db_service.py` lama cek dedup POC dari SATU dokumen
+      (`find_one`, ambil sembarang) lalu `$push` hasil yang sama ke
+      SEMUA baris client lewat `update_many` -- kalau >1 client nge-
+      track CVE yang sama, baris client lain bisa kebagian POC duplikat.
+      Di sini dedup dihitung ULANG per baris (per client), koreksi
+      kecil yang konsisten sama niat aslinya ("jangan taro POC dobel"),
+      bukan ubah kontrak.
+
+      **1 bug API EKSTERNAL ketemu LEWAT LIVE TEST, bukan port issue** --
+      exploit-db beneran ganti bentuk respons sejak kode lama ditulis:
+      field `description` SEKARANG list `[edb_id, title]`, bukan string
+      polos (`row.get("description", "").strip()` lama crash
+      `AttributeError` kalau dibiarin). Ini bukan "port apa adanya" --
+      kontrak API pihak ketiga yang berubah, bukan keputusan desain lama
+      -- diperbaiki (`_extract_title()`, tetap dukung string polos buat
+      jaga-jaga), ketauan justru KARENA live-test terhadap API asli,
+      bukan cuma baca kode lama.
+
+      **Verified LIVE 100% terhadap API eksternal asli** (bukan mock
+      doang buat verifikasi akhir): `CVE-2021-44228` (Log4Shell)
+      disisipin manual ke dev DB buat test -- `/cisa-lookup` match asli
+      lawan katalog CISA KEV 1721 entry (`Apache Log4j2 Remote Code
+      Execution Vulnerability`), `/epss-lookup` narik skor EPSS asli
+      dari FIRST.org (`0.99999`, persentil `1.0` -- cocok sama fakta
+      publik Log4Shell EPSS-nya emang salah satu yang tertinggi pernah
+      ada), `/{id}/exploit-lookup` narik 3 exploit ASLI dari exploit-db
+      (ID 50590/50592/51183, URL bener, judul ke-parse bener SETELAH
+      fix bug di atas). `GET /api/cve?tech=Log4j` konfirmasi ketiga
+      field nyantol bareng di satu baris (`epss=0.99999, kev=true,
+      active_exploitation=true, pocs=3`).
+
+      13 test baru (4 unit parser murni + 9 integrasi Postgres real,
+      HTTP eksternal di-mock buat suite otomatis -- verifikasi LIVE
+      manual terpisah kayak di atas). Full suite: **862 passed**, mypy
+      121 file bersih, ruff bersih.
+
+      Lanjut Grup D (`confidence_service`/`fp_analytics_service`/
+      `dedup_service` + 2 endpoint ketinggalan) -- standalone, gak ada
+      blocker, plan lengkap udah ada.
 - [ ] **7.5** Buang duplikasi (pkg_vuln, cve_email, ioc, llm)
 - [ ] **7.6** Snapshot test tiap endpoint
 - [ ] **7.7** Ekspor skema OpenAPI

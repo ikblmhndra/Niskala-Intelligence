@@ -1,17 +1,22 @@
 """Port CRUD-baca + false-positive dari `ScraperNewsWeb/app/routers/cve.py`.
+`POST /cisa-lookup`/`/epss-lookup`/`/exploit-lookup`/`/{id}/exploit-lookup`
+(Fase 7.4 Grup B, survei 2026-09-19) SEKARANG diport -- lihat
+`cti_api.services.cve_lookup`.
 
 **Belum diport** (nyusul terpisah, masing-masing punya alasan beda):
 `GET /export` (Excel, `cve_export_service` + openpyxl, belum dependency
 `cti-api`), `POST /draft-email` (`cve_email_service`, Graph/email),
-`POST /cisa-lookup`/`/epss-lookup`/`/exploit-lookup` (lookup API eksternal,
-CISA/FIRST.org/exploit-db), `GET /{id}/mindmap` (`mermaid_service`,
-generate diagram), `GET /prioritize` (`cve_priority_service`, konsep
-"campaign" yang belum ada modelnya). `GET /{id}/ticket`+`PUT`,
-`POST /{id}/acknowledge`+`/bulk-acknowledge`, `GET /next-ticket-id`+
-`/ack-statuses`, parameter `ack_filter` di list/stats -- SEMUA nempel
-konsep ticket yang skemanya (`CveTicket`/`CveTicketItem`, Fase 2) beda
-desain total dari kebutuhan lama (lihat docstring `cti_core.db.
-repositories.cve`), butuh keputusan desain sendiri sebelum diport."""
+`GET /{id}/mindmap` (`mermaid_service`, generate diagram -- SUDAH
+tercakup fungsional lewat `GET /api/mindmap/cve/{cve_id}` generik,
+Bagian 4, endpoint spesifik lama gak perlu diduplikat), `GET /prioritize`
+(`cve_priority_service`, ternyata bagian dari "mesin cluster" `cluster_
+service.py`, Grup A -- bukan fitur CVE berdiri sendiri, lihat plan §Fase
+7.4). `GET /{id}/ticket`+`PUT`, `POST /{id}/acknowledge`+
+`/bulk-acknowledge`, `GET /next-ticket-id`+`/ack-statuses`, parameter
+`ack_filter` di list/stats -- SEMUA nempel konsep ticket yang skemanya
+(`CveTicket`/`CveTicketItem`, Fase 2) beda desain total dari kebutuhan
+lama (lihat docstring `cti_core.db.repositories.cve`), butuh keputusan
+desain sendiri sebelum diport (Grup C, plan §Fase 7.4)."""
 
 from __future__ import annotations
 
@@ -21,7 +26,7 @@ from cti_core.db.models.cve import CveTracker
 from cti_core.db.repositories.auth import AsyncAuditLogRepo
 from cti_core.db.repositories.cve import AsyncCveFalsePositiveRepo, AsyncCveTrackerRepo
 from cti_core.db.repositories.techstack import AsyncTechStackRepo
-from fastapi import APIRouter, Depends, Header, Query, Request
+from fastapi import APIRouter, Depends, Header, HTTPException, Query, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from cti_api.deps import AuthedUser, effective_client_id, get_db, request_ip, require_auth
@@ -35,6 +40,7 @@ from cti_api.schemas.cve import (
     PurgeOrphanedBody,
 )
 from cti_api.schemas.techstack import EXPOSURE_MULTIPLIER, HOSTING_MULTIPLIER
+from cti_api.services import cve_lookup as cve_lookup_service
 
 router = APIRouter(prefix="/api/cve", tags=["cve"])
 
@@ -80,6 +86,10 @@ def _serialize(
         tech_exposure=exposure,
         hosting_type=hosting,
         adjusted_risk_score=adjusted,
+        cisa_kev=cve.cisa_kev,
+        active_exploitation=cve.active_exploitation,
+        epss_score=cve.epss_score,
+        epss_percentile=cve.epss_percentile,
     )
 
 
@@ -275,5 +285,91 @@ async def purge_orphaned(
             detail={"deleted": result.get("deleted", 0), "by_tech": result.get("by_tech")},
             ip_address=request_ip(request),
         )
+    await session.commit()
+    return result
+
+
+@router.post("/cisa-lookup")
+async def cisa_kev_lookup(
+    request: Request,
+    session: AsyncSession = Depends(get_db),
+    user: AuthedUser = Depends(require_auth),
+) -> dict[str, object]:
+    """Cross-reference semua CVE true-positive vs katalog CISA Known
+    Exploited Vulnerabilities."""
+    try:
+        summary = await cve_lookup_service.run_cisa_kev_lookup(session)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e)) from e
+    await AsyncAuditLogRepo(session).write(
+        username=user["username"],
+        action="cisa_kev_lookup",
+        detail={"checked": summary["checked"], "matched": summary["matched"]},
+        ip_address=request_ip(request),
+    )
+    await session.commit()
+    return summary
+
+
+@router.post("/epss-lookup")
+async def epss_lookup(
+    request: Request,
+    session: AsyncSession = Depends(get_db),
+    user: AuthedUser = Depends(require_auth),
+) -> dict[str, object]:
+    """Fetch skor EPSS dari FIRST.org buat semua CVE true-positive, simpen
+    hasilnya."""
+    try:
+        summary = await cve_lookup_service.run_epss_lookup(session)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e)) from e
+    await AsyncAuditLogRepo(session).write(
+        username=user["username"],
+        action="epss_lookup",
+        detail={"checked": summary["checked"], "scored": summary["scored"]},
+        ip_address=request_ip(request),
+    )
+    await session.commit()
+    return summary
+
+
+@router.post("/exploit-lookup")
+async def bulk_exploit_lookup(
+    request: Request,
+    session: AsyncSession = Depends(get_db),
+    user: AuthedUser = Depends(require_auth),
+) -> dict[str, object]:
+    """Exploit-db lookup buat semua CVE true-positive, simpen hasilnya."""
+    try:
+        summary = await cve_lookup_service.run_exploit_db_bulk_lookup(session)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e)) from e
+    await AsyncAuditLogRepo(session).write(
+        username=user["username"],
+        action="exploit_db_bulk_lookup",
+        detail={"checked": summary["checked"], "with_exploits": summary["with_exploits"]},
+        ip_address=request_ip(request),
+    )
+    await session.commit()
+    return summary
+
+
+@router.post("/{cve_id}/exploit-lookup")
+async def single_exploit_lookup(
+    cve_id: str,
+    request: Request,
+    session: AsyncSession = Depends(get_db),
+    user: AuthedUser = Depends(require_auth),
+) -> dict[str, object]:
+    """Exploit-db lookup buat satu CVE, simpen hasilnya."""
+    result = await cve_lookup_service.run_exploit_db_single_lookup(session, cve_id)
+    if result["error"]:
+        raise HTTPException(status_code=500, detail=str(result["error"]))
+    await AsyncAuditLogRepo(session).write(
+        username=user["username"],
+        action="exploit_db_lookup",
+        target_id=cve_id,
+        ip_address=request_ip(request),
+    )
     await session.commit()
     return result

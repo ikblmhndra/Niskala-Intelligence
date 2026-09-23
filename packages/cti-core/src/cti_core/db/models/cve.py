@@ -3,28 +3,41 @@
 dkk, web `cve_service.py`) -- lihat plan §1. Multi-tenant lewat `client_id`
 (unique bareng `cve_id`), pola yang sama kayak app lama v3.8.0.
 
-`cisa_kev`/`active_exploitation`/`threat_actors`/`ttps` (Fase 7.3, router
-`crossref`, Bagian 3) -- field ini ADA di dokumen Mongo `cve_tracker`
-lama, tapi ditulis loop enrichment CVE (`app/main.py::_cve_enrichment_loop`,
-proses cross-reference CVE vs CISA KEV + artikel/TA) yang BELUM diport --
-itu salah satu dari 5 loop yang dipindah ke Celery beat (Fase 7.8, lihat
-docs/PROGRESS.md). Kolomnya ditambah SEKARANG (gap ketauan pas porting
-`crossref`, pola sama kayak nambah kolom pas nemu gap di router lain)
-supaya query `crossref` BENER begitu 7.8 ngisi datanya -- buat sekarang
-kolomnya bakal selalu kosong/false, bukan bug, cuma cold-start yang sama
-kayak `techstack` sebelum seed. `threat_actors`/`ttps` dinormalisasi jadi
-tabel anak (`CveThreatActor`/`CveTTP`), sama pola kayak
-`ArticleThreatActor`/`ArticleTTP` -- `crossref` butuh set-intersection
-per-value (`pir_ttps & cve_ttps`), bukan sekadar baca utuh.
+`active_exploitation`/`threat_actors`/`ttps` (Fase 7.3, router `crossref`,
+Bagian 3) -- field ini ADA di dokumen Mongo `cve_tracker` lama, tapi
+`threat_actors`/`ttps` KHUSUSNYA ditulis loop enrichment CVE
+(`app/main.py::_cve_enrichment_loop`, cross-reference CVE vs artikel/TA)
+yang BELUM diport -- salah satu dari 5 loop yang dipindah ke Celery beat
+(Fase 7.8). Kolomnya ditambah pas porting `crossref`, buat sekarang
+selalu kosong, cold-start biasa. `threat_actors`/`ttps` dinormalisasi
+jadi tabel anak (`CveThreatActor`/`CveTTP`), sama pola kayak
+`ArticleThreatActor`/`ArticleTTP`.
+
+`cisa_kev`/`active_exploitation` (bool) + `epss_score`/`epss_percentile`
+dst (Fase 7.3, router `cve`, Grup B survei 7.4 2026-09-19) -- SEKARANG
+diisi jalur MANUAL (`POST /cisa-lookup`/`/epss-lookup`/`/exploit-lookup`,
+lihat `cti_api.services.cve_lookup`), bukan lagi nunggu `_cve_enrichment_
+loop`. Fungsi service yang sama itu jugalah yang bakal dipanggil ulang
+dari Celery beat task pas Fase 7.8 beneran ngerjain loop-nya (tinggal
+jadwalin, bukan nulis ulang) -- jadi kolom-kolom ini SEKARANG genuinely
+keisi kalau analis mijit tombol lookup, bukan nunggu loop yang belum ada.
+
+`cisa_kev_detail`/`exploit_db_hits` JSONB -- snapshot mentah respons API
+eksternal (CISA KEV catalog entry / hasil exploit-db), "cair" persis
+alasan yang sama kayak `PackageDepGraph.scorecard_checks` (Bagian 4):
+field deskriptif yang gak pernah di-query per-sub-field, dibaca+ditulis
+utuh. `pocs` hasil exploit-db TETAP masuk tabel anak `CvePoc` yang udah
+ada (bukan field baru) -- exploit-db cuma nambahin baris baru ke situ.
 
 `CveNewsletterMention` (Fase 7.3, router `newsletter`, Bagian 4) --
 gantiin `cve_tracker.newsletter_mentions` (array Mongo, `$push` dedup by
 url). Ini DITULIS sama fitur yang lagi diport sendiri (newsletter), beda
-dari `cisa_kev`/`threat_actors` dkk di atas yang nunggu loop terpisah."""
+dari `threat_actors` dkk di atas yang nunggu loop terpisah."""
 
 from __future__ import annotations
 
 import datetime
+from typing import Any
 
 from sqlalchemy import (
     BigInteger,
@@ -38,6 +51,7 @@ from sqlalchemy import (
     UniqueConstraint,
     func,
 )
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from cti_core.db.base import Base, TimestampMixin
@@ -70,6 +84,29 @@ class CveTracker(TimestampMixin, Base):
     detected_on: Mapped[datetime.datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, server_default=func.now()
     )
+
+    epss_score: Mapped[float | None] = mapped_column(Float)
+    epss_percentile: Mapped[float | None] = mapped_column(Float)
+    epss_date: Mapped[str | None] = mapped_column(String(10))
+    """`YYYY-MM-DD` -- tanggal "as-of" skor dari FIRST.org, string
+    apa adanya kayak sumbernya, bukan `Date` (bukan field yang di-range-
+    query)."""
+    epss_checked_at: Mapped[datetime.datetime | None] = mapped_column(DateTime(timezone=True))
+
+    cisa_kev_checked_at: Mapped[datetime.datetime | None] = mapped_column(DateTime(timezone=True))
+    cisa_kev_detail: Mapped[dict[str, Any]] = mapped_column(JSONB, nullable=False, default=dict)
+    """`{date_added, due_date, vendor, product, name, description,
+    action}` -- snapshot satu entry katalog CISA KEV, lihat docstring
+    modul."""
+
+    exploit_db_checked_at: Mapped[datetime.datetime | None] = mapped_column(DateTime(timezone=True))
+    exploit_db_hits: Mapped[list[dict[str, Any]]] = mapped_column(
+        JSONB, nullable=False, default=list
+    )
+    """Snapshot mentah hasil pencarian exploit-db (dipotong ke `pocs`
+    juga, lihat docstring modul) -- dipakai UI nampilin detail exploit
+    (title/tanggal publish) yang gak ada analognya di `CvePoc` (cuma
+    `url`/`source`/`poc_type`)."""
     registered_date: Mapped[datetime.datetime | None] = mapped_column(DateTime(timezone=True))
 
     references: Mapped[list[CveReference]] = relationship(

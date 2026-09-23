@@ -1,6 +1,10 @@
-"""Adaptasi dari `ScraperNewsWeb/app/models/cve_tracker.py` -- field yang
-nempel fitur DITUNDA (ticket/CISA-KEV/exploit-db/EPSS/newsletter) SENGAJA
-gak ada di sini, bukan kelewat. Lihat docstring `cti_api.routers.cve`."""
+"""Adaptasi dari `ScraperNewsWeb/app/models/cve_tracker.py`. Field CISA-
+KEV/EPSS (flat: `cisa_kev`/`active_exploitation`/`epss_score`/
+`epss_percentile`) SEKARANG diekspos (Fase 7.4 Grup B) -- blob deskriptif
+mentah (`cisa_kev_detail`/`exploit_db_hits`) SENGAJA belum, list view
+tetap ringkas, lihat docstring `cti_api.routers.cve`. Field yang nempel
+fitur ticket/export/campaign SENGAJA masih gak ada di sini (lihat Grup
+C/A, plan §Fase 7.4)."""
 
 from __future__ import annotations
 
@@ -40,6 +44,10 @@ class CveOut(BaseModel):
     tech_exposure: str = "internal"
     hosting_type: str = "on_prem"
     adjusted_risk_score: float = 0.0
+    cisa_kev: bool = False
+    active_exploitation: bool = False
+    epss_score: float | None = None
+    epss_percentile: float | None = None
 
 
 class CveListResponse(BaseModel):
