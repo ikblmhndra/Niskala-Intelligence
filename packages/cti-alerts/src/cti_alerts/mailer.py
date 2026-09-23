@@ -1,6 +1,10 @@
 """SATU mailer Microsoft Graph -- gantiin `_send_newsletter_email()` di
 `ScraperNewsWeb/app/routers/newsletter.py:62-119` (dua cabang SMTP/Graph
-digabung satu fungsi, dipicu `EMAIL_METHOD` env var).
+digabung satu fungsi, dipicu `EMAIL_METHOD` env var), DAN
+`_create_graph_draft()` di `cve_email_service.py` lama (logic-nya sama
+persis, cuma disalin). Dua-duanya kepake sekarang (`newsletter`+`cve`
+router, Fase 7.4 Grup C) -- nama fungsi digeneralisasi dari
+`send_newsletter_email` biar gak nyesatin, bukan lagi spesifik newsletter.
 
 **Cuma jalur Microsoft Graph yang diport, SMTP TIDAK** -- keputusan
 sadar, bukan kelalaian: `GraphSettings` (Fase 2) udah dibikin duluan
@@ -39,7 +43,7 @@ class GraphSendError(Exception):
     """Graph API nolak permintaan kirim/draft email."""
 
 
-def send_newsletter_email(
+def create_graph_draft(
     html_content: str, subject: str, *, settings: GraphSettings | None = None
 ) -> str:
     """Bikin DRAFT message di mailbox `settings.sender` lewat Graph API

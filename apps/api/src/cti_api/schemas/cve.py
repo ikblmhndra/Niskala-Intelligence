@@ -3,8 +3,21 @@ KEV/EPSS (flat: `cisa_kev`/`active_exploitation`/`epss_score`/
 `epss_percentile`) SEKARANG diekspos (Fase 7.4 Grup B) -- blob deskriptif
 mentah (`cisa_kev_detail`/`exploit_db_hits`) SENGAJA belum, list view
 tetap ringkas, lihat docstring `cti_api.routers.cve`. Field yang nempel
-fitur ticket/export/campaign SENGAJA masih gak ada di sini (lihat Grup
-C/A, plan §Fase 7.4)."""
+fitur campaign SENGAJA masih gak ada di sini (Grup A, plan §Fase 7.4).
+
+`CveTicketBody` -- field remediation doang (14 field, semua `str=""`
+kayak legacy, TANPA `Literal`/enum validation -- server-side legacy juga
+gak validasi, cuma dropdown di frontend, lihat docstring `CveTicket`
+model). Tanggal (`remediation_date_plan`/`actual_remediation_date`/
+`closure_date`) tetap `str` di boundary API (`"YYYY-MM-DD"` atau kosong)
+-- diparse ke `datetime.date` di router sebelum masuk repo (`Date` asli
+di DB, lihat docstring model), balik jadi string lagi pas serialize.
+`cve_reported_date`/`ticket_id`/`acknowledged_by`/`acknowledge_time`
+SENGAJA gak ada di body PUT -- `ticket_id` di-generate/dipertahankan
+server-side (`AsyncCveTicketRepo.upsert`), `acknowledged_by`/
+`acknowledge_time` cuma nempel `acknowledge()`/`bulk_acknowledge()`,
+`cve_reported_date` di-drop (lihat docstring model, derive dari
+`CveTracker.published` di frontend)."""
 
 from __future__ import annotations
 
@@ -71,3 +84,34 @@ class BulkFalsePositiveBody(BaseModel):
 
 class PurgeOrphanedBody(BaseModel):
     dry_run: bool = True
+
+
+class CveTicketBody(BaseModel):
+    affected_asset: str = ""
+    affected_version: str = ""
+    fixed_version: str = ""
+    asset_owner: str = ""
+    owner_email: str = ""
+    owner_team: str = ""
+    active_exploitation: str = ""
+    remediation_date_plan: str = ""
+    remediation_status: str = ""
+    actual_remediation_date: str = ""
+    escalation_required: bool = False
+    comments: str = ""
+    risk_acceptance: str = ""
+    closure_date: str = ""
+
+
+class AcknowledgeBody(BaseModel):
+    analyst_name: str
+
+
+class BulkAcknowledgeBody(BaseModel):
+    cve_ids: list[str]
+    analyst_name: str
+
+
+class DraftEmailBody(BaseModel):
+    cve_ids: list[str]
+    ticket_id: str = ""

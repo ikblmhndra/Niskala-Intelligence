@@ -1786,7 +1786,7 @@ tinggal pkg_vuln+cve_email), 7.6 (snapshot test), 7.7 (ekspor OpenAPI), 7.8.
       `campaign_trend_service`/`geopolitical_service` consumer-nya, 1773
       baris total, butuh keputusan taruh sklearn di mana), **Grup B**
       lookup eksternal CVE (KELAR, lihat bawah), **Grup C** ticket/email/
-      export CVE (butuh keputusan desain, belum dikerjain), **Grup D**
+      export CVE (KELAR, lihat bawah), **Grup D**
       standalone tanpa blocker (`confidence_service`/`fp_analytics_
       service`/`dedup_service` + 2 endpoint ketinggalan -- KELAR, lihat
       bawah), **Grup E** keluar scope (`wisemap_service.py` 391
@@ -1957,8 +1957,81 @@ tinggal pkg_vuln+cve_email), 7.6 (snapshot test), 7.7 (ekspor OpenAPI), 7.8.
       suite: **921 passed**, mypy 126 file bersih, ruff bersih. SATU
       commit nutup Grup D.
 
-      Lanjut Grup C (CVE ticket/email/export) -- butuh keputusan desain
-      skema `CveTicket`/`CveTicketItem` bareng user dulu sebelum ngoding.
+      **Grup C (2026-09-23) -- 3/3 KELAR** (`cve_ticket_service`,
+      `cve_email_service`, `cve_export_service`) -- didahuluin diskusi
+      desain sama user (3 keputusan konkret, semua dijawab "Recommended"):
+      tanggal ticket jadi `Date` asli (bukan string bebas kayak legacy),
+      `ticket_id` tetap GLOBAL lintas semua client per bulan (port apa
+      adanya), `cve_reported_date` di-drop (readonly di UI lama, gak
+      pernah beneran di-override -- selalu derive dari `CveTracker.
+      published`).
+
+      **`CveTicket` DIROMBAK TOTAL dari placeholder Fase 2** (`CveTicket`
+      1:N `CveTicketItem`, "satu ticket nyakup banyak CVE") -- ketauan
+      baca `cve_ticket_service.py` lama: konsepnya SATU record flat per
+      (cve_id, client_id), bukan container. `CveTicketItem` di-drop total,
+      `CveTicket` jadi 17 kolom (affected_asset/owner_email/remediation_*/
+      escalation_required/comments/risk_acceptance/closure_date/
+      acknowledged_by/acknowledge_time). `ack_filter` (parameter
+      list/stats lama yang di-skip pas Fase 7.3 karena nunggu ini) SEKARANG
+      jalan lagi, subquery lawan `cve_tickets.acknowledged_by`.
+
+      **1 fungsi mailer di-generalize, bukan diduplikat** --
+      `cti_alerts.mailer.send_newsletter_email` (Bagian 4) namanya diganti
+      `create_graph_draft` (logic-nya 100% generic, gak ada yang
+      newsletter-spesifik) biar `cve_email.py` bisa numpang langsung,
+      bukan nyalin ulang ~40 baris logic Graph API. Satu-satunya caller
+      lama (`newsletter.py`) ikut di-update, gak ada perubahan perilaku.
+
+      **1 bug DITEMUKAN & DIPERBAIKI di export, bukan port apa adanya** --
+      `cve_export_service.export_cves_to_excel()` legacy TIDAK PERNAH
+      nge-scope `client_id` sama sekali (query CVE maupun query false-
+      positive), beda dari SEMUA endpoint lain di router yang sama yang
+      konsisten pakai `effective_client_id()`. Di multi-tenant beneran
+      ini kebocoran data lintas client. Diperbaiki: di-scope `client_id`
+      (lihat docstring `cti_api.services.cve_export`).
+
+      **1 asimetri legacy DIPERTAHANKAN, didokumentasikan eksplisit** --
+      `cve_export_service.py` filter tanggal di `detected_on`, sedangkan
+      `cve_service.py` (list/stats) filter `published` -- ini asimetri
+      yang UDAH ADA di kode lama sendiri (bukan penyimpangan baru dari
+      porting), jadi `AsyncCveTrackerRepo.list_for_export()` sengaja jadi
+      method terpisah dari `list_filtered()`/`get_stats()`, bukan numpang
+      `_apply_filters()` yang sama.
+
+      Dependency baru `openpyxl` (`apps/api`). Template `CVE_Tracker_
+      template.xlsx` + `cve_notification_email.html` disalin ke
+      `apps/api/src/cti_api/templates/`. 3 panggilan LLM (`_llm_cve_
+      validator`/`_dedup_mitigation`/`_dedup_risk_context`) port apa
+      adanya (prompt verbatim), dibungkus `asyncio.to_thread()` (bukan
+      `run_in_executor` legacy -- API sama, `to_thread` modern).
+
+      **Verified LIVE terhadap dev DB real** (uvicorn lokal, Postgres+
+      Redis via `localhost`): `next-ticket-id` (CTI-2026-09-001, generate
+      bener), `PUT`/`GET /{cve_id}/ticket` (round-trip field remediation
+      lengkap), `acknowledge`/`bulk-acknowledge`/`ack-statuses` (3 CVE
+      real diacknowledge, status kebaca bener), `ack_filter=acked|unacked`
+      di list DAN stats (angka cocok), `GET /export` (download xlsx
+      beneran, 4 baris CVE real + ticket ID/severity/score/affected_asset
+      semua kecantol bener di kolom yang tepat). Data ticket sintetis
+      DIBERSIHIN abis verifikasi (`DELETE FROM cve_tickets`).
+
+      **`POST /draft-email` SENGAJA BELUM live-tested** -- 3 panggilan
+      LLM beneran (cost token) + bikin draft ASLI di mailbox Graph yang
+      dikonfigurasi `.env` -- keputusan user (2026-09-23): cukup mocked
+      integration test (3 test, `_llm_cve_validator`/`_dedup_mitigation`/
+      `_dedup_risk_context`/`create_graph_draft` di-patch) buat sekarang,
+      **live-test endpoint ini dicatat sebagai TODO sebelum deploy ke
+      production** -- jangan anggap fitur ini "fully verified" sampai itu
+      kejadian.
+
+      30 test baru (2 file unit murni + 4 file integrasi Postgres real,
+      LLM/Graph di-mock buat `cve_email`). Full suite: **951 passed**,
+      mypy 131 file bersih, ruff bersih. SATU commit nutup Grup C.
+
+      Lanjut Grup A ("mesin cluster") -- butuh keputusan arsitektur
+      (TF-IDF/sklearn di `apps/api` langsung atau di worker) sebelum
+      ngoding, plan lengkap udah ada §Fase 7.4.
 - [ ] **7.5** Buang duplikasi (pkg_vuln, cve_email, ioc, llm)
 - [ ] **7.6** Snapshot test tiap endpoint
 - [ ] **7.7** Ekspor skema OpenAPI

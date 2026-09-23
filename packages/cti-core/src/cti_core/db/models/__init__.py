@@ -28,7 +28,6 @@ from cti_core.db.models.cve import (
     CveReference,
     CveThreatActor,
     CveTicket,
-    CveTicketItem,
     CveTracker,
     CveTTP,
 )
@@ -74,7 +73,6 @@ __all__ = [
     "CveTTP",
     "CveThreatActor",
     "CveTicket",
-    "CveTicketItem",
     "CveTracker",
     "DailyRecap",
     "IOCFeedback",

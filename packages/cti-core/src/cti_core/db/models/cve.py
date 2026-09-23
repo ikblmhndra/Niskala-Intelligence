@@ -232,25 +232,67 @@ class CveFalsePositive(Base):
 
 
 class CveTicket(TimestampMixin, Base):
+    """Fase 7.4 Grup C (2026-09-23) -- ROMBAK TOTAL dari placeholder Fase 2
+    (`CveTicket` 1:N `CveTicketItem`, "satu ticket bisa nyakup banyak CVE").
+    Ketauan pas baca `cve_ticket_service.py` lama: KONSEPNYA BEDA -- SATU
+    record per (cve_id, client_id), bukan container. `ticket_id` ("CTI-
+    2026-09-001") cuma label tampilan yang di-generate pas record ini
+    pertama disentuh (acknowledge atau edit manual), BUKAN entity yang
+    menaungi banyak CVE. Gak ada tabel anak sama sekali.
+
+    `remediation_date_plan`/`actual_remediation_date`/`closure_date` --
+    `Date` asli (legacy: string bebas dari `<input type="date">` frontend,
+    `str=""` di Pydantic lama tanpa validasi) -- upgrade konsisten sama
+    pola `Article.posted_on`/`CveTracker.published` di skema ini, bukan
+    port literal (frontend selalu kirim `YYYY-MM-DD`, aman diparse).
+
+    `cve_reported_date` (legacy) SENGAJA GAK ADA kolomnya -- field itu
+    READONLY di UI lama (auto-fill dari `cve.published`), gak ada bukti
+    pernah beneran di-override. Router baca `CveTracker.published`
+    langsung pas serialize, bukan simpen field duplikat.
+
+    `active_exploitation`/`remediation_status`/`risk_acceptance` --
+    "soft enum" String, TANPA CHECK constraint -- legacy juga gak
+    validasi server-side (cuma dropdown `<select>` di frontend, Pydantic-
+    nya `str=""` polos). Nilai yang dipakai UI lama (dokumentasi, bukan
+    enforced): `active_exploitation` -- "Active Exploitation"|"Limited
+    Exploitation"|"No Known Exploitation"|"Unknown/Under Investigation";
+    `remediation_status` -- "Open"|"In Progress"|"Resolved"|"Risk
+    Accepted"|"Closed"; `risk_acceptance` -- "Risk Acceptance"|"Risk
+    Mitigation"|"Risk Transfer"|"No Risk (Not Affected)".
+
+    `ticket_id` di-generate GLOBAL lintas SEMUA client per bulan (legacy
+    `get_next_ticket_id()` scan tanpa filter client_id sama sekali) --
+    asimetri dipertahankan apa adanya, port literal (lihat
+    `AsyncCveTicketRepo.get_next_ticket_id`)."""
+
     __tablename__ = "cve_tickets"
+    __table_args__ = (UniqueConstraint("cve_id", "client_id", name="uq_cve_tickets_cve_client"),)
 
     id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
-    ticket_id: Mapped[str] = mapped_column(String(50), nullable=False, unique=True, index=True)
-    status: Mapped[str] = mapped_column(String(30), nullable=False, default="open")
-
-    cve_ids: Mapped[list[CveTicketItem]] = relationship(
-        back_populates="ticket", cascade="all, delete-orphan", lazy="selectin"
-    )
-
-
-class CveTicketItem(Base):
-    __tablename__ = "cve_ticket_items"
-    __table_args__ = (UniqueConstraint("ticket_id", "cve_id", name="uq_cve_ticket_item"),)
-
-    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
-    ticket_id: Mapped[int] = mapped_column(
-        ForeignKey("cve_tickets.id", ondelete="CASCADE"), nullable=False
-    )
     cve_id: Mapped[str] = mapped_column(String(20), nullable=False, index=True)
+    client_id: Mapped[str] = mapped_column(
+        ForeignKey("clients.client_id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    ticket_id: Mapped[str] = mapped_column(String(50), nullable=False, unique=True, index=True)
 
-    ticket: Mapped[CveTicket] = relationship(back_populates="cve_ids")
+    affected_asset: Mapped[str | None] = mapped_column(Text)
+    affected_version: Mapped[str | None] = mapped_column(Text)
+    fixed_version: Mapped[str | None] = mapped_column(Text)
+    asset_owner: Mapped[str | None] = mapped_column(String(200))
+    owner_email: Mapped[str | None] = mapped_column(String(200))
+    owner_team: Mapped[str | None] = mapped_column(String(200))
+    active_exploitation: Mapped[str | None] = mapped_column(String(50))
+    """Free-text/soft-enum ANALIS, BEDA dari `CveTracker.active_exploitation`
+    (bool, dihitung mesin dari CISA KEV/exploit-db, Grup B) -- dua konsep
+    beda yang kebetulan nama sama, dipertahankan terpisah kayak legacy."""
+    remediation_date_plan: Mapped[datetime.date | None] = mapped_column(Date)
+    remediation_status: Mapped[str | None] = mapped_column(String(50))
+    actual_remediation_date: Mapped[datetime.date | None] = mapped_column(Date)
+    escalation_required: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    comments: Mapped[str | None] = mapped_column(Text)
+    risk_acceptance: Mapped[str | None] = mapped_column(String(50))
+    closure_date: Mapped[datetime.date | None] = mapped_column(Date)
+
+    acknowledged_by: Mapped[str | None] = mapped_column(String(200))
+    acknowledge_time: Mapped[datetime.datetime | None] = mapped_column(DateTime(timezone=True))

@@ -1,13 +1,14 @@
-"""`cti_alerts.mailer` -- port `_send_newsletter_email()` (jalur Graph
-doang, lihat docstring modul). Mock `msal`/`httpx` -- gak boleh manggil
-Azure AD/Graph API beneran dari test unit."""
+"""`cti_alerts.mailer.create_graph_draft` -- port `_send_newsletter_email()`/
+`_create_graph_draft()` lama (jalur Graph doang, lihat docstring modul).
+Mock `msal`/`httpx` -- gak boleh manggil Azure AD/Graph API beneran dari
+test unit."""
 
 from __future__ import annotations
 
 from unittest.mock import MagicMock, patch
 
 import pytest
-from cti_alerts.mailer import GraphAuthError, GraphSendError, send_newsletter_email
+from cti_alerts.mailer import GraphAuthError, GraphSendError, create_graph_draft
 from cti_core.config import GraphSettings
 
 _SETTINGS = GraphSettings(
@@ -35,7 +36,7 @@ def test_auth_failure_raises_graph_auth_error() -> None:
         ),
         pytest.raises(GraphAuthError),
     ):
-        send_newsletter_email("<html/>", "subject", settings=_SETTINGS)
+        create_graph_draft("<html/>", "subject", settings=_SETTINGS)
 
 
 def test_non_201_response_raises_graph_send_error() -> None:
@@ -47,7 +48,7 @@ def test_non_201_response_raises_graph_send_error() -> None:
         patch("cti_alerts.mailer.httpx.post", return_value=mock_resp) as mock_post,
         pytest.raises(GraphSendError),
     ):
-        send_newsletter_email("<html/>", "subject", settings=_SETTINGS)
+        create_graph_draft("<html/>", "subject", settings=_SETTINGS)
     assert mock_post.called
 
 
@@ -60,7 +61,7 @@ def test_successful_send_returns_message_id() -> None:
         ),
         patch("cti_alerts.mailer.httpx.post", return_value=mock_resp) as mock_post,
     ):
-        result = send_newsletter_email("<html/>content", "subject line", settings=_SETTINGS)
+        result = create_graph_draft("<html/>content", "subject line", settings=_SETTINGS)
 
     assert result == "msg-123"
     call_kwargs = mock_post.call_args.kwargs
@@ -85,6 +86,6 @@ def test_empty_cc_produces_empty_recipient_list() -> None:
         ),
         patch("cti_alerts.mailer.httpx.post", return_value=mock_resp) as mock_post,
     ):
-        send_newsletter_email("<html/>", "subject", settings=settings)
+        create_graph_draft("<html/>", "subject", settings=settings)
 
     assert mock_post.call_args.kwargs["json"]["ccRecipients"] == []

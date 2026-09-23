@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CVE Notification</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .email-container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+            border-bottom: 3px solid #d32f2f;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+        .subject {
+            font-size: 18px;
+            font-weight: bold;
+            color: #d32f2f;
+            margin-bottom: 15px;
+        }
+        .metadata {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        .metadata-row {
+            margin: 5px 0;
+        }
+        .greeting {
+            margin-bottom: 20px;
+        }
+        .section {
+            margin: 25px 0;
+        }
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #1976d2;
+            border-bottom: 2px solid #e3f2fd;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+        .severity-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+        .severity-critical { background-color: #b71c1c; color: white; }
+        .severity-high     { background-color: #d32f2f; color: white; }
+        .severity-medium   { background-color: #f57c00; color: white; }
+        .severity-low      { background-color: #fbc02d; color: #333;  }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 14px;
+        }
+        th {
+            background-color: #1976d2;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        tr:hover { background-color: #f5f5f5; }
+        .info-box {
+            background-color: #e3f2fd;
+            border-left: 4px solid #1976d2;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        .warning-box {
+            background-color: #fff3e0;
+            border-left: 4px solid #f57c00;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        .alert-box {
+            background-color: #ffebee;
+            border-left: 4px solid #d32f2f;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        ul, ol { margin: 10px 0; padding-left: 25px; }
+        li { margin: 5px 0; }
+        .action-table { margin: 20px 0; }
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+            font-size: 14px;
+            color: #666;
+        }
+        .signature { margin-top: 25px; }
+        .signature-name { font-weight: bold; color: #333; }
+        .contact-info {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 15px 0;
+        }
+        .contact-item { margin: 5px 0; }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #1976d2;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            margin: 10px 10px 10px 0;
+        }
+        .button:hover { background-color: #1565c0; }
+        a { color: #1976d2; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .classification {
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="greeting">
+            Hi Owner,
+        </div>
+
+        <p>Our CTI team identified <strong>{{ cve_count }} vulnerabilit{{ 'y' if cve_count == 1 else 'ies' }}</strong> in your <strong>{{ product_name }}</strong> requiring patching within {{ remediation_days }} days.</p>
+
+        <!-- Affected Asset Section -->
+        <div class="section">
+            <div class="section-title">Affected Asset</div>
+            <div class="info-box">
+                <div><strong>Product:</strong> {{ product_name }}</div>
+            </div>
+        </div>
+
+        <!-- Vulnerabilities Section -->
+        <div class="section">
+            <div class="section-title">Vulnerabilities Identified</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE ID</th>
+                        <th>Severity</th>
+                        <th>Impact</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cve in cves %}
+                    <tr>
+                        <td><strong>{{ cve.id }}</strong></td>
+                        <td><span class="severity-badge severity-{{ cve.severity | lower }}">{{ cve.severity }}</span></td>
+                        <td>{{ cve.impact }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Risk Context Section -->
+        <div class="section">
+            <div class="section-title">Risk Context</div>
+            <div class="alert-box">
+                {{ risk_context | safe }}
+            </div>
+        </div>
+
+        <!-- Required Action Section -->
+        <div class="section">
+            <div class="section-title">Required Action - Upgrade {{ product_name }}</div>
+            <div class="warning-box">
+                <strong>Consolidated Fix (addresses all CVEs):</strong>
+                <ul>
+                    {% for fix in remediation_fixes %}
+                    <li><strong>{{ fix.version_branch }}</strong> → Upgrade to <strong>{{ fix.fixed_version }}</strong></li>
+                    {% endfor %}
+                </ul>
+                {% if vendor_advisory_url %}
+                <div style="margin-top: 10px;">
+                    <strong>Vendor Advisory:</strong>
+                    <ul>
+                        {% for advisory in vendor_advisory_url %}
+                        <li><strong>{{ advisory }}</strong></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+
+            <p><strong>If immediate patching is not possible, implement these interim controls:</strong></p>
+            <ul>
+                {% for mitigation in mitigations %}
+                <li>{{ mitigation }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Timeline Section -->
+        <div class="section">
+            <div class="section-title">Timeline &amp; Next Steps</div>
+            <table class="action-table">
+                <thead>
+                    <tr>
+                        <th>Action</th>
+                        <th>Owner</th>
+                        <th>Due Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for action in timeline_actions %}
+                    <tr>
+                        <td>{{ action.description }}</td>
+                        <td>{{ action.owner }}</td>
+                        <td>{% if action.critical %}<strong>{{ action.due_date }}</strong>{% else %}{{ action.due_date }}{% endif %}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="info-box">
+                <strong>Your Response Required:</strong>
+                <ol>
+                    <li>Acknowledge receipt within 24 hours</li>
+                    <li>Provide maintenance window schedule maximum by {{ plan_date }}</li>
+                    <li>Complete upgrades by {{ due_date }} ({{ remediation_days }}-day timeline for {{ highest_severity }} severity)</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Thanks for your prompt attention to this security matter.</p>
+        </div>
+
+        <div class="classification">
+            <strong>Tracking ID:</strong> {{ tracking_id }} | <strong>Classification:</strong> {{ classification }}
+        </div>
+    </div>
+</body>
+</html>

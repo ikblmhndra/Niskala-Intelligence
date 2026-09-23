@@ -1,7 +1,7 @@
 """Port dari `ScraperNewsWeb/app/routers/newsletter.py`. `GET /source-hints`
 SENGAJA gak `require_auth` -- port apa adanya, sama pola asimetri
 baca-vs-tulis kayak router lain (`articles.py` dkk). Email beneran
-dikirim lewat `cti_alerts.mailer.send_newsletter_email` (Graph draft
+dikirim lewat `cti_alerts.mailer.create_graph_draft` (Graph draft
 API, BUKAN `/sendMail` -- lihat docstring modul itu), bukan SMTP (lihat
 alasan di sana juga)."""
 
@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import asyncio
 
-from cti_alerts.mailer import send_newsletter_email
+from cti_alerts.mailer import create_graph_draft
 from cti_core.db.repositories.auth import AsyncAuditLogRepo
 from cti_core.db.repositories.newsletter import AsyncNewsletterRepo
 from fastapi import APIRouter, Depends, HTTPException, Request
@@ -135,7 +135,7 @@ async def resend_newsletter(
         raise HTTPException(status_code=404, detail="Newsletter not found")
     subject = f"[CTI Newsletter] Threat Intelligence Digest — Week {doc.week}, {doc.year}"
     try:
-        email_id = await asyncio.to_thread(send_newsletter_email, doc.html, subject)
+        email_id = await asyncio.to_thread(create_graph_draft, doc.html, subject)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e)) from e
     await AsyncAuditLogRepo(session).write(
@@ -182,7 +182,7 @@ async def draft_email(
             f"[CTI Newsletter] Threat Intelligence Digest — "
             f"Week {context['week']}, {context['year']}"
         )
-        email_id = await asyncio.to_thread(send_newsletter_email, html, subject)
+        email_id = await asyncio.to_thread(create_graph_draft, html, subject)
     except HTTPException:
         raise
     except Exception as e:

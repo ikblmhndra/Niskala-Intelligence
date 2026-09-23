@@ -3,46 +3,98 @@
 (Fase 7.4 Grup B, survei 2026-09-19) SEKARANG diport -- lihat
 `cti_api.services.cve_lookup`.
 
-**Belum diport** (nyusul terpisah, masing-masing punya alasan beda):
-`GET /export` (Excel, `cve_export_service` + openpyxl, belum dependency
-`cti-api`), `POST /draft-email` (`cve_email_service`, Graph/email),
-`GET /{id}/mindmap` (`mermaid_service`, generate diagram -- SUDAH
-tercakup fungsional lewat `GET /api/mindmap/cve/{cve_id}` generik,
-Bagian 4, endpoint spesifik lama gak perlu diduplikat), `GET /prioritize`
-(`cve_priority_service`, ternyata bagian dari "mesin cluster" `cluster_
-service.py`, Grup A -- bukan fitur CVE berdiri sendiri, lihat plan §Fase
-7.4). `GET /{id}/ticket`+`PUT`, `POST /{id}/acknowledge`+
-`/bulk-acknowledge`, `GET /next-ticket-id`+`/ack-statuses`, parameter
-`ack_filter` di list/stats -- SEMUA nempel konsep ticket yang skemanya
-(`CveTicket`/`CveTicketItem`, Fase 2) beda desain total dari kebutuhan
-lama (lihat docstring `cti_core.db.repositories.cve`), butuh keputusan
-desain sendiri sebelum diport (Grup C, plan §Fase 7.4)."""
+Fase 7.4 Grup C (2026-09-23) nambahin workflow ticket (`GET /{id}/ticket`+
+`PUT`, `POST /{id}/acknowledge`+`/bulk-acknowledge`, `GET /next-ticket-id`+
+`/ack-statuses`, parameter `ack_filter` di list/stats -- semua lewat
+`AsyncCveTicketRepo`, skema `CveTicket` yang DIROMBAK TOTAL dari
+placeholder Fase 2, lihat docstring model), `POST /draft-email`
+(`cti_api.services.cve_email`), dan `GET /export` (`cti_api.services.
+cve_export` -- SEKALIAN merbaiki bug lama: export gak pernah nge-scope
+`client_id`, lihat docstring modul itu).
+
+**Masih belum diport**: `GET /{id}/mindmap` (`mermaid_service`, generate
+diagram -- SUDAH tercakup fungsional lewat `GET /api/mindmap/cve/{cve_id}`
+generik, Bagian 4, endpoint spesifik lama gak perlu diduplikat),
+`GET /prioritize` (`cve_priority_service`, ternyata bagian dari "mesin
+cluster" `cluster_service.py`, Grup A -- bukan fitur CVE berdiri
+sendiri, lihat plan §Fase 7.4)."""
 
 from __future__ import annotations
 
 import datetime
+import io
 
-from cti_core.db.models.cve import CveTracker
+from cti_core.db.models.cve import CveTicket, CveTracker
 from cti_core.db.repositories.auth import AsyncAuditLogRepo
-from cti_core.db.repositories.cve import AsyncCveFalsePositiveRepo, AsyncCveTrackerRepo
+from cti_core.db.repositories.cve import (
+    AsyncCveFalsePositiveRepo,
+    AsyncCveTicketRepo,
+    AsyncCveTrackerRepo,
+)
 from cti_core.db.repositories.techstack import AsyncTechStackRepo
 from fastapi import APIRouter, Depends, Header, HTTPException, Query, Request
+from fastapi.responses import StreamingResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from cti_api.deps import AuthedUser, effective_client_id, get_db, request_ip, require_auth
 from cti_api.schemas.cve import (
+    AcknowledgeBody,
+    BulkAcknowledgeBody,
     BulkFalsePositiveBody,
     CveListResponse,
     CveOut,
     CvePocOut,
     CveReferenceOut,
     CveStats,
+    CveTicketBody,
+    DraftEmailBody,
     PurgeOrphanedBody,
 )
 from cti_api.schemas.techstack import EXPOSURE_MULTIPLIER, HOSTING_MULTIPLIER
+from cti_api.services import cve_email as cve_email_service
+from cti_api.services import cve_export as cve_export_service
 from cti_api.services import cve_lookup as cve_lookup_service
 
 router = APIRouter(prefix="/api/cve", tags=["cve"])
+
+_ACK_FILTER_PATTERN = "^(acked|unacked)$"
+
+
+def _parse_date(value: str) -> datetime.date | None:
+    return datetime.date.fromisoformat(value) if value else None
+
+
+def _serialize_ticket(ticket: CveTicket | None) -> dict[str, object]:
+    """Port `get_ticket()` -- `{}` kalau belum ada ticket (legacy juga
+    gitu, bukan 404). `cve_reported_date` SENGAJA gak ada, lihat
+    docstring `CveTicket` model -- frontend fallback ke `cve.published`
+    sendiri kalau field ini gak ada di response."""
+    if ticket is None:
+        return {}
+    return {
+        "ticket_id": ticket.ticket_id,
+        "cve_id": ticket.cve_id,
+        "affected_asset": ticket.affected_asset or "",
+        "affected_version": ticket.affected_version or "",
+        "fixed_version": ticket.fixed_version or "",
+        "asset_owner": ticket.asset_owner or "",
+        "owner_email": ticket.owner_email or "",
+        "owner_team": ticket.owner_team or "",
+        "active_exploitation": ticket.active_exploitation or "",
+        "remediation_date_plan": (
+            ticket.remediation_date_plan.isoformat() if ticket.remediation_date_plan else ""
+        ),
+        "remediation_status": ticket.remediation_status or "",
+        "actual_remediation_date": (
+            ticket.actual_remediation_date.isoformat() if ticket.actual_remediation_date else ""
+        ),
+        "escalation_required": ticket.escalation_required,
+        "comments": ticket.comments or "",
+        "risk_acceptance": ticket.risk_acceptance or "",
+        "closure_date": ticket.closure_date.isoformat() if ticket.closure_date else "",
+        "acknowledged_by": ticket.acknowledged_by or "",
+        "acknowledge_time": ticket.acknowledge_time.isoformat() if ticket.acknowledge_time else "",
+    }
 
 
 def _serialize(
@@ -113,6 +165,7 @@ async def list_cves(
     include_fp: bool = False,
     sort_by: str = Query("published", pattern="^(tech|severity|published|epss)$"),
     sort_dir: str = Query("desc", pattern="^(asc|desc)$"),
+    ack_filter: str | None = Query(None, pattern=_ACK_FILTER_PATTERN),
     session: AsyncSession = Depends(get_db),
     user: AuthedUser = Depends(require_auth),
     x_client_id: str | None = Header(None),
@@ -136,6 +189,7 @@ async def list_cves(
         exclude_cve_ids=None if include_fp else fp_ids,
         sort_by=sort_by,
         sort_dir=sort_dir,
+        ack_filter=ack_filter,
     )
 
     tp_ids = [c.cve_id for c in cves if c.cve_id not in fp_ids_set]
@@ -166,6 +220,7 @@ async def cve_stats(
     tech: list[str] | None = Query(None),
     date_start: datetime.date | None = Query(None),
     date_end: datetime.date | None = Query(None),
+    ack_filter: str | None = Query(None, pattern=_ACK_FILTER_PATTERN),
     session: AsyncSession = Depends(get_db),
     user: AuthedUser = Depends(require_auth),
     x_client_id: str | None = Header(None),
@@ -181,6 +236,7 @@ async def cve_stats(
         date_start=date_start,
         date_end=date_end,
         exclude_cve_ids=fp_ids or None,
+        ack_filter=ack_filter,
     )
     return CveStats(**stats)
 
@@ -373,3 +429,208 @@ async def single_exploit_lookup(
     )
     await session.commit()
     return result
+
+
+@router.get("/export")
+async def export_cves(
+    request: Request,
+    date_start: datetime.date | None = Query(None),
+    date_end: datetime.date | None = Query(None),
+    search: str | None = Query(None),
+    severity: list[str] | None = Query(None),
+    tech: list[str] | None = Query(None),
+    include_fp: bool = Query(False),
+    ack_filter: str | None = Query(None, pattern=_ACK_FILTER_PATTERN),
+    session: AsyncSession = Depends(get_db),
+    user: AuthedUser = Depends(require_auth),
+    x_client_id: str | None = Header(None),
+) -> StreamingResponse:
+    """Export CVE+ticket client ini sebagai Excel. Lihat docstring
+    `cti_api.services.cve_export` -- SEKARANG di-scope `client_id`
+    (legacy: bug, gak pernah nge-scope sama sekali)."""
+    cid = effective_client_id(user, x_client_id)
+    try:
+        data = await cve_export_service.export_cves_to_excel(
+            session,
+            client_id=cid,
+            date_start=date_start,
+            date_end=date_end,
+            search=search,
+            severity=severity,
+            tech=tech,
+            include_fp=include_fp,
+            ack_filter=ack_filter,
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e)) from e
+
+    filename = f"CVE_Tracker_Export_{datetime.date.today().strftime('%Y%m%d')}.xlsx"
+    if date_start or date_end:
+        filename = f"CVE_Tracker_{date_start or 'start'}_{date_end or 'end'}.xlsx"
+
+    await AsyncAuditLogRepo(session).write(
+        username=user["username"],
+        action="export_cve_excel",
+        detail={
+            "date_start": date_start.isoformat() if date_start else None,
+            "date_end": date_end.isoformat() if date_end else None,
+            "search": search,
+            "severity": severity,
+            "tech": tech,
+            "ack_filter": ack_filter,
+        },
+        ip_address=request_ip(request),
+    )
+    await session.commit()
+    return StreamingResponse(
+        io.BytesIO(data),
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )
+
+
+@router.get("/next-ticket-id")
+async def next_ticket_id(
+    session: AsyncSession = Depends(get_db), _user: AuthedUser = Depends(require_auth)
+) -> dict[str, str]:
+    return {"ticket_id": await AsyncCveTicketRepo(session).get_next_ticket_id()}
+
+
+@router.get("/ack-statuses")
+async def ack_statuses(
+    session: AsyncSession = Depends(get_db),
+    user: AuthedUser = Depends(require_auth),
+    x_client_id: str | None = Header(None),
+) -> dict[str, str]:
+    cid = effective_client_id(user, x_client_id)
+    return await AsyncCveTicketRepo(session).get_ack_statuses(cid)
+
+
+@router.post("/draft-email")
+async def create_draft_email(
+    body: DraftEmailBody,
+    request: Request,
+    session: AsyncSession = Depends(get_db),
+    user: AuthedUser = Depends(require_auth),
+) -> dict[str, object]:
+    if not body.cve_ids:
+        raise HTTPException(status_code=400, detail="cve_ids required")
+    ticket_id = body.ticket_id or await AsyncCveTicketRepo(session).get_next_ticket_id()
+    try:
+        result = await cve_email_service.draft_email_for_cves(session, body.cve_ids, ticket_id)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e)) from e
+    await AsyncAuditLogRepo(session).write(
+        username=user["username"],
+        action="draft_email",
+        detail={"cve_ids": body.cve_ids},
+        ip_address=request_ip(request),
+    )
+    await session.commit()
+    return result
+
+
+@router.get("/{cve_id}/ticket")
+async def get_cve_ticket(
+    cve_id: str,
+    session: AsyncSession = Depends(get_db),
+    user: AuthedUser = Depends(require_auth),
+    x_client_id: str | None = Header(None),
+) -> dict[str, object]:
+    cid = effective_client_id(user, x_client_id)
+    ticket = await AsyncCveTicketRepo(session).get(cve_id, cid)
+    return _serialize_ticket(ticket)
+
+
+@router.put("/{cve_id}/ticket")
+async def update_cve_ticket(
+    cve_id: str,
+    body: CveTicketBody,
+    request: Request,
+    session: AsyncSession = Depends(get_db),
+    user: AuthedUser = Depends(require_auth),
+    x_client_id: str | None = Header(None),
+) -> dict[str, bool]:
+    cid = effective_client_id(user, x_client_id)
+    await AsyncCveTicketRepo(session).upsert(
+        cve_id=cve_id,
+        client_id=cid,
+        affected_asset=body.affected_asset or None,
+        affected_version=body.affected_version or None,
+        fixed_version=body.fixed_version or None,
+        asset_owner=body.asset_owner or None,
+        owner_email=body.owner_email or None,
+        owner_team=body.owner_team or None,
+        active_exploitation=body.active_exploitation or None,
+        remediation_date_plan=_parse_date(body.remediation_date_plan),
+        remediation_status=body.remediation_status or None,
+        actual_remediation_date=_parse_date(body.actual_remediation_date),
+        escalation_required=body.escalation_required,
+        comments=body.comments or None,
+        risk_acceptance=body.risk_acceptance or None,
+        closure_date=_parse_date(body.closure_date),
+    )
+    await AsyncAuditLogRepo(session).write(
+        username=user["username"],
+        action="update_ticket",
+        target_id=cve_id,
+        ip_address=request_ip(request),
+    )
+    await session.commit()
+    return {"ok": True}
+
+
+@router.post("/bulk-acknowledge")
+async def bulk_acknowledge(
+    body: BulkAcknowledgeBody,
+    request: Request,
+    session: AsyncSession = Depends(get_db),
+    user: AuthedUser = Depends(require_auth),
+    x_client_id: str | None = Header(None),
+) -> dict[str, object]:
+    if not body.cve_ids:
+        raise HTTPException(status_code=400, detail="cve_ids required")
+    if not body.analyst_name.strip():
+        raise HTTPException(status_code=400, detail="analyst_name required")
+    if len(body.cve_ids) > 100:
+        raise HTTPException(status_code=400, detail="max 100 CVEs per bulk operation")
+    cid = effective_client_id(user, x_client_id)
+    acknowledged = await AsyncCveTicketRepo(session).bulk_acknowledge(
+        body.cve_ids, cid, body.analyst_name
+    )
+    await AsyncAuditLogRepo(session).write(
+        username=user["username"],
+        action="bulk_acknowledge_cve",
+        detail={
+            "cve_ids": body.cve_ids,
+            "analyst_name": body.analyst_name,
+            "acknowledged": acknowledged,
+        },
+        ip_address=request_ip(request),
+    )
+    await session.commit()
+    return {"ok": True, "acknowledged": acknowledged}
+
+
+@router.post("/{cve_id}/acknowledge")
+async def acknowledge(
+    cve_id: str,
+    body: AcknowledgeBody,
+    request: Request,
+    session: AsyncSession = Depends(get_db),
+    user: AuthedUser = Depends(require_auth),
+    x_client_id: str | None = Header(None),
+) -> dict[str, bool]:
+    if not body.analyst_name.strip():
+        raise HTTPException(status_code=400, detail="analyst_name required")
+    cid = effective_client_id(user, x_client_id)
+    await AsyncCveTicketRepo(session).acknowledge(cve_id, cid, body.analyst_name)
+    await AsyncAuditLogRepo(session).write(
+        username=user["username"],
+        action="acknowledge_cve",
+        target_id=cve_id,
+        detail={"analyst_name": body.analyst_name},
+        ip_address=request_ip(request),
+    )
+    await session.commit()
+    return {"ok": True}

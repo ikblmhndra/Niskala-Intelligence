@@ -8,18 +8,12 @@ buat yang kedua, dua-duanya lewat repo yang sama biar gak drift lagi.
 BARU -- permukaan BACA + false-positive doang, satu-satunya jalur TULIS CVE
 baru tetap `CveTrackerRepo` sync di atas (Celery task, Fase 4).
 
-**Sengaja gak nyentuh `CveTicket`/`CveTicketItem`** (acknowledge/ticket
-workflow) -- ketauan pas baca `cve_service.py`/`cve_ticket_service.py`
-lama: `CveTicket` (Pydantic lama) itu record remediation KAYA per-CVE
-(affected_asset, owner_email, remediation_status, escalation_required, dst
--- 14+ field), sedangkan model Postgres `CveTicket`/`CveTicketItem` (Fase 2)
-didesain buat konsep BEDA (satu ticket_id + status, bisa nyakup BANYAK
-cve_id lewat `CveTicketItem`, gak ada kolom `client_id`/`acknowledged_by`/
-`acknowledge_time` sama sekali). Ini bukan "tambah kolom" kayak gap-gap
-sebelumnya (`Role.display_name`, dst) -- butuh keputusan desain sendiri
-soal bentuk final tabel, gak pantas diputus buru-buru di tengah porting
-router lain. `ack_filter` (parameter list/stats lama) ikut di-skip karena
-semantiknya nempel ticket ini."""
+**`AsyncCveTicketRepo`** (Fase 7.4 Grup C, 2026-09-23) -- jalur baca/tulis
+`cve_tickets`, satu record remediation per (cve_id, client_id) -- lihat
+docstring `CveTicket` (`db/models/cve.py`) soal kenapa bentuknya flat,
+bukan "ticket nyakup banyak CVE" kayak placeholder Fase 2. `ack_filter`
+(parameter `list_filtered()`/`get_stats()` di bawah) sekarang jalan lagi,
+subquery lawan `cve_tickets.acknowledged_by`."""
 
 from __future__ import annotations
 
@@ -39,6 +33,7 @@ from cti_core.db.models.cve import (
     CvePoc,
     CveReference,
     CveThreatActor,
+    CveTicket,
     CveTracker,
     CveTTP,
 )
@@ -130,6 +125,7 @@ def _apply_filters(
     date_start: datetime.date | None,
     date_end: datetime.date | None,
     exclude_cve_ids: Sequence[str] | None,
+    ack_filter: str | None = None,
 ) -> Select[tuple[CveTracker]]:
     stmt = stmt.where(CveTracker.client_id == client_id)
     if exclude_cve_ids:
@@ -150,6 +146,14 @@ def _apply_filters(
         stmt = stmt.where(CveTracker.published >= date_start)
     if date_end is not None:
         stmt = stmt.where(CveTracker.published <= date_end)
+    if ack_filter in ("acked", "unacked"):
+        acked_subq = select(CveTicket.cve_id).where(
+            CveTicket.client_id == client_id, CveTicket.acknowledged_by.is_not(None)
+        )
+        if ack_filter == "acked":
+            stmt = stmt.where(CveTracker.cve_id.in_(acked_subq))
+        else:
+            stmt = stmt.where(CveTracker.cve_id.notin_(acked_subq))
     return stmt
 
 
@@ -460,6 +464,7 @@ class AsyncCveTrackerRepo:
         exclude_cve_ids: Sequence[str] | None = None,
         sort_by: str = "published",
         sort_dir: str = "desc",
+        ack_filter: str | None = None,
     ) -> tuple[list[CveTracker], int]:
         base = _apply_filters(
             select(CveTracker),
@@ -470,6 +475,7 @@ class AsyncCveTrackerRepo:
             date_start=date_start,
             date_end=date_end,
             exclude_cve_ids=exclude_cve_ids,
+            ack_filter=ack_filter,
         )
         total = (
             await self.session.execute(select(func.count()).select_from(base.subquery()))
@@ -493,6 +499,7 @@ class AsyncCveTrackerRepo:
         date_start: datetime.date | None = None,
         date_end: datetime.date | None = None,
         exclude_cve_ids: Sequence[str] | None = None,
+        ack_filter: str | None = None,
     ) -> dict[str, int]:
         """`severity` SENGAJA cuma dipakai buat query `total` -- port perilaku
         lama: bucket critical/high/medium/low tetap ngitung SEMUA severity
@@ -507,6 +514,7 @@ class AsyncCveTrackerRepo:
             date_start=date_start,
             date_end=date_end,
             exclude_cve_ids=exclude_cve_ids,
+            ack_filter=ack_filter,
         )
         base_with_severity = _apply_filters(
             select(CveTracker),
@@ -517,6 +525,7 @@ class AsyncCveTrackerRepo:
             date_start=date_start,
             date_end=date_end,
             exclude_cve_ids=exclude_cve_ids,
+            ack_filter=ack_filter,
         )
 
         async def _count(stmt: Select[tuple[CveTracker]]) -> int:
@@ -535,6 +544,59 @@ class AsyncCveTrackerRepo:
             base_no_severity.where(CveTracker.cve_score > 0, CveTracker.cve_score < 4.0)
         )
         return {"total": total, "critical": critical, "high": high, "medium": medium, "low": low}
+
+    async def list_for_export(
+        self,
+        *,
+        client_id: str,
+        tech: Sequence[str] | None = None,
+        severity: Sequence[str] | None = None,
+        search: str | None = None,
+        date_start: datetime.date | None = None,
+        date_end: datetime.date | None = None,
+        exclude_cve_ids: Sequence[str] | None = None,
+        ack_filter: str | None = None,
+    ) -> list[CveTracker]:
+        """Port `cve_export_service.export_cves_to_excel()`'s query --
+        filter tanggal di `detected_on`, BUKAN `published` kayak
+        `list_filtered()`/`get_stats()` di atas. Ini asimetri yang UDAH
+        ADA di legacy sendiri (`cve_export_service.py` filter
+        `detected_on`, `cve_service.py` filter `published`) -- port apa
+        adanya, bukan penyimpangan baru, makanya metode terpisah alih-
+        alih numpang `_apply_filters()`. Fallback-ke-`published` lama
+        (buat dokumen Mongo tanpa `detected_on`) gak relevan lagi --
+        `detected_on` NOT NULL di skema baru (`server_default=now()`),
+        kasusnya struktural gak mungkin kejadian."""
+        stmt = select(CveTracker).where(CveTracker.client_id == client_id)
+        if exclude_cve_ids:
+            stmt = stmt.where(CveTracker.cve_id.notin_(exclude_cve_ids))
+        if tech:
+            stmt = stmt.where(CveTracker.tech.in_(tech))
+        if severity:
+            stmt = stmt.where(CveTracker.cve_severity.in_([s.upper() for s in severity]))
+        if search:
+            stmt = stmt.where(
+                or_(
+                    CveTracker.cve_id.ilike(f"%{search}%"),
+                    CveTracker.summary.ilike(f"%{search}%"),
+                    CveTracker.tech.ilike(f"%{search}%"),
+                )
+            )
+        if date_start is not None:
+            stmt = stmt.where(func.date(CveTracker.detected_on) >= date_start)
+        if date_end is not None:
+            stmt = stmt.where(func.date(CveTracker.detected_on) <= date_end)
+        if ack_filter in ("acked", "unacked"):
+            acked_subq = select(CveTicket.cve_id).where(
+                CveTicket.client_id == client_id, CveTicket.acknowledged_by.is_not(None)
+            )
+            if ack_filter == "acked":
+                stmt = stmt.where(CveTracker.cve_id.in_(acked_subq))
+            else:
+                stmt = stmt.where(CveTracker.cve_id.notin_(acked_subq))
+        stmt = stmt.order_by(CveTracker.detected_on.desc()).limit(50000)
+        result = await self.session.execute(stmt)
+        return list(result.scalars().all())
 
     async def get_tech_list(self, client_id: str) -> list[str]:
         result = await self.session.execute(
@@ -596,3 +658,173 @@ class AsyncCveTrackerRepo:
             await self.session.delete(fp)
         await self.session.flush()
         return {"dry_run": False, "deleted": len(cve_ids), "by_tech": by_tech, "cve_ids": cve_ids}
+
+
+class AsyncCveTicketRepo:
+    """Port `cve_ticket_service.py`. Satu record `CveTicket` per
+    (cve_id, client_id) -- lihat docstring model."""
+
+    def __init__(self, session: AsyncSession) -> None:
+        self.session = session
+
+    async def get(self, cve_id: str, client_id: str) -> CveTicket | None:
+        result = await self.session.execute(
+            select(CveTicket).where(CveTicket.cve_id == cve_id, CveTicket.client_id == client_id)
+        )
+        return result.scalar_one_or_none()
+
+    async def get_by_cve_ids(self, cve_ids: Sequence[str], client_id: str) -> dict[str, CveTicket]:
+        """`{cve_id: ticket}` -- batch fetch buat export Excel (Grup C),
+        satu query bukan N."""
+        if not cve_ids:
+            return {}
+        result = await self.session.execute(
+            select(CveTicket).where(CveTicket.client_id == client_id, CveTicket.cve_id.in_(cve_ids))
+        )
+        return {t.cve_id: t for t in result.scalars().all()}
+
+    async def get_next_ticket_id(self) -> str:
+        """`"CTI-{tahun}-{bulan:02d}-{urut:03d}"` -- scan GLOBAL lintas
+        SEMUA client (legacy: query tanpa filter client_id sama sekali),
+        port apa adanya (lihat docstring `CveTicket`). Urutan dari suffix
+        numerik terbesar yang match prefix bulan ini + 1, bukan row
+        count (gap dari ticket yang kehapus gak bikin nomor kepake
+        ulang)."""
+        now = datetime.datetime.now(datetime.UTC)
+        prefix = f"CTI-{now.year}-{now.month:02d}-"
+        result = await self.session.execute(
+            select(CveTicket.ticket_id).where(CveTicket.ticket_id.like(f"{prefix}%"))
+        )
+        max_num = 0
+        for ticket_id in result.scalars().all():
+            try:
+                num = int(ticket_id.rsplit("-", 1)[-1])
+            except ValueError:
+                continue
+            max_num = max(max_num, num)
+        return f"{prefix}{max_num + 1:03d}"
+
+    async def upsert(
+        self,
+        *,
+        cve_id: str,
+        client_id: str,
+        ticket_id: str | None = None,
+        affected_asset: str | None = None,
+        affected_version: str | None = None,
+        fixed_version: str | None = None,
+        asset_owner: str | None = None,
+        owner_email: str | None = None,
+        owner_team: str | None = None,
+        active_exploitation: str | None = None,
+        remediation_date_plan: datetime.date | None = None,
+        remediation_status: str | None = None,
+        actual_remediation_date: datetime.date | None = None,
+        escalation_required: bool = False,
+        comments: str | None = None,
+        risk_acceptance: str | None = None,
+        closure_date: datetime.date | None = None,
+    ) -> CveTicket:
+        """Port `upsert_ticket()` -- `PUT /{cve_id}/ticket`. `ticket_id`
+        kosong/`None` -> pakai yang udah ada (record lama) atau generate
+        baru -- BEDA kecil dari legacy (yang `$set` apa adanya termasuk
+        string kosong dari form) SENGAJA: `ticket_id` UNIQUE di Postgres
+        (gak ada analognya di Mongo schemaless), nyimpen blank buat >1
+        ticket bakal nabrak constraint itu. `acknowledged_by`/
+        `acknowledge_time` TETAP -- cuma `acknowledge()`/`bulk_acknowledge()`
+        yang nyentuh dua field itu."""
+        existing = await self.get(cve_id, client_id)
+        existing_ticket_id = existing.ticket_id if existing else None
+        resolved_ticket_id = ticket_id or existing_ticket_id or await self.get_next_ticket_id()
+
+        if existing is None:
+            ticket = CveTicket(cve_id=cve_id, client_id=client_id, ticket_id=resolved_ticket_id)
+            self.session.add(ticket)
+        else:
+            ticket = existing
+            ticket.ticket_id = resolved_ticket_id
+
+        ticket.affected_asset = affected_asset
+        ticket.affected_version = affected_version
+        ticket.fixed_version = fixed_version
+        ticket.asset_owner = asset_owner
+        ticket.owner_email = owner_email
+        ticket.owner_team = owner_team
+        ticket.active_exploitation = active_exploitation
+        ticket.remediation_date_plan = remediation_date_plan
+        ticket.remediation_status = remediation_status
+        ticket.actual_remediation_date = actual_remediation_date
+        ticket.escalation_required = escalation_required
+        ticket.comments = comments
+        ticket.risk_acceptance = risk_acceptance
+        ticket.closure_date = closure_date
+        await self.session.flush()
+        return ticket
+
+    async def get_acked_cve_ids(self, client_id: str) -> list[str]:
+        result = await self.session.execute(
+            select(CveTicket.cve_id).where(
+                CveTicket.client_id == client_id, CveTicket.acknowledged_by.is_not(None)
+            )
+        )
+        return list(result.scalars().all())
+
+    async def get_ack_statuses(self, client_id: str) -> dict[str, str]:
+        result = await self.session.execute(
+            select(CveTicket.cve_id, CveTicket.acknowledged_by).where(
+                CveTicket.client_id == client_id, CveTicket.acknowledged_by.is_not(None)
+            )
+        )
+        return {cve_id: acked_by for cve_id, acked_by in result.all() if acked_by}
+
+    async def acknowledge(self, cve_id: str, client_id: str, analyst_name: str) -> CveTicket:
+        existing = await self.get(cve_id, client_id)
+        ticket_id = (existing.ticket_id if existing else None) or await self.get_next_ticket_id()
+        now = datetime.datetime.now(datetime.UTC)
+
+        if existing is None:
+            ticket = CveTicket(cve_id=cve_id, client_id=client_id, ticket_id=ticket_id)
+            self.session.add(ticket)
+        else:
+            ticket = existing
+            ticket.ticket_id = ticket_id
+        ticket.acknowledged_by = analyst_name.strip()
+        ticket.acknowledge_time = now
+        await self.session.flush()
+        return ticket
+
+    async def bulk_acknowledge(
+        self, cve_ids: Sequence[str], client_id: str, analyst_name: str
+    ) -> int:
+        """Port `bulk_acknowledge_cves()`. CVE yang UDAH acked (`acknowledged_by`
+        keisi) di-skip, gak dobel-timpa waktu ack-nya. Flush TIAP iterasi
+        (bukan sekali di akhir) -- `get_next_ticket_id()` scan ulang tiap
+        kali, ticket BARU dari iterasi sebelumnya harus udah keliatan di
+        query berikutnya biar 2 CVE baru dalam satu batch gak kebagian
+        nomor ticket sama (legacy Mongo aman dari ini otomatis karena
+        tiap `update_one` langsung commit; SQLAlchemy session butuh
+        flush eksplisit)."""
+        result = await self.session.execute(
+            select(CveTicket).where(CveTicket.client_id == client_id, CveTicket.cve_id.in_(cve_ids))
+        )
+        existing_by_cve = {t.cve_id: t for t in result.scalars().all()}
+        already_acked = {cid for cid, t in existing_by_cve.items() if t.acknowledged_by}
+        to_ack = [c for c in cve_ids if c not in already_acked]
+        if not to_ack:
+            return 0
+
+        analyst_name = analyst_name.strip()
+        now = datetime.datetime.now(datetime.UTC)
+        for cve_id in to_ack:
+            ticket = existing_by_cve.get(cve_id)
+            if ticket is None:
+                ticket = CveTicket(
+                    cve_id=cve_id,
+                    client_id=client_id,
+                    ticket_id=await self.get_next_ticket_id(),
+                )
+                self.session.add(ticket)
+            ticket.acknowledged_by = analyst_name
+            ticket.acknowledge_time = now
+            await self.session.flush()
+        return len(to_ack)
