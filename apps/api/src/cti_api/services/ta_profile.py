@@ -2,24 +2,23 @@
 cross-ref CVE-nya) -- `generate_ta_profile()`/`get_ta_profile()`. Fase
 7.3 (router `ta_groups`, Bagian 3).
 
-Klien LLM lewat `cti_api.services.llm_client.get_llm_client()` -- lihat
-docstring modul itu soal kenapa gak langsung reuse `cti_enrich.llm.client`."""
+Klien LLM lewat `cti_core.llm.client.get_llm_client()` -- Fase 7.5, module
+ini gak numpang duplikat sempit sendiri lagi (lihat docstring
+`cti_core.llm.client` soal relokasi)."""
 
 from __future__ import annotations
 
 import asyncio
 import datetime
-import json
 import re
 from typing import Any
 
 from cti_core.db.models.article import Article, ArticleThreatActor
 from cti_core.db.repositories.cve import AsyncCveTrackerRepo
 from cti_core.db.repositories.ta import AsyncTAProfileRepo, build_ta_name_pattern
+from cti_core.llm.client import get_llm_client, parse_json_response
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-
-from cti_api.services.llm_client import get_llm_client
 
 _SYSTEM_PROMPT = """You are a Senior Cyber Threat Intelligence Analyst. Your task is to produce a structured,
 analyst-grade threat actor profile based on the input provided (report text, article,
@@ -192,7 +191,7 @@ def _call_llm(actor_name: str, news: list[dict[str, Any]]) -> dict[str, Any]:
         response_format={"type": "json_object"},
     )
     raw = completion.choices[0].message.content
-    result: dict[str, Any] = json.loads(raw or "{}")
+    result = parse_json_response(raw or "{}")
     return result
 
 

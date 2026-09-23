@@ -1105,6 +1105,11 @@ disentuh (`apps/api` + `db/repositories/auth.py` + `db/models/auth.py`).
 lain), 7.4 (56 service lain, termasuk logika 7.8), 7.5 (buang duplikasi
 pkg_vuln/cve_email/ioc/llm -- versi kanonik IOC+LLM udah disatukan Fase 5,
 tinggal pkg_vuln+cve_email), 7.6 (snapshot test), 7.7 (ekspor OpenAPI), 7.8.
+~~Catatan ini soal IOC+LLM ternyata JADI STALE lagi begitu `apps/api` lahir
+(Fase 7.3) -- exit criteria "gak ada import `cti_enrich` dari API" bikin
+`llm` harus di-duplikat ULANG buat `apps/api`. `ioc` kena masalah sama tapi
+udah dibenerin Fase 7.3 Bagian 4; `llm` nyusul dibenerin Fase 7.5
+(2026-09-23), lihat catatan lengkap di bawah.~~
 
 - [x] **7.1** ~~Bootstrap FastAPI (tanpa background loop)~~ -- `apps/api`
       + `main.py` (`create_app()`, lifespan, CORS), lihat catatan di atas.
@@ -2165,7 +2170,74 @@ tinggal pkg_vuln+cve_email), 7.6 (snapshot test), 7.7 (ekspor OpenAPI), 7.8.
       vuln/cve_email/ioc/llm client), **7.6** (snapshot test tiap
       endpoint), **7.7** (ekspor skema OpenAPI), **7.8** (5 loop jadi
       Celery beat) -- belum dimulai, nunggu arahan user.
-- [ ] **7.5** Buang duplikasi (pkg_vuln, cve_email, ioc, llm)
+- [x] **7.5** Buang duplikasi (pkg_vuln, cve_email, ioc, llm) --
+      **(2026-09-23) audit 4 item, 1 genuinely butuh kerjaan.**
+      Catatan lama (Bagian 7.2, "IOC+LLM udah disatukan Fase 5") jadi
+      STALE tanpa disadari: bener SAAT ditulis (`cti_enrich` cuma satu
+      salinan), tapi begitu `apps/api` lahir (Fase 7.3) dengan exit
+      criteria "gak ada import `cti_scraper`/`cti_enrich` dari API",
+      LLM client harus di-duplikat ULANG (`cti_api.services.llm_client.
+      py`, ~15 baris, versi sempit) buat 5 service yang butuh -- gap
+      baru yang gak ke-cover catatan lama. `ioc` udah kena masalah SAMA
+      lebih dulu dan UDAH dibenerin (Fase 7.3 Bagian 4, relokasi
+      `cti_core.ioc.extractor`) -- pattern-nya identik, cuma belum
+      diterapkan ke `llm`.
+
+      **Hasil audit 4 item:**
+      - **`ioc`** -- KELAR dari Fase 7.3 Bagian 4, diverifikasi ulang,
+        gak ada kerjaan.
+      - **`pkg_vuln`** -- KELAR dari Fase 4 (`pkg_vuln.py` satu
+        implementasi, gak ada fork tersisa), diverifikasi, gak ada
+        kerjaan.
+      - **`cve_email`** -- KELAR dari Grup C (Fase 7.4), satu template
+        (`cve_notification_email.html`), diverifikasi, gak ada kerjaan.
+      - **`llm`** -- GENUINELY DUPLIKAT, dikerjain sesi ini (lihat
+        bawah).
+      - *(bonus, di luar 4 item yang disebut plan tapi ada di §6 asli)*
+        **`send_alert`** (Telegram) -- juga udah KELAR dari Bagian 4
+        (`cti_alerts.telegram.send_alert()`, satu fungsi gantiin 14).
+
+      **`llm` -- relokasi `cti_enrich.llm.client` → `cti_core.llm.
+      client`**, persis presedan `cti_core.ioc.extractor`: modul ini
+      dari awal ZERO dependency internal `cti_enrich` (cuma
+      `cti_core.config` + `openai` + stdlib), jadi mekanis murni buat
+      dipindah. `apps/api`'s duplikat sempit (`cti_api.services.
+      llm_client.py`) DIHAPUS TOTAL, 5 caller-nya (`ta_profile`/
+      `exec_brief`/`cve_email`/`newsletter`/`recap`) import langsung
+      dari `cti_core.llm.client`, sama kayak 2 caller internal
+      `cti_enrich` (`stages/classify.py`/`stages/extract_ttps.py`).
+      `openai>=1.30` ditambahin ke dependency `cti-core`.
+
+      **Bonus correctness fix, ketauan gara-gara audit ini (bukan yang
+      dicari dari awal):** 6 titik parsing JSON-dari-LLM di `apps/api`
+      (`cve_email.py` x2, `newsletter.py` x2, `ta_profile.py` x1,
+      `recap.py`'s `_extract_json`) SEMUANYA re-implementasi terpisah,
+      dan 5 dari 6 (semua kecuali `recap.py`) cuma `json.loads(content
+      or "{}")` POLOS -- gak nahan `<think>...</think>` preamble atau
+      code-fence markdown, padahal edge case itu UDAH KEBUKTIAN
+      kejadian beneran lawan dev gateway (dicatat di docstring
+      `parse_json_response()` sejak Fase 5). Kelima titik itu rawan
+      `JSONDecodeError` gak ketangkep kalau gateway kebetulan mbalikin
+      salah satu bentuk itu. Diganti semua numpang `cti_core.llm.
+      client.parse_json_response()` -- pola `parse_json_response(content
+      or "{}")` (bukan `parse_json_response(content)` polos) dipilih
+      biar behavior identik lawan kode lama buat kasus falsy
+      (`raw or "{}"` sebelumnya, sekarang `parse_json_response("{}")`
+      == `{}` juga). `recap.py`'s `_extract_json()` beda kasus -- dia
+      PUNYA kontrak sendiri (gak pernah raise, fallback `{"_raw": raw}`
+      yang dipakai `generate_daily_recap()` mutusin nyimpen `raw_llm`
+      atau kagak), jadi BUKAN diganti langsung, tapi dibungkus try/
+      except di sekitar `parse_json_response()` -- kontrak lama tetap
+      sama persis, cuma sekarang IKUT dapet proteksi `<think>`-block
+      yang sebelumnya gak ada di situ juga.
+
+      18 test baru: `tests/unit/test_llm_client.py` (13 test --
+      `parse_json_response`/`get_llm_client`/`store_param`, belum
+      pernah ada test khusus sebelum ini walau dipakai 7 caller),
+      `tests/unit/test_recap_extract_json.py` (5 test, verifikasi
+      kontrak fallback `_extract_json` gak berubah pasca refactor).
+      Full suite: **1049 passed** (dari 1031), mypy 183 file bersih
+      (turun dari 184 -- 1 file duplikat kehapus), ruff bersih.
 - [ ] **7.6** Snapshot test tiap endpoint
 - [ ] **7.7** Ekspor skema OpenAPI
 - [ ] **7.8** *(dipindah dari 6.6)* Pindahkan 5 loop `ScraperNewsWeb/app/main.py`

@@ -10,9 +10,9 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass, field
 
+from cti_core.llm.client import get_llm_client, parse_json_response, store_param
 from openai import RateLimitError
 
-from cti_enrich.llm.client import get_llm_client, parse_json_response, store_param
 from cti_enrich.stages.classify import OpenAIQuotaExhausted
 
 _TTP_SYSTEM_PROMPT = """Based on the provided article summary, identify the top 5 most relevant MITRE ATT&CK techniques. For each technique return:

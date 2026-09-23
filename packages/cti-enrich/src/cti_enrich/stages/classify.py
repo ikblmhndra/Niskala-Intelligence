@@ -18,7 +18,7 @@ ada `response_format={"type":"json_object"}` -- `extractTTPs()` di file yang
 SAMA udah pasang ini dan gak butuh hack apa pun. Fix: pasang
 `response_format=json_object` di sini juga (extractTTPs, port di
 `extract_ttps.py`, jadi acuan gaya yang bener), parse jawaban lewat
-`parse_json_response()` (`cti_enrich.llm.client`) yang cuma strip wrapper
+`parse_json_response()` (`cti_core.llm.client`) yang cuma strip wrapper
 yang emang dikenal (fence ```json, atau `<think>` reasoning model -- bukan
 string tebak-tebakan)."""
 
@@ -27,9 +27,8 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass, field
 
+from cti_core.llm.client import get_llm_client, parse_json_response, store_param
 from openai import RateLimitError
-
-from cti_enrich.llm.client import get_llm_client, parse_json_response, store_param
 
 _PROMPT = """
         As a Threat Intelligence analyst, determine whether the following article title provides meaningful insight into the cybersecurity threat landscape.

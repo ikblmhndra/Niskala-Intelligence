@@ -18,10 +18,10 @@ from __future__ import annotations
 import asyncio
 from typing import Any
 
+from cti_core.llm.client import get_llm_client
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from cti_api.services.exec_dashboard import get_exec_dashboard_v2
-from cti_api.services.llm_client import get_llm_client
 
 SYSTEM_PROMPT = """You are a Senior Cyber Threat Intelligence Analyst producing a concise 1-page executive briefing for C-suite and board-level audiences.
 

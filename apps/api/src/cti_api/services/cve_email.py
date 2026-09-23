@@ -36,16 +36,14 @@ from __future__ import annotations
 
 import asyncio
 import datetime
-import json
 from pathlib import Path
 from typing import Any
 
 from cti_alerts.mailer import create_graph_draft
 from cti_core.db.repositories.cve import AsyncCveTrackerRepo
+from cti_core.llm.client import get_llm_client, parse_json_response
 from jinja2 import Environment, FileSystemLoader
 from sqlalchemy.ext.asyncio import AsyncSession
-
-from cti_api.services.llm_client import get_llm_client
 
 _TEMPLATE_DIR = Path(__file__).parent.parent / "templates"
 _TEMPLATE_FILE = "cve_notification_email.html"
@@ -95,7 +93,7 @@ CRITICAL: Return ONLY the JSON object. Start with { and end with }."""
         n=1,
     )
     content = completion.choices[0].message.content
-    result: dict[str, Any] = json.loads(content or "{}")
+    result = parse_json_response(content or "{}")
     return result
 
 
@@ -124,7 +122,7 @@ CRITICAL: Return ONLY the JSON object. Start with { and end with }."""
         n=1,
     )
     content = completion.choices[0].message.content
-    result: dict[str, Any] = json.loads(content or "{}")
+    result = parse_json_response(content or "{}")
     return result
 
 

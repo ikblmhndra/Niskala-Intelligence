@@ -26,14 +26,20 @@ lama di-drop, bagian "NEW/UPDATED CVES" (`_collect_cves`) sendiri udah
 nutup sinyal itu. Sort artikel pakai `source_score.get_source_reliability()`
 (heuristik nama sumber) gantiin field `source_reliability` per-dokumen
 lama yang gak ada analognya di `Article` (grading itu sekarang query
-terpisah lewat `AsyncSourceReliabilityRepo`, bukan kolom artikel)."""
+terpisah lewat `AsyncSourceReliabilityRepo`, bukan kolom artikel).
+
+**`_extract_json()` (Fase 7.5, "buang duplikasi")** dulu regex sendiri
+(fence-strip + brace-extraction) yang HAMPIR sama kayak `cti_core.llm.
+client.parse_json_response()` tapi gak nahan `<think>...</think>`
+preamble -- sekarang numpang fungsi kanonik itu, dibungkus try/except
+biar kontrak lama (gak pernah raise, fallback `{"_raw": raw}` yang
+dipakai `generate_daily_recap()` buat mutusin nyimpen `raw_llm` atau
+kagak) tetap sama persis."""
 
 from __future__ import annotations
 
 import asyncio
 import datetime
-import json
-import re
 from typing import Any
 
 from cti_core.db.repositories.article import AsyncArticleRepo
@@ -42,10 +48,10 @@ from cti_core.db.repositories.ioc import AsyncIOCRepo
 from cti_core.db.repositories.recap import AsyncRecapRepo
 from cti_core.db.repositories.ta import AsyncTARepo
 from cti_core.db.repositories.tweet import AsyncTweetRepo
+from cti_core.llm.client import get_llm_client, parse_json_response
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from cti_api.services import campaign as campaign_service
-from cti_api.services.llm_client import get_llm_client
 from cti_api.services.source_score import get_source_reliability
 
 SYSTEM_PROMPT = """You are a Senior Cyber Threat Intelligence Analyst producing a daily desk-brief for analysts.
@@ -248,22 +254,10 @@ Now produce the JSON recap+forecast per the schema. Remember: forecast must cite
 def _extract_json(raw: str) -> dict[str, Any]:
     if not raw:
         return {}
-    s = raw.strip()
-    if s.startswith("```"):
-        s = re.sub(r"^```(?:json)?\s*", "", s)
-        s = re.sub(r"\s*```$", "", s)
     try:
-        result: dict[str, Any] = json.loads(s)
-        return result
+        return parse_json_response(raw)
     except Exception:
-        m = re.search(r"\{.*\}", s, re.DOTALL)
-        if m:
-            try:
-                result = json.loads(m.group(0))
-                return result
-            except Exception:
-                pass
-    return {"_raw": raw}
+        return {"_raw": raw}
 
 
 def _call_llm(user_msg: str) -> tuple[str, str]:

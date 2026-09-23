@@ -10,7 +10,27 @@ provider apa pun, bukan cuma 3 URL tetap (openai/deepseek/gemini) -- ini yang
 dipakai dev nunjuk ke gateway lokal (9router) yang OpenAI-compatible tapi bukan
 openai.com asli. `store_param()` juga jadi off begitu `url` custom di-set, karena
 gateway pihak ketiga gak jamin dukung param `store` OpenAI (lihat catatan di bawah).
-"""
+
+**Pindah dari `cti_enrich.llm` ke `cti_core.llm` (Fase 7.5, "buang duplikasi")** --
+modul ini dari awal ZERO dependency internal `cti_enrich` (cuma `cti_core.config` +
+`openai` + stdlib), jadi mekanis murni buat dipindah, sama presedan kayak
+`cti_core.ioc.extractor` (Fase 7.3 Bagian 4). Alasan mindahnya: `apps/api` punya
+exit criteria "gak ada import `cti_scraper`/`cti_enrich` dari API", jadi 5 service
+(`ta_profile`/`exec_brief`/`cve_email`/`newsletter`/`recap`) yang butuh
+`get_llm_client()` dulu numpang duplikat SEMPIT sendiri
+(`cti_api.services.llm_client.py`, ~15 baris, gak punya `store_param`/
+`parse_json_response`). Sekarang `apps/api` DAN `cti_enrich` (`stages/classify.py`,
+`stages/extract_ttps.py`) sama-sama import modul ini LANGSUNG dari `cti_core` --
+duplikat sempit itu dihapus total, gak ada lagi 2 salinan `get_llm_client()`.
+
+**`parse_json_response()` sekalian nutup 5 titik copas terpisah di `apps/api`**
+(`cve_email.py` x2, `newsletter.py` x2, `ta_profile.py` x1) yang semuanya cuma
+`json.loads(content or "{}")` POLOS -- gak nahan `<think>...</think>` preamble
+atau code-fence markdown kayak fungsi ini, padahal edge case itu UDAH KEBUKTIAN
+kejadian beneran lawan dev gateway (lihat docstring `parse_json_response` di
+bawah). Bukan cuma dedup kosmetik -- 5 titik itu tadinya rawan `JSONDecodeError`
+kalau gateway kebetulan mbalikin salah satu bentuk itu, sekarang kepasang proteksi
+yang sama kayak `cti_enrich`'s pipeline udah pake dari awal."""
 
 from __future__ import annotations
 
@@ -18,8 +38,9 @@ import json
 import re
 from typing import Any
 
-from cti_core.config import LlmSettings, get_settings
 from openai import OpenAI
+
+from cti_core.config import LlmSettings, get_settings
 
 _RE_THINK_BLOCK = re.compile(r"<think>.*?</think>", re.DOTALL | re.IGNORECASE)
 _RE_CODE_FENCE = re.compile(r"^```(?:json)?\s*|\s*```$", re.IGNORECASE)
