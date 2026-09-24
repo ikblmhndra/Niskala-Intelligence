@@ -330,3 +330,154 @@ export interface PkgVulnAckResult {
   success: boolean;
   acknowledged: boolean;
 }
+
+/**
+ * Grup F (`/exec`) -- `routers/exec_dashboard.py` gak declare
+ * `response_model` (return `dict[str, object]`), shape dicek dari
+ * `services/exec_dashboard.py::get_exec_dashboard()`/
+ * `get_exec_dashboard_v2()` + snapshot test
+ * `tests/integration/__snapshots__/test_exec_dashboard_router_snapshot.ambr`.
+ */
+export interface ExecTrendSeries {
+  data: number[];
+  [key: string]: unknown;
+}
+
+export interface ExecNamedCount {
+  name: string;
+  count: number;
+}
+
+export interface ExecCveExposureRow {
+  tech: string;
+  total: number;
+  critical: number;
+  high: number;
+  medium: number;
+  max_cvss?: number | null;
+  poc_count?: number;
+}
+
+/** v1 (`GET /api/exec/dashboard`, TANPA auth -- sengaja, lihat docstring
+ * router). */
+export interface ExecDashboardV1 {
+  total_incidents: number;
+  prev_total: number;
+  unique_ta_count: number;
+  prev_unique_ta: number;
+  active_sectors: number;
+  prev_active_sectors: number;
+  months: string[];
+  top_sectors: string[];
+  top_countries: string[];
+  sector_trend: ({ sector: string } & ExecTrendSeries)[];
+  country_trend: ({ country: string } & ExecTrendSeries)[];
+  ta_leaderboard: ExecNamedCount[];
+  news_type_breakdown: ExecNamedCount[];
+  sector_heatmap: { sector: string; months: { month: string; count: number }[] }[];
+  heatmap_max: number;
+  cve_exposure: ExecCveExposureRow[];
+}
+
+export interface ExecViewConfig {
+  role: string;
+  sections: {
+    kpis: boolean;
+    sector_risk: boolean;
+    ta_leaderboard: boolean;
+    exec_brief_button: boolean;
+    source_reliability_spread: boolean;
+    cluster_list: boolean;
+    ioc_enrichment_hits: boolean;
+    fp_feedback_queue: boolean;
+    critical_cve_feed: boolean;
+    live_ioc_stream: boolean;
+    sigma_export_quick: boolean;
+    spike_alerts: boolean;
+  };
+}
+
+/** v2 (`GET /api/exec/dashboard-v2`, auth required) -- spread semua
+ * field v1 + field di bawah. 4 field role-gated (`critical_cves`/
+ * `recent_clusters_summary`/`pending_fp_queue`/
+ * `source_reliability_spread`) SELALU ada tapi isinya `[]`/`{}` kalau
+ * `view_config.sections.*` false buat role efektif -- cek section flag
+ * itu buat bedain "gak berhak lihat" vs "emang belom ada data". */
+export interface ExecDashboardV2 extends ExecDashboardV1 {
+  prev_ta_names: string[];
+  sector_risk_scores: { sector: string; risk_score: number }[];
+  cve_exposure_v2: ExecCveExposureRow[];
+  industry_spikes: {
+    entity: string;
+    date: string;
+    count: number;
+    baseline_mean: number;
+    z_score: number;
+    severity: "high" | "medium";
+  }[];
+  victim_country_trend: ({ country: string } & ExecTrendSeries)[];
+  top_ttps: { id: string; name: string; count: number }[];
+  ta_velocity: {
+    actor: string;
+    velocity_pct: number;
+    last_month: number;
+    avg_prev: number;
+    total: number;
+  }[];
+  sector_cooccurrence: { sector_a: string; sector_b: string; count: number }[];
+  newstype_trend: { months: string[]; series: ({ type: string } & ExecTrendSeries)[] };
+  sector_actor_matrix: { sectors: string[]; actors: string[]; matrix: number[][]; max_val: number };
+  ta_confidence: Record<string, number>;
+  confirmed_incident_rate: number | null;
+  view_config: ExecViewConfig;
+  critical_cves: { cve_id: string; cve_score: number; cve_severity: string; cisa_kev: boolean; tech: string }[];
+  recent_clusters_summary: {
+    cluster_id: string;
+    summary_title: string;
+    size: number;
+    threat_actors: string[];
+    last_seen: string;
+  }[];
+  /** `id` ditambahin Fase 8 Grup F (2026-09-25) -- sebelumnya gak
+   * ke-serialize, padahal wajib buat manggil `POST
+   * /api/iocs/{ioc_id}/feedback` (kontrak baru). */
+  pending_fp_queue: { id: number; value: string; type: string; last_seen: string; confidence_score: number }[];
+  source_reliability_spread: Record<string, number>;
+}
+
+export interface ExecBriefResponse {
+  brief: string;
+  generated_at: string;
+}
+
+/**
+ * `POST /api/iocs/{ioc_id}/feedback` -- request body typed penuh
+ * (`FeedbackBody` di `schema.d.ts`), tapi response `ioc_feedback()`
+ * gak declare `response_model`. Shape = `_serialize_detail()`
+ * (`routers/iocs.py`).
+ */
+export interface IocFeedbackResponse {
+  id: number;
+  type: string;
+  value: string;
+  first_seen: string;
+  last_seen: string;
+  seen_count: number;
+  tags: string[];
+  threat_actors: string[];
+  tp_count: number;
+  fp_count: number;
+  confidence_score: number;
+  actionability_score: number;
+  actionability_label: string;
+  recommended_action: string;
+  auto_suppressed: boolean;
+  suppression_reason: string | null;
+  sources: { url: string; source_name: string; context: string; article_id: number | null; first_seen: string }[];
+  source_fp_warning?: {
+    source_name: string;
+    fp_rate: number;
+    fp_count: number;
+    total_iocs: number;
+  };
+}

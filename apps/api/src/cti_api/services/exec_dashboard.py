@@ -14,6 +14,16 @@ tapi satu-satunya cara aman lewat SQLAlchemy async session.
 campaigns()` beneran -- `try/except -> []` tetap dipertahankan (port
 apa adanya, bukan cuma buat nutup gap lagi).
 
+`_get_pending_fp_queue()` sekarang nyertain `id` (Fase 8 Grup F,
+2026-09-25) -- legacy `exec.js` manggil kontrak FP-vote LAMA
+(`POST /api/iocs/feedback`, body `{ioc_type,value,is_true_positive}`)
+yang UDAH GAK ADA; kontrak baru (`POST /api/iocs/{ioc_id}/feedback`,
+body `{verdict,note}`) butuh `ioc_id`, yang sebelumnya gak ke-serialize
+di sini sama sekali (row cuma `value`/`type`/`last_seen`/
+`confidence_score` -- gak cukup buat manggil endpoint yang bener).
+Bukan perubahan skema DB, cuma nambah field yang emang udah ada di
+`IOC` ORM object.
+
 **`_get_critical_cves()` cuma filter `cisa_kev`** -- cabang `epss_score
 >= 0.5` gak ada (kolom `epss_score` gak ada di `CveTracker`, lihat
 docstring `cti_core.db.repositories.dashboard`)."""
@@ -334,6 +344,7 @@ async def _get_pending_fp_queue(session: AsyncSession) -> list[dict[str, Any]]:
         rows = await AsyncDashboardRepo(session).pending_fp_queue(limit=20)
         return [
             {
+                "id": i.id,
                 "value": i.value,
                 "type": i.type,
                 "last_seen": i.last_seen_at.isoformat(),

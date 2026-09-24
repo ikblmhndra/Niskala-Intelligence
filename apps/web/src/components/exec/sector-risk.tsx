@@ -1,0 +1,49 @@
+import { cn } from "@/lib/utils";
+import { riskTier, sectorPeerBenchmark } from "@/lib/exec/format";
+import type { ExecDashboardV2 } from "@/lib/api/loose-types";
+
+function toTitleCase(s: string): string {
+  return s.replace(/\w\S*/g, (w) => w.charAt(0).toUpperCase() + w.slice(1));
+}
+
+const RISK_FORMULA_TITLE =
+  "Risk Score = Volume(0-50) + Trend(0-20) + Spike(0-30)\n• Volume: (last_month / max_sector) × 50\n• Trend: increase first→second half, max 20\n• Spike: z-score × 10, capped at 30";
+
+/** Port Sector Risk Matrix + peer benchmark (`exec.js:135-167`). */
+export function SectorRiskMatrix({ d }: { d: ExecDashboardV2 }) {
+  return (
+    <div className="space-y-2">
+      {d.sector_risk_scores.map((sr) => {
+        const tier = riskTier(sr.risk_score);
+        const bench = sectorPeerBenchmark(d.sector_trend, sr.sector);
+        return (
+          <div key={sr.sector} className="flex items-center gap-2.5" title={RISK_FORMULA_TITLE}>
+            <div className="min-w-[140px] truncate font-mono text-[10px] text-foreground">{toTitleCase(sr.sector)}</div>
+            <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
+              <div
+                className={cn("h-full rounded-full", tier.colorClass.replace("text-", "bg-"))}
+                style={{ width: `${sr.risk_score}%` }}
+              />
+            </div>
+            <div className={cn("min-w-[28px] text-right font-mono text-[10px]", tier.colorClass)}>{sr.risk_score}</div>
+            <div
+              className={cn(
+                "min-w-[32px] rounded px-1.5 py-0.5 text-center font-mono text-[8px]",
+                tier.colorClass,
+                tier.colorClass.replace("text-", "bg-") + "/15",
+              )}
+            >
+              {tier.label}
+            </div>
+            <div
+              className={cn("min-w-[64px] text-right font-mono text-[8px]", bench.colorClass)}
+              title="Peer Benchmark: share of total incidents vs avg sector share"
+            >
+              {bench.text}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}

@@ -3050,6 +3050,98 @@ tab baru sepanjang seluruh alur (dicek 2x, termasuk tab baru terpisah
 abis semua testing). `pnpm build`/`tsc --noEmit`/`pnpm lint` semua
 bersih.
 
+### Grup F -- selesai (2026-09-25)
+
+`/exec` -- Executive Dashboard: 6 chart+2 heatmap+AI-brief+FP-vote
+widget, port `legacy/static/js/newsroom/exec.js` (869 baris, satu file
+mandiri -- BUKAN scattered kayak newsroom). Backend (`exec_dashboard.py`/
+`exec_brief.py`/`spike.py`) udah lengkap sejak Fase 7; satu-satunya
+perubahan backend di Grup ini adalah fix kontrak IOC feedback (gap #7,
+lihat di bawah). `_pirXxx` functions (`exec.js:757+`, Priority
+Intelligence Requirements) TIDAK ikut diport -- fitur beda (`/intelligence`
+Grup G2), cuma numpang 1 file fisik sama legacy.
+
+**Riset**: 1 agen Explore (peta lengkap legacy+backend+kontrak IOC
+feedback lama-vs-baru) + baca langsung `exec.js` full buat detail
+rendering/formula yang butuh presisi tinggi (risk score, peer benchmark,
+warna threshold) -- laporan agen dipakai buat orientasi awal, detail
+implementasi dicek ulang dari source asli.
+
+**Dibangun**: KPI strip (7 tile + trend arrow naik=merah/turun=hijau
+khusus metrik keamanan), Sector Risk Matrix (formula Volume+Trend+Spike,
+0-100) + peer benchmark (share sektor vs rata-rata, dihitung client-side
+sama kayak legacy), TA Leaderboard (badge NEW/REC + confidence),
+6 chart Chart.js (sector/country/victim-country trend multi-series,
+incident-type doughnut, incident-type monthly stacked bar, Source
+Reliability Spread doughnut grade A-F -- role-gated), tabel CVE
+Exposure, 2 heatmap (Sector×Month biru + drill-down klik sel ->
+`GET /api/articles`, Sector×Actor merah tanpa drill), 4 panel Tier 2
+(Top TTPs, TA Velocity, Sector Co-occurrence -- semua di
+`components/exec/tier2-panels.tsx`), 3 section role-gated (Cluster List,
+IOC FP Queue, Critical CVE Feed -- render kondisional dari
+`view_config.sections`, bukan selalu ditampilin kayak legacy yang gak
+bedain "gak berhak lihat" vs "emang kosong"), modal AI Brief
+(`react-markdown`, generate on-demand), export CSV client-side, watchlist
+localStorage, role-preview switcher (admin/superadmin only).
+
+**Fix backend -- gap #7 (kontrak `/api/iocs/feedback`)**: legacy
+`execFpVote()` manggil `POST /api/iocs/feedback` (`{ioc_type,value,
+is_true_positive}`) yang UDAH GAK ADA; kontrak baru `POST /api/iocs/
+{ioc_id}/feedback` (`{verdict,note}`) butuh `ioc_id` numerik yang
+sebelumnya GAK ke-serialize di `_get_pending_fp_queue()`
+(`services/exec_dashboard.py`) -- ditambahin `id` ke row (1 baris + 1
+test integrasi baru), FP-vote widget sekarang manggil kontrak yang
+beneran ada. Bukan perubahan skema DB.
+
+**Adaptasi field yang beda dari legacy** (didokumentasikan, bukan silent
+drop): `critical_cves` gak punya `epss_score`/`first_seen` (kolom
+`epss_score` emang gak ada di `CveTracker`, `_get_critical_cves()` cuma
+filter `cisa_kev`) -- 2 kolom itu didrop dari tabel, bukan ditampilin
+kosong. TA Leaderboard row click (`drillToNewsroomTA()` legacy: pindah
+tab + auto-pilih filter actor + reload) disederhanain jadi navigasi
+polos ke `/newsroom` TANPA auto-filter -- filter newsroom gak
+addressable lewat query param (state lokal ke komponen, Grup D), gap
+kecil dicatat bukan pura-pura jalan. Cluster List row click (legacy:
+pindah tab Intelligence) dihapus link-nya sama sekali -- rute itu belum
+ada (Grup G7). Critical CVE Feed row click cuma link polos ke `/cve`
+(bukan auto-buka modal detail -- butuh row `CveOut` lengkap yang cuma
+ada di query list `/cve`, pola defer sama kayak cross-link pkg-vuln->CVE
+di Grup E).
+
+**1 bug nyata ketemu live**: React duplicate-key warning di Top TTPs
+list -- `ttp_counts()` (repo) group-by `(ttp_id, ttp_name)` BUKAN
+`ttp_id` doang, jadi id yang sama (`T1583`) bisa muncul 2 baris kalau
+enrichment nyimpen 2 varian nama beda ("Acquire Infrastructure" vs
+"Resource Development") buat id yang sama -- KETEMU dari data dev DB
+beneran, bukan data buatan. Ini data quality upstream (di luar scope
+Grup F buat dibenerin), fix di frontend: key gabung `id+name+index`
+biar cocok sama kenyataan API (2 entry beda konten, bukan 1 entry
+diduplikasi).
+
+Verifikasi LIVE end-to-end (tab baru, login `admin1`/superadmin):
+semua 6 chart + 2 heatmap render data asli (7 insiden, 3 TA, 5 sektor).
+Drill-down klik sel heatmap "General · 2026-09" -> 2 artikel asli
+kebuka lengkap (judul+tanggal+sumber+news_type+TA tags). Generate
+Brief manggil LLM ASLI (~15 detik), balikin markdown 5-section
+(Vulnerability Exposure/Key Findings dst) -- render `react-markdown`
+BENERAN terformat (bold/bullet/heading), bukan raw `#` kayak bug
+legacy. FP-vote widget: seed 1 IOC test manual di DB dev, klik 👍 ->
+`POST /api/iocs/99/feedback` 200, toast "Marked as true positive.",
+row ilang dari queue abis refetch (confidence naik keluar rentang
+40-74) -- IOC test dibersihin abis verifikasi. Role-preview switcher:
+ganti ke "soc" -> refetch dengan `role=soc`, badge "View: SOC" muncul,
+section role-gated berubah SESUAI (Cluster List+FP Queue ilang,
+Critical CVE Feed tetap ada, chart Source Reliability Spread ilang) --
+konfirmasi `view_config.sections` bener-bener ngontrol render, bukan
+cuma dekorasi. Export CSV + clipboard-copy brief jalan (clipboard
+`NotAllowedError` di browser tool otomasi -- permission browser
+environment testing, BUKAN bug kode, pattern yang sama kayak
+`navigator.clipboard` manapun di browser automation headless). Console
+bersih di tab baru terpisah abis seluruh alur testing (dicek 2x).
+Backend: 10 test (7 lama + 3 baru termasuk `test_pending_fp_queue_
+includes_ioc_id`) semua pass. `pnpm build`/`tsc --noEmit`/`pnpm lint`
+semua bersih.
+
 ### Checklist
 
 - [x] **8.1** Setup Next.js App Router + TS + keputusan arsitektur di atas
@@ -3058,8 +3150,9 @@ bersih.
 - [x] **8.3** Auth + session (Grup A)
 - [ ] **8.4** Route: `/dashboard` (Grup B, selesai) `/newsroom`
       (Grup D, selesai) `/cve` (Grup E, selesai) `/intelligence`
-- [ ] **8.5** Route: `/exec` `/xintel` (Grup C, selesai) `/recap`
-      (Grup B, selesai) `/admin/users` (Grup C, selesai) `/newsletter`
+- [ ] **8.5** Route: `/exec` (Grup F, selesai) `/xintel` (Grup C, selesai)
+      `/recap` (Grup B, selesai) `/admin/users` (Grup C, selesai)
+      `/newsletter`
       *(route ke-9, ditambahin dari survei -- gap nyata, bukan revisi
       scope sepihak)*
 - [ ] **8.6** Halaman control plane scraper -- SEBAGIAN blocked sampai

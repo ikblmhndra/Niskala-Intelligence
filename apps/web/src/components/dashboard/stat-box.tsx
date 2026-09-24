@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 interface StatBoxProps {
   label: string;
   value: number | string | undefined;
-  sub: string;
+  sub: ReactNode;
   className?: string;
 }
 

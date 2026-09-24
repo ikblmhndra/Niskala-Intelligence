@@ -134,6 +134,145 @@ export function DoughnutChart({ labels, data }: DoughnutChartProps) {
   );
 }
 
+/** Palet 8 warna line/bar multi-series (`_PALETTE` di `exec.js`), dipakai
+ * Grup F (`/exec`) buat chart sector/country/victim-country trend +
+ * stacked news-type trend -- beda dari `CHART_COLORS` (doughnut) biar
+ * garis-garis berdampingan gampang dibedain. */
+const SERIES_COLORS = [
+  "#2F81F7",
+  "#3DC9AF",
+  "#E3B341",
+  "#DA3633",
+  "#BC8CFF",
+  "#58A6FF",
+  "#fd79a8",
+  "#F0883E",
+];
+
+interface MultiLineSeries {
+  label: string;
+  data: number[];
+}
+
+interface MultiLineChartProps {
+  labels: string[];
+  series: MultiLineSeries[];
+}
+
+/** Beberapa line sekaligus 1 chart (sector/country/victim-country trend). */
+export function MultiLineChart({ labels, series }: MultiLineChartProps) {
+  return (
+    <Line
+      data={{
+        labels,
+        datasets: series.map((s, i) => {
+          const color = SERIES_COLORS[i % SERIES_COLORS.length];
+          return {
+            label: s.label,
+            data: s.data,
+            borderColor: color,
+            backgroundColor: color,
+            borderWidth: 1.5,
+            pointRadius: 1.5,
+            tension: 0.3,
+          };
+        }),
+      }}
+      options={{
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: "bottom", labels: { color: TEXT_DIM, boxWidth: 10, font: { size: 9 } } },
+          tooltip: { mode: "index", intersect: false },
+        },
+        scales: {
+          x: { grid: { color: BORDER }, ticks: { color: TEXT_DIM, maxTicksLimit: 12 } },
+          y: { grid: { color: BORDER }, ticks: { color: TEXT_DIM }, beginAtZero: true },
+        },
+      }}
+    />
+  );
+}
+
+interface StackedBarChartProps {
+  labels: string[];
+  series: MultiLineSeries[];
+}
+
+/** Bar stacked (news-type trend per bulan). */
+export function StackedBarChart({ labels, series }: StackedBarChartProps) {
+  return (
+    <Bar
+      data={{
+        labels,
+        datasets: series.map((s, i) => {
+          const color = SERIES_COLORS[i % SERIES_COLORS.length];
+          return {
+            label: s.label,
+            data: s.data,
+            backgroundColor: color,
+            borderWidth: 0,
+          };
+        }),
+      }}
+      options={{
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: "bottom", labels: { color: TEXT_DIM, boxWidth: 10, font: { size: 9 } } },
+        },
+        scales: {
+          x: { stacked: true, grid: { display: false }, ticks: { color: TEXT_DIM, maxTicksLimit: 12 } },
+          y: { stacked: true, grid: { color: BORDER }, ticks: { color: TEXT_DIM } },
+        },
+      }}
+    />
+  );
+}
+
+const GRADE_COLORS: Record<string, string> = {
+  A: "#3DC9AF",
+  B: "#58A6FF",
+  C: "#E3B341",
+  D: "#F0883E",
+  E: "#DA3633",
+  F: "#8B949E",
+};
+
+interface GradedDoughnutChartProps {
+  counts: Record<string, number>;
+}
+
+/** Doughnut Source Reliability Spread -- warna per grade A-F (bukan
+ * palet siklik `CHART_COLORS`), F/grade gak dikenal fallback abu-abu. */
+export function GradedDoughnutChart({ counts }: GradedDoughnutChartProps) {
+  const grades = Object.keys(counts).sort();
+  return (
+    <Doughnut
+      data={{
+        labels: grades.map((g) => `${g} – ${counts[g]}`),
+        datasets: [
+          {
+            data: grades.map((g) => counts[g]),
+            backgroundColor: grades.map((g) => GRADE_COLORS[g] ?? "#8B949E"),
+            borderColor: SURFACE,
+            borderWidth: 2,
+            hoverOffset: 6,
+          },
+        ],
+      }}
+      options={{
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: "right", labels: { color: TEXT_BRIGHT, padding: 12, font: { size: 10 } } },
+        },
+        cutout: "55%",
+      }}
+    />
+  );
+}
+
 interface TimelineChartProps {
   labels: string[];
   data: number[];

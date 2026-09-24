@@ -11,6 +11,7 @@ from cti_api.services import exec_dashboard as exec_dashboard_service
 from cti_api.services import risk_matrix as risk_matrix_service
 from cti_api.services import spike as spike_service
 from cti_core.db.models.cve import CveTracker
+from cti_core.db.models.ioc import IOC
 from cti_core.db.repositories.article import AsyncArticleRepo
 from cti_core.db.repositories.auth import AsyncClientRepo
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -125,6 +126,24 @@ async def test_exec_dashboard_recent_clusters_populated_for_analyst_role(
     assert result["view_config"]["sections"]["cluster_list"] is True
     assert len(result["recent_clusters_summary"]) == 1
     assert result["recent_clusters_summary"][0]["threat_actors"] == ["Apt41"]
+
+
+async def test_pending_fp_queue_includes_ioc_id(async_db_session: AsyncSession) -> None:
+    """Fase 8 Grup F -- `id` wajib ada di row biar frontend bisa manggil
+    kontrak baru `POST /api/iocs/{ioc_id}/feedback` (bukan kontrak lama
+    `POST /api/iocs/feedback` yang legacy `exec.js` masih pakai, gap #7
+    docs/PROGRESS.md)."""
+    await _ensure_clients(async_db_session)
+    ioc = IOC(type="ip", value="203.0.113.5", confidence_score=55)
+    async_db_session.add(ioc)
+    await async_db_session.flush()
+
+    result = await exec_dashboard_service.get_exec_dashboard_v2(
+        async_db_session, days=90, client_id="default", role="analyst"
+    )
+    assert result["view_config"]["sections"]["fp_feedback_queue"] is True
+    row = next(r for r in result["pending_fp_queue"] if r["value"] == "203.0.113.5")
+    assert row["id"] == ioc.id
 
 
 async def test_build_view_config_role_gating() -> None:
