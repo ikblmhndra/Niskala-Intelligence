@@ -2751,6 +2751,111 @@ state), bukan unhandled. `chart.js` sempet warning `Filler` plugin
 (dipake `fill:true` di line chart) -- diregister, verified ilang di
 tab baru abis fix. `pnpm build`/`tsc --noEmit`/`pnpm lint` semua bersih.
 
+### Grup C -- selesai (2026-09-24)
+
+`/xintel` + `/admin/users` ("sedang, mandiri"). Port `legacy/static/js/
+newsroom/{xintel,usermgmt}.js` + `tab_{xintel,usermgmt}.html`.
+
+**`/xintel`**: sub-tab lokal (bukan sub-route -- cuma `/intelligence`
+yang diputuskan sub-route beneran, keputusan #2) Tweets + Monitored
+Accounts. Tweets: filter bar (teks/tanggal butuh APPLY, 3 checkbox APAC/
+OT/Confirmed langsung apply on-change, port `_xiState` lama), stats row,
+card list + modal detail penuh (signals, threat groups, CVE, APAC, negara
+victim/actor, incident), pager pakai `<SimplePager>` baru (lihat bawah).
+`confidence`/`incident_confidence` DIRENDER LANGSUNG sebagai `%` -- BUKAN
+`*100` kayak `(t.confidence*100).toFixed(0)` legacy: skema baru
+`TweetOut.confidence: int | None` UDAH 0-100, beda dari field lama yang
+0-1 float, ikut kaliin ulang bakal salah (ketemu baca skema, bukan asumsi
+port apa adanya). "+ Newsletter" queue nulis ke `localStorage
+newsletter_queue` KONTRAK SAMA PERSIS kayak lama (Grup H nanti baca key
+yang sama, forward-compatible, bukan reimplementasi). **𝕏 API balance
+chip (popover recharge/bonus credits) SENGAJA DIDROP, bukan lupa** --
+`GET /api/tweets/balance` sendiri gak pernah diport (`routers/tweets.py`
+docstring Fase 7.3: "passthrough eksternal doang, gak genting buat
+inti"), gak ada backend buat dipanggil.
+
+**`/admin/users`**: role-gate di level HALAMAN (admin+superadmin) --
+**ini "Grup yang beneran punya halaman admin"** yang disebut di catatan
+deferred Grup A, jadi role-gate per-halaman dieksekusi di sini pertama
+kali (`require_admin`/`require_superadmin` FastAPI tetap enforcement
+ASLI, ini cuma UI). 5 section: Users (tabel + Add User + dropdown aksi
+⋮ Reset Password/Edit Clients/Change Role -- 2 terakhir admin+ doang,
+port asimetri `isAdmin` lama), User Roles (tabel + Add Role modal
+superadmin-only, grid permission dari `/api/roles/permissions`),
+Password Policy (form pakai pola "derived state" `override` BUKAN
+`useEffect`+`setState` -- itu persis pola yang kena
+`react-hooks/set-state-in-effect` di `AuthProvider` Grup A, lihat
+komentar di `password-policy-section.tsx`), Audit Log (filter user/
+action debounce 400ms, page-size select, pager), Client Tenants
+(superadmin-only, Add/Edit pakai `<CountryMultiSelect>` baru).
+
+**2 komponen generik deferred Grup A akhirnya kepake beneran**:
+`<ConfirmDialog>` (dipakai lagi buat Remove Account/Delete Role/Delete
+Client) dan `<CountryMultiSelect>` (Client Tenant country assignment).
+`<Pagination>` shadcn TETAP gak kepake -- primitif itu `<a href>`-based
+(buat pagination URL asli), sedangkan tiap list di app ini state
+halamannya di React state (page di-`useState`, bukan query-string) --
+dibikin `<SimplePager>` baru (Prev/Next + info halaman, plain `Button`,
+sama persis pola pager lama) buat X Intel tweets dan Admin audit log.
+
+**Self password-change ditambahin ke `UserMenu`** (`ChangePasswordDialog`,
+dropdown item baru) -- gap NYATA dari Grup A: sebelum ini gak ada cara
+user ganti password sendiri sama sekali dari UI. Numpang
+`usePasswordPolicy()`/`validatePasswordClient()` (`lib/auth/password-
+policy.ts`, hook baru dipakai bareng Add User/Reset Password/Change
+Password). **Force-password-change gate (redirect paksa abis login kalau
+`force_pw_change=true`) SENGAJA BELUM dibangun** -- `GET /api/auth/me`
+gak balikin `force_pw_change` sama sekali (cuma `POST /api/auth/login`
+response yang punya field itu, JWT sendiri gak nyimpennya), jadi begitu
+halaman di-refresh infonya hilang; butuh keputusan kecil dulu (tambah
+field ke `/me`, atau baca dari cookie terpisah) sebelum bisa dibangun
+bener, bukan sesuatu yang bisa diselesaikan sambil lalu di Grup ini.
+Dicatat di sini sebagai gap eksplisit, bukan lupa.
+
+**2 bug REAL ketemu LIVE (browser beneran, bukan cuma tsc/lint)**:
+
+1. **`client_countries.country_code` Postgres `VARCHAR(2)`** -- `POST
+   /api/clients` dengan nama negara penuh ("Indonesia", ikutin
+   `_COUNTRIES` legacy apa adanya) 500
+   `StringDataRightTruncationError`. Skema baru pakai ISO alpha-2 (sama
+   konvensi kayak `ArticleCountry.country_code` yang UDAH dipakai
+   Dashboard Grup B), BUKAN nama penuh kayak Mongo lama. Fix: `lib/
+   countries.ts` diulang total jadi `{code, name}[]` ISO 3166-1 alpha-2,
+   `<CountryMultiSelect>` kirim `code`, tampilin `name`. Verified live:
+   `POST /api/clients` 201 abis fix, badge tabel Client Tenants resolve
+   code->nama lewat `countryName()`.
+2. **Base UI `Select` crash kalau `SelectItem` children lebih dari satu
+   ekspresi/teks JSX** -- `AddUserForm`'s Role select (`{r.name}{cond ?
+   ... : ""}`, DUA children) bikin `Uncaught TypeError: c.toLowerCase is
+   not a function`, crash SELURUH Select (Base UI extract label buat
+   typeahead/keyboard-match, `.toLowerCase()` di hasil extract yang
+   ternyata bukan string tunggal). Fix: gabung jadi SATU string
+   (`` `${a} — ${b}` : a ``), sama pola yang dipakai Select lain yang
+   emang gak pernah crash. Dicatat sebagai gotcha ke-3 di `apps/web/
+   CLAUDE.md` (gotcha #1/#2 dari Grup A: `render` vs `asChild`,
+   `DropdownMenuLabel` butuh `DropdownMenuGroup`).
+
+Verifikasi LIVE (tab baru tiap kali abis fix, biar console bersih):
+`/xintel` tweets (real data + filter+pager+modal), Monitored Accounts
+(toggle+remove ConfirmDialog, real data `@blueteamsec1`). `/admin/users`
+4 user asli, 3 role asli+permission badge, Password Policy pre-filled
+data server asli, Audit Log 128 entries real+pager (entry toggle account
+dari tes X Intel MUNCUL di sini, konfirmasi audit trail jalan), Client
+Tenants 2 client asli (`acme`/`default`) + add/delete client test
+(`qa_test_grp_c`, dibuat lalu dihapus buat bersihin data tes) full
+round-trip. Dialog Change Role/Add Role/Add Client semua kebuka+keisi
+data benar (beberapa sempet keliatan "gak kebuka" di screenshot doang --
+accessibility tree/network selalu konfirmasi bener-bener kebuka,
+sekadar delay render screenshot tool, bukan bug). `pnpm build`/
+`tsc --noEmit`/`pnpm lint` semua bersih (setelah 2 fix bug di atas).
+
+**Gak dites live**: role-gate `/admin/users` buat role `analyst` (gak
+ada kredensial test analyst di tangan) -- diverifikasi lewat code review
++ tsc doang, pola sama persis kayak conditional `isSuperadmin` yang
+UDAH kebukti kerja (`ClientsSection`/`RolesSection`). Force-password-
+change gate (lihat gap di atas) juga gak dites karena emang belum
+dibangun.
+
 ### Checklist
 
 - [x] **8.1** Setup Next.js App Router + TS + keputusan arsitektur di atas
@@ -2759,9 +2864,10 @@ tab baru abis fix. `pnpm build`/`tsc --noEmit`/`pnpm lint` semua bersih.
 - [x] **8.3** Auth + session (Grup A)
 - [ ] **8.4** Route: `/dashboard` (Grup B, selesai) `/newsroom` `/cve`
       `/intelligence`
-- [ ] **8.5** Route: `/exec` `/xintel` `/recap` (Grup B, selesai)
-      `/admin/users` `/newsletter` *(route ke-9, ditambahin dari survei --
-      gap nyata, bukan revisi scope sepihak)*
+- [ ] **8.5** Route: `/exec` `/xintel` (Grup C, selesai) `/recap`
+      (Grup B, selesai) `/admin/users` (Grup C, selesai) `/newsletter`
+      *(route ke-9, ditambahin dari survei -- gap nyata, bukan revisi
+      scope sepihak)*
 - [ ] **8.6** Halaman control plane scraper -- SEBAGIAN blocked sampai
       `/api/scraper/health` diport (gap #6 di atas; MITRE heatmap-nya
       sendiri udah backend-ready)

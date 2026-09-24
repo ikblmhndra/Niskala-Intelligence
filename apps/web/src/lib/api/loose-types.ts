@@ -91,3 +91,69 @@ export interface RecapListItem {
   counts: RecapCounts;
   generated_at: string;
 }
+
+/**
+ * Grup C (`/xintel`, `/admin/users`) -- sisa endpoint yang response-nya
+ * `dict[str,object]`/`list[dict[str,object]]` polos di backend (kebanyakan
+ * `routers/auth.py`/`roles.py`/`clients.py` gak declare `response_model`
+ * sama sekali). Shape dicek dari `_serialize()`/return dict tiap endpoint
+ * langsung.
+ */
+
+export interface AuthorCount {
+  author: string;
+  count: number;
+}
+
+export interface TweetStats {
+  total: number;
+  top_authors: AuthorCount[];
+}
+
+export interface AdminUser {
+  username: string;
+  role: string;
+  client_ids: string[];
+  force_pw_change: boolean;
+  last_sign_in: string | null;
+  created_at: string;
+}
+
+export interface Permission {
+  key: string;
+  description: string;
+}
+
+export interface Role {
+  name: string;
+  display_name: string;
+  permissions: string[];
+  is_system: boolean;
+  created_by: string | null;
+  created_at: string;
+}
+
+export interface Client {
+  client_id: string;
+  name: string;
+  countries: string[];
+  created_at: string;
+}
+
+export interface AuditLogEntry {
+  user: string;
+  action: string;
+  target_id: string | null;
+  detail: Record<string, unknown> | null;
+  ip: string;
+  timestamp: string;
+}
+
+export interface PasswordPolicy {
+  min_length: number;
+  require_upper: boolean;
+  require_lower: boolean;
+  require_number: boolean;
+  require_symbol: boolean;
+  hint?: string;
+}
