@@ -33,6 +33,12 @@ _NORMALIZE = path_type(
         r"(.*\.)?first_seen$": (str,),
         r"(.*\.)?last_seen$": (str,),
         r"(.*\.)?published$": (str,),
+        # `_build_indicator()` (stix.py) juga nulis `valid_from`/
+        # `x_last_seen` -- nama field beda dari `first_seen`/`last_seen`
+        # polos di atas, sama-sama turunan tanggal "today" yang basi
+        # tiap hari kalender maju.
+        r"(.*\.)?valid_from$": (str,),
+        r"(.*\.)?x_last_seen$": (str,),
     },
     regex=True,
     strict=False,

@@ -21,6 +21,10 @@ _NORMALIZE = path_type(
     {
         r"(.*\.)?id$": (int,),
         r"(.*\.)?generated_at$": (str,),
+        # `/latest` dan `/generate` balikin "yesterday" relatif ke hari
+        # jalan test (routers/recap.py), bukan tanggal tetap -- literal
+        # ke-bake di snapshot bakal basi tiap hari kalender maju.
+        r"(.*\.)?date$": (str,),
     },
     regex=True,
     strict=False,
@@ -55,7 +59,7 @@ async def test_recap_latest_none(
 ) -> None:
     resp = await api_client.get("/api/recap/latest", headers=auth_header())
     assert resp.status_code == 200
-    assert resp.json() == snapshot
+    assert resp.json() == snapshot(matcher=_NORMALIZE)
 
 
 async def test_recap_get_not_found(

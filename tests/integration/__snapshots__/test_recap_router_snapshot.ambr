@@ -11,7 +11,7 @@
         'new_threat_actors': 0,
         'tweets': 0,
       }),
-      'date': '2026-09-22',
+      'date': str,
       'forecast': dict({
         'outlook': 'stable',
       }),
@@ -35,7 +35,7 @@
 # ---
 # name: test_recap_latest_none
   dict({
-    'date': '2026-09-22',
+    'date': str,
     'recap': None,
   })
 # ---

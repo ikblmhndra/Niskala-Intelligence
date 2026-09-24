@@ -22,7 +22,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 pytestmark = pytest.mark.asyncio
 
-_TODAY = datetime.date.today()
+_TODAY = datetime.datetime.now(datetime.UTC).date()
+"""UTC, bukan tanggal lokal mesin -- `IOC.first_seen_at` (app-set lewat
+`datetime.datetime.now(datetime.UTC)`, lihat `AsyncIOCRepo.upsert()`),
+`CveTracker.detected_on`, dan `ThreatActorGroup.created_at` (keduanya
+`server_default=func.now()` Postgres) semua ke-stamp jam UTC. Tanggal
+lokal (WIB/UTC+7) beda sama tanggal UTC di jendela ~00:00-07:00 WIB,
+bikin `test_collect_iocs_and_cves_and_new_tas` flaky di jam segitu."""
 
 
 async def _ensure_clients(session: AsyncSession) -> None:

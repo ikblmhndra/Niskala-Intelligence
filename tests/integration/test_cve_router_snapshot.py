@@ -225,7 +225,19 @@ async def test_bulk_exploit_lookup(
     ):
         resp = await api_client.post("/api/cve/exploit-lookup", headers=auth_header())
     assert resp.status_code == 200
-    assert resp.json() == snapshot
+    body = resp.json()
+    # `run_exploit_db_bulk_lookup()` urut dari `list_true_positive_cve_ids()`
+    # -> `list_all_distinct_cve_ids()`, yang query-nya `SELECT DISTINCT`
+    # TANPA `ORDER BY` -- Postgres gak janji urutan row buat DISTINCT
+    # tanpa itu, dan urutannya bisa geser tergantung query plan (yang
+    # kepengaruh histori churn tabel dari test LAIN pas full-suite run,
+    # gak kejadian kalau file ini dijalanin sendirian). Disortir di sini
+    # biar snapshot stabil -- normalisasi test, bukan ubah query service
+    # (pre-existing dari Fase 7.3 Bagian 4, ketauan gak sengaja pas
+    # verifikasi full-suite Fase 7.6, sama pola kayak `cluster_service`'s
+    # `sources` set-ordering).
+    body["details"] = sorted(body["details"], key=lambda d: d["cve_id"])
+    assert body == snapshot
 
 
 async def test_single_exploit_lookup(
