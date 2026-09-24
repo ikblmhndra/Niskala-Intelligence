@@ -157,3 +157,26 @@ export interface PasswordPolicy {
   require_symbol: boolean;
   hint?: string;
 }
+
+/**
+ * Grup D (`/newsroom`) -- `RansomwareVictimOut` didefinisikan di
+ * `schemas/ransomware.py` tapi router-nya (`GET /api/ransomware/victims`)
+ * gak declare `response_model`, jadi model itu GAK NONGOL di
+ * `openapi.json` sama sekali (`schema.d.ts` gak generate tipe-nya).
+ * Field dicek langsung dari `_serialize()` di `routers/ransomware.py`.
+ */
+export interface RansomwareVictim {
+  id: number;
+  group_name: string;
+  victim: string;
+  domain: string | null;
+  description: string | null;
+  country_code: string | null;
+  industry: string | null;
+  published: string | null;
+  discovered: string | null;
+  post_url: string;
+  ransom: string | null;
+  data_size: string | null;
+  screenshot: string | null;
+}

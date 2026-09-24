@@ -2856,14 +2856,107 @@ UDAH kebukti kerja (`ClientsSection`/`RolesSection`). Force-password-
 change gate (lihat gap di atas) juga gak dites karena emang belum
 dibangun.
 
+### Grup D -- selesai (2026-09-24)
+
+`/newsroom` (survei: "8 panel paralel, butuh pola panel+pagination dari
+Grup A udah solid"). Port `tab_newsroom.html` + `{core,api,tabs,render,
+modal,ttp}.js` -- newsroom gak punya file lama sendiri, logic-nya
+tersebar 7 file (termasuk `loadPanel()`/`PANEL_CONFIG` yang nangkring di
+`cve.js`, `loadWatchlistPanel()`/`loadTechStackPanel()` di `ta.js` --
+disposisi legacy, bukan salah taruh port di sini).
+
+**6 panel**: APAC (`news_type=apac`), Global (6 `news_type` sekaligus),
+Ransomware Activity (2 sub-section independen: tabel live victims
+`ransomware.live` dengan mini-filter sendiri group/country/industry +
+artikel terkait tanpa filter apa pun), Local (di-scope `client_countries`
+user aktif -- `AuthUser` yang sama dipakai `<ClientSwitcher>` Grup A,
+BUKAN filter country di filter bar, judul jadi "Global News" kalau
+client gak punya negara ke-assign, port `localPanelTitle([])` apa
+adanya), TA Watchlist (resolve `/api/ta/watchlist-names` dulu baru query
+artikel, cuma respect filter `search`), Tech Stack (resolve
+`/api/techstack?page_size=500` dulu, respect date/industry/actor/search
+tapi BUKAN country). **Tiap panel beda subset filter yang dipakai --
+port asimetri persis dari `loadPanel()`/`loadLocalPanel()`/
+`loadWatchlistPanel()`/`loadTechStackPanel()`/`loadRwArticles()` lama,
+bukan "apply semua filter ke semua panel" yang lebih gampang tapi
+salah.**
+
+**Filter bar default 7 hari terakhir** (`posted_on_start`/`_end`), port
+`autorefresh.js`'s init -- BUKAN unfiltered/all-time, itu perilaku
+lama yang gampang kelewat kalau cuma baca nama fungsinya. Country/
+industry/actor SELECT isinya `/api/filters` langsung (kode ISO alpha-2
+buat country) -- `variantToCanonical`/`expandCountry`/`/api/country-
+groups` legacy SENGAJA gak diport, `routers/articles.py` sendiri bilang
+peta nama-negara-bebas-teks itu obsolete (skema baru udah ISO alpha-2
+dari enrichment).
+
+**Modal artikel** (`openModal()`): meta bar, industries, countries
+(victim/actor role-based atau fallback mentioned), threat actors, tabel
+MITRE TTP + toggle D3FEND per baris (`toggleD3fend()` -- BUKAN
+`openTtpDrill()` penuh, itu punya MITRE heatmap `/intelligence` Grup G),
+IOC section (terstruktur tapi PASTI kosong sekarang -- `ArticleOut.iocs`
+selalu `{}`, linkage artikel<->IOC belum diport, placeholder yang udah
+didokumentasikan sejak schema Fase 7.3, bukan bug baru), newsletter
+queue (localStorage, kontrak sama kayak X Intel Grup C), export IOC CSV.
+
+**Sub-view "Not Related Cyber"** (`rejected_articles`) -- di-gate admin+
+di level KOMPONEN (tombol submenu-nya gak dirender buat non-admin,
+beda dikit dari legacy yang render tombolnya terus redirect balik kalau
+diklik -- efeknya sama, presentasinya lebih bersih di app route-based).
+Search + Restore (re-queue ke NLP pipeline).
+
+**3 hal SENGAJA didefer, dicatat eksplisit bukan lupa**:
+1. **Filter bar gak dibagi ke `/dashboard`** -- legacy nge-share SATU
+   filter bar buat tab Dashboard+Newsroom sekaligus (`applyFilters()`
+   manggil `loadDashboard()` juga). Di app baru itu 2 ROUTE terpisah;
+   nyambungin filter state lintas-route (URL search params, atau store
+   di layout `(app)`) butuh keputusan arsitektur baru yang belum
+   diambil. `/dashboard` (Grup B) tetap unfiltered.
+2. **Auto-refresh countdown** (`autorefresh.js`'s `setAutoRefresh()`)
+   gak diport -- chrome "nice to have", tiap panel udah punya tombol
+   refresh manual (core requirement udah kepenuhin).
+3. **Admiralty/source-reliability badge** di kartu+modal artikel
+   (`_srScoreMap`) belum -- itu punya Source Reliability
+   (`/intelligence`, Grup G, belum dibangun).
+4. `loadCvePanel()` yang ikut kepanggil di `loadAllPanels()` lama GAK
+   diport -- itu prefetch optimasi buat SPA monolitik lama (biar tab CVE
+   gak nge-flash loading pas di-switch), obsolete di arsitektur
+   route+TanStack-Query baru (`/cve`, Grup E, bakal fetch sendiri pas
+   route-nya diakses).
+
+**2 bug REAL ketemu live**:
+1. **`Select` trigger nampilin VALUE MENTAH (`__all__`) bukan label**
+   ("All Countries") pas belum pernah dibuka sekali -- Base UI
+   `Select.Value` cuma resolve label dari item yang UDAH ke-render
+   (`SelectContent` di-portal). Fix: prop `items` di `Select.Root`
+   (`Record<string,label>`), API yang didesain Base UI persis buat ini.
+   Dicatat gotcha ke-4 di `apps/web/CLAUDE.md`.
+2. (Ketemu sepanjang nulis kode, dibenerin sebelum sempet ke-commit,
+   dicatat di sini biar histori nyambung) `Object.values(a.iocs).reduce`
+   ke-infer `unknown` tanpa generic eksplisit (`iocs` tipe `{[key:
+   string]: unknown}`) -- fix `.reduce<number>(...)`.
+
+Verifikasi LIVE (tab baru): 6 panel render data ASLI (APAC 1 artikel
+nyata, Global 1, Local 2 -- konsisten karena client `default` gak punya
+country assignment jadi keduanya masuk, Watchlist+Techstack 0 tapi
+techstack RESOLVE nama asli `Apache Struts`/`Linux`/`WordPress` sebelum
+query -- kebukti dari network request, bukan cuma UI kosong). Modal
+artikel buka data lengkap termasuk 2 TTP asli (`T1555.003`/`T1574`) +
+D3FEND toggle manggil API asli. Filter Apply narrow-in hasil bener
+(search "Zero Trust" bikin APAC 0/Global 1, ransomware TETAP gak
+kepengaruh -- konfirmasi asimetri filter per-panel jalan), Reset balikin
+ke default 7-hari. "Not Related Cyber" nampilin artikel rejected asli
+("10 Best Pasta Recipes..."). Console bersih di tab baru sepanjang
+seluruh alur. `pnpm build`/`tsc --noEmit`/`pnpm lint` semua bersih.
+
 ### Checklist
 
 - [x] **8.1** Setup Next.js App Router + TS + keputusan arsitektur di atas
 - [x] **8.2** Generate client API dari OpenAPI (`docs/openapi.json` udah
       siap dari Fase 7.7)
 - [x] **8.3** Auth + session (Grup A)
-- [ ] **8.4** Route: `/dashboard` (Grup B, selesai) `/newsroom` `/cve`
-      `/intelligence`
+- [ ] **8.4** Route: `/dashboard` (Grup B, selesai) `/newsroom`
+      (Grup D, selesai) `/cve` `/intelligence`
 - [ ] **8.5** Route: `/exec` `/xintel` (Grup C, selesai) `/recap`
       (Grup B, selesai) `/admin/users` (Grup C, selesai) `/newsletter`
       *(route ke-9, ditambahin dari survei -- gap nyata, bukan revisi

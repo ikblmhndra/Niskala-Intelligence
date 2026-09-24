@@ -26,3 +26,14 @@ c.toLowerCase is not a function`, crash SELURUH Select (bukan cuma item
 itu). KETEMU LIVE Grup C (`AddUserForm`'s Role select, dua children
 `{r.name}{cond ? ... : ""}`) -- fix: gabung jadi satu
 `{cond ? `${a} — ${b}` : a}`.
+
+`<Select>` yang value default/awal-nya BUKAN item pertama yang di-render
+(mis. sentinel "semua"/"all" dipilih sebelum popup pernah dibuka) bakal
+nampilin VALUE MENTAH di trigger (`__all__`), bukan label item-nya --
+`<Select.Value>` cuma bisa resolve label dari item yang UDAH ke-render
+(`SelectContent` di-portal, gak mounted sebelum popup dibuka sekali kali
+pertama). Fix: kasih prop `items` di `<Select>` (`Select.Root`) --
+`Record<string, ReactNode>` value->label -- itu API yang didesain Base
+UI persis buat resolve label tanpa nunggu popup mounted. KETEMU LIVE
+Grup D (`FilterBar`'s country/industry/actor select, default value
+`"__all__"` sebelum user buka dropdown-nya sama sekali).
