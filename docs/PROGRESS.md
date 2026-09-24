@@ -2583,12 +2583,17 @@ Fase 7.4 -- user minta disurvei dulu sebelum ngoding, bukan langsung gas.
 baris):**
 
 - **Grup A -- Fondasi** (blocking semua grup lain): setup Next.js App
-  Router+TS, `openapi-typescript` dari `docs/openapi.json`, auth
-  (login+JWT+client-switcher+role-gate+lazy-auth-gate), API client
-  wrapper (fetch+TanStack Query buat cache/polling), design token
-  (ekstrak palet dark-theme+font dari CSS lama), primitif modal/dialog
-  (Radix, gantiin 16 overlay manual), `<Pagination>`/`<ConfirmDialog>`/
-  `<CountryMultiSelect>` reusable, modal Changelog (validasi pola modal).
+  Router+TS+Tailwind+shadcn/ui (di-tema pakai token dari CSS lama),
+  `openapi-typescript` dari `docs/openapi.json`, auth httpOnly-cookie
+  (Route Handler login yang taruh JWT ke cookie, Route Handler proxy
+  `app/api/proxy/[...path]` yang baca cookie+pasang Bearer buat semua
+  panggilan Client Component, Server Component boleh fetch API langsung
+  server-side, middleware guard route pakai keberadaan cookie,
+  client-switcher, role-gate, lazy-auth-gate -- lihat keputusan #3 di
+  atas), API client wrapper (TanStack Query di atas proxy route, buat
+  cache/polling), primitif modal/dialog (shadcn Dialog, gantiin 16
+  overlay manual), `<Pagination>`/`<ConfirmDialog>`/`<CountryMultiSelect>`
+  reusable, modal Changelog (validasi pola modal).
 - **Grup B -- Kecil, validasi pola end-to-end**: `/recap`, `/dashboard`
   (nunggu keputusan gap #6 buat widget scraper-health-nya).
 - **Grup C -- Sedang, mandiri**: `/xintel`, `/admin/users`.
@@ -2606,20 +2611,33 @@ baris):**
 - **Grup H -- `/newsletter`**: route baru, numpang komponen Mindmap dari
   G5.
 
-**4 keputusan arsitektur yang perlu diambil SEBELUM Grup A** (bukan hal
-yang aman diputus sepihak, beda dari keputusan desain kecil lain):
-1. Styling: rebuild tema dark custom lewat token Tailwind, atau pakai
-   component library (shadcn/ui) yang di-tema ulang?
-2. `/intelligence`: sub-route Next.js beneran (rekomendasi 3 agent survei,
-   deep-link+code-split) atau tetap 1 halaman+tab internal (persis UX
-   lama)?
-3. Auth token: tetap `localStorage` (pola lama, konsisten sama arsitektur
-   CORS-direct-to-API yang backend udah siapin) atau httpOnly cookie
-   (lebih aman dari XSS, tapi butuh Next.js middleware buat jembatanin ke
-   header Bearer)?
-4. `/admin`: sama kayak `/intelligence`, User Mgmt lama gabung 4 area
-   (users/roles/clients/audit) di 1 tab -- tetap 1 route `/admin/users`
-   atau pecah sub-route juga?
+**4 keputusan arsitektur -- DIPUTUSKAN user (2026-09-24):**
+1. **Styling: Tailwind + shadcn/ui, di-tema ulang.** Palet warna+font dari
+   1627 baris CSS lama diekstrak jadi Tailwind token; komponen aksesibel
+   (dropdown/dialog/table) dari shadcn, bukan rebuild manual.
+2. **`/intelligence`: sub-route Next.js beneran** (`/intelligence/clusters`
+   dst, Threat Actor Room nested lagi `/intelligence/threat-actors/tracked`
+   dst) -- sesuai rekomendasi survei, deep-link+code-split.
+3. **Auth token: httpOnly cookie** (BUKAN rekomendasi awal -- user pilih
+   lebih aman dari XSS ketimbang simpel). **Implikasi buat Grup A**:
+   backend cuma nerima `Authorization: Bearer` (gak ada cookie auth sama
+   sekali di `deps.py`), jadi arsitektur browser-manggil-API-langsung
+   (CORS direct) GAK dipakai buat request yang butuh auth -- Next.js jadi
+   proxy (pola BFF): (a) Route Handler login (`app/api/auth/login`) yang
+   manggil FastAPI, taruh JWT hasilnya ke httpOnly cookie; (b) Server
+   Component boleh fetch API langsung server-side (baca cookie via
+   `next/headers`, pasang jadi Bearer header sebelum manggil FastAPI);
+   (c) Client Component (mutasi, polling, interaksi) manggil Route
+   Handler proxy Next.js sendiri (`app/api/proxy/[...path]`), BUKAN
+   FastAPI langsung -- proxy itu yang baca cookie + pasang Bearer;
+   (d) middleware Next.js buat guard route (cek cookie ada/nggak sebelum
+   render halaman admin/protected). Kerjaan Grup A "API client wrapper"
+   nambah satu lapis (proxy route handler), bukan cuma fetch wrapper
+   biasa.
+4. **`/admin`: tetap 1 route `/admin/users`, tab internal** -- 4 area
+   (users/roles/clients/audit) gak dipecah sub-route, sesuai rencana
+   awal (areanya emang saling terhubung erat, edit role langsung reload
+   user table).
 
 ### Checklist
 
