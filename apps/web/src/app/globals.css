@@ -1,0 +1,155 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is(.dark *));
+
+/* Palet+font diekstrak dari `ScraperNewsWeb/templates/newsroom.html`'s
+   1627-baris <style> inline + `legacy/static/css/custom.css` -- lihat
+   docs/PROGRESS.md Fase 8 survei. App ini dark-only (`.dark` KELAS TETAP
+   nempel di <html>, lihat layout.tsx), jadi cuma blok `.dark` yang
+   kepake -- `:root` (light) DIBIARIN default shadcn, gak pernah aktif,
+   bukan lupa isi. */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-rajdhani);
+  --font-mono: var(--font-ibm-plex-mono);
+  --font-heading: var(--font-share-tech-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  /* Token TAMBAHAN, gak ada di shadcn default -- port langsung dari
+     `--color-success`/`--color-warning`/`--color-panel` CSS lama, dan
+     `--color-surface` vs `--color-card` (2 layer elevasi beda di app
+     lama, shadcn cuma py 1 "card" token). */
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-surface: var(--surface);
+  --color-panel: var(--panel);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --success: oklch(0.5 0.15 145);
+  --warning: oklch(0.8 0.15 85);
+  --surface: oklch(0.98 0 0);
+  --panel: oklch(0.95 0 0);
+  --radius: 0.375rem;
+}
+
+/* Palet asli app lama (hex, port apa adanya -- bukan konversi oklch,
+   biar warnanya PERSIS sama, bisa dibandingin langsung ke screenshot
+   lama pas QA visual). */
+.dark {
+  --background: #0d1117; /* --bg lama */
+  --foreground: #e6edf3; /* --text/--text-bright lama */
+  --surface: #161b22; /* --surface lama -- card/popover */
+  --panel: #21262d; /* --color-card lama -- elevasi lebih tinggi (dropdown, nested panel) */
+  --card: var(--surface);
+  --card-foreground: var(--foreground);
+  --popover: var(--surface);
+  --popover-foreground: var(--foreground);
+  --primary: #2f81f7; /* --accent lama */
+  --primary-foreground: #e6edf3;
+  --secondary: #3dc9af; /* --green lama */
+  --secondary-foreground: #0d1117;
+  --muted: var(--panel);
+  --muted-foreground: #8b949e; /* --text-dim lama */
+  --accent: var(--panel); /* hover/highlight halus -- BEDA dari --primary (itu "accent" biru lama) */
+  --accent-foreground: var(--foreground);
+  --destructive: #da3633; /* --red lama */
+  --border: #30363d; /* --border lama */
+  --input: #30363d;
+  --ring: #6e7cff; /* --color-focus lama */
+  --success: #238636;
+  --warning: #e3b341; /* --orange lama */
+  --chart-1: #2f81f7;
+  --chart-2: #3dc9af;
+  --chart-3: #e3b341;
+  --chart-4: #da3633;
+  --chart-5: #6e7cff;
+  --sidebar: #161b22;
+  --sidebar-foreground: #e6edf3;
+  --sidebar-primary: #2f81f7;
+  --sidebar-primary-foreground: #e6edf3;
+  --sidebar-accent: #21262d;
+  --sidebar-accent-foreground: #e6edf3;
+  --sidebar-border: #30363d;
+  --sidebar-ring: #6e7cff;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+
+/* Scrollbar tipis -- port `custom.css` lama apa adanya. */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--panel);
+  border-radius: 3px;
+}

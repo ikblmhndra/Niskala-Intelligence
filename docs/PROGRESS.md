@@ -2639,12 +2639,67 @@ baris):**
    awal (areanya emang saling terhubung erat, edit role langsung reload
    user table).
 
+### Grup A -- selesai (2026-09-25)
+
+`apps/web` -- Next.js 16.3.6 (App Router, Turbopack) + React 19 + TS
+strict + Tailwind v4 + shadcn/ui. Palet+font (Rajdhani/Share Tech Mono/
+IBM Plex Mono) diekstrak dari 1627 baris `<style>` `newsroom.html` lama
+ke token Tailwind (`globals.css`) -- app dark-only (`.dark` KELAS TETAP
+nempel di `<html>`, gak ada toggle).
+
+**Auth BFF (keputusan #3, httpOnly cookie) lengkap**: `lib/auth/
+session.ts` (cookie helper) + 3 Route Handler (`api/auth/login`
+taruh `access_token` FastAPI ke cookie, `api/auth/logout` hapus,
+`api/auth/me` proxy buat `AuthProvider` populate state client) + proxy
+catch-all `api/proxy/[...path]` (baca cookie, pasang `Authorization:
+Bearer`+`X-Client-ID`, forward apa adanya termasuk response binary
+--`Content-Disposition` diteruskan buat export Excel/DOCX nanti) +
+`src/proxy.ts` (guard optimistic, redirect ke `/login?redirect=...` kalau
+cookie gak ada -- BUKAN `middleware.ts`, Next.js 16 rename konvensi ini).
+`AuthProvider` pakai `useQuery` (bukan `useEffect` manual -- kena lint
+`react-hooks/set-state-in-effect`, React 19 baru).
+
+**API client**: `openapi-typescript` generate `lib/api/schema.d.ts` dari
+`docs/openapi.json` (`pnpm run gen:api`), `openapi-fetch` client
+ke-bind ke `/api/proxy` (browser gak pernah kontak FastAPI langsung).
+
+**Shell**: `AppHeader` (nav 9 route + Changelog + ClientSwitcher +
+UserMenu), route group `(app)` buat guard client-side kedua (cookie ada
+tapi invalid/expired -- proxy.ts sengaja gak decode JWT). `ChangelogDialog`
+jadi vertical-slice validasi PENUH (Dialog+Query+client+proxy+
+`react-markdown`, gantiin mini-parser regex lama).
+
+**2 bug Base UI (shadcn migrasi dari Radix, BUKAN dikira) ketemu LIVE**
+(browser, bukan cuma typecheck) -- dicatat di `apps/web/CLAUDE.md` biar
+gak keulang: (1) `asChild` gak dikenali Base UI, harus `render={<Elem
+/>}`, kalau kepake tetap nge-render `<button>` default sendiri di
+sekitar child -> nested `<button>` (hydration error); (2)
+`DropdownMenuLabel` WAJIB dibungkus `<DropdownMenuGroup>`, beda dari
+Radix yang boleh berdiri sendiri.
+
+**Deferred, BUKAN lupa**: `<Pagination>`/`<ConfirmDialog>`/
+`<CountryMultiSelect>` generik ditunda sampai Grup B/C butuh beneran
+(primitif shadcn `pagination.tsx`/`dialog.tsx` udah ke-install, tinggal
+dikomposisi) -- daripada desain API generik tanpa use-case nyata di
+tangan. Role-gate per halaman (admin-only dst) juga ditunda ke Grup yang
+beneran punya halaman admin, `require_admin` FastAPI tetap jadi
+enforcement asli (frontend cuma sembunyiin UI, bukan satu-satunya
+lapis).
+
+Verifikasi LIVE end-to-end (browser beneran, bukan cuma `pnpm build`):
+login (`admin1`/superadmin) -> dashboard -> nav 9 route render -> buka
+Changelog (data asli dari `/api/changelog` lewat proxy) -> user menu ->
+logout -> akses `/admin/users` tanpa sesi -> redirect ke `/login?
+redirect=%2Fadmin%2Fusers` (proxy.ts guard). Console browser BERSIH
+(tab baru, bukan history lama) setelah 2 bug Base UI di atas dibenerin.
+`pnpm build`/`tsc --noEmit`/`pnpm lint` semua bersih.
+
 ### Checklist
 
-- [ ] **8.1** Setup Next.js App Router + TS + keputusan arsitektur di atas
-- [ ] **8.2** Generate client API dari OpenAPI (`docs/openapi.json` udah
+- [x] **8.1** Setup Next.js App Router + TS + keputusan arsitektur di atas
+- [x] **8.2** Generate client API dari OpenAPI (`docs/openapi.json` udah
       siap dari Fase 7.7)
-- [ ] **8.3** Auth + session (Grup A)
+- [x] **8.3** Auth + session (Grup A)
 - [ ] **8.4** Route: `/dashboard` `/newsroom` `/cve` `/intelligence`
 - [ ] **8.5** Route: `/exec` `/xintel` `/recap` `/admin/users`
       `/newsletter` *(route ke-9, ditambahin dari survei -- gap nyata,
