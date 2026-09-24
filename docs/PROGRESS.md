@@ -2694,16 +2694,74 @@ redirect=%2Fadmin%2Fusers` (proxy.ts guard). Console browser BERSIH
 (tab baru, bukan history lama) setelah 2 bug Base UI di atas dibenerin.
 `pnpm build`/`tsc --noEmit`/`pnpm lint` semua bersih.
 
+### Grup B -- selesai (2026-09-24)
+
+`/dashboard` + `/recap` (docs/PROGRESS.md urutan kerja: "kecil, validasi
+pola end-to-end"). Port `legacy/static/js/newsroom/{dashboard,recap}.js`
++ `tab_{dashboard,recap}.html`, bukan desain baru.
+
+**`/dashboard`**: 2 `useQuery` independen (`/api/dashboard` typed penuh
+lewat `DashboardStats`, `/api/ta/stats` -- backend balikin
+`dict[str,object]` jadi di-cast ke `TaStats` lokal, field-nya dicek
+langsung dari `AsyncTARepo.get_ta_stats()` biar gak nebak) gantiin
+`Promise.all` lama -- tiap section render begitu datanya sendiri siap.
+`chart.js`+`react-chartjs-2` (dependency baru) buat 8 chart (bar
+horizontal/doughnut/line), warna hex LITERAL sama persis kayak
+`.dark` block `globals.css` (canvas gak bisa resolve `var(--x)` tanpa
+`getComputedStyle`, jadi bukan port yang males, itu keterbatasan teknis).
+**Scraper Health widget (accept-rate chart + tabel per-script) SENGAJA
+belum diisi** -- `/api/scraper/health` punya Fase 9 (gap #6 survei),
+diganti placeholder kartu yang bilang jelas alasannya, bukan endpoint
+di-fake atau section dihapus diam-diam.
+
+**`/recap`**: toolbar (date picker + Load/Generate/Force Regen) + grid
+2 kolom (history sidebar + body). `RecapDoc`/`RecapListItem`/`TaStats`
+di `lib/api/loose-types.ts` -- 4 endpoint `/api/recap/*` juga
+`dict[str,object]` di backend (`routers/recap.py` balikin dict polos,
+bukan Pydantic model), jadi shape-nya di-declare manual dari baca
+`cti_api.services.recap._to_dict()`/`SYSTEM_PROMPT` langsung, bukan
+tebakan dari nama field lama. 404 di `/api/recap/{date}` (belum ada
+recap buat tanggal itu) DIBACA dari `response.status` sebelum cek
+`error` openapi-fetch -- endpoint itu gak deklarasiin 404 di OpenAPI
+spec (cuma 200/422), jadi tipe `error` gak nyakup dia; power lewat
+`response.status` langsung lebih aman daripada gantungin narrowing tipe
+yang emang gak lengkap.
+
+**`<ConfirmDialog>` generik dibangun** (`src/components/confirm-
+dialog.tsx`) -- gantiin `.modal-overlay#recap-confirm-overlay` manual
+lama, ini use-case nyata pertama yang disebut di catatan deferred
+Grup A. Dipakai buat Generate/Force Regen (Force Regen nampilin baris
+peringatan tambahan).
+
+Verifikasi LIVE (browser beneran, tab baru): `/dashboard` -- semua 8
+chart render benar (warna/legend/tooltip cocok sama lama), stat box
+kebaca dari data asli (38 artikel dev DB), Scraper Health placeholder
+muncul. `/recap` -- state kosong (belum pernah ada recap di DB dev)
+render dengan benar (history "No recaps yet", body "No recap stored for
+<date>" + tombol Generate Now), buka dialog Generate DAN Force Regen
+(warning bander muncul cuma di Force Regen), Cancel nutup tanpa mutate.
+**Gak nge-klik confirm beneran** -- `POST /api/recap/generate` manggil
+LLM asli (biaya token + 10-30 detik), sengaja gak dites end-to-end
+biar gak buang token tanpa diminta; wiring-nya sama persis pola
+`ChangelogDialog` yang udah divalidasi Grup A (`api.POST` typed +
+`useMutation`), jadi risiko rendah. 404 `/api/recap/{date}` MUNCUL di
+console sebagai "Failed to load resource" (browser bawaan buat fetch
+non-2xx) -- itu bukan bug, response-nya DIBACA dan ditangani (empty
+state), bukan unhandled. `chart.js` sempet warning `Filler` plugin
+(dipake `fill:true` di line chart) -- diregister, verified ilang di
+tab baru abis fix. `pnpm build`/`tsc --noEmit`/`pnpm lint` semua bersih.
+
 ### Checklist
 
 - [x] **8.1** Setup Next.js App Router + TS + keputusan arsitektur di atas
 - [x] **8.2** Generate client API dari OpenAPI (`docs/openapi.json` udah
       siap dari Fase 7.7)
 - [x] **8.3** Auth + session (Grup A)
-- [ ] **8.4** Route: `/dashboard` `/newsroom` `/cve` `/intelligence`
-- [ ] **8.5** Route: `/exec` `/xintel` `/recap` `/admin/users`
-      `/newsletter` *(route ke-9, ditambahin dari survei -- gap nyata,
-      bukan revisi scope sepihak)*
+- [ ] **8.4** Route: `/dashboard` (Grup B, selesai) `/newsroom` `/cve`
+      `/intelligence`
+- [ ] **8.5** Route: `/exec` `/xintel` `/recap` (Grup B, selesai)
+      `/admin/users` `/newsletter` *(route ke-9, ditambahin dari survei --
+      gap nyata, bukan revisi scope sepihak)*
 - [ ] **8.6** Halaman control plane scraper -- SEBAGIAN blocked sampai
       `/api/scraper/health` diport (gap #6 di atas; MITRE heatmap-nya
       sendiri udah backend-ready)
