@@ -2949,6 +2949,107 @@ ke default 7-hari. "Not Related Cyber" nampilin artikel rejected asli
 ("10 Best Pasta Recipes..."). Console bersih di tab baru sepanjang
 seluruh alur. `pnpm build`/`tsc --noEmit`/`pnpm lint` semua bersih.
 
+### Grup E -- selesai (2026-09-25)
+
+`/cve` -- area terbesar tunggal Fase 8 (docs/PROGRESS.md urutan kerja:
+"core+techstack+pkgvuln, ticket workflow, 3 lookup eksternal"). Port
+`legacy/static/js/newsroom/{cve,techstack,pkgvuln}.js` (1284+309+908 =
+2501 baris) terhadap backend yang UDAH lengkap diport sejak Fase 7 --
+murni build frontend, gak ada kerjaan backend baru. Dua agen Explore
+paralel dulu buat riset (peta UI legacy + kontrak backend lengkap,
+termasuk cross-check ke test snapshot `.ambr` buat shape response yang
+gak declare `response_model`) sebelum nulis komponen apa pun.
+
+**2 level view-switch**, niru struktur legacy persis: `CveTrackerPage`
+(view "CVE Tracker" vs "Package Vulnerabilities", `cveSwitchView`), dan
+di dalam CVE Tracker, sub-view "CVEs" vs "Tech Stack"
+(`cveSwitchTSVSubview`).
+
+**CVE core** (`CveCoreView`+`CveList`+`CveRow`+`CveDetailModal`+
+`CveTicketTab`+`CveLookupToolbar`): tabel 13 kolom (checkbox, CVE ID,
+Tech, Score, Severity, Summary, Affected, Published, Solution, Flags,
+News, EPSS, Action) dengan sort per-kolom, bulk-select+bulk-ack+bulk-FP+
+draft-email (disable kalau tech beda), filter bar (search/severity/tech/
+date range/show-FP/unacked-only), stats bar, 3 lookup eksternal (CISA
+KEV/EPSS/Exploit-DB, bulk+single-row), export Excel. Modal detail 2 tab
+(Details statis dari row ter-cache -- gak fetch ulang, sama kayak
+legacy -- dan Ticket: form 16 field uncontrolled + `FormData` pas save,
+niru pola legacy baca DOM langsung, sekalian ngehindarin `useEffect`
+buat sync state pas data ticket pertama kali datang).
+
+**Tech Stack** (`TechStackPanel`): CRUD table -- add/remove/inline
+exposure+hosting cycle (PATCH). Tombol "↺ Historical backfill"/
+"↺ Backfill CVEs" legacy TIDAK diport -- endpoint-nya emang belum ada
+di `routers/techstack.py` (docstring router sendiri bilang nyusul bareng
+`cve.py`, yang sekarang UDAH diport tapi backfill-nya sendiri masih
+belum -- dicatat sebagai gap terpisah, bukan lupa).
+
+**Package Vulnerability** (`PkgVulnView`+`PackagesPanel`+`VulnsPanel`+
+`DepsModal`+`LockfileImportDialog`+`EditPackageDialog`+
+`VulnDetailModal`): sub-view Packages (CRUD+scan+resolve-deps+import
+lockfile drag-drop) dan Vulns (filter+ack+detail). Semua aksi
+scan/resolve-deps/import-lockfile fire-and-forget (`BackgroundTasks`
+FastAPI, gak ada job-status endpoint sama sekali) -- port pola legacy:
+invalidate query abis delay tetap (4-30 detik tergantung aksi), bukan
+nunggu sinyal "selesai" yang emang gak ada di kontrak API.
+
+**Adaptasi karena kontrak API beda dari legacy** (bukan bug, field-nya
+emang gak ke-expose):
+- `affected` berubah shape dari dict Mongo-era (`{product:[ranges]}`)
+  jadi flat string `"Product: constraint"` di skema Postgres baru --
+  parsing baru (`parseAffected()`) ditulis dari nol, bukan port
+  `_renderAffected()` lama yang bakal crash kena shape baru.
+- `CvePocOut.poc_type` (bukan `p.type` kayak legacy baca) -- field-nya
+  emang direname pas port.
+- Detail CISA-KEV (vendor/product/date_added/due_date/name/description/
+  action) dan `epss_date` GAK ada di `CveOut` -- cuma `cisa_kev` bool +
+  `epss_score`/`epss_percentile`. Modal detail disederhanain ke apa yang
+  beneran ada, bukan nebak-nebak field yang gak dikirim API.
+- Mind Map button (CVE ticket) DIDEFER -- nunggu komponen Mindmap
+  bersama (Grup G5, dipakai bareng G6/G7/Newsletter/CVE-ticket sesuai
+  survei backend 2026-09-19).
+- Cross-link klik package-vuln row → buka modal CVE tab (`pvShowVulnDetail`
+  legacy) DIDEFER -- butuh fetch tambahan cuma buat kemungkinan-kecil
+  match, sementara `VulnDetailModal` fallback SUDAH nampilin semua data
+  riil yang ada.
+
+**1 bug nyata ketemu live**: gak ada -- kali ini semua kontrak API
+match ekspektasi (hasil riset 2-agen Explore yang udah cross-check ke
+test snapshot beneran, bukan tebak dari nama field lama). Yang KETEMU
+malah masalah environment: dev server `.next` cache korup abis
+`pnpm build` production dijalanin bareng `next dev` (turbopack) di
+folder yang sama -- fix: stop task lama, `rm -rf .next`, restart.
+Terpisah dari itu, cookie sesi lama (dari testing Grup A-D sebelumnya)
+udah expired tapi `proxy.ts` cuma cek KEBERADAAN cookie (bukan validasi
+JWT, sengaja -- lihat docstring situ), jadi `/login`↔`/dashboard` muter
+infinite pas cookie ada-tapi-invalid. Bukan bug baru dari Grup E,
+edge-case pre-existing yang baru ketemu sekarang -- fix sesi ini cukup
+`POST /api/auth/logout` manual buat clear cookie-nya, gak perlu ubah
+kode `proxy.ts`.
+
+Verifikasi LIVE end-to-end (tab baru, login `admin1`/superadmin):
+**CVE core** -- 4 CVE real render (WordPress×3 + Linux), stats bar
+Critical/High/Medium bener, modal detail CVSS vector table expand bener
++ affected versions parse bener dari flat string, tab Ticket render 16
+field + prefill affected asset/version dari CVE asli + ticket ID
+auto-generate (`CTI-2026-09-001`), Save Ticket (PUT 200) + Acknowledge
+(POST 200, banner ijo muncul + row live-patch badge ACK + Mark FP
+kebuka), Mark FP/Unmark FP round-trip (row ilang/muncul sesuai filter
+`include_fp`), 3 lookup eksternal jalan BENERAN ke API luar (CISA KEV:
+1721 entri katalog asli, toast muncul), Export Excel 200 dengan
+`include_fp=true` kebawa bener. **Tech Stack** -- 3 entri asli (Apache
+Struts/Linux/WordPress), inline PATCH exposure+hosting jalan, Add+Remove
+round-trip bersih. **Package Vulnerability** -- add `lodash` npm beneran
+manggil registry npm + osv.dev ASLI, background scan nemu 10 vuln nyata
+(GHSA-jf85-cpcp-j695 dst, CVSS/severity/fixed-in semua kebaca bener),
+Vuln detail modal render lengkap, Ack toggle (PATCH 200), Resolve-deps
+manggil deps.dev ASLI (OSSF Scorecard 5.4 dengan breakdown Packaging/
+Signed-Releases/Branch-Protection/Pinned-Dependencies/Code-Review/
+License), Edit + Delete package round-trip bersih. Console bersih di
+tab baru sepanjang seluruh alur (dicek 2x, termasuk tab baru terpisah
+abis semua testing). `pnpm build`/`tsc --noEmit`/`pnpm lint` semua
+bersih.
+
 ### Checklist
 
 - [x] **8.1** Setup Next.js App Router + TS + keputusan arsitektur di atas
@@ -2956,7 +3057,7 @@ seluruh alur. `pnpm build`/`tsc --noEmit`/`pnpm lint` semua bersih.
       siap dari Fase 7.7)
 - [x] **8.3** Auth + session (Grup A)
 - [ ] **8.4** Route: `/dashboard` (Grup B, selesai) `/newsroom`
-      (Grup D, selesai) `/cve` `/intelligence`
+      (Grup D, selesai) `/cve` (Grup E, selesai) `/intelligence`
 - [ ] **8.5** Route: `/exec` `/xintel` (Grup C, selesai) `/recap`
       (Grup B, selesai) `/admin/users` (Grup C, selesai) `/newsletter`
       *(route ke-9, ditambahin dari survei -- gap nyata, bukan revisi

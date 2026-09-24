@@ -37,3 +37,13 @@ pertama). Fix: kasih prop `items` di `<Select>` (`Select.Root`) --
 UI persis buat resolve label tanpa nunggu popup mounted. KETEMU LIVE
 Grup D (`FilterBar`'s country/industry/actor select, default value
 `"__all__"` sebelum user buka dropdown-nya sama sekali).
+
+Base UI `Checkbox` BUKAN native `<input type="checkbox">` (role-based
+`<span>`), tapi render hidden native `<input>` di sebelahnya buat form
+participation KALAU dikasih prop `name` -- value-nya default = `name`
+itu sendiri (BUKAN `"on"` kayak native checkbox polos), dan kalau
+UNCHECKED gak ada input sama sekali di form (kecuali `uncheckedValue`
+di-set). Jadi ekstraksi lewat `FormData` harus cek KEBERADAAN key
+(`fd.get('x') != null`), BUKAN `=== 'on'`. KETEMU Grup E
+(`CveTicketTab`'s `escalation_required` checkbox, form ticket
+uncontrolled).
