@@ -9,6 +9,14 @@ dependencies = [
     "cti-scrapers",
     "cti-enrich",
     "cti-alerts",
+    # 5 loop beat (Fase 7.8, tasks/periodic.py) reuse LANGSUNG fungsi
+    # async "session-first" yang udah ada di cti_api.services (cve_lookup,
+    # recap, dst) lewat asyncio.run() -- daripada nulis ulang jadi versi
+    # sync, dedup logic bisnis (satu sumber, dipakai API DAN worker).
+    # Belum ada image Docker terpisah worker/api (plan §10, belum
+    # dikerjain) -- kalau nanti dipisah dan berat cti-api (fastapi/
+    # playwright/sklearn) jadi masalah nyata, revisit di situ.
+    "cti-api",
     "celery[redis]>=5.4",
 ]
 

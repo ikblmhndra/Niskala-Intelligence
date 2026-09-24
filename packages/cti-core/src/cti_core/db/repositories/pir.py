@@ -211,13 +211,19 @@ class AsyncPIRRepo:
         *,
         page: int = 1,
         page_size: int = 15,
+        created_at_start: datetime.datetime | None = None,
     ) -> tuple[list[Any], int]:
+        """`created_at_start` (Fase 7.8, `pir_alert`) -- "artikel yang
+        BARU masuk sejak tick terakhir", dipasang BARENG `pir.start_date`/
+        `end_date` (bukan gantiin) -- PIR yang jendela aktifnya udah
+        lewat tetep gak nyangkut walau artikelnya baru."""
         filters = _criteria_filters(pir.criteria)
         return await article_repo.list_filtered(
             page=page,
             page_size=page_size,
             posted_on_start=pir.start_date,
             posted_on_end=pir.end_date,
+            created_at_start=created_at_start,
             **filters,
         )
 

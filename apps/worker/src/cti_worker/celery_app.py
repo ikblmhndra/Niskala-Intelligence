@@ -46,6 +46,7 @@ cuma setelah yang sekarang kelar."""
 from cti_worker.beat import build_beat_schedule  # noqa: E402
 from cti_worker.tasks import (  # noqa: E402,F401  -- registrasi task, harus setelah `app` ada
     enrich,
+    periodic,
     scrape,
 )
 

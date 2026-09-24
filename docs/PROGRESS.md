@@ -21,7 +21,7 @@ Plan lengkap: `~/.claude/plans/oke-bro-jadi-gini-sparkling-fern.md`
 | 4 | Migrasi scraper (**100 aktif**) | `[x]` | ~2 minggu | ≥95% fixture identik, semua modul ke-import |
 | 5 | `cti-enrich` | `[x]` | 2–3 minggu | Output cocok dgn baseline, tiap cabang routing ada test |
 | 6 | Celery + beat | `[x]` inti; sisanya dipindah 7.8/10.1d/10.1e | 1–2 minggu | ~~5 loop web pindah~~ (→ 7.8) · ~~beat singleton terverifikasi~~ (→ 10.1d) |
-| 7 | `apps/api` | `[~]` 7.1/7.2 auth kelar, sisanya nyusul | 4–6 minggu | Semua endpoint ada snapshot test · 5 loop jadi beat task (7.8) |
+| 7 | `apps/api` | `[x]` | 4–6 minggu | Semua endpoint ada snapshot test · 5 loop jadi beat task (7.8) |
 | 8 | `apps/web` (Next.js) | `[ ]` | 4–6 minggu | Semua tab lama ada padanannya |
 | 9 | Control plane scraper | `[ ]` | 1 minggu | Scraper mati kedeteksi dlm 3 interval |
 | 10 | Cutover | `[ ]` | 1 minggu | Semua checklist cutover hijau |
@@ -1000,7 +1000,7 @@ queue → enrich task → persist jalan tanpa satu pun langkah disintesis/di-moc
 
 ---
 
-## Fase 7 — `apps/api` `[~]` 7.1/7.2 (inti auth) kelar, sisanya nyusul
+## Fase 7 — `apps/api` `[x]`
 
 **2026-09-18 — 7.1 + 7.2 (auth vertical slice), diverifikasi LIVE lewat
 HTTP beneran (curl), bukan cuma pytest.** Package baru `apps/api`
@@ -2369,14 +2369,109 @@ udah dibenerin Fase 7.3 Bagian 4; `llm` nyusul dibenerin Fase 7.5
 
       Full suite abis 7.7: **1234 passed** (dari 1232 abis fix di atas,
       +2 test baru), mypy+ruff bersih, diverifikasi 2x berturut-turut.
-- [ ] **7.8** *(dipindah dari 6.6)* Pindahkan 5 loop `ScraperNewsWeb/app/main.py`
+- [x] **7.8** *(dipindah dari 6.6)* Pindahkan 5 loop `ScraperNewsWeb/app/main.py`
       (PIR alert, ATT&CK sync, IOC decay, daily recap, CVE enrichment) jadi
-      Celery beat task -- infra beat/worker-nya udah ada dari Fase 6
-      (`apps/worker/src/cti_worker/beat.py`), tinggal port logika service-nya
-      (bagian dari 7.4) + daftarin jadwalnya. Setelah ini `apps/api` bisa
-      di-scale horizontal (multi-worker uvicorn gak lagi gandain loop).
+      Celery beat task.
 
-**Exit criteria:** semua endpoint ada snapshot test · gak ada import `cti_scraper`/`cti_enrich` dari API · 5 loop web hilang dari `main.py`, jadi beat task (7.8)
+      **5 loop -> 6 task**: `_pir_alert_loop` lama (satu loop, dua interval
+      P1/P2+ internal, dedup pakai GLOBAL `_alerted_urls`/`_alerted_date`
+      in-process) dipecah jadi `pir.check_p1_alerts` (tiap 5 menit) +
+      `pir.check_all_alerts` (tiap 15 menit, exclude P1) -- masing-masing
+      partisi PRIORITY-nya sendiri (gak overlap window), TANPA state
+      in-process sama sekali: `Article.created_at >= since` (kolom BARU,
+      bukan `posted_on`) yang jadi kebenaran "baru sejak tick terakhir",
+      bukan set dedup yang gak aman lintas worker/restart (persis masalah
+      struktural yang jadi alasan revamp ini -- lihat plan). 4 loop
+      lainnya 1:1 jadi 1 task masing-masing, jam tetap (04:00/06:00 UTC,
+      tiap 3 jam) HARDCODED port apa adanya dari `_seconds_until_04h_utc()`
+      dkk lama (gak pernah env-configurable), PIR P1/all-interval DAN
+      ATT&CK sync interval pindah ke `Settings.worker` (field baru,
+      `WorkerSettings`, `packages/cti-core/src/cti_core/config.py`).
+
+      **3 fungsi service BARU** (logic-nya emang belum pernah diport --
+      router `pir`/`iocs`/`attack` docstring-nya sendiri udah nyebut item
+      ini "belum diport, masuk 7.8"):
+      - `cti_api.services.pir_alert.check_new_articles_vs_pirs()` --
+        reuse `AsyncPIRRepo.list_articles_for_pir()` yang UDAH ada
+        (`_criteria_filters`), cuma nambahin parameter `created_at_start`
+        yang di-plumbing sampai ke `_apply_list_filters()`
+        (`AsyncArticleRepo`, SATU sumber filter artikel, bukan query
+        builder terpisah -- pola yang sama kayak `ttps` sebelumnya).
+      - `cti_api.services.ioc_decay.decay_sweep()` -- repo method baru
+        `AsyncIOCRepo.list_needing_decay()`, iterasi loop-sampai-kosong
+        (bukan Mongo bulk_write 500/batch lama), tiap IOC lewat
+        `confidence.recompute_ioc_confidence_and_actionability()` yang
+        UDAH ada (dipakai endpoint feedback juga -- satu sumber logic).
+      - `cti_api.services.attack_sync_check.sync_if_needed()` -- `_needs_
+        sync()` (pure function, gampang ditest) + `AsyncAttackSyncRepo.
+        get_sync_status()`/`sync_all_domains()` yang UDAH ada dari Fase
+        7.3 Bagian 3, cuma keputusan "kapan" yang belum ada.
+
+      **2 fungsi EXISTING langsung dipakai (session-first, "FONDASI 7.8"
+      sesuai catatan pas dibangun)**: `cve_lookup.run_cisa_kev_lookup`/
+      `run_epss_lookup`/`run_exploit_db_bulk_lookup` (Fase 7.4 Grup B) dan
+      `recap.generate_daily_recap` (Fase 7.3 Bagian 5, dipanggil `date=None`
+      sama kayak lama).
+
+      **Keputusan arsitektur: `cti-worker` sekarang depend ke `cti-api`**
+      (`apps/worker/pyproject.toml`). Semua fungsi di atas `AsyncSession`-
+      first (ditulis buat FastAPI), task Celery sendiri fungsi SYNC biasa
+      -- daripada nulis ulang jadi versi sync (duplikat logic bisnis),
+      task manggil LANGSUNG lewat `asyncio.run()`. Belum ada image Docker
+      terpisah worker/api (plan §10 belum dikerjain) jadi belum ada beban
+      nyata dari `fastapi`/`playwright`/`scikit-learn` ikut ke image
+      worker -- dicatat sebagai hal yang perlu di-revisit kalau/pas image
+      dipisah beneran.
+
+      **1 bug GENUINE ketemu pas verifikasi LIVE (bukan test), bukan
+      dugaan**: engine/sessionmaker async `cti_core.db.engine` di-
+      `@lru_cache` SEKALI per PROSES (didesain buat FastAPI -- satu event
+      loop uvicorn yang idup terus). Di worker Celery yang manggil
+      `asyncio.run()` BERULANG (task beda-beda, tick beda-beda, satu
+      proses worker yang sama), event loop LAMA ketutup begitu
+      `asyncio.run()` kelar, tapi engine cache-nya nyangkut ke situ --
+      panggilan `asyncio.run()` BERIKUTNYA (task lain) pecah
+      `RuntimeError: Event loop is closed` / "attached to a different
+      loop" pas nyoba pakai koneksi yang keiket ke loop mati. Reproduksi
+      LIVE: dispatch manual `ioc.decay_sweep` lalu `cve.enrichment_sweep`
+      ke worker Celery beneran (`--pool=solo`, Redis+Postgres dev
+      container) -- CISA KEV lookup pecah PERSIS gini, Exploit-DB/EPSS
+      (jalan setelahnya, kebetulan gak butuh session BARU di titik yang
+      sama) tetep sukses. Fix: `_run_async()` (`tasks/periodic.py`) --
+      wrapper `asyncio.run()` yang manggil `reset_engines()` (SUDAH ada,
+      dipakai fixture test buat alasan serupa) di `finally`, jadi
+      panggilan berikutnya bikin engine baru di loop barunya sendiri.
+      Diverifikasi ulang urutan yang SAMA PERSIS abis fix -- `cve.
+      enrichment_sweep` sukses penuh (CISA KEV+Exploit-DB+EPSS
+      semua jalan, `catalog_size: 1721`).
+
+      **Verifikasi LIVE end-to-end** (worker Celery beneran, `--pool=
+      solo`, Redis+Postgres dev container lewat `docker compose`, BUKAN
+      testcontainer efemeral): `ioc.decay_sweep` -- 92/92 IOC di DB dev
+      ke-decay bener. `attack.sync_check` -- correctly SKIP (3 domain
+      semua masih fresh dari sync live Fase 7.3). `cve.enrichment_sweep`
+      -- CISA KEV/Exploit-DB/EPSS ketiganya jalan lewat API eksternal
+      ASLI (bukan mock), data ke-tulis ke Postgres dev. **`pir.check_*`/
+      `recap.generate_daily` SENGAJA GAK di-live-dispatch** -- `.env` dev
+      punya kredensial Telegram+LLM ASLI, risiko kirim alert Telegram
+      beneran / kena biaya API LLM kalau ada PIR+artikel yang kebetulan
+      cocok; cukup diverifikasi lewat integration test (mocked) + bukti
+      mekanisme `_run_async` yang sama udah kebukti benar di 2 task lain.
+
+      11 test baru (`test_pir_alert_service.py` 5, `test_ioc_decay_
+      service.py` 3, `test_attack_sync_check_service.py` 3) -- Postgres
+      REAL (testcontainers), `AsyncAttackSyncRepo.sync_domain` di-mock
+      (pola sama kayak `test_attack_router_snapshot.py`). Gak ada test
+      buat task Celery-nya sendiri (`@app.task(...)` wrapper) -- sama
+      pola kayak `scrape.run`/`enrich.article` (Fase 6), diverifikasi
+      LIVE bukan lewat unit test.
+
+      Full suite: **1245 passed** (dari 1234 abis 7.7, +11 test baru),
+      mypy (`cti-core` strict + `cti-worker`/`cti-api` file yang disentuh)
+      bersih, ruff bersih (80 file lain butuh reformat tapi PRA-ADA, gak
+      ada satupun file Fase 7.8 -- gak disentuh, di luar scope).
+
+**Exit criteria:** semua endpoint ada snapshot test · gak ada import `cti_scraper`/`cti_enrich` dari API · 5 loop web hilang dari `main.py`, jadi beat task (7.8) -- **SEMUA TERPENUHI**, Fase 7 `[x]` lengkap.
 
 ---
 

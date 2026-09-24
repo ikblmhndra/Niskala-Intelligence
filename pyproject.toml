@@ -112,5 +112,5 @@ ignore_missing_imports = true
 # (posisi baris-nya gak stabil buat decorator multi-baris). Cuma 2 modul
 # task (`tasks/scrape.py`, `tasks/enrich.py`) yang kena -- bukan disable
 # strict buat seluruh `apps/worker`.
-module = ["cti_worker.tasks.scrape", "cti_worker.tasks.enrich"]
+module = ["cti_worker.tasks.scrape", "cti_worker.tasks.enrich", "cti_worker.tasks.periodic"]
 disable_error_code = ["untyped-decorator"]

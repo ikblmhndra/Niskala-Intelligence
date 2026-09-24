@@ -1107,6 +1107,7 @@ source = { editable = "apps/worker" }
 dependencies = [
     { name = "celery", extra = ["redis"] },
     { name = "cti-alerts" },
+    { name = "cti-api" },
     { name = "cti-core" },
     { name = "cti-enrich" },
     { name = "cti-scraper" },
@@ -1122,6 +1123,7 @@ nlp = [
 requires-dist = [
     { name = "celery", extras = ["redis"], specifier = ">=5.4" },
     { name = "cti-alerts", editable = "packages/cti-alerts" },
+    { name = "cti-api", editable = "apps/api" },
     { name = "cti-core", editable = "packages/cti-core" },
     { name = "cti-enrich", editable = "packages/cti-enrich" },
     { name = "cti-enrich", extras = ["nlp"], marker = "extra == 'nlp'", editable = "packages/cti-enrich" },

@@ -139,6 +139,22 @@ class ScraperSettings(_StrictModel):
     (spaCy/LLM). Lihat plan §4.7."""
 
 
+class WorkerSettings(_StrictModel):
+    """Interval buat 2 dari 5 loop Celery beat (Fase 7.8) yang nentuin
+    LOGIKA task, bukan cuma jadwal cron-nya -- IOC decay/daily recap/CVE
+    enrichment jam tetap (04:00/06:00/tiap 3 jam UTC, port apa adanya dari
+    `_seconds_until_04h_utc()` dkk lama) di-hardcode langsung di `beat.py`,
+    gak butuh entri di sini."""
+
+    pir_p1_alert_interval_min: int = 5
+    """Port `PIR_P1_INTERVAL_MIN` lama -- P1 dicek tiap segini menit."""
+    pir_alert_interval_min: int = 15
+    """Port `PIR_ALERT_INTERVAL_MIN` lama -- P2+ dicek tiap segini menit."""
+    attack_sync_interval_days: int = 7
+    """Port `ATTACK_SYNC_INTERVAL_DAYS` lama -- re-sync kalau domain
+    manapun belum pernah sync ATAU sync terlama udah lebih dari ini."""
+
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -167,6 +183,7 @@ class Settings(BaseSettings):
     twitter: TwitterSettings = Field(default_factory=TwitterSettings)
     otx: OtxSettings = Field(default_factory=OtxSettings)
     scraper: ScraperSettings = Field(default_factory=ScraperSettings)
+    worker: WorkerSettings = Field(default_factory=WorkerSettings)
 
     cors_origins: str = "http://localhost:3000"
     api_base_url: str = "http://api:8000"

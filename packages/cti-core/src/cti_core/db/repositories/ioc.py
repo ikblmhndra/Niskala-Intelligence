@@ -8,7 +8,7 @@ from __future__ import annotations
 import datetime
 from collections.abc import Sequence
 
-from sqlalchemy import func, select
+from sqlalchemy import func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Session
 
@@ -170,6 +170,22 @@ class AsyncIOCRepo:
             select(IOC)
             .where(func.date(IOC.first_seen_at) == day)
             .order_by(IOC.first_seen_at)
+            .limit(limit)
+        )
+        return list(result.scalars().all())
+
+    async def list_needing_decay(self, cutoff: datetime.datetime, *, limit: int = 500) -> list[IOC]:
+        """Port query `decay_sweep()` (`ioc_service.py` lama) -- IOC yang
+        confidence-nya belum PERNAH dihitung ulang (`confidence_decayed_at`
+        NULL) ATAU udah lebih lama dari `cutoff` (24 jam lalu, port apa
+        adanya). `limit` -- Celery task (`ioc_decay`, Fase 7.8) manggil ini
+        berulang tiap sweep sampai kosong, bukan sekali angkut semua (dataset
+        bisa gede, satu UPDATE per-IOC lewat ORM -- lihat docstring
+        `ioc_decay.decay_sweep`)."""
+        result = await self.session.execute(
+            select(IOC)
+            .where(or_(IOC.confidence_decayed_at.is_(None), IOC.confidence_decayed_at < cutoff))
+            .order_by(IOC.id)
             .limit(limit)
         )
         return list(result.scalars().all())

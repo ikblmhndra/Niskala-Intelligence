@@ -48,6 +48,7 @@ def _apply_list_filters(
     search: str | None,
     title_keywords: Sequence[str] | None,
     ttps: Sequence[str] | None = None,
+    created_at_start: datetime.datetime | None = None,
 ) -> Select[tuple[Article]]:
     """Filter bersama buat query list DAN count -- port dari `article_service.
     get_articles()` (Mongo query dict) ke SQL. Tiga field negara Mongo lama
@@ -59,6 +60,13 @@ def _apply_list_filters(
         stmt = stmt.where(Article.posted_on >= posted_on_start)
     if posted_on_end is not None:
         stmt = stmt.where(Article.posted_on <= posted_on_end)
+    if created_at_start is not None:
+        # Beda dari `posted_on` (tanggal publish, presisi HARI) -- ini
+        # `created_at` (timestamp masuk ke sistem KITA, presisi DETIK).
+        # Dipakai `pir_alert` (Fase 7.8, Celery beat) buat "artikel yang
+        # BENERAN baru sejak tick terakhir", bukan "artikel yang tayang
+        # hari ini" -- dua hal beda yang `posted_on` gak bisa jawab.
+        stmt = stmt.where(Article.created_at >= created_at_start)
     if industries:
         stmt = stmt.join(Article.industries).where(ArticleIndustry.industry.in_(industries))
     if countries:
@@ -341,6 +349,7 @@ class AsyncArticleRepo:
         search: str | None = None,
         title_keywords: Sequence[str] | None = None,
         ttps: Sequence[str] | None = None,
+        created_at_start: datetime.datetime | None = None,
     ) -> tuple[list[Article], int]:
         """Port `article_service.get_articles()`. Filter di-`join()` ke
         tabel anak -- `.distinct()` WAJIB begitu ada join one-to-many
@@ -351,7 +360,10 @@ class AsyncArticleRepo:
         ditambah di sini alih-alih duplikat query builder terpisah di
         `pir`, biar SATU sumber logic filter artikel (beda dari kode
         lama: `pir_service._build_query` DAN `export_pir_docx.py
-        _build_article_query` adalah dua salinan yang sama persis)."""
+        _build_article_query` adalah dua salinan yang sama persis).
+
+        `created_at_start` (Fase 7.8, `pir_alert`) -- lihat docstring
+        `_apply_list_filters`."""
         base = _apply_list_filters(
             select(Article),
             posted_on_start=posted_on_start,
@@ -366,6 +378,7 @@ class AsyncArticleRepo:
             search=search,
             title_keywords=title_keywords,
             ttps=ttps,
+            created_at_start=created_at_start,
         )
         has_join = bool(
             industries
