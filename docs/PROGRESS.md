@@ -2329,7 +2329,46 @@ udah dibenerin Fase 7.3 Bagian 4; `llm` nyusul dibenerin Fase 7.5
       diverifikasi lewat run ulang berkali-kali (per-file, gabungan
       27 file, DAN full suite project) -- bukan cuma "generate sekali terus
       percaya".
-- [ ] **7.7** Ekspor skema OpenAPI
+- [x] **7.7** Ekspor skema OpenAPI
+
+      `tools/export_openapi.py` -- panggil `create_app().openapi()`
+      (murni introspeksi route/Pydantic model, GAK connect ke Postgres/
+      Redis beneran) terus tulis ke `docs/openapi.json` (di-commit ke
+      git, bukan `.gitignore` -- diff-nya kelihatan di code review tiap
+      kali kontrak endpoint berubah). Ini yang bakal dibaca
+      `openapi-typescript` buat generate client TypeScript pas Fase 8
+      (`apps/web`, plan §9) -- drift frontend-backend ketahuan saat
+      compile, bukan pas runtime.
+
+      **Satu keputusan kecil**: `create_app()` butuh `Settings` valid
+      buat kebentuk (`FastAPI(...)` + router registration), dan 4 field
+      `database.url`/`sync_url`/`auth.jwt_secret`/`session_secret_key`
+      gak punya default (`cti_core.config`, sengaja -- container app
+      beneran WAJIB gagal start kalau kosong). Skrip ini `os.environ.
+      setdefault(...)` 4 placeholder (gak pernah kepake buat I/O asli,
+      cuma biar validasi Pydantic lolos) SEBELUM import `cti_api.main`
+      (yang punya `app = create_app()` di level modul) -- jadi jalan di
+      mana aja, dev lokal TANPA `.env` maupun CI TANPA testcontainer,
+      gak butuh secret apa pun.
+
+      Jalanin: `uv run python tools/export_openapi.py` -> **156 path**
+      ke-export, `openapi` 3.1.0, `info.title`/`version` kebaca dari
+      `create_app()`. Test unit (`tests/unit/test_export_openapi.py`,
+      2 test -- shape schema + JSON-serializable) gak butuh Postgres,
+      lolos di CI job `test` biasa tanpa perubahan workflow.
+
+      **3 bug flaky full-suite kesenggol pas verifikasi Fase 7.6
+      (bukan bagian 7.7 langsung, tapi ketemu re-run full suite abis
+      fix timezone `task_a3ad146d`) udah dibenerin di commit `1e32357`
+      sebelum item ini**: 2 snapshot ke-bake tanggal literal
+      (`test_recap_router_snapshot.py`'s `date`, `test_stix_router_
+      snapshot.py`'s `valid_from`/`x_last_seen`) + 1 `SELECT DISTINCT`
+      tanpa `ORDER BY` (`list_all_distinct_cve_ids`, `test_cve_router_
+      snapshot.py::test_bulk_exploit_lookup`) -- lihat commit message
+      buat detail lengkap, gak diulang di sini.
+
+      Full suite abis 7.7: **1234 passed** (dari 1232 abis fix di atas,
+      +2 test baru), mypy+ruff bersih, diverifikasi 2x berturut-turut.
 - [ ] **7.8** *(dipindah dari 6.6)* Pindahkan 5 loop `ScraperNewsWeb/app/main.py`
       (PIR alert, ATT&CK sync, IOC decay, daily recap, CVE enrichment) jadi
       Celery beat task -- infra beat/worker-nya udah ada dari Fase 6
