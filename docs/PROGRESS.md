@@ -2477,12 +2477,163 @@ udah dibenerin Fase 7.3 Bagian 4; `llm` nyusul dibenerin Fase 7.5
 
 ## Fase 8 — `apps/web` (Next.js) `[ ]`
 
-- [ ] **8.1** Setup Next.js App Router + TS
-- [ ] **8.2** Generate client API dari OpenAPI
-- [ ] **8.3** Auth + session
+### Survei frontend lama + urutan kerja (2026-09-24)
+
+Checklist 8.1-8.6 di bawah ini kedengeran kayak 6 kerjaan datar, padahal ini
+fase terbesar yang tersisa (4-6 minggu). Sebelum eksekusi, disurvei dulu
+28 file JS (11.751 baris) + 14 template Jinja (7.726 baris) legacy
+(`legacy/static/js/newsroom/*.js` + `ScraperNewsWeb/templates/`) lewat 4
+subagent paralel, cross-check ke 156 endpoint / 27 router API yang udah
+ada (`docs/openapi.json`, hasil Fase 7.7). Sama pola kayak survei 56-service
+Fase 7.4 -- user minta disurvei dulu sebelum ngoding, bukan langsung gas.
+
+**Temuan yang mengubah asumsi rencana awal (plan §9, 8 route):**
+
+1. **`/intelligence` BUKAN satu halaman** -- `tab_intelligence.html` (944
+   baris) punya 11 sub-view internal yang di-switch murni `display:none`
+   (TANPA ubah URL sama sekali): News Clusters, Source Reliability, Early
+   Warning/Spikes, MITRE Heatmap, ATT&CK DB, PIR, RFI, Threat Actor Room
+   (+3 sub-sub-view: Tracked/Whitelist/Watchlist), IOC Management,
+   **Campaign Clusters**, Risk Matrix. Rekomendasi: pecah jadi sub-route
+   Next.js beneran (`/intelligence/clusters`, `/intelligence/campaigns`,
+   dst) -- dapet deep-link/bookmark yang SEKARANG gak bisa, plus code-
+   splitting otomatis (±4700 baris JS logic di area ini doang).
+2. **Newsletter itu GAP nyata** -- gak ada di 8 route awal, padahal
+   `newsletter.html` (1261 baris) halaman STANDALONE (route `/newsletter`
+   sendiri di app lama, bukan tab), backend-nya (`newsletter.py`,
+   `mindmap.py`) UDAH lengkap ke-port dari Fase 7.3. Skala sebanding
+   `exec.js` (composer 4-section + history drawer + editor mindmap
+   Mermaid). Ditambahin jadi route ke-9.
+3. **Pkg Vuln BUKAN gap** -- `tab_pkgvuln.html` udah nested DI DALAM tab
+   CVE Tracker di app lama (submenu "Pkg Vuln" vs "Tech Stack Vuln"), jadi
+   tetap masuk `/cve` (nested), bukan route terpisah. Konsisten sama 8
+   route awal, bukan revisi.
+4. **`/cve` 3 level nested tab**: `/cve` -> Tech Stack Vuln (default) /
+   Pkg Vuln, masing-masing punya sub-tab lagi (CVEs/Tech Stack,
+   Vulnerabilities/Packages). File tunggal terkompleks di SELURUH
+   frontend lama (`cve.js` 1284 baris): bulk action dengan business rule
+   lintas-baris (draft-email cuma aktif kalau semua row tech sama), ticket
+   workflow 15+ field, 3 lookup eksternal (CISA/EPSS/exploit-db), export
+   Excel, embed mindmap inline.
+5. **2 endpoint belum diport** (tombol bakal 404 kalau di-port apa
+   adanya): `POST /api/techstack/{id}/backfill-historical` +
+   `POST /api/techstack/backfill-cves` -- docstring `techstack.py` sendiri
+   udah nyebut ini sengaja gak diport (trigger NVD/MITRE, cascade-delete
+   lintas-client). Perlu keputusan produk: hidupin lagi backend-nya, atau
+   drop tombolnya di rewrite.
+6. **`/api/scraper/health` juga belum diport** -- `health.py` baru
+   docstring-nya sendiri bilang ini Fase 9 punya, bukan Fase 8. Blocking
+   sebagian widget Scraper Health di `/dashboard` (accept-rate chart +
+   tabel per-script) sampai itu ada.
+7. **Kontrak `/api/iocs/feedback` BERUBAH** -- `exec.js` manggil bentuk
+   lama `POST /api/iocs/feedback` (body `{ioc_type, value,
+   is_true_positive}`), backend baru `POST /api/iocs/{ioc_id}/feedback`
+   (body `{verdict, note}`). Bukan blocker (endpoint-nya ADA), tapi bukan
+   port literal -- widget FP-vote di Exec Dashboard perlu ditulis ulang
+   melawan kontrak baru.
+8. **`scraper.js` BUKAN control plane** -- namanya menyesatkan, isinya cuma
+   2 widget MONITORING read-only (Scraper Health di `/dashboard`, MITRE
+   Heatmap di `/intelligence`), gak ada start/stop/pause/schedule/config
+   sama sekali. Fase 9 ("control plane scraper" beneran) GAK PUNYA
+   preseden kode buat di-port -- desain dari nol, bukan port.
+9. **Tanpa framework CSS** -- gak ada Bootstrap/Tailwind, cuma 1627 baris
+   `&lt;style&gt;` inline custom (dark theme GitHub-ish + font "Share Tech
+   Mono"/"Rajdhani", identitas visual yang cukup khas buat tool CTI).
+   Chart.js dipakai di Dashboard/Exec/TA-profile (6+6+1 chart), Mermaid.js
+   di Mindmap (dipakai lintas TA Room + Campaign Clusters + Newsletter)
+   dan gak ada lib visualisasi lain.
+10. **Auth murni Bearer JWT, gak ada session cookie** -- token di
+    `localStorage` (`cti_jwt`), header `Authorization: Bearer` +
+    `X-Client-ID` (multi-tenant). 3 role (analyst/admin/superadmin,
+    `deps.py::require_admin`/`require_superadmin`). CORS backend udah
+    disiapin buat browser manggil API langsung (`cors_origins` default
+    `http://localhost:3000`) -- BUKAN proxy server-side lewat Next.js,
+    jadi client-side fetch langsung ke API adalah arsitektur yang emang
+    udah dianggep dari sisi backend.
+
+**Peringkat kompleksitas (gabungan 4 laporan survei, kecil→sangat besar):**
+
+| Kompleksitas | Area | Baris (JS/HTML) | Catatan |
+|---|---|---|---|
+| Kecil | Changelog (modal global) | 94 | custom md renderer mini, ganti `react-markdown` |
+| Kecil | Login | - | form standalone |
+| Kecil | Risk Matrix (`/intelligence`) | 90 | tabel + filter client-side |
+| Kecil | TTP/D3FEND (shared) | 134 | KECIL kodenya, tapi dipakai lintas MITRE heatmap + modal artikel generik -- taruh di `shared/` |
+| Kecil | Recap | 249 | read-mostly, 1 modal konfirmasi |
+| Sedang | Dashboard | 191 | 6 chart, blocked sebagian sama gap `/api/scraper/health` |
+| Sedang | Source Reliability (`/intelligence`) | 327 | CRUD + autocomplete custom |
+| Sedang | X-Intel | 546 | 2 sub-tab + 1 modal, no chart |
+| Sedang | Tech Stack (nested `/cve`) | 309 | CRUD tabel, 2 tombol 404 (gap #5) |
+| Sedang | News Clusters (`intel.js`, `/intelligence`) | 231 | beda dari Campaign Clusters, nama mirip -- jangan ketuker |
+| Besar | PIR + RFI (`/intelligence`) | 453 | 2 fitur CRUD tergabung 1 file |
+| Besar | Admin/User Mgmt | 837 | CRUD user+role+client+policy+audit, custom dropdown/picker |
+| Besar | ATT&CK DB (`/intelligence`) | 519 | polling 5s, 4 sub-tab paginated |
+| Besar | Mindmap (shared, lintas TA/Campaign/Newsletter/CVE-ticket) | 379 | satu-satunya pemakai Mermaid.js, editor+live-preview |
+| Besar | IOC Management (`/intelligence`) | 692 | 3 sub-section (tabel+allowlist+FP-analytics) |
+| Besar | Exec Dashboard | 869 | 6 chart+heatmap+AI-brief, kontrak IOC feedback beda (gap #7) |
+| Besar | Package Vuln (nested `/cve`) | 908+192 | dep-graph+scorecard+lockfile-import, coupling ke modal CVE |
+| Besar | Newsroom (gak ada file sendiri) | tersebar | 8 panel paralel (APAC/Global/RW/Indo/TA-watch/Tech-watch + 2 subview) |
+| Besar | Newsletter (route BARU) | 1261 | composer+history+editor mindmap, GAP dari rencana awal |
+| Besar | CVE Tracker (core) | ~1200 | **terkompleks tunggal** -- ticket 15 field, bulk-action business rule, 3 lookup eksternal |
+| Sangat besar | Threat Actor Room (`/intelligence`) | 1103 | 3 sub-view + profile modal masif + Chart.js timeline |
+| Sangat besar | Campaign Clusters (`/intelligence`) | 907 | Diamond Model + Kill Chain viz + geopolitical heatmap, semua custom-render tanpa lib |
+
+**Urutan kerja diusulkan (Grup A base dulu, baru per-route, kecil→besar,
+`/intelligence` dipecah lagi jadi sub-grup karena sendirian udah ~4700
+baris):**
+
+- **Grup A -- Fondasi** (blocking semua grup lain): setup Next.js App
+  Router+TS, `openapi-typescript` dari `docs/openapi.json`, auth
+  (login+JWT+client-switcher+role-gate+lazy-auth-gate), API client
+  wrapper (fetch+TanStack Query buat cache/polling), design token
+  (ekstrak palet dark-theme+font dari CSS lama), primitif modal/dialog
+  (Radix, gantiin 16 overlay manual), `<Pagination>`/`<ConfirmDialog>`/
+  `<CountryMultiSelect>` reusable, modal Changelog (validasi pola modal).
+- **Grup B -- Kecil, validasi pola end-to-end**: `/recap`, `/dashboard`
+  (nunggu keputusan gap #6 buat widget scraper-health-nya).
+- **Grup C -- Sedang, mandiri**: `/xintel`, `/admin/users`.
+- **Grup D -- `/newsroom`**: 8 panel paralel, butuh pola panel+pagination
+  dari Grup A udah solid.
+- **Grup E -- `/cve`**: area terbesar tunggal (core+techstack+pkgvuln),
+  ticket workflow, 3 lookup eksternal.
+- **Grup F -- `/exec`**: charts+heatmap+brief, includes fix kontrak IOC
+  feedback (gap #7).
+- **Grup G -- `/intelligence`** (dipecah sub-grup, kecil ke besar): G1
+  Risk Matrix+Source Reliability+Early Warning, G2 PIR+RFI, G3 MITRE
+  (heatmap+ATT&CK DB), G4 IOC Management, G5 komponen Mindmap (shared,
+  dipakai G6/G7/Newsletter/CVE-ticket), G6 Threat Actor Room, G7 Campaign
+  Clusters.
+- **Grup H -- `/newsletter`**: route baru, numpang komponen Mindmap dari
+  G5.
+
+**4 keputusan arsitektur yang perlu diambil SEBELUM Grup A** (bukan hal
+yang aman diputus sepihak, beda dari keputusan desain kecil lain):
+1. Styling: rebuild tema dark custom lewat token Tailwind, atau pakai
+   component library (shadcn/ui) yang di-tema ulang?
+2. `/intelligence`: sub-route Next.js beneran (rekomendasi 3 agent survei,
+   deep-link+code-split) atau tetap 1 halaman+tab internal (persis UX
+   lama)?
+3. Auth token: tetap `localStorage` (pola lama, konsisten sama arsitektur
+   CORS-direct-to-API yang backend udah siapin) atau httpOnly cookie
+   (lebih aman dari XSS, tapi butuh Next.js middleware buat jembatanin ke
+   header Bearer)?
+4. `/admin`: sama kayak `/intelligence`, User Mgmt lama gabung 4 area
+   (users/roles/clients/audit) di 1 tab -- tetap 1 route `/admin/users`
+   atau pecah sub-route juga?
+
+### Checklist
+
+- [ ] **8.1** Setup Next.js App Router + TS + keputusan arsitektur di atas
+- [ ] **8.2** Generate client API dari OpenAPI (`docs/openapi.json` udah
+      siap dari Fase 7.7)
+- [ ] **8.3** Auth + session (Grup A)
 - [ ] **8.4** Route: `/dashboard` `/newsroom` `/cve` `/intelligence`
 - [ ] **8.5** Route: `/exec` `/xintel` `/recap` `/admin/users`
-- [ ] **8.6** Halaman control plane scraper
+      `/newsletter` *(route ke-9, ditambahin dari survei -- gap nyata,
+      bukan revisi scope sepihak)*
+- [ ] **8.6** Halaman control plane scraper -- SEBAGIAN blocked sampai
+      `/api/scraper/health` diport (gap #6 di atas; MITRE heatmap-nya
+      sendiri udah backend-ready)
 
 **Exit criteria:** tiap tab lama ada padanannya · `static/` lama dipakai sebagai spesifikasi perilaku, bukan di-port
 
