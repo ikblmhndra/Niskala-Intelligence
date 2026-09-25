@@ -153,6 +153,10 @@ class WorkerSettings(_StrictModel):
     attack_sync_interval_days: int = 7
     """Port `ATTACK_SYNC_INTERVAL_DAYS` lama -- re-sync kalau domain
     manapun belum pernah sync ATAU sync terlama udah lebih dari ini."""
+    scraper_item_retention_days: int = 30
+    """Fase 9 -- umur baris `scraper_items` (log accept/reject per artikel,
+    84 scraper) sebelum kena purge periodik. Gak ada padanan lama (tabel
+    ini gak pernah ada di skema Mongo)."""
 
 
 class Settings(BaseSettings):

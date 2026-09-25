@@ -1,7 +1,9 @@
 """Task `scrape.run` -- eksekusi SATU scraper. Beat (`cti_worker.beat`)
-manggil ini terjadwal per scraper (`args=(scraper_id,)`, `queue=` dinamis
-lewat `cti_worker.queues.queue_for`); control plane (Fase 9, trigger
-manual) bakal manggil task yang sama.
+manggil ini terjadwal per scraper (`args=(scraper_id,)`, `trigger` default
+"beat", `queue=` dinamis lewat `cti_worker.queues.queue_for`); control
+plane (Fase 9, `POST /api/scraper/{id}/trigger`) manggil task YANG SAMA
+lewat `.delay(scraper_id, trigger="manual")` -- `Runner`/`ScraperRun.
+trigger` yang bedain asalnya, bukan task terpisah.
 
 Retry di LEVEL TASK (whole run), bukan per-request -- `ScraperHttpClient`
 (Fase 3) sengaja gak retry sendiri per `httpx.get()`, dan `Runner`
@@ -11,7 +13,12 @@ Retry di LEVEL TASK (whole run), bukan per-request -- `ScraperHttpClient`
 urus"). Task ini itu "caller"-nya: cek `result.status`, raise
 `_RetryableRunError` biar `autoretry_for` Celery yang eksekusi backoff --
 `ParseError` (situs berubah) TIDAK PERNAH masuk sini, `status="parse_error"`
-dibiarin apa adanya (retry gak bakal ngubah hasil situs yang emang berubah)."""
+dibiarin apa adanya (retry gak bakal ngubah hasil situs yang emang berubah).
+
+Task `scraper.purge_expired_items`/`scraper.purge_expired_seen` (Fase 9,
+`maintenance` queue) numpang file ini juga -- sama domain (scraper), sync
+native (bukan `_run_async()` kayak `tasks/periodic.py`, soalnya manggil
+repo SYNC langsung, gak ada layer `cti_api.services` async yang dibungkus)."""
 
 from __future__ import annotations
 
@@ -39,7 +46,7 @@ class _RetryableRunError(Exception):
     retry_jitter=True,
     max_retries=3,
 )
-def run_scraper(self: Any, scraper_id: str) -> dict[str, object]:
+def run_scraper(self: Any, scraper_id: str, trigger: str = "beat") -> dict[str, object]:
     from cti_core.config import get_settings
     from cti_core.db.engine import sync_session
     from cti_scraper.ratelimit import TokenBucket
@@ -61,7 +68,7 @@ def run_scraper(self: Any, scraper_id: str) -> dict[str, object]:
 
     with sync_session() as session:
         result = Runner(scraper_cls, session=session, bucket=bucket, dry_run=False).execute(
-            trigger="beat"
+            trigger=trigger
         )
 
     if result.status in ("fetch_error", "rate_limited"):
@@ -79,3 +86,29 @@ def run_scraper(self: Any, scraper_id: str) -> dict[str, object]:
         "items_found": result.items_found,
         "items_new": result.items_new,
     }
+
+
+@app.task(bind=True, name="scraper.purge_expired_items", queue="maintenance")
+def purge_expired_items(self: Any) -> dict[str, object]:
+    from cti_core.db.engine import sync_session
+    from cti_core.db.repositories.scraper import ScraperItemRepo
+
+    with sync_session() as session:
+        deleted = ScraperItemRepo(session).purge_expired()
+    log.info("scraper_items_purged", deleted=deleted)
+    return {"deleted": deleted}
+
+
+@app.task(bind=True, name="scraper.purge_expired_seen", queue="maintenance")
+def purge_expired_seen(self: Any) -> dict[str, object]:
+    """`scraper_seen.expire_at` udah ada dari Fase 2, tapi task ini gak
+    pernah ditulis sampai Fase 9 -- baris in-flight (1 hari) dan committed
+    (`dedup_ttl_days`, default 180) numpuk gak abis-abis dari hari pertama
+    deploy sampai sekarang."""
+    from cti_core.db.engine import sync_session
+    from cti_core.db.repositories.scraper_seen import ScraperSeenRepo
+
+    with sync_session() as session:
+        deleted = ScraperSeenRepo(session).purge_expired()
+    log.info("scraper_seen_purged", deleted=deleted)
+    return {"deleted": deleted}

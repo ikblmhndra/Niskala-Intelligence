@@ -8,8 +8,11 @@ bukan `url_hash`.
 from __future__ import annotations
 
 import datetime
+from typing import Any, cast
 
-from sqlalchemy import select
+from sqlalchemy import delete, select
+from sqlalchemy.engine import CursorResult
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Session
 
 from cti_core.db.models.scraper import ScraperSeen
@@ -106,3 +109,38 @@ class ScraperSeenRepo:
             self.session.delete(row)
         self.session.flush()
         return len(rows)
+
+    def purge_expired(self) -> int:
+        """Dipanggil task Celery periodik `scraper.purge_expired_seen`
+        (Fase 9) -- docstring model `ScraperSeen` udah nyebut task ini
+        sejak Fase 3 ("Fase 6: cti.maintenance.purge_expired_seen"), tapi
+        gak pernah beneran ditulis sampai sekarang (grep kosong total
+        sebelum Fase 9) -- baris `expire_at`-nya lewat numpuk gak abis-abis
+        dari hari pertama deploy."""
+        now = datetime.datetime.now(datetime.UTC)
+        result = cast(
+            "CursorResult[Any]",
+            self.session.execute(delete(ScraperSeen).where(ScraperSeen.expire_at < now)),
+        )
+        self.session.commit()
+        return result.rowcount
+
+
+class AsyncScraperSeenRepo:
+    """Cuma `reset_scraper()` -- satu-satunya operasi yang dipanggil dari
+    API (Fase 9, `POST /api/scraper/{id}/reset-dedup`). Sisa siklus hidup
+    dedup (`try_reserve`/`commit`/`release`) murni internal `Runner`
+    (worker, sesi sync) -- gak butuh padanan async."""
+
+    def __init__(self, session: AsyncSession) -> None:
+        self.session = session
+
+    async def reset_scraper(self, scraper_id: str) -> int:
+        result = cast(
+            "CursorResult[Any]",
+            await self.session.execute(
+                delete(ScraperSeen).where(ScraperSeen.scraper_id == scraper_id)
+            ),
+        )
+        await self.session.flush()
+        return result.rowcount

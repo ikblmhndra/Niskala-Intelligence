@@ -95,6 +95,13 @@ class ScraperItem(Base):
     run_at: Mapped[datetime.datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, server_default=func.now(), index=True
     )
+    expire_at: Mapped[datetime.datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, index=True
+    )
+    """`run_at + Settings.worker.scraper_item_retention_days` (Fase 9),
+    dibersihin task Celery periodik `scraper.purge_expired_items` --
+    tabel ini nyatet SEMUA item (accept+reject) 84 scraper, gak ada TTL
+    index bawaan Postgres (sama keterbatasan kayak `ScraperSeen`)."""
 
 
 class ScraperConfig(TimestampMixin, Base):

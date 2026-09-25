@@ -3862,6 +3862,118 @@ Grup H) -- 8 route awal + 1 gap nyata dari survei, semua selesai.
 
 ## Fase 9 — Control plane scraper `[ ]`
 
+### Survei (2026-09-25)
+
+Beda karakter dari Fase 8 -- ini BUKAN port dari legacy (survei Fase 8
+udah nyimpulin `scraper.js` cuma 2 widget monitoring read-only, "Fase 9
+GAK PUNYA preseden kode buat di-port -- desain dari nol"). Survei fokus
+ke state SEKARANG framework `cti-scraper` (Fase 3-4), bukan baca legacy.
+
+**Yang udah ada (fondasi solid)**: framework scraper penuh (84 scraper
+terdaftar: 60 `light`/httpx + 24 `browser`/Playwright), skema DB 4 tabel
+persis plan §8 (`ScraperRun` heartbeat, `ScraperItem` log accept/reject,
+`ScraperConfig` override enable/disable/schedule/rate_limit/max_items,
+`ScraperSeen` dedup), task Celery `scrape.run` yang docstring-nya SENDIRI
+udah bilang "control plane Fase 9 bakal manggil task yang sama",
+`cti_alerts.telegram.send_alert()` (fungsi alert konsolidasi udah ada),
+placeholder card eksplisit di `/dashboard` ("Scraper Health widget
+sengaja belum diisi, nunggu Fase 9").
+
+**Gap nyata**: `ScraperItem`/`ScraperConfig` PUNYA skema tapi NOL kode
+yang baca/tulis (grep kosong total di luar `models/scraper.py` sendiri).
+`Runner._handle_item()` cuma update counter, gak pernah nulis
+`ScraperItem`. Gak ada yang cek `ScraperConfig.enabled` di mana pun --
+`ScraperMeta.enabled`'s docstring SENDIRI (Fase 3) udah bilang
+"`scraper_config` di DB nge-override runtime, bukan field ini", jadi ini
+emang gap yang disengaja ditinggal ke Fase 9. Gak ada router
+`/api/scraper/*` (cuma `/healthz` liveness, docstring-nya sendiri bilang
+"BUKAN control plane"). Gak ada health-sweep logic. Gak ada frontend.
+
+**2 keputusan dari user (2026-09-25)**: (1) scope Fase 9 = backend +
+frontend sekalian, bukan backend doang -- API tanpa UI gak kepake, dan
+Fase 8.6 emang nunggu ini buat kelar. (2) `ScraperItem` log SEMUA item
+(accept+reject) + purge periodik (bukan reject-doang+sample) -- paling
+berguna buat debug, konsisten pola `ScraperSeen`.
+
+**Urutan kerja**: H1 (data layer+worker wiring) -> H2 (read+trigger API)
+-> H3 (config write API+health sweep+alert) -> H4 (frontend dashboard
+widget) -> H5 (frontend halaman control plane penuh).
+
+### Grup H1 -- selesai (2026-09-25) -- data layer + worker wiring
+
+Migration `scraper_items.expire_at` (kolom baru, tabel kosong -- gak ada
+kode yang pernah nulis ke sini sebelum ini). `ScraperItemRepo`/
+`AsyncScraperItemRepo` (create/list_by_scraper/list_by_run/purge_expired)
++ `ScraperConfigRepo`/`AsyncScraperConfigRepo` (get/get_all/upsert pakai
+sentinel `UNSET` biar `None` tetep bisa berarti "hapus override"/reset)
+di `cti_core.db.repositories.scraper` -- numpang file yang sama kayak
+`ScraperRunRepo` (satu domain "control plane scraper"). `AsyncScraperSeenRepo.
+reset_scraper()` ditambahin buat endpoint reset-dedup (H2 nanti) --
+versi sync-nya (`reset_scraper()`) udah ada dari Fase 3, cuma belum ada
+padanan async buat dipanggil router.
+
+**`Runner` (`cti_scraper/runner.py`) di-wire 3 hal**: (1) `execute()`
+baca `ScraperConfig` di awal, `enabled=False` short-circuit SEBELUM
+`_run_body()` (gak ada fetch/HTTP/dedup sama sekali) langsung nulis
+heartbeat `status="disabled"`, ditambahin ke `_TERMINAL_STATUSES`. (2)
+`rate_limit`/`max_items` override via `dataclasses.replace()`. (3)
+`_handle_item()` nulis `ScraperItem` buat SEMUA 3 outcome (accept/
+duplicate-drop/sink-fail) lewat helper baru `item_display.
+display_title_url()` (dispatch per tipe `Item` -- `ArticleItem`/
+`TweetItem`/`RansomwareVictimItem`/`CveItem`/`CvePocItem`/
+`MalwareTrendItem`/`IocFeedItem`, fallback generik buat tipe custom masa
+depan) buat judul+URL yang "cukup manusiawi" di log. Item-log write
+best-effort (kegagalan nulis baris log TIDAK BOLEH nggagalin run yang
+udah kelar).
+
+**`beat.py`** baca `ScraperConfig` (SATU query, `_scraper_configs()`)
+pas `build_beat_schedule()` jalan -- `enabled=False` skip entri dari
+schedule (gak buang-buang dispatch Celery), `schedule` override
+dipakai kalau ada. Efeknya baru keliatan abis restart worker/beat
+berikutnya (gak ada scheduler dinamis yang polling DB tiap tick, gak
+ada kebutuhan nyata yang minta itu sekarang) -- `Runner.execute()` TETAP
+cek ulang `enabled` pas eksekusi beneran, jaring pengaman buat race
+antara beat-build dan tick berikutnya ATAU trigger manual (API, H2) di
+luar beat sama sekali. Task `scrape.run` sekarang terima param `trigger`
+(default "beat") -- sebelumnya di-hardcode, blocker buat trigger manual
+API kirim `trigger="manual"`.
+
+**2 gap tambahan ketemu+fix sekalian** (bukan diminta, ketemu pas baca
+kode buat wiring di atas): `ScraperSeenRepo` gak punya `purge_expired()`
+sama sekali -- model docstring-nya SENDIRI (Fase 3) udah nyebut
+"dibersihin task Celery periodik (Fase 6: cti.maintenance.
+purge_expired_seen)", tapi task itu gak pernah beneran ditulis (grep
+kosong total) -- baris in-flight (1 hari)/committed (`dedup_ttl_days`,
+default 180) numpuk dari hari pertama deploy sampai sekarang. Ditambahin
+`purge_expired()` + task `scraper.purge_expired_seen` (crontab 03:15)
+bareng `scraper.purge_expired_items` (03:00) punya `ScraperItem`,
+keduanya di `tasks/scrape.py` (sync native, bukan `_run_async()` kayak
+`tasks/periodic.py` -- manggil repo sync langsung, gak ada layer
+`cti_api.services` async yang dibungkus).
+
+**1 bug ketemu di kode sendiri (bukan backend lama, kode BARU sesi
+ini)**: override `max_items`/`rate_limit` awalnya cuma nempel ke
+`Runner.meta` (`self.meta = dataclasses.replace(...)`), tapi family
+(`RSSScraper.fetch()` dkk) baca `self.meta.max_items` dari ATRIBUT
+KELAS scraper instance (`BaseScraper.meta: ClassVar[ScraperMeta]`),
+BUKAN dari `ctx.meta` atau `Runner.meta` -- override gak pernah nyampe.
+**Ketemu LIVE, bukan dari baca kode**: set `ScraperConfig.max_items=2`
+buat `bleepcomp`, run beneran, `items_found` tetep 11 bukan 2. Fix:
+`scraper.meta = self.meta` (assignment instance, nge-shadow ClassVar
+SATU instance scraper itu doang) tepat setelah `scraper = self.scraper_cls()`
+dibikin di `_run_body()`. Re-test: `items_found=2`, kombinasi
+`enabled=False` (short-circuit tanpa fetch) dan `max_items` override
+KEDUANYA diverifikasi ulang lewat scraper real (`bleepcomp`, Bleeping
+Computer RSS) via `cti-scraper run` CLI langsung ke DB dev -- bukan cuma
+unit test. Data test (config/items/runs/seen row `bleepcomp`) dibersihin
+abis verifikasi; dicek dulu gak ada artikel real yang ke-insert (worker
+Celery consumer emang lagi mati, task `enrich.article` yang di-publish
+ke Redis gak ke-consume, jadi gak ada efek samping nyata ke `articles`).
+
+`pnpm`-nya gak relevan (Fase 9 backend Python doang buat H1). `mypy`/
+`ruff check`/`ruff format` semua bersih, 435 test unit+contract existing
+tetep lolos (gak ada regresi ke framework scraper yang udah jalan).
+
 - [ ] **9.1** API: list/detail/runs/items
 - [ ] **9.2** API: trigger + **dry-run** _(endpoint paling berguna, sekarang gak ada)_
 - [ ] **9.3** API: enable/disable/schedule
