@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/table";
 import type { components } from "@/lib/api/schema";
 import { D3fendToggle } from "@/components/newsroom/d3fend-toggle";
+import { addToQueue } from "@/lib/newsletter/queue";
 
 type Article = components["schemas"]["ArticleOut"];
 
@@ -43,8 +44,6 @@ const IOC_FIELD_LABEL: Record<string, string> = {
   cves: "CVE",
 };
 
-const NEWSLETTER_QUEUE_KEY = "newsletter_queue";
-
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div>
@@ -66,15 +65,6 @@ function Tags({ items }: { items: { label: string; suffix?: string; variant?: "o
       ))}
     </div>
   );
-}
-
-function queueForNewsletter(a: Article): "queued" | "already" {
-  const raw = localStorage.getItem(NEWSLETTER_QUEUE_KEY);
-  const queue: Array<{ _id?: number; id?: number }> = raw ? JSON.parse(raw) : [];
-  if (queue.some((x) => (x._id ?? x.id) === a.id)) return "already";
-  queue.push({ ...a, _id: a.id } as never);
-  localStorage.setItem(NEWSLETTER_QUEUE_KEY, JSON.stringify(queue));
-  return "queued";
 }
 
 function exportIocsCsv(a: Article) {
@@ -136,7 +126,7 @@ export function ArticleModal({ article: a, onOpenChange }: { article: Article | 
   ) as [string, string[]][];
 
   function handleQueue() {
-    const result = queueForNewsletter(a!);
+    const result = addToQueue(a!);
     setQueueLabel(result === "already" ? "✓ Already queued" : "✓ Queued");
     setTimeout(() => setQueueLabel("+ Newsletter"), 1500);
   }

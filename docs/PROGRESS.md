@@ -3740,6 +3740,101 @@ komponen baru, 2 bug backend nyata ketemu+fix (G4 enrichment+
 actionability, G6 `get_by_name_ci` MultipleResultsFound), 0 bug
 backend di G3/G5/G7.
 
+### Grup H -- selesai (2026-09-25) -- `/newsletter`, route ke-9, Fase 8 KOMPLET
+
+Port `ScraperNewsWeb/templates/newsletter.html` (1261 baris, satu file
+HTML+JS standalone, route berdiri sendiri di app lama -- BUKAN tab).
+Backend (`routers/newsletter.py`, `services/newsletter.py`, builder
+`newsletter` di `services/mindmap.py`) udah lengkap ke-port sejak Fase
+7.3 Bagian 4 -- Grup H murni kerjaan frontend, 0 endpoint baru, 0
+regenerate OpenAPI.
+
+**Baca legacy dulu, ketemu 2 blok dead code signifikan** -- `init()`
+cuma manggil `checkAuth()`/`loadPaywallHints()`/`renderSections()`/
+`renderQueuedArticles()`, GAK PERNAH manggil `loadArticles()` (search
+artikel via `/api/articles?search=...`). Fungsi itu ADA di file tapi
+elemen HTML yang dipakainya (`#f-search`/`#f-date-start`/`#btn-prev`/
+dst) GAK ADA di markup -- artinya satu-satunya jalur artikel masuk ke
+composer beneran cuma queue `localStorage.newsletter_queue` (diisi dari
+Newsroom). Kedua, `_renderQueueBanner()`/`toggleQueueBanner()`/
+`loadNewsroomQueue()` (mekanisme banner alternatif, referensi elemen
+`#queue-banner`/`#queue-toggle-btn` yang JUGA gak ada di markup) --
+sisa iterasi UI lama yang ketinggalan, tumpang tindih sama
+`renderQueuedArticles()` yang beneran jalan. Kedua blok ini SENGAJA gak
+diport, sama prinsip kayak `requireTAAuth()` G6 -- port perilaku yang
+kebukti hidup, bukan tiap baris kode yang ada di file.
+
+**Ketemu kontrak queue yang UDAH disiapin dari Grup D** -- `article-
+modal.tsx` (Newsroom, dibangun jauh sebelum Grup H) udah punya tombol
+"+ Newsletter" nulis ke `localStorage["newsletter_queue"]` persis
+kontrak lama (`{...article, _id: article.id}`). Grup H tinggal
+KONSUMSI key itu, gak nulis ulang. Logic queue lokal di
+`article-modal.tsx` (`queueForNewsletter()`) diekstrak jadi
+`lib/newsletter/queue.ts` (`getQueue`/`addToQueue`/`removeFromQueue`/
+`clearQueue`) SATU sumber, `article-modal.tsx` di-refactor numpang itu
+juga -- bukan fitur baru, cuma nyatuin 2 salinan logic yang sama biar
+gak drift.
+
+**Dibangun**: `NewsletterQueuePanel` (kartu queue + dropdown assign
+Highlight/APAC/Global/Indonesia, paywall hint dari `/source-hints`),
+`NewsletterComposerSections` (4 section slot filled/empty + analyst
+note per artikel, port `renderSection()`), `NewsletterTemplatePanel`
+(collapsible custom CSS/intro/footer + toggle "Include Top Campaign
+Clusters" -- jalan nyata sejak Fase 7.4 Grup A), `NewsletterPreviewDialog`
+(SATU dialog dipakai 2 mode -- "compose" hasil `POST /preview` dari
+draft yang lagi disusun, "saved" hasil `GET /{id}/html` dari histori,
+port `openPreview()`/`previewSaved()` yang di legacy numpang modal
+sama), `NewsletterHistoryPanel` (collapsible, port drawer bawah jadi
+panel biasa -- `/newsletter` sekarang route App Router biasa, bukan
+Jinja standalone page yang butuh `position:fixed` drawer sendiri, sama
+simplifikasi kayak `GeopoliticalPanel` G7). "Mind Map" per histori
+numpang `MindmapWidget` (G5) langsung -- GANTI modal bespoke
+`_nlShowMindmapModal()`/`_nlMmEdit()`/`_nlMmSave()` legacy (~120 baris
+JS custom), konsisten sama pola inline-toggle G6/G7. Ini konsumer
+KE-4 `MindmapWidget` dan yang PERTAMA numpang `featureType="newsletter"`
+-- builder-nya udah ada di backend sejak G5 tapi waktu itu 0 call site
+legacy (dicatat G5 sebagai "backend-only"), sekarang materialisasi di
+sini.
+
+**Validasi payload port apa adanya** dari `buildPayload()` -- wajib ada
+Highlight, wajib minimal 1 artikel APAC atau Global, `notes` keyed
+`String(article.id)` (backend docstring eksplisit nyebut ini pola yang
+sama kayak dulu `String(ObjectId)`).
+
+**0 bug backend** -- Grup H gak nyentuh backend sama sekali (sama
+kayak G3/G5/G7).
+
+Verifikasi LIVE: queue 2 artikel real (APT41 Philippines, Zero Trust
+best-practices) dari Newsroom lewat tombol "+ Newsletter" yang UDAH
+ada -- muncul benar di `NewsletterQueuePanel`. Assign artikel 1 ->
+Highlight, artikel 2 -> Global lewat dropdown -- toast konfirmasi,
+queue berkurang, slot section keisi, textarea analyst note nulis. Klik
+Preview -> `POST /api/newsletter/preview` 200 OK, HTML hasil beneran
+lewat pipeline enrichment penuh (Playwright fetch body + LLM
+summarize + IOC extract) -- key points/summary asli ke-generate,
+analyst note ke-embed persis di kartu Highlight, newsletter tersimpan
+`id=1`. **Tombol "Send Draft Email"/"Resend" SENGAJA gak diklik pas
+verifikasi** -- keduanya manggil `cti_alerts.mailer.create_graph_draft`
+beneran (nulis draft ke mailbox Graph API asli, efek eksternal di luar
+DB lokal), di luar scope yang aman buat dites otomatis tanpa
+konfirmasi eksplisit; endpoint-nya sendiri udah live-tested waktu
+backend-nya diport Fase 7.3 Bagian 4. Verifikasi jalur baca lain lewat
+API langsung (bukan klik UI, browser pane lagi dipakai bareng): `GET
+/api/newsletter/history` balikin shape `sections` persis yang
+dideklarasikan di `loose-types.ts`, `GET /api/mindmap/newsletter/1`
+generate Mermaid syntax REAL merefleksikan isi newsletter yang baru
+disusun ("Highlights 1" / "Global News 1" node), `GET
+/api/newsletter/1/html` balikin HTML tersimpan 9111 char. Data test
+(`newsletters` id=1 + `mindmaps` baris terkait) dibersihin raw SQL abis
+verifikasi (gak ada FK yang nunjuk ke `newsletters`, aman). `pnpm
+build`/`tsc --noEmit`/`pnpm lint` semua bersih, route `/newsletter`
+muncul di build output (28 route total).
+
+**Fase 8 KOMPLET**: 9 route (`/dashboard` Grup B, `/newsroom` Grup D,
+`/cve` Grup E, `/intelligence` Grup G 7 sub-grup, `/exec` Grup F,
+`/xintel` Grup C, `/recap` Grup B, `/admin/users` Grup C, `/newsletter`
+Grup H) -- 8 route awal + 1 gap nyata dari survei, semua selesai.
+
 ### Checklist
 
 - [x] **8.1** Setup Next.js App Router + TS + keputusan arsitektur di atas
@@ -3752,9 +3847,9 @@ backend di G3/G5/G7.
       Warning, G2 -- PIR+RFI, G3 -- MITRE Heatmap+ATT&CK DB, G4 -- IOC
       Management, G5 -- komponen Mindmap, G6 -- Threat Actor Room, G7
       -- Campaign Clusters -- SEMUA selesai, Grup G komplet)
-- [ ] **8.5** Route: `/exec` (Grup F, selesai) `/xintel` (Grup C, selesai)
+- [x] **8.5** Route: `/exec` (Grup F, selesai) `/xintel` (Grup C, selesai)
       `/recap` (Grup B, selesai) `/admin/users` (Grup C, selesai)
-      `/newsletter`
+      `/newsletter` (Grup H, selesai)
       *(route ke-9, ditambahin dari survei -- gap nyata, bukan revisi
       scope sepihak)*
 - [ ] **8.6** Halaman control plane scraper -- SEBAGIAN blocked sampai

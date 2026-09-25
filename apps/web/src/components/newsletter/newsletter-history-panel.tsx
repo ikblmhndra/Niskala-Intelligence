@@ -1,0 +1,112 @@
+"use client";
+
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+
+import { api } from "@/lib/api/client";
+import { Button } from "@/components/ui/button";
+import { MindmapWidget } from "@/components/mindmap/mindmap-widget";
+import type { NewsletterSections } from "@/lib/api/loose-types";
+
+interface Props {
+  refreshKey: number;
+  onPreview: (id: number, week: number, year: number) => void;
+  onResend: (id: number, week: number, year: number) => void;
+  resendingId: number | null;
+}
+
+/** Port bottom "Saved Newsletters" drawer (`newsletter.html:418-429`,
+ * `loadHistory()` `newsletter.html:835-868`) -- di sini kolaps jadi
+ * panel biasa (bukan `position:fixed` drawer nempel viewport, sama
+ * simplifikasi kayak `GeopoliticalPanel` G7) karena `/newsletter`
+ * halaman biasa dalam App Router, bukan Jinja standalone page lagi.
+ * "Mind Map" per histori numpang `MindmapWidget` (G5, `featureType=
+ * "newsletter"`) -- GANTI modal bespoke `_nlShowMindmapModal()`/
+ * `_nlMmEdit()` legacy, konsisten sama pola inline-toggle G6/G7. */
+export function NewsletterHistoryPanel({ refreshKey, onPreview, onResend, resendingId }: Props) {
+  const [open, setOpen] = useState(false);
+
+  const query = useQuery({
+    queryKey: ["newsletter", "history", refreshKey],
+    queryFn: async () => {
+      const { data, error } = await api.GET("/api/newsletter/history", {
+        params: { query: { page: 1, page_size: 20 } },
+      });
+      if (error) throw error;
+      return data;
+    },
+    enabled: open,
+  });
+
+  const newsletters = query.data?.newsletters ?? [];
+
+  return (
+    <div className="mt-6 border-t border-border pt-4">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        className="flex w-full items-center gap-2 font-mono text-[10px] tracking-[0.1em] text-muted-foreground uppercase"
+      >
+        <span className={open ? "rotate-180 transition-transform" : "transition-transform"}>▲</span>
+        Saved Newsletters
+        {query.data && (
+          <span className="rounded-sm bg-primary/10 px-1.5 py-0.5 text-[9px] text-primary">{query.data.total}</span>
+        )}
+        <span className="ml-auto text-[9px] text-muted-foreground">{open ? "▼ collapse" : "▶ expand"}</span>
+      </button>
+
+      {open && (
+        <div className="mt-3">
+          {query.isLoading && <p className="py-6 text-center text-xs text-muted-foreground">Loading…</p>}
+          {query.isError && <p className="py-6 text-center text-xs text-destructive">Failed to load history.</p>}
+          {query.data && newsletters.length === 0 && (
+            <p className="py-6 text-center text-xs text-muted-foreground">No saved newsletters yet.</p>
+          )}
+
+          <div className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
+            {newsletters.map((n) => {
+              const sections = n.sections as unknown as NewsletterSections | undefined;
+              const apacLen = sections?.apac?.length ?? 0;
+              const globalLen = sections?.global_news?.length ?? 0;
+              const indonesiaLen = sections?.indonesia?.length ?? 0;
+              const highlightTitle = sections?.highlight?.title;
+              return (
+                <div key={n.id} className="rounded-md border border-border bg-surface2 p-3">
+                  <div className="font-mono text-[11px] text-primary">
+                    Week {n.week}, {n.year}
+                  </div>
+                  <div className="mt-0.5 font-mono text-[9px] text-muted-foreground">
+                    {n.generated_at} · by {n.created_by}
+                  </div>
+                  {highlightTitle && (
+                    <div className="mt-1.5 truncate text-[11px] text-foreground" title={highlightTitle}>
+                      ⭐ {highlightTitle}
+                    </div>
+                  )}
+                  <div className="mt-1.5 font-mono text-[10px] text-muted-foreground">
+                    🌏 {apacLen} &nbsp; 🌐 {globalLen} &nbsp; 🇮🇩 {indonesiaLen}
+                  </div>
+                  <div className="mt-2 flex gap-1.5">
+                    <Button variant="outline" size="sm" className="h-6 flex-1 px-2 text-[10px]" onClick={() => onPreview(n.id, n.week, n.year)}>
+                      Preview
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-6 flex-1 px-2 text-[10px]"
+                      disabled={resendingId === n.id}
+                      onClick={() => onResend(n.id, n.week, n.year)}
+                    >
+                      {resendingId === n.id ? "…" : "Resend"}
+                    </Button>
+                  </div>
+                  <MindmapWidget featureType="newsletter" docId={String(n.id)} title={`Newsletter — Week ${n.week}, ${n.year}`} />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

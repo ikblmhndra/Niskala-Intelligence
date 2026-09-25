@@ -1135,3 +1135,57 @@ export interface GeopoliticalSummary {
   days: number;
   campaign_count: number;
 }
+
+/** Shape `NewsletterListItem.sections` (generic `{[key:string]:unknown}`
+ * di `schema.d.ts` -- backend nulis lewat `_strip_article()`,
+ * `services/newsletter.py`). */
+export interface NewsletterArticleStrip {
+  id: number;
+  title: string;
+  url: string;
+  source: string;
+  posted_on: string;
+  news_type: string;
+  key_points: string[];
+  summary: string;
+  body_source: "fetched" | "metadata" | "";
+  iocs: Record<string, string[]>;
+  cve_mentions: string[];
+  possibly_exploited_wild: boolean;
+}
+
+export interface NewsletterSections {
+  highlight: NewsletterArticleStrip;
+  apac: NewsletterArticleStrip[];
+  global_news: NewsletterArticleStrip[];
+  indonesia: NewsletterArticleStrip[];
+}
+
+/** `POST /api/newsletter/preview` dan `/draft-email` balikin `dict[str,
+ * object]` polos (bukan Pydantic model) di `routers/newsletter.py`. */
+export interface NewsletterPreviewResult {
+  html: string;
+  week: number;
+  year: number;
+  newsletter_id: number;
+}
+
+export interface NewsletterDraftResult {
+  email_id: string;
+  method: string;
+  subject: string;
+  week: number;
+  year: number;
+  newsletter_id: number;
+}
+
+export interface NewsletterResendResult {
+  email_id: string;
+  method: string;
+  subject: string;
+}
+
+export interface NewsletterSourceHint {
+  paywall_likely: boolean;
+  last_seen: string;
+}
