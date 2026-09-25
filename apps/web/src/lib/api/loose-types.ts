@@ -826,3 +826,14 @@ export interface IocTaLink {
 export interface IocTaLinksResponse {
   threat_actors: IocTaLink[];
 }
+
+export interface MindmapDocResponse {
+  feature_type: string;
+  doc_id: string;
+  title: string;
+  mermaid_syntax: string;
+  custom_syntax: string | null;
+  display_syntax: string;
+  generated_at: string | null;
+  edited_at?: string | null;
+}

@@ -3005,9 +3005,8 @@ emang gak ke-expose):
   action) dan `epss_date` GAK ada di `CveOut` -- cuma `cisa_kev` bool +
   `epss_score`/`epss_percentile`. Modal detail disederhanain ke apa yang
   beneran ada, bukan nebak-nebak field yang gak dikirim API.
-- Mind Map button (CVE ticket) DIDEFER -- nunggu komponen Mindmap
-  bersama (Grup G5, dipakai bareng G6/G7/Newsletter/CVE-ticket sesuai
-  survei backend 2026-09-19).
+- ~~Mind Map button (CVE ticket) DIDEFER~~ -- selesai Grup G5
+  (2026-09-25), lihat writeup di bawah.
 - Cross-link klik package-vuln row → buka modal CVE tab (`pvShowVulnDetail`
   legacy) DIDEFER -- butuh fetch tambahan cuma buat kemungkinan-kecil
   match, sementara `VulnDetailModal` fallback SUDAH nampilin semua data
@@ -3458,6 +3457,86 @@ konfirmasi filter server-side REAL, bukan no-op. Console bersih
 `javascript_tool`, bukan dari kode app). `pytest tests/ -k ioc`: 72
 lolos. `pnpm build`/`tsc --noEmit`/`pnpm lint` semua bersih.
 
+### Grup G5 -- selesai (2026-09-25)
+
+Beda dari G1-G4: **G5 BUKAN sub-route `/intelligence` baru** -- ini
+komponen BERSAMA (`docs/PROGRESS.md` Fase 8 breakdown: "komponen
+Mindmap, dipakai bareng G6/G7/Newsletter/CVE-ticket"), niru
+`mindmap.js` (379 baris) yang di legacy juga berdiri sendiri lepas
+dari tab manapun (dipanggil dari `clusters.js`/`ta.js`/`cve.js`).
+Backend (`routers/mindmap.py` 106 baris + `services/mindmap.py` 317
+baris, 6 builder: newsletter/threat_actor/cve/pir/ransomware/cluster)
+udah lengkap dari Fase 7.3-7.4 -- murni build frontend + wiring.
+
+**Riset penting** -- grep `mmInlineWidget`/`mmToggleInline`/
+`mmOpenEditor` lintas SEMUA file `legacy/static/js/` buat mastiin
+di mana widget ini BENERAN kepake di UI (bukan cuma backend builder-nya
+ada), ketemu CUMA 3 call site: `clusters.js` (feature_type `cluster`,
+pola toggle inline), `ta.js` 2x (feature_type `threat_actor`, pola
+toggle inline), `cve.js` (feature_type `cve`, pola BEDA -- satu tombol
+`generateCveMindmap()` langsung buka editor, TANPA toggle inline).
+`pir`/`newsletter`/`ransomware` builder ADA di backend tapi **NOL call
+site ditemukan di UI legacy manapun** -- sama presedennya kayak
+`source-scores`/`wisemap_service` (G1/survei 2026-09-19): backend
+siap tapi frontend legacy emang gak pernah makenya, jadi TIDAK
+diwire di sini juga (bukan lupa, port apa adanya).
+
+**Dibangun**:
+- **`renderMindmap()`** (`lib/mindmap/render.ts`) -- port `_mmRender()`/
+  `_mmInjectColors()` byte-identik: init `mermaid.js` (npm package
+  BARU, `mermaid@12`, belum ada dependency sebelumnya) tema dark +
+  font mono sekali (module-level flag), render syntax ke SVG, inject
+  `<style>` warna literal per-level (`_MM_LEVEL_COLORS`, 6 warna) ATAU
+  satu warna custom kalau `nodeBg` di-set -- port apa adanya, BUKAN
+  token Tailwind (sama keputusan kayak heatmap MITRE G3).
+- **`lib/mindmap/colors.ts`** -- preferensi warna per-viewer di
+  `localStorage` (port `_mmLoadColors()`/`_mmSaveColors()`), BUKAN
+  state server -- benar-benar per-browser kayak legacy, gak sinkron
+  lintas device/analyst.
+- **`MindmapEditorDialog`** -- editor full-layar (`max-w-[95vw] h-[90vh]`):
+  color picker node (+ toggle "Auto" balik ke level-colors) & font,
+  textarea syntax + preview live (debounce 400ms), Save (`PUT`, timpa
+  `custom_syntax`) + Regenerate (`POST .../regenerate`, timpa balik ke
+  hasil builder, `custom_syntax` ke-reset null). Body dialog cuma
+  MOUNT pas `open` (`key={featureType:docId}` maksa remount fresh)
+  daripada `useEffect` buat reset state pas dibuka ulang -- ke-flag
+  `react-hooks/set-state-in-effect` pas lint pertama kali, difix
+  dengan pola yang sama kayak `NoteForm` PIR Grup G2 (mount baru =
+  state fresh otomatis, gak butuh sinkronisasi effect).
+- **`MindmapWidget`** -- toggle inline + tombol edit (port
+  `mmInlineWidget()`/`mmToggleInline()`), disiapkan buat G6 (Threat
+  Actor Room)/G7 (Campaign Clusters) yang bakal makenya -- BELUM ada
+  consumer live hari ini (kedua Grup itu belum dibangun), jadi belum
+  bisa live-tested lewat UI asli, tapi logic render/color-nya SAMA
+  persis kayak `MindmapEditorDialog` yang UDAH live-tested (lihat di
+  bawah) -- risiko rendah.
+- **Wiring 1 consumer yang UDAH ada**: `CveDetailModal` (`cve.js:1149-
+  1155`'s `generateCveMindmap()`) -- tombol "⬡ Mind Map" di header
+  modal, langsung buka `MindmapEditorDialog` (bukan toggle inline,
+  match perilaku asli CVE). Komentar deferred lama ("Mind Map button
+  DIDEFER -- nunggu Grup G5") dihapus, diganti penjelasan wiring-nya.
+
+**0 bug live**. Satu fix lint (bukan bug fungsional) diceritain di atas
+(`set-state-in-effect`).
+
+Verifikasi LIVE end-to-end (tab existing, session admin1 masih valid,
+dev server di-restart dulu -- user stop manual sebelum sesi ini): buka
+CVE-2026-12956 -> Mind Map -> editor kebuka, syntax REAL ke-generate
+dari data CVE asli (Severity/Published/Tech/Affected), preview render
+mindmap SVG level-colors (root merah, Overview oranye, dst) -- match
+persis warna legacy. Toggle "Auto" -> off -> SEMUA node ganti jadi 1
+warna biru custom instan (live preview, gak nunggu save). Save -> `PUT
+/api/mindmap/cve/CVE-2026-12956` 200, toast "✓ Saved", query
+invalidate+refetch. Regenerate -> `POST .../regenerate` 200, "✓
+Regenerated", syntax balik ke hasil builder segar (`custom_syntax`
+ke-reset null di DB -- gak ninggalin data test kotor, beda dari
+feedback IOC G4 yang butuh revert manual). Buka CVE KEDUA
+(CVE-2026-13359) -> state FRESH sepenuhnya (warna balik ke Auto/level,
+bukan nyisa warna biru custom CVE pertama) -- konfirmasi
+`key={featureType:docId}` remount jalan bener, gak ada state bocor
+antar dokumen. Console bersih di kedua percobaan. `pnpm build`/
+`tsc --noEmit`/`pnpm lint` semua bersih.
+
 ### Checklist
 
 - [x] **8.1** Setup Next.js App Router + TS + keputusan arsitektur di atas
@@ -3465,10 +3544,11 @@ lolos. `pnpm build`/`tsc --noEmit`/`pnpm lint` semua bersih.
       siap dari Fase 7.7)
 - [x] **8.3** Auth + session (Grup A)
 - [ ] **8.4** Route: `/dashboard` (Grup B, selesai) `/newsroom`
-      (Grup D, selesai) `/cve` (Grup E, selesai) `/intelligence`
-      (G1 -- Risk Matrix+Source Reliability+Early Warning, G2 -- PIR+RFI,
-      G3 -- MITRE Heatmap+ATT&CK DB, G4 -- IOC Management -- selesai;
-      G5-G7 nyusul)
+      (Grup D, selesai) `/cve` (Grup E, selesai, +Mind Map G5)
+      `/intelligence` (G1 -- Risk Matrix+Source Reliability+Early
+      Warning, G2 -- PIR+RFI, G3 -- MITRE Heatmap+ATT&CK DB, G4 -- IOC
+      Management -- selesai; G6-G7 nyusul, masing-masing bakal wire
+      `MindmapWidget` G5)
 - [ ] **8.5** Route: `/exec` (Grup F, selesai) `/xintel` (Grup C, selesai)
       `/recap` (Grup B, selesai) `/admin/users` (Grup C, selesai)
       `/newsletter`
