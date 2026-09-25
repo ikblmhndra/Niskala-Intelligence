@@ -44,6 +44,7 @@ from cti_api.routers import ransomware as ransomware_router
 from cti_api.routers import recap as recap_router
 from cti_api.routers import rfi as rfi_router
 from cti_api.routers import roles as roles_router
+from cti_api.routers import scraper as scraper_router
 from cti_api.routers import source_reliability as source_reliability_router
 from cti_api.routers import stix as stix_router
 from cti_api.routers import ta_groups as ta_groups_router
@@ -105,6 +106,7 @@ def create_app() -> FastAPI:
     app.include_router(intelligence_router.router)
     app.include_router(recap_router.router)
     app.include_router(exec_dashboard_router.router)
+    app.include_router(scraper_router.router)
     return app
 
 

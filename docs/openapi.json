@@ -2838,6 +2838,623 @@
         "title": "SaveSyntaxRequest",
         "type": "object"
       },
+      "ScraperConfigOut": {
+        "description": "`None` di tiap field override = \"gak ada override, pakai default\nkode\" -- `enabled` kekecualian (selalu bool efektif, gabungan\n`ScraperConfig.enabled` kalau ada baris override, else `ScraperMeta.\nenabled` kode).",
+        "properties": {
+          "enabled": {
+            "title": "Enabled",
+            "type": "boolean"
+          },
+          "max_items": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Items"
+          },
+          "paused_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Paused Reason"
+          },
+          "rate_limit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rate Limit"
+          },
+          "schedule": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Schedule"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At"
+          },
+          "updated_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated By"
+          }
+        },
+        "required": [
+          "enabled",
+          "schedule",
+          "rate_limit",
+          "max_items",
+          "paused_reason",
+          "updated_by",
+          "updated_at"
+        ],
+        "title": "ScraperConfigOut",
+        "type": "object"
+      },
+      "ScraperDetail": {
+        "properties": {
+          "config": {
+            "$ref": "#/components/schemas/ScraperConfigOut"
+          },
+          "credential": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Credential"
+          },
+          "default_dedup_ttl_days": {
+            "title": "Default Dedup Ttl Days",
+            "type": "integer"
+          },
+          "default_enabled": {
+            "title": "Default Enabled",
+            "type": "boolean"
+          },
+          "default_max_items": {
+            "title": "Default Max Items",
+            "type": "integer"
+          },
+          "default_max_retries": {
+            "title": "Default Max Retries",
+            "type": "integer"
+          },
+          "default_rate_limit": {
+            "title": "Default Rate Limit",
+            "type": "string"
+          },
+          "default_schedule": {
+            "title": "Default Schedule",
+            "type": "string"
+          },
+          "default_timeout_s": {
+            "title": "Default Timeout S",
+            "type": "number"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "notes": {
+            "title": "Notes",
+            "type": "string"
+          },
+          "queue": {
+            "title": "Queue",
+            "type": "string"
+          },
+          "reference_data": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Reference Data",
+            "type": "array"
+          },
+          "runtime": {
+            "title": "Runtime",
+            "type": "string"
+          },
+          "source": {
+            "title": "Source",
+            "type": "string"
+          },
+          "tags": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Tags",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "source",
+          "runtime",
+          "credential",
+          "reference_data",
+          "tags",
+          "notes",
+          "default_schedule",
+          "default_rate_limit",
+          "default_max_items",
+          "default_enabled",
+          "default_timeout_s",
+          "default_max_retries",
+          "default_dedup_ttl_days",
+          "queue",
+          "config"
+        ],
+        "title": "ScraperDetail",
+        "type": "object"
+      },
+      "ScraperDryRunResult": {
+        "properties": {
+          "duration_ms": {
+            "title": "Duration Ms",
+            "type": "integer"
+          },
+          "errors": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Errors",
+            "type": "array"
+          },
+          "items_found": {
+            "title": "Items Found",
+            "type": "integer"
+          },
+          "scraper_id": {
+            "title": "Scraper Id",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "scraper_id",
+          "status",
+          "items_found",
+          "duration_ms",
+          "errors"
+        ],
+        "title": "ScraperDryRunResult",
+        "type": "object"
+      },
+      "ScraperItemListResponse": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ScraperItemOut"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "page": {
+            "title": "Page",
+            "type": "integer"
+          },
+          "page_size": {
+            "title": "Page Size",
+            "type": "integer"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "page_size"
+        ],
+        "title": "ScraperItemListResponse",
+        "type": "object"
+      },
+      "ScraperItemOut": {
+        "properties": {
+          "accepted": {
+            "title": "Accepted",
+            "type": "boolean"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "run_at": {
+            "title": "Run At",
+            "type": "string"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "url": {
+            "title": "Url",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "run_id",
+          "title",
+          "url",
+          "accepted",
+          "reason",
+          "run_at"
+        ],
+        "title": "ScraperItemOut",
+        "type": "object"
+      },
+      "ScraperListItem": {
+        "properties": {
+          "enabled": {
+            "title": "Enabled",
+            "type": "boolean"
+          },
+          "has_override": {
+            "title": "Has Override",
+            "type": "boolean"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "last_finished_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Finished At"
+          },
+          "last_items_found": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Items Found"
+          },
+          "last_items_new": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Items New"
+          },
+          "last_run_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Run Id"
+          },
+          "last_started_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Started At"
+          },
+          "last_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Status"
+          },
+          "last_trigger": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Trigger"
+          },
+          "queue": {
+            "title": "Queue",
+            "type": "string"
+          },
+          "runtime": {
+            "title": "Runtime",
+            "type": "string"
+          },
+          "schedule": {
+            "title": "Schedule",
+            "type": "string"
+          },
+          "source": {
+            "title": "Source",
+            "type": "string"
+          },
+          "tags": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Tags",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "source",
+          "runtime",
+          "queue",
+          "tags",
+          "enabled",
+          "schedule",
+          "has_override",
+          "last_run_id",
+          "last_status",
+          "last_trigger",
+          "last_started_at",
+          "last_finished_at",
+          "last_items_found",
+          "last_items_new"
+        ],
+        "title": "ScraperListItem",
+        "type": "object"
+      },
+      "ScraperListResponse": {
+        "properties": {
+          "scrapers": {
+            "items": {
+              "$ref": "#/components/schemas/ScraperListItem"
+            },
+            "title": "Scrapers",
+            "type": "array"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "scrapers",
+          "total"
+        ],
+        "title": "ScraperListResponse",
+        "type": "object"
+      },
+      "ScraperRunListResponse": {
+        "properties": {
+          "page": {
+            "title": "Page",
+            "type": "integer"
+          },
+          "page_size": {
+            "title": "Page Size",
+            "type": "integer"
+          },
+          "runs": {
+            "items": {
+              "$ref": "#/components/schemas/ScraperRunOut"
+            },
+            "title": "Runs",
+            "type": "array"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "runs",
+          "total",
+          "page",
+          "page_size"
+        ],
+        "title": "ScraperRunListResponse",
+        "type": "object"
+      },
+      "ScraperRunOut": {
+        "properties": {
+          "celery_task_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Celery Task Id"
+          },
+          "duration_ms": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duration Ms"
+          },
+          "errors": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Errors",
+            "type": "array"
+          },
+          "finished_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Finished At"
+          },
+          "items_dropped": {
+            "title": "Items Dropped",
+            "type": "integer"
+          },
+          "items_failed": {
+            "title": "Items Failed",
+            "type": "integer"
+          },
+          "items_found": {
+            "title": "Items Found",
+            "type": "integer"
+          },
+          "items_new": {
+            "title": "Items New",
+            "type": "integer"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          },
+          "scraper_id": {
+            "title": "Scraper Id",
+            "type": "string"
+          },
+          "started_at": {
+            "title": "Started At",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "trigger": {
+            "title": "Trigger",
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_id",
+          "scraper_id",
+          "trigger",
+          "status",
+          "started_at",
+          "finished_at",
+          "duration_ms",
+          "items_found",
+          "items_new",
+          "items_dropped",
+          "items_failed",
+          "errors",
+          "celery_task_id"
+        ],
+        "title": "ScraperRunOut",
+        "type": "object"
+      },
+      "ScraperTriggerResult": {
+        "properties": {
+          "celery_task_id": {
+            "title": "Celery Task Id",
+            "type": "string"
+          },
+          "queue": {
+            "title": "Queue",
+            "type": "string"
+          },
+          "scraper_id": {
+            "title": "Scraper Id",
+            "type": "string"
+          },
+          "trigger": {
+            "title": "Trigger",
+            "type": "string"
+          }
+        },
+        "required": [
+          "scraper_id",
+          "celery_task_id",
+          "trigger",
+          "queue"
+        ],
+        "title": "ScraperTriggerResult",
+        "type": "object"
+      },
       "SyncRequest": {
         "properties": {
           "domains": {
@@ -14319,6 +14936,401 @@
         "summary": "Remove Role",
         "tags": [
           "roles"
+        ]
+      }
+    },
+    "/api/scraper": {
+      "get": {
+        "operationId": "list_scrapers_api_scraper_get",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScraperListResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Scrapers",
+        "tags": [
+          "scraper"
+        ]
+      }
+    },
+    "/api/scraper/{scraper_id}": {
+      "get": {
+        "operationId": "get_scraper_api_scraper__scraper_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "scraper_id",
+            "required": true,
+            "schema": {
+              "title": "Scraper Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScraperDetail"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Scraper",
+        "tags": [
+          "scraper"
+        ]
+      }
+    },
+    "/api/scraper/{scraper_id}/dry-run": {
+      "post": {
+        "operationId": "dry_run_scraper_api_scraper__scraper_id__dry_run_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "scraper_id",
+            "required": true,
+            "schema": {
+              "title": "Scraper Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScraperDryRunResult"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Dry Run Scraper",
+        "tags": [
+          "scraper"
+        ]
+      }
+    },
+    "/api/scraper/{scraper_id}/items": {
+      "get": {
+        "operationId": "list_items_api_scraper__scraper_id__items_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "scraper_id",
+            "required": true,
+            "schema": {
+              "title": "Scraper Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "default": 1,
+              "title": "Page",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "required": false,
+            "schema": {
+              "default": 20,
+              "title": "Page Size",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "accepted",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accepted"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScraperItemListResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Items",
+        "tags": [
+          "scraper"
+        ]
+      }
+    },
+    "/api/scraper/{scraper_id}/runs": {
+      "get": {
+        "operationId": "list_runs_api_scraper__scraper_id__runs_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "scraper_id",
+            "required": true,
+            "schema": {
+              "title": "Scraper Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "default": 1,
+              "title": "Page",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "required": false,
+            "schema": {
+              "default": 20,
+              "title": "Page Size",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScraperRunListResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Runs",
+        "tags": [
+          "scraper"
+        ]
+      }
+    },
+    "/api/scraper/{scraper_id}/trigger": {
+      "post": {
+        "operationId": "trigger_scraper_api_scraper__scraper_id__trigger_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "scraper_id",
+            "required": true,
+            "schema": {
+              "title": "Scraper Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScraperTriggerResult"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Trigger Scraper",
+        "tags": [
+          "scraper"
         ]
       }
     },

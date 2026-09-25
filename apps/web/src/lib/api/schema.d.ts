@@ -2203,6 +2203,108 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/scraper": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Scrapers */
+        get: operations["list_scrapers_api_scraper_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/scraper/{scraper_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Scraper */
+        get: operations["get_scraper_api_scraper__scraper_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/scraper/{scraper_id}/dry-run": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Dry Run Scraper */
+        post: operations["dry_run_scraper_api_scraper__scraper_id__dry_run_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/scraper/{scraper_id}/items": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Items */
+        get: operations["list_items_api_scraper__scraper_id__items_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/scraper/{scraper_id}/runs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Runs */
+        get: operations["list_runs_api_scraper__scraper_id__runs_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/scraper/{scraper_id}/trigger": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Trigger Scraper */
+        post: operations["trigger_scraper_api_scraper__scraper_id__trigger_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/source-scores": {
         parameters: {
             query?: never;
@@ -3996,6 +4098,199 @@ export interface components {
         SaveSyntaxRequest: {
             /** Syntax */
             syntax: string;
+        };
+        /**
+         * ScraperConfigOut
+         * @description `None` di tiap field override = "gak ada override, pakai default
+         *     kode" -- `enabled` kekecualian (selalu bool efektif, gabungan
+         *     `ScraperConfig.enabled` kalau ada baris override, else `ScraperMeta.
+         *     enabled` kode).
+         */
+        ScraperConfigOut: {
+            /** Enabled */
+            enabled: boolean;
+            /** Max Items */
+            max_items: number | null;
+            /** Paused Reason */
+            paused_reason: string | null;
+            /** Rate Limit */
+            rate_limit: string | null;
+            /** Schedule */
+            schedule: string | null;
+            /** Updated At */
+            updated_at: string | null;
+            /** Updated By */
+            updated_by: string | null;
+        };
+        /** ScraperDetail */
+        ScraperDetail: {
+            config: components["schemas"]["ScraperConfigOut"];
+            /** Credential */
+            credential: string | null;
+            /** Default Dedup Ttl Days */
+            default_dedup_ttl_days: number;
+            /** Default Enabled */
+            default_enabled: boolean;
+            /** Default Max Items */
+            default_max_items: number;
+            /** Default Max Retries */
+            default_max_retries: number;
+            /** Default Rate Limit */
+            default_rate_limit: string;
+            /** Default Schedule */
+            default_schedule: string;
+            /** Default Timeout S */
+            default_timeout_s: number;
+            /** Id */
+            id: string;
+            /** Notes */
+            notes: string;
+            /** Queue */
+            queue: string;
+            /** Reference Data */
+            reference_data: string[];
+            /** Runtime */
+            runtime: string;
+            /** Source */
+            source: string;
+            /** Tags */
+            tags: string[];
+        };
+        /** ScraperDryRunResult */
+        ScraperDryRunResult: {
+            /** Duration Ms */
+            duration_ms: number;
+            /** Errors */
+            errors: {
+                [key: string]: unknown;
+            }[];
+            /** Items Found */
+            items_found: number;
+            /** Scraper Id */
+            scraper_id: string;
+            /** Status */
+            status: string;
+        };
+        /** ScraperItemListResponse */
+        ScraperItemListResponse: {
+            /** Items */
+            items: components["schemas"]["ScraperItemOut"][];
+            /** Page */
+            page: number;
+            /** Page Size */
+            page_size: number;
+            /** Total */
+            total: number;
+        };
+        /** ScraperItemOut */
+        ScraperItemOut: {
+            /** Accepted */
+            accepted: boolean;
+            /** Id */
+            id: number;
+            /** Reason */
+            reason: string | null;
+            /** Run At */
+            run_at: string;
+            /** Run Id */
+            run_id: string;
+            /** Title */
+            title: string;
+            /** Url */
+            url: string;
+        };
+        /** ScraperListItem */
+        ScraperListItem: {
+            /** Enabled */
+            enabled: boolean;
+            /** Has Override */
+            has_override: boolean;
+            /** Id */
+            id: string;
+            /** Last Finished At */
+            last_finished_at: string | null;
+            /** Last Items Found */
+            last_items_found: number | null;
+            /** Last Items New */
+            last_items_new: number | null;
+            /** Last Run Id */
+            last_run_id: string | null;
+            /** Last Started At */
+            last_started_at: string | null;
+            /** Last Status */
+            last_status: string | null;
+            /** Last Trigger */
+            last_trigger: string | null;
+            /** Queue */
+            queue: string;
+            /** Runtime */
+            runtime: string;
+            /** Schedule */
+            schedule: string;
+            /** Source */
+            source: string;
+            /** Tags */
+            tags: string[];
+        };
+        /** ScraperListResponse */
+        ScraperListResponse: {
+            /** Scrapers */
+            scrapers: components["schemas"]["ScraperListItem"][];
+            /** Total */
+            total: number;
+        };
+        /** ScraperRunListResponse */
+        ScraperRunListResponse: {
+            /** Page */
+            page: number;
+            /** Page Size */
+            page_size: number;
+            /** Runs */
+            runs: components["schemas"]["ScraperRunOut"][];
+            /** Total */
+            total: number;
+        };
+        /** ScraperRunOut */
+        ScraperRunOut: {
+            /** Celery Task Id */
+            celery_task_id: string | null;
+            /** Duration Ms */
+            duration_ms: number | null;
+            /** Errors */
+            errors: {
+                [key: string]: unknown;
+            }[];
+            /** Finished At */
+            finished_at: string | null;
+            /** Items Dropped */
+            items_dropped: number;
+            /** Items Failed */
+            items_failed: number;
+            /** Items Found */
+            items_found: number;
+            /** Items New */
+            items_new: number;
+            /** Run Id */
+            run_id: string;
+            /** Scraper Id */
+            scraper_id: string;
+            /** Started At */
+            started_at: string;
+            /** Status */
+            status: string;
+            /** Trigger */
+            trigger: string;
+        };
+        /** ScraperTriggerResult */
+        ScraperTriggerResult: {
+            /** Celery Task Id */
+            celery_task_id: string;
+            /** Queue */
+            queue: string;
+            /** Scraper Id */
+            scraper_id: string;
+            /** Trigger */
+            trigger: string;
         };
         /** SyncRequest */
         SyncRequest: {
@@ -9499,6 +9794,209 @@ export interface operations {
                     "application/json": {
                         [key: string]: boolean;
                     };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_scrapers_api_scraper_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScraperListResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_scraper_api_scraper__scraper_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                scraper_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScraperDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    dry_run_scraper_api_scraper__scraper_id__dry_run_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                scraper_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScraperDryRunResult"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_items_api_scraper__scraper_id__items_get: {
+        parameters: {
+            query?: {
+                page?: number;
+                page_size?: number;
+                accepted?: boolean | null;
+            };
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                scraper_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScraperItemListResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_runs_api_scraper__scraper_id__runs_get: {
+        parameters: {
+            query?: {
+                page?: number;
+                page_size?: number;
+            };
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                scraper_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScraperRunListResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    trigger_scraper_api_scraper__scraper_id__trigger_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                scraper_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScraperTriggerResult"];
                 };
             };
             /** @description Validation Error */

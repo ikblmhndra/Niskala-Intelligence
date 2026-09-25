@@ -3974,8 +3974,76 @@ ke Redis gak ke-consume, jadi gak ada efek samping nyata ke `articles`).
 `ruff check`/`ruff format` semua bersih, 435 test unit+contract existing
 tetep lolos (gak ada regresi ke framework scraper yang udah jalan).
 
-- [ ] **9.1** API: list/detail/runs/items
-- [ ] **9.2** API: trigger + **dry-run** _(endpoint paling berguna, sekarang gak ada)_
+### Grup H2 -- selesai (2026-09-25) -- read + trigger API
+
+Router baru `apps/api/src/cti_api/routers/scraper.py` (`/api/scraper/*`,
+skema `schemas/scraper.py`) -- 6 endpoint: `GET ""` (list 84 scraper,
+`registry.discover()` digabung `ScraperConfig`+run terakhir per scraper
+lewat `AsyncScraperRunRepo.latest_per_scraper()`, SATU query `DISTINCT
+ON`), `GET /{id}` (detail meta+config), `GET /{id}/runs` + `GET /{id}/items`
+(paginated, `items` terima filter `accepted`), `POST /{id}/trigger`
+(manual, admin-only), `POST /{id}/dry-run` (admin-only). Read
+(`dependencies=[Depends(require_auth)]` di level router) kebuka semua
+user login, trigger/dry-run tambahan `require_admin` -- keduanya efek
+nyata (trigger beneran jalanin scraper produksi, dry-run mukul situs
+eksternal asli), beda dari widget monitoring pasif yang legacy pernah
+punya.
+
+**Gap arsitektur ketemu pas nulis trigger endpoint**: `apps/api` gak
+depends ke `cti-scraper` sama sekali (pyproject.toml-nya gak nyebut,
+padahal butuh `registry.discover()`+`ScraperMeta` buat semua endpoint
+baru). Ditambahin `"cti-scraper"` ke `apps/api/pyproject.toml`. Trigger
+juga butuh route ke QUEUE yang bener per scraper (`queue_for()`, biar
+`send_task()` gak nyasar ke queue default) -- fungsi ini sebelumnya di
+`cti_worker.queues` (`apps/worker`), tapi `apps/api` gak boleh depends ke
+`apps/worker` (arah dependency sama kayak `cti_core.celery_client`'s
+docstring: apps -> packages, bukan apps -> apps lain). Pindahin
+`QUEUE_RSS`/`QUEUE_API`/`QUEUE_BROWSER`/`queue_for()` ke `cti_scraper.
+queues` (murni fungsi `ScraperMeta`, bukan worker-spesifik) -- `beat.py`
+ikut diupdate importnya, `cti_worker.queues` tinggal `QUEUE_ENRICH`/
+`QUEUE_NOTIFY`/`QUEUE_MAINTENANCE` (non-scrape). Trigger manggil task
+`scrape.run` yang SAMA kayak beat (H1 udah nambahin param `trigger`),
+lewat `cti_core.celery_client.get_celery_client()` (producer ringan,
+fire-and-forget, result backend gak di-set).
+
+**Regresi environment ketemu (bukan bug kode, gotcha `uv sync` yang UDAH
+didokumentasikan sebelumnya)** -- nambah `cti-scraper` ke
+`apps/api/pyproject.toml` lalu `uv sync` polos WIPE extra `cti-enrich
+[nlp]` (spacy/torch), PERSIS masalah yang dicatat pas Fase 7 Bagian 4
+("`uv sync` polos WIPE lagi extra `cti-enrich[nlp]`"). Fix: `uv sync
+--all-packages --extra nlp --extra dev` (bukan `--extra nlp` doang dari
+root -- `nlp` dideklarasiin di `cti-enrich`'s pyproject sendiri, bukan
+root; `--package cti-enrich --extra nlp` juga SALAH, itu nyempitin sync
+ke closure dependency `cti-enrich` doang, ngilangin `fastapi`/`mypy`/dst).
+
+**Response schema Pydantic eksplisit** (`ScraperListItem`/`ScraperDetail`/
+`ScraperRunOut`/`ScraperItemOut`/`ScraperTriggerResult`/
+`ScraperDryRunResult`) -- BUKAN `dict[str,object]` polos kayak
+`newsletter`/`recap` (pola itu buat PORT dari kode lama yang emang balikin
+dict bebas; Fase 9 desain baru dari nol, jadi langsung model tervalidasi,
+ke-generate bersih ke `schema.d.ts` frontend). Dry-run response CUMA
+status/items_found/duration_ms/errors (SAMA persis `RunResult` -- CLI
+`dry-run` command juga gak nampilin preview item, `_handle_item()` return
+langsung tanpa nyimpen apa pun pas `dry_run=True`, nambahin item-preview
+bakal nambah state yang gak ada di `RunResult` buat fitur yang gak
+diminta).
+
+Live-tested lewat instance API sungguhan (port 8010) + JWT `admin`/
+`analyst` racik manual (`cti_api.security.create_token`, bukan tebak
+password dev): `GET /api/scraper` -> 84 scraper, `GET /{id}` -> detail
+`bleepcomp`, 404 buat id gak ada, `POST /{id}/dry-run` -> `status=ok
+items_found=11` cepat (392ms) tanpa nulis DB, `POST /{id}/trigger` ->
+`celery_task_id` asli + `queue=scrape.rss` bener + audit log kecatat
+(`trigger_scraper`, `admin1`). Auth gating dicek 3 arah: analyst bisa
+`GET` (200), analyst DITOLAK `trigger` (403 "Admin role required"), tanpa
+token 401. `runs`/`items` (termasuk filter `accepted=false`) diverifikasi
+lewat scraper real yang dijalanin ulang via CLI abis dry-run/trigger test.
+Data test dibersihin abis (items/runs/seen/audit-log baris `bleepcomp`).
+`tsc --noEmit` frontend bersih abis `pnpm run gen:api` (schema baru
+ke-generate, belum ada consumer sampe H4/H5).
+
+- [x] **9.1** API: list/detail/runs/items
+- [x] **9.2** API: trigger + **dry-run** _(endpoint paling berguna, sekarang gak ada)_
 - [ ] **9.3** API: enable/disable/schedule
 - [ ] **9.4** API: reset dedup
 - [ ] **9.5** Health sweep: `dead` / `degraded` / `zero_yield` / `stale`

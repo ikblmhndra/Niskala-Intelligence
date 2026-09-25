@@ -41,9 +41,10 @@ from typing import TYPE_CHECKING
 
 from celery.schedules import crontab
 from cti_core.config import get_settings
+from cti_scraper.queues import queue_for
 from cti_scraper.registry import discover
 
-from cti_worker.queues import QUEUE_MAINTENANCE, QUEUE_NOTIFY, queue_for
+from cti_worker.queues import QUEUE_MAINTENANCE, QUEUE_NOTIFY
 
 if TYPE_CHECKING:
     from cti_core.db.models.scraper import ScraperConfig
