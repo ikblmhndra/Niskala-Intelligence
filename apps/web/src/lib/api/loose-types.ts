@@ -564,3 +564,157 @@ export interface PirExportData {
 export interface DeletedResult {
   deleted: boolean;
 }
+
+/**
+ * Grup G3 (`/intelligence` -- MITRE heatmap + ATT&CK DB) --
+ * `routers/mitre.py`/`routers/attack.py` gak declare `response_model`
+ * di endpoint manapun (return `dict[str,object]`/`list[dict]` polos).
+ * Shape dicek dari `AsyncMitreHeatmapRepo`/`AsyncAttackSyncRepo`/
+ * `AsyncAttackQueryRepo` + model kolom langsung
+ * (`packages/cti-core/src/cti_core/db/models/attack.py`).
+ */
+export interface MitreHeatmapTtp {
+  id: string;
+  name: string;
+}
+
+export interface MitreHeatmapResponse {
+  rows: string[];
+  ttps: MitreHeatmapTtp[];
+  matrix: number[][];
+  max_val: number;
+}
+
+export interface MitreArticle {
+  _id: string;
+  title: string;
+  url: string;
+  posted_on: string | null;
+  source: string;
+  news_type: string | null;
+}
+
+export interface MitreArticlesResponse {
+  articles: MitreArticle[];
+  total: number;
+  page: number;
+  page_size: number;
+}
+
+export interface AttackDomainStatus {
+  domain_key: string;
+  domain?: string;
+  label: string;
+  stix_domain?: string;
+  status: "never" | "syncing" | "success" | "error";
+  version: string | null;
+  mitre_modified?: string | null;
+  last_attempted?: string | null;
+  last_sync: string | null;
+  error?: string | null;
+  phase?: string | null;
+  bytes_downloaded?: number | null;
+  bytes_total?: number | null;
+  download_pct?: string | null;
+  technique_count?: number;
+  tactic_count?: number;
+  mitigation_count?: number;
+  group_count?: number;
+  software_count?: number;
+  relationship_count?: number;
+  delta_technique_count?: number | null;
+  delta_group_count?: number | null;
+  delta_software_count?: number | null;
+  delta_mitigation_count?: number | null;
+}
+
+export interface AttackTechniqueRow {
+  attack_id: string;
+  name: string;
+  url: string;
+  tactics: string[];
+  is_subtechnique: boolean;
+  parent_id: string | null;
+  platforms: string[];
+  domains: string[];
+}
+
+export interface AttackTechniqueDetail extends AttackTechniqueRow {
+  description: string;
+  detection: string;
+  mitigations: { mitigation_id: string; name: string; description: string }[];
+  groups: { group_id: string; name: string }[];
+  software: { software_id: string; name: string; software_type: string }[];
+  sub_techniques: { attack_id: string; name: string }[];
+}
+
+export interface AttackTechniquesResponse {
+  techniques: AttackTechniqueRow[];
+  total: number;
+  page: number;
+  page_size: number;
+}
+
+export interface AttackGroupRow {
+  group_id: string;
+  name: string;
+  aliases: string[];
+  url: string;
+  domains: string[];
+}
+
+export interface AttackGroupDetail extends AttackGroupRow {
+  description: string;
+  techniques: { attack_id: string; name: string; tactics: string[]; context: string }[];
+  software: { software_id: string; name: string; software_type: string }[];
+}
+
+export interface AttackGroupsResponse {
+  groups: AttackGroupRow[];
+  total: number;
+  page: number;
+  page_size: number;
+}
+
+export interface AttackSoftwareRow {
+  software_id: string;
+  name: string;
+  software_type: string;
+  aliases: string[];
+  url: string;
+  platforms: string[];
+  domains: string[];
+}
+
+export interface AttackSoftwareDetail extends AttackSoftwareRow {
+  description: string;
+  groups: { group_id: string; name: string }[];
+  techniques: { attack_id: string; name: string }[];
+}
+
+export interface AttackSoftwareResponse {
+  software: AttackSoftwareRow[];
+  total: number;
+  page: number;
+  page_size: number;
+}
+
+export interface AttackMitigationRow {
+  mitigation_id: string;
+  name: string;
+  description: string;
+  domains: string[];
+}
+
+export interface AttackMitigationsResponse {
+  mitigations: AttackMitigationRow[];
+  total: number;
+  page: number;
+  page_size: number;
+}
+
+export interface AttackSyncStartedResult {
+  status: string;
+  domains?: string[];
+  domain?: string;
+}

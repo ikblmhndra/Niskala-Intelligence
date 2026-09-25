@@ -3281,6 +3281,90 @@ bersih. Semua data test (PIR/RFI/artikel/note) dibersihin abis
 verifikasi. Console bersih di tab baru terpisah. `pnpm build`/
 `tsc --noEmit`/`pnpm lint` semua bersih.
 
+### Grup G3 -- selesai (2026-09-25)
+
+`/intelligence` sub-grup ketiga: **MITRE Heatmap + ATT&CK DB**. Dua
+fitur legacy beda sumber data yang numpang nama "MITRE" doang, sama
+kelas keputusan kayak `source_score.py` vs `source_reliability` di
+G1 -- gak saling gantiin. Heatmap = TTP OBSERVED di artikel
+(`ArticleTTP`, hasil ekstraksi enrichment); ATT&CK DB = katalog
+referensi dari STIX bundle MITRE, sinkron manual/berkala. Legacy:
+heatmap numpang di `scraper.js` (bareng Scraper Health read-only, gap
+#6 -- lihat catatan lama "`scraper.js` BUKAN control plane") + drill-down
+di `ttp.js` (134 baris), ATT&CK DB penuh di `attack_db.js` (519 baris).
+Backend (`routers/mitre.py` 92 baris + `routers/attack.py` 222 baris +
+`services/d3fend.py`) udah lengkap sejak Fase 7 -- `attack_sync_check.py`
+(polling Celery-beat) dikonfirmasi di luar scope, murni infrastruktur
+Fase 7.8, gak ada router exposure sama sekali. Murni build frontend.
+
+**Temuan penting**: SEMUA 17 endpoint (`mitre.py` 5 + `attack.py` 12)
+untyped (`dict[str,object]`/`list[dict]`, gak ada `response_model`) --
+beda dari kebanyakan Grup sebelumnya yang mayoritas typed, butuh
+tambahan manual besar di `loose-types.ts`. Dan dua vocabulary "domain"
+yang KELIATAN sama tapi beda: `domain_key` sinkron ("enterprise"/
+"ics"/"mobile", dipakai `GET/POST /api/attack/sync[/{domain_key}]`)
+vs `domain` filter browse ("enterprise-attack"/"ics-attack"/
+"mobile-attack", nilai STIX asli di kolom array `domains` tiap row) --
+ketuker bakal bikin filter domain di 4 panel browse gak pernah match.
+
+**Dibangun**:
+- **MITRE Heatmap** -- grid Threat Actor/Industry × TTP observed,
+  intensitas warna `rgba()` inline dari `val/max` (bukan token Tailwind
+  diskrit, port apa adanya dari legacy), filter view+period. Klik sel
+  -> `TtpDrillDialog` (artikel yang match, paginated) + `D3fendToggle`
+  di-reuse APA ADANYA dari Grup D (`components/newsroom/d3fend-toggle.tsx`)
+  -- manggil endpoint `GET /api/mitre/d3fend/{technique_id}` yang persis
+  sama, gak ada alasan bikin ulang.
+- **ATT&CK DB** -- kartu sync status per-domain (Enterprise/ICS/Mobile,
+  tombol Sync per-domain + Sync All, polling 5s SELAMA ada domain
+  `"syncing"`, delta indicator teknik/grup/software/mitigasi vs sync
+  sebelumnya) + 4 sub-tab browse (Techniques/Groups/Software/Mitigations,
+  search+domain filter, +tactic/subtechnique khusus Techniques, +type
+  khusus Software) dengan pagination. 3 dari 4 sub-tab row-nya clickable
+  -> `AttackDetailDialog` SATU dialog dibagi (bukan modal ke-stack),
+  cross-link technique<->group<->software lewat `onNavigate` ganti
+  target + refetch, niru pola `_openModal()` legacy yang dipakai ulang
+  tanpa nge-stack. Mitigations SENGAJA gak clickable (`attack_db.js`'s
+  `_fetchMitigations()` render row TANPA `onclick`, beda dari 3 lainnya
+  yang semua punya `onclick="show*Detail(...)"`).
+- **Navigator export** -- `downloadLayer()` (blob download lewat
+  `/api/proxy/...`, pola direct-fetch+`getActiveClientId()` yang sama
+  kayak export lain) + `openNavigator()`/`openNavigatorForGroup()`
+  (buka MITRE Navigator eksternal dengan `layerURL` nunjuk balik ke
+  backend kita). **Keterbatasan yang DIWARISI, bukan bug baru**: session
+  cookie httpOnly same-site-only gak kebawa pas Navigator (origin lain)
+  ngambil `layerURL` itu sendiri lewat `fetch()` -- legacy punya masalah
+  analog (Bearer JWT di localStorage juga gak nempel ke navigasi
+  eksternal polos). Diputuskan port APA ADANYA (pola URL sama), bukan
+  bikin auth-bypass baru -- dicatat di sini biar gak disalahartikan bug
+  yang belum ketangkep.
+
+**0 bug ketemu live** -- kontrak backend (17 endpoint untyped) tetap
+match penuh setelah baca `AsyncAttackQueryRepo`/`AsyncMitreQueryRepo`
+langsung (bukan tebak dari nama field). Satu self-correction pas nulis
+kode (bukan bug live): `mitre-heatmap-view.tsx` awalnya punya helper
+`heatBgClass()` yang gak kepake -- kalkulasi warna di-inline langsung
+di JSX `style`, fungsi lama dihapus sebelum final.
+
+Verifikasi LIVE end-to-end (tab existing, session admin1 masih valid):
+MITRE Heatmap render grid asli (3 threat actor × 20 TTP, data real dari
+enrichment) -> klik sel "Apt41 × T1555.003: 1 articles" -> drill dialog
+buka artikel asli ("China-linked APT41 breaches Philippine government
+network...", gbhacker) -> toggle D3FEND -> fetch sukses ("No D3FEND
+countermeasures mapped" -- respons valid, teknik ini emang gak ada
+mapping). ATT&CK DB: sync status 3 kartu SUCCESS (Enterprise 709
+teknik/191 grup/828 software, ICS 97/16/23, Mobile 137/22/127) --
+data real dari sync yang udah jalan sebelumnya. Techniques tab (943
+total, paginated) -> klik T0800 -> detail lengkap (8 mitigasi, 1
+software) -> klik cross-ref "S0604 Industroyer" -> dialog GANTI isi
+jadi Software detail (1 grup, 44 teknik) TANPA modal baru -> klik
+cross-ref "G0034 Sandworm Team" -> ganti lagi jadi Group detail (85
+teknik, 28 software) -- triangle technique<->group<->software full
+jalan. Mitigations tab render (943 baris cek M0800-dst) TANPA row
+clickable, sesuai desain. `pnpm build`/`tsc --noEmit`/`pnpm lint`
+(scope `intelligence/mitre`+`intelligence/attack-db`+`loose-types.ts`)
+semua bersih.
+
 ### Checklist
 
 - [x] **8.1** Setup Next.js App Router + TS + keputusan arsitektur di atas
@@ -3289,8 +3373,8 @@ verifikasi. Console bersih di tab baru terpisah. `pnpm build`/
 - [x] **8.3** Auth + session (Grup A)
 - [ ] **8.4** Route: `/dashboard` (Grup B, selesai) `/newsroom`
       (Grup D, selesai) `/cve` (Grup E, selesai) `/intelligence`
-      (G1 -- Risk Matrix+Source Reliability+Early Warning, G2 -- PIR+RFI
-      -- selesai; G3-G7 nyusul)
+      (G1 -- Risk Matrix+Source Reliability+Early Warning, G2 -- PIR+RFI,
+      G3 -- MITRE Heatmap+ATT&CK DB -- selesai; G4-G7 nyusul)
 - [ ] **8.5** Route: `/exec` (Grup F, selesai) `/xintel` (Grup C, selesai)
       `/recap` (Grup B, selesai) `/admin/users` (Grup C, selesai)
       `/newsletter`

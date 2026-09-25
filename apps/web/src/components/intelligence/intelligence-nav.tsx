@@ -19,6 +19,8 @@ const NAV_ITEMS = [
   { href: "/intelligence/early-warning", label: "Early Warning" },
   { href: "/intelligence/pir", label: "PIR" },
   { href: "/intelligence/rfi", label: "RFI" },
+  { href: "/intelligence/mitre", label: "MITRE Heatmap" },
+  { href: "/intelligence/attack-db", label: "ATT&CK DB" },
 ] as const;
 
 export function IntelligenceNav() {
