@@ -3142,6 +3142,79 @@ Backend: 10 test (7 lama + 3 baru termasuk `test_pending_fp_queue_
 includes_ioc_id`) semua pass. `pnpm build`/`tsc --noEmit`/`pnpm lint`
 semua bersih.
 
+### Grup G1 -- selesai (2026-09-25)
+
+`/intelligence` sub-grup pertama dari 7 (G1-G7, dipecah karena
+`/intelligence` sendirian ~4700 baris legacy): **Risk Matrix + Source
+Reliability + Early Warning**, sesuai urutan "kecil ke besar" yang
+diusulkan survei. Keputusan arsitektur Fase 8 #2 diterapkan pertama
+kali di sini: `/intelligence` jadi sub-route Next.js BENERAN
+(`/intelligence/risk-matrix` dst, `layout.tsx` shared + nav), bukan
+client-state tab switcher kayak legacy `intelSwitchView()`
+(`intel.js`, 11 sub-view dalam 1 shell). Nav sub-route cuma nampilin
+3 yang UDAH dibangun -- bakal nambah entry tiap G2-G7 landing, bukan
+placeholder buat 8 sub-view yang belum ada.
+
+**Riset**: dibaca langsung (gak lewat agen) -- `risk_matrix.js` (90
+baris) + bagian spikes `intel.js` (~50 baris) + `source_reliability.js`
+(327 baris) semua ukuran kecil-sedang, backend (`risk_matrix.py`,
+`spike.py` -- udah dikenal detail dari Grup F, `source_score.py`,
+`routers/source_reliability.py`) juga udah lengkap sejak Fase 7.
+
+**Temuan penting**: `GET /api/source-scores` (`source_score.py`,
+heuristik grading OTOMATIS per nama sumber, lookup tabel hardcoded)
+**KONFIRMASI dead code** -- `loadSourceScores()` di `intel.js` cuma
+DI-DEFINE, NOL call site di seluruh `legacy/static/js/` manapun (grep
+lintas file). Sub-view "scores" yang beneran dipakai (`intelSwitchViewAndLoad`)
+manggil `loadSREntries()` (grading MANUAL analis tersimpan DB), bukan
+fungsi itu. Sama presedennya kayak `wisemap_service.py` (Grup E survei
+2026-09-19) -- endpoint gak dipanggil UI manapun, sengaja gak diporting,
+bukan lupa.
+
+**Dibangun**:
+- **Risk Matrix** -- grid Industry×Country, skor 0-100 (Volume+Trend+
+  Spike, formula sama kayak yang dipakai Grup F), 4 tier warna
+  (mapping ke token Tailwind success/primary/warning/destructive,
+  bukan rgba literal legacy), filter `days`/`compare_days` (server)
+  + `min_score` (client-side, port apa adanya).
+- **Early Warning** -- `GET /api/spikes` versi standalone (endpoint +
+  service PERSIS sama kayak spike banner Grup F, cuma `lookback_days`/
+  `z_threshold` sekarang jadi filter user-facing, bukan hardcoded),
+  4 kategori (Overall/Threat Actor/Country/Industry) urut z-score desc.
+- **Source Reliability** -- CRUD grading Admiralty (grade A-F ×
+  credibility 1-6, kode `admiralty_code` = gabungan keduanya), search+
+  filter grade+sort+pagination, modal Add/Edit dengan autocomplete
+  source picker custom (Input+dropdown lokal dengan arrow-key nav,
+  BUKAN Base UI `Select` -- itu buat fixed-option, bukan free-text+
+  filter; gak ada komponen Combobox siap pakai di `ui/`). Analyst Name
+  di-prefill `user.username` (perbaikan kecil atas legacy yang kosong
+  defaultnya -- sekarang ada JWT asli, bukan password bersama).
+
+**1 bug nyata ketemu live** (bukan kode, cara nge-test): pas nyoba
+verifikasi Risk Matrix pakai data seed manual, cell-nya kosong terus
+biarpun 2 artikel share industry+country yang sama -- ternyata
+`risk_matrix_rows()` (repo) cuma ngitung `ArticleCountry` dengan
+`role="mentioned"`, bukan `"victim"` (beda dari cara Grup F seed data
+buat exec dashboard yang gak peduli role). Bukan bug kode yang perlu
+difix, cuma kesalahan seed data pas testing -- re-seed pakai role
+`"mentioned"` langsung nunjukin cell "Healthcare×US: 100↑" bener.
+
+Verifikasi LIVE end-to-end (tab baru, login `admin1`/superadmin): nav
+3 sub-route + redirect `/intelligence`->`/intelligence/risk-matrix`
+jalan. Risk Matrix filter re-fetch pas parameter ganti (cache 900s
+backend per kombinasi `days|compare_days`, dites lewat beberapa
+kombinasi biar gak kena cache basi), cell render warna+tooltip bener
+pas ada data seed manual (dibersihin abis verifikasi). Early Warning
+render 4-kategori grouping, empty-state bener buat dev DB yang sepi
+(logic `get_spikes()` udah diverifikasi ketat Grup F, gak diulang
+seeding di sini). Source Reliability CRUD PENUH: Add (autocomplete
+munculin sumber ASLI dari DB -- "Bitdefender Labs"/"Mandiant"/
+"gbhacker"/"live-test-feed", grade+code select populate dari
+`/api/sr/labels` beneran, preview badge A1 ijo) -> Edit (notes update,
+PUT 200) -> Remove (confirm dialog nyebut nama sumber bener, DELETE
+200, row ilang). Console bersih di tab baru terpisah abis seluruh
+alur. `pnpm build`/`tsc --noEmit`/`pnpm lint` semua bersih.
+
 ### Checklist
 
 - [x] **8.1** Setup Next.js App Router + TS + keputusan arsitektur di atas
@@ -3150,6 +3223,8 @@ semua bersih.
 - [x] **8.3** Auth + session (Grup A)
 - [ ] **8.4** Route: `/dashboard` (Grup B, selesai) `/newsroom`
       (Grup D, selesai) `/cve` (Grup E, selesai) `/intelligence`
+      (G1 -- Risk Matrix+Source Reliability+Early Warning -- selesai;
+      G2-G7 nyusul)
 - [ ] **8.5** Route: `/exec` (Grup F, selesai) `/xintel` (Grup C, selesai)
       `/recap` (Grup B, selesai) `/admin/users` (Grup C, selesai)
       `/newsletter`

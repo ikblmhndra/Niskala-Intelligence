@@ -481,3 +481,59 @@ export interface IocFeedbackResponse {
     total_iocs: number;
   };
 }
+
+/**
+ * Grup G1 (`/intelligence` -- Risk Matrix, Early Warning) -- endpoint
+ * `routers/intelligence.py` gak declare `response_model`. Shape dicek
+ * dari `services/spike.py::get_spikes()`/`services/risk_matrix.py::
+ * _compute_risk_matrix()` langsung.
+ */
+export interface SpikeEntry {
+  entity: string;
+  date: string;
+  count: number;
+  baseline_mean: number;
+  z_score: number;
+  severity: "high" | "medium";
+}
+
+export interface SpikesResponse {
+  threat_actors: SpikeEntry[];
+  countries: SpikeEntry[];
+  industries: SpikeEntry[];
+  overall: SpikeEntry[];
+  generated_at: string;
+  parameters: { lookback_days: number; z_threshold: number; recent_window: number };
+}
+
+export interface RiskMatrixCell {
+  industry: string;
+  country: string;
+  risk_score: number;
+  trend: "↑" | "↓" | "→";
+  current_count: number;
+  previous_count: number;
+  top_actors: string[];
+}
+
+export interface RiskMatrixResponse {
+  matrix: RiskMatrixCell[];
+  industries: string[];
+  countries: string[];
+  generated_at: string;
+}
+
+/** Grup G1 (`/intelligence` -- Source Reliability) -- `GET /api/sr/stats`
+ * gak declare `response_model` (`routers/source_reliability.py`). Shape
+ * dicek dari `AsyncSourceReliabilityRepo.get_stats()`. */
+export interface SrStats {
+  total: number;
+  by_grade: { grade: string; count: number }[];
+}
+
+/** `POST/PUT /api/sr/entries*` gak declare `response_model`. */
+export interface SrActionResult {
+  success: boolean;
+  reason?: string;
+  entry?: components["schemas"]["SREntryOut"];
+}
