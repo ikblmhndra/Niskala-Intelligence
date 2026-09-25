@@ -23,6 +23,7 @@ const NAV_ITEMS = [
   { href: "/intelligence/attack-db", label: "ATT&CK DB" },
   { href: "/intelligence/ioc-management", label: "IOC Management" },
   { href: "/intelligence/threat-actor-room", label: "Threat Actor Room" },
+  { href: "/intelligence/campaign-clusters", label: "Campaign Clusters" },
 ] as const;
 
 export function IntelligenceNav() {

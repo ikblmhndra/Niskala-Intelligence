@@ -952,3 +952,186 @@ export interface TaProfileGenerateResult {
   success: boolean;
   profile: TaProfile;
 }
+
+export interface ClusterArticleRef {
+  id: number;
+  title: string;
+  url: string;
+  source: string;
+  posted_on: string;
+}
+
+export interface ClusterEntry {
+  cluster_id: string;
+  cluster_name: string;
+  article_count: number;
+  source_count: number;
+  sources: string[];
+  confidence: "low" | "medium" | "high";
+  first_date: string;
+  last_date: string;
+  re_emerged: boolean;
+  articles: ClusterArticleRef[];
+}
+
+export interface ClustersResponse {
+  clusters: ClusterEntry[];
+  total: number;
+}
+
+export interface PrioritizedCve {
+  cve_id: string;
+  cvss_score: number | null;
+  severity: string | null;
+  cisa_kev: boolean;
+  poc_available: boolean;
+  actively_exploited: boolean;
+  in_tech_stack: boolean;
+  priority_score: number;
+  priority_label: "critical_patch" | "high_priority" | "medium" | "low";
+  patch_urgency: string;
+}
+
+export interface MatchedPir {
+  id: number;
+  title: string;
+  description: string | null;
+  priority: string;
+  status: string;
+  criteria: Record<string, string[]>;
+}
+
+export interface KillChainPhase {
+  phase: string;
+  covered: boolean;
+  techniques: string[];
+}
+
+export interface KillChain {
+  phases_covered: string[];
+  phases_missing: string[];
+  completeness_score: number;
+  completeness_label: "full_chain" | "partial_chain" | "limited";
+  chain_visualization: KillChainPhase[];
+  operational_risk: "critical" | "high" | "medium" | "low";
+}
+
+export interface SeverityBreakdown {
+  ta_sophistication: number;
+  ioc_confidence: number;
+  cve_criticality: number;
+  campaign_velocity: number;
+  source_quality: number;
+  raw: {
+    ta_sophistication: number;
+    ioc_confidence: number;
+    cve_criticality: number;
+    campaign_velocity: number;
+    source_quality: number;
+  };
+}
+
+export interface DiamondModel {
+  adversary: { threat_actors: string[]; actor_types: string[]; sponsoring_nations: string[]; sophistication: string | null };
+  infrastructure: { domains: string[]; ips: string[]; urls: string[]; c2_indicators: string[] };
+  capability: { attack_techniques: Record<string, string[]>; malware: string[]; tools: string[]; cve_exploited: string[] };
+  victim: { industries: string[]; countries: string[]; organization_types: string[] };
+  meta: { timestamps: { first_seen: string; last_seen: string }; confidence: "high" | "medium" | "low"; direction: "lateral" | "outbound" | "inbound" };
+}
+
+export interface RelatedCampaign {
+  cluster_id: string;
+  cluster_name: string;
+  link_score: number;
+  link_type: "same_actor" | "shared_infra" | "similar_ttp" | "related";
+  shared_elements: { tas: string[]; ttps: string[]; iocs: string[] };
+}
+
+export interface CampaignIoc {
+  id?: number;
+  type: string;
+  value: string;
+}
+
+export interface CampaignEntry {
+  cluster_id: string;
+  cluster_name: string;
+  size: number;
+  first_seen: string;
+  last_seen: string;
+  member_article_ids: number[];
+  titles: string[];
+  summary_title: string;
+  dominant_tas: string[];
+  dominant_industries: string[];
+  dominant_countries: string[];
+  attack_techniques: string[];
+  kill_chain: KillChain;
+  iocs: CampaignIoc[];
+  cve_ids: string[];
+  prioritized_cves: PrioritizedCve[];
+  velocity_articles_per_day: number;
+  velocity_label: "surging" | "active" | "moderate" | "slow";
+  acceleration: number;
+  velocity_alert: boolean;
+  new_iocs_24h: number;
+  days_active: number;
+  severity_score: number;
+  severity_label: "critical" | "high" | "medium" | "low";
+  severity_breakdown: SeverityBreakdown;
+  matched_pirs: MatchedPir[];
+  diamond_model: DiamondModel;
+  related_campaigns: RelatedCampaign[];
+}
+
+export interface CampaignLink {
+  source_id: string;
+  target_id: string;
+  score: number;
+  link_type: string;
+  shared_elements: { tas: string[]; ttps: string[]; iocs: string[] };
+}
+
+export interface CampaignsResponse {
+  campaigns: CampaignEntry[];
+  campaign_links: CampaignLink[];
+  total: number;
+}
+
+export interface CampaignTrendPoint {
+  date: string;
+  count: number;
+}
+
+export interface CampaignTrend {
+  cluster_id: string;
+  trend_direction: "growing" | "stable" | "declining" | "dormant";
+  growth_rate: number | null;
+  timeline: CampaignTrendPoint[];
+  predicted_peak: string | null;
+}
+
+export interface GeopoliticalNationEntry {
+  campaign_count: number;
+  campaigns: string[];
+  primary_motivations: string[];
+  targeted_sectors: string[];
+  targeted_countries: string[];
+  actor_type: string;
+}
+
+export interface GeopoliticalSectorTrend {
+  campaign_count: number;
+  prior_count: number;
+  threat_actors: string[];
+  trend: "increasing" | "decreasing" | "stable";
+}
+
+export interface GeopoliticalSummary {
+  nation_state_activity: Record<string, GeopoliticalNationEntry>;
+  motivation_breakdown: Record<string, number>;
+  sector_threat_trends: Record<string, GeopoliticalSectorTrend>;
+  geopolitical_alerts: string[];
+  days: number;
+  campaign_count: number;
+}

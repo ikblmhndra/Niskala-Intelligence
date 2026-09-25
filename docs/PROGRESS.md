@@ -3629,18 +3629,129 @@ SEBELUM fix, gak ada error baru abis fix). `pytest -k "ta_group or
 ta_profile or threat_actor or mindmap"`: 46 lolos abis fix.
 `pnpm build`/`tsc --noEmit`/`pnpm lint` semua bersih.
 
+### Grup G7 -- selesai (2026-09-25) -- Grup G (`/intelligence`) KOMPLET
+
+`/intelligence` sub-grup ketujuh, TERAKHIR dari Grup G: **Campaign
+Clusters**. Legacy: `clusters.js` (907 baris) + bagian atas `intel.js`
+(148 baris) -- ternyata DUA pipeline TF-IDF independen numpang di dua
+sub-view berbeda (`intelSwitchViewAndLoad`'s dispatch table):
+- **`clusters`** (Pipeline 1, `cti_api.services.cluster`) -- greedy
+  fixed-centroid, threshold TUNABLE (0.2-0.7), DI-PERSIST ke tabel
+  `clusters` (cache 900s), **manual-generate ONLY** (komentar legacy
+  eksplisit: "do not auto-load on tab switch").
+- **`campaigns`** (Pipeline 2, `cti_api.services.campaign`) --
+  union-find, threshold TETAP 0.75, enrichment kaya (severity/kill
+  chain/diamond model/prioritized CVE/matched PIR/campaign links),
+  NOL cache/persist, **auto-load**.
+
+Backend (`routers/intelligence.py` 139 baris + 7 service file,
+~1770 baris total: `cluster`/`campaign`/`campaign_analysis`/
+`campaign_trend`/`diamond_model`/`geopolitical`/`cluster_tokenize`)
+udah lengkap dari Fase 7.4 Grup A (2026-09-23) -- murni build
+frontend, TANPA nyentuh backend sama sekali (beda dari G4/G6 yang
+masing-masing nemuin 1 bug backend nyata).
+
+**Riset penting**: grep `clusters/evolution`/`campaign_evolution`
+lintas SEMUA `legacy/static/js/` -- NOL match. Endpoint
+`GET /clusters/evolution` ada di backend tapi gak PERNAH dipanggil UI
+legacy manapun (beda dari `/intelligence/geopolitical` yang awalnya
+dikira sama tapi TERNYATA dipakai -- panel collapsible DI DALAM view
+Campaigns, `loadGeopoliticalOverview()`). Sama presedennya kayak
+`pir`/`newsletter`/`ransomware` mindmap builder G5 -- sengaja gak
+diwire, backend siap tapi frontend legacy emang gak pernah makenya.
+
+**Dibangun**:
+- **Clusters (Simple)** -- filter days/threshold/exclude-low-
+  reliability, tombol Generate manual, card expand/collapse per
+  cluster, sparkline SVG tanggal artikel, badge spike-match (baca
+  `/api/spikes` paralel) + re-emerging, toggle "show single-source".
+- **Campaigns** -- filter days/min_size, sort bar (size/velocity/
+  severity/first_seen/last_seen), tabel expand-row: severity
+  breakdown (5 faktor weighted bar), kill chain coverage (12 fase
+  MITRE, segmen visual), Diamond Model (4 kuadran + expand detail
+  penuh per-tactic -- data TA di kuadran Adversary/Victim PULL
+  LANGSUNG dari TA profile G6 kalau ada, integrasi cross-Grup nyata),
+  matched PIRs (buka `ClusterPirDialog`, numpang `PirArticlesDialog`
+  G2 lewat objek minimal `{id,title}`), member articles (`ArticleModal`
+  Grup D lewat wrapper fetch-by-id), IOCs, prioritized CVEs, Mind Map
+  (`MindmapWidget` G5, consumer KEDUA), related campaigns (jump-to
+  scroll+expand), Hunt Pack (download JSON client-side, tanpa request
+  backend). Panel Geopolitical Overview collapsible (alert list,
+  heatmap nation×sector, motivation breakdown bar) di atas tabel.
+- **Deviasi disengaja dari legacy** (dicatat eksplisit di kode, BUKAN
+  port apa adanya):
+  1. CVE chip klik -- legacy `openCveDetail()` cross-tab (SPA satu-
+     halaman lama bisa buka modal CVE Tracker dari tab manapun). Di
+     sini `/cve` sub-route TERPISAH (keputusan arsitektur Fase 8), gak
+     ada state cross-page -- diganti buka NVD langsung.
+  2. Nation×sector heatmap -- `nation_state_activity[nation].
+     targeted_sectors` backend DEDUP per nation (beda dari legacy yang
+     gak dedup), jadi heatmap di sini jadi biner (terisi/kosong) bukan
+     gradasi intensitas -- BUKAN bug baru, warisan data-shape Fase 7.4
+     Grup A yang udah lama commit, logic hitung diport apa adanya,
+     cuma hasil visualnya beda dari desain original.
+
+**1 bug ketemu LIVE, tapi di kode SENDIRI (bukan backend)**: query
+spike `SimpleClustersPanel` awalnya port literal legacy
+`lookback_days=7` (`intel.js:118`) mentah-mentah -- TERNYATA backend
+BARU (`GET /api/spikes`, di-establish Grup G1) punya constraint
+`Query(30, ge=14, le=90)` yang lebih ketat dari backend lama, jadi
+`lookback_days=7` selalu 422. Fix: pakai nilai minimum valid (14),
+dicatat di komentar kenapa beda dari literal legacy.
+
+**0 bug backend** -- konsisten sama G3/G5 (Grup yang gak nyentuh
+backend sama sekali), beda dari G4/G6.
+
+Verifikasi LIVE end-to-end (tab existing, session admin1 masih valid):
+Clusters (Simple) -- `days=90` nemu ULANG cluster REAL dari Fase 7.4
+Grup A (UNC6671/Russia, 2 artikel Mandiant, `source_count=1` makanya
+butuh toggle "show single-source" buat muncul -- BUKAN bug, port apa
+adanya dari filter default legacy), expand nunjukin 2 artikel asli
+lengkap source+tanggal. Campaigns -- default `days=7,min_size=3`
+kosong (0.75 threshold Pipeline 2 emang jauh lebih ketat dari 0.35
+Pipeline 1, gak ada campaign yang lolos di dataset asli ini, expected
+per catatan verifikasi Fase 7.4 Grup A). **Seed 2 artikel test**
+("APT41 breaches Philippine government...", judul sengaja mirip biar
+lolos threshold 0.75) + 1 IOC CVE-2025-8088 -> campaign REAL
+kebentuk, severity MEDIUM 56 (TA Sophistication 100 -- PULL LANGSUNG
+dari profil APT41 asli hasil generate G6, bukan data sintetis),
+velocity ACTIVE, kill chain 0%/limited (jujur -- TTP seed pakai nama
+teknik tanpa embed ID `T####`, `analyze_kill_chain()`'s regex emang
+gak nemu match, bukan bug tampilan), Diamond Model quadrant Victim
+nunjukin "gov"/"telco" dari `targeting_profile` asli APT41. Member
+Article klik -> `ArticleModal` full data. Mind Map toggle -> render
+sukses, confirmed CUMA branch "Stats" keisi (bug cross-pipeline yang
+udah didokumentasikan Fase 7.4, direproduksi ulang di sini sebagai
+BUKTI port yang jujur, bukan disembunyiin). CVE chip klik -> popup
+NVD ke-block browser pane (sandboxing otomatis, bukan bug -- konfirmasi
+`window.open()` terpanggil bener). Geopolitical panel toggle -> render
+"0 campaigns" gracefully sebelum seed, isi lengkap (alert/heatmap/
+motivation) setelah. **1 bug ketemu & fix** (spike query 422) di atas.
+Semua data test dibersihin abis verifikasi (artikel+IOC source, raw
+SQL DELETE dengan cascade FK yang udah dikonfirmasi `ondelete=CASCADE`
+di model). Console bersih abis fix (422 lama, bukan baru). `pnpm build`/
+`tsc --noEmit`/`pnpm lint` semua bersih.
+
+**Grup G (`/intelligence`) KOMPLET**: G1 Risk Matrix+Source
+Reliability+Early Warning, G2 PIR+RFI, G3 MITRE Heatmap+ATT&CK DB, G4
+IOC Management, G5 komponen Mindmap bersama, G6 Threat Actor Room, G7
+Campaign Clusters -- 7 sub-grup, 9 sub-route `/intelligence/*`, ~30
+komponen baru, 2 bug backend nyata ketemu+fix (G4 enrichment+
+actionability, G6 `get_by_name_ci` MultipleResultsFound), 0 bug
+backend di G3/G5/G7.
+
 ### Checklist
 
 - [x] **8.1** Setup Next.js App Router + TS + keputusan arsitektur di atas
 - [x] **8.2** Generate client API dari OpenAPI (`docs/openapi.json` udah
       siap dari Fase 7.7)
 - [x] **8.3** Auth + session (Grup A)
-- [ ] **8.4** Route: `/dashboard` (Grup B, selesai) `/newsroom`
+- [x] **8.4** Route: `/dashboard` (Grup B, selesai) `/newsroom`
       (Grup D, selesai) `/cve` (Grup E, selesai, +Mind Map G5)
       `/intelligence` (G1 -- Risk Matrix+Source Reliability+Early
       Warning, G2 -- PIR+RFI, G3 -- MITRE Heatmap+ATT&CK DB, G4 -- IOC
-      Management, G6 -- Threat Actor Room -- selesai; G7 nyusul, bakal
-      wire `MindmapWidget` G5 juga buat feature_type `cluster`)
+      Management, G5 -- komponen Mindmap, G6 -- Threat Actor Room, G7
+      -- Campaign Clusters -- SEMUA selesai, Grup G komplet)
 - [ ] **8.5** Route: `/exec` (Grup F, selesai) `/xintel` (Grup C, selesai)
       `/recap` (Grup B, selesai) `/admin/users` (Grup C, selesai)
       `/newsletter`
