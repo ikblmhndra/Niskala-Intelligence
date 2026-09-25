@@ -837,3 +837,118 @@ export interface MindmapDocResponse {
   generated_at: string | null;
   edited_at?: string | null;
 }
+
+export interface TaStats {
+  total_groups: number;
+  total_whitelisted: number;
+  manual_count: number;
+  in_news_count: number;
+  by_source: { name: string; count: number }[];
+  top_in_news: { name: string; count: number }[];
+}
+
+export interface TaGroupActionResult {
+  success: boolean;
+  reason?: "whitelisted" | "duplicate";
+}
+
+export interface TaTimeline {
+  actor: string;
+  months: string[];
+  article_counts: number[];
+  tweet_counts: number[];
+  ransom_counts: number[];
+  total_counts: number[];
+  dormancy_state: "ACTIVE" | "DORMANT" | "RESURGENT";
+  last_active_month: string | null;
+  state_transitions: { month: string; from: string; to: string }[];
+}
+
+export interface TaKnownMalware {
+  name: string;
+  type?: string;
+  notes?: string | null;
+}
+
+export interface TaExploitedVuln {
+  cve_id: string;
+  product?: string;
+  notes?: string | null;
+  _confirmed?: boolean;
+  _cve_score?: number | null;
+  _cve_severity?: string | null;
+  _cisa_kev?: boolean;
+  _poc_available?: boolean;
+}
+
+export interface TaProfile {
+  _actor_name?: string;
+  _generated_at?: string;
+  profile_metadata?: { analyst_confidence?: string; tlp_marking?: string; source_document?: string };
+  identity?: {
+    primary_name?: string;
+    aliases?: string[];
+    tracking_ids?: { mitre_group_id?: string | null; other_ids?: string[] };
+    actor_type?: string;
+    sponsoring_nation?: string | null;
+    affiliated_group?: string | null;
+    first_observed?: string | null;
+    last_active?: string | null;
+    active_status?: string;
+  };
+  motivation?: {
+    primary_motivation?: string;
+    secondary_motivations?: string[];
+    strategic_objectives?: string[];
+    targeting_approach?: string;
+  };
+  targeting_profile?: {
+    targeted_sectors?: string[];
+    targeted_geographies?: string[];
+    targeted_organization_types?: string[];
+    high_value_assets_targeted?: string[];
+  };
+  capability_assessment?: {
+    sophistication_level?: string;
+    development_capability?: string;
+    known_malware?: TaKnownMalware[];
+    known_tools?: string[];
+    exploited_vulnerabilities?: TaExploitedVuln[];
+    attack_techniques?: Record<string, string[]>;
+  };
+  infrastructure?: {
+    c2_patterns?: string[];
+    hosting_preferences?: string[];
+    known_iocs?: { ips?: string[]; domains?: string[]; hashes?: string[]; urls?: string[] };
+    infrastructure_reuse?: string;
+    infrastructure_notes?: string | null;
+  };
+  campaign_history?: {
+    campaign_name?: string | null;
+    date_range?: string;
+    targeted_sectors?: string[];
+    source_reference?: string;
+  }[];
+  detection_and_defense?: {
+    detection_opportunities?: { layer?: string; description?: string; mitre_technique_ref?: string | null }[];
+    recommended_mitigations?: { mitigation?: string; mitre_mitigation_id?: string | null; priority?: string }[];
+  };
+  organizational_relevance?: {
+    sector_relevance?: string;
+    relevance_rationale?: string;
+    monitoring_priority?: string;
+    recommended_actions?: { timeframe?: string; action?: string }[];
+  };
+  intelligence_gaps?: string[];
+  references?: { title?: string; source?: string; url?: string | null; date?: string | null }[];
+}
+
+export interface TaProfileResponse {
+  exists: boolean;
+  profile: TaProfile | null;
+}
+
+export interface TaProfileGenerateResult {
+  success: boolean;
+  profile: TaProfile;
+}

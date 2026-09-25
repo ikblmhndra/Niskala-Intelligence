@@ -3537,6 +3537,98 @@ bukan nyisa warna biru custom CVE pertama) -- konfirmasi
 antar dokumen. Console bersih di kedua percobaan. `pnpm build`/
 `tsc --noEmit`/`pnpm lint` semua bersih.
 
+### Grup G6 -- selesai (2026-09-25)
+
+`/intelligence` sub-grup keenam: **Threat Actor Room** (Tracked Groups
++ Whitelist + Watchlist + profil TA AI-generated + activity timeline).
+Legacy: `ta.js` (1103 baris, terbesar di antara semua Grup G sejauh
+ini) -- 3 sub-view (`taSwitchView()`) ditambah modal profil terpisah
+(10 section terstruktur) dan Mind Map (consumer PERTAMA dari
+`MindmapWidget` G5 yang beneran ke-pasang, sesuai rencana). Backend
+(`routers/ta_groups.py` 358 baris, fully typed Pydantic response
+model, + `services/ta_profile.py` 297 baris LLM profiler + repo 487
+baris) udah lengkap dari Fase 7.3 -- murni build frontend.
+
+**Riset penting**: `requireTAAuth()` (legacy, popup re-entry password
+sebelum aksi privileged) dikonfirmasi RELIK sistem auth LAMA (Bearer
+JWT localStorage) -- app baru udah punya session cookie httpOnly
+(`require_auth` di semua endpoint tulis), jadi popup itu SENGAJA gak
+diport, backend 403 yang nge-gate kalau somehow gak authenticated
+(`AppLayout` udah blokir akses unauth duluan). Desain keputusan:
+`MindmapWidget` (toggle+edit) dipasang di WATCHLIST CARD juga, padahal
+legacy card cuma punya toggle-only (hand-rolled, gak lewat
+`mmInlineWidget()`) -- disatuin ke komponen bersama biar konsisten,
+bukan pertahanin 2 implementasi toggle mindmap yang beda (deviasi
+kecil disengaja, bukan port apa adanya).
+
+**1 bug backend nyata ketemu LIVE** (bukan frontend): `AsyncTARepo.
+get_by_name_ci()` (`packages/cti-core/.../repositories/ta.py:37`)
+pakai `scalar_one_or_none()` tanpa unique constraint di
+`lower(name)` -- tabel `threat_actor_groups` cuma unique di `name`
+mentah, jadi 2 baris case-variant (`"APT41"` id=1 vs `"apt41"` id=99,
+data seed lama dari sesi sebelumnya) bikin query nemu 2 baris dan
+CRASH 500 (`MultipleResultsFound`) tiap kali Mind Map widget dibuka
+buat threat actor manapun yang kena tabrakan case. Fix: ganti ke
+`.limit(1)` + `.scalars().first()` -- ambil satu baris deterministik,
+gak butuh migration atau hapus data. Confirmed via traceback live,
+BUKAN tebakan -- 46 test `-k "ta_group or ta_profile or threat_actor
+or mindmap"` tetep lolos abis fix.
+
+**Dibangun**:
+- **Tracked Groups** -- tabel sort klik-header (Name/Added Date/
+  Source, beda dari Watchlist yang `<Select>` karena ini tabel
+  beneran), search, Add (validasi whitelisted/duplicate dari backend),
+  toggle Watch/Unwatch inline, Remove (`ConfirmDialog`, whitelist
+  otomatis + gak bisa di-re-add).
+- **Whitelist** -- tabel grup yang di-remove, Restore (`ConfirmDialog`)
+  ngehapus dari whitelist (BUKAN muncul lagi di Tracked otomatis --
+  restore cuma buka jalan buat di-Add ulang manual, sama presedennya
+  kayak legacy).
+- **Watchlist** -- card grid (BUKAN tabel), tiap card ngecek profile
+  existence + article count PARALEL (`useQueries`, port
+  `Promise.allSettled` legacy), dormancy badge (ACTIVE/DORMANT/
+  RESURGENT, 3 warna), AI Generate -> buka Profile Dialog otomatis
+  abis sukses (match legacy), View Profile, Mind Map (`MindmapWidget`),
+  tombol artikel (disabled kalau 0), Unwatch, "Open in Navigator"
+  (export TTP coverage watchlist ke MITRE Navigator eksternal --
+  keterbatasan cross-origin auth yang sama kayak G3, diwarisi bukan
+  bug baru).
+- **Profile Dialog** -- 10 section (Identity/Motivation/Targeting/
+  Capability/Infrastructure/Campaign History/Detection & Defense/Org
+  Relevance/Gaps/References) + meta chips (actor type/confidence/TLP/
+  nation) + Activity Timeline (`TAActivityTimelineChart`, Chart.js 3
+  series stacked+filled: Articles/Tweets/Ransom, + state transitions
+  DORMANT<->ACTIVE<->RESURGENT) + Regenerate (invalidate profile+
+  watchlist query, refresh badge card) + `MindmapWidget`. Field
+  enrichment backend (`_confirmed`/`_article_cves` dari
+  `_enrich_profile_cves()`) SENGAJA gak dirender -- legacy
+  `_renderProfileBody()` juga gak pernah nampilin field itu (data
+  dihitung tapi gak pernah disurface UI, presenden sama kayak
+  `enrichment` IOC G4 tapi arah kebalik: di sini backend LEBIH kaya
+  dari yang ditampilin, bukan lebih miskin).
+- **Articles Dialog** -- `GET /api/articles?threat_actor=...`, pola
+  sama persis kayak `PirArticlesDialog` G2 (title+url, source/
+  posted_on/news_type, pager).
+
+Verifikasi LIVE end-to-end (tab existing, session admin1 masih valid,
+dev server di-restart abis user stop manual sebelum sesi ini): 3992
+grup TA real ke-load (stats bar match). Watch APT41 dari Tracked ->
+muncul di Watchlist card (RESURGENT, "1 Article", NO PROFILE) -> AI
+Generate -> LLM call ~20 detik -> profil REAL ke-generate (nation-state/
+China/MITRE G0096/alias Winnti+BlackFly+Wicked Panda+Axiom/malware
+Poison Ivy+Winnti+ShadowPad+DarkSide/TTP lengkap per-tactic) -> Profile
+Dialog kebuka OTOMATIS -> timeline chart render (DORMANT->ACTIVE
+transition beneran dari data artikel) -> **Mind Map widget crash 500**
+(bug di atas, langsung ke-debug+fix+verify ulang LIVE -> mindmap
+render sukses, warna level, semua branch keisi data profil real) ->
+Edit Mindmap -> editor+preview jalan (pola sama kayak G5). Round-trip
+Add ("Test Actor G6 Round Trip") -> Remove (whitelist) -> muncul di
+Whitelist tab -> Restore -> bersih total (3992/1 balik ke baseline,
+gak ninggalin data test). Console bersih (4 error 500 sisa DARI
+SEBELUM fix, gak ada error baru abis fix). `pytest -k "ta_group or
+ta_profile or threat_actor or mindmap"`: 46 lolos abis fix.
+`pnpm build`/`tsc --noEmit`/`pnpm lint` semua bersih.
+
 ### Checklist
 
 - [x] **8.1** Setup Next.js App Router + TS + keputusan arsitektur di atas
@@ -3547,8 +3639,8 @@ antar dokumen. Console bersih di kedua percobaan. `pnpm build`/
       (Grup D, selesai) `/cve` (Grup E, selesai, +Mind Map G5)
       `/intelligence` (G1 -- Risk Matrix+Source Reliability+Early
       Warning, G2 -- PIR+RFI, G3 -- MITRE Heatmap+ATT&CK DB, G4 -- IOC
-      Management -- selesai; G6-G7 nyusul, masing-masing bakal wire
-      `MindmapWidget` G5)
+      Management, G6 -- Threat Actor Room -- selesai; G7 nyusul, bakal
+      wire `MindmapWidget` G5 juga buat feature_type `cluster`)
 - [ ] **8.5** Route: `/exec` (Grup F, selesai) `/xintel` (Grup C, selesai)
       `/recap` (Grup B, selesai) `/admin/users` (Grup C, selesai)
       `/newsletter`

@@ -37,11 +37,19 @@ class AsyncTARepo:
     async def get_by_name_ci(self, name: str) -> ThreatActorGroup | None:
         """Fase 7.3 (router `mindmap`, Bagian 4) -- gate "TA ini beneran
         di-track" sebelum generate mindmap, port `build_threat_actor_mindmap()`
-        lama (yang nyari `ta_groups` doc dulu sebelum baca profile)."""
+        lama (yang nyari `ta_groups` doc dulu sebelum baca profile).
+
+        `.limit(1)` + `.first()` (BUKAN `scalar_one_or_none()`) -- tabel
+        gak punya unique constraint di `lower(name)` (cuma di `name`
+        mentah), jadi dua baris case-variant (`"APT41"`/`"apt41"`) bisa
+        eksis bareng kalau race atau seed manual. `scalar_one_or_none()`
+        crash 500 (`MultipleResultsFound`) kalau itu kejadian -- KETEMU
+        LIVE Grup G6. Ambil baris pertama (order gak dijamin stabil
+        tanpa `order_by`, tapi cukup buat gate baca non-destruktif ini)."""
         result = await self.session.execute(
-            select(ThreatActorGroup).where(func.lower(ThreatActorGroup.name) == name.lower())
+            select(ThreatActorGroup).where(func.lower(ThreatActorGroup.name) == name.lower()).limit(1)
         )
-        return result.scalar_one_or_none()
+        return result.scalars().first()
 
     async def list_added_on(self, day: datetime.date) -> list[ThreatActorGroup]:
         """Port `_collect_new_threat_actors()` (`recap_service.py`, Fase

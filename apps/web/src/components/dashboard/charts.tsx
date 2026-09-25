@@ -230,6 +230,42 @@ export function StackedBarChart({ labels, series }: StackedBarChartProps) {
   );
 }
 
+interface TAActivityTimelineChartProps {
+  labels: string[];
+  articleCounts: number[];
+  tweetCounts: number[];
+  ransomCounts: number[];
+}
+
+/** Port `_tapLoadTimeline()`'s Chart.js config (`ta.js:740-763`) -- 3
+ * series stacked+filled (Articles/Tweets/Ransom), dipakai Threat Actor
+ * Room Grup G6. */
+export function TAActivityTimelineChart({ labels, articleCounts, tweetCounts, ransomCounts }: TAActivityTimelineChartProps) {
+  return (
+    <Line
+      data={{
+        labels,
+        datasets: [
+          { label: "Articles", data: articleCounts, borderColor: "rgba(47,129,247,.8)", backgroundColor: "rgba(47,129,247,.15)", fill: true, tension: 0.3, pointRadius: 2 },
+          { label: "Tweets", data: tweetCounts, borderColor: "rgba(0,191,255,.8)", backgroundColor: "rgba(0,191,255,.1)", fill: true, tension: 0.3, pointRadius: 2 },
+          { label: "Ransom", data: ransomCounts, borderColor: "rgba(218,54,51,.8)", backgroundColor: "rgba(218,54,51,.1)", fill: true, tension: 0.3, pointRadius: 2 },
+        ],
+      }}
+      options={{
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: "bottom", labels: { color: TEXT_DIM, boxWidth: 10, font: { size: 9 } } },
+        },
+        scales: {
+          x: { grid: { color: BORDER }, ticks: { color: TEXT_DIM, maxTicksLimit: 12, font: { size: 8 } } },
+          y: { grid: { color: BORDER }, ticks: { color: TEXT_DIM, font: { size: 9 } }, beginAtZero: true, stacked: true },
+        },
+      }}
+    />
+  );
+}
+
 const GRADE_COLORS: Record<string, string> = {
   A: "#3DC9AF",
   B: "#58A6FF",
