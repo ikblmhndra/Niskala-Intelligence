@@ -1,19 +1,28 @@
 """Control plane scraper (Fase 9) -- BUKAN port dari legacy, `scraper.js`
 lama cuma 2 widget monitoring read-only (survei Fase 8, gap #8: "Fase 9
 GAK PUNYA preseden kode buat di-port -- desain dari nol"). Read (list/
-detail/runs/items) kebuka buat semua user login, trigger/dry-run admin-
-only -- keduanya efek nyata (trigger beneran jalanin scraper produksi,
-dry-run mukul situs eksternal asli), beda dari widget monitoring pasif.
+detail/runs/items/health) kebuka buat semua user login, write (trigger/
+dry-run/enable/disable/config/reset-dedup) admin-only -- semuanya efek
+nyata (trigger beneran jalanin scraper produksi, dry-run mukul situs
+eksternal asli, enable/disable+config ngubah perilaku produksi), beda
+dari widget monitoring pasif yang legacy pernah punya.
 
 `GET /api/scraper` enumerasi `cti_scraper.registry.discover()` (84
 scraper) DIGABUNG `ScraperConfig` (override) + run terakhir per scraper
 (`AsyncScraperRunRepo.latest_per_scraper()`, SATU query `DISTINCT ON`,
-bukan N+1). H3 (belum) nambahin enable/disable/schedule/reset-dedup +
-health sweep di atas fondasi yang sama."""
+bukan N+1). `GET /health` numpang `cti_scraper.health.
+summarize_fleet_health()` (fungsi murni, dipakai bareng task digest
+periodik worker) -- endpoint YANG SAMA yang ditunggu placeholder
+"Scraper Health" widget di `/dashboard` sejak Grup B (Fase 8).
+
+`GET /health` DIDAFTARIN SEBELUM `GET /{scraper_id}` -- FastAPI cocokin
+route berurutan, kalau kebalik "health" bakal ketangkep jadi
+`scraper_id="health"` di route generik."""
 
 from __future__ import annotations
 
 import asyncio
+import datetime
 from typing import TYPE_CHECKING
 
 from cti_core.celery_client import get_celery_client
@@ -23,6 +32,8 @@ from cti_core.db.repositories.scraper import (
     AsyncScraperItemRepo,
     AsyncScraperRunRepo,
 )
+from cti_core.db.repositories.scraper_seen import AsyncScraperSeenRepo
+from cti_scraper.health import summarize_fleet_health
 from cti_scraper.queues import queue_for
 from cti_scraper.registry import discover
 from cti_scraper.registry import get as get_scraper_cls
@@ -35,12 +46,17 @@ if TYPE_CHECKING:
 from cti_api.deps import AuthedUser, get_db, request_ip, require_admin, require_auth
 from cti_api.schemas.scraper import (
     ScraperConfigOut,
+    ScraperConfigUpdateBody,
     ScraperDetail,
+    ScraperDisableBody,
     ScraperDryRunResult,
+    ScraperHealthEntryOut,
+    ScraperHealthSummary,
     ScraperItemListResponse,
     ScraperItemOut,
     ScraperListItem,
     ScraperListResponse,
+    ScraperResetDedupResult,
     ScraperRunListResponse,
     ScraperRunOut,
     ScraperTriggerResult,
@@ -134,6 +150,31 @@ async def list_scrapers(session: AsyncSession = Depends(get_db)) -> ScraperListR
             )
         )
     return ScraperListResponse(scrapers=items, total=len(items))
+
+
+@router.get("/health", response_model=ScraperHealthSummary)
+async def scraper_health(session: AsyncSession = Depends(get_db)) -> ScraperHealthSummary:
+    registry = discover()
+    configs = await AsyncScraperConfigRepo(session).get_all()
+    recent_runs = await AsyncScraperRunRepo(session).list_recent_by_scraper_bulk(limit=3)
+    now = datetime.datetime.now(datetime.UTC)
+    entries = summarize_fleet_health(registry, configs, recent_runs, now=now)
+
+    counts: dict[str, int] = {}
+    problems: list[ScraperHealthEntryOut] = []
+    for e in entries:
+        counts[e.status] = counts.get(e.status, 0) + 1
+        if e.status not in ("ok", "disabled"):
+            problems.append(
+                ScraperHealthEntryOut(
+                    id=e.scraper_id,
+                    source=e.source,
+                    status=e.status,
+                    last_status=e.last_status,
+                    last_started_at=e.last_started_at.isoformat() if e.last_started_at else None,
+                )
+            )
+    return ScraperHealthSummary(generated_at=now.isoformat(), counts=counts, problems=problems)
 
 
 @router.get("/{scraper_id}", response_model=ScraperDetail)
@@ -264,3 +305,135 @@ async def dry_run_scraper(
         duration_ms=duration_ms,
         errors=errors,
     )
+
+
+@router.post("/{scraper_id}/enable", response_model=ScraperConfigOut)
+async def enable_scraper(
+    scraper_id: str,
+    request: Request,
+    session: AsyncSession = Depends(get_db),
+    admin: AuthedUser = Depends(require_admin),
+) -> ScraperConfigOut:
+    try:
+        cls = get_scraper_cls(scraper_id)
+    except KeyError:
+        raise HTTPException(status_code=404, detail="scraper not found") from None
+    config = await AsyncScraperConfigRepo(session).upsert(
+        scraper_id, enabled=True, paused_reason=None, updated_by=admin["username"]
+    )
+    await AsyncAuditLogRepo(session).write(
+        username=admin["username"],
+        action="enable_scraper",
+        target_id=scraper_id,
+        ip_address=request_ip(request),
+    )
+    await session.commit()
+    return _config_out(config, cls.meta.enabled)
+
+
+@router.post("/{scraper_id}/disable", response_model=ScraperConfigOut)
+async def disable_scraper(
+    scraper_id: str,
+    body: ScraperDisableBody,
+    request: Request,
+    session: AsyncSession = Depends(get_db),
+    admin: AuthedUser = Depends(require_admin),
+) -> ScraperConfigOut:
+    try:
+        cls = get_scraper_cls(scraper_id)
+    except KeyError:
+        raise HTTPException(status_code=404, detail="scraper not found") from None
+    config = await AsyncScraperConfigRepo(session).upsert(
+        scraper_id, enabled=False, paused_reason=body.reason, updated_by=admin["username"]
+    )
+    await AsyncAuditLogRepo(session).write(
+        username=admin["username"],
+        action="disable_scraper",
+        target_id=scraper_id,
+        detail={"reason": body.reason},
+        ip_address=request_ip(request),
+    )
+    await session.commit()
+    return _config_out(config, cls.meta.enabled)
+
+
+@router.put("/{scraper_id}/config", response_model=ScraperConfigOut)
+async def update_scraper_config(
+    scraper_id: str,
+    body: ScraperConfigUpdateBody,
+    request: Request,
+    session: AsyncSession = Depends(get_db),
+    admin: AuthedUser = Depends(require_admin),
+) -> ScraperConfigOut:
+    """PATCH-style: cuma field yang beneran dikirim client yang kesentuh
+    (`model_dump(exclude_unset=True)`) -- `schedule` override baru kepake
+    abis beat restart (lihat docstring `cti_worker.beat`), `rate_limit`/
+    `max_items` kepake run BERIKUTNYA (`Runner.execute()` baca tiap run,
+    H1)."""
+    try:
+        cls = get_scraper_cls(scraper_id)
+    except KeyError:
+        raise HTTPException(status_code=404, detail="scraper not found") from None
+    changes = body.model_dump(exclude_unset=True)
+    config = await AsyncScraperConfigRepo(session).upsert(
+        scraper_id, updated_by=admin["username"], **changes
+    )
+    await AsyncAuditLogRepo(session).write(
+        username=admin["username"],
+        action="update_scraper_config",
+        target_id=scraper_id,
+        detail=changes,
+        ip_address=request_ip(request),
+    )
+    await session.commit()
+    return _config_out(config, cls.meta.enabled)
+
+
+@router.post("/{scraper_id}/reset-config", response_model=ScraperConfigOut)
+async def reset_scraper_config(
+    scraper_id: str,
+    request: Request,
+    session: AsyncSession = Depends(get_db),
+    admin: AuthedUser = Depends(require_admin),
+) -> ScraperConfigOut:
+    """Hapus SEMUA override (`ScraperConfig` row-nya, bukan cuma
+    enabled) -- balik ke `ScraperMeta` default kode sepenuhnya."""
+    try:
+        cls = get_scraper_cls(scraper_id)
+    except KeyError:
+        raise HTTPException(status_code=404, detail="scraper not found") from None
+    await AsyncScraperConfigRepo(session).reset(scraper_id)
+    await AsyncAuditLogRepo(session).write(
+        username=admin["username"],
+        action="reset_scraper_config",
+        target_id=scraper_id,
+        ip_address=request_ip(request),
+    )
+    await session.commit()
+    return _config_out(None, cls.meta.enabled)
+
+
+@router.post("/{scraper_id}/reset-dedup", response_model=ScraperResetDedupResult)
+async def reset_scraper_dedup(
+    scraper_id: str,
+    request: Request,
+    session: AsyncSession = Depends(get_db),
+    admin: AuthedUser = Depends(require_admin),
+) -> ScraperResetDedupResult:
+    """Control plane "lupain semuanya" -- dipanggil analis abis benerin
+    parser yang sempat ngeluarin sampah, biar run berikutnya nge-treat
+    ulang semua item sebagai baru (bukan ke-dedup ke sampah lama)."""
+    try:
+        get_scraper_cls(scraper_id)
+    except KeyError:
+        raise HTTPException(status_code=404, detail="scraper not found") from None
+    deleted = await AsyncScraperSeenRepo(session).reset_scraper(scraper_id)
+    await AsyncAuditLogRepo(session).write(
+        username=admin["username"],
+        action="reset_scraper_dedup",
+        target_id=scraper_id,
+        detail={"deleted": deleted},
+        ip_address=request_ip(request),
+    )
+    await session.commit()
+    return ScraperResetDedupResult(scraper_id=scraper_id, deleted=deleted)

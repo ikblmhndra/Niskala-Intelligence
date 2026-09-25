@@ -126,3 +126,45 @@ class ScraperDryRunResult(BaseModel):
     items_found: int
     duration_ms: int
     errors: list[dict[str, Any]]
+
+
+class ScraperConfigUpdateBody(BaseModel):
+    """PATCH-style -- field yang gak dikirim (bukan dikirim `null`) gak
+    disentuh, lihat `ScraperConfigRepo.upsert()`'s sentinel `UNSET`.
+    Router baca `body.model_fields_set` buat mbedain "gak dikirim" dari
+    "dikirim null", bukan dari nilai field ini sendiri."""
+
+    schedule: str | None = None
+    rate_limit: str | None = None
+    max_items: int | None = None
+    paused_reason: str | None = None
+
+
+class ScraperDisableBody(BaseModel):
+    reason: str | None = None
+
+
+class ScraperResetDedupResult(BaseModel):
+    scraper_id: str
+    deleted: int
+
+
+class ScraperHealthEntryOut(BaseModel):
+    id: str
+    source: str
+    status: str
+    """ok | disabled | stale | dead | degraded | zero_yield -- lihat
+    `cti_scraper.health.HealthStatus`."""
+    last_status: str | None
+    last_started_at: str | None
+
+
+class ScraperHealthSummary(BaseModel):
+    generated_at: str
+    counts: dict[str, int]
+    """Key = `HealthStatus`, cuma status yang beneran muncul (gak semua
+    6 selalu ada)."""
+    problems: list[ScraperHealthEntryOut]
+    """Subset non-`ok` (dan non-`disabled` -- itu bukan masalah, operator
+    yang minta) -- ini yang dashboard/digest peduliin, bukan 84 baris
+    penuh tiap kali."""

@@ -19,9 +19,12 @@ P1/all-interval PAKAI `Settings.worker` (lihat docstring
 `cti_api.services.pir_alert` soal kenapa dipecah 2 entry) -- BUKAN
 `get_settings()` dipanggil pas modul ini di-import (`build_beat_schedule()`
 dipanggil sekali di `celery_app.py`, env harus udah siap saat itu, sama
-kayak semua env lain yang dibaca modul ini). +2 entri Fase 9 (purge
-`scraper_items`/`scraper_seen`, jam 03:00 -- sebelum IOC decay 04:00,
-gak ada padanan lama, dua tabel ini gak pernah ada di skema Mongo).
+kayak semua env lain yang dibaca modul ini). +3 entri Fase 9: purge
+`scraper_items`/`scraper_seen` (jam 03:00 -- sebelum IOC decay 04:00, gak
+ada padanan lama, dua tabel ini gak pernah ada di skema Mongo) +
+`scraper-health-digest` (`Settings.worker.scraper_health_sweep_interval_min`,
+default 30 menit -- SATU pesan Telegram konsolidasi, `cti_scraper.health.
+summarize_fleet_health()`, gak ngirim apa-apa kalau semua scraper `ok`).
 
 `_scraper_configs()` (Fase 9) -- SATU query `ScraperConfig` (control
 plane) dibaca pas `build_beat_schedule()` jalan, bukan per-scraper.
@@ -120,6 +123,11 @@ def _periodic_schedule() -> dict[str, dict[str, object]]:
             "task": "scraper.purge_expired_seen",
             "schedule": crontab(hour=3, minute=15),
             "options": {"queue": QUEUE_MAINTENANCE},
+        },
+        "scraper-health-digest": {
+            "task": "scraper.health_digest",
+            "schedule": crontab(minute=f"*/{w.scraper_health_sweep_interval_min}"),
+            "options": {"queue": QUEUE_NOTIFY},
         },
     }
 

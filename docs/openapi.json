@@ -2924,6 +2924,57 @@
         "title": "ScraperConfigOut",
         "type": "object"
       },
+      "ScraperConfigUpdateBody": {
+        "description": "PATCH-style -- field yang gak dikirim (bukan dikirim `null`) gak\ndisentuh, lihat `ScraperConfigRepo.upsert()`'s sentinel `UNSET`.\nRouter baca `body.model_fields_set` buat mbedain \"gak dikirim\" dari\n\"dikirim null\", bukan dari nilai field ini sendiri.",
+        "properties": {
+          "max_items": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Items"
+          },
+          "paused_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Paused Reason"
+          },
+          "rate_limit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rate Limit"
+          },
+          "schedule": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Schedule"
+          }
+        },
+        "title": "ScraperConfigUpdateBody",
+        "type": "object"
+      },
       "ScraperDetail": {
         "properties": {
           "config": {
@@ -3024,6 +3075,23 @@
         "title": "ScraperDetail",
         "type": "object"
       },
+      "ScraperDisableBody": {
+        "properties": {
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          }
+        },
+        "title": "ScraperDisableBody",
+        "type": "object"
+      },
       "ScraperDryRunResult": {
         "properties": {
           "duration_ms": {
@@ -3059,6 +3127,82 @@
           "errors"
         ],
         "title": "ScraperDryRunResult",
+        "type": "object"
+      },
+      "ScraperHealthEntryOut": {
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "last_started_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Started At"
+          },
+          "last_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Status"
+          },
+          "source": {
+            "title": "Source",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "source",
+          "status",
+          "last_status",
+          "last_started_at"
+        ],
+        "title": "ScraperHealthEntryOut",
+        "type": "object"
+      },
+      "ScraperHealthSummary": {
+        "properties": {
+          "counts": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "title": "Counts",
+            "type": "object"
+          },
+          "generated_at": {
+            "title": "Generated At",
+            "type": "string"
+          },
+          "problems": {
+            "items": {
+              "$ref": "#/components/schemas/ScraperHealthEntryOut"
+            },
+            "title": "Problems",
+            "type": "array"
+          }
+        },
+        "required": [
+          "generated_at",
+          "counts",
+          "problems"
+        ],
+        "title": "ScraperHealthSummary",
         "type": "object"
       },
       "ScraperItemListResponse": {
@@ -3296,6 +3440,24 @@
           "total"
         ],
         "title": "ScraperListResponse",
+        "type": "object"
+      },
+      "ScraperResetDedupResult": {
+        "properties": {
+          "deleted": {
+            "title": "Deleted",
+            "type": "integer"
+          },
+          "scraper_id": {
+            "title": "Scraper Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "scraper_id",
+          "deleted"
+        ],
+        "title": "ScraperResetDedupResult",
         "type": "object"
       },
       "ScraperRunListResponse": {
@@ -14988,6 +15150,55 @@
         ]
       }
     },
+    "/api/scraper/health": {
+      "get": {
+        "operationId": "scraper_health_api_scraper_health_get",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScraperHealthSummary"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Scraper Health",
+        "tags": [
+          "scraper"
+        ]
+      }
+    },
     "/api/scraper/{scraper_id}": {
       "get": {
         "operationId": "get_scraper_api_scraper__scraper_id__get",
@@ -15046,6 +15257,143 @@
         ]
       }
     },
+    "/api/scraper/{scraper_id}/config": {
+      "put": {
+        "description": "PATCH-style: cuma field yang beneran dikirim client yang kesentuh\n(`model_dump(exclude_unset=True)`) -- `schedule` override baru kepake\nabis beat restart (lihat docstring `cti_worker.beat`), `rate_limit`/\n`max_items` kepake run BERIKUTNYA (`Runner.execute()` baca tiap run,\nH1).",
+        "operationId": "update_scraper_config_api_scraper__scraper_id__config_put",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "scraper_id",
+            "required": true,
+            "schema": {
+              "title": "Scraper Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScraperConfigUpdateBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScraperConfigOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Update Scraper Config",
+        "tags": [
+          "scraper"
+        ]
+      }
+    },
+    "/api/scraper/{scraper_id}/disable": {
+      "post": {
+        "operationId": "disable_scraper_api_scraper__scraper_id__disable_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "scraper_id",
+            "required": true,
+            "schema": {
+              "title": "Scraper Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScraperDisableBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScraperConfigOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Disable Scraper",
+        "tags": [
+          "scraper"
+        ]
+      }
+    },
     "/api/scraper/{scraper_id}/dry-run": {
       "post": {
         "operationId": "dry_run_scraper_api_scraper__scraper_id__dry_run_post",
@@ -15099,6 +15447,64 @@
           }
         },
         "summary": "Dry Run Scraper",
+        "tags": [
+          "scraper"
+        ]
+      }
+    },
+    "/api/scraper/{scraper_id}/enable": {
+      "post": {
+        "operationId": "enable_scraper_api_scraper__scraper_id__enable_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "scraper_id",
+            "required": true,
+            "schema": {
+              "title": "Scraper Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScraperConfigOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Enable Scraper",
         "tags": [
           "scraper"
         ]
@@ -15193,6 +15599,124 @@
           }
         },
         "summary": "List Items",
+        "tags": [
+          "scraper"
+        ]
+      }
+    },
+    "/api/scraper/{scraper_id}/reset-config": {
+      "post": {
+        "description": "Hapus SEMUA override (`ScraperConfig` row-nya, bukan cuma\nenabled) -- balik ke `ScraperMeta` default kode sepenuhnya.",
+        "operationId": "reset_scraper_config_api_scraper__scraper_id__reset_config_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "scraper_id",
+            "required": true,
+            "schema": {
+              "title": "Scraper Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScraperConfigOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Reset Scraper Config",
+        "tags": [
+          "scraper"
+        ]
+      }
+    },
+    "/api/scraper/{scraper_id}/reset-dedup": {
+      "post": {
+        "description": "Control plane \"lupain semuanya\" -- dipanggil analis abis benerin\nparser yang sempat ngeluarin sampah, biar run berikutnya nge-treat\nulang semua item sebagai baru (bukan ke-dedup ke sampah lama).",
+        "operationId": "reset_scraper_dedup_api_scraper__scraper_id__reset_dedup_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "scraper_id",
+            "required": true,
+            "schema": {
+              "title": "Scraper Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScraperResetDedupResult"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Reset Scraper Dedup",
         "tags": [
           "scraper"
         ]

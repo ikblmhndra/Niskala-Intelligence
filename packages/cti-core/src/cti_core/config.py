@@ -157,6 +157,10 @@ class WorkerSettings(_StrictModel):
     """Fase 9 -- umur baris `scraper_items` (log accept/reject per artikel,
     84 scraper) sebelum kena purge periodik. Gak ada padanan lama (tabel
     ini gak pernah ada di skema Mongo)."""
+    scraper_health_sweep_interval_min: int = 30
+    """Fase 9 -- tiap berapa menit `scraper.health_digest` jalan (hitung
+    ulang status SEMUA scraper, kirim SATU digest Telegram kalau ada yang
+    non-`ok`). Gak ada padanan lama."""
 
 
 class Settings(BaseSettings):

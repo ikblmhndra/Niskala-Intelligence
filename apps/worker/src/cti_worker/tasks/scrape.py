@@ -112,3 +112,43 @@ def purge_expired_seen(self: Any) -> dict[str, object]:
         deleted = ScraperSeenRepo(session).purge_expired()
     log.info("scraper_seen_purged", deleted=deleted)
     return {"deleted": deleted}
+
+
+@app.task(bind=True, name="scraper.health_digest", queue="notify")
+def scraper_health_digest(self: Any) -> dict[str, object]:
+    """SATU pesan Telegram konsolidasi (topic `scraper_health`, perlu
+    ditambahin ke `TELEGRAM__THREAD_IDS` operator) tiap sweep -- gantiin
+    kelas masalah yang sama kayak 14 fungsi `send_alert_*` lama
+    (`cti_alerts.telegram`'s docstring): satu alert per scraper bermasalah
+    bakal jadi puluhan pesan kalau lagi ada insiden luas, di sini digabung
+    jadi satu. GAK ngirim apa-apa kalau semua `ok`/`disabled` -- diam itu
+    sinyal "sehat", bukan di-spam tiap tick."""
+    from cti_alerts.telegram import send_alert
+    from cti_core.db.engine import sync_session
+    from cti_core.db.repositories.scraper import ScraperConfigRepo, ScraperRunRepo
+    from cti_scraper.health import summarize_fleet_health
+    from cti_scraper.registry import discover
+
+    registry = discover()
+    with sync_session() as session:
+        configs = ScraperConfigRepo(session).get_all()
+        recent_runs = ScraperRunRepo(session).list_recent_by_scraper_bulk(limit=3)
+
+    entries = summarize_fleet_health(registry, configs, recent_runs)
+    problems = [e for e in entries if e.status not in ("ok", "disabled")]
+    if not problems:
+        log.info("scraper_health_digest_clean", total=len(entries))
+        return {"problems": 0, "total": len(entries)}
+
+    by_status: dict[str, list[str]] = {}
+    for e in problems:
+        by_status.setdefault(e.status, []).append(f"{e.scraper_id} ({e.source})")
+
+    lines = [f"<b>Scraper Health</b> -- {len(problems)}/{len(entries)} bermasalah"]
+    for status in sorted(by_status):
+        lines.append(f"\n<b>{status}</b> ({len(by_status[status])}):")
+        lines.extend(f"  • {s}" for s in sorted(by_status[status]))
+
+    send_alert("scraper_health", "\n".join(lines))
+    log.info("scraper_health_digest_sent", problems=len(problems), total=len(entries))
+    return {"problems": len(problems), "total": len(entries)}

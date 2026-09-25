@@ -22,7 +22,7 @@ from typing import Any, cast
 from sqlalchemy import delete, func, select
 from sqlalchemy.engine import CursorResult
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, aliased
 
 from cti_core.db.models.scraper import ScraperConfig, ScraperItem, ScraperRun
 
@@ -147,6 +147,26 @@ class ScraperRunRepo:
         )
         return list(result.scalars().all())
 
+    def list_recent_by_scraper_bulk(self, *, limit: int = 3) -> dict[str, list[ScraperRun]]:
+        """SEMUA scraper sekaligus, N run terbaru masing-masing -- SATU
+        query window function (`ROW_NUMBER() OVER (PARTITION BY
+        scraper_id ...)`), bukan N+1 lintas 84 scraper. Dipakai task
+        digest periodik (worker, sync)."""
+        row_number = func.row_number().over(
+            partition_by=ScraperRun.scraper_id, order_by=ScraperRun.started_at.desc()
+        )
+        subq = select(ScraperRun, row_number.label("rn")).subquery()
+        run_alias = aliased(ScraperRun, subq)
+        result = self.session.execute(
+            select(run_alias)
+            .where(subq.c.rn <= limit)
+            .order_by(run_alias.scraper_id, run_alias.started_at.desc())
+        )
+        out: dict[str, list[ScraperRun]] = {}
+        for run in result.scalars().all():
+            out.setdefault(run.scraper_id, []).append(run)
+        return out
+
 
 class AsyncScraperRunRepo:
     def __init__(self, session: AsyncSession) -> None:
@@ -242,6 +262,24 @@ class AsyncScraperRunRepo:
             .limit(limit)
         )
         return list(result.scalars().all())
+
+    async def list_recent_by_scraper_bulk(self, *, limit: int = 3) -> dict[str, list[ScraperRun]]:
+        """Async padanan `ScraperRunRepo.list_recent_by_scraper_bulk()` --
+        dipakai `GET /api/scraper/health`."""
+        row_number = func.row_number().over(
+            partition_by=ScraperRun.scraper_id, order_by=ScraperRun.started_at.desc()
+        )
+        subq = select(ScraperRun, row_number.label("rn")).subquery()
+        run_alias = aliased(ScraperRun, subq)
+        result = await self.session.execute(
+            select(run_alias)
+            .where(subq.c.rn <= limit)
+            .order_by(run_alias.scraper_id, run_alias.started_at.desc())
+        )
+        out: dict[str, list[ScraperRun]] = {}
+        for run in result.scalars().all():
+            out.setdefault(run.scraper_id, []).append(run)
+        return out
 
 
 # ── ScraperItem -- log accept/reject per artikel dalam satu run ─────────────
@@ -375,10 +413,19 @@ class AsyncScraperConfigRepo:
         default-nya "jangan sentuh field ini" -- `None` itu nilai yang SAH
         buat `schedule`/`rate_limit`/`max_items`/`paused_reason` (artinya
         "hapus override, balik ke default kode"), jadi gak bisa dipakai
-        double-duty sebagai "parameter ini gak dikirim caller"."""
+        double-duty sebagai "parameter ini gak dikirim caller".
+
+        `updated_at`/`created_at` di-set EKSPLISIT di Python, BUKAN
+        diserahin ke `server_default`/`onupdate=func.now()` lalu dibaca
+        balik -- KETEMU LIVE (persis warning docstring `ScraperRunRepo`
+        di atas file ini): `onupdate` nandain kolom itu EXPIRED abis
+        UPDATE (row yang UDAH ADA, bukan INSERT baru) terlepas dari
+        `expire_on_commit=False` level-sesi, akses sync ke atribut
+        expired di sesi async -> `MissingGreenlet`."""
+        now = datetime.datetime.now(datetime.UTC)
         row = await self.get(scraper_id)
         if row is None:
-            row = ScraperConfig(scraper_id=scraper_id, enabled=True)
+            row = ScraperConfig(scraper_id=scraper_id, enabled=True, created_at=now, updated_at=now)
             self.session.add(row)
         if enabled is not None:
             row.enabled = enabled
@@ -392,6 +439,7 @@ class AsyncScraperConfigRepo:
             row.paused_reason = paused_reason
         if updated_by is not None:
             row.updated_by = updated_by
+        row.updated_at = now
         await self.session.flush()
         return row
 

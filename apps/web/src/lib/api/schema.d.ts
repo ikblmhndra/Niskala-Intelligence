@@ -2220,6 +2220,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/scraper/health": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Scraper Health */
+        get: operations["scraper_health_api_scraper_health_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/scraper/{scraper_id}": {
         parameters: {
             query?: never;
@@ -2231,6 +2248,47 @@ export interface paths {
         get: operations["get_scraper_api_scraper__scraper_id__get"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/scraper/{scraper_id}/config": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Update Scraper Config
+         * @description PATCH-style: cuma field yang beneran dikirim client yang kesentuh
+         *     (`model_dump(exclude_unset=True)`) -- `schedule` override baru kepake
+         *     abis beat restart (lihat docstring `cti_worker.beat`), `rate_limit`/
+         *     `max_items` kepake run BERIKUTNYA (`Runner.execute()` baca tiap run,
+         *     H1).
+         */
+        put: operations["update_scraper_config_api_scraper__scraper_id__config_put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/scraper/{scraper_id}/disable": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Disable Scraper */
+        post: operations["disable_scraper_api_scraper__scraper_id__disable_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -2254,6 +2312,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/scraper/{scraper_id}/enable": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Enable Scraper */
+        post: operations["enable_scraper_api_scraper__scraper_id__enable_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/scraper/{scraper_id}/items": {
         parameters: {
             query?: never;
@@ -2265,6 +2340,49 @@ export interface paths {
         get: operations["list_items_api_scraper__scraper_id__items_get"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/scraper/{scraper_id}/reset-config": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Reset Scraper Config
+         * @description Hapus SEMUA override (`ScraperConfig` row-nya, bukan cuma
+         *     enabled) -- balik ke `ScraperMeta` default kode sepenuhnya.
+         */
+        post: operations["reset_scraper_config_api_scraper__scraper_id__reset_config_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/scraper/{scraper_id}/reset-dedup": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Reset Scraper Dedup
+         * @description Control plane "lupain semuanya" -- dipanggil analis abis benerin
+         *     parser yang sempat ngeluarin sampah, biar run berikutnya nge-treat
+         *     ulang semua item sebagai baru (bukan ke-dedup ke sampah lama).
+         */
+        post: operations["reset_scraper_dedup_api_scraper__scraper_id__reset_dedup_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -4122,6 +4240,23 @@ export interface components {
             /** Updated By */
             updated_by: string | null;
         };
+        /**
+         * ScraperConfigUpdateBody
+         * @description PATCH-style -- field yang gak dikirim (bukan dikirim `null`) gak
+         *     disentuh, lihat `ScraperConfigRepo.upsert()`'s sentinel `UNSET`.
+         *     Router baca `body.model_fields_set` buat mbedain "gak dikirim" dari
+         *     "dikirim null", bukan dari nilai field ini sendiri.
+         */
+        ScraperConfigUpdateBody: {
+            /** Max Items */
+            max_items?: number | null;
+            /** Paused Reason */
+            paused_reason?: string | null;
+            /** Rate Limit */
+            rate_limit?: string | null;
+            /** Schedule */
+            schedule?: string | null;
+        };
         /** ScraperDetail */
         ScraperDetail: {
             config: components["schemas"]["ScraperConfigOut"];
@@ -4156,6 +4291,11 @@ export interface components {
             /** Tags */
             tags: string[];
         };
+        /** ScraperDisableBody */
+        ScraperDisableBody: {
+            /** Reason */
+            reason?: string | null;
+        };
         /** ScraperDryRunResult */
         ScraperDryRunResult: {
             /** Duration Ms */
@@ -4170,6 +4310,30 @@ export interface components {
             scraper_id: string;
             /** Status */
             status: string;
+        };
+        /** ScraperHealthEntryOut */
+        ScraperHealthEntryOut: {
+            /** Id */
+            id: string;
+            /** Last Started At */
+            last_started_at: string | null;
+            /** Last Status */
+            last_status: string | null;
+            /** Source */
+            source: string;
+            /** Status */
+            status: string;
+        };
+        /** ScraperHealthSummary */
+        ScraperHealthSummary: {
+            /** Counts */
+            counts: {
+                [key: string]: number;
+            };
+            /** Generated At */
+            generated_at: string;
+            /** Problems */
+            problems: components["schemas"]["ScraperHealthEntryOut"][];
         };
         /** ScraperItemListResponse */
         ScraperItemListResponse: {
@@ -4238,6 +4402,13 @@ export interface components {
             scrapers: components["schemas"]["ScraperListItem"][];
             /** Total */
             total: number;
+        };
+        /** ScraperResetDedupResult */
+        ScraperResetDedupResult: {
+            /** Deleted */
+            deleted: number;
+            /** Scraper Id */
+            scraper_id: string;
         };
         /** ScraperRunListResponse */
         ScraperRunListResponse: {
@@ -9838,6 +10009,37 @@ export interface operations {
             };
         };
     };
+    scraper_health_api_scraper_health_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScraperHealthSummary"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     get_scraper_api_scraper__scraper_id__get: {
         parameters: {
             query?: never;
@@ -9858,6 +10060,80 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ScraperDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_scraper_config_api_scraper__scraper_id__config_put: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                scraper_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ScraperConfigUpdateBody"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScraperConfigOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    disable_scraper_api_scraper__scraper_id__disable_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                scraper_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ScraperDisableBody"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScraperConfigOut"];
                 };
             };
             /** @description Validation Error */
@@ -9904,6 +10180,39 @@ export interface operations {
             };
         };
     };
+    enable_scraper_api_scraper__scraper_id__enable_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                scraper_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScraperConfigOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     list_items_api_scraper__scraper_id__items_get: {
         parameters: {
             query?: {
@@ -9928,6 +10237,72 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ScraperItemListResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    reset_scraper_config_api_scraper__scraper_id__reset_config_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                scraper_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScraperConfigOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    reset_scraper_dedup_api_scraper__scraper_id__reset_dedup_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                scraper_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScraperResetDedupResult"];
                 };
             };
             /** @description Validation Error */

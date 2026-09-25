@@ -4042,12 +4042,89 @@ Data test dibersihin abis (items/runs/seen/audit-log baris `bleepcomp`).
 `tsc --noEmit` frontend bersih abis `pnpm run gen:api` (schema baru
 ke-generate, belum ada consumer sampe H4/H5).
 
+### Grup H3 -- selesai (2026-09-25) -- config write API + health sweep + alert digest
+
+5 endpoint baru di router yang sama: `POST /{id}/enable`, `POST
+/{id}/disable` (body `{reason}` -> `ScraperConfig.paused_reason`), `PUT
+/{id}/config` (PATCH-style -- `schedule`/`rate_limit`/`max_items`/
+`paused_reason`, `body.model_dump(exclude_unset=True)` biar field yang
+gak dikirim client gak kesentuh, numpang sentinel `UNSET` `ScraperConfigRepo.
+upsert()` H1), `POST /{id}/reset-config` (hapus SEMUA override, balik ke
+default kode), `POST /{id}/reset-dedup` (numpang `AsyncScraperSeenRepo.
+reset_scraper()` H1). Semua admin-only + audit log.
+
+**Health sweep** -- modul BARU `cti_scraper/health.py` (FUNGSI MURNI, gak
+ada I/O), ditaruh di `cti_scraper` (bukan `apps/api/services`) dari awal
+biar `apps/api` (`GET /api/scraper/health`) DAN task digest periodik
+(worker) numpang logic SAMA tanpa apps-depends-apps -- pelajaran H2
+(`queue_for()`) diterapkan proaktif kali ini, bukan ketemu ulang.
+`expected_interval()` pakai `croniter` (udah jadi dependency `cti-scraper`
+sejak Fase 3, TAPI GAK PERNAH KEPAKE di mana pun sampai sekarang) buat
+ngitung gap 2 fire-time cron terakhir -- bener buat cron kompleks hasil
+`spread()` (`"7-59/15 * * * *"`), bukan cuma parsing `*/N` manual.
+
+5 status (`Exit criteria` Fase 9 nyebut 4 -- `disabled` DITAMBAHIN karena
+scraper yang sengaja dimatiin operator, beat skip dia total dari
+schedule, bakal salah keklasifikasi `dead` seiring waktu tanpa status
+ini): `disabled` (`ScraperConfig.enabled=False`), `stale` (gak pernah ada
+run), `dead` (run terakhir >3x interval jadwal -- match persis "scraper
+yang dimatiin kedeteksi dead dalam 3 interval"), `degraded` (run terakhir
+`fetch_error`/`parse_error`/`rate_limited`/`timeout`/`backpressure` --
+kedeteksi SATU run, match persis "selector dirusak kedeteksi parse_error
+dalam 1 interval", GAK nunggu 3x kayak `dead`), `zero_yield` (3 run
+beruntun `status="empty"`), `ok`. `GET /api/scraper/health` (didaftarin
+SEBELUM `/{scraper_id}` di router -- FastAPI cocokin berurutan, kebalik
+"health" ketangkep jadi `scraper_id`) balikin `counts` per status +
+`problems` (subset non-`ok`/non-`disabled`) -- endpoint YANG SAMA yang
+ditunggu placeholder "Scraper Health" widget `/dashboard` sejak Grup B.
+
+**Task `scraper.health_digest`** (beat tiap `Settings.worker.
+scraper_health_sweep_interval_min`, default 30 menit) -- SATU pesan
+Telegram konsolidasi kalau ADA scraper bermasalah, DIAM kalau semua
+`ok`/`disabled` (bukan spam tiap tick). Topic BARU `scraper_health`
+ditambahin ke `.env.example`'s `TELEGRAM__THREAD_IDS` -- operator wajib
+konfigurasi thread_id-nya sendiri, `send_alert()` raise `UnknownAlertTopic`
+kalau belum. **SENGAJA gak pernah beneran dipanggil pas verifikasi** --
+`.env` dev PUNYA kredensial Telegram ASLI (bot token + chat_id + thread_id
+nyata), manggil task ini beneran (atau `send_alert()` langsung) bakal
+ngirim pesan ke channel Telegram sungguhan. Logic agregasi (`summarize_
+fleet_health()`) diverifikasi lewat `GET /api/scraper/health` (jalur yang
+SAMA, tanpa `send_alert()`) + unit-level manual (lihat di bawah).
+
+**1 bug ketemu LIVE** (bukan dugaan) -- `_config_out()` baca `config.
+updated_at` abis `upsert()` PAS row-nya UDAH ADA (UPDATE, bukan INSERT):
+`sqlalchemy.exc.MissingGreenlet`. `ScraperConfig` extend `TimestampMixin`
+(`updated_at` punya `onupdate=func.now()`), dan `onupdate` NANDAIN kolom
+itu EXPIRED abis UPDATE TERLEPAS dari `expire_on_commit=False` level-sesi
+-- persis warning yang UDAH ada di docstring `ScraperRunRepo` (atas file
+yang sama) sejak H1, "kejadian lagi" di kode yang gak baca ulang
+docstring itu sendiri pas nulis `ScraperConfigRepo`. Fix: `updated_at`/
+`created_at` di-set EKSPLISIT di Python di `upsert()`, gak diserahin ke
+server-side value yang dibaca balik.
+
+Live-tested lewat instance API sungguhan: enable/disable (+reason)/PATCH
+config (single-field update, field lain SURVIVE, `null` eksplisit vs
+gak-dikirim dibedain bener)/reset-config (balik ke default kode, `has_
+override=false`)/reset-dedup, semua audit log kecatat (11 baris, urutan
+bener). Auth gating dicek analyst DITOLAK di semua 5 write endpoint
+(403), `GET /health` tetep 200 buat analyst. `GET /api/scraper/health`
+real: 78 stale (fresh dev DB) + beberapa dead dari sisa run test sesi
+sebelumnya + 1 ok -- `disabled` scraper KEBUKTI dikecualikan dari
+`problems`. Data test dibersihin abis (config+audit-log baris
+`bleepcomp`). `mypy`/`ruff` bersih, unit+contract 686 lolos, full suite
+(termasuk integration) tetep 1243 lolos (3 kegagalan snapshot date-
+sensitive pre-existing, sama kayak sebelumnya).
+
+**Fase 9 backend KOMPLET** (9.1-9.6 semua selesai). Sisa: H4 (isi
+placeholder widget Scraper Health `/dashboard`) + H5 (halaman control
+plane penuh) -- frontend doang, backend-nya udah siap dipakai.
+
 - [x] **9.1** API: list/detail/runs/items
 - [x] **9.2** API: trigger + **dry-run** _(endpoint paling berguna, sekarang gak ada)_
-- [ ] **9.3** API: enable/disable/schedule
-- [ ] **9.4** API: reset dedup
-- [ ] **9.5** Health sweep: `dead` / `degraded` / `zero_yield` / `stale`
-- [ ] **9.6** Alert digest (satu pesan, bukan 198)
+- [x] **9.3** API: enable/disable/schedule
+- [x] **9.4** API: reset dedup
+- [x] **9.5** Health sweep: `dead` / `degraded` / `zero_yield` / `stale`
+- [x] **9.6** Alert digest (satu pesan, bukan 198)
 
 **Exit criteria:** scraper yang dimatiin kedeteksi `dead` dalam 3 interval · selector yang dirusak kedeteksi `parse_error` dalam 1 interval
 
