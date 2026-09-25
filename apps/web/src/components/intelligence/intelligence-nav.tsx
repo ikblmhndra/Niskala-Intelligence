@@ -21,6 +21,7 @@ const NAV_ITEMS = [
   { href: "/intelligence/rfi", label: "RFI" },
   { href: "/intelligence/mitre", label: "MITRE Heatmap" },
   { href: "/intelligence/attack-db", label: "ATT&CK DB" },
+  { href: "/intelligence/ioc-management", label: "IOC Management" },
 ] as const;
 
 export function IntelligenceNav() {

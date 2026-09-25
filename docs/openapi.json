@@ -9357,6 +9357,22 @@
             }
           },
           {
+            "in": "query",
+            "name": "actionability",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Actionability"
+            }
+          },
+          {
             "in": "header",
             "name": "authorization",
             "required": false,

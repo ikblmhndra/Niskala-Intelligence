@@ -199,11 +199,14 @@ class AsyncIOCRepo:
         search: str | None = None,
         tags: Sequence[str] | None = None,
         sort_by: str | None = None,
+        actionability: str | None = None,
     ) -> tuple[list[IOC], int]:
         """Port `ioc_service.get_iocs()`. `actionability` (filter lama)
-        SENGAJA gak diport -- itu field turunan `confidence_service`
-        (skoring, ditunda bareng `articles`'s confidence -- lihat
-        PROGRESS.md Fase 7.3), gak ada kolomnya di skema baru."""
+        gak diport pas Fase 7.3 -- waktu itu kolomnya emang belum ada.
+        Fase 7.4 Grup D nambahin `actionability_label` ke skema (lihat
+        `IOC.actionability_label`), jadi filter ini SEKARANG bisa
+        diwire -- ditambahin di sini pas Grup G4 (`/intelligence/
+        ioc-management`) baru butuh beneran dari frontend."""
         stmt = select(IOC)
         if ioc_type and ioc_type in _VALID_TYPES:
             stmt = stmt.where(IOC.type == ioc_type)
@@ -211,6 +214,8 @@ class AsyncIOCRepo:
             stmt = stmt.where(IOC.value.ilike(f"%{search}%"))
         if tags:
             stmt = stmt.join(IOC.tags).where(IOCTag.tag.in_(tags)).distinct()
+        if actionability:
+            stmt = stmt.where(IOC.actionability_label == actionability)
 
         count_stmt = select(func.count()).select_from(stmt.subquery())
         total = (await self.session.execute(count_stmt)).scalar_one()

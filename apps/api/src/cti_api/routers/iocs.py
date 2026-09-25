@@ -84,6 +84,7 @@ def _serialize_summary(ioc: IOC) -> dict[str, object]:
 def _serialize_detail(ioc: IOC) -> dict[str, object]:
     return {
         **_serialize_summary(ioc),
+        "enrichment": ioc.enrichment or None,
         "sources": [
             {
                 "url": s.url,
@@ -104,11 +105,17 @@ async def list_iocs(
     page: int = Query(1, ge=1),
     page_size: int = Query(50, ge=1, le=200),
     sort_by: str | None = None,
+    actionability: str | None = None,
     session: AsyncSession = Depends(get_db),
     _user: AuthedUser = Depends(require_auth),
 ) -> dict[str, object]:
     iocs, total = await AsyncIOCRepo(session).list_filtered(
-        page=page, page_size=page_size, ioc_type=ioc_type, search=search, sort_by=sort_by
+        page=page,
+        page_size=page_size,
+        ioc_type=ioc_type,
+        search=search,
+        sort_by=sort_by,
+        actionability=actionability,
     )
     return {
         "iocs": [_serialize_summary(i) for i in iocs],

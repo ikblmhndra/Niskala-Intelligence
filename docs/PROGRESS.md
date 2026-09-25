@@ -3365,6 +3365,99 @@ clickable, sesuai desain. `pnpm build`/`tsc --noEmit`/`pnpm lint`
 (scope `intelligence/mitre`+`intelligence/attack-db`+`loose-types.ts`)
 semua bersih.
 
+### Grup G4 -- selesai (2026-09-25)
+
+`/intelligence` sub-grup keempat: **IOC Management** (tabel IOC +
+Allowlist + FP Analytics). Legacy: `ioc_mgmt.js` (692 baris) -- SATU
+file numpang 3 fitur (`iocmgmtLoad()` dkk, `allowlistLoad()` dkk,
+`fpAnalyticsLoad()` dkk) yang di sub-view `iocmgmt` legacy dimuat
+BARENGAN pas view dibuka (`intel.js:28`), bukan sub-tab terpisah --
+disusun vertikal di satu halaman di sini juga (tabel utama di atas,
+Allowlist+FP Analytics di bawah), niru urutan muat legacy apa adanya.
+Backend (`routers/iocs.py` 424 baris) udah lengkap dari Fase 7.3+7.4
+Grup D, tapi survei baca kode nemuin **2 gap nyata** (bukan dead code
+kayak G1 -- field/param yang MESTINYA ada tapi ketinggalan pas port):
+
+1. **`enrichment` (TIP provider payload) ada di model IOC
+   (`ioc.enrichment`, JSONB) tapi `_serialize_detail()` gak pernah
+   nyertain di respons** -- UI `_renderIocEnrichment()` di legacy
+   nunggu field itu, jadi tanpa fix bakal selalu kosong walopun data
+   provider ada. Fix: tambahin `"enrichment": ioc.enrichment or None`
+   ke `_serialize_detail()` (`routers/iocs.py`).
+2. **Filter `actionability` di `list_iocs()` gak pernah diport** --
+   docstring `list_filtered()` bilang "sengaja gak diport, gak ada
+   kolomnya di skema baru", TAPI itu docstring BASI: kolom
+   `actionability_label` UDAH ada sejak Fase 7.4 Grup D nambahin
+   confidence/actionability scoring. Filter client-side-only bakal
+   ngerusak paginasi (total count gak sinkron sama hasil ke-filter).
+   Fix: wire `actionability` jadi query param asli
+   (`AsyncIOCRepo.list_filtered(actionability=...)` + `WHERE
+   IOC.actionability_label == actionability`), regen
+   `docs/openapi.json`+`schema.d.ts` (`pnpm run gen:api`), update
+   docstring basi.
+
+Dua fix ini KECIL (dalam blast radius satu router+satu repo method,
+no migration) tapi WAJIB biar frontend gak port fitur yang keliatan
+jalan padahal diam-diam gak pernah ngirim data sebenernya (enrichment)
+atau nge-filter di client dengan paginasi rusak (actionability).
+Snapshot test `test_iocs_router_snapshot.py` di-update (`enrichment:
+None` nongol di 2 snapshot) -- 72 test terkait IOC lolos abis fix.
+
+**Dibangun**:
+- **IOC Table** -- stat bar per-tipe (klik buat filter, 9 tipe: IP/
+  Domain/URL/URL+Path/Email/SHA256/SHA1/MD5/CVE, warna literal per
+  tipe port apa adanya sama kayak keputusan heatmap MITRE G3, bukan
+  token Tailwind diskrit -- nuansanya sengaja beda tiap tipe buat scan
+  cepat), filter search/type/actionability/sort/page size, feedback
+  👍/👎 inline (invalidate query abis submit, BUKAN manual DOM-patch
+  kayak legacy -- lebih idiomatik React, query cache yang jadi source
+  of truth).
+- **IOC Detail Dialog** -- badge tipe/confidence/actionability, delete
+  (via `ConfirmDialog`, BUKAN `window.confirm()` browser native --
+  satu-satunya di app ini yang legacy-nya pake native confirm, diganti
+  biar konsisten sama seluruh app), recommended_action banner, stat
+  grid (seen/first/last), tags, TIP enrichment cards (provider
+  score/verdict/malware families/tags -- baru bisa dirender abis fix
+  gap #1 di atas), TA links (list + add/remove manual tag + badge
+  WATCHED/ATT&CK-group-id/MANUAL sumber), linked articles.
+- **IOC Allowlist** -- add (type url_domain/email_domain/ip + value) +
+  tabel + remove. **Perbedaan sengaja dari legacy**: toast "Added to
+  allowlist" TANPA klaim "N existing IOC dihapus" -- backend
+  `AsyncIocAllowlistRepo` punya docstring eksplisit "SENGAJA gak port
+  `_sweep_delete_matching()`" (filtering sekarang kejadian di
+  EXTRACTION time, bukan sweep retroaktif), jadi field
+  `deleted_iocs` yang legacy harapkan emang gak pernah ada di respons
+  -- pesan UI disesuaikan biar gak klaim sesuatu yang gak kejadian.
+- **FP Analytics** -- FP rate by source + by type (progress bar warna
+  by threshold), suggested allowlist entries (>=3 FP, 0 TP) + "Apply
+  All" (`ConfirmDialog`, warning text disesuaikan sama alasan di atas
+  -- BUKAN "matching IOCs will be deleted" kayak legacy, karena
+  `apply-suggestions` cuma manggil `create()` yang sama, gak ada sweep
+  delete juga).
+
+**0 bug live selain 2 gap backend di atas** (yang keduanya kefix
+sebelum frontend nyentuh sama sekali, bukan ketemu pas testing UI).
+
+Verifikasi LIVE end-to-end (tab baru, session admin1 masih valid): 92
+IOC real ke-load, stat bar filter (klik CVE -> 8 IOCs, semua tipe
+CVE match). Detail dialog CVE-2026-5426 -> Add TA "Test Actor G4" ->
+count 0->1, badge MANUAL muncul -> Remove -> balik ke 0 (round-trip
+POST/DELETE `/threat-actors` bersih). Feedback TP pada IOC id=90 ->
+`confidence_score` 50->95, `actionability_label` null->"monitor"
+(verified via fetch langsung ke endpoint detail) -- **direvert manual
+lewat SQL** abis testing (DELETE row `ioc_feedback` + UPDATE kolom
+`iocs` balik ke nilai semula) karena gak ada endpoint "undo feedback"
+di router, IOC ini data seed lama yang dipakai testing Grup lain juga.
+Allowlist add "test-g4-allowlist.example" -> muncul di tabel (Added
+By: admin1) -> remove -> hilang, bersih. Filter Actionability
+"block_now" pada IOC type=CVE -> `GET /api/iocs?...&actionability=
+block_now` beneran ke-kirim ke backend (bukan diem-diem di-drop) ->
+hasil 0 IOCs (kedelapan CVE itu semua "monitor", bukan "block_now") --
+konfirmasi filter server-side REAL, bukan no-op. Console bersih
+(1 warning 405 ternyata dari debug `fetch()` manual sendiri via
+`javascript_tool`, bukan dari kode app). `pytest tests/ -k ioc`: 72
+lolos. `pnpm build`/`tsc --noEmit`/`pnpm lint` semua bersih.
+
 ### Checklist
 
 - [x] **8.1** Setup Next.js App Router + TS + keputusan arsitektur di atas
@@ -3374,7 +3467,8 @@ semua bersih.
 - [ ] **8.4** Route: `/dashboard` (Grup B, selesai) `/newsroom`
       (Grup D, selesai) `/cve` (Grup E, selesai) `/intelligence`
       (G1 -- Risk Matrix+Source Reliability+Early Warning, G2 -- PIR+RFI,
-      G3 -- MITRE Heatmap+ATT&CK DB -- selesai; G4-G7 nyusul)
+      G3 -- MITRE Heatmap+ATT&CK DB, G4 -- IOC Management -- selesai;
+      G5-G7 nyusul)
 - [ ] **8.5** Route: `/exec` (Grup F, selesai) `/xintel` (Grup C, selesai)
       `/recap` (Grup B, selesai) `/admin/users` (Grup C, selesai)
       `/newsletter`

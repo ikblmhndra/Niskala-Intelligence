@@ -718,3 +718,111 @@ export interface AttackSyncStartedResult {
   domains?: string[];
   domain?: string;
 }
+
+export interface IocSummary {
+  id: number;
+  type: string;
+  value: string;
+  first_seen: string;
+  last_seen: string;
+  seen_count: number;
+  tags: string[];
+  threat_actors: string[];
+  tp_count: number;
+  fp_count: number;
+  confidence_score: number | null;
+  actionability_score: number | null;
+  actionability_label: string | null;
+  recommended_action: string | null;
+  auto_suppressed: boolean;
+  suppression_reason: string | null;
+}
+
+export interface IocEnrichmentProvider {
+  key: string;
+  name?: string;
+  verdict?: string;
+  score?: number;
+  malware_families?: string[];
+  tags?: string[];
+  raw?: Record<string, string | number | null>;
+}
+
+export interface IocEnrichment {
+  updated_at?: string;
+  providers?: IocEnrichmentProvider[];
+}
+
+export interface IocSource {
+  url: string;
+  source_name: string;
+  context: string | null;
+  article_id: number | null;
+  first_seen: string;
+}
+
+export interface IocDetail extends IocSummary {
+  enrichment: IocEnrichment | null;
+  sources: IocSource[];
+  source_fp_warning?: { source_name: string; fp_rate: number; fp_count: number; total_iocs: number };
+}
+
+export interface IocListResponse {
+  iocs: IocSummary[];
+  total: number;
+  page: number;
+  page_size: number;
+}
+
+export interface IocStats {
+  total: number;
+  by_type: { type: string; count: number }[];
+}
+
+export interface IocAllowlistEntry {
+  id: number;
+  type: string;
+  value: string;
+  note: string | null;
+  added_by: string;
+  added_at: string;
+}
+
+export interface IocAllowlistResponse {
+  entries: IocAllowlistEntry[];
+}
+
+export interface IocFpBucket {
+  total_iocs: number;
+  fp_count: number;
+  fp_rate: number;
+}
+
+export interface IocFpSuggestion {
+  ioc_type: string;
+  value: string;
+  allowlist_type: string;
+  fp_count: number;
+}
+
+export interface IocFpAnalytics {
+  fp_by_source: Record<string, IocFpBucket>;
+  fp_by_type: Record<string, IocFpBucket>;
+  suggested_allowlist: IocFpSuggestion[];
+  fp_trend: { date: string; fp_count: number; total_count: number; fp_rate: number }[];
+}
+
+export interface IocTaLink {
+  name: string;
+  article_count: number;
+  is_watched: boolean;
+  source: "manual" | "both" | "article";
+  attack_group_id?: string;
+  attack_group_name?: string;
+  attack_group_aliases?: string[];
+  attack_group_domains?: string[];
+}
+
+export interface IocTaLinksResponse {
+  threat_actors: IocTaLink[];
+}
