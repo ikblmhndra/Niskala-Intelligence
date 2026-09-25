@@ -22,8 +22,8 @@ Plan lengkap: `~/.claude/plans/oke-bro-jadi-gini-sparkling-fern.md`
 | 5 | `cti-enrich` | `[x]` | 2–3 minggu | Output cocok dgn baseline, tiap cabang routing ada test |
 | 6 | Celery + beat | `[x]` inti; sisanya dipindah 7.8/10.1d/10.1e | 1–2 minggu | ~~5 loop web pindah~~ (→ 7.8) · ~~beat singleton terverifikasi~~ (→ 10.1d) |
 | 7 | `apps/api` | `[x]` | 4–6 minggu | Semua endpoint ada snapshot test · 5 loop jadi beat task (7.8) |
-| 8 | `apps/web` (Next.js) | `[ ]` | 4–6 minggu | Semua tab lama ada padanannya |
-| 9 | Control plane scraper | `[ ]` | 1 minggu | Scraper mati kedeteksi dlm 3 interval |
+| 8 | `apps/web` (Next.js) | `[x]` | 4–6 minggu | Semua tab lama ada padanannya |
+| 9 | Control plane scraper | `[x]` | 1 minggu | Scraper mati kedeteksi dlm 3 interval |
 | 10 | Cutover | `[ ]` | 1 minggu | Semua checklist cutover hijau |
 
 > **Realistis: 4–6 bulan untuk satu developer.** Fase 0–4 udah ngasih nilai
@@ -2475,7 +2475,7 @@ udah dibenerin Fase 7.3 Bagian 4; `llm` nyusul dibenerin Fase 7.5
 
 ---
 
-## Fase 8 — `apps/web` (Next.js) `[ ]`
+## Fase 8 — `apps/web` (Next.js) `[x]`
 
 ### Survei frontend lama + urutan kerja (2026-09-24)
 
@@ -3852,15 +3852,15 @@ Grup H) -- 8 route awal + 1 gap nyata dari survei, semua selesai.
       `/newsletter` (Grup H, selesai)
       *(route ke-9, ditambahin dari survei -- gap nyata, bukan revisi
       scope sepihak)*
-- [ ] **8.6** Halaman control plane scraper -- SEBAGIAN blocked sampai
-      `/api/scraper/health` diport (gap #6 di atas; MITRE heatmap-nya
-      sendiri udah backend-ready)
+- [x] **8.6** Halaman control plane scraper -- selesai Fase 9 Grup H4
+      (`/scrapers`, 2026-09-25), bukan digabung `/dashboard` -- keputusan
+      user, halaman sendiri
 
 **Exit criteria:** tiap tab lama ada padanannya · `static/` lama dipakai sebagai spesifikasi perilaku, bukan di-port
 
 ---
 
-## Fase 9 — Control plane scraper `[ ]`
+## Fase 9 — Control plane scraper `[x]`
 
 ### Survei (2026-09-25)
 
@@ -4115,9 +4115,69 @@ sebelumnya + 1 ok -- `disabled` scraper KEBUKTI dikecualikan dari
 (termasuk integration) tetep 1243 lolos (3 kegagalan snapshot date-
 sensitive pre-existing, sama kayak sebelumnya).
 
-**Fase 9 backend KOMPLET** (9.1-9.6 semua selesai). Sisa: H4 (isi
-placeholder widget Scraper Health `/dashboard`) + H5 (halaman control
-plane penuh) -- frontend doang, backend-nya udah siap dipakai.
+**Fase 9 backend KOMPLET** (9.1-9.6 semua selesai). Sisa: frontend.
+
+### Grup H4 -- selesai (2026-09-25) -- halaman control plane `/scrapers`
+
+**Keputusan user (2026-09-25)**: control plane scraper dapet halaman
+SENDIRI (`/scrapers`, nav top-level baru), BUKAN widget kecil di
+`/dashboard` kayak yang direncanakan awal (rencana lama numpang scope
+legacy "Scraper Health" widget yang emang bagian tab Dashboard). Placeholder
+card yang udah ada di `/dashboard` sejak Grup B (Fase 8) DICABUT, bukan
+diisi -- H4 ini gabungin apa yang tadinya dipisah H4 (widget)/H5 (halaman
+penuh) di rencana awal jadi SATU halaman.
+
+**Dibangun** (`apps/web/src/components/scrapers/`): `HealthSummaryBar`
+(counts per status + chip "Needs attention" yang bisa diklik buka detail
+langsung, `GET /health`, `refetchInterval` 60d), `ScrapersTable` (84 baris,
+search id/source + filter runtime/status client-side, status DIGABUNG
+client-side dari `/health`'s `problems` + `enabled` -- partition DIJAMIN
+backend, compute_health() selalu balikin TEPAT satu dari 6 status jadi gak
+ada ambiguitas, dropdown aksi per baris Trigger/Dry-run/Enable-Disable),
+`ScraperDetailDialog` (mount-gates-freshness, sama pola `NoteForm`/
+`MindmapEditorForm` -- form config lazy-init dari data yang UDAH ada,
+bukan reset-effect) berisi meta info+aksi (Trigger/Dry-run/Enable-Disable/
+Reset Dedup)+form config PATCH (`ScraperRunsPanel`/`ScraperItemsPanel`
+paginated, numpang `SimplePager` Grup A), `DisableScraperDialog` (reason
+opsional). `StatusBadge`/`RunStatusText` -- pill warna per status, pola
+sama kayak `SeverityBadge` G7.
+
+**Status per baris DIHITUNG client-side** (bukan endpoint baru) -- scraper
+yang gak muncul di `/health`'s `problems` DAN `enabled=true` dianggap
+`ok`, `!enabled` `disabled`. Awalnya nyoba nebak status dari `enabled`
+doang di parent (`ScrapersView`) pas problem-chip diklik -- SALAH buat
+scraper `disabled` (gak pernah muncul di `problems`, defaultnya kena
+tebak "ok"). Fix: `ScrapersTable`/`HealthSummaryBar` kirim status yang
+UDAH bener lewat callback (`onOpenDetail(id, status)`), bukan nebak ulang
+di parent.
+
+Live-tested penuh via browser beneran (bukan cuma `tsc`/`build`) --
+**ketemu 1 masalah operasional** (bukan bug kode): cookie sesi `cti_session`
+basi dari testing sesi sebelumnya bikin redirect loop `/login`<->`/dashboard`
+(`proxy.ts`'s guard optimistic ngeliat cookie ADA lalu redirect `/login`
+duluan, padahal invalid, `/api/auth/me` 401, balik lagi) -- fix `POST
+/api/auth/logout` manual buat clear cookie httpOnly-nya (`document.cookie`
+JS gak bisa, httpOnly). Password dev `admin1` di-reset manual (`bcrypt`
+langsung ke DB) karena credential asli gak diketahui -- **flag ke user**:
+password `admin1` sekarang `DevTest123!` di DB dev, bukan yang lama.
+
+Verifikasi: 84 scraper ke-load (78 stale/5 dead/1 ok, cocok sama H3),
+search+filter jalan, klik problem-chip DAN klik baris tabel dua-duanya
+buka detail yang bener. Detail dialog: meta info bener, form config
+pre-fill BENER (`bitdefender` yang punya override REAL dari sesi jauh
+sebelumnya nunjukin `schedule`/`rate_limit`/`max_items` asli, bukan
+placeholder). **Dry-run REAL end-to-end** (bitdefender, browser -> proxy
+-> API -> `Runner(dry_run=True)` -> fetch asli ke feed Bitdefender ->
+"ok -- 15 item found (309ms)"). Enable/Disable/Reset-Config REAL
+end-to-end di `akamai` (scraper tanpa override, dipilih spesifik biar gak
+ganggu data asli) -- toast konfirmasi, `updated_by`/`updated_at` kebukti
+kepopulasi bener (verifikasi ulang fix `MissingGreenlet` H3 lewat UI, bukan
+cuma curl), ConfirmDialog reset-dedup/reset-config render bener. Data test
+dibersihin abis (config+audit-log baris `akamai`), dikonfirmasi
+`bitdefender` (data asli) gak keganggu, dry-run kebukti 0 DB write.
+`tsc --noEmit`/`eslint`/`pnpm build` semua bersih (29 route).
+
+**Fase 9 KOMPLET SELURUHNYA** (backend 9.1-9.6 + frontend `/scrapers`).
 
 - [x] **9.1** API: list/detail/runs/items
 - [x] **9.2** API: trigger + **dry-run** _(endpoint paling berguna, sekarang gak ada)_

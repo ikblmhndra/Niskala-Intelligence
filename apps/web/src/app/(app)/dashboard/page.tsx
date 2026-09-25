@@ -41,9 +41,9 @@ function useTaStats() {
  * begitu datanya sendiri siap, gak nunggu yang paling lambat.
  *
  * Scraper Health widget (§Scraper Health lama, accept-rate chart + tabel
- * per-script) BELUM diport -- `/api/scraper/health` sendiri belum ada
- * (gap #6, survei Fase 8: itu backend punya Fase 9 "control plane
- * scraper", bukan Fase 8). Placeholder di bawah, bukan lupa.
+ * per-script) SENGAJA GAK diport ke sini walau `/api/scraper/health` udah
+ * ada (Fase 9) -- keputusan user (2026-09-25): control plane scraper
+ * dapet halaman SENDIRI (`/scrapers`), bukan digabung ke dashboard umum.
  */
 export default function DashboardPage() {
   const dashboard = useDashboardStats();
@@ -163,13 +163,6 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* ── Scraper Health -- deferred, gap #6 ── */}
-      <DashboardSectionLabel>Scraper Health</DashboardSectionLabel>
-      <div className="rounded-md border border-dashed border-border bg-surface px-4 py-6 text-center">
-        <p className="font-mono text-xs text-muted-foreground">
-          Belum tersedia — <code>/api/scraper/health</code> nyusul Fase 9 (control plane scraper).
-        </p>
-      </div>
     </div>
   );
 }

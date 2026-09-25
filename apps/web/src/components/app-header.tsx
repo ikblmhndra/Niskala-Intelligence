@@ -13,7 +13,14 @@ import { cn } from "@/lib/utils";
  * (route baru, gap yang ketemu pas survei). `/admin/users` di-guard
  * `role` di dalam `UserMenu`/halaman itu sendiri (bukan disembunyiin di
  * nav -- port perilaku lama: link tetep ada di DOM, cuma halamannya yang
- * nolak kalau bukan admin, lihat `deps.py::require_admin`). */
+ * nolak kalau bukan admin, lihat `deps.py::require_admin`).
+ *
+ * `/scrapers` (Fase 9, control plane scraper) -- keputusan user
+ * (2026-09-25): halaman SENDIRI, bukan widget di `/dashboard` (yang
+ * lama-nya "Scraper Health" numpang tab Dashboard). Read kebuka semua
+ * user login (sama kayak halaman lain di nav ini), aksi tulis (trigger/
+ * enable/disable/config) admin-only DI DALAM halaman-nya sendiri --
+ * pola sama kayak `/admin/users` di atas, bukan disembunyiin dari nav. */
 const NAV_ITEMS = [
   { href: "/dashboard", label: "Dashboard" },
   { href: "/newsroom", label: "Newsroom" },
@@ -23,6 +30,7 @@ const NAV_ITEMS = [
   { href: "/xintel", label: "X Intel" },
   { href: "/recap", label: "Recap" },
   { href: "/newsletter", label: "Newsletter" },
+  { href: "/scrapers", label: "Scrapers" },
   { href: "/admin/users", label: "Admin" },
 ] as const;
 
