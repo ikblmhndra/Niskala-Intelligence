@@ -17,6 +17,8 @@ const NAV_ITEMS = [
   { href: "/intelligence/risk-matrix", label: "Risk Matrix" },
   { href: "/intelligence/source-reliability", label: "Source Reliability" },
   { href: "/intelligence/early-warning", label: "Early Warning" },
+  { href: "/intelligence/pir", label: "PIR" },
+  { href: "/intelligence/rfi", label: "RFI" },
 ] as const;
 
 export function IntelligenceNav() {

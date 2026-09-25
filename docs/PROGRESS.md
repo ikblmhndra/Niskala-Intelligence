@@ -3215,6 +3215,72 @@ PUT 200) -> Remove (confirm dialog nyebut nama sumber bener, DELETE
 200, row ilang). Console bersih di tab baru terpisah abis seluruh
 alur. `pnpm build`/`tsc --noEmit`/`pnpm lint` semua bersih.
 
+### Grup G2 -- selesai (2026-09-25)
+
+`/intelligence` sub-grup kedua: **PIR (Priority Intelligence
+Requirements) + RFI (Request for Information)**. Legacy: file
+`pir.js` (453 baris) -- ternyata PIR *dan* RFI dua-duanya numpang 1
+file fisik (pola disorganisasi yang sama kayak "Newsroom" Grup D:
+panel loader numpang di file gak nyambung), plus multi-select criteria
+UI (`_pirMsXxx`) numpang lagi di `exec.js` (udah dibaca lengkap Grup
+F). Backend (`routers/pir.py` 305 baris + `routers/rfi.py` 127 baris +
+`services/pir_docx.py`) udah lengkap sejak Fase 7, semua endpoint
+`response_model`-typed penuh KECUALI `/{id}/export` (JSON mentah,
+bukan docx) dan 2 endpoint delete -- murni build frontend.
+
+**Dibangun**:
+- **PIR**: kartu list (priority badge, coverage bar, badge COVERAGE
+  GAP kalau `is_gap` -- match historis ada tapi 0 match 14 hari
+  terakhir), modal Add/Edit dengan 5 `MultiSelectField` (Threat
+  Actors/Industries/Countries/News Types/TTPs -- komponen baru,
+  Input+dropdown+tag chip, gak ada Combobox siap pakai di `ui/`, sama
+  pola kayak autocomplete Source Reliability Grup G1 tapi versi
+  multi-pick) + keywords comma-separated + priority/owner/status(edit
+  doang)/date range, overlay artikel yang match (paginated) dengan
+  note analis per-artikel (`GET`/`PUT /api/pir/{id}/note`), export
+  DOCX.
+- **RFI**: kartu list + filter status (All/Open/In Progress/Closed),
+  modal Add/Edit dengan dropdown Linked PIR (native `<select>`,
+  populate dari `GET /api/pir` beneran).
+- Analyst Name/field prefill `user.username` di form note (perbaikan
+  kecil atas legacy yang kosong defaultnya, sama alasan kayak Grup
+  G1's Source Reliability).
+
+**Pola React tanpa `useEffect`**: `NoteForm` (dalam `PirArticlesDialog`)
+awalnya nyimpen state `note`/`analyst` di parent + "seed once" flag --
+disederhanain jadi `useState(initialNote)` LANGSUNG di `NoteForm`,
+valid karena `NoteForm` cuma pernah mount SETELAH `noteQuery.data`
+resolve (di-gate kondisional render `noteQuery.isPending ? loading :
+&lt;NoteForm/&gt;`), jadi `initialNote` udah pasti nilai final pas
+`NoteForm` pertama kali mount -- gak butuh sinkronisasi effect sama
+sekali, konsisten sama konvensi proyek ini (`react-hooks/set-state-in-effect`).
+
+**0 bug ketemu live** -- kontrak backend match ekspektasi penuh dari
+baca source langsung (bukan tebak dari nama field). Satu detail teknis
+ketemu pas nyiapin data test: `_criteria_filters()` (repo) nge-mapping
+tiap field kriteria PIR (`threat_actors`/`industries`/`keywords` dst)
+ke parameter `AsyncArticleRepo.list_filtered()` yang UDAH ADA (bukan
+query builder terpisah) -- semua kriteria di-AND, bukan di-OR, jadi
+artikel test harus match SEMUA field yang diisi PIR buat kehitung
+coverage-nya.
+
+Verifikasi LIVE end-to-end (tab baru, login `admin1`/superadmin): PIR
+create dengan 2 multi-select field (Threat Actors: "Breeze comet",
+Industries: "Healthcare & Life Sciences" -- opsi ASLI dari
+`/api/pir/options`) + keywords, kartu render lengkap dengan semua tag.
+Seed 1 artikel manual yang match SEMUA kriteria -> reload -> coverage
+count update jadi 1, "View 1" muncul, badge "Last Hit"/"14d: 1" bener.
+Buka overlay artikel -> artikel asli kebuka -> buka note -> isi ->
+save (PUT 200) -> badge "✓ NOTED" muncul abis refetch. Export DOCX
+beneran manggil `python-docx` di server (200, bukan 501). Edit PIR
+prefill semua field termasuk Status (field edit-doang) + 2 tag
+multi-select yang udah dipilih. RFI create dengan Linked PIR dropdown
+populate PIR asli ("[P2] Ransomware activity targeting Healthcare"),
+filter status "Open" trigger query param bener, delete round-trip
+bersih. Semua data test (PIR/RFI/artikel/note) dibersihin abis
+verifikasi. Console bersih di tab baru terpisah. `pnpm build`/
+`tsc --noEmit`/`pnpm lint` semua bersih.
+
 ### Checklist
 
 - [x] **8.1** Setup Next.js App Router + TS + keputusan arsitektur di atas
@@ -3223,8 +3289,8 @@ alur. `pnpm build`/`tsc --noEmit`/`pnpm lint` semua bersih.
 - [x] **8.3** Auth + session (Grup A)
 - [ ] **8.4** Route: `/dashboard` (Grup B, selesai) `/newsroom`
       (Grup D, selesai) `/cve` (Grup E, selesai) `/intelligence`
-      (G1 -- Risk Matrix+Source Reliability+Early Warning -- selesai;
-      G2-G7 nyusul)
+      (G1 -- Risk Matrix+Source Reliability+Early Warning, G2 -- PIR+RFI
+      -- selesai; G3-G7 nyusul)
 - [ ] **8.5** Route: `/exec` (Grup F, selesai) `/xintel` (Grup C, selesai)
       `/recap` (Grup B, selesai) `/admin/users` (Grup C, selesai)
       `/newsletter`

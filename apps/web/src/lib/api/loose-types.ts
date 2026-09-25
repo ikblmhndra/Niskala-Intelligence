@@ -537,3 +537,30 @@ export interface SrActionResult {
   reason?: string;
   entry?: components["schemas"]["SREntryOut"];
 }
+
+/**
+ * Grup G2 (`/intelligence` -- PIR + RFI) -- endpoint di bawah gak
+ * declare `response_model`. Shape dicek dari `routers/pir.py`/
+ * `routers/rfi.py` langsung (`_build_export_data()`/`{"deleted": bool}`).
+ */
+export interface PirExportData {
+  pir: components["schemas"]["PIROut"];
+  exported_at: string;
+  total_articles: number;
+  articles: {
+    _id: string;
+    title: string;
+    url: string;
+    posted_on: string | null;
+    source: string;
+    news_type: string | null;
+    threat_actors: string[];
+    impacted_industries: string[];
+    mentioned_countries: string[];
+    analyst_note: { note?: string; analyst?: string; updated_at?: string };
+  }[];
+}
+
+export interface DeletedResult {
+  deleted: boolean;
+}
