@@ -24,7 +24,7 @@ Plan lengkap: `~/.claude/plans/oke-bro-jadi-gini-sparkling-fern.md`
 | 7 | `apps/api` | `[x]` | 4–6 minggu | Semua endpoint ada snapshot test · 5 loop jadi beat task (7.8) |
 | 8 | `apps/web` (Next.js) | `[x]` | 4–6 minggu | Semua tab lama ada padanannya |
 | 9 | Control plane scraper | `[x]` | 1 minggu | Scraper mati kedeteksi dlm 3 interval |
-| 10 | Cutover | `[ ]` | 1 minggu | Semua checklist cutover hijau |
+| 10 | Cutover | `[~]` 10.A–10.E + 10.G + 10.G2 (nginx compose) (kode/dokumen/latihan staging) selesai; sisa 10.F + langkah operasional (butuh user/prod) | 1 minggu | Semua checklist cutover hijau |
 
 > **Realistis: 4–6 bulan untuk satu developer.** Fase 0–4 udah ngasih nilai
 > nyata (framework + scraper jalan) walaupun fase sesudahnya mundur.
@@ -4192,16 +4192,1217 @@ dibersihin abis (config+audit-log baris `akamai`), dikonfirmasi
 
 ## Fase 10 — Cutover `[ ]`
 
+### Survei (2026-09-26) -- hasil + keputusan user
+
+Estimasi plan awal ("1 minggu, seed + `docker compose up`") **gak
+realistis**: beberapa hal yang dikira udah ada ternyata belum. Temuan
+(semua diverifikasi langsung dari repo, bukan dari catatan):
+
+- **Gak ada Dockerfile sama sekali** -- `docker/` kosong, gak ada
+  `.dockerignore` (tanpa itu `legacy/config.yml` + `legacy/dump/` ~110MB
+  ikut build context). `docker-compose.yml` cuma postgres/redis/vault.
+- **Cold-start guard belum ada kodenya** -- cuma setting
+  `SCRAPER__COLD_START_MAX_ITEMS=5` (`config.py:133`), gak ada yang baca.
+  Runner gak punya logika "run pertama". Run pertama 84 scraper = ratusan
+  s/d ribuan task `enrich.article` (~10-13 detik + 1 panggilan LLM
+  masing-masing) + tiap artikel lolos ke Telegram channel asli, gak ada
+  filter umur artikel.
+- **Beat singleton lock (10.1d) + backpressure `enrich` (10.1e) belum
+  ada** -- yang backpressure cuma setting `enrich_queue_max_depth=2000`
+  + nama status `backpressure`.
+- **CI cuma 4 job** (ruff/mypy/pytest/gitleaks): gak ada job web, gak ada
+  docker build. `tests/fixtures/` (46MB, 103 dir) **UNTRACKED** -- golden
+  test gak punya bahan di CI, gate "≥95% fixture identik" cuma bisa
+  dicek lokal.
+- **`torch>=2.3` masih di extra `cti-enrich[nlp]`** padahal Fase 0.9
+  ngonfirmasi nol importer (`git grep` juga kosong) -- image `worker-nlp`
+  bengkak multi-GB tanpa alasan.
+- **Web belum siap prod**: `next.config.ts` kosong (belum
+  `output: "standalone"`); cookie session `secure` di production =>
+  wajib HTTPS di depan.
+- **Seed**: sumbernya ada di dump Mongo (`techstack` di dump
+  `threatintel`, `monitored_accounts` 18, `clients` 2, `roles` 3,
+  `users` 6). `POST /api/auth/init` udah bikin superadmin pertama.
+- **Dump Mongo 2026-09-16** (>10 hari) -- checklist minta <24 jam +
+  udah dites restore => perlu dump final pas cutover. Backup Postgres
+  stack baru belum dipikirin.
+- **11 secret belum dirotasi**; `cti_core` belum bisa baca Vault.
+- **17 job Rundeck aktif gak punya padanan** (100 aktif = 83 scraper +
+  17): 4 GitHub watcher (`githubTTPs`/`mitreGithub`/`githubSophoslab`/
+  `githubAptTTPSimulation`), `topCve`, `logbook`/`sendCounter`/
+  `trendingNewsToday` (baca Mongo lama -- data basi kalau dibiarin),
+  `techstackGO/NPM/PYPI`, `trendingCve`/`twitter`/`twitter30`,
+  `threatactorTrendGraylog`/`threatactorTrendTelegram`, `offsetAlert`.
+- Docker Desktop lokal cuma 4GB RAM -- cukup buat smoke test, mepet
+  buat `worker-nlp`.
+- Item checklist "`static/` dilayani container web" **basi** (web
+  sekarang Next.js, `static/` cuma spesifikasi); yang relevan cuma
+  "ke-commit" -- udah beres (29 file).
+
+**Keputusan user (2026-09-26):**
+
+1. **Cold-start = cap saja.** Run pertama tiap scraper cuma enrich N
+   item terbaru (`cold_start_max_items`, default 5), sisanya ditandai
+   `seen` tanpa diproses. Alert Telegram **TETAP kirim normal** --
+   risiko yang DITERIMA sadar: worst case ~84 x 5 = ~420 pesan burst ke
+   channel asli pas run pertama. (Opsi "mute alert" ditawarin dan
+   ditolak.) **Direvisi di keputusan 5** (warm start): cap tetap dibangun,
+   tapi perannya jadi jaring pengaman, bukan jalur utama cutover.
+2. **17 job Rundeck = port semua** (bukan cuma yang murah). Catatan
+   tafsiran yang perlu dikonfirmasi: `offsetAlert` (rusak dari dulu,
+   diganti heartbeat + control plane Fase 9) dan `threatactorTrend
+   Graylog`/`...Telegram` (Graylog dibuang di plan §6; yang kedua
+   diblokir permanen karena token hardcoded) dianggap **di luar** "port
+   semua" kecuali user bilang lain. Prasyarat dari user: narik
+   `/opt/techstackLibrary` dari prod (buat `techstack*`); token Twitter
+   baru (buat trio Twitter -- `TwitterScrap` udah ada di checkout).
+3. **Deploy = 1 VM + nginx/ingress yang udah ada** -- compose cuma expose
+   port internal, TLS dipegang proxy di luar compose (bukan Caddy).
+   **DIGANTI user 2026-09-26 (10.G2): nginx sekarang service di compose** (self-signed otomatis);
+   template nginx host tetap ada sebagai alternatif (`docker/ops/nginx-cti.conf.example`).
+4. **Go-live pakai `.env`** (chmod 600 di host); integrasi Vault jadi
+   item PASCA-cutover, gak nge-blok Fase 10.
+5. **Warm start (skenario C) sekarang, migrasi riwayat (skenario D)
+   bertahap pasca-cutover** (user: "ngikut lu"). Dasar keputusan -- semua
+   diverifikasi dari kode/dump 2026-09-26:
+   - `run_pipeline()` GAK ngecek apakah URL udah ada di `articles`: langsung
+     `classify` (LLM) -> ... -> `persist` -> `route_alerts` (Telegram).
+     Gerbang dedup SATU-SATUNYA = `scraper_seen` (`sha256(scraper_id + NUL +
+     URL kanonik)`). Jadi migrasi `articles` doang TANPA isi `scraper_seen`
+     = artikel lama diproses + di-alert ULANG (skenario B, jelek).
+   - Sumber seed `scraper_seen`: `articles` di dump (7.899 URL, posted_on
+     2026-01-05..2026-09-15) -- key dihitung ulang dari URL. `threatintel.
+     offsets` (8.737) formatnya `title+url` mentah tanpa pemisah, GAK
+     dipakai langsung; selisih ~840 kemungkinan item yang ditolak LLM
+     (kalau gak diseed: diklasifikasi ulang, cuma ongkos LLM, tanpa alert).
+   - Pemetaan `Article.source` -> `scraper_id`: cocok persis ke
+     `meta.source` cuma ~70% (5.513/7.899); 14 label perlu tabel alias
+     manual (terbesar "Cybersecurity News" 1.845, "Socradar" 147, "Cisa" 127,
+     "Cyfirma" 92). Tidak ada `source` yang dipakai >1 scraper.
+   - "Cold" didefinisikan = scraper gak punya SATU PUN baris `scraper_seen`
+     (bukan "belum pernah ada `ScraperRun`"), biar scraper yang udah
+     di-warm-start gak kena cap dan kehilangan item baru sejak dump.
+     `reset-dedup` otomatis bikin scraper "cold" lagi -> cap jalan sbg
+     jaring pengaman (masuk akal: reset tanpa cap = re-ingest seluruh feed).
+   - Urutan cutover: stop Rundeck -> `mongodump` final -> seed `scraper_seen`
+     -> nyalain stack baru (dump basi = alert item di antaranya kekirim
+     ulang).
+   - Skenario D (migrasi penuh) ditunda: ~40rb dokumen (bukan volume yang
+     jadi masalah, tapi mapping skema): `articles`+tabel anak, `iocs`,
+     `cve_tracker`, `cve_tickets`, `tweets`, `ransomware_victims`,
+     `audit_log`, `daily_recaps`, `clusters`, `newsletters`. `logbook_
+     entries` (4.657) dan `cve_mentions` (4.058) BELUM punya tabel
+     padanan -- perlu keputusan sebelum D. `attack_*` (~27rb dok) GAK
+     perlu dimigrasi (re-sync otomatis lewat beat `attack.sync_check`);
+     `scraper_runs`/`nlp_jobs`/`offsets`/`openai_cache` semantik lama, skip.
+     Import riwayat aman dijalankan kapan pun karena `articles.url_hash`
+     unique (idempoten) -- data lama diimpor TANPA lewat pipeline
+     (kalau lewat = LLM + Telegram dobel).
+6. **Staging tersedia** (server shared user, SSH key udah ada; detail akses
+   sengaja gak ditulis di repo). Direcon baca-doang 2026-09-26: 8 CPU, 23GB
+   RAM, 35GB disk bebas (75% kepake), Docker 29 + Compose v5, outbound OK,
+   gateway LLM lokal (9router) kejangkau dari host. Catatan: box SHARED sama
+   stack lain -> deploy CTI di compose project/direktori terpisah, publish
+   port ke `127.0.0.1` + SSH tunnel (cookie `secure` Next.js cuma diterima
+   di HTTPS atau `localhost`), `.env` + bot Telegram TES sendiri (JANGAN
+   channel asli). Ada container `cti-mongo` (restore dump legacy) yang
+   ke-publish di `0.0.0.0:27017` -- belum dicek pakai auth atau nggak.
+
+**Rencana blok kerja (urutan):**
+
+- [x] **10.A2** Ketahanan `enrich.article` (2026-09-26) -- KELAR, live-verified
+      di staging. Prinsip: artikel yang sudah lolos dedup (`scraper_seen`
+      di-commit pas `send_task`) TIDAK BOLEH hilang tanpa jejak.
+      - **Retry per kategori** (`apps/worker/.../tasks/enrich.py`): TRANSIEN
+        (LLM mati/timeout/5xx/429-bukan-kuota, koneksi DB putus, jaringan) 6x,
+        backoff 30s->10 mnt +jitter (~30 mnt total); JSON rusak 2x; sisanya
+        (401, kuota abis, bug) langsung gagal. **Live**: LLM dimatiin (URL tak
+        terjangkau) -> 10 retry tercatat, 0 task gagal, semua terselesaikan
+        pas LLM pulih.
+      - **Gagal permanen -> `rejected_articles`** (`on_failure`, sekali di
+        kegagalan FINAL): `reason="[enrichment_failed] <Tipe>: <pesan>"`
+        (tipe asli dari `einfo.type` -- Celery nurunin exception openai ke
+        kelas dasarnya), muncul di Filtered Articles + bisa di-restore.
+        Best-effort (gagal nyatet gak nutupi kegagalan aslinya); secret
+        yang dikonfigurasi di-SCRUB dari pesan. **Live**: key salah (401) ->
+        5/5 tercatat, 0 retry. Berhasil di-replay -> baris `rejected` basi
+        DIHAPUS di `persist()` (gak dobel artikel + "ditolak").
+      - **`persist` di-commit SEBELUM `route_alerts`** -- keduanya satu
+        transaksi dan `sync_session()` rollback saat exception: alert
+        Telegram gagal dulu ikut MEMBATALKAN artikel yang sudah ke-persist.
+      - **PERSONA "KIRO" DIREPRODUKSI & DISELESAIKAN**: `my-combo` ->
+        `claude-haiku-4.5` lewat backend Kiro njawab "I'm Kiro, a development
+        environment assistant, not a threat intelligence analyst" / "I'm
+        ready to classify, please provide a title" (BUKAN JSON). Bergantung
+        isi judul + gak deterministik; probe 4-input generik tadi GAK
+        nangkep (100/100). `temperature=0` bikin retry identik ngulang
+        jawaban sama. Diukur (6 percobaan, 2 judul gagal): polos 0/6 & 1/6;
+        + pengingat terpisah 1/6 & 6/6; **system + `<article_title>` +
+        pengingat di pesan user yg sama 6/6 & 6/6** (juga satu-pesan-user
+        6/6). Fix: `cti_enrich/stages/llm_messages.py::build_messages` --
+        percobaan PERTAMA tetap verbatim (prompt bisnis + perilaku Fase 5
+        gak berubah), percobaan ULANG pakai bentuk dikuatkan (`classify` +
+        `extract_ttps`). Probe di gateway staging: polos `classify_kiro_1`
+        0/8, `_2` 7/8; `--hardened` 48/48. Replay 7 artikel `[enrichment_
+        failed]` -> 7/7 pulih <1 menit (3 artikel, 4 ditolak LLM normal).
+        CATATAN: bentuk dikuatkan belum dievaluasi AKURASI-nya vs bentuk
+        polos di korpus besar -> jangan dijadikan percobaan pertama dulu.
+      - `tools/llm/probe_json.py` +2 judul Kiro bawaan, `--hardened`,
+        `--titles-file` (replay judul asli). 4 -> 6 input.
+      - **Suite penuh: 1346 lulus, 3 gagal** (3 gagal = snapshot sensitif
+        tanggal yang sama kayak sebelumnya). Test baru 10.A2: kegagalan task
+        (13), retry JSON dikuatkan (5), probe (+3), ketahanan pipeline (+1).
+        Semua mutasi (commit-sebelum-alert, `on_failure`, retry transien)
+        terdeteksi. `mypy` bersih; `ruff` cuma sisa E501 `ta.py:50` (10.D).
+        Belum di-commit (commit di akhir Fase 10).
+      - Sisa yang diterima: retry ETA di Redis yang ditahan worker
+        yang di-SIGKILL nyangkut sampai `visibility_timeout` (1 jam) --
+        shutdown normal (SIGTERM/`docker stop`) mengembalikannya seketika.
+- [x] **10.A** Hardening kode (2026-09-26) -- KELAR, live-verified.
+      - **Cold-start guard** (`Runner._cold_start_cap`/`_cold_start_skipped`,
+        `ScraperSeenRepo.has_any`): "cold" = nol baris `scraper_seen` (BUKAN
+        "belum pernah ada `ScraperRun`", biar scraper warm-start gak kena cap).
+        Run cold nge-buffer item, enrich N `ArticleItem` TERBARU (`posted_on`
+        desc; sort stabil -> feed tanpa tanggal tetap urutan feed), sisanya
+        di-mark seen tanpa diproses (`ScraperItem.reason="cold_start_cap"`).
+        Cuma `ArticleItem` yang kena (jalur ke `enrich` + Telegram); sink lain
+        (ransomware/CVE/IOC/tweet) nulis langsung ke DB, gak kena.
+        `Runner(cold_start_max_items=...)` bisa di-override, `<= 0` = mati.
+        **Live** (bleepcomp asli, dev DB): 10 item -> 5 enrich + 5 cap-skipped,
+        `LLEN enrich`=5; `reset-dedup` bikin scraper cold lagi.
+      - **Beat singleton (=10.1d)** `cti_worker.beat_lock.BeatLock` (`SET NX PX`
+        + Lua renew/release, token per-proses) + `cti_worker.beat_main`:
+        standby GAK ngejalanin Celery beat sama sekali (jadi ambil alih tanpa
+        catch-up buat slot yang lewat), leader renew tiap `ttl/3`, renew
+        ditolak / Redis putus > TTL = `os._exit(1)` (fail-stop, restart policy
+        Compose yang bawa balik ke standby). **Compose pakai `python -m
+        cti_worker.beat_main`, GANTI `celery beat`.** `WORKER__BEAT_LOCK_TTL_S`
+        (default 30). **Live** (2 proses asli + Redis sementara): tetap 1
+        leader lewat > 1 TTL, SIGTERM -> takeover 2.1s, SIGKILL -> takeover
+        6.1s (= TTL).
+      - **Backpressure (=10.1e)** `sinks.ensure_enrich_capacity()`: `LLEN
+        enrich` >= `enrich_queue_max_depth` -> `BackpressureError` -> Runner
+        berhenti, `status="backpressure"` (kelihatan di control plane +
+        health), lease dilepas (item BUKAN ditandai seen, dicoba lagi run
+        berikutnya). Asumsi "queue Celery = LIST Redis bernama `enrich`"
+        dibuktikan lawan producer Celery + Redis asli (test + live). **Live**:
+        batas 3 -> 3 terkirim, item ke-4 backpressure, `LLEN`=3. Ambang 2000
+        masih tebakan awal -- setel ulang pas ada angka nyata `worker-nlp`.
+      - **`torch` dibuang** dari extra `nlp` (`uv.lock` -331 baris: torch, 12
+        paket nvidia-*, triton, sympy, ...; ~2-3GB di image Linux). spaCy
+        `en_core_web_sm` + sumy diverifikasi tetap jalan.
+      - **Temuan sampingan yang ikut dibenerin:** (1) Runner/`DedupStore`/
+        `ScraperSeenRepo` **GAK PUNYA test otomatis sama sekali** sebelumnya
+        -> `tests/integration/test_runner.py` (18 test), `test_beat_lock.py`
+        (8), `test_enrich_queue_depth.py` (2, Redis asli via testcontainers);
+        (2) `ScrapeContext.now` pakai `datetime.utcnow()` (deprecated, jadi
+        ERROR di test lewat `filterwarnings`) -> `_utcnow_naive()`, nilai SAMA
+        persis (naive UTC, `unit42_github` bergantung ke itu); (3)
+        `dedup.commit()` cuma flush -- state "done" numpang commit
+        `_log_item()`; kalau log itu gagal item balik `in_flight` dan
+        di-dispatch ULANG begitu lease basi (enrich + alert dobel) -> commit
+        eksplisit + test regresi (mutation-check: gagal tanpa fix).
+      - Batas yang diterima: backpressure di tengah run COLD bikin sisa item
+        yang belum diproses jalan TANPA cap di run berikutnya (bounded
+        `max_items`, cuma kejadian pas antrian penuh).
+      - **Suite penuh: 1271 lulus, 3 gagal** (1243 lama + 28 baru). Tiga
+        gagal = snapshot sensitif tanggal yang UDAH gagal sebelum Fase 10
+        (`test_recent_campaigns`, `test_get_pirs`, `test_pir_export`), bukan
+        dari perubahan ini. `mypy` (cti-core + cti-scraper) bersih; file yang
+        disentuh lolos `ruff check` + `ruff format`. Belum di-commit (commit
+        di akhir Fase 10, sesuai preferensi).
+- [x] **10.B** Containerization (2026-09-26) -- KELAR, smoke test penuh LULUS
+      di staging (project `cti-stg`, secret dummy).
+      - **File**: `.dockerignore` (ngeblok `.env*`, `legacy/`, `tools/salvage/`,
+        `tests/fixtures/`, `.git`), `docker/{api,worker,web}.Dockerfile`
+        (worker = SATU file, dua target `worker`/`worker-nlp`),
+        `docker/stack.env.example`, `docker-compose.yml` (profile `app`),
+        `apps/web/next.config.ts` -> `output: "standalone"`,
+        `apps/web/public/.gitkeep` (dir kosong gak ke-track git -> `COPY` gagal
+        di clone bersih).
+      - **Compose**: default tetap cuma `postgres`+`redis` (alur dev gak
+        berubah); stack penuh = `docker compose --profile app up -d --build`
+        -> `migrate` (one-shot `alembic upgrade head`, gagal = stack gak
+        naik) -> `api` / `worker` (rss+api+notify+maintenance) /
+        `worker-browser` (`scrape.browser`, `shm_size: 1gb`) / `worker-nlp`
+        (`enrich`) / `beat` (`python -m cti_worker.beat_main`) -> `web`.
+        Semua port di-publish ke `${BIND_ADDR:-127.0.0.1}` (nginx yang
+        terminasi TLS). `web` SENGAJA tanpa `env_file` (gak boleh megang
+        secret DB/LLM/Telegram). Variabel level compose (`BIND_ADDR`, port,
+        concurrency, `POSTGRES_PASSWORD`, `CTI_TAG`) di `docker/stack.env`,
+        BUKAN `.env` (pydantic-settings `extra="forbid"` bakal nolak).
+        `CTI_ENV_FILE` buat ganti file env (smoke test pakai secret dummy).
+      - **Image (terukur)**: web 321MB, api 1.87GB, worker 1.89GB,
+        worker-nlp 2.12GB; semua non-root (uid 10001 / `node`), tanpa torch.
+        Chromium (~600MB) di stage `browser-base` TERPISAH dari venv, layer
+        dishare api<->worker lewat cache (rebuild source = detik, bukan menit);
+        `playwright==` di-pin lewat ARG + smoke launch pas build +
+        `tests/unit/test_docker_build_context.py` (pin == uv.lock, stage
+        identik, `.dockerignore` ngeblok secret). `worker-nlp`: spaCy +
+        sumy + data NLTK `punkt_tab` di-bake, terbukti jalan `--network none`.
+      - **BUG NYATA ketemu pas build/smoke (semua gak kelihatan di dev karena
+        env dev install semuanya)**:
+        1. `discover()` gagal di image tanpa extra `nlp`: scraper `monitor_x`
+           -> `cti_enrich.stages.score` -> `import spacy` di level modul ->
+           API/worker/beat GAGAL START. Fix: `score._get_nlp()` lazy
+           (`lru_cache`); test kontrak `tests/contract/test_registry_without_
+           nlp.py` (subprocess, `sys.modules[spacy]=None`; mutation-check gagal
+           tanpa fix).
+        2. **Image API gak punya paket `cti-scrapers`** -> `discover()` balik
+           `{}` DIAM-DIAM -> `GET /api/scraper` = 0 scraper, halaman
+           `/scrapers` kosong total di prod. Fix: `cti-scrapers` masuk deps
+           `cti-api`; beat sekarang RAISE kalau registry kosong (`beat.py`,
+           `tests/unit/test_beat_schedule.py`, 3 test -- sebelumnya
+           `build_beat_schedule` gak punya test); Dockerfile nge-assert
+           `len(discover()) > 50` pas build.
+        3. **Web = BFF, API cuma lihat IP container `web`** -> rate limit
+           login (`login:{ip}`, 10/menit) GLOBAL + audit log IP gak berguna.
+           Fix: `apps/web/src/lib/auth/client-ip.ts` (login + proxy route
+           nerusin SATU IP hop ke-N dari kanan `X-Forwarded-For`,
+           `TRUSTED_PROXY_HOPS`=1, divalidasi) + uvicorn `--proxy-headers`.
+           **Terbukti live**: rantai `6.6.6.6, 203.0.113.9, 198.51.100.7` ->
+           key Redis `ratelimit:login:198.51.100.7` (entri palsu di kiri
+           diabaikan); tanpa XFF Next.js ngisi IP socket sendiri; XFF sampah
+           diabaikan (bukan 500). **nginx WAJIB set
+           `proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;`** --
+           kalau enggak API lihat IP nginx buat semua orang (10.G runbook).
+        4. **Race bootstrap API di DB kosong**: `lifespan` (client `default` +
+           role sistem, pola "cek dulu baru insert") jalan di TIAP proses
+           uvicorn, `WEB_CONCURRENCY=2` -> dua proses tabrakan di `pk_clients`
+           -> "Child process failed to start" -> container mati, cuma
+           self-heal lewat restart policy (start pertama SELALU flap).
+           Fix: `bootstrap_reference_rows()` di `cti_api/main.py` pakai
+           `pg_advisory_xact_lock`; `tests/integration/test_api_bootstrap_
+           race.py` maksa race-nya deterministik (mutation-check: gagal dgn
+           `UniqueViolation pk_clients` persis kayak di staging tanpa lock).
+           **Live**: boot bersih dari DB kosong -> 0 traceback, restart count 0.
+      - **Smoke di STAGING (2026-09-26, project `cti-stg`, dir
+        `~/cti-platform-stg`, secret acak di-generate DI server)**:
+        - Build 4 image di server: api ~1 mnt, worker ~20s, worker-nlp ~30s,
+          web ~40s (cache Chromium dishare). Ukuran: web 302MB, api 1.85GB,
+          worker 1.85GB, worker-nlp 2.1GB. Build cache ~7GB di server
+          (`docker builder prune` kalau butuh ruang).
+        - `migrate` naikin skema dari DB kosong (20 migrasi, exit 0); 9
+          service healthy; RAM idle total ~1.3GB (api 534MB, nlp 327MB,
+          worker 249MB, browser 156MB, beat 105MB, web 48MB).
+        - Login lewat web (cookie `Secure; HttpOnly; SameSite=lax`), `init`
+          admin lewat proxy; **registry API = 84 scraper** (sebelum fix = 0);
+          IP klien: rantai `6.6.6.6, 203.0.113.9, 198.51.100.7` -> key
+          `ratelimit:login:198.51.100.7`.
+        - **Chromium di image API** (dry-run `any_run_trends` = 10 item, 3s)
+          dan **di image worker** (trigger Celery ke `worker-browser`:
+          `ok`, 10 item). `worker` (rss) jalan: `bleepcomp` 11 item -> 5
+          diproses + 6 `cold_start_cap` (cap live di container).
+        - `worker-nlp` menerima task `enrich.article` dari antrian dan
+          nyampe langkah LLM (gagal 401 = API key dummy, sesuai rencana;
+          e2e enrichment butuh endpoint LLM staging asli -> 10.G).
+        - **2 container `beat`**: 1 leader + 1 standby; SIGTERM leader ->
+          takeover 4,1s; SIGKILL -> 17,5s (TTL 15s + interval cek).
+        - `abnormalsecurity` -> `parse_error` di DUA jalur (dry-run API +
+          worker-browser) = situs/selector, BUKAN container; cek di 10.D/hypercare.
+      - **TEMUAN (belum dikerjain, butuh keputusan): kegagalan `enrich.article`
+        = artikel HILANG.** Retry cuma buat `JSONDecodeError`
+        (`tasks/enrich.py`); error lain (LLM mati/timeout/5xx/401, jaringan pas
+        `fetch_text`) -> task gagal permanen, padahal dedup UDAH commit pas
+        `send_task` -> gak akan dicoba lagi, jejaknya cuma di log. Pas LLM
+        gateway gangguan (riwayat: persona "Kiro", ~6,5% JSON rusak) semua
+        artikel di jendela itu lenyap tanpa suara. Usulan: (a) retry error
+        transien (koneksi/timeout/5xx/429-bukan-kuota) dgn backoff panjang,
+        (b) `on_failure` nulis ke `rejected_articles` (`reason=enrichment_
+        failed: ...`) biar muncul di UI Filtered Articles + bisa di-restore.
+      - **Suite penuh: 1279 lulus, 3 gagal** (1271 + 8 test baru 10.B: registry
+        tanpa nlp, guard Docker/`.dockerignore` x3, jadwal beat x3, race
+        bootstrap API). 3 gagal = snapshot sensitif tanggal yang sama kayak
+        sebelumnya. `mypy` bersih; `ruff` cuma sisa E501 `ta.py:50` (10.D).
+        Belum di-commit (commit di akhir Fase 10).
+      - **Daftar secret staging/prod (2026-09-26)** -- WAJIB: `LLM__URL`/
+        `LLM__MODEL`/`LLM__API_KEY` (9router; tanpa itu `enrich.article` 401 +
+        fitur LLM API mati) dan `TELEGRAM__BOT_TOKEN`/`CHAT_ID`/`THREAD_IDS`
+        (`send_alert` RAISE kalau kosong, jadi tiap artikel lolos = task gagal
+        SETELAH tersimpan). OPSIONAL per scraper (cuma 6 dari 84):
+        `NVD__API_KEY` (`new_cve`, sumber CVE tracker; 5 -> 50 req/30s),
+        `GITHUB__TOKEN` (`blackorbird`, `deepdark_cti`, `github_poc_monitor`,
+        `unit42_github`; PAT tanpa scope cukup), `TWITTER__API_KEY`
+        (`monitor_x`). JANGAN diisi di staging: `GRAPH__*` (bikin draft/email
+        BENERAN di mailbox). Gak dipakai kode: `OTX__API_KEY`.
+      - **Bug ikut ketemu (nyusun daftar itu)**: `Runner._run_body` manggil
+        `resolve_credential_headers` SEBELUM blok `try` -> secret kosong =
+        `ConfigError` nembus `execute()`, run nyangkut `running` tanpa
+        `finish`, task Celery crash tiap jadwal. Sekarang jadi run
+        `fetch_error` dgn `errors[0].stage="config"` (kelihatan di control
+        plane), test `test_missing_credential_is_a_clean_failed_run_not_a_
+        stuck_one` (test integrasi baca `.env` dev lewat `get_settings()` --
+        test dikunci dgn env kosong biar deterministik). **Image staging
+        sekarang BELUM punya fix ini -- rebuild dulu sebelum 10.G.**
+      - **E2E staging dgn key ASLI (2026-09-26, user isi `stg.env`)**:
+        - `tools/ops/check_secrets.py` (BARU, 8 test, read-only, TIDAK nyetak
+          secret -- termasuk lewat pesan error httpx yg memuat URL Telegram):
+          LLM `GET /models`, Telegram `getMe`+`getChat` (tanpa kirim pesan),
+          NVD, GitHub `/rate_limit`, twitterapi.io; Graph cuma dilaporin
+          terisi/kosong. Hasil staging: SEMUA OK (LLM 48 model, `my-combo`
+          ada; bot `@privhemdall_bot` di chat "Bot Status" (forum); GitHub
+          5000/jam). Pakai lagi buat verifikasi setelah rotasi secret (10.F).
+        - **Dua instance 9router BERBEDA**: dev `172.25.0.77` (26 model) vs
+          server staging `172.25.1.77` (48 model). Hasil probe `my-combo` ->
+          `claude-haiku-4.5` itu buat instance DEV; isi combo di staging bisa
+          beda -> probe ulang ke `172.25.1.77` (`--url`).
+        - Trigger manual 3 scraper (`beat` sengaja MATI biar gak banjir
+          Telegram/LLM): 9 artikel ke-enrich end-to-end (8 `global`, 1
+          `apac`), Telegram jalan tanpa error, `unit42_github` (credential
+          GitHub) jalan.
+        - **4 MASALAH NYATA ketemu, semua sudah diperbaiki + mutation-check**:
+          1. **TTP kembar hapus artikel** -- LLM ngembaliin `T1176` 2x dgn
+             nama beda; `set_enrichment` dedup per tuple `(id, nama)` padahal
+             kunci `uq_article_ttp` = `(article_id, ttp_id)` -> UniqueViolation
+             -> seluruh transaksi rollback, artikel HILANG. Fix `_dedup_ttps()`
+             per `ttp_id` (sync + async, dua tempat).
+          2. **Koneksi DB dipakai bareng antar proses hasil fork** -- engine
+             dibuat di induk Celery (`build_beat_schedule()` baca DB pas
+             import), anak prefork mewarisi socket yang sama ->
+             `OperationalError: server closed the connection` +
+             `PendingRollbackError`. Fix `discard_inherited_connections()`
+             (`dispose(close=False)`) di sinyal `worker_process_init`; test
+             fork 3 anak (gagal 3/3 tanpa fix).
+          3. **Run nyangkut `running`** -- `_run_body` bisa selesai dgn sesi
+             DB rusak lalu `finish()` raise. Fix: rollback sebelum finish.
+          4. **Halaman blokir WAF dianggap isi artikel** -- Arctic Wolf
+             (Wordfence 403): Playwright `goto` gak raise di 403 dan
+             `page.content()` = halaman blokir; boilerplate 158 karakter jadi
+             "ringkasan" -> LLM njawab prosa ("saya gak lihat ringkasan
+             artikelnya", BUKAN persona Kiro) -> JSON gagal -> artikel hilang.
+             Fix: `fetch_text` cek status >= 400 + `looks_blocked()` (teks
+             pendek + frasa khas WAF) -> title-only; DAN `extract_ttps` gagal
+             JSON = artikel TETAP disimpan tanpa TTP (`_extract_ttps_or_empty`,
+             log `ttp_extraction_failed_article_kept`) -- TTP itu pengayaan
+             opsional, klasifikasi bukan (classify gagal tetap raise ->
+             retry Celery). Pipeline sebelumnya GAK punya test otomatis.
+        - **Hasil setelah semua fix (sampel 50 artikel, 3 batch, concurrency
+          2 + 1)**: dikirim ke enrich 50 = tersimpan 35 + ditolak LLM 15,
+          **HILANG 0** (sebelum fix: 3 dari 30 = 10%). Log: 0 `raised
+          unexpected`, 0 `OperationalError`, 0 `PendingRollback`.
+        - **Census feed RSS dari egress staging** (49 feed ringan): 41 OK
+          (84%). Gagal 8: 3 MATI (404: `google`, `nquiring_minds`, `sysdig` --
+          URL feed pindah), 4 DIBLOKIR WAF (`cisa` 403, `exploitdb` 403
+          Sucuri, `threatmon` 403 Cloudflare, `cybersecnews` 202+HTML), 1
+          gak terjangkau (`ecrime` ConnectTimeout). Plus run nyata: `cisa`/
+          `cybersecnews`/`doyensec`/`abnormalsecurity` `parse_error`,
+          `crowdstrike` `empty`. **Hipotesis UA bot ditolak** (UA browser
+          nyelamatin 0 feed, malah 3 lebih jelek) -> JANGAN ganti UA.
+          CATATAN: WAF berbasis reputasi IP -- hasil dari egress staging
+          belum tentu sama dgn egress prod -> ulang census dari IP prod
+          sebelum cutover; gate 10.D "tiap scraper live punya golden test
+          hijau ATAU waiver" perlu data ini (feed mati = perbaiki URL,
+          diblokir = waiver/proxy). Cuma 49 feed ringan diuji; browser + API
+          scraper belum.
+        - Pelajaran: bug #1, #2, #4 SELALU lolos di dev (satu proses, satu
+          LLM yang "sopan") -- cuma ketahuan lewat e2e dgn LLM asli +
+          concurrency > 1. Makanya 10.G rehearsal wajib pakai sampel besar.
+      - **Suite penuh (setelah e2e staging + semua fix): 1324 lulus, 3
+        gagal** (3 gagal = snapshot sensitif tanggal yang sama kayak
+        sebelumnya). Test baru sejak 1279: probe LLM (17), `check_secrets`
+        (8), fetch_text/blokir WAF (10), ketahanan pipeline (4), fork-safety
+        DB (2), dedup TTP (2), run-finish (1), credential kosong (1).
+        `mypy` bersih; `ruff` cuma sisa E501 `ta.py:50` (10.D). Belum
+        di-commit (commit di akhir Fase 10).
+      - **Catatan operasional**: nginx WAJIB `proxy_set_header X-Forwarded-For
+        $proxy_add_x_forwarded_for;`. Build image di laptop ~10GB (bikin disk
+        Mac penuh sampai Docker VM read-only) -- build berikutnya di staging.
+        Stack `cti-stg` sekarang DIMATIKAN (`docker compose stop`; image +
+        volume tetap): `cd ~/cti-platform-stg && docker compose -p cti-stg
+        --env-file stg.stack.env --profile app up -d`.
+- [x] **10.C** Seed & bootstrap + warm start (2026-09-26). Dua script,
+      keduanya idempoten, `--dry-run`, `--dump-dir` (default `legacy/dump`;
+      di hari cutover arahkan ke mongodump TERAKHIR), dan jalan tanpa
+      `pymongo` di test (dump palsu `MemoryDump`); bacaan BSON asli lewat
+      `uv run --with pymongo`. Pembaca dump di `tools/seed/_dump.py`.
+      - **`tools/seed/fase10_reference_data.py`** (data referensi kurasi
+        manusia). Hasil di dump arsip 2026-09-16: `clients` 2 (+3 baris
+        `client_countries`: nama negara -> ISO alpha-2 lewat
+        `cti_enrich.countries`, nama gak dikenal = ABORT bukan tebak),
+        `techstack_entries` 33 (dokumen lama tanpa `client_id` -> `default`),
+        `monitored_accounts` 18, `ta_profiles` 2, `ta_watchlist` 2,
+        `ta_whitelist` 2, `source_reliability_entries` 2, `pir_requirements`
+        3, `pir_notes` 3, `roles` 3 (sudah ada -- dibikin API pas start).
+        Identitas per tabel = kunci alami (mis. PIR = `title`+`created_at`
+        ASLI, karena dump punya DUA PIR berjudul sama; catatan PIR dipetakan
+        lewat ObjectId lama -> id baru). Baris yang sudah ada DILEWATI, bukan
+        di-update (perubahan di UI baru gak ketimpa seed ulang). `created_at`
+        asli dipertahankan.
+        **Cek drift izin role**: izin peran sistem di KODE (`SYSTEM_ROLES`)
+        dibandingkan dengan produksi lama -- hasilnya SAMA (nol drift), jadi
+        user lama gak diam-diam dapat hak akses beda.
+        **User TIDAK dimigrasi** (keputusan): script cuma ngeprint daftar 6
+        user lama (username/role/client) sbg daftar kerja buat dibikin ulang
+        lewat UI; hash bcrypt gak dibawa. `users.bson` sengaja TIDAK diupload
+        ke staging (isinya hash) -- script tahan kalau file itu gak ada.
+      - **`tools/seed/fase10_warm_start.py`** (skenario C). Isi `scraper_seen`
+        (`state=done`, TTL = `dedup_ttl_days` scraper) dari riwayat lama.
+        TEMUAN yang mengubah rancangan: `offsets.script` dipetakan PERSIS ke
+        `ScraperMeta.legacy_script` (field ini emang dibikin buat ini) dan
+        `nlp_jobs.script_name` ke `legacy_label` -- jadi gak perlu tabel alias
+        tebak-tebakan; `ALIASES` cuma buat 11 label `articles.source` yang
+        beda tulisan (mis. "Cybersecurity News" = 1845 artikel). Sumber yang
+        digabung per scraper: `offsets` (key lama = `str(title)+str(url)`
+        TANPA pemisah -> URL dicari dari pasangan (title,url) di `nlp_jobs`/
+        `articles`, lalu judul-prefix terpanjang, lalu ekor `https://`),
+        `nlp_jobs` (termasuk artikel yang ditolak klasifikasi -- gak ada di
+        `articles`), `articles`, `ransomware_victims.offset_key` (format SAMA
+        dgn `RansomwareVictimItem.dedup_key`) dan `tweets.tweet_id`.
+        Tipe item non-artikel (CVE/tweet/dst) dikenali dari anotasi return
+        `fetch()` -- kunci mereka gak boleh ditebak dari URL.
+        Hasil dump arsip: **17.410 kunci di 71 scraper, NOL key offsets yang
+        gagal dipetakan** (termasuk 131 key berbentuk CISA "judul+tanggal" dan
+        Splunk "judul+path relatif"). Data 4 script lama yang memang gak
+        diport (detectionEngineering, sekoia, paloaltonet, validin) dilaporkan
+        "diabaikan". **13 scraper tetap dingin** (kena cap di run pertama):
+        abnormalsecurity, blackberry, crowdstrike, dragos, huntio, mandiant,
+        prodraft, sans, sysdig (gak punya riwayat di dump -- rusak/mati/baru),
+        deepdark_cti, github_poc_monitor (kunci non-URL, tanpa sumber),
+        + `new_cve`, `any_run_trends` (dedup DIMATIKAN, upsert idempoten --
+        gak butuh warm start).
+      - **Bukti di staging** (dump subset tanpa `users.bson`; script jalan di
+        container worker, `pymongo` dipasang ke `/tmp`): seed referensi 2x
+        (kedua: 0 baru, semua "sudah ada"); warm start 2x (kedua: 0 baru;
+        baris yang bentrok dgn sisa e2e lama di-skip `ON CONFLICT`).
+        Lalu `securelist` DIJALANKAN BENERAN: feed 10 item -> **6 duplikat
+        (dari seed), 4 baru diproses, NOL `cold_start_cap`**; `scraper_seen`
+        47 -> 51. (`dry-run` CLI TIDAK bisa jadi bukti: `Runner(dry_run=True)`
+        mematikan dedup total, `items_new` selalu 0.) Tanpa warm start feed
+        yang sama kena cap 5 dari 10.
+      - **Test** (mutation-checked: hash beda dari runner, tanpa resolusi
+        judul-prefix, `write_plan` gak nulis, catatan PIR nempel PIR salah,
+        drift gak dilaporkan, techstack gak idempoten -- semua digagalkan test):
+        `tests/integration/test_seed_reference_data.py` (12),
+        `tests/integration/test_warm_start.py` (17, termasuk 3 test lewat
+        `Runner` beneran: scraper hangat lolosin CUMA item baru dan gak kena
+        cap, kunci seed == kunci yang di-reserve runner, kontrol negatif tanpa
+        seed tetap kena cap; + test dump ASLI -- pagar buat dump cutover: key
+        yang gak bisa dipetakan atau sumber tak dikenal = test merah),
+        `tests/unit/test_seed_dump.py` (2), `tests/contract/
+        test_scraper_labels.py` (3).
+      - **BUG DITEMUKAN & DIPERBAIKI di jalur ini**: `blackberry` punya
+        `source="Name"` -- skrip lama `blackberryThreat.py` nge-push label
+        templat "NEW ARTICLE FROM NAME" yang gak pernah diganti, codemod
+        memindahkannya apa adanya -> artikel BlackBerry tampil bersumber
+        "Name". Sekarang `BlackBerry`; `legacy_label` sengaja dibiarkan
+        (kompat mundur). Test kontrak baru: gak ada `source` placeholder,
+        `source` unik, `legacy_script`/`legacy_label` unik.
+      - **Parity `threat_feeds`/`threatintel.domain|ip|hash`** (pertanyaan
+        terbuka survei): `threat_feeds` (C2) kosong di prod lama juga ->
+        `check_c2_hit` selalu False, bukan regresi. `threatintel.domain/ip/
+        hash` (76rb/9rb/431): TIDAK ada konsumen di kode lama (helper generik
+        `dbMongo.list_existing` cuma dipanggil buat `groups`/`apac-*`/
+        `global-country`, yang sudah di-seed Fase 5) -> arsip saja, tidak
+        dimigrasi.
+      - **Suite penuh: 1380 lulus, 3 gagal** (sebelumnya 1346; +34 = 12 seed
+        referensi + 17 warm start + 2 pembaca dump + 3 kontrak label). 3 gagal =
+        snapshot sensitif tanggal yang SAMA seperti sebelumnya
+        (`test_recent_campaigns`, `test_get_pirs`, `test_pir_export`).
+        `ruff`/`mypy` bersih di file baru. Belum di-commit (akhir Fase 10).
+      - **Urutan hari cutover**: stop Rundeck -> mongodump TERAKHIR -> API
+        start (bikin `default` + role sistem) -> `fase10_reference_data.py
+        --dump-dir <dump baru>` -> user dibikin ulang lewat UI ->
+        `fase10_warm_start.py --dump-dir <dump baru>` -> BARU nyalakan beat.
+        Kalau beat sempat jalan duluan, scraper sudah lewat fase dingin dan
+        item yang ke-cap gak terselamatkan. Selalu `--dry-run` dulu dan baca
+        bagian "key yang gak ketemu"/"tanpa scraper" -- itu yang berubah kalau
+        dump terakhir bawa bentuk baru.
+- [x] **10.D** CI & gate (2026-09-26). Cara kerjanya: BUKAN nulis workflow lalu
+      berharap -- tiap job dijalanin lokal, dan job `test` disimulasikan di
+      **checkout bersih** (`git ls-files -co --exclude-standard` -> folder baru,
+      `uv sync --extra dev --locked`, TANPA `.env`, TANPA extra `nlp`, TANPA
+      `tests/fixtures`) = kondisi runner GitHub. Simulasi itu nemu 6 masalah yang
+      GAK kelihatan di laptop (lihat "CI-only" di bawah); putaran terakhir:
+      **1385 lulus, 7 skip, exit 0** (lokal penuh dgn `.env`/fixtures/pymongo:
+      lihat baris "Suite penuh"). Belum pernah jalan di GitHub beneran -- `origin`
+      ada, tapi push = keputusan user; yang bisa dibuktikan lokal sudah dibuktikan.
+      - **Suite penuh (lokal: `.env` + fixtures + pymongo): 1392 lulus, 0 gagal**
+        (sebelumnya 1380 lulus + 3 gagal). Simulasi CI bersih: 1385 lulus, 7 skip
+        (5 golden yang saat itu di-skip krn fixtures di-.gitignore + 2 dump-asli tanpa
+        `legacy/dump`), exit 0; sekarang golden jalan penuh (fixtures ikut repo).
+        Belum di-commit (akhir Fase 10).
+      - **Lint**: `ruff format .` (79 file: 60 `cti_scrapers` hasil codemod, sisanya
+        core/api/tools/tests) + E501 `ta.py:50` + E501 `run_migration.py` (muncul
+        SESUDAH format). `ruff check`/`ruff format --check`/`mypy` hijau.
+        **Format = commit TERPISAH saat Fase 10 di-commit**: bikin dari
+        `git worktree` di HEAD (`ruff format .` -> commit), lalu di working dir
+        `git reset --mixed <commit-format>` + commit sisanya -- diff kerjaan asli
+        gak tercampur 79 file mekanis. (Format sudah diterapkan di working tree.)
+      - **CI-only** (semua diperbaiki + dikunci):
+        1. `test_api_bootstrap_race.py` import `cti_api.main` di level modul ->
+           `create_app()` butuh env DB -> error COLLECTION, seluruh sesi pytest
+           mati (exit 2, nol test jalan). Sekarang import lazy.
+        2. `stages/summarize.py` import `nltk`/`sumy` di level modul -> pipeline
+           gak bisa di-import tanpa extra `nlp`. Sekarang lazy DAN dipanggil di
+           luar `try/except` (dependency hilang = gagal KERAS, bukan diam-diam
+           "ringkasan = teks asli"). Test: `test_registry_without_nlp.py` +2
+           (import pipeline tanpa NLP; summarize meledak kalau nltk hilang) --
+           mutation-checked keduanya.
+        3. `test_enrich_pipeline_resilience` lupa nge-stub `extract_ttps` ->
+           test itu MANGGIL LLM BENERAN di laptop (lewat `.env`), OpenAIError di CI.
+           Bug gua sendiri dari 10.A2; artinya test itu juga nondeterministik lokal.
+        4. `test_auth_security.py` (4 test, dari Fase 7.2) ngandelin `.env`
+           (docstring-nya malah nulis itu sbg kesengajaan). Sekarang env di-set
+           `monkeypatch` per-test.
+        5. 3 snapshot sensitif tanggal (`test_recent_campaigns`, `test_get_pirs`,
+           `test_pir_export`) yang selama ini "gagal sebelum Fase 10": nilai
+           `last_match`/`first_seen`/`last_seen` (`today - N hari`) dinormalisasi
+           jadi `str` di matcher syrupy; diff `.ambr` cuma 6 baris tanggal. Suite
+           sekarang 0 gagal.
+        6. `test_golden.py` (5 test) butuh `tests/fixtures/`: sempat di-skip waktu
+           folder itu di-.gitignore, lalu skip DICABUT lagi (lihat keputusan
+           fixture) -- fixture ikut repo, jadi folder hilang = merah, bukan skip.
+      - **Job baru di `.github/workflows/ci.yml`** (actionlint bersih): `web`
+        (pnpm install --frozen-lockfile, eslint, `next typegen` + `tsc --noEmit`,
+        `next build`; tsc standalone tanpa typegen MERAH palsu: `LayoutProps`
+        cuma ada setelah typegen), `api-contract` (export OpenAPI + `gen:api` +
+        `git diff --exit-code` atas `docs/openapi.json` & `schema.d.ts` -- dicek
+        sekarang: nol drift), `compose` (`docker compose config -q`, 2 profil),
+        `docker` (matrix 4 image: build + smoke-import DI DALAM image + cek
+        non-root; smoke = `cti_api/cti_scrapers` ke-import, registry >= 80,
+        punkt_tab + spaCy load, `server.js` ada -- SEMUA perintah smoke dijalankan
+        di image staging beneran dan lolos). Ditambah `permissions: contents:
+        read` + `concurrency` (batalkan run lama di ref yang sama).
+      - **Gitleaks**: 61 temuan (default rules) di 16 fixture -- semuanya konten
+        publik pihak ketiga (key BOOMR/reCAPTCHA, form-id HubSpot, 24 ID `AKIA...`
+        di artikel berita, 1 JWT konfigurasi halaman, sampel `curl -u`). Di-scrub
+        (715 kemunculan; panjang string dijaga) pakai `tools/ops/scrub_fixtures.py`
+        (baca laporan gitleaks; 7 test) -> scan ulang 0 temuan, golden 430 tetap
+        hijau. `.gitleaks.toml`: allowlist `tests/fixtures/` DICABUT (sebelumnya
+        gate buta buat rekaman baru). Scan atas pohon yang akan di-commit + riwayat
+        git: bersih; 3 secret PALSU di test (`test_check_secrets`,
+        `test_scrub_fixtures`) ditandai `# gitleaks:allow` per baris.
+      - **KEPUTUSAN FIXTURE (final, user)**: `tests/fixtures/` (46MB, 332 file) IKUT
+        repo -- user mengeluarkannya dari `.gitignore` setelah sempat di-ignore
+        (`.vscode/` tetap di-ignore). Fixture sudah di-scrub; scan gitleaks atas
+        seluruh pohon yang akan di-commit (1087 file, fixtures ikut) = bersih, jadi
+        golden test scraper JADI gate CI. `tests/fixture_report.2026-09-17.json`
+        (laporan rekaman) ikut di-commit bareng fixture. Alur rekam ulang fixture:
+        docstring `tools/ops/scrub_fixtures.py`.
+- [x] **10.E** 14 dari 17 job Rundeck -> scraper/beat task (2026-09-26). Sisa 3
+      (`offsetAlert`, `threatactorTrendGraylog`, `threatactorTrendTelegram`) semula
+      DI LUAR scope; sesudah user bilang tidak paham fungsinya dan diskusi, hasilnya
+      lihat **10.E2**: pasangan `threatactorTrend*` DIPORT (jadi satu laporan mingguan),
+      `offsetAlert` tetap tidak diport. `techstackLibrary`
+      sudah ditarik user (`cti-revamp/techstackLibrary`, DI LUAR repo git).
+      Tiap job dibaca dulu dari skrip aslinya; bug lama yang ketemu DIPERBAIKI
+      (bukan diport), disebut per job di bawah. Semua kode ter-test (mutation-checked)
+      dan tiap komponen dijalankan LIVE di staging (LLM, Telegram, GitHub, deps.dev,
+      MITRE, twitterapi.io asli).
+      - **Fondasi**: `NoticeItem` (pesan Telegram murni tanpa enrichment; dedup per
+        `key`; sink TIDAK menelan error -> item di-release dan diulang run berikutnya,
+        beda dari `send_alert_*` lama; kena cold-start cap seperti artikel),
+        `CveMentionItem` (+ sink ke `cve_mentions`), `cti_alerts.send_document`
+        (caption > 1024 karakter -> pesan terpisah; nama file di-basename),
+        mode **`--prime`** di `Runner`/`cti-scraper run` (lihat bawah),
+        tabel **`cve_mentions`** + **`job_state`** (migrasi `a10e5c0de001`; test baru
+        `test_migrations_match_models` -> ternyata SELURUH skema nol drift, jadi guard
+        itu berlaku untuk semua migrasi berikutnya), hook penghitung mention CVE di
+        pipeline enrichment (hanya artikel BARU `seen_count == 1`, di SAVEPOINT --
+        `update_cve_mention` yang di Fase 5 dicatat "belum diport").
+      - **Watcher commit GitHub** (`GithubCommitWatcher`, 1 family): `github_ttps`
+        (`githubTTPs`, topik `apt`), `sophoslabs_github` (`githubSophoslab`),
+        `apt_ttp_simulation` (`githubAptTTPSimulation`, patch jadi lampiran),
+        `mitre_github` (`mitreGithub` + port `mitreValidator` sbg fungsi murni
+        `mitre_changelog.py`). Bug lama diperbaiki: Sophoslab cuma mengabarkan file
+        TERAKHIR per commit dan `commit_detail` tanpa token; `exit()` di commit yang
+        sudah diproses menghentikan seluruh run; offset MITRE tercatat sebelum semua
+        file terkirim; changelog MITRE gagal total kalau satu objek kurang field
+        (`KeyError`), format waktu `%H:%M%:%S` rusak, dan blok "has a parent" salah
+        kunci; field GitHub tidak di-escape untuk HTML Telegram.
+      - **Advisory library** (`LibraryAdvisoryScraper`): `techstack_npm/pypi/go`
+        (`techstackLibrary/*`). Bug lama: pesan dibangun SETELAH loop advisory ->
+        cuma advisory TERAKHIR per versi yang dikabarkan (efek fix: 3 advisory lama
+        yang tak pernah terkirim muncul sebagai notice baru di rehearsal); versi
+        dibandingkan sebagai STRING; "5 versi terbaru" dicocokkan normalisasi-vs-mentah;
+        `details` tanpa escape/batas. Dedup key = `<AdvisoryID>:<ModifiedDate>` =
+        identitas `offset/techstack_*_offset.txt` lama. Daftar paket masih
+        hardcoded (lodash/debug/request; requests/selenium/pandas; docker/runc) seperti
+        skrip lama -- `monitored_packages` di dump KOSONG, jadi belum ada konfigurasi
+        lain. **Token bot Telegram + chat/thread hardcoded di ketiga skrip** -> 12th
+        secret di `docs/SECRETS_ROTATION.md`; kode baru pakai topik `library_advisory`.
+      - **Alert tweet**: `tweet_alerts_1h`/`tweet_alerts_30m` (`twitter`/`twitter30`,
+        495 dari 498 baris identik) + routing murni `tweet_routing.route_tweet`
+        (cascade `_sendAlert` tweet, BEDA dari routing artikel: aturan "shame-site",
+        `#threatreport`, "hacktivist alliance"). SATU query `(from:a OR from:b ...)`
+        per run (bukan satu request per akun). LLM dipanggil terakhir (skrip lama
+        SEBELUM filter murah). `trending_cve` (`trendingCve`) = pengumpul mention
+        (dedup id tweet menggantikan kursor `lastTweetId.txt`); laporan 6 jamnya =
+        task `report.trending_cve`. Bug/kuirk dipertahankan: filter `falconfeedsio`
+        (`re.search(" ")` = praktis tanpa filter).
+        **TEMUAN REHEARSAL**: free tier twitterapi.io = ~1 request / 5 detik; halaman
+        ke-2 pencarian kena 429 -> run gagal total. Sekarang `_twitterapi` menunggu 6
+        detik dan mengulang 429 (maks 3x). Cek tier API key produksi.
+      - **Laporan periodik (task beat, `report.*`, queue `notify`)**: `daily_counters`
+        (`sendCounter` -> topik `debug`; angka dihitung dari DB per hari lokal, bukan
+        file `.txt`), `news_of_the_day` (`trendingNewsToday`; LLM; prompt jadi OBJEK
+        `{"topics": [...]}` karena `json_object` menolak array), `logbook`
+        (`logbook.py`; xlsx dari templat resmi, tanggal Indonesia dari tabel statis --
+        bukan `GoogleTranslator` per tanggal), `weekly_top_cve` (`topCve`) dan
+        `trending_cve`. Prinsip: baca DB -> TUTUP sesi -> kirim Telegram -> baru
+        reset counter/state (kode lama mereset/mengosongkan SEBELUM kirim).
+        Jam = jam LOKAL Rundeck lama -> UTC lewat `report_utc_offset_hours` (default 7,
+        WIB): counter 23:55, NOTD 23:58, logbook 07:00, top CVE Minggu 07:01, trending
+        tiap 6 jam. **ASUMSI: server Rundeck lama berjalan di WIB** -- set 0 kalau UTC.
+      - **`--prime`** (`Runner(prime=True)` / `cti-scraper run <id> --prime`): fetch
+        beneran, SEMUA item ditandai seen, sink dilewati (juga item non-artikel).
+        Dipakai di cutover untuk scraper yang riwayat dedup-nya gak bisa dibawa dari
+        sistem lama: watcher commit (offset lama cuma SHA, notice baru per (SHA,file))
+        dan advisory library -- tanpa duplikat, tanpa "drip" advisory lama. Warm start
+        (`fase10_warm_start.py --legacy-dir`) sekarang juga membaca file offset lama
+        `APTattack_offset.txt` dan `techstack_*_offset.txt` (kunci formatnya identik;
+        dijaga test kontrak yang membandingkan dengan kunci scraper aslinya).
+      - **Topik Telegram baru** (wajib diisi di `.env` produksi, `.env.example`
+        sudah): `notd`, `debug`, `library_advisory`, `logbook`. Guard baru
+        `test_alert_topics`: topik yang dipakai kode harus ada di `.env.example`
+        (typo topik = `UnknownAlertTopic` baru di produksi).
+      - **Bug ASLI ketemu di jalan** (diperbaiki + regresi): `ArticleRepo.
+        set_enrichment` gagal `UniqueViolation` kalau artikel yang sama di-persist
+        dua kali dengan industri/negara yang sama (SQLAlchemy INSERT sebelum DELETE
+        di flush yang sama) -- kejadian nyata kalau DUA scraper meliput URL yang
+        sama (dedup itu per-scraper): artikel sehat dicatat `[enrichment_failed]`.
+        Sekarang child dipakai ulang (`_reconcile`). Juga: urutan `count DESC` tanpa
+        tie-break di statistik IOC (`test_ioc_stats` flaky di full suite) -> tie-break
+        `IOC.type`. (~10 query `count DESC` lain di `dashboard.py`/`ta.py`/
+        `tweet.py` punya risiko tie yang sama -- belum disentuh.)
+      - **Rehearsal staging** (image dibangun ulang dari kode ini; migrasi
+        `71dc81d1e99c -> a10e5c0de001` jalan): 10 scraper baru dry-run + real,
+        `github_ttps` dingin -> cap 5 dari 14, `techstack_go --prime` -> 8 dari 8 di-skip,
+        `techstack_npm` -> 3 notice baru (advisory yang dulu tak pernah terkirim),
+        `apt_ttp_simulation` 4 notice dgn lampiran, `tweet_alerts_1h` 1 alert lewat
+        LLM+429-retry, `trending_cve` 1 mention; 5 task laporan jalan (counter
+        64 artikel + 2 file, NOTD global+apac, logbook 33 baris xlsx, top CVE MITRE
+        asli, trending). Kejadian tak terduga: `tar` dari macOS ikut membawa 3.472
+        file `._*` (AppleDouble) ke staging dan bikin `alembic` gagal `SyntaxError:
+        null bytes` -- sync berikutnya WAJIB `COPYFILE_DISABLE=1 tar ...`.
+      - **Test baru (mutation-checked; angka = fungsi test, kasus terparametrisasi
+        lebih banyak)**: `test_notice_item` (9), `test_github_watchers` (13),
+        `test_mitre_changelog` (9), `test_library_advisories` (11),
+        `test_tweet_routing` (8), `test_tweet_alerts` (18), `test_cve_mention_sink`
+        (3), `test_report_state_repo` (6), `test_report_tasks` (18), `test_logbook`
+        (8), `test_cve_record` (10), `test_report_timeutil` (4), `test_alert_topics`
+        (3), `test_migrations_match_models` (1); tambahan di `test_runner` (+4 prime),
+        `test_repositories` (+4 idempotensi), `test_enrich_pipeline_resilience` (+4
+        mention CVE), `test_warm_start` (+4), `test_beat_schedule` (+3).
+      - **Verifikasi akhir 10.E**: simulasi CI di checkout bersih (tanpa `.env`, dengan
+        fixtures yang sekarang ikut repo): `ruff check`, `ruff format --check`, `mypy`
+        hijau; **1615 lulus, 2 skip** (2 test dump-asli tanpa `legacy/dump`), 0 gagal.
+        Belum di-commit (akhir Fase 10).
+      - **Belum / perlu keputusan user**: (1) konfirmasi zona waktu Rundeck lama
+        (WIB?); (2) thread ID Telegram produksi untuk 4 topik baru; (3) tier
+        twitterapi.io produksi (free tier = 1 req/5 dtk); (4) `logbook` sekarang DIKIRIM
+        ke Telegram (skrip lama cuma menulis file, baris `send_file` dikomentari) --
+        ok?; (5) nama penandatangan logbook default = nilai hardcoded lama
+        (`WORKER__LOGBOOK_*`); (6) 3 job di luar scope (lihat atas).
+- [x] **10.E2** Keputusan user sesudah 10.E + sumber Twitter ganda (2026-09-26/27).
+      Jawaban user: zona waktu ikut asumsi WIB; thread ID Telegram staging sudah diisi
+      (termasuk topik baru `top_ta`); logbook boleh dikirim ke Telegram (user menulis
+      "twitter", dibaca Telegram -- isinya file Excel); API resmi X **pay-per-use**;
+      pilihan sumber **per-scraper**, **manual** (tanpa auto-fallback); laporan tren
+      threat actor dihidupkan, **Senin 13:00 WIB**; bearer di `stg.env` (nama
+      `X__BEARER_TOKEN`, dikoreksi user dari `X__BEARER__TOKEN`).
+      - **Opsi per-scraper** (`ScraperMeta.options`, generik -- bukan khusus Twitter):
+        `ScraperOption`/`OptionChoice` (pilihan TERTUTUP, tiap pilihan boleh membawa
+        `credential`), `cti_scraper/options.py` (`resolve_options` toleran terhadap
+        data DB usang, `validate_options` ketat buat API/CLI, `credential_for`),
+        `ScrapeContext.options`. `Runner` memilih kredensial dari opsi aktif; override
+        eksplisit `Runner(options=...)`/CLI `--option key=value` menang atas pilihan
+        admin dan TIDAK menulis DB (coba sumber lain sekali jalan). Kolom
+        `scraper_config.options` (JSONB, migrasi `a10e5c0de002`). API: `GET /{id}`
+        memuat `options[]` (pilihan + nilai efektif), `PUT /{id}/config` memvalidasi
+        (422 + daftar pilihan valid), `POST /{id}/dry-run` memakai pilihan TERSIMPAN
+        (kalau tidak, "uji dulu sebelum ganti" menguji sumber yang salah). UI: dropdown
+        di dialog detail scraper (Base UI `Select` dengan `items`), hanya pilihan yang
+        beda dari default yang disimpan, penanda "belum disimpan".
+      - **KEBIJAKAN sumber Twitter (keputusan user 2026-09-27)**: **twitterapi.io = jalur
+        UTAMA dan dipaksa duluan; API resmi X = CADANGAN**, dipakai hanya kalau twitterapi.io
+        memang tidak bisa. Pindah **MANUAL** (tanpa auto-fallback -- keputusan sebelumnya:
+        biar kuota tidak terbakar diam-diam). Default di kode tetap `twitterapi_io`, tidak ada
+        baris `scraper_config.options` kecuali admin sengaja memilih, dan teks dropdown
+        menyebut X resmi "cadangan". Yang dianggap "tidak bisa" (usulan gua, belum
+        dikonfirmasi user): kunci ditolak / kredit habis / layanan mati -- tampak sebagai
+        `fetch_error` atau `parse_error` berulang di `tweet_alerts_*`/`trending_cve`, atau
+        status health `degraded`/`dead`. BUKAN alasan pindah: 429 free tier (sudah ada
+        retry+backoff, hanya lambat), atau selisih beberapa tweet antar provider.
+      - **Sumber Twitter**: `collectors/_twitter.py` (bentuk netral `Tweet`/`TweetSearch`,
+        dispatcher, deklarasi opsi), `_twitterapi.py` (perilaku lama, sekarang lewat
+        bentuk netral -- 23 test `test_tweet_alerts` lama lolos TANPA diubah),
+        `_x_official.py` (`GET /2/tweets/search/recent`: `-is:reply`, `start_time`,
+        `expansions=author_id`, `note_tweet` untuk tweet panjang, teks di-unescape
+        supaya pesan Telegram tak ter-escape dua kali, paginasi `next_token`,
+        401/402/403/400 -> `ParseError` berisi judul+detail X, 429/5xx dibiarkan ke retry
+        Runner karena jendela rate limit X 15 menit). Dedup tetap `{id tweet}:{topik}`
+        (id sama di kedua API) -> ganti sumber tidak bikin alert dobel.
+        `tweet_alerts_1h/30m` dan `trending_cve` punya opsi `provider`; **default tetap
+        twitterapi.io**. `trending_cve` diberi peringatan biaya di dropdown (mencari
+        SEMUA tweet "CVE-<tahun>-" di seluruh X = ribuan tweet/hari; ~$0,005/tweet).
+        Secret: `XSettings.bearer_token` -> `X__BEARER_TOKEN` (SATU underscore; `__` =
+        nesting, dan `extra="forbid"` membuat nama salah gagal-START, ada test-nya);
+        credential `"x"` -> `Authorization: Bearer`. Cuma bearer -- consumer/access
+        key tidak dipakai dan tidak boleh ditaruh di server.
+        **Pengaman biaya**: maks 2 halaman x 100 = 200 tweet dibaca per run (~$1) dan
+        pemotongan dicatat (`x_official_truncated`); tiap pencarian mencatat tweet
+        dibaca + perkiraan biaya (`x_official_search`); resource yang sama di hari UTC
+        yang sama tidak ditagih dua kali (jendela 2x interval aman); batas belanja
+        bulanan dipasang user di X Developer Console.
+      - **Laporan tren threat actor** `report.weekly_threat_actor_trend` -> topik `top_ta`,
+        Senin 13:00 WIB (jadwal pilihan user, BUKAN jadwal Rundeck lama; ikut
+        `WORKER__REPORT_UTC_OFFSET_HOURS`, hari ikut bergeser lewat tengah malam).
+        Gantiin pasangan `threatactorTrendGraylog`+`Telegram`: datanya dihitung dari
+        `article_threat_actors` + `articles.first_seen_at` -- TANPA Graylog, tanpa file
+        `ThreatActorName.txt`, tanpa dua token hardcoded (yang tetap harus dicabut,
+        SECRETS_ROTATION #1/#2). Sama: dua jendela bergulir 7 hari, top 5 menurut jumlah
+        artikel, banding naik/turun/tetap/baru; beda: ejaan digabung tanpa peduli
+        huruf besar/kecil, "Baru muncul" tanpa persen (lama: jumlah x 100 = tak bermakna),
+        pekan kosong tidak kirim pesan, nama grup di-escape HTML. `as_of` (ISO) buat
+        mengulang. Bug yang ketemu SAAT menulis test: jumlah per-ejaan dijumlahkan ->
+        satu artikel yang menyebut "APT41" dan "Apt41" terhitung dua kali (diperbaiki).
+      - **`offsetAlert` tetap tidak diport**: alarm "file offset > 30 hari" sudah rusak
+        dari lama (semua scraper tampak mati sejak dedup pindah ke Mongo) dan file offset
+        tidak ada lagi; health sweep Fase 9 (`dead`/`degraded`/`zero_yield`) menggantikan.
+        Celah kecil yang DISADARI: feed yang fetch-nya sukses tapi isinya beku (semua item
+        sudah pernah terlihat) tidak ditandai (`zero_yield` hanya kalau fetch balik 0 item).
+        Sinyal "tak ada item BARU N hari" bisa ditambah nanti; berisik buat feed jarang-update.
+      - **Test baru (92)**: `test_scraper_options` (9), `test_x_official` (23; 12 mutasi
+        adapter mati semua), `test_cli_options` (7), `test_credentials` (+3),
+        `tests/contract/test_scraper_options` (16; opsi tiap scraper konsisten -- default
+        termasuk pilihan, kredensial dikenal, `meta.credential` = kredensial pilihan default),
+        `test_runner_options` (6; DB -> Runner -> header HTTP), `test_scraper_options_api`
+        (13; termasuk dry-run memakai pilihan tersimpan), `test_threat_actor_trend` (12),
+        `test_beat_schedule` (+1), `test_x_official` (+2 lagi untuk `with_author`). Semuanya mutation-checked; 3 mutan yang sempat SELAMAT
+        (urutan peringkat, `as_of` naif, `{}` vs `null`) menemukan test yang lemah dan
+        sudah diperketat.
+      - **Verifikasi terhadap API X asli** (bearer staging; total belanja seluruh uji live
+        ~17 tweet unik = di bawah $0,10):
+        `GET /2/usage/tweets` HTTP 200 (batas proyek 3.000.000 baca; `project_usage` tidak
+        real-time -- selisih sebelum/sesudah probe 0 padahal 5 tweet dibaca, jadi jangan
+        dijadikan alat ukur biaya per run). Nama parameter `tweet.fields` (termasuk
+        `note_tweet`, `referenced_tweets`, `entities`, `created_at`), `expansions=author_id`,
+        `user.fields=username` DITERIMA (X memvalidasi field dulu lalu berhenti di error
+        pertama -- dibuktikan dengan `start_time` masa depan + kontrol field ngawur; validasi
+        query justru SESUDAH validasi parameter, jadi sintaks hanya terbukti lewat pencarian
+        sungguhan). Probe sungguhan: `(from:a OR from:b ...) -is:retweet -is:reply` dan
+        `CVE-2026- -is:retweet -is:reply -is:quote` -> HTTP 200; `"CVE-2026-"` dengan/tanpa
+        kutip memberi hasil identik -> **tanpa kutip**. Tweet panjang akun sungguhan
+        (DailyDarkWeb) datang dengan `note_tweet` -> penanganan `note_tweet` terbukti
+        perlu. Dokumentasi X menulis `post.fields`; `tweet.fields` yang dipakai dan valid.
+      - **Temuan biaya**: `expansions=author_id` membuat X ikut mengirim objek user, yang
+        kemungkinan ditagih terpisah (lookup user ~$0,010 per user unik per hari UTC). Untuk
+        `tweet_alerts_*` (<= 21 akun) itu maksimal beberapa sen per hari; untuk `trending_cve`
+        (ribuan penulis unik) bisa melipatgandakan tagihan -- makanya `TweetSearch.with_author`
+        (default True) dimatikan di `trending_cve`: tanpa `expansions`, tanpa username, URL
+        `x.com/i/status/<id>`. Terbukti di API asli (dry-run `trending_cve` X resmi: HTTP 200,
+        8 tweet, tanpa `includes`).
+      - **Uji di staging** (image dibangun ulang, migrasi `a10e5c0de002` dijalankan,
+        7 container healthy, `X__BEARER_TOKEN` termuat):
+        dry-run twitterapi.io vs X resmi -> `tweet_alerts_30m` 0 vs 0, `tweet_alerts_1h`
+        4 vs 4 notice, `trending_cve` 6 vs 8 (indeks berbeda, selisih detik). X resmi ~0,5 dtk
+        untuk pencarian vs 18-35 dtk di twitterapi.io free tier (429 + backoff).
+        **Dedup lintas provider terbukti**: run sungguhan `tweet_alerts_1h` via X resmi
+        `items_new=4`, lalu via twitterapi.io tweet yang sama `items_new=0 items_dropped=4`.
+        Kontrol plane e2e lewat proxy web (login `stg-admin`): GET memuat `options` + nilai
+        efektif, PUT menyimpan (`updated_by` tercatat), nilai/key salah 422 dengan daftar
+        pilihan valid, scraper tanpa opsi 422, gagal-PUT tidak mengubah pilihan tersimpan,
+        dry-run memakai pilihan TERSIMPAN (log `x_official_search` muncul di container api),
+        `options=null` dan `reset-config` mengembalikan default. State staging dibersihkan
+        (semua scraper kembali ke default twitterapi.io). **Dropdown di UI belum dilihat mata
+        di browser** (login browser butuh kredensial; lint + `tsc` + `next build` di image
+        lolos).
+      - **Verifikasi**: simulasi CI di checkout bersih (tanpa `.env`): `ruff check`, `ruff
+        format --check` (ruff juga memformat blok kode di `docs/*.md` -- ketahuan di sini),
+        `mypy` hijau; **1707 lulus, 2 skip** (1709 test = 1617 + 92 baru), 0 gagal.
+        `openapi.json` + `schema.d.ts` di-generate ulang (diff = hanya penambahan `options`);
+        `eslint` + `tsc --noEmit` web bersih. Belum di-commit (akhir Fase 10).
+- [x] **10.E2 sisa**: dropdown "Sumber data Twitter/X" DIVERIFIKASI di browser (staging via SSH
+      tunnel `13000`, login server-side `stg-admin`, izin user) -- label "twitterapi.io (utama)"/
+      "X API resmi (cadangan)" muncul benar, simpan bertahan setelah reload, Reset to Defaults
+      jalan. Dua cacat kosmetik (label terpotong, teks dialog reset) dibenerin. Browser sudah
+      logout. Disk staging sempat 100% penuh (Docker build cache 30 GB dari build gua berulang) ->
+      di-prune dengan izin user (`docker image prune` + `docker builder prune --filter until=6h`,
+      17,9 GB kembali, sekarang ~16 GB kosong); volume TIDAK disentuh.
+- [x] **10.F** Rotasi 13 secret (lihat `docs/SECRETS_ROTATION.md`) -- **didelegasikan ke tim ops user
+      2026-09-30, dieksekusi tim tersebut di luar sesi/repo ini** (bukan hasil verifikasi teknis; token
+      belum dicek ulang dari sisi platform baru). Template `.env` prod (keputusan 4) SELESAI dikerjakan
+      di sesi ini (`.env.prod.template`).
+- [~] **10.G** Runbook cutover + latihan + bukti (2026-09-27). **Kode, dokumen, dan latihan
+      di staging SELESAI; sisanya butuh user/produksi** (daftar di "Belum" bawah).
+      - **Runbook**: `docs/CUTOVER_RUNBOOK.md` (prasyarat, cutover 12 langkah dengan perintah,
+        pantau 4 jam, hypercare, backup, rollback 3 tingkat, sumber Twitter utama/cadangan,
+        troubleshooting dari kejadian nyata, dan bagian "Yang BELUM terbukti" yang jujur).
+        Templat: `docker/ops/nginx-cti.conf.example` (`X-Forwarded-For` WAJIB),
+        `cti-pg-backup.{service,timer}`. Komentar `CTI_TAG` di `stack.env.example` yang menyuruh
+        "rollback = ganti tag + up -d" DIKOREKSI (itu jebakan, lihat temuan 1).
+      - **Alat baru `tools/ops/`** (stdlib, jalan di host tanpa `uv`; semua mutation-checked):
+        `pg_backup.py` backup/verify/restore/prune (33 test), `notify_telegram.py` (10),
+        `rollback.py` (21), `rundeck_schedule.py` (12), `check_secrets.py` +cek bearer X (+3).
+      - **Latihan backup Postgres** (staging, DB kecil 1,1 MB): backup 0,45 dtk, `verify`
+        (restore ke DB scratch + banding `alembic_version` dan 6 tabel kunci + drop scratch)
+        3,4 dtk -> semua cocok, restore ke DB bernama 1,2 dtk. Pengaman terbukti live: restore
+        ke DB live DITOLAK, ke DB berisi DITOLAK tanpa `--replace`, pg-exec salah -> exit 1 +
+        alarm (`--on-failure-cmd`) jalan dan tidak meninggalkan berkas.
+      - **Latihan rollback versi** (image `:stg` = N, `:prev` = N-1 tanpa migrasi terakhir):
+        (1) **TEMUAN 1 -- rollback naif `CTI_TAG=prev docker compose up -d` bikin OUTAGE**:
+        `migrate` (jalan tiap `up`) gagal "Can't locate revision a10e5c0de002" dan compose sudah
+        terlanjur menghentikan api/worker yang bergantung padanya. (2) Prosedur benar (downgrade
+        pakai image BARU, lalu ganti tag): 21,9 dtk sampai semua healthy. Dijadikan alat
+        `rollback.py` (pre-flight revisi DB vs head target, gabung riwayat KEDUA image, downgrade
+        hanya dengan `--yes`, tolak riwayat bercabang, tidak lanjut `up` kalau downgrade gagal,
+        verifikasi revisi akhir). Waktu terukur: rollback 19,2-23,1 dtk, roll-forward 22,3 dtk,
+        satu siklus mundur+maju 41,9 dtk. **Bug di alat ini ketemu OLEH LATIHAN**: roll-forward
+        salah dianggap "bercabang" karena riwayat cuma dari image sekarang (image lama tak kenal
+        revisi baru) -> sekarang riwayat digabung; dan **oleh tes**: baris riwayat merge/cabang
+        DILEWATI diam-diam oleh regex (harusnya ditolak) -> parser diganti.
+      - **Bukti health sweep dengan beat** (staging, sweep tiap 3 mnt, thread `scraper_health`
+        asli): beat terpilih `beat_leader`; digest pertama 14:42:00 `problems=92 total=94`
+        terkirim ke Telegram dalam ~2 dtk; scraper browser `any_run_trends` (jadwal dipaksa
+        tiap menit) jalan normal, lalu `worker-browser` DIMATIKAN -> 6 menit kemudian status
+        **`dead`** dan tercantum di digest 14:48 (isi pesan diambil dengan fungsi asli, kirim
+        Telegram diganti print: `dead (22): ... any_run_trends ...`, `degraded (1): doyensec`);
+        `worker-browser` dinyalakan -> `ok` di run pertama, backlog terkuras. `degraded` juga
+        terdeteksi alami (parse_error XPath/XML). Pesan digest 2.350 karakter (< batas 4096).
+        Catatan desain (masuk runbook): digest dikirim ULANG tiap sweep selama masih ada
+        masalah (tidak ada dedupe); dan digest lewat queue `notify` yang dilayani container
+        `worker` -- kalau `worker` yang mati, digest tidak bisa melaporkannya (alarm ikut mati).
+      - **TEMUAN 2 -- thundering herd** (dari latihan di atas): worker mati -> beat terus
+        mengirim tick -> saat worker nyala SEMUA tick menumpuk dieksekusi sekaligus (di produksi:
+        mati 24 jam = puluhan run per scraper, 25 scraper Chromium serentak). Perbaikan: tick
+        scrape kedaluwarsa setelah SATU interval jadwalnya (`options.expires` di beat; task
+        periodik/laporan sengaja TIDAK kedaluwarsa). Terbukti live: worker-browser mati 3,4 mnt
+        -> 12 tick menumpuk -> saat nyala tick basi dibuang (`Discarding revoked task`) dan
+        `any_run_trends` cuma jalan 1x. (4 test, mutasi mati semua.)
+      - **TEMUAN 3 -- `monitor_x` TIDAK viable di twitterapi.io free tier** (ketemu di beat staging):
+        satu query PER AKUN x 18 akun berturut-turut; free tier ~1 request/5 dtk untuk SELURUH
+        key, dibagi juga dengan `tweet_alerts_*`/`trending_cve`. Sudah ditambah backoff 429
+        (`_twitterapi._get_with_backoff`: tunggu 6 dtk, ulang maks 3x; 3 test) -- **TAPI di live
+        BELUM menyelesaikan**: run berubah dari gagal-cepat jadi gagal-lambat (`fetch_error`
+        40-130 dtk, nol tweet) lalu `rate_limited` dari token bucket domain lokal. Bucket Redis
+        itu rata-rata, bukan jeda 5 dtk antar request, jadi tidak menolong. Yang BELUM
+        diputuskan: (a) tier PRODUKSI twitterapi.io berbayar (QPS jauh lebih tinggi) -> scraper ini
+        jalan apa adanya; atau (b) redesign: SATU query OR per run + dedup id tweet (kunci sudah
+        id tweet), pindah ke lapisan sumber netral (`collectors/_twitter.py`) -- butuh `Tweet`
+        netral diperluas (nama, avatar, followers, media, lang) dan `since_id` per akun diganti
+        jendela `since_time`. **Pertanyaan terbuka ke user: tier produksi twitterapi.io?** Sampai
+        dijawab, tab X Intel di staging kosong dan `monitor_x` akan `degraded` di digest.
+      - **Update 2026-09-30 (permintaan user "kasih delay biar gak kena rate limit", bukan minta tier
+        berbayar)**: dua bug ketemu, dua-duanya diperbaiki. (1) `rate_limit` `monitor_x` beda dari 3
+        scraper lain di domain yang sama ("15/minute" vs "10/minute" ke-3 lainnya) -- melanggar
+        invarian modul `ratelimit.py` sendiri ("domain dibagi rata"), disamakan ke "10/minute". (2)
+        18 akun berturut-turut TANPA jeda menghabiskan budget LOKAL kita sendiri (Redis token
+        bucket) sebelum server sempat balas 429 sama sekali -- itu penyebab `rate_limited` yang
+        belum kejelasan di TEMUAN 3, bukan cuma bucket "rata-rata" yang disebut di atas. Diperbaiki:
+        jeda PROAKTIF `window_s/capacity` (6 dtk, diturunkan dari `rate_limit` yang sama, bukan angka
+        baru) di antara akun, dan `_get_with_backoff` sekarang menangkap `RateLimited` (budget lokal)
+        selain `TransientFetchError` "HTTP 429" (server), nunggu jendela reset yang BENAR (60 dtk,
+        bukan 6 dtk punya-nya 429) baru mengulang. 6 test `monitor_x_backoff` (dari 3) + mutasi 8/8
+        mati. **Masih BELUM dibuktikan live/staging** -- opsi (a) tier berbayar dan (b) redesign OR-
+        query di atas masih relevan kalau ini terbukti belum cukup.
+      - **TEMUAN 4 -- `new_cve` membungkus SEMUA exception MITRE jadi `ParseError`**, jadi batas
+        laju domain (`RateLimited`) dan 429/5xx tampil sebagai "struktur situs berubah"
+        (`degraded`) -- terlihat di digest. Sekarang error framework diteruskan apa adanya
+        (status run `rate_limited`/`fetch_error`). (6 test.) Yang BELUM ditangani: `new_cve`
+        tanpa dedup (upsert ulang tiap run) dan `rate_limit=60/minute` -> kalau kandidat CVE per
+        run > 60, run selalu terhenti di kandidat yang sama (starvation potensial).
+      - **Rehearsal sampel besar = beat asli 60 menit di staging** (14:40-15:41 UTC, LLM gateway
+        asli, Telegram tes asli; 16 dari 94 scraper masih "dingin"): **92/94 scraper sempat jalan**;
+        run: ok 121, parse_error 28, fetch_error 17, rate_limited 8, empty 5 (dedup membuang
+        **1.074 item duplikat** -> warm start terbukti bekerja; `cold_start_cap` memotong 15 item
+        `mandiant`, 5 lolos); **106 artikel baru diproses, 19 ditolak klasifikasi, 0 gagal
+        diproses** (`[enrichment_failed]` = 0); queue `enrich` puncak 13 (concurrency NLP = 1,
+        habis dalam beberapa menit); 12 digest health terkirim tanpa satu pun kegagalan Telegram;
+        **nol ERROR di api/beat/worker-browser**, dan di worker/worker-nlp hanya: `_RetryableRunError`
+        (pembungkus retry Celery untuk run yang memang gagal) dan `HTTP 403` dari
+        `bleepingcomputer.com` saat mengambil teks artikel (IP staging diblokir; artikel tetap
+        diproses). RAM: worker-nlp 449 MB, worker 365 MB, worker-browser 250 MB, api 432 MB.
+        BELUM teruji: `NLP_WORKER_CONCURRENCY` > 1 dengan volume produksi (pelajaran 10.B).
+      - **CENSUS dari IP staging** (run terakhir non-ok per scraper; 30 dari 92 = 33%): **18
+        XPath tak cocok** -- abnormalsecurity aquasec blackberry cis cloudflare cymru dragos groupib
+        huntio huntress intel471 k7security koisec landth prodraft proofpoint sans splunk (situs
+        berubah ATAU bot-protection memblokir IP staging); **7 XML tak valid (respons bukan
+        feed)** -- cisa cybersecnews exploitdb google nquiring_minds sysdig threatmon; **2 `item_path`
+        Atom tak cocok** -- doyensec trustwave; **2 batas laju domain** -- monitor_x (twitterapi.io,
+        temuan 3) dan new_cve (MITRE 60/mnt, temuan 4; status kini `rate_limited` sesudah perbaikan);
+        **1 timeout** -- ecrime. Sebagian besar sudah dikenal dari census 10.B/KNOWN_BROKEN, tapi
+        angkanya JAUH lebih besar dari yang tercatat (10.B hanya menguji 49 feed ringan; browser +
+        API belum). **Wajib diulang dari IP PRODUKSI sebelum cutover** -- dari staging tidak bisa
+        dibedakan "selector rusak" vs "IP diblokir" -- lalu tiap scraper live tanpa golden test
+        hijau butuh perbaikan atau waiver tertulis (gate 10.D). Health sweep sudah menampilkan
+        semuanya sebagai `degraded` di digest (itu memang fungsinya).
+      - **CENSUS DIULANG 2026-09-30** (permintaan user): user sadar staging punya `warp-cli`/`warp-svc`
+        (Cloudflare WARP) yang mungkin nge-tunnel egress lewat IP yang di-block situs anti-bot --
+        dimatikan sebelum ulang census. Diverifikasi dulu (read-only): `systemctl is-active warp-svc`
+        masih `active` (daemon-nya idle, bukan mati total), TAPI IP publik staging SEKARANG
+        (`ipinfo.io`) balik ke `AS131111 PT Mora Telematika Indonesia` (ISP asli, Jakarta) -- BUKAN
+        range Cloudflare -- dan default route langsung ke gateway LAN, bukan interface WARP. Skrip
+        census ditulis ulang (`census2.py`, yang lama sudah kehapus bareng scratchpad sesi
+        sebelumnya) -- satu proses Python jalan DI DALAM `cti-worker:stg`, iterasi `Runner(...,
+        dry_run=True)` per scraper (bukan 94x `docker run` terpisah), 658 detik total.
+
+        **Hasil: 24 dari 94 gagal** (turun dari 30/92) -- **18 XPath tak cocok** (LIST IDENTIK
+        dengan sebelumnya, huruf demi huruf: abnormalsecurity aquasec blackberry cis cloudflare
+        cymru dragos groupib huntio huntress intel471 k7security koisec landth prodraft proofpoint
+        sans splunk); **4 XML tak valid** -- cisa google nquiring_minds sysdig (turun dari 7: cybersecnews
+        exploitdb threatmon HILANG dari daftar gagal); **2 `item_path` kosong** -- doyensec trustwave
+        (tetap); **0 batas laju** (turun dari 2: monitor_x DAN new_cve sekarang `ok` -- lihat detail
+        `monitor_x` di TEMUAN 3, tapi `new_cve` yang tadinya `rate_limited` juga sekarang lolos tanpa
+        sentuhan kode APAPUN di sesi ini, jadi murni efek WARP mati); **0 timeout** (turun dari 1:
+        `ecrime` sekarang `ok`).
+
+        **Baca hasil ini apa adanya**: 18 XPath yang PERSIS SAMA sebelum/sesudah WARP dimatikan adalah
+        bukti kuat itu genuinely selector situs berubah (bukan IP diblokir) -- kalau itu IP-blocking,
+        harusnya ikut hilang juga seperti 5 yang lain. Sebaliknya, 5 yang hilang (rate-limit x2, timeout,
+        XML x3 minus yang masih gagal) adalah kandidat kuat "itu WARP", walau tidak 100% bisa dipisah
+        dari kemungkinan lain (jam berbeda, situs berubah kebetulan bersamaan). `monitor_x` KHUSUSNYA
+        punya bukti live tambahan: 429 tetap terjadi tiap akun (1x per akun, 18 kali, ~330 detik total)
+        TAPI sekarang berhasil sampai selesai (`status=ok`, 23 item) -- pacing 10.G2 yang menyelamatkannya
+        dari 429 berulang, bukan cuma soal WARP.
+
+        **Belum diuji sama sekali di census ini**: fetch teks artikel penuh (stage enrichment, BUKAN
+        `fetch()` scraper) -- termasuk 403 `bleepingcomputer.com` yang tercatat sebelumnya; `dry-run`
+        berhenti di `fetch()`, gak sampai ke situ. **Kesimpulan soal gate 10.D**: staging sekarang cukup
+        dipercaya buat mastiin 24 sisa itu genuine (bukan sekadar "IP staging diblokir") -- census dari
+        IP PRODUKSI SUNGGUHAN jadi TIDAK LAGI wajib blocking, tapi tetap direkomendasikan sebagai sanity
+        check terakhir sebelum go-live kalau egress produksi beda jalur dari staging.
+
+      - **Perbaikan selector 2026-09-30** (permintaan user, "prioritas paling gampang" dulu): dari 24
+        sisa, 2 `item_path` diperbaiki, 1 dari 4 "XML tak valid" dikonfirmasi flaky (bukan bug), 3
+        dikonfirmasi BUKAN gampang (site migration tanpa pengganti jelas). 18 XPath BELUM disentuh.
+        - **`doyensec` -- FIXED, bug MIGRASI (bukan situs berubah)**: feed-nya Atom sejak awal
+          (`<feed xmlns="...atom...">`, `<entry>`, `<link href="...">`), tapi codemod Fase 4 nge-generate
+          scraper ini pakai default `RSSScraper` yang RSS-shaped (`.//item`, `link` `.text`) --
+          overridenya emang gak pernah ada. Fix: `item_path=".//{ns}entry"`, `title_path="{ns}title"`,
+          `link_path="{ns}link"`, `link_attr="href"`.
+        - **`trustwave` -- FIXED, URL pindah (rebrand jadi LevelBlue)**: URL lama 301 ke feed yang
+          SENGAJA dikosongkan sumbernya (`<title>[DO NOT USE] SpiderLabs Blog</title>`, nol `<item>`) --
+          BUKAN selector yang salah, dan `follow_redirects=True` sudah bekerja benar, cuma tujuannya
+          mati. Feed aktif ketemu dari `<link rel="alternate" type="application/rss+xml">` di halaman
+          blog live: `levelblue.com/blogs/spiderlabs-blog/rss.xml` (tanpa `en-us`). `meta.source` diganti
+          "LevelBlue SpiderLabs (dulu Trustwave)" -- efek samping: alias `by_source` di
+          `fase10_warm_start.py` builds dari `meta.source` LIVE, jadi dump lama (masih label
+          "trustwave") gak ke-match lagi. Ditambal: entri `ALIASES["trustwave"] = "trustwave"` eksplisit
+          (test regresi `test_real_dump_resolves_every_key_and_only_retired_sources_are_dropped` yang
+          nangkep ini butuh fix, bukan cuma teori).
+        - **`cisa` -- KEMUNGKINAN FLAKY, TIDAK diubah**: fetch ulang 4x berturut-turut (byte SAMA
+          persis tiap kali) parse bersih tanpa error -- gagal di census kemungkinan hiccup transien
+          sesaat (jaringan/server), bukan bug yang reproducible. Tidak ada kode yang disentuh.
+        - **`google`, `nquiring_minds`, `sysdig` -- DIKONFIRMASI BUKAN gampang, belum diperbaiki**:
+          `google` (`blog.google/threat-analysis-group/rss/`) sekarang balikin halaman 404 Google
+          sendiri (`<title>Error 404 (Not Found)!!!</title>`) -- blog TAG dibubarkan/direstrukturisasi;
+          `blog.google/threat-analysis-group/` redirect ke `blog.google/security/` yang RSS-nya
+          (`blog.google/security/rss/`) isinya keamanan PRODUK umum (Android/Chrome/AI), bukan threat
+          intel -- ganti scope, bukan ganti URL doang, butuh keputusan bukan cuma perbaikan.
+          `nquiring_minds` (`/feed/`) sekarang 404, homepage-nya gak nyantumin link blog/news/feed sama
+          sekali di HTML mentah (kemungkinan pindah CMS/SPA) -- gak ada sitemap.xml juga. `sysdig`
+          (`/blog/topic/threat-research/feed/`) redirect ke URL yang JUGA 404. Ketiganya butuh
+          investigasi manual lebih dalam (mungkin browser interaktif) atau waiver tertulis (gate 10.D).
+        - **18 XPath tak cocok -- belum disurvei sama sekali**: abnormalsecurity aquasec blackberry cis
+          cloudflare cymru dragos groupib huntio huntress intel471 k7security koisec landth prodraft
+          proofpoint sans splunk. Menyusul.
+        - Test baru `test_census_selector_fixes.py` (5, fixture dari HTML/XML NYATA yang ditarik live
+          2026-09-30) + `test_warm_start.py` alias (1 baru via dump asli). 7 mutasi, 0 selamat. Full
+          suite sesudahnya: **1880 lulus, 0 gagal, 0 skip.**
+      - **KESALAHAN gua yang harus diketahui**: (a) cek kunci `stg.env` dengan `${v:+..}${v:-..}`
+        MENCETAK nilai NVD/GitHub/LLM-gateway/twitterapi.io ke transkrip sesi -> dilaporkan ke
+        user, rotasi diserahkan ke keputusan user (memori `never-echo-secrets`); (b) `echo "K=v" >> stg.env`
+        menempelkan baris ke akhir `X__BEARER_TOKEN=...` karena file tanpa newline akhir -- ketahuan
+        seketika (grep) dan dipulihkan dari backup `stg.env.bak-10G`; (c) harness mutation-check
+        gua cacat (cache `.pyc` mutan sebelumnya dipakai kalau ukuran file sama dalam detik yang
+        sama -> "KILLED"/"SURVIVED" bisa palsu) -> diperbaiki (`PYTHONDONTWRITEBYTECODE` + hapus
+        `.pyc` + cek baseline hijau) dan SEMUA mutation-check sesi ini diulang: 0 selamat.
+        Mutation-check 10.E di sesi sebelumnya memakai harness lama dan BELUM diulang.
+      - **Disk staging** sempat 100% (build cache 30 GB) lalu 95% lagi sesudah build berulang;
+        di-prune dengan izin user (`image prune` + `builder prune --filter until=`); volume tidak disentuh.
+      - **Latihan restore penuh ke DB live DIBLOKIR pengaman** (memuat `TRUNCATE` + `DROP DATABASE` di
+        staging) -- tidak dijalankan, tidak diakali; menunggu izin eksplisit user.
+      - **Belum / butuh user atau produksi**: (1) restore penuh ke DB live (izin); (2) latihan
+        rollback ke STACK LAMA <5 menit di produksi (`rundeck_schedule.py` baru diuji dengan API
+        palsu, belum ke Rundeck asli); (3) census feed dari IP produksi + waiver; (4) pasang
+        nginx/systemd timer backup/salinan off-host di host produksi; (5) tier twitterapi.io
+        produksi; (6) rotasi kunci yang tercetak (lihat KESALAHAN a) dan 10.F.
+      - **Test baru 10.G (91)**: `pg_backup` 33, `notify_telegram` 10, `rollback` 21,
+        `rundeck_schedule` 12, `monitor_x_backoff` 3, `new_cve_errors` 6, `beat_schedule` +3,
+        `check_secrets` +3. Simulasi CI checkout bersih: ruff, format, mypy hijau,
+        **1798 lulus, 2 skip** (simulasi CI FINAL di checkout bersih, sesudah semua perubahan 10.G).
+
+- [x] **10.G2** nginx di compose + sertifikat self-signed + temuan CVE Tracker (2026-09-26/27, permintaan user).
+      - **nginx = service compose** (`profile app`, dibuka ke luar di `NGINX_BIND_ADDR:80/443`; api/web/postgres/redis
+        tetap `127.0.0.1`). Image sendiri `docker/nginx.Dockerfile` (nginx:1.27-alpine + openssl; `nginx:alpine`
+        polos TIDAK punya openssl), tag `cti-nginx:1` **tidak ikut `CTI_TAG`** supaya `rollback.py` tak menyentuh edge.
+        Berkas: `docker/nginx/templates/cti.conf.template`, `05-selfsigned-cert.sh`, `06-cert-renew-loop.sh`;
+        variabel `NGINX_*` di `docker/stack.env.example`; `docker/nginx/tls/` (kunci privat) di-gitignore +
+        di-dockerignore.
+      - **Sertifikat**: dibuat otomatis saat start (SAN = `localhost`, `127.0.0.1` + `NGINX_TLS_HOSTS`, RSA 2048,
+        365 hari, `CA:FALSE`, EKU serverAuth, kunci mode 600). Dibuat ulang bila daftar host berubah / kunci tak cocok /
+        sisa <= 30 hari; selain itu **fingerprint tetap**. Sertifikat operator (subject tanpa penanda) **tidak pernah
+        disentuh**. Loop latar belakang memeriksa tiap 24 jam dan `nginx -s reload` -- tanpa ini nginx yang jalan
+        > 1 tahun tanpa restart kedaluwarsa diam-diam. IPv6 belum didukung generator.
+      - **Config proxy**: `X-Forwarded-For $proxy_add_x_forwarded_for` (WAJIB), `Host $http_host` (bukan `$host`,
+        yang membuang port), `proxy_pass` lewat variabel + `resolver 127.0.0.11 valid=10s` (nginx yang menyimpan IP
+        `web` saat start = 502 selamanya setelah `web` di-recreate/rollback; terbukti pulih 3 dtk), tanpa HSTS
+        (self-signed), TLS 1.2/1.3, `server_tokens off`, upload 20 MB.
+      - **Bukti staging** (nginx di 127.0.0.1:18443): e2e 13/13 (login lewat nginx, cookie `Secure`+`HttpOnly`, sesi valid,
+        redirect http->https membawa port, sertifikat yang disajikan = berkas, SAN, TLS 1.3, `Server: nginx` tanpa versi,
+        pulih setelah `web` di-recreate); **IP klien asli sampai `audit_log`** dari container klien (`172.21.0.10`)
+        walau klien mengirim `X-Forwarded-For: 6.6.6.6` + `X-Real-IP: 9.9.9.9`; fingerprint stabil antar recreate.
+      - **Test `tests/edge` (44)** container Docker sungguhan (skip tanpa Docker): generator (SAN, izin kunci, idempoten,
+        host berubah, hampir kedaluwarsa, sertifikat operator tak tersentuh, pasangan setengah, kunci tertukar, host
+        tak valid, wildcard/duplikat), proxy (XFF ditambah bukan ditimpa, header identitas klien ditimpa, port di Host,
+        redirect, `web` diganti -> ditemukan lagi, start tanpa `web`, batas upload, healthcheck, konfigurasi efektif),
+        loop pembaruan, healthcheck (log tetap kosong; listener internal tak terjangkau dari jaringan), dan kabel compose
+        (profil, port, tag tak ikut `CTI_TAG`, tanpa secret aplikasi, mount TLS).
+        **Mutation check: 62 mutasi, 0 selamat** (template 16, skrip 21, Dockerfile 4, compose 10, loop 6, healthcheck 5).
+        Temuan tentang test sendiri: 413 yang "lolos" di percobaan pertama ternyata datang dari upstream palsu
+        (nginx polos, batas 1 MB), bukan dari edge -> upstream palsu dilonggarkan.
+      - **Spam log ketemu user + diperbaiki** (2026-09-26): log nginx berisi 2 baris `notice` (`SIGCHLD received` +
+        `unknown process N exited`) tiap 15 dtk. Penyebab dibuktikan: healthcheck https -> `wget` busybox memakai proses anak
+        `ssl_client` yang yatim, di-reap nginx (PID 1); 1x `wget` manual = persis 2 baris itu. Diperbaiki dengan memindah
+        healthcheck ke HTTP polos di listener loopback `127.0.0.1:8081` (bukan dijadikan harian: container akan `starting`
+        24 jam dan nginx mati baru ketahuan besoknya). Live: 0 notice dalam 3 menit (tadinya 12).
+      - **IP klien eksternal TERBUKTI** (2026-09-26): login user dari laptop lewat `https://172.25.1.77` tercatat di
+        `audit_log.ip_address` = IP laptop (`10.251.64.143`), bukan gateway Docker (`172.21.0.1` hanya untuk akses lewat
+        tunnel SSH/localhost). Staging kini publish `0.0.0.0:80/443` (setelan `stg.stack.env` user).
+      - **Belum**: dipasang di host produksi.
+      - **CVE Tracker**: teks kosong "Run newCveThreat.py to populate" (legacy) diganti (satu-satunya teks legacy
+        yang tampil di UI). Tab kosong di staging karena `new_cve` **belum pernah sukses** di sana (run terakhir
+        berhenti kena batas MITRE); dijalankan manual: **80 CVE / 12 tech / 49 dtk** (11 CRITICAL, 37 HIGH).
+      - **Bug ketemu + diperbaiki**: kandidat CVE membawa nama ter-encode URL (`palo%20alto`/`palo+alto`) tetapi peta
+        tech->client berkunci nama asli, jadi techstack **multi-kata dibuang diam-diam** (4 dari 33 di staging:
+        `palo alto`, `microsoft 365`, `new relic`, `harmony sase`); skrip lama meng-index kedua bentuk dan menyimpan
+        nama ter-decode. Sekarang kandidat membawa nama asli (encode hanya untuk URL). Bukti live: run ulang ->
+        81 CVE, `microsoft 365` masuk (CRITICAL), warning `no_client_match` 0. Test baru `test_new_cve_multiword_tech`
+        (5; NVD + Tenable), 4 mutasi 0 selamat.
+      - **Tidak diperbaiki -> `docs/ROADMAP.md` item 3**: jendela pencarian hanya 8 hari (riwayat techstack **baru
+        setelah cutover** tak pernah terisi -- riwayat SEBELUM cutover sekarang diatasi migrasi, lihat 10.F di bawah),
+        token bucket MITRE tidak menunggu (kandidat > 60/mnt = run berhenti `rate_limited`), `new_cve` tanpa dedup.
+      - **Roadmap baru** `docs/ROADMAP.md`: (1) rebranding nama + UI, (2) rebranding email newsletter/CVE,
+        (3) tombol "Populate now" (semua / hanya yang baru ditambahkan).
+      - **Validasi akhir**: simulasi CI di checkout bersih -- ruff, format (514 file), mypy hijau, **1845 lulus, 2 skip**
+        (CI-sim penuh terakhir; sesudahnya +2 test edge healthcheck, 44/44 lulus) (+47 dari 1798: 42 `tests/edge` + 5 `new_cve` multi-kata); eslint + tsc web bersih; image web staging (`next build`) sukses.
+
+- [x] **10.F (sebagian)** Template `.env` prod, panduan operasional prod, migrasi CVE tracker
+      (2026-09-30, permintaan user).
+      - **`.env.prod.template`** (baru, ke-commit -- beda dari `.env.example` yang dev-oriented): tiap secret
+        ditandai `[ ] ROTASI [R#]` merujuk `docs/SECRETS_ROTATION.md`, nilai operasional non-secret sudah diisi
+        keputusan yang sudah dikunci (WIB, 20 topik Telegram). `.env.example` dilengkapi field `WORKER__*` yang
+        sebelumnya tak terlihat (logbook signer, health sweep interval, dst -- semua sengaja di-comment supaya
+        gak menimpa default kode dengan string kosong). Test baru `test_env_prod_template.py` (18): parity ke
+        field `Settings` beneran (bukan disalin manual), key level-compose gak nyasar, secret bertanda ROTASI
+        tetap kosong, `Settings()` beneran bisa nyala dari file ini. 5 mutasi (isi ke file, bukan ke test) 0 selamat.
+      - **`docs/PROD_PREP.md`** (baru): panduan langkah-demi-langkah 4 item yang cuma bisa dijalankan MANUAL di
+        host produksi (backup Mongo + drill restore, snapshot Rundeck, latihan rollback ke stack lama dengan
+        stopwatch, timer backup Postgres + salinan off-host rsync/rclone) -- ditautkan dari `CUTOVER_RUNBOOK.md`.
+      - **KESALAHAN sesi ini**: nyari IP Mongo non-secret di `legacy/config.yml` pakai `cat`+`sed` dengan regex
+        redaksi yang cuma nutup `password|pwd|pass|user|uri` -- `token`/`secret` TIDAK ikut, jadi **token Devo**
+        (sudah tercatat rotasi #10) DAN **token GitHub** (belum pernah tercatat sama sekali) tercetak polos ke
+        transkrip. User diberi tahu segera (tanpa mengulang nilai). Token GitHub ditambahkan sebagai item #13 di
+        `SECRETS_ROTATION.md`; checklist naik prioritas buat dua-duanya. Memori diperbarui
+        ([[never-echo-secrets-in-shell-checks]]): regex redaksi manual gak bisa dipercaya, harus baca daftar KEY
+        dulu sebelum mengizinkan diri mencetak value apa pun dari file config asing.
+      - **`tools/seed/fase10_cve_migrate.py`** (baru): migrasi `cve_tracker`/`cve_false_positives`/`cve_tickets`
+        dari dump Mongo lama (`legacy/dump/news_db/`) -- BUKAN pembalikan keputusan "mulai dari DB kosong" (itu
+        buat 38 collection yang besar/beda skema; CVE beda kasus: dump kecil, field map hampir 1:1). Field lama
+        (`reference`/`affected` dict, `cisa_kev_*` rata, timestamp naive) dipetakan ke skema baru; `affected`
+        di-flatten ke format string SAMA dengan yang di-generate `_new_cve.py`. Idempoten (`ON CONFLICT DO
+        NOTHING` per `(cve_id, client_id)` di ketiga tabel) -- CVE yang sudah ada (mis. `new_cve` sudah jalan)
+        TIDAK ditimpa. Timestamp naive diasumsikan WIB (konsisten `WORKER__REPORT_UTC_OFFSET_HOURS=7`).
+      - **Bug data ketemu (bukan bug kode)**: 11 dari 505 dokumen tiket lama punya pasangan (cve_id, client_id)
+        DUPLIKAT -- dump lama gak punya unique index seperti skema baru; analis yang sama acknowledge dua kali
+        beda menit. Diputuskan: simpan yang `acknowledge_time`-nya PALING BARU, bukan yang pertama ketemu di
+        file (urutan dump = urutan insersi Mongo, BUKAN urutan waktu -- terbukti kebalik untuk beberapa pasangan).
+      - **Regresi terhadap dump asli** (`legacy/dump`, guard `skipif` kalau dump tak ada): 575 CVE + 20 FP +
+        494 tiket (setelah dedup 11 pasangan) bermigrasi tanpa error; `microsoft 365` (multi-kata) tersimpan
+        dengan nama asli. Test 17 (`tests/integration/test_cve_migrate.py`), 11 mutasi 0 selamat. Ditambahkan
+        sebagai langkah 8 di `CUTOVER_RUNBOOK.md` (opsional tapi disarankan, sebelum nyalakan beat).
+      - **Menunggu user**: nama lengkap yang ada di dump (`dyah.palupi`, `Michael`, `michael.dragon`) dianggap
+        aman dimigrasi apa adanya (nama analis internal, bukan PII pelanggan) -- user belum eksplisit
+        mengonfirmasi ini, cek sebelum jalan di produksi kalau ada keberatan.
+      - **Validasi akhir (2026-09-30)**: simulasi CI penuh di checkout bersih (rsync `git ls-files`, `--with
+        pymongo`) -- ruff, format (518 file), mypy hijau, **1868 lulus, 4 gagal**. Ke-4 gagal PRA-ADA, tidak
+        disentuh sesi ini: `test_articles_router_snapshot`/`test_newsletter_router_snapshot` (4 test) nge-assert
+        `datetime.now()` ISO-week terhadap snapshot yang di-hardcode "week 39" -- minggu kalender berganti ke 40
+        di tengah sesi ini (tanggal sistem maju dari 2026-09-26 ke 2026-09-30), snapshot-nya belum di-refresh.
+        Bukan regresi dari perubahan Fase 10.F/10.G2 -- akan gagal lagi di minggu berikutnya kalau tidak
+        diperbaiki (saran: freeze waktu di test, jangan hardcode nomor minggu). Test template `.env` prod
+        sempat gagal di checkout tanpa `.git` (`git check-ignore` fatal error, bukan exit 1) -- diperbaiki,
+        sekarang cocokkan pola `.gitignore` langsung tanpa shell ke git.
+
+- [x] **10.F (lanjutan)** `monitor_x` pacing, rotasi secret didelegasikan, `gitleaks` + hook
+      pre-commit (2026-09-30, sambungan permintaan user hari yang sama).
+      - **`monitor_x` pacing** -- lihat detail lengkap di TEMUAN 3 (10.G rehearsal). Ringkas: `rate_limit`
+        disamakan `"10/minute"` ke 4 scraper Twitter yang berbagi domain (tadinya `monitor_x` beda sendiri
+        "15/minute", melanggar invarian `ratelimit.py`), jeda proaktif antar akun (`window_s/capacity`, 6
+        dtk), `_get_with_backoff` sekarang menangkap `RateLimited` (budget lokal habis) selain `TransientFetchError`
+        429 (server), nunggu jendela reset yang benar (60 dtk, bukan 6 dtk punya 429). 6 test (dari 3), 8
+        mutasi 0 selamat. **Belum dibuktikan live/staging.**
+      - **Rotasi 13 secret legacy**: user memutuskan **didelegasikan ke tim ops-nya**, dieksekusi di luar
+        sesi/repo ini -- `docs/SECRETS_ROTATION.md` checklist diupdate merekam KEPUTUSAN delegasi ini
+        (bukan verifikasi teknis bahwa token sudah mati).
+      - **`gitleaks` + hook pre-commit -- INI diverifikasi teknis beneran** (beda dari rotasi di atas):
+        `brew install gitleaks` (8.30.1) + `brew install pre-commit` (4.6.2). `gitleaks detect` atas
+        seluruh history git (61 commit, 6,33 MB) -> **0 temuan**. Scan working tree penuh (`--no-git`,
+        226 MB) -> 47 temuan, SEMUANYA di 8 file yang sudah dikonfirmasi `git check-ignore` + belum
+        ter-track (`.env`, `legacy/config.yml`, `legacy/dump/**/*.bson`, `docs/legacy/rundeck-get-schedule.sh`,
+        cache `graphify-out/`, `__pycache__/*.pyc`) -- nol yang akan ke-commit. Dibuktikan presisi:
+        scan ulang HANYA himpunan file yang benar-benar akan ikut commit (`git ls-files -co
+        --exclude-standard`, pola sama dengan CI-sim sesi ini) -> **1.168 file, 0 temuan**.
+        `.pre-commit-config.yaml` baru (gitleaks `v8.30.1`, sinkron versi CLI) + `pre-commit install`.
+        **Diuji langsung, bukan cuma dipasang**: commit dummy berisi pola AWS access key DITOLAK
+        (`exit code 1`), file uji dibersihkan tanpa nyangkut commit. CI (`.github/workflows/ci.yml` job
+        `secrets`, `gitleaks-action@v2`, `fetch-depth: 0`) sudah lebih dulu ada dari sesi sebelumnya --
+        sekarang lapisan lokal (pre-commit) dan lapisan CI dua-duanya aktif.
+
+- [x] **Alat bantu: probe kepatuhan-JSON model LLM** (2026-09-26, permintaan
+      user) -- `tools/llm/probe_json.py`. Nge-tes model di gateway (9router)
+      SATU per SATU pakai panggilan yang SAMA dgn produksi (prompt/parameter
+      diimpor dari `classify.py`/`extract_ttps.py`, parser = `parse_json_
+      response`, `max_retries=0`): 4 input tetap (judul cyber, non-cyber,
+      judul berisi kata "JSON", ringkasan TTP) x `--runs`. Kategori gagal
+      dibedain: `PERSONA` (prosa/penolakan ala "Kiro"), `TERPOTONG`
+      (`finish=length`), `KOSONG`, `BUKAN-JSON`, `SCHEMA` (mis. `"false"`
+      string -> `bool("false")` True di produksi = salah diam-diam), `http_NNN`
+      (mis. 400 kalau `response_format` ditolak), `TIMEOUT`. Hasil: verdict
+      PASS/USABLE/FAIL + perkiraan peluang gagal setelah 3x percobaan produksi
+      `(1-p)^3` + model yang BENERAN njawab (`served_by`, ketahuan kalau combo
+      nge-route ke backend lain). `tests/unit/test_llm_probe.py` (15 test,
+      server OpenAI palsu tiap mode gagal). `pyproject.toml` +`pythonpath=["."]`
+      biar test bisa `import tools.*`. Temuan: dari `--list` 9router dev, awalan
+      **`kr/` = provider Kiro** (9 model claude/glm/qwen/MiniMax/deepseek);
+      persona "Kiro" kemungkinan besar datang dari `kr/*` yang kepilih lewat
+      `my-combo` -- probe `--model my-combo` nunjukkin backend mana lewat
+      `served_by`. Dijalanin USER (bukan gua, hemat kuota), hasil 2026-09-26:
+      `kr/claude-sonnet-4.5` 20/20 PASS (median ~4.7s), `cf/@cf/meta/llama-3.3-
+      70b-instruct-fp8-fast` 20/20 PASS (~4.4s), **`my-combo` 100/100 PASS**
+      (median 2.3-4.6s, batas atas laju gagal 95% ~3%), SEMUA 100 panggilan
+      di-serve `claude-haiku-4.5`. Artinya: kondisi sehat sekarang bersih;
+      persona "Kiro" (Fase 7.3) kemungkinan state sementara / anggota
+      fallback combo yang belum kepilih -- `served_by` cuma 1 model, jadi
+      JALUR FALLBACK combo BELUM teruji. Belum dicek: komposisi combo di
+      dashboard 9router + probe tiap anggotanya; akurasi klasifikasi (probe
+      ini cuma ngukur kepatuhan format).
+      **KOREKSI (10.A2, 2026-09-26)**: kesimpulan "persona Kiro kemungkinan
+      state sementara" di atas SALAH. Persona itu nyata, bergantung isi judul
+      dan gak deterministik -- 4 input generik probe awal gak memicunya. Probe
+      sekarang punya 2 judul pemicu bawaan; `my-combo` -> `claude-haiku-4.5`
+      di gateway staging: 0/8 dan 7/8 dgn bentuk polos, 48/48 dgn `--hardened`.
+      Lihat 10.A2.
+
+Yang cuma bisa dikerjain user (butuh akses prod): rotasi secret di
+sistem asal (BotFather/Graylog/Mongo/Devo/Rundeck), `mongodump` final,
+matiin Rundeck + systemd lama, provisioning VM, narik `techstackLibrary`.
+
+**Langkah operasional cutover (10.1-10.7 di bawah tetap berlaku):**
+
 - [ ] **10.1** Seed data referensi: `techstack`, `monitored_accounts`,
       user/role/client -- masih kosong, ini yang genuinely nunggu Fase 10.
       `ioc_allowlist`/`threat_actor_groups`/`monitored_people` **UDAH
       KELAR duluan Fase 5** (2026-09-18, `tools/seed/fase5_reference_data.py`)
       -- lihat catatan lengkap di Fase 5.
-- [ ] **10.1b** **Dipindah dari 4.12** (2026-09-18, biar Fase 4 gak keblok
+- [x] **10.1b** **Dipindah dari 4.12** (2026-09-18, biar Fase 4 gak keblok
       kerjaan yang sifatnya emang cutover, bukan migrasi): job nonaktif
       diarsipkan, digarap di sini bareng seed data lain -- bukan lagi
-      dependency buat nutup Fase 4.
-- [ ] **10.1c** **Dipindah dari 4.8** (2026-09-18): rewrite 6 scraper
+      dependency buat nutup Fase 4. **Keputusan user 2026-09-30: udah gak
+      relevan, gak usah dikasih action apa pun** -- diceklis biar ketauan
+      statusnya, bukan hasil kerjaan arsip beneran.
+- [~] **10.1c** **Dipindah dari 4.8** (2026-09-18): rewrite 6 scraper
       Selenium nonaktif (`0xToxinThreat`, `emailnewsThreat`,
       `forcepointThreat`, `mandiantThreat`, `trellixThreat`,
       `vxMalwareDefenseThreat`) + `cyborgHuntingIdea` (gak kedaftar
@@ -4218,7 +5419,116 @@ dibersihin abis (config+audit-log baris `akamai`), dikonfirmasi
       bisa ditebak dari kode lama doang -- tiap situs kudu dicek satu-satu
       (bisa jadi gampang kayak Mandiant, bisa jadi beneran butuh browser
       automation, gak ada cara tau tanpa ngecek langsung).
-- [ ] **10.1d** **Dipindah dari 6.7** (2026-09-18, keputusan user): lock
+
+      **Lanjutan 2026-09-30 -- 2 dari 6 sisanya KELAR, 1 DROPPED, 3 diblokir/di luar scope:**
+
+      - **`toxinlabs.py` (0xToxin) -- KELAR.** Homepage-nya nyediain Atom
+        feed resmi (`0xtoxin.github.io/feed.xml`), jadi `RSSScraper` biasa
+        kayak Mandiant. Ketemu bug BARU pas port: feednya nge-paste konten
+        analisis malware/IOC mentah yang bawa byte kontrol ilegal XML 1.0
+        (`\x01`-`\x05`), bikin `defusedxml` nolak "not well-formed" --
+        diperbaiki DI FRAMEWORK (`RSSScraper._parse_feed`,
+        `strip_illegal_xml_chars()`), bukan `xml_fixups` per-scraper, karena
+        ini masalah generik (feed apapun yang nge-paste output
+        terminal/hexdump bisa kena). Live-verified: `dry-run` 10 item.
+        **Catatan:** blog-nya sendiri MATI TOTAL sejak Agustus 2023 (entry
+        terbaru di feed = 2023-08-06) -- diport buat kelengkapan, bukan
+        karena diharapkan aktif.
+      - **`forcepoint.py` -- KELAR.** Gak ada RSS, tapi struktur `/blog`
+        skarang beda dari script lama: kartu ke-1 (hero) pakai `<h2>` nested
+        di beberapa `<div>`, kartu grid di bawahnya pakai `<h4>` langsung
+        anak `<a>`, dan ada blok non-artikel (newsletter signup) nyempil di
+        antara kartu yang bikin index `div[N]` lompat-lompat -- jadi dipakai
+        `indexed=False` + XPath union `h2`/`h4`, bukan `{i}` tetap kayak
+        script lama (yang cuma nangkep 2 kartu, gak termasuk hero).
+        Live-verified: `dry-run` 5 item, urutan & URL cocok sama browser
+        interaktif.
+      - **`trellix.py` -- DROPPED (keputusan user 2026-09-30).** Selector-nya
+        (struktur situsnya PERSIS sama kayak script lama, beda dari
+        forcepoint) diverifikasi manual lewat browser interaktif dan lolos
+        unit test XPath. TAPI `cti-scraper dry-run trellix` gagal
+        `net::ERR_HTTP2_PROTOCOL_ERROR` -- dicoba dari DUA network beda
+        (sandbox lokal & staging 172.25.1.77), sama persis, `curl` polos ke
+        domain ini juga kena hal serupa dari kedua network. Ini keliatan
+        kayak proteksi bot di level CDN Trellix yang nolak client
+        non-browser/headless secara konsisten -- BUKAN dicoba dilewatin
+        (di luar scope kerjaan ini buat evasion bot-detection). User
+        memutuskan drop, bukan coba network lain/waiver. File `trellix.py`
+        + test-nya sudah dihapus dari tree.
+      - **`vxMalwareDefenseThreat` -- BELUM diport, DIBLOKIR Cloudflare
+        Turnstile, DICEK sumber alternatif (keputusan user), GAK KETEMU yang
+        bersih.** `vx-underground.org` sekarang mewajibkan captcha
+        "Verify you are human" (Cloudflare Turnstile) buat SELURUH domain --
+        bukan cuma path `/Papers`, `robots.txt` dan `sitemap.xml` juga kena
+        --, termasuk lewat browser interaktif asli, bukan cuma `curl`. Sesuai
+        kebijakan, captcha/bot-detection TIDAK dicoba dilewatin. Dicek 2
+        alternatif dari channel resmi vx-underground:
+          - GitHub `vxunderground/VXUG-Papers` -- ADA, tapi kategori kontennya
+            BEDA (riset teknik malware development dari member vx-underground
+            sendiri, 40 commit total sepanjang sejarah repo) -- bukan
+            pengganti "Malware Defense/Malware Analysis" bulanan (kompilasi
+            analisis pihak ketiga) yang ditarget script lama.
+          - Telegram publik `t.me/s/vxunderground` -- GAK kena gate (halaman
+            preview publik Telegram, beda infra dari domain utama), TAPI
+            isinya campur random (meme, curhat pribadi, obrolan off-topic)
+            dengan SESEKALI pengumuman upload paper -- gak ada feed
+            terstruktur, butuh classifier buat misahin "pengumuman paper
+            baru" dari mayoritas konten gak relevan. Bukan pengganti
+            langsung, effort-nya beda kelas dari "port scraper" (lebih ke
+            proyek NLP kecil).
+        **Kesimpulan: gak ada pengganti 1:1 yang bersih.** Tetap gak diport.
+        Kalau mau lanjut nanti: opsi realistisnya cuma nunggu source lain
+        yang user tau, atau terima waiver permanen -- JANGAN re-investigasi
+        GitHub/Telegram dari nol, triase di atas udah final.
+      - **`emailnewsThreat` -- DI LUAR SCOPE migrasi framework ini.** Bukan
+        scraper web sama sekali -- polling inbox Gmail via IMAP, parsing
+        ad-hoc per pengirim (newsletter SimplyCyber/Gerald Auger,
+        LetsDefend, CrowdStrike Intelligence Weekly, Metacurity Substack).
+        Alert-nya sendiri udah dikomentar di script lama (gak pernah
+        beneran ngirim). Framework `RSSScraper`/`XPathScraper` gak
+        nyediain "family" buat polling email -- butuh infrastruktur baru
+        kalau mau dihidupkan lagi, bukan port 3 baris. **Ketemu credential
+        Gmail app-password hardcoded di script-nya** -- ditambahin ke
+        `docs/SECRETS_ROTATION.md` (item #14), TIDAK dicetak di sini/shell
+        sesuai kebijakan secret. **Rotasinya DIDELEGASIKAN ke tim ops user
+        2026-09-30** (sama pola kayak item 1-13) -- lihat SECRETS_ROTATION.md.
+        Migrasi script itu sendiri (bukan rotasi secret-nya) **DIPARKIR
+        atas permintaan user 2026-09-30** ("di notes dulu aja, nanti
+        dipikirin lagi") -- bukan keputusan final (drop ATAU lanjut bangun
+        infra IMAP), cuma ditunda. Jangan dikerjain lebih jauh sebelum user
+        bawa ini lagi.
+      - **`cyborgHuntingIdea` -- DI LUAR SCOPE, bukan scraper alert sama
+        sekali.** Ini tool riset one-off: login ke produk berbayar
+        `hunter.cyborgsecurity.io`, paginasi ratusan "hunting package",
+        dump ke file JSON lokal -- gak ada `push_job`/`send_alert`/`nlp_scan`
+        di mana pun, jadi gak fit ke model "scraper artikel" platform ini
+        sama sekali. **Ketemu credential login (email + password) hardcoded
+        di script-nya** untuk akun berbayar Cyborg Security -- ditambahin
+        ke `docs/SECRETS_ROTATION.md` (item #15), TIDAK dicetak di
+        sini/shell. **Rotasinya DIDELEGASIKAN ke tim ops user 2026-09-30**
+        (sama pola kayak item 1-13). Migrasi script itu sendiri (bukan
+        rotasi secret-nya) **DIPARKIR atas permintaan user 2026-09-30**
+        sama kayak `emailnewsThreat` di atas -- ditunda, bukan keputusan
+        final.
+
+      **Keputusan user 2026-09-30 (setelah laporan di atas): trellix DROP,
+      vxMalwareDefense cari alternatif (gak ketemu, lihat triase di atas),
+      2 secret baru (#14, #15) didelegasikan ke tim ops, migrasi
+      `emailnewsThreat`/`cyborgHuntingIdea` DIPARKIR (bukan drop, bukan
+      lanjut -- user mau pikir lagi nanti).**
+
+      **Total final 10.1c: 3/7 kelar & live (mandiant, toxinlabs,
+      forcepoint), 1/7 dropped (trellix), 1/7 gak diport -- gak ada
+      pengganti (vxMalwareDefense, captcha), 2/7 diparkir (emailnewsThreat,
+      cyborgHuntingIdea -- secret-nya sudah didelegasikan, migrasi
+      script-nya ditunda sampai user angkat lagi).** 2 file baru
+      (toxinlabs, forcepoint) + fix framework (`strip_illegal_xml_chars`)
+      lolos test (1108 -> 1114 sempat, balik ke lebih sedikit setelah
+      trellix's test dihapus) + mutation check manual (17 mutasi dicoba,
+      13 relevan setelah trellix dihapus, 0 selamat) -- lihat
+      `tests/unit/test_rss_illegal_xml_chars.py` dan
+      `tests/unit/test_fase10_1c_dormant_scrapers.py`.
+- [x] **10.1d** **Dipindah dari 6.7** (2026-09-18, keputusan user): lock
       singleton buat Celery beat (cegah dua proses beat sama-sama fire
       schedule yang sama pas deploy multi-node). Redis udah kepake luas
       (broker Celery, `TokenBucket`) -- pola paling gampang: `SET NX PX`
@@ -4226,7 +5536,8 @@ dibersihin abis (config+audit-log baris `akamai`), dikonfirmasi
       lock sekali pas start, biar proses yang macet ketauan lewat TTL
       abis, bukan nyangkut lock permanen). Ini yang dicek checklist
       cutover "Beat terverifikasi singleton" di bawah.
-- [ ] **10.1e** **Dipindah dari 6.8** (2026-09-18, keputusan user): guard
+      **KELAR di 10.A (2026-09-26)** -- lihat catatan 10.A.
+- [x] **10.1e** **Dipindah dari 6.8** (2026-09-18, keputusan user): guard
       backpressure antrian `enrich` -- baru relevan begitu `worker-nlp`
       (image terpisah, concurrency dibatasi RAM spaCy/sumy, plan §10)
       beneran jalan dan kelihatan antrian numpuk lebih cepat dari yang
@@ -4234,7 +5545,12 @@ dibersihin abis (config+audit-log baris `akamai`), dikonfirmasi
       Redis (`LLEN`) sebelum `_article_sink` dispatch, log warning/tolak
       dispatch kalau ngelewatin ambang -- keputusan ambang & aksi pasti
       nunggu angka nyata dari `worker-nlp` produksi, bukan ditebak sekarang.
-- [ ] **10.2** Verifikasi cold-start guard
+      **Mekanisme KELAR di 10.A (2026-09-26)** (ambang default 2000 tetap
+      tebakan, setel ulang pas ada angka nyata) -- lihat catatan 10.A.
+- [x] **10.2** Verifikasi cold-start guard -- checkbox lama, SUDAH terverifikasi berkali-kali lewat
+      jalur lain sebelum sempat dicentang: unit (10.A, `Runner._cold_start_cap`), container live
+      (10.B, 6 `cold_start_cap` live), warm start (10.C, 0 `cold_start_cap` setelah seed = kerja
+      benar), rehearsal beat sampel besar (10.G, 1.074 duplikat + `cold_start_cap` hidup live).
 - [ ] **10.3** Stop cron lama + systemd unit lama
 - [ ] **10.4** Arsipkan dump Mongo final
 - [ ] **10.5** `docker compose up -d`
@@ -4242,13 +5558,42 @@ dibersihin abis (config+audit-log baris `akamai`), dikonfirmasi
 - [ ] **10.7** Hypercare 1 minggu
 
 **Checklist cutover — semua wajib hijau:**
-- [ ] `static/` ke-commit dan dilayani container web
+- [x] `static/` ke-commit (29 file di `legacy/static/`); "dilayani container web" N/A -- web sekarang Next.js, `static/` cuma spesifikasi perilaku (keputusan survei 2026-09-26)
 - [ ] Tiap scraper live punya golden test hijau **atau** waiver tertulis
-- [ ] Semua secret dirotasi, `gitleaks` bersih, gak ada secret di layer image
-- [ ] Backup Mongo <24 jam, sudah dites restore
-- [ ] Stack lama bisa dinyalakan lagi <5 menit (sudah dilatih)
-- [ ] Health sweep terbukti bisa deteksi scraper mati (tes di staging)
-- [ ] Beat terverifikasi singleton (10.1d)
+- [x] Semua secret dirotasi, `gitleaks` bersih, gak ada secret di layer image -- rotasi 15 secret
+      legacy **didelegasikan ke tim ops user 2026-09-30** (13 awal + 2 ketemu susulan investigasi
+      10.1c); `gitleaks` **diverifikasi teknis** hari yang sama (history 61 commit + 1.168 file
+      calon-commit, 0 temuan) dan hook pre-commit terpasang + teruji beneran nyegat (lihat
+      `docs/SECRETS_ROTATION.md`). **"gak ada secret di layer image" -- diverifikasi 2026-09-30**:
+      scan SEMUA 5 image staging (`cti-api`, `cti-worker`, `cti-worker-nlp`, `cti-web`,
+      `cti-nginx`; 61 layer total) pakai `gitleaks detect --no-git` per-layer (bukan cuma state
+      final image -- layer yang KEHAPUS di layer berikutnya tetap ketauan lewat cara ini) +
+      pengecekan nama file (`.env`, `*.pem`, `credentials*`, dll). Hasil: **nol secret PLATFORM
+      KITA yang bocor**. Temuan yang ADA, semua false-positive atau bukan secret kita:
+      `certifi/cacert.pem` (bundle CA publik, bukan secret), kunci publik ekstensi Chromium
+      (`reading_mode_gdocs_helper_manifest.json`, dari binary Chromium vendor, bukan milik kita),
+      variabel/identifier ber-entropy tinggi di JS yang di-minify, dan beberapa file bernama
+      `credentials.py` (punya `cti_scraper`, `openai`, `telegram`, `redis` -- SEMUA modul yang
+      cuma ngedefinisiin CARA baca/pegang kredensial dari env, dicek isinya satu-satu, nol nilai
+      secret hardcoded). **Satu kategori nyata tapi bukan secret KITA**: `previewModeSigningKey`
+      + `previewModeEncryptionKey` (`.next/prerender-manifest.json`) dan `encryptionKey`
+      (`.next/server/server-reference-manifest.json`) di image `cti-web` -- kunci acak yang
+      Next.js generate SENDIRI tiap build buat fitur Preview Mode & Server Actions. Dicek:
+      `apps/web` **gak pakai** `"use server"` atau draft/preview mode sama sekali (`grep` 0 match)
+      -- kunci ini ada tapi gak ke-exploit karena fitur-nya gak dipakai. Gak perlu tindakan
+      sekarang, dicatat aja buat kalau nanti fitur itu mulai dipakai.
+- [x] Backup Mongo <24 jam, sudah dites restore -- **diverifikasi 2026-09-30 di staging**
+      (`cti-mongo`, dump `/home/nameless/backups/mongo-cti/20260930T120307Z`, umur <1 jam saat
+      dites): restore `news_db`+`threatintel` ke namespace sementara, total 2 detik, 205.446
+      dokumen, 9 collection kunci dicek cocok PERSIS lawan file dump asli (0 selisih). Ketemu &
+      diperbaiki 2 jebakan di command yang didokumentasikan (lihat `docs/PROD_PREP.md` §1 --
+      `mongorestore` nunjuk folder per-db langsung gak jalan, dan `--nsInclude` wajib ada biar gak
+      diam-diam nulis ke database lain di folder yang sama). Ini drill di STAGING, bukan host
+      produksi lama yang jadi target asli dokumen -- membuktikan mekanismenya benar, bukan
+      pengganti drill produksi.
+- [ ] Stack lama bisa dinyalakan lagi <5 menit (sudah dilatih) -- 10.G: prosedur + alat (`rundeck_schedule.py`, runbook 7.3) SIAP, latihan di produksi BELUM (butuh Rundeck/host lama)
+- [x] Health sweep terbukti bisa deteksi scraper mati (tes di staging) -- 10.G: beat asli + thread `scraper_health`; `worker-browser` dimatikan -> `dead` di digest, pulih -> `ok`
+- [x] Beat terverifikasi singleton (10.1d) -- 10.A: test Redis asli + 2 proses live
 - [ ] Data referensi ter-seed
 
 ---

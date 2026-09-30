@@ -1,0 +1,54 @@
+{
+  "2026-09-17": [
+    {
+      "title": "VMware vDefend IDPS: Securing Private Cloud Workloads in the Age of Frontier AI",
+      "url": "https://blogs.vmware.com/security/2026/08/vmware-vdefend-idps-frontier-ai.html",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "VMware vDefend Advances Multi-Layer Lateral Security, Deployment Automation and Performance for the Frontier AI Era",
+      "url": "https://blogs.vmware.com/security/2026/08/vdefend-ssp-for-frontier-ai-era.html",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "VMware vDefend Sessions at VMware Explore 2026",
+      "url": "https://blogs.vmware.com/security/2026/07/vmware-vdefend-sessions-at-vmware-explore-2026.html",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Validated Compliance: VMware vDefend Conforms with NIST CSF, HIPAA and PCI DSS",
+      "url": "https://blogs.vmware.com/security/2026/06/validated-compliance-vmware-vdefend-conforms-with-nist-csf-hipaa-and-pci-dss.html",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Introducing VMware vDefend Lateral Security Design Blueprints for  VCF 9.1",
+      "url": "https://blogs.vmware.com/security/2026/06/vdefend-design-blueprints-vcf-9-1.html",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "AMD Ionic Driver Vulnerabilities Affecting VMware ESX",
+      "url": "https://blogs.vmware.com/security/2026/05/amd-ionic-driver-vulnerabilities-affecting-vmware-esx.html",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "VMware at Pwn2Own Berlin 2026",
+      "url": "https://blogs.vmware.com/security/2026/05/vmware-at-pwn2own-berlin-2026.html",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "VMware vDefend for VCF 9.1: Zero Trust Lateral Security for the AI Era",
+      "url": "https://blogs.vmware.com/security/2026/05/vdefend-vcf-9-1-zero-trust.html",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Breaking the Ransomware Kill Chain: Why Distributed Lateral Security Is No Longer Optional",
+      "url": "https://blogs.vmware.com/security/2026/04/breaking-ransomware-kill-chain.html",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Virtual Patching: Guarding Against a Tsunami of AI-discovered Exploits with vDefend and Avi",
+      "url": "https://blogs.vmware.com/security/2026/04/virtual-patch-guard-tsunami-ai.html",
+      "posted_on": "2026-09-17"
+    }
+  ]
+}

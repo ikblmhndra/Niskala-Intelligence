@@ -14,6 +14,7 @@ from collections.abc import AsyncIterator, Callable, Iterator
 
 import httpx
 import pytest
+import redis
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Session
 from testcontainers.community.postgres import PostgresContainer
@@ -26,6 +27,18 @@ def postgres_url() -> Iterator[str]:
             "postgresql+psycopg2://", "postgresql+psycopg://"
         )
         yield sync_url
+
+
+@pytest.fixture(scope="session")
+def redis_client() -> Iterator[redis.Redis]:
+    """Redis EFEMERAL beneran (bukan fake) -- dipakai test yang semantiknya
+    justru Redis-spesifik: lock beat (`SET NX PX` + Lua) dan kedalaman antrian
+    Celery (`LLEN`). Scope "session": satu container, tiap test yang butuh
+    bersih-bersih sendiri (`flushall`)."""
+    from testcontainers.community.redis import RedisContainer
+
+    with RedisContainer("redis:7-alpine") as rc:
+        yield rc.get_client()
 
 
 @pytest.fixture(scope="package")

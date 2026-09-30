@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Reports - Arctic Wolf Resource Center</title>
+	<atom:link href="https://arcticwolf.com/resources/category/report/feed/" rel="self" type="application/rss+xml" />
+	<link>https://arcticwolf.com/resources/category/report/</link>
+	<description>The Leaders in Security Operations</description>
+	<lastBuildDate>Tue, 28 Jul 2026 15:47:48 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=7.1</generator>
+
+<image>
+	<url>https://arcticwolf.com/wp-content/uploads/2019/11/aw-favicon-rebrand-150x150.png</url>
+	<title>Reports - Arctic Wolf Resource Center</title>
+	<link>https://arcticwolf.com/resources/category/report/</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+	<item>
+		<title>2026 Cybersecurity Trends in the Age of AI</title>
+		<link>https://arcticwolf.com/resources/report/2026-cybersecurity-trends-in-the-age-of-ai/</link>
+		
+		<dc:creator><![CDATA[Arctic Wolf]]></dc:creator>
+		<pubDate>Mon, 27 Jul 2026 14:41:35 +0000</pubDate>
+				<category><![CDATA[Report]]></category>
+		<guid isPermaLink="false">https://arcticwolf.com/?p=134056</guid>
+
+					<description><![CDATA[Discover 2026 cybersecurity trends: AI adoption, incident response readiness, threat landscape evolution, and regional cyber risk insights from Arctic Wolf&#8217;s authoritative survey.]]></description>
+		
+		
+		
+			</item>
+		<item>
+		<title>IDC MarketScape: Worldwide Managed Detection and Response Service for Midmarket 2026 Vendor Assessment</title>
+		<link>https://arcticwolf.com/resources/report/idc-marketscape-worldwide-managed-detection-and-response-service-for-midmarket-2026-vendor-assessment/</link>
+		
+		<dc:creator><![CDATA[Arctic Wolf]]></dc:creator>
+		<pubDate>Thu, 23 Jul 2026 14:52:40 +0000</pubDate>
+				<category><![CDATA[Report]]></category>
+		<category><![CDATA[Report - UK]]></category>
+		<guid isPermaLink="false">https://arcticwolf.com/?p=134085</guid>
+
+					<description><![CDATA[Arctic Wolf recognized as a Leader in IDC MarketScape 2026 for Managed Detection and Response. Agentic AI-powered MDR for midmarket security operations.]]></description>
+		
+		
+		
+			</item>
+		<item>
+		<title>State of the Cybersecurity Attack Surface</title>
+		<link>https://arcticwolf.com/resources/report/state-of-the-cybersecurity-attack-surface/</link>
+		
+		<dc:creator><![CDATA[Arctic Wolf]]></dc:creator>
+		<pubDate>Tue, 16 Jun 2026 13:00:18 +0000</pubDate>
+				<category><![CDATA[Report]]></category>
+		<guid isPermaLink="false">https://arcticwolf.com/?p=132265</guid>
+
+					<description><![CDATA[Discover how exposure management reduces cyber risk as enterprises face growing attack surfaces, patching gaps, and hidden vulnerabilities across IT environments.]]></description>
+		
+		
+		
+			</item>
+		<item>
+		<title>2026 Gartner® Voice of the Customer for Managed Detection and Response</title>
+		<link>https://arcticwolf.com/resources/report/2026-gartner-voice-of-the-customer-for-managed-detection-and-response/</link>
+		
+		<dc:creator><![CDATA[Arctic Wolf]]></dc:creator>
+		<pubDate>Thu, 02 Apr 2026 19:06:51 +0000</pubDate>
+				<category><![CDATA[Report]]></category>
+		<category><![CDATA[Managed Detection and Response]]></category>
+		<guid isPermaLink="false">https://arcticwolf.com/?p=130831</guid>
+
+					<description><![CDATA[Get actionable insights and aggregated customer reviews of leading MDR solutions.]]></description>
+		
+		
+		
+			</item>
+		<item>
+		<title>2026 Arctic Wolf Threat Report</title>
+		<link>https://arcticwolf.com/resources/report/2026-arctic-wolf-threat-report/</link>
+		
+		<dc:creator><![CDATA[Arctic Wolf]]></dc:creator>
+		<pubDate>Tue, 17 Feb 2026 12:00:27 +0000</pubDate>
+				<category><![CDATA[Report]]></category>
+		<guid isPermaLink="false">https://arcticwolf.com/?p=129535</guid>
+
+					<description><![CDATA[Gain insight from real-world incidents our teams investigated to see how attackers operate and which controls consistently buy defenders time.]]></description>
+		
+		
+		
+			</item>
+		<item>
+		<title>2025 Gartner® Market Guide for Managed Detection and Response</title>
+		<link>https://arcticwolf.com/resources/report/2025-gartner-market-guide-managed-detection-and-response/</link>
+		
+		<dc:creator><![CDATA[Arctic Wolf]]></dc:creator>
+		<pubDate>Thu, 30 Oct 2025 20:29:55 +0000</pubDate>
+				<category><![CDATA[Report]]></category>
+		<guid isPermaLink="false">https://arcticwolf.com/?p=128212</guid>
+
+					<description><![CDATA[Explore Gartner&#8217;s guidance for evaluating MDR services, including 24&#215;7 threat detection, incident response, proactive risk mitigation, and security operations maturity. &#160;]]></description>
+		
+		
+		
+			</item>
+		<item>
+		<title>2025 Human Risk Behavior Snapshot</title>
+		<link>https://arcticwolf.com/resources/report/2025-human-risk-behavior-snapshot/</link>
+		
+		<dc:creator><![CDATA[Arctic Wolf]]></dc:creator>
+		<pubDate>Tue, 14 Oct 2025 17:44:08 +0000</pubDate>
+				<category><![CDATA[Report]]></category>
+		<guid isPermaLink="false">https://arcticwolf.com/?p=127968</guid>
+
+					<description><![CDATA[See how gaps between IT leaders and end users shape human risk – and what it means for security outcomes.]]></description>
+		
+		
+		
+			</item>
+		<item>
+		<title>2025 Security Operations Report</title>
+		<link>https://arcticwolf.com/resources/report/2025-security-operations-report/</link>
+		
+		<dc:creator><![CDATA[Arctic Wolf]]></dc:creator>
+		<pubDate>Tue, 16 Sep 2025 14:42:10 +0000</pubDate>
+				<category><![CDATA[Report]]></category>
+		<guid isPermaLink="false">https://arcticwolf.com/?p=127435</guid>
+
+					<description><![CDATA[The second annual Security Operations Report demonstrates how Arctic Wolf’s world-class SOC closes the effectiveness gap with 24&#215;7 monitoring, context-rich triage that reduces alert fatigue, and rapid human-led response to contain threats faster.]]></description>
+		
+		
+		
+			</item>
+		<item>
+		<title>Navigating the Human-AI Relationship for Security Operations Success</title>
+		<link>https://arcticwolf.com/resources/report/navigating-human-ai-relationship-for-security-operations-success/</link>
+		
+		<dc:creator><![CDATA[Arctic Wolf]]></dc:creator>
+		<pubDate>Wed, 27 Aug 2025 15:20:00 +0000</pubDate>
+				<category><![CDATA[Report]]></category>
+		<guid isPermaLink="false">https://arcticwolf.com/?p=127172</guid>
+
+					<description><![CDATA[Discover how organizations are navigating the human-AI relationship in security operations. This report reveals key findings on AI adoption, attitudes towards AI, and the importance of human-AI collaboration for security success.]]></description>
+		
+		
+		
+			</item>
+		<item>
+		<title>Tolly Group Evaluation of Arctic Wolf Aurora Endpoint Security: Eﬃcacy with Endpoint Detection and Response</title>
+		<link>https://arcticwolf.com/resources/report/tolly-group-evaluation-of-arctic-wolf-aurora-endpoint-security-e%ef%ac%83cacy-with-endpoint-detection-and-response/</link>
+		
+		<dc:creator><![CDATA[Arctic Wolf]]></dc:creator>
+		<pubDate>Tue, 26 Aug 2025 17:44:12 +0000</pubDate>
+				<category><![CDATA[Report]]></category>
+		<category><![CDATA[Aurora Endpoint Security]]></category>
+		<guid isPermaLink="false">https://arcticwolf.com/?p=127165</guid>
+
+					<description><![CDATA[Use independent testing from the Tolly Group to evaluate the protection efficacy and system resource utilization of Arctic Wolf Endpoint Security.]]></description>
+		
+		
+		
+			</item>
+	</channel>
+</rss>

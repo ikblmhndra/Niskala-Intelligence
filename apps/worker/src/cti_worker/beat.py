@@ -44,10 +44,12 @@ from typing import TYPE_CHECKING
 
 from celery.schedules import crontab
 from cti_core.config import get_settings
+from cti_scraper.health import expected_interval
 from cti_scraper.queues import queue_for
 from cti_scraper.registry import discover
 
 from cti_worker.queues import QUEUE_MAINTENANCE, QUEUE_NOTIFY
+from cti_worker.reports.timeutil import local_to_utc_cron
 
 if TYPE_CHECKING:
     from cti_core.db.models.scraper import ScraperConfig
@@ -79,6 +81,49 @@ def _cron_to_crontab(cron: str) -> crontab:
         month_of_year=_normalize_field(month_of_year),
         day_of_week=_normalize_field(day_of_week),
     )
+
+
+def _report_schedule(offset: int) -> dict[str, dict[str, object]]:
+    """Laporan periodik Fase 10.E. Jam di bawah = jam LOKAL Rundeck lama (job
+    "News Counter" 23:55, trendingNewsToday 23:58, Logbook 07:00, Top Cve Minggu
+    07:01, Twitter CVE Trending tiap 6 jam, tren threat actor Senin 13:00 -- yang terakhir
+    dipilih user, bukan jadwal Rundeck lama); `local_to_utc_cron` menggesernya ke UTC sesuai
+    `WorkerSettings.report_utc_offset_hours`."""
+    trending_hours = ",".join(str(h) for h in sorted({(h - offset) % 24 for h in (0, 6, 12, 18)}))
+    return {
+        "report-daily-counters": {
+            "task": "report.daily_counters",
+            "schedule": crontab(**local_to_utc_cron(23, 55, offset)),
+            "options": {"queue": QUEUE_NOTIFY},
+        },
+        "report-news-of-the-day": {
+            "task": "report.news_of_the_day",
+            "schedule": crontab(**local_to_utc_cron(23, 58, offset)),
+            "options": {"queue": QUEUE_NOTIFY},
+        },
+        "report-logbook": {
+            "task": "report.logbook",
+            "schedule": crontab(**local_to_utc_cron(7, 0, offset)),
+            "options": {"queue": QUEUE_NOTIFY},
+        },
+        "report-weekly-top-cve": {
+            "task": "report.weekly_top_cve",
+            "schedule": crontab(**local_to_utc_cron(7, 1, offset, weekday=6)),  # Minggu
+            "options": {"queue": QUEUE_NOTIFY},
+        },
+        "report-weekly-threat-actor-trend": {
+            "task": "report.weekly_threat_actor_trend",
+            "schedule": crontab(**local_to_utc_cron(13, 0, offset, weekday=0)),  # Senin
+            "options": {"queue": QUEUE_NOTIFY},
+        },
+        "report-trending-cve": {
+            "task": "report.trending_cve",
+            # menit 5: pengumpulan mention (`trending_cve`, tiap 15 menit di menit 0)
+            # sudah selesai; kode lama melapor di run menit-0 itu sendiri.
+            "schedule": crontab(hour=trending_hours, minute=5),
+            "options": {"queue": QUEUE_NOTIFY},
+        },
+    }
 
 
 def _periodic_schedule() -> dict[str, dict[str, object]]:
@@ -129,6 +174,7 @@ def _periodic_schedule() -> dict[str, dict[str, object]]:
             "schedule": crontab(minute=f"*/{w.scraper_health_sweep_interval_min}"),
             "options": {"queue": QUEUE_NOTIFY},
         },
+        **_report_schedule(w.report_utc_offset_hours),
     }
 
 
@@ -152,7 +198,16 @@ def _scraper_configs() -> dict[str, ScraperConfig]:
 def build_beat_schedule() -> dict[str, dict[str, object]]:
     schedule: dict[str, dict[str, object]] = dict(_periodic_schedule())
     configs = _scraper_configs()
-    for scraper_id, cls in discover().items():
+    registry = discover()
+    if not registry:
+        # `discover()` balik `{}` diam-diam kalau paket `cti_scrapers` gak
+        # ke-install -- beat naik "sehat" tapi TIDAK PERNAH nge-fire scraper
+        # apa pun. Kegagalan senyap kayak gini yang gak boleh terjadi lagi.
+        raise RuntimeError(
+            "registry scraper KOSONG -- paket `cti-scrapers` gak ter-install di image "
+            "ini? Beat menolak start tanpa scraper."
+        )
+    for scraper_id, cls in registry.items():
         meta = cls.meta
         config = configs.get(scraper_id)
 
@@ -172,6 +227,20 @@ def build_beat_schedule() -> dict[str, dict[str, object]]:
             "task": "scrape.run",
             "schedule": _cron_to_crontab(cron),
             "args": (scraper_id,),
-            "options": {"queue": queue_for(meta)},
+            "options": {"queue": queue_for(meta), "expires": _tick_expiry_s(cron)},
         }
     return schedule
+
+
+def _tick_expiry_s(cron: str) -> int:
+    """Kedaluwarsa satu tick scrape = SATU interval jadwalnya (`expected_interval` sudah menjamin
+    minimal 60 dtk).
+
+    Ketemu di latihan staging 10.G: `worker-browser` mati 6 menit, beat terus mengirim tick tiap
+    menit, dan begitu worker nyala SEMUA tick yang menumpuk dieksekusi sekaligus. Di produksi
+    itu berarti worker mati 24 jam = ~24 run per scraper per jam-nya x 25 scraper Chromium
+    sekaligus begitu pulih (thundering herd, dan ban dari situs sumber). Tick yang sudah lewat
+    satu interval tidak berguna: tick berikutnya sudah/segera datang -- lebih baik dibuang.
+    Task periodik LAIN (laporan harian, dst) sengaja tidak kedaluwarsa: telat lebih baik
+    daripada hilang."""
+    return int(expected_interval(cron).total_seconds())

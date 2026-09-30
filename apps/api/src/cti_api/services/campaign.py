@@ -73,9 +73,7 @@ async def get_recent_campaigns(
             session, c["cve_ids"], client_id=cid
         )
     for c in campaigns:
-        sev = await campaign_analysis.compute_campaign_severity(
-            session, c, c.pop("_articles_raw")
-        )
+        sev = await campaign_analysis.compute_campaign_severity(session, c, c.pop("_articles_raw"))
         c.update(sev)
 
     campaigns.sort(key=lambda x: x["severity_score"], reverse=True)
@@ -111,9 +109,7 @@ async def get_recent_campaigns(
     return campaigns
 
 
-def _article_to_dict(
-    articles: list[Article], ratings: dict[str, Any]
-) -> list[dict[str, Any]]:
+def _article_to_dict(articles: list[Article], ratings: dict[str, Any]) -> list[dict[str, Any]]:
     out = []
     for a in articles:
         rating = ratings.get((a.source or "").lower())
@@ -226,9 +222,7 @@ def _build_campaign_groups(
         acceleration = round(rate_recent - rate_prior, 4)
         velocity_alert = acceleration > 2.0
 
-        recent_aids = {
-            a["id"] for a in members if a.get("posted_on", "") in (today_s, yesterday_s)
-        }
+        recent_aids = {a["id"] for a in members if a.get("posted_on", "") in (today_s, yesterday_s)}
         new_iocs_set: set[str] = set()
         for a in members:
             if a["id"] in recent_aids:

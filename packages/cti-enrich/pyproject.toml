@@ -12,14 +12,19 @@ dependencies = [
     "pycountry>=24.6",
 ]
 
-# Heavy models live behind an extra so the API image never pulls torch/spacy.
+# Heavy models live behind an extra so the API image never pulls spacy/sumy.
 # Only the worker-nlp image installs cti-enrich[nlp].
+#
+# `torch` SENGAJA GAK ada di sini (dibuang Fase 10, sebelumnya `torch>=2.3`):
+# Fase 0.9 udah ngonfirmasi nol importer (yang kepake cuma `sumy.LsaSummarizer`,
+# bukan bert-extractive-summarizer), `git grep` juga kosong, dan gak ada paket
+# lain yang require dia. Di image Linux dia narik ~2-3GB (wheel CUDA) buat
+# nol manfaat.
 [project.optional-dependencies]
 nlp = [
     "spacy>=3.7",
     "sumy>=0.11",
     "nltk>=3.9",
-    "torch>=2.3",
     "en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl",
 ]
 

@@ -250,7 +250,9 @@ class AsyncIOCRepo:
     async def get_stats(self) -> dict[str, object]:
         total = (await self.session.execute(select(func.count()).select_from(IOC))).scalar_one()
         by_type_stmt = (
-            select(IOC.type, func.count()).group_by(IOC.type).order_by(func.count().desc())
+            select(IOC.type, func.count())
+            .group_by(IOC.type)
+            .order_by(func.count().desc(), IOC.type)  # tie-break: urutan deterministik
         )
         by_type = (await self.session.execute(by_type_stmt)).all()
         return {

@@ -1,0 +1,17 @@
+{
+  "scraper": "dfirchThreat",
+  "legacy_script": "dfirchThreat",
+  "legacy_labels": [
+    "NEW ARTICLE FROM DFIRCH"
+  ],
+  "source_urls": [
+    "https://dfir.ch/posts/index.xml"
+  ],
+  "http_status": {
+    "https://dfir.ch/posts/index.xml": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

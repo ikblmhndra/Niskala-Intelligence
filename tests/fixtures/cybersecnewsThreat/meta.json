@@ -1,0 +1,17 @@
+{
+  "scraper": "cybersecnewsThreat",
+  "legacy_script": "cybersecnewsThreat",
+  "legacy_labels": [
+    "NEW ARTICLE FROM CYBERSECURITY NEWS"
+  ],
+  "source_urls": [
+    "https://cybersecuritynews.com/feed/"
+  ],
+  "http_status": {
+    "https://cybersecuritynews.com/feed/": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

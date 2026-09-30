@@ -23,7 +23,7 @@ class Splunk(XPathScraper):
         legacy_label="NEW RECENT ARTICLE FROM SPLUNK",
         legacy_script="splunkThreat",
     )
-    url = 'https://www.splunk.com/en_us/blog/security.html'
-    title_xpath = '/html/body/main/div[2]/div[2]/div/div/div[{i}]/div[2]/h3/a/text()'
-    link_xpath = '/html/body/main/div[2]/div[2]/div/div/div[{i}]/div[2]/h3/a/@href'
+    url = "https://www.splunk.com/en_us/blog/security.html"
+    title_xpath = "/html/body/main/div[2]/div[2]/div/div/div[{i}]/div[2]/h3/a/text()"
+    link_xpath = "/html/body/main/div[2]/div[2]/div/div/div[{i}]/div[2]/h3/a/@href"
     base_url = "https://www.splunk.com"

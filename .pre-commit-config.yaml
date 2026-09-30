@@ -1,0 +1,10 @@
+# Cegah secret ke-commit -- rencana dari docs/SECRETS_ROTATION.md ("Cegah kejadian lagi").
+# Pasang: `pre-commit install` (sekali per checkout). Uji semua file: `pre-commit run --all-files`.
+# CI juga punya gate terpisah (`.github/workflows/ci.yml` job `secrets`, gitleaks-action@v2 atas
+# HISTORY PENUH) -- hook ini nyegat SEBELUM commit sempat dibuat, CI nyegat kalau hook ini
+# di-skip/di-bypass (`git commit --no-verify`).
+repos:
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.1  # sinkron sama versi CLI terpasang (gitleaks version) -- naikkan bareng saat update
+    hooks:
+      - id: gitleaks

@@ -1,0 +1,17 @@
+{
+  "scraper": "tenableThreat",
+  "legacy_script": "tenableThreat",
+  "legacy_labels": [
+    "NEW ARTICLE FROM TENABLE"
+  ],
+  "source_urls": [
+    "https://feeds.feedburner.com/tenable/qaXL"
+  ],
+  "http_status": {
+    "https://feeds.feedburner.com/tenable/qaXL": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

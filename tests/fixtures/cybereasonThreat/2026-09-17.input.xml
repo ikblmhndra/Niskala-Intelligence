@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
+  <channel>
+    <title>Blog</title>
+    <link>https://www.cybereason.com/blog</link>
+    <description>Get the latest research, expert insights, and security industry news.</description>
+    <language>en</language>
+    <pubDate>Thu, 05 Feb 2026 12:58:37 GMT</pubDate>
+    <dc:date>2026-02-05T12:58:37Z</dc:date>
+    <dc:language>en</dc:language>
+    <item>
+      <title>Cybereason TTP Briefing Q4 2025: Diverse Phishing Tactics and RATs on the Rise</title>
+      <link>https://www.cybereason.com/blog/ttp-briefing-q4-2025</link>
+      <description>&lt;div class="hs-featured-image-wrapper"&gt; 
+ &lt;a href="https://www.cybereason.com/blog/ttp-briefing-q4-2025" title="" class="hs-featured-image-link"&gt; &lt;img src="https://www.cybereason.com/hubfs/Consulting/TTP_Briefing/Q4_2025/BLOG_Images_Template_v2%20(38).png" alt="Cybereason TTP Briefing Q4 2025: Diverse Phishing Tactics and RATs on the Rise" class="hs-featured-image" style="width:auto !important; max-width:50%; float:left; margin:0 15px 15px 0;"&gt; &lt;/a&gt; 
+&lt;/div&gt; 
+&lt;p&gt;&lt;span&gt;Explore the latest trends, techniques, and procedures (TTPs) our incident response (IR) experts are actively facing with the TTP Briefing Q4 2025, a report built on frontline threat intelligence from our global incident response investigations, enriched by noteworthy detections from our SOC. &lt;/span&gt;&lt;/p&gt;</description>
+      <content:encoded>&lt;div class="hs-featured-image-wrapper"&gt; 
+ &lt;a href="https://www.cybereason.com/blog/ttp-briefing-q4-2025" title="" class="hs-featured-image-link"&gt; &lt;img src="https://www.cybereason.com/hubfs/Consulting/TTP_Briefing/Q4_2025/BLOG_Images_Template_v2%20(38).png" alt="Cybereason TTP Briefing Q4 2025: Diverse Phishing Tactics and RATs on the Rise" class="hs-featured-image" style="width:auto !important; max-width:50%; float:left; margin:0 15px 15px 0;"&gt; &lt;/a&gt; 
+&lt;/div&gt; 
+&lt;p&gt;&lt;span&gt;Explore the latest trends, techniques, and procedures (TTPs) our incident response (IR) experts are actively facing with the TTP Briefing Q4 2025, a report built on frontline threat intelligence from our global incident response investigations, enriched by noteworthy detections from our SOC. &lt;/span&gt;&lt;/p&gt;  
+&lt;img src="https://track.hubspot.com/__ptq.gif?a=3354902&amp;amp;k=14&amp;amp;r=https%3A%2F%2Fwww.cybereason.com%2Fblog%2Fttp-briefing-q4-2025&amp;amp;bu=https%253A%252F%252Fwww.cybereason.com%252Fblog&amp;amp;bvt=rss" alt="" width="1" height="1" style="min-height:1px!important;width:1px!important;border-width:0!important;margin-top:0!important;margin-bottom:0!important;margin-right:0!important;margin-left:0!important;padding-top:0!important;padding-bottom:0!important;padding-right:0!important;padding-left:0!important; "&gt;</content:encoded>
+      <pubDate>Thu, 05 Feb 2026 12:54:25 GMT</pubDate>
+      <guid>https://www.cybereason.com/blog/ttp-briefing-q4-2025</guid>
+      <dc:date>2026-02-05T12:54:25Z</dc:date>
+      <dc:creator>Cybereason Consulting Team</dc:creator>
+    </item>
+    <item>
+      <title>Fake Installer: Ultimately, ValleyRAT infection</title>
+      <link>https://www.cybereason.com/blog/fake-installer-valleyrat</link>
+      <description>&lt;div class="hs-featured-image-wrapper"&gt; 
+ &lt;a href="https://www.cybereason.com/blog/fake-installer-valleyrat" title="" class="hs-featured-image-link"&gt; &lt;img src="https://www.cybereason.com/hubfs/BLOG_Images_Template_v2%20%2837%29.png" alt="Fake Installer: Ultimately, ValleyRAT infection" class="hs-featured-image" style="width:auto !important; max-width:50%; float:left; margin:0 15px 15px 0;"&gt; &lt;/a&gt; 
+&lt;/div&gt; 
+&lt;p style="text-align: left;"&gt;Cybereason Security Services issue Threat Analysis reports to inform on impacting threats. The Threat Analysis reports investigate these threats and provide practical recommendations for protecting against them.&lt;/p&gt; 
+&lt;p style="text-align: left;"&gt;In this Threat Analysis report, Cybereason Security Services investigates a fake installer attack we recently observed multiple times. We identified some findings that have not been documented in previous reports and obtained new threat intelligence insights from the malwares.&lt;/p&gt;</description>
+      <content:encoded>&lt;div class="hs-featured-image-wrapper"&gt; 
+ &lt;a href="https://www.cybereason.com/blog/fake-installer-valleyrat" title="" class="hs-featured-image-link"&gt; &lt;img src="https://www.cybereason.com/hubfs/BLOG_Images_Template_v2%20%2837%29.png" alt="Fake Installer: Ultimately, ValleyRAT infection" class="hs-featured-image" style="width:auto !important; max-width:50%; float:left; margin:0 15px 15px 0;"&gt; &lt;/a&gt; 
+&lt;/div&gt; 
+&lt;p style="text-align: left;"&gt;Cybereason Security Services issue Threat Analysis reports to inform on impacting threats. The Threat Analysis reports investigate these threats and provide practical recommendations for protecting against them.&lt;/p&gt; 
+&lt;p style="text-align: left;"&gt;In this Threat Analysis report, Cybereason Security Services investigates a fake installer attack we recently observed multiple times. We identified some findings that have not been documented in previous reports and obtained new threat intelligence insights from the malwares.&lt;/p&gt;  
+&lt;img src="https://track.hubspot.com/__ptq.gif?a=3354902&amp;amp;k=14&amp;amp;r=https%3A%2F%2Fwww.cybereason.com%2Fblog%2Ffake-installer-valleyrat&amp;amp;bu=https%253A%252F%252Fwww.cybereason.com%252Fblog&amp;amp;bvt=rss" alt="" width="1" height="1" style="min-height:1px!important;width:1px!important;border-width:0!important;margin-top:0!important;margin-bottom:0!important;margin-right:0!important;margin-left:0!important;padding-top:0!important;padding-bottom:0!important;padding-right:0!important;padding-left:0!important; "&gt;</content:encoded>
+      <category>Ransomware</category>
+      <category>Research</category>
+      <category>Threat Alerts</category>
+      <pubDate>Tue, 03 Feb 2026 11:35:56 GMT</pubDate>
+      <guid>https://www.cybereason.com/blog/fake-installer-valleyrat</guid>
+      <dc:date>2026-02-03T11:35:56Z</dc:date>
+      <dc:creator>Cybereason Security Services Team</dc:creator>
+    </item>
+    <item>
+      <title>Identity &amp; Beyond: 2026 Incident Response Predictions</title>
+      <link>https://www.cybereason.com/blog/identity-beyond-2026-incident-response-predictions</link>
+      <description>&lt;div class="hs-featured-image-wrapper"&gt; 
+ &lt;a href="https://www.cybereason.com/blog/identity-beyond-2026-incident-response-predictions" title="" class="hs-featured-image-link"&gt; &lt;img src="https://www.cybereason.com/hubfs/Jamie-Blog-Predictions.jpg" alt="2026 incident response predictions" class="hs-featured-image" style="width:auto !important; max-width:50%; float:left; margin:0 15px 15px 0;"&gt; &lt;/a&gt; 
+&lt;/div&gt; 
+&lt;p&gt;In 2026, &lt;a href="https://www.cybereason.com/consulting/incident-response-retainer"&gt;incident response&lt;/a&gt; (IR) will continue its shift away from traditional malware-centric investigations toward identity-driven intrusions, abuse of trusted cloud services, and low-signal, high-impact activity that blends seamlessly into normal business operations. Rather than relying on technical exploits, threat actors are prioritizing legitimate access, persistence, and operational efficiency, enabling them to evade users, security controls, and automated detection.&lt;/p&gt;</description>
+      <content:encoded>&lt;div class="hs-featured-image-wrapper"&gt; 
+ &lt;a href="https://www.cybereason.com/blog/identity-beyond-2026-incident-response-predictions" title="" class="hs-featured-image-link"&gt; &lt;img src="https://www.cybereason.com/hubfs/Jamie-Blog-Predictions.jpg" alt="2026 incident response predictions" class="hs-featured-image" style="width:auto !important; max-width:50%; float:left; margin:0 15px 15px 0;"&gt; &lt;/a&gt; 
+&lt;/div&gt; 
+&lt;p&gt;In 2026, &lt;a href="https://www.cybereason.com/consulting/incident-response-retainer"&gt;incident response&lt;/a&gt; (IR) will continue its shift away from traditional malware-centric investigations toward identity-driven intrusions, abuse of trusted cloud services, and low-signal, high-impact activity that blends seamlessly into normal business operations. Rather than relying on technical exploits, threat actors are prioritizing legitimate access, persistence, and operational efficiency, enabling them to evade users, security controls, and automated detection.&lt;/p&gt;  
+&lt;img src="https://track.hubspot.com/__ptq.gif?a=3354902&amp;amp;k=14&amp;amp;r=https%3A%2F%2Fwww.cybereason.com%2Fblog%2Fidentity-beyond-2026-incident-response-predictions&amp;amp;bu=https%253A%252F%252Fwww.cybereason.com%252Fblog&amp;amp;bvt=rss" alt="" width="1" height="1" style="min-height:1px!important;width:1px!important;border-width:0!important;margin-top:0!important;margin-bottom:0!important;margin-right:0!important;margin-left:0!important;padding-top:0!important;padding-bottom:0!important;padding-right:0!important;padding-left:0!important; "&gt;</content:encoded>
+      <pubDate>Fri, 09 Jan 2026 22:54:46 GMT</pubDate>
+      <guid>https://www.cybereason.com/blog/identity-beyond-2026-incident-response-predictions</guid>
+      <dc:date>2026-01-09T22:54:46Z</dc:date>
+      <dc:creator>Cybereason Security Services Team</dc:creator>
+    </item>
+    <item>
+      <title>Cybereason Nails 2025 MITRE ATT&amp;CK® Enterprise Evaluation</title>
+      <link>https://www.cybereason.com/blog/2025-mitre-attck-enterprise-evaluation</link>
+      <description>&lt;div class="hs-featured-image-wrapper"&gt; 
+ &lt;a href="https://www.cybereason.com/blog/2025-mitre-attck-enterprise-evaluation" title="" class="hs-featured-image-link"&gt; &lt;img src="https://www.cybereason.com/hubfs/Cybereason%20Mitre%20Blog%202026.png" alt="Cybereason Nails 2025 MITRE ATT&amp;amp;CK® Enterprise Evaluation" class="hs-featured-image" style="width:auto !important; max-width:50%; float:left; margin:0 15px 15px 0;"&gt; &lt;/a&gt; 
+&lt;/div&gt; 
+&lt;div style="line-height: 1.25; font-size: 20px; text-align: center;"&gt; 
+ &lt;strong&gt;&lt;em&gt;Flawless detection and protection against the industry’s most rigorous adversary emulation, proving Cybereason’s real-world effectiveness&amp;nbsp;&lt;/em&gt;&lt;/strong&gt; 
+&lt;/div&gt; 
+&lt;div style="line-height: 1.25; font-size: 18px;"&gt;
+  &amp;nbsp; 
+&lt;/div&gt;</description>
+      <content:encoded>&lt;div class="hs-featured-image-wrapper"&gt; 
+ &lt;a href="https://www.cybereason.com/blog/2025-mitre-attck-enterprise-evaluation" title="" class="hs-featured-image-link"&gt; &lt;img src="https://www.cybereason.com/hubfs/Cybereason%20Mitre%20Blog%202026.png" alt="Cybereason Nails 2025 MITRE ATT&amp;amp;CK® Enterprise Evaluation" class="hs-featured-image" style="width:auto !important; max-width:50%; float:left; margin:0 15px 15px 0;"&gt; &lt;/a&gt; 
+&lt;/div&gt; 
+&lt;div style="line-height: 1.25; font-size: 20px; text-align: center;"&gt; 
+ &lt;strong&gt;&lt;em&gt;Flawless detection and protection against the industry’s most rigorous adversary emulation, proving Cybereason’s real-world effectiveness&amp;nbsp;&lt;/em&gt;&lt;/strong&gt; 
+&lt;/div&gt; 
+&lt;div style="line-height: 1.25; font-size: 18px;"&gt;
+  &amp;nbsp; 
+&lt;/div&gt;  
+&lt;img src="https://track.hubspot.com/__ptq.gif?a=3354902&amp;amp;k=14&amp;amp;r=https%3A%2F%2Fwww.cybereason.com%2Fblog%2F2025-mitre-attck-enterprise-evaluation&amp;amp;bu=https%253A%252F%252Fwww.cybereason.com%252Fblog&amp;amp;bvt=rss" alt="" width="1" height="1" style="min-height:1px!important;width:1px!important;border-width:0!important;margin-top:0!important;margin-bottom:0!important;margin-right:0!important;margin-left:0!important;padding-top:0!important;padding-bottom:0!important;padding-right:0!important;padding-left:0!important; "&gt;</content:encoded>
+      <pubDate>Tue, 16 Dec 2025 18:58:08 GMT</pubDate>
+      <guid>https://www.cybereason.com/blog/2025-mitre-attck-enterprise-evaluation</guid>
+      <dc:date>2025-12-16T18:58:08Z</dc:date>
+      <dc:creator>Cybereason Security Services Team</dc:creator>
+    </item>
+    <item>
+      <title>CVE-2025-55182: Critical Vulnerability, React2Shell, Allows for Unauthenticated RCE</title>
+      <link>https://www.cybereason.com/blog/cve-2025-55182-rce-vulnerability</link>
+      <description>&lt;div class="hs-featured-image-wrapper"&gt; 
+ &lt;a href="https://www.cybereason.com/blog/cve-2025-55182-rce-vulnerability" title="" class="hs-featured-image-link"&gt; &lt;img src="https://www.cybereason.com/hubfs/BLOG_Images_Template_v2%20%2836%29.png" alt="CVE-2025-55182: Critical Vulnerability, React2Shell, Allows for Unauthenticated RCE" class="hs-featured-image" style="width:auto !important; max-width:50%; float:left; margin:0 15px 15px 0;"&gt; &lt;/a&gt; 
+&lt;/div&gt; 
+&lt;div style="line-height: 1.25; font-size: 18px;"&gt; 
+ &lt;span style="font-size: 20px;"&gt;&lt;em&gt;Cybereason is continuing to investigate. Check the Cybereason blog for additional updates.&amp;nbsp;&lt;/em&gt;&lt;/span&gt; 
+&lt;/div&gt; 
+&lt;div style="line-height: 1.25; font-size: 18px;"&gt;
+  &amp;nbsp; 
+&lt;/div&gt; 
+&lt;div style="line-height: 1;"&gt;
+  &amp;nbsp; 
+&lt;/div&gt; 
+&lt;h3 style="line-height: 1;"&gt;KEY TAKEAWAYS&lt;/h3&gt; 
+&lt;ul&gt; 
+ &lt;li&gt;Critical vulnerability discovered on December 3, 2025 in React that could allow for unauthenticated remote code execution.&amp;nbsp;&lt;/li&gt; 
+ &lt;li&gt;Cybereason experts have dubbed this vulnerability as trivial to exploit.&amp;nbsp;&lt;/li&gt; 
+ &lt;li&gt;Issue allows the server to incorrectly trust user-supplied identifiers and fails to verify.&amp;nbsp;&lt;/li&gt; 
+ &lt;li&gt;Initial working proof of concept is public and attributed to Chinese threat actors.&amp;nbsp;&lt;/li&gt; 
+ &lt;li&gt;If server was exposed to public internet prior to patch release date (December 3, 2025), investigate for signs of compromise.&amp;nbsp;&lt;/li&gt; 
+ &lt;li&gt;Update to latest patched versions of React, and review &lt;a href="https://react.dev/blog/2025/12/03/critical-security-vulnerability-in-react-server-components"&gt;advisory&lt;/a&gt; for additional recommendations.&amp;nbsp;&amp;nbsp;&lt;/li&gt; 
+&lt;/ul&gt;</description>
+      <content:encoded>&lt;div class="hs-featured-image-wrapper"&gt; 
+ &lt;a href="https://www.cybereason.com/blog/cve-2025-55182-rce-vulnerability" title="" class="hs-featured-image-link"&gt; &lt;img src="https://www.cybereason.com/hubfs/BLOG_Images_Template_v2%20%2836%29.png" alt="CVE-2025-55182: Critical Vulnerability, React2Shell, Allows for Unauthenticated RCE" class="hs-featured-image" style="width:auto !important; max-width:50%; float:left; margin:0 15px 15px 0;"&gt; &lt;/a&gt; 
+&lt;/div&gt; 
+&lt;div style="line-height: 1.25; font-size: 18px;"&gt; 
+ &lt;span style="font-size: 20px;"&gt;&lt;em&gt;Cybereason is continuing to investigate. Check the Cybereason blog for additional updates.&amp;nbsp;&lt;/em&gt;&lt;/span&gt; 
+&lt;/div&gt; 
+&lt;div style="line-height: 1.25; font-size: 18px;"&gt;
+  &amp;nbsp; 
+&lt;/div&gt; 
+&lt;div style="line-height: 1;"&gt;
+  &amp;nbsp; 
+&lt;/div&gt; 
+&lt;h3 style="line-height: 1;"&gt;KEY TAKEAWAYS&lt;/h3&gt; 
+&lt;ul&gt; 
+ &lt;li&gt;Critical vulnerability discovered on December 3, 2025 in React that could allow for unauthenticated remote code execution.&amp;nbsp;&lt;/li&gt; 
+ &lt;li&gt;Cybereason experts have dubbed this vulnerability as trivial to exploit.&amp;nbsp;&lt;/li&gt; 
+ &lt;li&gt;Issue allows the server to incorrectly trust user-supplied identifiers and fails to verify.&amp;nbsp;&lt;/li&gt; 
+ &lt;li&gt;Initial working proof of concept is public and attributed to Chinese threat actors.&amp;nbsp;&lt;/li&gt; 
+ &lt;li&gt;If server was exposed to public internet prior to patch release date (December 3, 2025), investigate for signs of compromise.&amp;nbsp;&lt;/li&gt; 
+ &lt;li&gt;Update to latest patched versions of React, and review &lt;a href="https://react.dev/blog/2025/12/03/critical-security-vulnerability-in-react-server-components"&gt;advisory&lt;/a&gt; for additional recommendations.&amp;nbsp;&amp;nbsp;&lt;/li&gt; 
+&lt;/ul&gt;  
+&lt;img src="https://track.hubspot.com/__ptq.gif?a=3354902&amp;amp;k=14&amp;amp;r=https%3A%2F%2Fwww.cybereason.com%2Fblog%2Fcve-2025-55182-rce-vulnerability&amp;amp;bu=https%253A%252F%252Fwww.cybereason.com%252Fblog&amp;amp;bvt=rss" alt="" width="1" height="1" style="min-height:1px!important;width:1px!important;border-width:0!important;margin-top:0!important;margin-bottom:0!important;margin-right:0!important;margin-left:0!important;padding-top:0!important;padding-bottom:0!important;padding-right:0!important;padding-left:0!important; "&gt;</content:encoded>
+      <pubDate>Fri, 05 Dec 2025 18:04:47 GMT</pubDate>
+      <guid>https://www.cybereason.com/blog/cve-2025-55182-rce-vulnerability</guid>
+      <dc:date>2025-12-05T18:04:47Z</dc:date>
+      <dc:creator>Cybereason Consulting Team</dc:creator>
+    </item>
+    <item>
+      <title>License to Encrypt: “The Gentlemen” Make Their Move</title>
+      <link>https://www.cybereason.com/blog/the-gentlemen-ransomware</link>
+      <description>&lt;div class="hs-featured-image-wrapper"&gt; 
+ &lt;a href="https://www.cybereason.com/blog/the-gentlemen-ransomware" title="" class="hs-featured-image-link"&gt; &lt;img src="https://www.cybereason.com/hubfs/dam/images/images-web/blog-images/TheGentlemen/The%20Gentlemen%20Blog.png" alt="License to Encrypt: “The Gentlemen” Make Their Move" class="hs-featured-image" style="width:auto !important; max-width:50%; float:left; margin:0 15px 15px 0;"&gt; &lt;/a&gt; 
+&lt;/div&gt; 
+&lt;p&gt;Cybereason Threat Intelligence Team recently conducted an analysis of "The Gentlemen" ransomware group, which emerged around July 2025 as a ransomware threat actor group with relatively advanced methodologies. The Gentlemen group employs a dual-extortion strategy, not only encrypting sensitive files but also exfiltrating critical business data and threatening to publish it on dark web leak sites unless a ransom is paid. The group has demonstrated a unique approach by combining established ransomware techniques with newer strategies, making them quick to adapt to new attack vectors, allowing them to remain a persistent to evolving threat to organizations worldwide.&lt;/p&gt;</description>
+      <content:encoded>&lt;div class="hs-featured-image-wrapper"&gt; 
+ &lt;a href="https://www.cybereason.com/blog/the-gentlemen-ransomware" title="" class="hs-featured-image-link"&gt; &lt;img src="https://www.cybereason.com/hubfs/dam/images/images-web/blog-images/TheGentlemen/The%20Gentlemen%20Blog.png" alt="License to Encrypt: “The Gentlemen” Make Their Move" class="hs-featured-image" style="width:auto !important; max-width:50%; float:left; margin:0 15px 15px 0;"&gt; &lt;/a&gt; 
+&lt;/div&gt; 
+&lt;p&gt;Cybereason Threat Intelligence Team recently conducted an analysis of "The Gentlemen" ransomware group, which emerged around July 2025 as a ransomware threat actor group with relatively advanced methodologies. The Gentlemen group employs a dual-extortion strategy, not only encrypting sensitive files but also exfiltrating critical business data and threatening to publish it on dark web leak sites unless a ransom is paid. The group has demonstrated a unique approach by combining established ransomware techniques with newer strategies, making them quick to adapt to new attack vectors, allowing them to remain a persistent to evolving threat to organizations worldwide.&lt;/p&gt;  
+&lt;img src="https://track.hubspot.com/__ptq.gif?a=3354902&amp;amp;k=14&amp;amp;r=https%3A%2F%2Fwww.cybereason.com%2Fblog%2Fthe-gentlemen-ransomware&amp;amp;bu=https%253A%252F%252Fwww.cybereason.com%252Fblog&amp;amp;bvt=rss" alt="" width="1" height="1" style="min-height:1px!important;width:1px!important;border-width:0!important;margin-top:0!important;margin-bottom:0!important;margin-right:0!important;margin-left:0!important;padding-top:0!important;padding-bottom:0!important;padding-right:0!important;padding-left:0!important; "&gt;</content:encoded>
+      <category>Ransomware</category>
+      <category>Research</category>
+      <category>Threat Alerts</category>
+      <pubDate>Tue, 18 Nov 2025 13:59:59 GMT</pubDate>
+      <guid>https://www.cybereason.com/blog/the-gentlemen-ransomware</guid>
+      <dc:date>2025-11-18T13:59:59Z</dc:date>
+      <dc:creator>Cybereason Security Services Team</dc:creator>
+    </item>
+    <item>
+      <title>Tycoon 2FA Phishing Kit Analysis</title>
+      <link>https://www.cybereason.com/blog/tycoon-phishing-kit-analysis</link>
+      <description>&lt;div class="hs-featured-image-wrapper"&gt; 
+ &lt;a href="https://www.cybereason.com/blog/tycoon-phishing-kit-analysis" title="" class="hs-featured-image-link"&gt; &lt;img src="https://www.cybereason.com/hubfs/dam/images/images-web/blog-images/Tycoon%20Phishing%20Kit/BLOG_Images_Template_v2%20(27).png" alt="Tycoon 2FA Phishing Kit Analysis" class="hs-featured-image" style="width:auto !important; max-width:50%; float:left; margin:0 15px 15px 0;"&gt; &lt;/a&gt; 
+&lt;/div&gt; 
+&lt;p&gt;The &lt;span style="font-weight: bold;"&gt;Tycoon 2FA phishing kit&lt;/span&gt; is a sophisticated Phishing-as-a-Service (PhaaS) platform that emerged in August 2023, designed to bypass two-factor authentication (2FA) and multi-factor authentication (MFA) protections, primarily targeting Microsoft 365 and Gmail accounts. Utilizing an Adversary-in-the-Middle (AiTM) approach, it employs a reverse proxy server to host deceptive phishing pages that mimic legitimate login interfaces, capturing user credentials and session cookies in real-time. According to the Any.run malware trends tracker, Tycoon 2FA leads with over 64,000 reported incidents this year.&lt;/p&gt;</description>
+      <content:encoded>&lt;div class="hs-featured-image-wrapper"&gt; 
+ &lt;a href="https://www.cybereason.com/blog/tycoon-phishing-kit-analysis" title="" class="hs-featured-image-link"&gt; &lt;img src="https://www.cybereason.com/hubfs/dam/images/images-web/blog-images/Tycoon%20Phishing%20Kit/BLOG_Images_Template_v2%20(27).png" alt="Tycoon 2FA Phishing Kit Analysis" class="hs-featured-image" style="width:auto !important; max-width:50%; float:left; margin:0 15px 15px 0;"&gt; &lt;/a&gt; 
+&lt;/div&gt; 
+&lt;p&gt;The &lt;span style="font-weight: bold;"&gt;Tycoon 2FA phishing kit&lt;/span&gt; is a sophisticated Phishing-as-a-Service (PhaaS) platform that emerged in August 2023, designed to bypass two-factor authentication (2FA) and multi-factor authentication (MFA) protections, primarily targeting Microsoft 365 and Gmail accounts. Utilizing an Adversary-in-the-Middle (AiTM) approach, it employs a reverse proxy server to host deceptive phishing pages that mimic legitimate login interfaces, capturing user credentials and session cookies in real-time. According to the Any.run malware trends tracker, Tycoon 2FA leads with over 64,000 reported incidents this year.&lt;/p&gt;  
+&lt;img src="https://track.hubspot.com/__ptq.gif?a=3354902&amp;amp;k=14&amp;amp;r=https%3A%2F%2Fwww.cybereason.com%2Fblog%2Ftycoon-phishing-kit-analysis&amp;amp;bu=https%253A%252F%252Fwww.cybereason.com%252Fblog&amp;amp;bvt=rss" alt="" width="1" height="1" style="min-height:1px!important;width:1px!important;border-width:0!important;margin-top:0!important;margin-bottom:0!important;margin-right:0!important;margin-left:0!important;padding-top:0!important;padding-bottom:0!important;padding-right:0!important;padding-left:0!important; "&gt;</content:encoded>
+      <category>Ransomware</category>
+      <category>Research</category>
+      <category>Threat Alerts</category>
+      <pubDate>Mon, 03 Nov 2025 17:42:04 GMT</pubDate>
+      <guid>https://www.cybereason.com/blog/tycoon-phishing-kit-analysis</guid>
+      <dc:date>2025-11-03T17:42:04Z</dc:date>
+      <dc:creator>Cybereason Security Services Team</dc:creator>
+    </item>
+    <item>
+      <title>From Scripts to Systems: A Comprehensive Look at Tangerine Turkey Operations</title>
+      <link>https://www.cybereason.com/blog/tangerine-turkey</link>
+      <description>&lt;div class="hs-featured-image-wrapper"&gt; 
+ &lt;a href="https://www.cybereason.com/blog/tangerine-turkey" title="" class="hs-featured-image-link"&gt; &lt;img src="https://www.cybereason.com/hubfs/dam/images/images-web/blog-images/From%20Scripts%20to%20Systems-%20A%20Comprehensive%20Look%20at%20Tangerine%20Turkey%20Operations/BLOG_Images_Template_v2%20(28).png" alt="From Scripts to Systems: A Comprehensive Look at Tangerine Turkey Operations" class="hs-featured-image" style="width:auto !important; max-width:50%; float:left; margin:0 15px 15px 0;"&gt; &lt;/a&gt; 
+&lt;/div&gt; 
+&lt;p&gt;Cybereason Security Services issue Threat Analysis reports to inform on impacting threats. The Threat Analysis reports investigate these threats and provide practical recommendations for protecting against them.&lt;/p&gt; 
+&lt;p&gt;In this Threat Analysis report, Cybereason Security Services investigates the flow of a Tangerine Turkey campaign observed in Cybereason EDR. Tangerine Turkey is a threat actor identified as a visual basic script (VBS) worm used to facilitate cryptomining activity.&lt;/p&gt;</description>
+      <content:encoded>&lt;div class="hs-featured-image-wrapper"&gt; 
+ &lt;a href="https://www.cybereason.com/blog/tangerine-turkey" title="" class="hs-featured-image-link"&gt; &lt;img src="https://www.cybereason.com/hubfs/dam/images/images-web/blog-images/From%20Scripts%20to%20Systems-%20A%20Comprehensive%20Look%20at%20Tangerine%20Turkey%20Operations/BLOG_Images_Template_v2%20(28).png" alt="From Scripts to Systems: A Comprehensive Look at Tangerine Turkey Operations" class="hs-featured-image" style="width:auto !important; max-width:50%; float:left; margin:0 15px 15px 0;"&gt; &lt;/a&gt; 
+&lt;/div&gt; 
+&lt;p&gt;Cybereason Security Services issue Threat Analysis reports to inform on impacting threats. The Threat Analysis reports investigate these threats and provide practical recommendations for protecting against them.&lt;/p&gt; 
+&lt;p&gt;In this Threat Analysis report, Cybereason Security Services investigates the flow of a Tangerine Turkey campaign observed in Cybereason EDR. Tangerine Turkey is a threat actor identified as a visual basic script (VBS) worm used to facilitate cryptomining activity.&lt;/p&gt;  
+&lt;img src="https://track.hubspot.com/__ptq.gif?a=3354902&amp;amp;k=14&amp;amp;r=https%3A%2F%2Fwww.cybereason.com%2Fblog%2Ftangerine-turkey&amp;amp;bu=https%253A%252F%252Fwww.cybereason.com%252Fblog&amp;amp;bvt=rss" alt="" width="1" height="1" style="min-height:1px!important;width:1px!important;border-width:0!important;margin-top:0!important;margin-bottom:0!important;margin-right:0!important;margin-left:0!important;padding-top:0!important;padding-bottom:0!important;padding-right:0!important;padding-left:0!important; "&gt;</content:encoded>
+      <category>Ransomware</category>
+      <category>Research</category>
+      <category>Threat Alerts</category>
+      <pubDate>Wed, 29 Oct 2025 14:00:35 GMT</pubDate>
+      <guid>https://www.cybereason.com/blog/tangerine-turkey</guid>
+      <dc:date>2025-10-29T14:00:35Z</dc:date>
+      <dc:creator>Cybereason Security Services Team</dc:creator>
+    </item>
+    <item>
+      <title>Cybereason TTP Briefing Q3 2025: LOLBINs and CVE Exploits Dominate</title>
+      <link>https://www.cybereason.com/blog/ttp-briefing-q3-2025</link>
+      <description>&lt;div class="hs-featured-image-wrapper"&gt; 
+ &lt;a href="https://www.cybereason.com/blog/ttp-briefing-q3-2025" title="" class="hs-featured-image-link"&gt; &lt;img src="https://www.cybereason.com/hubfs/Consulting/TTP%20Briefing/Q3%202025/Untitled%20presentation%20(3).png" alt="Cybereason TTP Briefing Q3 2025: LOLBINs and CVE Exploits Dominate" class="hs-featured-image" style="width:auto !important; max-width:50%; float:left; margin:0 15px 15px 0;"&gt; &lt;/a&gt; 
+&lt;/div&gt; 
+&lt;p&gt;Explore the latest trends, techniques, and procedures (TTPs) our incident response (IR) experts are actively facing with the TTP Briefing Q3 2025, a report built on frontline threat intelligence from our global incident response investigations, enriched by noteworthy detections from our SOC.&amp;nbsp;&lt;/p&gt;</description>
+      <content:encoded>&lt;div class="hs-featured-image-wrapper"&gt; 
+ &lt;a href="https://www.cybereason.com/blog/ttp-briefing-q3-2025" title="" class="hs-featured-image-link"&gt; &lt;img src="https://www.cybereason.com/hubfs/Consulting/TTP%20Briefing/Q3%202025/Untitled%20presentation%20(3).png" alt="Cybereason TTP Briefing Q3 2025: LOLBINs and CVE Exploits Dominate" class="hs-featured-image" style="width:auto !important; max-width:50%; float:left; margin:0 15px 15px 0;"&gt; &lt;/a&gt; 
+&lt;/div&gt; 
+&lt;p&gt;Explore the latest trends, techniques, and procedures (TTPs) our incident response (IR) experts are actively facing with the TTP Briefing Q3 2025, a report built on frontline threat intelligence from our global incident response investigations, enriched by noteworthy detections from our SOC.&amp;nbsp;&lt;/p&gt;  
+&lt;img src="https://track.hubspot.com/__ptq.gif?a=3354902&amp;amp;k=14&amp;amp;r=https%3A%2F%2Fwww.cybereason.com%2Fblog%2Fttp-briefing-q3-2025&amp;amp;bu=https%253A%252F%252Fwww.cybereason.com%252Fblog&amp;amp;bvt=rss" alt="" width="1" height="1" style="min-height:1px!important;width:1px!important;border-width:0!important;margin-top:0!important;margin-bottom:0!important;margin-right:0!important;margin-left:0!important;padding-top:0!important;padding-bottom:0!important;padding-right:0!important;padding-left:0!important; "&gt;</content:encoded>
+      <pubDate>Thu, 23 Oct 2025 12:59:59 GMT</pubDate>
+      <guid>https://www.cybereason.com/blog/ttp-briefing-q3-2025</guid>
+      <dc:date>2025-10-23T12:59:59Z</dc:date>
+      <dc:creator>Cybereason Consulting Team</dc:creator>
+    </item>
+    <item>
+      <title>Addressing CL0P Extortion Campaign Targeting Oracle EBS CVE-2025-61882</title>
+      <link>https://www.cybereason.com/blog/oracle-ebs-extortion-cl0p</link>
+      <description>&lt;div class="hs-featured-image-wrapper"&gt; 
+ &lt;a href="https://www.cybereason.com/blog/oracle-ebs-extortion-cl0p" title="" class="hs-featured-image-link"&gt; &lt;img src="https://www.cybereason.com/hubfs/BLOG_Images_Template_v2%20%2827%29.png" alt="Addressing CL0P Extortion Campaign Targeting Oracle EBS CVE-2025-61882" class="hs-featured-image" style="width:auto !important; max-width:50%; float:left; margin:0 15px 15px 0;"&gt; &lt;/a&gt; 
+&lt;/div&gt; 
+&lt;div style="line-height: 1.25; font-size: 18px;"&gt; 
+ &lt;span style="font-size: 20px;"&gt;&lt;em&gt;Cybereason is continuing to investigate. Check the Cybereason blog for additional updates.&amp;nbsp;&lt;/em&gt;&lt;/span&gt; 
+&lt;/div&gt; 
+&lt;div style="line-height: 1.25; font-size: 18px;"&gt; 
+ &lt;span style="font-size: 20px;"&gt;&amp;nbsp;&lt;/span&gt; 
+&lt;/div&gt; 
+&lt;div style="line-height: 1.25; font-size: 18px;"&gt; 
+ &lt;span style="font-size: 20px;"&gt;&lt;em&gt;Last update: Oct 7, 11am EST&lt;/em&gt;&lt;/span&gt; 
+&lt;/div&gt; 
+&lt;div style="line-height: 1.25; font-size: 18px;"&gt; 
+ &lt;span style="font-size: 20px;"&gt;&amp;nbsp;&lt;/span&gt; 
+&lt;/div&gt; 
+&lt;div style="line-height: 1;"&gt;
+  &amp;nbsp; 
+&lt;/div&gt; 
+&lt;h3 style="line-height: 1;"&gt;Overview and What Cybereason Knows So Far&lt;/h3&gt; 
+&lt;ul&gt; 
+ &lt;li&gt;&lt;strong&gt;July 2025&lt;/strong&gt;, Oracle releases&amp;nbsp;&lt;a href="https://blogs.oracle.com/security/post/apply-july-2025-cpu"&gt;security updates&lt;/a&gt; including 309 patches, which included nine that addressed flaws/vulnerabilities in Oracle E-Business Suite (EBS).&lt;/li&gt; 
+ &lt;li&gt;&lt;strong&gt;July 2025&lt;/strong&gt; (end of) through &lt;strong&gt;September 2025&lt;/strong&gt; (beginning of), Cybereason has assessed based on emerging evidence and ongoing forensic investigations, that CL0P orchestrated an Intrusion Path that allowed for unauthorized access to on-premise, customer-managed Oracle E-Business Suite (EBS) solutions, enumerated accessible and stored data, and conducted data exfiltration.&lt;/li&gt; 
+ &lt;li&gt;&lt;strong&gt;September 2025&lt;/strong&gt; (end of) through &lt;strong&gt;October 2025&lt;/strong&gt; (beginning of), a widespread orchestrated email extortion campaigns emerged targeting users of on-premise, customer-managed Oracle E-Business Suite (EBS) and requesting contact with CL0P in order to not expose data allegedly exfiltrated.&lt;/li&gt; 
+ &lt;li&gt;&lt;strong&gt;October 2025&lt;/strong&gt; (beginning of), Cybereason is aware of ongoing investigations in which CL0P has provided proof of data. CL0P does not appear to have named new victims associated with this incident as of &lt;strong&gt;October 4, 2025&lt;/strong&gt;.&lt;/li&gt; 
+ &lt;li&gt;&lt;span style="font-weight: bold;"&gt;October 5, 2025&lt;/span&gt;, Oracle &lt;a href="https://www.oracle.com/security-alerts/alert-cve-2025-61882.html"&gt;confirms&lt;/a&gt; CVE-2025-61882 in Oracle E-Business Suite (EBS). This vulnerability was remotely exploitable without authentication (i.e., it can be exploited over a network without the need for a username and password). Successful exploitation can lead to remote code execution (RCE).&lt;/li&gt; 
+ &lt;li&gt;&lt;strong&gt;October 7, 2025&lt;/strong&gt;, Cybereason confirms earliest evidence of threat actor activity occurred August 9, but is subject to change based on ongoing investigations.&amp;nbsp;&lt;/li&gt; 
+&lt;/ul&gt;</description>
+      <content:encoded>&lt;div class="hs-featured-image-wrapper"&gt; 
+ &lt;a href="https://www.cybereason.com/blog/oracle-ebs-extortion-cl0p" title="" class="hs-featured-image-link"&gt; &lt;img src="https://www.cybereason.com/hubfs/BLOG_Images_Template_v2%20%2827%29.png" alt="Addressing CL0P Extortion Campaign Targeting Oracle EBS CVE-2025-61882" class="hs-featured-image" style="width:auto !important; max-width:50%; float:left; margin:0 15px 15px 0;"&gt; &lt;/a&gt; 
+&lt;/div&gt; 
+&lt;div style="line-height: 1.25; font-size: 18px;"&gt; 
+ &lt;span style="font-size: 20px;"&gt;&lt;em&gt;Cybereason is continuing to investigate. Check the Cybereason blog for additional updates.&amp;nbsp;&lt;/em&gt;&lt;/span&gt; 
+&lt;/div&gt; 
+&lt;div style="line-height: 1.25; font-size: 18px;"&gt; 
+ &lt;span style="font-size: 20px;"&gt;&amp;nbsp;&lt;/span&gt; 
+&lt;/div&gt; 
+&lt;div style="line-height: 1.25; font-size: 18px;"&gt; 
+ &lt;span style="font-size: 20px;"&gt;&lt;em&gt;Last update: Oct 7, 11am EST&lt;/em&gt;&lt;/span&gt; 
+&lt;/div&gt; 
+&lt;div style="line-height: 1.25; font-size: 18px;"&gt; 
+ &lt;span style="font-size: 20px;"&gt;&amp;nbsp;&lt;/span&gt; 
+&lt;/div&gt; 
+&lt;div style="line-height: 1;"&gt;
+  &amp;nbsp; 
+&lt;/div&gt; 
+&lt;h3 style="line-height: 1;"&gt;Overview and What Cybereason Knows So Far&lt;/h3&gt; 
+&lt;ul&gt; 
+ &lt;li&gt;&lt;strong&gt;July 2025&lt;/strong&gt;, Oracle releases&amp;nbsp;&lt;a href="https://blogs.oracle.com/security/post/apply-july-2025-cpu"&gt;security updates&lt;/a&gt; including 309 patches, which included nine that addressed flaws/vulnerabilities in Oracle E-Business Suite (EBS).&lt;/li&gt; 
+ &lt;li&gt;&lt;strong&gt;July 2025&lt;/strong&gt; (end of) through &lt;strong&gt;September 2025&lt;/strong&gt; (beginning of), Cybereason has assessed based on emerging evidence and ongoing forensic investigations, that CL0P orchestrated an Intrusion Path that allowed for unauthorized access to on-premise, customer-managed Oracle E-Business Suite (EBS) solutions, enumerated accessible and stored data, and conducted data exfiltration.&lt;/li&gt; 
+ &lt;li&gt;&lt;strong&gt;September 2025&lt;/strong&gt; (end of) through &lt;strong&gt;October 2025&lt;/strong&gt; (beginning of), a widespread orchestrated email extortion campaigns emerged targeting users of on-premise, customer-managed Oracle E-Business Suite (EBS) and requesting contact with CL0P in order to not expose data allegedly exfiltrated.&lt;/li&gt; 
+ &lt;li&gt;&lt;strong&gt;October 2025&lt;/strong&gt; (beginning of), Cybereason is aware of ongoing investigations in which CL0P has provided proof of data. CL0P does not appear to have named new victims associated with this incident as of &lt;strong&gt;October 4, 2025&lt;/strong&gt;.&lt;/li&gt; 
+ &lt;li&gt;&lt;span style="font-weight: bold;"&gt;October 5, 2025&lt;/span&gt;, Oracle &lt;a href="https://www.oracle.com/security-alerts/alert-cve-2025-61882.html"&gt;confirms&lt;/a&gt; CVE-2025-61882 in Oracle E-Business Suite (EBS). This vulnerability was remotely exploitable without authentication (i.e., it can be exploited over a network without the need for a username and password). Successful exploitation can lead to remote code execution (RCE).&lt;/li&gt; 
+ &lt;li&gt;&lt;strong&gt;October 7, 2025&lt;/strong&gt;, Cybereason confirms earliest evidence of threat actor activity occurred August 9, but is subject to change based on ongoing investigations.&amp;nbsp;&lt;/li&gt; 
+&lt;/ul&gt;  
+&lt;img src="https://track.hubspot.com/__ptq.gif?a=3354902&amp;amp;k=14&amp;amp;r=https%3A%2F%2Fwww.cybereason.com%2Fblog%2Foracle-ebs-extortion-cl0p&amp;amp;bu=https%253A%252F%252Fwww.cybereason.com%252Fblog&amp;amp;bvt=rss" alt="" width="1" height="1" style="min-height:1px!important;width:1px!important;border-width:0!important;margin-top:0!important;margin-bottom:0!important;margin-right:0!important;margin-left:0!important;padding-top:0!important;padding-bottom:0!important;padding-right:0!important;padding-left:0!important; "&gt;</content:encoded>
+      <pubDate>Sun, 05 Oct 2025 01:50:33 GMT</pubDate>
+      <guid>https://www.cybereason.com/blog/oracle-ebs-extortion-cl0p</guid>
+      <dc:date>2025-10-05T01:50:33Z</dc:date>
+      <dc:creator>Cybereason Consulting Team</dc:creator>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,17 @@
+{
+  "scraper": "resecurityThreat",
+  "legacy_script": "resecurityThreat",
+  "legacy_labels": [
+    "NEW ARTICLE FROM RE SECURITY"
+  ],
+  "source_urls": [
+    "https://www.resecurity.com/feed"
+  ],
+  "http_status": {
+    "https://www.resecurity.com/feed": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

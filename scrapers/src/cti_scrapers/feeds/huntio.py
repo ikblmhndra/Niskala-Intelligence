@@ -23,7 +23,7 @@ class Huntio(XPathScraper):
         legacy_label="NEW ARTICLE FROM HUNT IO",
         legacy_script="huntioThreat",
     )
-    url = 'https://hunt.io/blog'
-    title_xpath = '/html/body/div[1]/div[1]/div[2]/div/div[1]/div[1]/div/div/div[{i}]/div/div/div/div[1]/div[2]/h2/a/text()'
-    link_xpath = '/html/body/div[1]/div[1]/div[2]/div/div[1]/div[1]/div/div/div[{i}]/div/div/div/div[1]/div[2]/h2/a/@href'
+    url = "https://hunt.io/blog"
+    title_xpath = "/html/body/div[1]/div[1]/div[2]/div/div[1]/div[1]/div/div/div[{i}]/div/div/div/div[1]/div[2]/h2/a/text()"
+    link_xpath = "/html/body/div[1]/div[1]/div[2]/div/div[1]/div[1]/div/div/div[{i}]/div/div/div/div[1]/div[2]/h2/a/@href"
     base_url = "https://hunt.io"

@@ -20,7 +20,10 @@ class Labsqrx(RSSScraper):
         legacy_label="NEW ARTICLE FROM LABS SQRX",
         legacy_script="labsqrxThreat",
     )
-    feeds = ('https://labs.sqrx.com/feed',)
+    feeds = ("https://labs.sqrx.com/feed",)
     date_path = None  # scraper lama pakai waktu-scrape, bukan tanggal artikel asli
-    xml_fixups = (('&ndash;', ''), ('&', '&amp;'),)
+    xml_fixups = (
+        ("&ndash;", ""),
+        ("&", "&amp;"),
+    )
     html_unescape = True  # feed lama pakai html.unescape() sebelum parse XML

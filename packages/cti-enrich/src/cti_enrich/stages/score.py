@@ -6,8 +6,14 @@ butuh `Session` (baca `techstack`/`threat_actor_groups`/`monitored_people`)
 dan HTTP (MITRE), itu sebabnya sinyal-sinyal ini dihitung DI SINI baru
 diteruskan sebagai data polos ke `routing.route()`.
 
-Butuh extra `nlp` (`en_core_web_sm`) -- modul ini import `spacy` di level
-atas, jangan diimport dari kode yang jalan di image API/scrape ringan.
+Butuh extra `nlp` (`en_core_web_sm`) HANYA buat NER di `score_with_lists()`
+kalau `body` diisi -- spaCy di-load LAZY (`_get_nlp()`), BUKAN pas modul
+di-import. Itu disengaja (Fase 10.B): scraper `monitor_x` meng-import
+`score_with_lists` (mode title-only, tanpa NER), dan SETIAP proses
+(API/worker/beat) nge-`discover()` seluruh registry -- import spaCy di level
+modul bikin image tanpa extra `nlp` gagal total pas start, bukan cuma pas
+ada yang manggil NER. Ada test kontrak yang ngunci ini
+(`tests/contract/test_registry_without_nlp.py`).
 
 Perubahan yang DISENGAJA dari sumber lama (bukan bug, bukan port apa
 adanya -- lihat penjelasan tiap satu):
@@ -32,10 +38,11 @@ from __future__ import annotations
 import re
 from collections import OrderedDict
 from dataclasses import dataclass, field
+from functools import lru_cache
+from typing import Any
 
 import httpx
 import pycountry
-import spacy
 from cti_core.db.models.techstack import TechStackEntry
 from cti_core.db.repositories.threat_reference import (
     list_monitored_people,
@@ -44,7 +51,16 @@ from cti_core.db.repositories.threat_reference import (
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-_NLP = spacy.load("en_core_web_sm")
+
+@lru_cache(maxsize=1)
+def _get_nlp() -> Any:
+    """`spacy.load` sekali per proses, PAS PERTAMA DIPAKAI (bukan pas import --
+    lihat docstring modul). ~1 detik + ratusan MB; di worker-nlp itu kejadian
+    sekali per proses child."""
+    import spacy
+
+    return spacy.load("en_core_web_sm")
+
 
 _OT_LIST = [
     "ics vulnerabilities",
@@ -470,7 +486,7 @@ def score_with_lists(
         if ot_status_count >= 1:
             result.ot_status = True
 
-        doc = _NLP(body[:1_000_000])
+        doc = _get_nlp()(body[:1_000_000])
         for ent in doc.ents:
             if ent.label_ in ("ORG", "PERSON", "GPE"):
                 for group in group_list:

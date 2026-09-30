@@ -1,0 +1,17 @@
+{
+  "scraper": "qualysThreat",
+  "legacy_script": "qualysThreat",
+  "legacy_labels": [
+    "NEW ARTICLE FROM QUALYS SECURITY"
+  ],
+  "source_urls": [
+    "https://blog.qualys.com/vulnerabilities-threat-research/feed"
+  ],
+  "http_status": {
+    "https://blog.qualys.com/vulnerabilities-threat-research/feed": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

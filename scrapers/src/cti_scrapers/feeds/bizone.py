@@ -23,7 +23,11 @@ class Bizone(XPathScraper):
         legacy_label="NEW ARTICLE FROM BIZONE",
         legacy_script="bizoneThreat",
     )
-    url = 'https://bi.zone/eng/expertise/blog/'
-    title_xpath = '/html/body/div[1]/main/section[1]/div/div/div[3]/div/div/div[2]/div/div[{i}]/div/a/text()'
-    link_xpath = '/html/body/div[1]/main/section[1]/div/div/div[3]/div/div/div[2]/div/div[{i}]/div/a/@href'
+    url = "https://bi.zone/eng/expertise/blog/"
+    title_xpath = (
+        "/html/body/div[1]/main/section[1]/div/div/div[3]/div/div/div[2]/div/div[{i}]/div/a/text()"
+    )
+    link_xpath = (
+        "/html/body/div[1]/main/section[1]/div/div/div[3]/div/div/div[2]/div/div[{i}]/div/a/@href"
+    )
     base_url = "https://bi.zone"

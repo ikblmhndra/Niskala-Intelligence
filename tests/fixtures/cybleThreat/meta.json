@@ -1,0 +1,17 @@
+{
+  "scraper": "cybleThreat",
+  "legacy_script": "cybleThreat",
+  "legacy_labels": [
+    "NEW ARTICLE FROM CYBLE"
+  ],
+  "source_urls": [
+    "https://cyble.com/feed/"
+  ],
+  "http_status": {
+    "https://cyble.com/feed/": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

@@ -1,0 +1,284 @@
+{
+  "2026-09-17": [
+    {
+      "title": "CASI Leaderboard Shifts: Sugar-Coated Poison, and the Expanding AI Attack Surface",
+      "url": "https://www.f5.com/labs/articles/casi-leaderboard-shifts-sugar-coated-poison-and-the-expanding-ai-attack-surface",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Azure-Hosted Scanning Cluster Launches WordPress Webshell Discovery Campaign",
+      "url": "https://www.f5.com/labs/articles/azure-hosted-scanning-cluster-launches-wordpress-webshell-discovery-campaign",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Drupal Core CVE-2026-9082 Active Exploitation Confirmed Within Days of Disclosure",
+      "url": "https://www.f5.com/labs/articles/drupal-core-cve-2026-9082-active-exploitation-confirmed-within-days-of-disclosure",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "When AI Gets Bullied: How Agentic Attacks Are Replaying Human Social Engineering ",
+      "url": "https://www.f5.com/labs/articles/when-ai-gets-bullied-how-agentic-attacks-are-replaying-human-social-engineering",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "AI Security at the 2026 Winter Games: The Ultimate Stress Test",
+      "url": "https://www.f5.com/labs/articles/ai-security-at-the-2026-winter-games-the-ultimate-stress-test",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Analyzing React2Shell Threat Actors",
+      "url": "https://www.f5.com/labs/articles/analyzing-react2shell-threat-actors",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "CVE-2026-63030 and CVE-2026-60137: 'wp2shell' Captured Exploit Payload",
+      "url": "https://www.f5.com/labs/articles/cve-2026-63030-and-cve-2026-60137-wp2shell-captured-exploit-payload",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Chinese Open-weight AI Models: Cybersecurity Risks and Rewards",
+      "url": "https://www.f5.com/labs/articles/chinese-open-weight-ai-models-cybersecurity-risks-and-rewards",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "CVE-2024-44000 (LiteSpeed Cache Account Takeover) Ranks in June’s Top Threats",
+      "url": "https://www.f5.com/labs/articles/cve-2024-44000-litespeed-cache-account-takeover-ranks-in-june-s-top-threats",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Looking at the SmarterMail API Vulnerability CVE-2026-24423",
+      "url": "https://www.f5.com/labs/articles/looking-at-the-smartermail-api-vulnerability-cve-2026-24423",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Topic Bridge",
+      "url": "https://www.f5.com/labs/articles/topic-bridge",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Microsoft Exchange ProxyShell Scanning Doubles in April 2026 as Two Distinct Campaign Clusters Emerge",
+      "url": "https://www.f5.com/labs/articles/microsoft-exchange-proxyshell-scanning-doubles-in-april-2026-as-two-distinct-campaign-clusters",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The Small Model Cliff",
+      "url": "https://www.f5.com/labs/articles/the-small-model-cliff",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Introducing the F5 Labs Weekly Threat Bulletin",
+      "url": "https://www.f5.com/labs/articles/introducing-the-f5-labs-weekly-threat-bulletin",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Cloud Takeover: Mass Scanning for Exposed Vite Endpoints (CVE-2026-39364)",
+      "url": "https://www.f5.com/labs/articles/cloud-takeover-mass-scanning-for-exposed-vite-endpoints-cve-2026-39364",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "GeoServer Targeting on the Rise",
+      "url": "https://www.f5.com/labs/articles/geoserver-targeting-on-the-rise",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The Ghost in the Shell: Why Agentic AI is a Corporate Security Nightmare",
+      "url": "https://www.f5.com/labs/articles/the-ghost-in-the-shell-why-agentic-ai-is-a-corporate-security-nightmare",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Adversarial Tales",
+      "url": "https://www.f5.com/labs/articles/adversarial-tales",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "AI Capabilities Are Advancing Faster Than AI Security",
+      "url": "https://www.f5.com/labs/articles/ai-capabilities-are-advancing-faster-than-ai-security",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "CASI Leaderboard Shifts: Developer Role Attack, and Three Concerning Incidents",
+      "url": "https://www.f5.com/labs/articles/casi-leaderboard-shifts-developer-role-attack-and-three-concerning-incidents",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Capability Is Closing the Open-Closed Gap; Security Is Not",
+      "url": "https://www.f5.com/labs/articles/capability-is-closing-the-open-closed-gap-security-is-not",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Weekly Threat Bulletin – January 21st, 2026",
+      "url": "https://www.f5.com/labs/articles/weekly-threat-bulletin-january-21st-2026",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Weekly Threat Bulletin – January 28th, 2026",
+      "url": "https://www.f5.com/labs/articles/weekly-threat-bulletin-january-28th-2026",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Weekly Threat Bulletin – February 4th, 2026",
+      "url": "https://www.f5.com/labs/articles/weekly-threat-bulletin-february-4th-2026",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Weekly Threat Bulletin – February 11th, 2026",
+      "url": "https://www.f5.com/labs/articles/weekly-threat-bulletin-february-11th-2026",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Weekly Threat Bulletin – February 18th, 2026",
+      "url": "https://www.f5.com/labs/articles/weekly-threat-bulletin-february-18th-2026",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Weekly Threat Bulletin – February 25th, 2026",
+      "url": "https://www.f5.com/labs/articles/weekly-threat-bulletin-february-25th-2026",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Weekly Threat Bulletin – March 4th, 2026",
+      "url": "https://www.f5.com/labs/articles/weekly-threat-bulletin-march-4th-2026",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Weekly Threat Bulletin – March 11th, 2026",
+      "url": "https://www.f5.com/labs/articles/weekly-threat-bulletin-march-11th-2026",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Weekly Threat Bulletin – March 18th, 2026",
+      "url": "https://www.f5.com/labs/articles/weekly-threat-bulletin-march-18th-2026",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Weekly Threat Bulletin – March 25th, 2026",
+      "url": "https://www.f5.com/labs/articles/weekly-threat-bulletin-march-25th-2026",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Weekly Threat Bulletin – April 1st, 2026",
+      "url": "https://www.f5.com/labs/articles/weekly-threat-bulletin-april-1st-2026",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Weekly Threat Bulletin – April 8th, 2026",
+      "url": "https://www.f5.com/labs/articles/weekly-threat-bulletin-april-8th-2026",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Weekly Threat Bulletin – April 15th, 2026",
+      "url": "https://www.f5.com/labs/articles/weekly-threat-bulletin-april-15th-2026",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Weekly Threat Bulletin – April 22nd, 2026",
+      "url": "https://www.f5.com/labs/articles/weekly-threat-bulletin-april-22nd-2026",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Weekly Threat Bulletin – April 29th, 2026",
+      "url": "https://www.f5.com/labs/articles/weekly-threat-bulletin-april-29th-2026",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Weekly Threat Bulletin – May 6th, 2026",
+      "url": "https://www.f5.com/labs/articles/weekly-threat-bulletin-may-6th-2026",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Weekly Threat Bulletin – May 13th, 2026",
+      "url": "https://www.f5.com/labs/articles/weekly-threat-bulletin-may-13th-2026",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Weekly Threat Bulletin – May 20th, 2026",
+      "url": "https://www.f5.com/labs/articles/weekly-threat-bulletin-may-20th-2026",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Weekly Threat Bulletin – May 27th, 2026",
+      "url": "https://www.f5.com/labs/articles/weekly-threat-bulletin-may-27th-2026",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Weekly Threat Bulletin – June 3rd, 2026",
+      "url": "https://www.f5.com/labs/articles/weekly-threat-bulletin-june-3rd-2026",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Weekly Threat Bulletin – June 10th, 2026",
+      "url": "https://www.f5.com/labs/articles/weekly-threat-bulletin-june-10th-2026",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Weekly Threat Bulletin – June 17th, 2026",
+      "url": "https://www.f5.com/labs/articles/weekly-threat-bulletin-june-17th-2026",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Weekly Threat Bulletin – June 24th, 2026",
+      "url": "https://www.f5.com/labs/articles/weekly-threat-bulletin-june-24th-2026",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Weekly Threat Bulletin – July 1st, 2026",
+      "url": "https://www.f5.com/labs/articles/weekly-threat-bulletin-july-1st-2026",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Weekly Threat Bulletin – July 8th, 2026",
+      "url": "https://www.f5.com/labs/articles/weekly-threat-bulletin-july-8th-2026",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Weekly Threat Bulletin – July 15th, 2026",
+      "url": "https://www.f5.com/labs/articles/weekly-threat-bulletin-july-15th-2026",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Weekly Threat Bulletin – July 22nd, 2026",
+      "url": "https://www.f5.com/labs/articles/weekly-threat-bulletin-july-22nd-2026",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Weekly Threat Bulletin – July 29th, 2026",
+      "url": "https://www.f5.com/labs/articles/weekly-threat-bulletin-july-29th-2026",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Weekly Threat Bulletin – August 5th, 2026",
+      "url": "https://www.f5.com/labs/articles/weekly-threat-bulletin-august-5th-2026",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Weekly Threat Bulletin – August 12th, 2026",
+      "url": "https://www.f5.com/labs/articles/weekly-threat-bulletin-august-12th-2026",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Weekly Threat Bulletin – August 19th, 2026",
+      "url": "https://www.f5.com/labs/articles/weekly-threat-bulletin-august-19th-2026",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Weekly Threat Bulletin – August 26th, 2026",
+      "url": "https://www.f5.com/labs/articles/weekly-threat-bulletin-august-26th-2026",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Weekly Threat Bulletin – September 2nd, 2026",
+      "url": "https://www.f5.com/labs/articles/weekly-threat-bulletin-september-2nd-2026",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Weekly Threat Bulletin – September 9th, 2026",
+      "url": "https://www.f5.com/labs/articles/weekly-threat-bulletin-september-9th-2026",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Weekly Threat Bulletin – September 16th, 2026",
+      "url": "https://www.f5.com/labs/articles/weekly-threat-bulletin-september-16th-2026",
+      "posted_on": "2026-09-17"
+    }
+  ]
+}

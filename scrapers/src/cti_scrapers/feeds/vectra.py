@@ -20,5 +20,5 @@ class Vectra(RSSScraper):
         legacy_label="NEW ARTICLE FROM VECTRA",
         legacy_script="vectraThreat",
     )
-    feeds = ('https://www.vectra.ai/blog/rss.xml',)
+    feeds = ("https://www.vectra.ai/blog/rss.xml",)
     date_path = None  # scraper lama pakai waktu-scrape, bukan tanggal artikel asli

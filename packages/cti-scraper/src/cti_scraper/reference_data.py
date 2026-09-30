@@ -27,6 +27,11 @@ def _resolve_techstack(session: Session) -> list[str]:
     return sorted(rows)
 
 
+def techstack_names(session: Session) -> list[str]:
+    """Publik: dipakai laporan periodik worker (Fase 10.E), bukan cuma `Runner`."""
+    return _resolve_techstack(session)
+
+
 def _resolve_techstack_by_client(session: Session) -> dict[str, list[str]]:
     """{client_id: [tech_names]} -- setara `get_tech_list_by_client()`
     lama (di sana docs tanpa client_id fallback ke "default"; skema baru

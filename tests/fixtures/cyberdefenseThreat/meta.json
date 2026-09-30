@@ -1,0 +1,17 @@
+{
+  "scraper": "cyberdefenseThreat",
+  "legacy_script": "cyberdefenseThreat",
+  "legacy_labels": [],
+  "source_urls": [
+    "https://www.cyberdefensemagazine.com/feed/"
+  ],
+  "http_status": {
+    "https://www.cyberdefensemagazine.com/feed/": 403
+  },
+  "blocked_urls": [
+    "https://www.cyberdefensemagazine.com/feed/"
+  ],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

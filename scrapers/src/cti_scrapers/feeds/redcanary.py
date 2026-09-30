@@ -20,5 +20,5 @@ class Redcanary(RSSScraper):
         legacy_label="NEW ARTICLE FROM REDCANARY",
         legacy_script="redcanaryThreat",
     )
-    feeds = ('https://redcanary.com/blog/feed/',)
+    feeds = ("https://redcanary.com/blog/feed/",)
     date_path = None  # scraper lama pakai waktu-scrape, bukan tanggal artikel asli

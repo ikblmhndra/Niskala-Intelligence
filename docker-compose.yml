@@ -1,16 +1,54 @@
-# Stack lokal buat CTI platform.
+# Stack CTI platform.
+#
+# DUA lapis, dipisah lewat profile:
+#   default        postgres + redis (+ vault opt-in)  -> kerja harian di laptop:
+#                  `docker compose up -d`, app jalan langsung di host (uv/pnpm).
+#   profile "app"  migrate + api + worker* + beat + web -> stack penuh
+#                  (staging/prod): `docker compose --profile app up -d --build`
+#                  (atau set COMPOSE_PROFILES=app di .env).
 #
 # Skema secret sekarang vs nanti — lihat docs/SECRETS_ROTATION.md:
-#   SEKARANG (dev/pra-produksi): satu sumber .env, dikontrol terpusat di sini.
-#   NANTI (produksi):            Vault jadi sumber secret asli, .env cuma
-#                                 nyimpen VAULT_ADDR + VAULT_TOKEN.
+#   SEKARANG (dev/pra-produksi + go-live): satu sumber .env (chmod 600 di host).
+#   NANTI (pasca-cutover):                 Vault jadi sumber secret asli.
+#   File env bisa diganti lewat CTI_ENV_FILE (mis. buat smoke test dgn secret
+#   dummy, tanpa nyentuh .env asli): `CTI_ENV_FILE=/path/x.env docker compose ...`
 #
-# Vault udah masuk stack DARI SEKARANG (service di bawah) supaya integrasinya
-# bisa mulai diuji kapan aja, tapi dia OPT-IN lewat profile "vault" — kerja
-# harian (`docker compose up`) gak butuh dia nyala.
+# Variabel level COMPOSE (BIND_ADDR, *_PORT, *_CONCURRENCY, POSTGRES_PASSWORD,
+# CTI_TAG, ...) TIDAK boleh masuk .env aplikasi -- pydantic-settings pakai
+# extra="forbid", key asing bikin proses GAGAL START. Taruh di file terpisah:
+#   cp docker/stack.env.example docker/stack.env
+#   docker compose --env-file .env --env-file docker/stack.env --profile app up -d --build
 #
-# Layanan apps/api, apps/worker, apps/web belum ditambahin: kodenya belum ada
-# (Fase 2/6/7/8). Ditambahin pas fase itu jalan.
+# Port: api/web/postgres/redis di-publish ke ${BIND_ADDR:-127.0.0.1} (debug dari
+# host saja). Yang dibuka ke luar cuma service `nginx` (TLS + reverse proxy ke web,
+# port 80/443 di ${NGINX_BIND_ADDR:-0.0.0.0}; sertifikat self-signed otomatis).
+# Sudah ada nginx lain di host yang memakai 80/443? Ubah NGINX_HTTP_PORT /
+# NGINX_HTTPS_PORT di docker/stack.env, atau pakai nginx itu dan arahkan ke WEB_PORT
+# (template: docker/ops/nginx-cti.conf.example).
+#
+# Urutan start (depends_on): postgres+redis healthy -> migrate (alembic upgrade
+# head, one-shot) selesai sukses -> api / worker* / beat -> web.
+
+x-logging: &logging
+  driver: json-file
+  options: {max-size: "20m", max-file: "5"}
+
+# Image dibangun SEKALI per Dockerfile lalu dipakai ulang service lain lewat
+# tag yang sama (layer cache bikin build ke-2 instan).
+x-api-build: &api-build
+  context: .
+  dockerfile: docker/api.Dockerfile
+
+x-worker-build: &worker-build
+  context: .
+  dockerfile: docker/worker.Dockerfile
+  target: worker
+
+x-app: &app
+  profiles: ["app"]
+  restart: unless-stopped
+  logging: *logging
+  env_file: ${CTI_ENV_FILE:-.env}
 
 services:
   postgres:
@@ -20,8 +58,9 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-cti}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-cti}
       POSTGRES_DB: ${POSTGRES_DB:-cti}
-    ports: ["${POSTGRES_PORT:-5432}:5432"]
+    ports: ["127.0.0.1:${POSTGRES_PORT:-5432}:5432"]
     volumes: [postgres-data:/var/lib/postgresql/data]
+    logging: *logging
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-cti}"]
       interval: 5s
@@ -32,8 +71,9 @@ services:
     image: redis:7-alpine
     restart: unless-stopped
     command: ["redis-server", "--appendonly", "yes"]
-    ports: ["${REDIS_PORT:-6379}:6379"]
+    ports: ["127.0.0.1:${REDIS_PORT:-6379}:6379"]
     volumes: [redis-data:/data]
+    logging: *logging
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 5s
@@ -53,13 +93,198 @@ services:
     environment:
       VAULT_DEV_ROOT_TOKEN_ID: ${VAULT_DEV_ROOT_TOKEN:-cti-dev-root}
       VAULT_DEV_LISTEN_ADDRESS: 0.0.0.0:8200
-    ports: ["${VAULT_PORT:-8200}:8200"]
+    ports: ["127.0.0.1:${VAULT_PORT:-8200}:8200"]
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8200/v1/sys/health?standbyok=true"]
       interval: 5s
       timeout: 5s
       retries: 10
 
+  # --- App (profile "app") ---------------------------------------------------
+
+  # One-shot: naikin skema ke head. SATU-SATUNYA yang boleh ngejalanin migrasi
+  # (api/worker gak pernah `alembic upgrade` sendiri -- dua proses migrasi
+  # barengan itu race). Gagal = stack GAK naik (depends_on service_completed_successfully).
+  migrate:
+    <<: *app
+    image: cti-api:${CTI_TAG:-latest}
+    build: *api-build
+    restart: "no"
+    command: ["alembic", "upgrade", "head"]
+    depends_on:
+      postgres: {condition: service_healthy}
+
+  api:
+    <<: *app
+    image: cti-api:${CTI_TAG:-latest}
+    build: *api-build
+    ports: ["${BIND_ADDR:-127.0.0.1}:${API_PORT:-8000}:8000"]
+    depends_on:
+      postgres: {condition: service_healthy}
+      redis: {condition: service_healthy}
+      migrate: {condition: service_completed_successfully}
+
+  # Worker "ringan": scraper RSS/API + task periodik (notify, maintenance).
+  worker:
+    <<: *app
+    image: cti-worker:${CTI_TAG:-latest}
+    build: *worker-build
+    command:
+      - celery
+      - -A
+      - cti_worker.celery_app
+      - worker
+      - -Q
+      - scrape.rss,scrape.api,notify,maintenance
+      - -n
+      - worker@%h
+      - -c
+      - "${WORKER_CONCURRENCY:-4}"
+      - --loglevel
+      - INFO
+    stop_grace_period: 60s        # task_acks_late: kasih waktu task yang jalan kelar
+    healthcheck:
+      test: ["CMD-SHELL", "celery -A cti_worker.celery_app inspect ping -d worker@$$HOSTNAME -t 10 >/dev/null 2>&1"]
+      interval: 60s
+      timeout: 20s
+      start_period: 60s
+      retries: 3
+    depends_on:
+      postgres: {condition: service_healthy}
+      redis: {condition: service_healthy}
+      migrate: {condition: service_completed_successfully}
+
+  # Worker browser: 24 scraper Playwright. Concurrency KECIL -- tiap Chromium
+  # makan ratusan MB; `shm_size` gede karena /dev/shm default Docker (64MB)
+  # bikin Chromium crash.
+  worker-browser:
+    <<: *app
+    image: cti-worker:${CTI_TAG:-latest}
+    build: *worker-build
+    command:
+      - celery
+      - -A
+      - cti_worker.celery_app
+      - worker
+      - -Q
+      - scrape.browser
+      - -n
+      - browser@%h
+      - -c
+      - "${BROWSER_WORKER_CONCURRENCY:-2}"
+      - --loglevel
+      - INFO
+    shm_size: 1gb
+    stop_grace_period: 60s
+    healthcheck:
+      test: ["CMD-SHELL", "celery -A cti_worker.celery_app inspect ping -d browser@$$HOSTNAME -t 10 >/dev/null 2>&1"]
+      interval: 60s
+      timeout: 20s
+      start_period: 60s
+      retries: 3
+    depends_on:
+      postgres: {condition: service_healthy}
+      redis: {condition: service_healthy}
+      migrate: {condition: service_completed_successfully}
+
+  # Worker NLP: queue `enrich` (spaCy + sumy + LLM). Concurrency dibatasi RAM
+  # (model spaCy di-load per proses child) -- plan §10.
+  worker-nlp:
+    <<: *app
+    image: cti-worker-nlp:${CTI_TAG:-latest}
+    build:
+      context: .
+      dockerfile: docker/worker.Dockerfile
+      target: worker-nlp
+    command:
+      - celery
+      - -A
+      - cti_worker.celery_app
+      - worker
+      - -Q
+      - enrich
+      - -n
+      - nlp@%h
+      - -c
+      - "${NLP_WORKER_CONCURRENCY:-2}"
+      - --loglevel
+      - INFO
+    shm_size: 1gb
+    stop_grace_period: 60s
+    healthcheck:
+      test: ["CMD-SHELL", "celery -A cti_worker.celery_app inspect ping -d nlp@$$HOSTNAME -t 10 >/dev/null 2>&1"]
+      interval: 60s
+      timeout: 20s
+      start_period: 90s
+      retries: 3
+    depends_on:
+      postgres: {condition: service_healthy}
+      redis: {condition: service_healthy}
+      migrate: {condition: service_completed_successfully}
+
+  # Beat SINGLETON: `beat_main` ambil lock Redis dulu (Fase 10.1d) -- aman
+  # walau ada dua container beat. Working dir = volume, biar `celerybeat-
+  # schedule` (PersistentScheduler) selamat dari recreate container.
+  beat:
+    <<: *app
+    image: cti-worker:${CTI_TAG:-latest}
+    build: *worker-build
+    command: ["python", "-m", "cti_worker.beat_main"]
+    working_dir: /var/lib/cti
+    volumes: [beat-data:/var/lib/cti]
+    stop_grace_period: 30s
+    depends_on:
+      postgres: {condition: service_healthy}
+      redis: {condition: service_healthy}
+      migrate: {condition: service_completed_successfully}
+
+  # Web = BFF: browser gak pernah manggil cti-api langsung. Sengaja TANPA
+  # env_file -- container ini gak butuh (dan gak boleh megang) secret DB/LLM/
+  # Telegram; cuma alamat API.
+  web:
+    profiles: ["app"]
+    restart: unless-stopped
+    logging: *logging
+    image: cti-web:${CTI_TAG:-latest}
+    build:
+      context: .
+      dockerfile: docker/web.Dockerfile
+    environment:
+      API_BASE_URL: ${WEB_API_BASE_URL:-http://api:8000}
+      # Jumlah proxy TERPERCAYA di depan web (nginx = 1). Dipakai buat milih IP
+      # klien dari X-Forwarded-For -- lihat apps/web/src/lib/auth/client-ip.ts.
+      TRUSTED_PROXY_HOPS: ${TRUSTED_PROXY_HOPS:-1}
+    ports: ["${BIND_ADDR:-127.0.0.1}:${WEB_PORT:-3000}:3000"]
+    depends_on:
+      api: {condition: service_healthy}
+
+  # Edge: TLS + reverse proxy ke `web` -- SATU-SATUNYA service yang dibuka ke luar host
+  # (NGINX_BIND_ADDR, default 0.0.0.0). Sertifikat self-signed dibuat sendiri saat start kalau
+  # belum ada (docker/nginx/05-selfsigned-cert.sh); sertifikat operator di NGINX_TLS_DIR tidak
+  # pernah disentuh. Sengaja TANPA env_file (tidak butuh secret aplikasi) dan tag image TIDAK
+  # mengikuti CTI_TAG: rollback aplikasi (rollback.py) tidak boleh ikut menyentuh edge.
+  nginx:
+    profiles: ["app"]
+    restart: unless-stopped
+    logging: *logging
+    image: cti-nginx:1
+    build:
+      context: .
+      dockerfile: docker/nginx.Dockerfile
+    environment:
+      NGINX_TLS_HOSTS: ${NGINX_TLS_HOSTS:-}
+      NGINX_TLS_DAYS: ${NGINX_TLS_DAYS:-365}
+      # port HTTPS di sisi HOST, buat redirect http -> https (bukan port di dalam container)
+      NGINX_PUBLIC_HTTPS_PORT: ${NGINX_HTTPS_PORT:-443}
+    ports:
+      - "${NGINX_BIND_ADDR:-0.0.0.0}:${NGINX_HTTP_PORT:-80}:80"
+      - "${NGINX_BIND_ADDR:-0.0.0.0}:${NGINX_HTTPS_PORT:-443}:443"
+    volumes:
+      - ${NGINX_TLS_DIR:-./docker/nginx/tls}:/etc/nginx/tls
+    depends_on:
+      web: {condition: service_healthy}
+
 volumes:
   postgres-data: {}
   redis-data: {}
+  beat-data: {}

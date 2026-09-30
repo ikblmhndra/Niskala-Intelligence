@@ -38,7 +38,7 @@ from typing import Any
 
 import lxml.html
 from cti_scraper.base import BaseScraper, ScrapeContext, ScraperMeta
-from cti_scraper.errors import ParseError
+from cti_scraper.errors import ParseError, ScraperError
 from cti_scraper.items import CveItem, Item
 from cti_scraper.schedule import spread
 
@@ -80,10 +80,14 @@ class NewCve(BaseScraper):
         if not tech_list:
             return
 
+        # Kunci = nama ASLI techstack ("palo alto"), sama dengan `cand["tech"]`. Bentuk ter-encode
+        # ("palo%20alto" / "palo+alto") HANYA untuk URL -- kandidat yang membawanya tidak pernah
+        # cocok dengan peta ini dan CVE-nya dibuang diam-diam (ketemu di staging: 4 dari 33
+        # techstack bernama multi-kata, termasuk Palo Alto dan Microsoft 365, tak pernah dapat CVE).
         tech_to_clients: dict[str, list[str]] = {}
         for client_id, techs in tech_by_client.items():
             for tech in techs:
-                tech_to_clients.setdefault(tech, []).append(client_id)
+                tech_to_clients.setdefault(tech.strip(), []).append(client_id)
 
         seen_cve_ids: set[str] = set()
         candidates = [
@@ -139,7 +143,7 @@ class NewCve(BaseScraper):
                 )
                 out.append(
                     {
-                        "tech": tech_enc,
+                        "tech": tech.strip(),
                         "id": cve_id,
                         "link": f"https://nvd.nist.gov/vuln/detail/{cve_id}",
                         "summary": summary,
@@ -176,14 +180,14 @@ class NewCve(BaseScraper):
 
                 # Tenable kadang balikin hasil yang gak beneran nyebut tech-nya --
                 # validasi tech-nya ada literal di summary sebelum dipakai.
-                if not re.search(rf"\b{re.escape(tech_enc.replace('+', ' '))}\b", cve_sum.lower()):
+                if not re.search(rf"\b{re.escape(tech.strip())}\b", cve_sum.lower()):
                     continue
                 if cve_id in seen:
                     continue
                 seen.add(cve_id)
                 out.append(
                     {
-                        "tech": tech_enc,
+                        "tech": tech.strip(),
                         "id": cve_id,
                         "link": f"https://www.tenable.com/cve/{cve_id}",
                         "summary": cve_sum,
@@ -194,6 +198,13 @@ class NewCve(BaseScraper):
     def _mitre_detail(self, ctx: ScrapeContext, cand: dict[str, str]) -> dict[str, Any] | None:
         try:
             data = ctx.http.get(f"{_MITRE_URL}/{cand['id']}").json()
+        except ScraperError:
+            # `RateLimited` / `TransientFetchError` dari `ctx.http` sudah diklasifikasi framework
+            # (status run `rate_limited` / `fetch_error`, bisa dicoba lagi). Dibungkus jadi
+            # `ParseError` (dulu: `except Exception`) mereka tampil sebagai "situs berubah"
+            # (`degraded`) -- ketemu di rehearsal beat staging 10.G: `new_cve` kena batas 60/mnt
+            # domain MITRE tapi dilaporkan parse_error.
+            raise
         except Exception as e:  # MITRE kadang balikin bentuk gak terduga
             raise ParseError(f"MITRE detail gak kebaca buat {cand['id']}: {e}") from e
 
@@ -234,9 +245,10 @@ class NewCve(BaseScraper):
                     vector = metric.get("vectorString", "")
                     severity = metric.get("baseSeverity")
 
-        solutions = "".join(
-            s["value"] for s in cna.get("solutions", []) if s.get("lang") == "en"
-        ) or "No solution yet"
+        solutions = (
+            "".join(s["value"] for s in cna.get("solutions", []) if s.get("lang") == "en")
+            or "No solution yet"
+        )
 
         cve_meta = data.get("cveMetadata", {})
 

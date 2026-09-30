@@ -65,9 +65,7 @@ async def _seed_rejected(session: AsyncSession, *, count: int = 1) -> list[int]:
 
 
 class TestAsyncRejectedArticleRepo:
-    async def test_list_filtered_returns_newest_first(
-        self, async_db_session: AsyncSession
-    ) -> None:
+    async def test_list_filtered_returns_newest_first(self, async_db_session: AsyncSession) -> None:
         from cti_core.db.models.article import RejectedArticle
 
         async_db_session.add(
@@ -123,9 +121,7 @@ class TestAsyncRejectedArticleRepo:
         assert total == 1
         assert rows[0].title == "Best pasta recipes"
 
-    async def test_get_by_id_returns_none_for_missing(
-        self, async_db_session: AsyncSession
-    ) -> None:
+    async def test_get_by_id_returns_none_for_missing(self, async_db_session: AsyncSession) -> None:
         repo = AsyncRejectedArticleRepo(async_db_session)
         assert await repo.get_by_id(999999) is None
 

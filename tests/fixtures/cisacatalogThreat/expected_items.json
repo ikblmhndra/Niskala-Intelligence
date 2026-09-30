@@ -1,0 +1,19 @@
+{
+  "2026-09-17": [
+    {
+      "title": "CVE-2026-58704",
+      "url": "https://source.android.com/docs/security/bulletin/pixel/2026/2026-09-01 || https://www.cisa.gov/news-events/directives/bod-26-04-prioritizing-security-updates-based-risk || https://www.cisa.gov/news-events/directives/bod-26-04-implementation-guidance-prioritizing-security-updates-based-risk || https://nvd.nist.gov/vuln/detail/CVE-2026-58704 ",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "CVE-2026-76460",
+      "url": "https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-ISE-ABP-VNSW7Tn5 || https://www.cisa.gov/news-events/directives/bod-26-04-prioritizing-security-updates-based-risk || https://www.cisa.gov/news-events/directives/bod-26-04-implementation-guidance-prioritizing-security-updates-based-risk || https://nvd.nist.gov/vuln/detail/CVE-2026-76460 ",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "CVE-2026-87886",
+      "url": "https://security-advisory.acronis.com/advisories/SEC-10986 || https://www.cisa.gov/news-events/directives/bod-26-04-prioritizing-security-updates-based-risk || https://www.cisa.gov/news-events/directives/bod-26-04-implementation-guidance-prioritizing-security-updates-based-risk || https://nvd.nist.gov/vuln/detail/CVE-2026-87886 ",
+      "posted_on": "2026-09-17"
+    }
+  ]
+}

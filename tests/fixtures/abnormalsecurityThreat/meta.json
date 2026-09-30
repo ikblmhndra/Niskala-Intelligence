@@ -1,0 +1,15 @@
+{
+  "scraper": "abnormalsecurityThreat",
+  "legacy_script": "abnormalsecurityThreat",
+  "legacy_labels": [],
+  "source_urls": [
+    "https://abnormal.ai/blog/category/threat-intel"
+  ],
+  "http_status": {
+    "https://abnormal.ai/blog/category/threat-intel": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

@@ -1,0 +1,17 @@
+{
+  "scraper": "dfirThreat",
+  "legacy_script": "dfirThreat",
+  "legacy_labels": [
+    "NEW ARTICLE FROM DFIR REPORT"
+  ],
+  "source_urls": [
+    "https://thedfirreport.com/feed/"
+  ],
+  "http_status": {
+    "https://thedfirreport.com/feed/": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

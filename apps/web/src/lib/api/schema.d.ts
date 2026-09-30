@@ -4229,6 +4229,10 @@ export interface components {
             enabled: boolean;
             /** Max Items */
             max_items: number | null;
+            /** Options */
+            options: {
+                [key: string]: string;
+            } | null;
             /** Paused Reason */
             paused_reason: string | null;
             /** Rate Limit */
@@ -4250,6 +4254,10 @@ export interface components {
         ScraperConfigUpdateBody: {
             /** Max Items */
             max_items?: number | null;
+            /** Options */
+            options?: {
+                [key: string]: string;
+            } | null;
             /** Paused Reason */
             paused_reason?: string | null;
             /** Rate Limit */
@@ -4280,6 +4288,8 @@ export interface components {
             id: string;
             /** Notes */
             notes: string;
+            /** Options */
+            options: components["schemas"]["ScraperOptionOut"][];
             /** Queue */
             queue: string;
             /** Reference Data */
@@ -4402,6 +4412,31 @@ export interface components {
             scrapers: components["schemas"]["ScraperListItem"][];
             /** Total */
             total: number;
+        };
+        /** ScraperOptionChoiceOut */
+        ScraperOptionChoiceOut: {
+            /** Label */
+            label: string;
+            /** Value */
+            value: string;
+        };
+        /**
+         * ScraperOptionOut
+         * @description Satu opsi yang dideklarasikan scraper (`ScraperMeta.options`) -- buat dropdown di UI.
+         */
+        ScraperOptionOut: {
+            /** Choices */
+            choices: components["schemas"]["ScraperOptionChoiceOut"][];
+            /** Default */
+            default: string;
+            /** Description */
+            description: string;
+            /** Key */
+            key: string;
+            /** Label */
+            label: string;
+            /** Value */
+            value: string;
         };
         /** ScraperResetDedupResult */
         ScraperResetDedupResult: {

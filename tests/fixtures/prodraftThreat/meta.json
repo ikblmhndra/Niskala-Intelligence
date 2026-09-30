@@ -1,0 +1,15 @@
+{
+  "scraper": "prodraftThreat",
+  "legacy_script": "prodraftThreat",
+  "legacy_labels": [],
+  "source_urls": [
+    "https://prodaft.com/blogs"
+  ],
+  "http_status": {
+    "https://prodaft.com/blogs": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "TargetClosedError"
+}

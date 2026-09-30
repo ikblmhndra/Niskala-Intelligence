@@ -1,0 +1,17 @@
+{
+  "scraper": "f5Threat",
+  "legacy_script": "f5Threat",
+  "legacy_labels": [
+    "NEW ARTICLE FROM F5"
+  ],
+  "source_urls": [
+    "https://www.f5.com/labs/rss-feeds/all.xml"
+  ],
+  "http_status": {
+    "https://www.f5.com/labs/rss-feeds/all.xml": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

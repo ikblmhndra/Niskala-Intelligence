@@ -20,5 +20,5 @@ class Munit(RSSScraper):
         legacy_label="NEW ARTICLE FROM MUNIT",
         legacy_script="munitThreat",
     )
-    feeds = ('https://munit.io/feed/',)
+    feeds = ("https://munit.io/feed/",)
     date_path = None  # scraper lama pakai waktu-scrape, bukan tanggal artikel asli

@@ -1,0 +1,54 @@
+{
+  "2026-09-17": [
+    {
+      "title": "Cryptography Is Negotiated: PQC Needs Network Data | Corelight",
+      "url": "https://corelight.com/blog/pqc-readiness-network-data",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Sensor v29.2: Behavioral Detection & AI Governance | Corelight",
+      "url": "https://corelight.com/blog/sensor-v29-2",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The Defensible AI-SOC: SOC Modernization for the Mythos Era | Corelight",
+      "url": "https://corelight.com/blog/defensible-ai-soc-mythos-era",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Hunting LDAP Injection Canaries on Port 389 | Corelight",
+      "url": "https://corelight.com/blog/ldap-fuzzers-injection-canaries",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The Cure for Exceptional Zeek Package Testing (Part 3) | Corelight",
+      "url": "https://corelight.com/blog/the-cure-for-exceptional-zeek-package-testing-part-3",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The Cure for Exceptional Zeek Package Testing (Part 2) | Corelight",
+      "url": "https://corelight.com/blog/the-cure-for-exceptional-zeek-package-testing-part-2",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The Cure for Exceptional Zeek Package Testing (Part 1) | Corelight",
+      "url": "https://corelight.com/blog/the-cure-for-exceptional-zeek-package-testing-part-1",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Evaluating AI Systems for Network Detection | Corelight",
+      "url": "https://corelight.com/blog/evaluating-ai-systems-network-detection",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Agent Lux: Agentic AI Triage That Shows Its Work | Corelight",
+      "url": "https://corelight.com/blog/agent-lux",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "TTP-Based Detection: The Missing Layer in Modern SOCs | Corelight",
+      "url": "https://corelight.com/blog/ttp-based-behavioral-detection",
+      "posted_on": "2026-09-17"
+    }
+  ]
+}

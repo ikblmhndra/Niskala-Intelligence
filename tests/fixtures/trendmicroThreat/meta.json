@@ -1,0 +1,17 @@
+{
+  "scraper": "trendmicroThreat",
+  "legacy_script": "trendmicroThreat",
+  "legacy_labels": [
+    "NEW ARTICLE FROM TRENDMICRO"
+  ],
+  "source_urls": [
+    "https://www.trendmicro.com/en_us/research.html?category=trend-micro-research:environments/cloud&category=trend-micro-research:environments/data-center&category=trend-micro-research:environments/endpoints&category=trend-micro-research:environments/iot&category=trend-micro-research:environments/mobile&category=trend-micro-research:environments/network&category=trend-micro-research:environments/smart-home&category=trend-micro-research:environments/social-media&category=trend-micro-research:environments/web&category=trend-micro-research:article-type/annual-predictions&category=trend-micro-research:article-type/expert-perspective&category=trend-micro-research:article-type/latest-news&category=trend-micro-research:article-type/reports&category=trend-micro-research:article-type/research&category=trend-micro-research:article-type/security-strategies&category=trend-micro-research:medium/article&category=trend-micro-research:medium/infographic&category=trend-micro-research:medium/report"
+  ],
+  "http_status": {
+    "https://www.trendmicro.com/en_us/research.html?category=trend-micro-research:environments/cloud&category=trend-micro-research:environments/data-center&category=trend-micro-research:environments/endpoints&category=trend-micro-research:environments/iot&category=trend-micro-research:environments/mobile&category=trend-micro-research:environments/network&category=trend-micro-research:environments/smart-home&category=trend-micro-research:environments/social-media&category=trend-micro-research:environments/web&category=trend-micro-research:article-type/annual-predictions&category=trend-micro-research:article-type/expert-perspective&category=trend-micro-research:article-type/latest-news&category=trend-micro-research:article-type/reports&category=trend-micro-research:article-type/research&category=trend-micro-research:article-type/security-strategies&category=trend-micro-research:medium/article&category=trend-micro-research:medium/infographic&category=trend-micro-research:medium/report": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

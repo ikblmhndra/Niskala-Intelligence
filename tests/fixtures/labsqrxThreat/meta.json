@@ -1,0 +1,17 @@
+{
+  "scraper": "labsqrxThreat",
+  "legacy_script": "labsqrxThreat",
+  "legacy_labels": [
+    "NEW ARTICLE FROM LABS SQRX"
+  ],
+  "source_urls": [
+    "https://labs.sqrx.com/feed"
+  ],
+  "http_status": {
+    "https://labs.sqrx.com/feed": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

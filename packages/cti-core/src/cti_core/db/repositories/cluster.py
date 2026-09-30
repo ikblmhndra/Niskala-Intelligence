@@ -21,9 +21,7 @@ class AsyncClusterRepo:
         self.session = session
 
     async def get_by_cluster_id(self, cluster_id: str) -> Cluster | None:
-        result = await self.session.execute(
-            select(Cluster).where(Cluster.cluster_id == cluster_id)
-        )
+        result = await self.session.execute(select(Cluster).where(Cluster.cluster_id == cluster_id))
         return result.scalar_one_or_none()
 
     async def list_seen_since(self, cutoff: datetime.date) -> list[Cluster]:
@@ -33,9 +31,7 @@ class AsyncClusterRepo:
         )
         return list(result.scalars().all())
 
-    async def upsert_and_tag(
-        self, clusters: list[dict[str, Any]], *, today: datetime.date
-    ) -> None:
+    async def upsert_and_tag(self, clusters: list[dict[str, Any]], *, today: datetime.date) -> None:
         """Port `_persist_and_tag()` -- upsert tiap cluster (nama/last_seen/
         last_count `$set`, `peak_count` `$max`, `daily_counts` `$push` +
         slice -90), lalu SET `c["re_emerged"]` in-place di tiap dict input

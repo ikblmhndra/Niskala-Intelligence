@@ -1,0 +1,11 @@
+{
+  "scraper": "cisThreat",
+  "legacy_script": "cisThreat",
+  "legacy_labels": [],
+  "source_urls": [],
+  "http_status": {},
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "TimeoutError"
+}

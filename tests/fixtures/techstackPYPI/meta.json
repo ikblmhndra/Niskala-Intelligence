@@ -1,0 +1,21 @@
+{
+  "scraper": "techstackPYPI",
+  "legacy_script": "techstackPYPI",
+  "legacy_labels": [],
+  "source_urls": [
+    "https://api.deps.dev/v3/systems/pypi/packages/requests",
+    "https://api.deps.dev/v3/systems/pypi/packages/requests/versions/0.10.0",
+    "https://api.osv.dev/v1/vulns/GHSA-652x-xj99-gmcc",
+    "https://api.osv.dev/v1/vulns/GHSA-9hjg-9r4m-mvj7"
+  ],
+  "http_status": {
+    "https://api.deps.dev/v3/systems/pypi/packages/requests": 200,
+    "https://api.deps.dev/v3/systems/pypi/packages/requests/versions/0.10.0": 200,
+    "https://api.osv.dev/v1/vulns/GHSA-652x-xj99-gmcc": 200,
+    "https://api.osv.dev/v1/vulns/GHSA-9hjg-9r4m-mvj7": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ValueError"
+}

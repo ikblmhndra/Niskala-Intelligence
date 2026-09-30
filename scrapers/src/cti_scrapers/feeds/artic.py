@@ -20,5 +20,8 @@ class Artic(RSSScraper):
         legacy_label="NEW ARTICLE FROM ARTIC WOLF",
         legacy_script="articThreat",
     )
-    feeds = ('https://arcticwolf.com/resources/category/report/feed/', 'https://arcticwolf.com/resources/tag/cyberattacks-breaches/feed/',)
+    feeds = (
+        "https://arcticwolf.com/resources/category/report/feed/",
+        "https://arcticwolf.com/resources/tag/cyberattacks-breaches/feed/",
+    )
     date_path = None  # scraper lama pakai waktu-scrape, bukan tanggal artikel asli

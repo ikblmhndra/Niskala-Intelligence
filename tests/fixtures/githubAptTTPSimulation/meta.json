@@ -1,0 +1,17 @@
+{
+  "scraper": "githubAptTTPSimulation",
+  "legacy_script": "githubAptTTPSimulation",
+  "legacy_labels": [],
+  "source_urls": [
+    "https://api.github.com/repos/S3N4T0R-0X0/APT-Attack-Simulation/commits"
+  ],
+  "http_status": {
+    "https://api.github.com/repos/S3N4T0R-0X0/APT-Attack-Simulation/commits": 401
+  },
+  "blocked_urls": [
+    "https://api.github.com/repos/S3N4T0R-0X0/APT-Attack-Simulation/commits"
+  ],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

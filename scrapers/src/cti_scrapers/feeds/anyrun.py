@@ -20,7 +20,10 @@ class Anyrun(RSSScraper):
         legacy_label="NEW MALWARE ANALYSIS ARTICLE FROM ANYRUN",
         legacy_script="anyrunThreat",
     )
-    feeds = ('https://any.run/cybersecurity-blog/feed/',)
+    feeds = ("https://any.run/cybersecurity-blog/feed/",)
     date_path = None  # scraper lama pakai waktu-scrape, bukan tanggal artikel asli
-    xml_fixups = (('&ndash;', ''), ('&', '&amp;'),)
+    xml_fixups = (
+        ("&ndash;", ""),
+        ("&", "&amp;"),
+    )
     html_unescape = True  # feed lama pakai html.unescape() sebelum parse XML

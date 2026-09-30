@@ -337,6 +337,14 @@ def _inject_analyst_note(article: dict[str, Any], notes: dict[str, str]) -> dict
     return article
 
 
+def _now() -> datetime.datetime:
+    """Titik indirection tunggal buat `datetime.now()` -- dipatch lewat
+    `patch.object(newsletter_service, "_now", ...)` di test snapshot supaya
+    `week`/`year`/`generated_at` gak ikut geser tiap minggu kalender asli
+    berganti (lihat `test_newsletter_router_snapshot.py`)."""
+    return datetime.datetime.now(datetime.UTC)
+
+
 async def build_newsletter_context(
     session: AsyncSession,
     highlight: dict[str, Any],
@@ -374,7 +382,7 @@ async def build_newsletter_context(
     n += global_count
     indonesia_enriched = [_inject_analyst_note(a, notes) for a in enriched[n:]]
 
-    now = datetime.datetime.now(datetime.UTC)
+    now = _now()
     iso_cal = now.isocalendar()
 
     campaign_clusters = [

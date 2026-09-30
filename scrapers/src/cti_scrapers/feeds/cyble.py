@@ -20,6 +20,6 @@ class Cyble(RSSScraper):
         legacy_label="NEW ARTICLE FROM CYBLE",
         legacy_script="cybleThreat",
     )
-    feeds = ('https://cyble.com/feed/',)
+    feeds = ("https://cyble.com/feed/",)
     date_path = None  # scraper lama pakai waktu-scrape, bukan tanggal artikel asli
-    xml_fixups = (('&', '&amp;'),)
+    xml_fixups = (("&", "&amp;"),)

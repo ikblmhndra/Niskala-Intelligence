@@ -1,0 +1,19 @@
+{
+  "scraper": "techstackNPM",
+  "legacy_script": "techstackNPM",
+  "legacy_labels": [],
+  "source_urls": [
+    "https://api.deps.dev/v3/systems/npm/packages/lodash",
+    "https://api.deps.dev/v3/systems/npm/packages/lodash/versions/0.1.0",
+    "https://api.osv.dev/v1/vulns/GHSA-35jh-r3h4-6jhm"
+  ],
+  "http_status": {
+    "https://api.deps.dev/v3/systems/npm/packages/lodash": 200,
+    "https://api.deps.dev/v3/systems/npm/packages/lodash/versions/0.1.0": 200,
+    "https://api.osv.dev/v1/vulns/GHSA-35jh-r3h4-6jhm": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ValueError"
+}

@@ -1,0 +1,104 @@
+{
+  "2026-09-17": [
+    {
+      "title": "GTIG AI Threat Tracker: From Prompting to Autonomy – The Evolution of Adversarial AI",
+      "url": "https://cloud.google.com/blog/topics/threat-intelligence/from-prompting-to-autonomy-the-evolution-of-adversarial-ai/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Financially Motivated Threat Actor BREEZE COMET Targets Brazil",
+      "url": "https://cloud.google.com/blog/topics/threat-intelligence/financially-motivated-threat-actor-breeze-comet-targets-brazil/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Going with the Flow(s): Distinct Clusters Target Individuals of Interest to Russia",
+      "url": "https://cloud.google.com/blog/topics/threat-intelligence/distinct-clusters-target-individuals-of-interest-to-russia/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Staying Ahead of Adversarial AI Through Agentic Source Code Review",
+      "url": "https://cloud.google.com/blog/topics/threat-intelligence/staying-ahead-of-adversarial-ai-through-agentic-source-code-review/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "UNC6671 Rebrands: Multi-Brand Vishing Extortion Targets Financial Services and Enterprise Cloud Environments",
+      "url": "https://cloud.google.com/blog/topics/threat-intelligence/unc6671-targets-financial-services-and-enterprise-cloud-environments/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Batten Down Your Packages: Mitigation Guidance for Supply Chain Compromise",
+      "url": "https://cloud.google.com/blog/topics/threat-intelligence/mitigation-guidance-for-supply-chain-compromise/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Updated Cyber Threat Actor Naming System",
+      "url": "https://cloud.google.com/blog/topics/threat-intelligence/updated-cyber-threat-actor-naming-system/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Demystifying AI Exploits: A Blueprint for AI-Assisted Vulnerability Management",
+      "url": "https://cloud.google.com/blog/topics/threat-intelligence/ai-assisted-vulnerability-management/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The Risk of Exposed Cloud Functions and How to Harden",
+      "url": "https://cloud.google.com/blog/topics/threat-intelligence/exposed-cloud-functions-harden/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The ‘Ghost’ in the Database: Recovering Active ADFS Signing Keys via Machine DPAPI",
+      "url": "https://cloud.google.com/blog/topics/threat-intelligence/recovering-active-adfs-signing-keys-machine-dpapi/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Google’s Continued Disruption of Malicious Residential Proxy Networks",
+      "url": "https://cloud.google.com/blog/topics/threat-intelligence/google-continued-disruption-residential-proxy-networks/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The Bear Necessities: A Look at the Drivers, Dynamics, and Applications of the Pro-Russia Influence Ecosystem",
+      "url": "https://cloud.google.com/blog/topics/threat-intelligence/pro-russia-influence-ecosystem/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "STOCKSTAY Another Day: The Latest Addition to Turla’s Intelligence Gathering Apparatus",
+      "url": "https://cloud.google.com/blog/topics/threat-intelligence/stockstay-turla-intelligence-gathering/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Zero-Day Exploitation of Vulnerability (CVE-2026-20245) in Cisco Catalyst SD-WAN Manager",
+      "url": "https://cloud.google.com/blog/topics/threat-intelligence/zero-day-exploitation-cisco-catalyst-sd-wan-manager/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Public and Private Medical Community Targeted by China-Nexus Threat Actor Pursuing Artificial Intelligence, Cyber, Medical, and National Defense Research",
+      "url": "https://cloud.google.com/blog/topics/threat-intelligence/prc-targets-us-medical-research/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "ShinyHunters Targets Education Sector with Oracle PeopleSoft Exploit",
+      "url": "https://cloud.google.com/blog/topics/threat-intelligence/shinyhunters-targets-education-sector-oracle-exploit/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Seeking Counsel: Ongoing Targeted Campaign Against US Law Firms",
+      "url": "https://cloud.google.com/blog/topics/threat-intelligence/targeted-campaign-us-law-firms/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Exploitation of KnowledgeDeliver via ViewState Deserialization Vulnerability",
+      "url": "https://cloud.google.com/blog/topics/threat-intelligence/knowledgedeliver-viewstate-deserialization-vulnerability/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "2 PhaaS 2 Furious: The Evolution of Chinese-Language Phishing Services",
+      "url": "https://cloud.google.com/blog/topics/threat-intelligence/chinese-language-phishing-services/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Welcome to BlackFile: Inside a Vishing Extortion Operation",
+      "url": "https://cloud.google.com/blog/topics/threat-intelligence/blackfile-vishing-extortion-operation/",
+      "posted_on": "2026-09-17"
+    }
+  ]
+}

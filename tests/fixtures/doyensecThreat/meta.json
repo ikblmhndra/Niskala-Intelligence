@@ -1,0 +1,15 @@
+{
+  "scraper": "doyensecThreat",
+  "legacy_script": "doyensecThreat",
+  "legacy_labels": [],
+  "source_urls": [
+    "https://blog.doyensec.com/atom.xml"
+  ],
+  "http_status": {
+    "https://blog.doyensec.com/atom.xml": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

@@ -1,0 +1,49 @@
+{
+  "2026-09-17": [
+    {
+      "title": "Investing Together: Wiz Defend and Google Security Operations",
+      "url": "https://www.wiz.io/blog/wiz-defend-and-google-security-operations",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Artifactory Under Attack: In-the-Wild Exploitation of CVE-2026-42016, CVE-2026-42018 & CVE-2026-82329",
+      "url": "https://www.wiz.io/blog/artifactory-under-attack-in-the-wild-exploitation-of-cve-2026-42016-cve-2026-4201",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Wiz achieves GovRAMP High Authorization",
+      "url": "https://www.wiz.io/blog/wiz-govramp-high",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": " Off Guard: Breaking LiteLLM from authentication bypass to cloud compromise",
+      "url": "https://www.wiz.io/blog/off-guard-breaking-litellm-from-authentication-bypass-to-cloud-compromise",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "How Developers Prevent Production Risk at the Source",
+      "url": "https://www.wiz.io/blog/prevent-production-risk-at-code-stage",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Introducing Continuous Vulnerability Assessment: Real-Time Defense for the AI Threat Era",
+      "url": "https://www.wiz.io/blog/introducing-cva",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": " Inside 90 days of attacks on AI infrastructure",
+      "url": "https://www.wiz.io/blog/ai-infrastructure-honeypot",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": " From Concept to Context Engine: How Wiz Built AI-Powered Data Discovery",
+      "url": "https://www.wiz.io/blog/bucket-scanner-to-context-engine",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Version Control DFIR: a Cheatsheet to GitHub, GitLab, Bitbucket, and Azure DevOps",
+      "url": "https://www.wiz.io/blog/vcs-dfir-threat-hunting-github-gitlab-azure-devops",
+      "posted_on": "2026-09-17"
+    }
+  ]
+}

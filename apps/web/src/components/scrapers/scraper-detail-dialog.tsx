@@ -17,12 +17,14 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { StatusBadge } from "@/components/scrapers/status-badge";
 import { ScraperRunsPanel } from "@/components/scrapers/scraper-runs-panel";
 import { ScraperItemsPanel } from "@/components/scrapers/scraper-items-panel";
 
 type ScraperDetail = components["schemas"]["ScraperDetail"];
+type ScraperOption = components["schemas"]["ScraperOptionOut"];
 
 interface Props {
   scraperId: string | null;
@@ -102,12 +104,23 @@ function ScraperDetailForm({
   const [rateLimit, setRateLimit] = useState(detail.config.rate_limit ?? "");
   const [maxItems, setMaxItems] = useState(detail.config.max_items?.toString() ?? "");
   const [pausedReason, setPausedReason] = useState(detail.config.paused_reason ?? "");
+  // Pilihan opsi scraper (mis. sumber data Twitter): key -> nilai EFEKTIF saat ini.
+  const [optionValues, setOptionValues] = useState<Record<string, string>>(() =>
+    Object.fromEntries(detail.options.map((o) => [o.key, o.value])),
+  );
   const [dryRunResult, setDryRunResult] = useState<string | null>(null);
   const [confirmResetConfig, setConfirmResetConfig] = useState(false);
   const [confirmResetDedup, setConfirmResetDedup] = useState(false);
 
   function invalidateAll() {
     void queryClient.invalidateQueries({ queryKey: ["scrapers"] });
+  }
+
+  /** Cuma pilihan yang BEDA dari default kode yang disimpan (`null` = tidak ada, balik ke
+   * default) -- sama polanya dengan field override lain: kosong = pakai default. */
+  function optionOverrides(): Record<string, string> | null {
+    const changed = detail.options.filter((o) => (optionValues[o.key] ?? o.default) !== o.default);
+    return changed.length ? Object.fromEntries(changed.map((o) => [o.key, optionValues[o.key]])) : null;
   }
 
   const saveConfigMutation = useMutation({
@@ -119,6 +132,7 @@ function ScraperDetailForm({
           rate_limit: rateLimit.trim() || null,
           max_items: maxItems.trim() ? Number(maxItems) : null,
           paused_reason: pausedReason.trim() || null,
+          ...(detail.options.length > 0 ? { options: optionOverrides() } : {}),
         },
       });
       if (error) throw error;
@@ -143,6 +157,7 @@ function ScraperDetailForm({
       setRateLimit("");
       setMaxItems("");
       setPausedReason("");
+      setOptionValues(Object.fromEntries(detail.options.map((o) => [o.key, o.default])));
       invalidateAll();
     },
     onError: (e: Error) => toast.error(`Reset failed: ${e.message}`),
@@ -300,6 +315,15 @@ function ScraperDetailForm({
               className="font-mono text-xs"
             />
           </div>
+          {detail.options.map((option) => (
+            <OptionField
+              key={option.key}
+              option={option}
+              value={optionValues[option.key] ?? option.default}
+              disabled={!isAdmin}
+              onChange={(value) => setOptionValues((prev) => ({ ...prev, [option.key]: value }))}
+            />
+          ))}
           <div className="space-y-1 sm:col-span-2">
             <Label className="font-mono text-[9px] text-muted-foreground uppercase">Paused reason</Label>
             <Textarea
@@ -342,7 +366,7 @@ function ScraperDetailForm({
         open={confirmResetConfig}
         onOpenChange={setConfirmResetConfig}
         title="Reset config to defaults?"
-        description={`Semua override untuk "${scraperId}" (schedule/rate_limit/max_items/paused_reason) akan dihapus, balik ke default kode.`}
+        description={`Semua override untuk "${scraperId}" (schedule/rate_limit/max_items/paused_reason${detail.options.length > 0 ? "/pilihan sumber data" : ""}) akan dihapus, balik ke default kode.`}
         onConfirm={() => resetConfigMutation.mutate()}
       />
       <ConfirmDialog
@@ -352,6 +376,49 @@ function ScraperDetailForm({
         description={`Semua riwayat dedup "${scraperId}" dihapus -- run berikutnya nge-treat ulang semua item sebagai baru.`}
         onConfirm={() => resetDedupMutation.mutate()}
       />
+    </div>
+  );
+}
+
+/** Dropdown satu opsi scraper (`ScraperMeta.options`) -- mis. "Sumber data Twitter/X". `items`
+ * di `<Select>` WAJIB: tanpa itu trigger nampilin value mentah sampai popup pernah dibuka
+ * (lihat apps/web/CLAUDE.md). Isi `SelectItem` satu string tunggal. */
+function OptionField({
+  option,
+  value,
+  disabled,
+  onChange,
+}: {
+  option: ScraperOption;
+  value: string;
+  disabled: boolean;
+  onChange: (value: string) => void;
+}) {
+  const labels = Object.fromEntries(option.choices.map((c) => [c.value, c.label]));
+  const unsaved = value !== option.value;
+  return (
+    <div className="space-y-1 sm:col-span-2">
+      <Label className="font-mono text-[9px] text-muted-foreground uppercase">
+        {option.label} — default {labels[option.default] ?? option.default}
+      </Label>
+      <Select items={labels} value={value} onValueChange={(v) => onChange(v ?? option.default)} disabled={disabled}>
+        <SelectTrigger size="sm" className="w-full max-w-sm font-mono text-xs">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          {option.choices.map((c) => (
+            <SelectItem key={c.value} value={c.value} className="font-mono text-xs">
+              {c.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      <p className="text-[10px] leading-snug text-muted-foreground">{option.description}</p>
+      {unsaved && (
+        <p className="font-mono text-[10px] text-amber-500">
+          Belum disimpan — klik Save Config; berlaku di run berikutnya.
+        </p>
+      )}
     </div>
   );
 }

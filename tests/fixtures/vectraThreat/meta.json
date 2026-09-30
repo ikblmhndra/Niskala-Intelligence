@@ -1,0 +1,17 @@
+{
+  "scraper": "vectraThreat",
+  "legacy_script": "vectraThreat",
+  "legacy_labels": [
+    "NEW ARTICLE FROM VECTRA"
+  ],
+  "source_urls": [
+    "https://www.vectra.ai/blog/rss.xml"
+  ],
+  "http_status": {
+    "https://www.vectra.ai/blog/rss.xml": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

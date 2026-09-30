@@ -9,5 +9,8 @@ useDefault = true
 [allowlist]
 paths = [
   '''\.venv-legacy/''',
-  '''tests/fixtures/''',
 ]
+# `tests/fixtures/` SENGAJA tidak di-allowlist (Fase 10.D): isinya halaman publik
+# pihak ketiga yang penuh string mirip-secret (key front-end, ID AWS di artikel
+# berita), dan allowlist bikin gate ini buta buat rekaman baru. Rekaman baru yang
+# kena temuan di-scrub dulu: tools/ops/scrub_fixtures.py (alurnya di docstring-nya).

@@ -129,9 +129,7 @@ def derive_cluster_name(titles: list[str]) -> str:
             if re.match(r"CVE-\d{4}-\d+", w, re.IGNORECASE):
                 pairs.append((w, w.lower()))
             else:
-                pairs.append(
-                    (re.sub(r"^[^\w]+|[^\w]+$", "", w), re.sub(r"[^\w]", "", w.lower()))
-                )
+                pairs.append((re.sub(r"^[^\w]+|[^\w]+$", "", w), re.sub(r"[^\w]", "", w.lower())))
 
         run: list[str] = []
         run_score = 0

@@ -1,0 +1,17 @@
+{
+  "scraper": "googleCloudThreat",
+  "legacy_script": "googleCloudThreat",
+  "legacy_labels": [
+    "NEW ARTICLE FROM GOOGLE CLOUD TI"
+  ],
+  "source_urls": [
+    "https://cloudblog.withgoogle.com/topics/threat-intelligence/rss/"
+  ],
+  "http_status": {
+    "https://cloudblog.withgoogle.com/topics/threat-intelligence/rss/": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

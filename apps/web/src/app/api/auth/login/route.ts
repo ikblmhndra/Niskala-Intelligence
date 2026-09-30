@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+import { clientIpHeaders } from "@/lib/auth/client-ip";
 import { setSessionCookie } from "@/lib/auth/session";
 
 const API_BASE_URL = process.env.API_BASE_URL ?? "http://localhost:8000";
@@ -24,7 +25,9 @@ export async function POST(request: Request): Promise<NextResponse> {
   try {
     upstream = await fetch(`${API_BASE_URL}/api/auth/login`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      // `clientIpHeaders`: rate limit login di API di-key per IP -- tanpa
+      // ini semua orang kelihatan datang dari IP container `web`.
+      headers: { "Content-Type": "application/json", ...clientIpHeaders(request) },
       body: JSON.stringify(body),
     });
   } catch {

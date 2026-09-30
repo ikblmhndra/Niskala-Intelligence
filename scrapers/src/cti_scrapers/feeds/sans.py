@@ -23,7 +23,7 @@ class Sans(XPathScraper):
         legacy_label="NEW ARTICLE FROM SANS",
         legacy_script="sansThreat",
     )
-    url = 'https://www.sans.org/white-papers/?focus-area=cloud-security,cyber-defense,cyber-security-it-essentials,cybersecurity-insights,devsecops,digital-forensics,incident-response-threat-hunting,purple-team,security-awareness'
-    title_xpath = '/html/body/div[2]/div/div/main/div/div[2]/div[2]/ul/li[{i}]/div/a/text()'
-    link_xpath = '/html/body/div[2]/div/div/main/div/div[2]/div[2]/ul/li[{i}]/div/a/@href'
+    url = "https://www.sans.org/white-papers/?focus-area=cloud-security,cyber-defense,cyber-security-it-essentials,cybersecurity-insights,devsecops,digital-forensics,incident-response-threat-hunting,purple-team,security-awareness"
+    title_xpath = "/html/body/div[2]/div/div/main/div/div[2]/div[2]/ul/li[{i}]/div/a/text()"
+    link_xpath = "/html/body/div[2]/div/div/main/div/div[2]/div[2]/ul/li[{i}]/div/a/@href"
     base_url = "https://www.sans.org"

@@ -34,6 +34,7 @@ from cti_core.db.repositories.scraper import (
 )
 from cti_core.db.repositories.scraper_seen import AsyncScraperSeenRepo
 from cti_scraper.health import summarize_fleet_health
+from cti_scraper.options import OptionError, resolve_options, validate_options
 from cti_scraper.queues import queue_for
 from cti_scraper.registry import discover
 from cti_scraper.registry import get as get_scraper_cls
@@ -42,6 +43,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 if TYPE_CHECKING:
     from cti_core.db.models.scraper import ScraperConfig, ScraperItem, ScraperRun
+    from cti_scraper.base import ScraperMeta
 
 from cti_api.deps import AuthedUser, get_db, request_ip, require_admin, require_auth
 from cti_api.schemas.scraper import (
@@ -56,6 +58,8 @@ from cti_api.schemas.scraper import (
     ScraperItemOut,
     ScraperListItem,
     ScraperListResponse,
+    ScraperOptionChoiceOut,
+    ScraperOptionOut,
     ScraperResetDedupResult,
     ScraperRunListResponse,
     ScraperRunOut,
@@ -73,6 +77,7 @@ def _config_out(config: ScraperConfig | None, default_enabled: bool) -> ScraperC
             rate_limit=None,
             max_items=None,
             paused_reason=None,
+            options=None,
             updated_by=None,
             updated_at=None,
         )
@@ -82,9 +87,25 @@ def _config_out(config: ScraperConfig | None, default_enabled: bool) -> ScraperC
         rate_limit=config.rate_limit,
         max_items=config.max_items,
         paused_reason=config.paused_reason,
+        options=config.options or None,
         updated_by=config.updated_by,
         updated_at=config.updated_at.isoformat() if config.updated_at else None,
     )
+
+
+def _options_out(meta: ScraperMeta, config: ScraperConfig | None) -> list[ScraperOptionOut]:
+    effective = resolve_options(meta, config.options if config is not None else None)
+    return [
+        ScraperOptionOut(
+            key=o.key,
+            label=o.label,
+            description=o.description,
+            default=o.default,
+            choices=[ScraperOptionChoiceOut(value=c.value, label=c.label) for c in o.choices],
+            value=effective[o.key],
+        )
+        for o in meta.options
+    ]
 
 
 def _run_out(run: ScraperRun) -> ScraperRunOut:
@@ -201,6 +222,7 @@ async def get_scraper(scraper_id: str, session: AsyncSession = Depends(get_db)) 
         default_max_retries=meta.max_retries,
         default_dedup_ttl_days=meta.dedup_ttl_days,
         queue=queue_for(meta),
+        options=_options_out(meta, config),
         config=_config_out(config, meta.enabled),
     )
 
@@ -275,12 +297,19 @@ async def trigger_scraper(
 @router.post("/{scraper_id}/dry-run", response_model=ScraperDryRunResult)
 async def dry_run_scraper(
     scraper_id: str,
+    session: AsyncSession = Depends(get_db),
     admin: AuthedUser = Depends(require_admin),
 ) -> ScraperDryRunResult:
     try:
         cls = get_scraper_cls(scraper_id)
     except KeyError:
         raise HTTPException(status_code=404, detail="scraper not found") from None
+
+    # Dry-run mencerminkan run terjadwal: pakai pilihan admin yang tersimpan (mis. sumber
+    # Twitter), bukan default kode -- kalau tidak, "uji dulu sebelum ganti" menguji sumber
+    # yang salah. `Runner(dry_run=True)` sendiri tidak membaca `scraper_config`.
+    config = await AsyncScraperConfigRepo(session).get(scraper_id)
+    options = resolve_options(cls.meta, config.options if config is not None else None)
 
     def _run() -> tuple[str, int, int, list[dict[str, str]]]:
         from cti_scraper.runner import Runner
@@ -289,9 +318,11 @@ async def dry_run_scraper(
             from cti_core.db.engine import sync_session
 
             with sync_session() as sync_sess:
-                result = Runner(cls, session=sync_sess, dry_run=True).execute(trigger="manual")
+                result = Runner(
+                    cls, session=sync_sess, dry_run=True, options=options or None
+                ).execute(trigger="manual")
         else:
-            result = Runner(cls, dry_run=True).execute(trigger="manual")
+            result = Runner(cls, dry_run=True, options=options or None).execute(trigger="manual")
         return result.status, result.items_found, result.duration_ms, result.errors
 
     # `Runner.execute()` SINKRON (HTTP/Playwright blocking) -- `to_thread`
@@ -375,6 +406,11 @@ async def update_scraper_config(
     except KeyError:
         raise HTTPException(status_code=404, detail="scraper not found") from None
     changes = body.model_dump(exclude_unset=True)
+    if changes.get("options"):
+        try:
+            validate_options(cls.meta, changes["options"])
+        except OptionError as e:
+            raise HTTPException(status_code=422, detail=str(e)) from e
     config = await AsyncScraperConfigRepo(session).upsert(
         scraper_id, updated_by=admin["username"], **changes
     )

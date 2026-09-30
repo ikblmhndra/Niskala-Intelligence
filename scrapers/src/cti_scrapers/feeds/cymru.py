@@ -23,7 +23,7 @@ class Cymru(XPathScraper):
         legacy_label="NEW ARTICLE FROM CYMRU",
         legacy_script="cymruThreat",
     )
-    url = 'https://www.team-cymru.com/categories/threat-research'
-    title_xpath = '/html/body/main/section[2]/div/div/div/div/div[2]/div/div/div[{i}]/div/div/a/h2'
-    link_xpath = '/html/body/main/section[2]/div/div/div/div/div[2]/div/div/div[{i}]/div/div/a'
+    url = "https://www.team-cymru.com/categories/threat-research"
+    title_xpath = "/html/body/main/section[2]/div/div/div/div/div[2]/div/div/div[{i}]/div/div/a/h2"
+    link_xpath = "/html/body/main/section[2]/div/div/div/div/div[2]/div/div/div[{i}]/div/div/a"
     base_url = "https://www.team-cymru.com"

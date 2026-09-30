@@ -20,5 +20,5 @@ class Vmware(RSSScraper):
         legacy_label="NEW ARTICLE FROM VMWARE",
         legacy_script="vmwareThreat",
     )
-    feeds = ('https://blogs.vmware.com/security/feed',)
+    feeds = ("https://blogs.vmware.com/security/feed",)
     date_path = None  # scraper lama pakai waktu-scrape, bukan tanggal artikel asli

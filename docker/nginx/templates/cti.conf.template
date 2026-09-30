@@ -1,0 +1,84 @@
+# Edge proxy platform CTI (Fase 10.G). Template ini diproses envsubst oleh entrypoint nginx:
+# HANYA ${NGINX_*} yang diganti (lihat NGINX_ENVSUBST_FILTER di docker/nginx.Dockerfile);
+# semua $variabel lain di bawah adalah variabel nginx.
+#
+# Cuma WEB (Next.js BFF) yang di-proxy. API TIDAK lewat sini: browser tidak pernah memanggil cti-api
+# langsung, semua lewat /api/proxy/* di web.
+#
+# WAJIB: `X-Forwarded-For $proxy_add_x_forwarded_for`. Rate limit login memakai IP klien dari header
+# ini (`TRUSTED_PROXY_HOPS=1` = SATU proxy tepercaya, yaitu nginx ini; lihat
+# apps/web/src/lib/auth/client-ip.ts). Tanpa header ini API melihat IP `web` untuk semua orang --
+# satu orang salah password 10x mengunci login SEMUA orang. Kalau ada proxy/load balancer lain
+# DI DEPAN nginx ini, naikkan TRUSTED_PROXY_HOPS di docker/stack.env.
+
+server_tokens off;
+
+# Resolver bawaan Docker. Dipakai bersama `set $cti_web ...` di bawah supaya nama `web` di-resolve
+# ULANG (valid=10s) -- bukan sekali saat nginx start. Tanpa ini nginx menyimpan IP `web` selamanya,
+# jadi tiap `web` di-recreate (deploy, rollback.py) hasilnya 502 sampai nginx di-restart. Efek
+# sampingan yang berguna: nginx bisa start walau `web` belum ada.
+resolver 127.0.0.11 valid=10s ipv6=off;
+
+# Listener KHUSUS healthcheck Docker (Dockerfile HEALTHCHECK): HTTP polos, hanya loopback DALAM container --
+# tidak bisa dicapai dari jaringan compose maupun host.
+server {
+    listen 127.0.0.1:8081;
+    access_log off;
+
+    location = /nginx-health {
+        default_type text/plain;
+        return 200 "ok\n";
+    }
+}
+
+server {
+    listen 80 default_server;
+    server_name _;
+
+    # ${NGINX_PUBLIC_HTTPS_PORT} = port HTTPS di sisi HOST (443 kecuali dipetakan lain), supaya
+    # redirect tidak melempar orang ke port yang salah.
+    return 301 https://$host:${NGINX_PUBLIC_HTTPS_PORT}$request_uri;
+}
+
+server {
+    listen 443 ssl default_server;
+    http2 on;
+    server_name _;
+
+    # Dibuat oleh docker/nginx/05-selfsigned-cert.sh kalau belum ada; kalau operator menaruh
+    # cti.crt + cti.key sendiri di direktori ini, skrip itu tidak menyentuhnya.
+    ssl_certificate     /etc/nginx/tls/cti.crt;
+    ssl_certificate_key /etc/nginx/tls/cti.key;
+    ssl_protocols       TLSv1.2 TLSv1.3;
+    ssl_session_cache   shared:SSL:10m;
+    ssl_session_timeout 1d;
+    ssl_session_tickets off;
+
+    # Sengaja TANPA HSTS: dengan sertifikat self-signed, HSTS membuat browser menolak tombol
+    # "lanjutkan" sama sekali kalau sertifikatnya berganti. Tambahkan setelah pakai sertifikat CA.
+
+    client_max_body_size 20m;       # upload (mis. impor STIX/CSV); sesuaikan bila perlu
+
+    location = /nginx-health {
+        access_log off;
+        default_type text/plain;
+        return 200 "ok\n";
+    }
+
+    location / {
+        set $cti_web http://web:3000;
+        proxy_pass $cti_web;
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+        # $http_host (bukan $host): $host membuang port, jadi di port non-standar (mis. :8443)
+        # web melihat Host tanpa port dan Origin/redirect-nya tidak cocok.
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;   # <- WAJIB, lihat atas
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Host $http_host;
+        # Dry-run scraper, ekspor, dan ringkasan LLM bisa berjalan puluhan detik.
+        proxy_read_timeout 300s;
+        proxy_send_timeout 300s;
+    }
+}

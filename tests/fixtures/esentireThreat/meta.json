@@ -1,0 +1,17 @@
+{
+  "scraper": "esentireThreat",
+  "legacy_script": "esentireThreat",
+  "legacy_labels": [
+    "NEW ARTICLE FROM ESENTIRE"
+  ],
+  "source_urls": [
+    "https://www.esentire.com/resources/blog?blogType%5B%5D=Threat%20Intelligence"
+  ],
+  "http_status": {
+    "https://www.esentire.com/resources/blog?blogType%5B%5D=Threat%20Intelligence": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

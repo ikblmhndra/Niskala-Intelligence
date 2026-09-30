@@ -20,5 +20,5 @@ class Microsoft(RSSScraper):
         legacy_label="NEW ARTICLE FROM MICROSOFT",
         legacy_script="microsoftThreat",
     )
-    feeds = ('https://www.microsoft.com/en-us/security/blog/topic/threat-intelligence/feed/',)
+    feeds = ("https://www.microsoft.com/en-us/security/blog/topic/threat-intelligence/feed/",)
     date_path = None  # scraper lama pakai waktu-scrape, bukan tanggal artikel asli

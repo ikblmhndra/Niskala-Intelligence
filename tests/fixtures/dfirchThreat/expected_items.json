@@ -1,0 +1,234 @@
+{
+  "2026-09-17": [
+    {
+      "title": "Living Inside the Shell: zsh Modules on macOS",
+      "url": "https://dfir.ch/posts/zsh_modules/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Field Notes: From AV Alert to Impacket",
+      "url": "https://dfir.ch/posts/field_notes_av_impacket/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Field Notes: NSSM - the Non-Sucking Service Manager",
+      "url": "https://dfir.ch/posts/field_notes_nssm/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Fantastic clear-text passwords and where to collect them (Part 2 - Windows)",
+      "url": "https://dfir.ch/posts/fantastic_passwords_windows/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Fantastic clear-text passwords and where to collect them (Part 1 - Linux)",
+      "url": "https://dfir.ch/posts/fantastic_passwords_linux/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Anatomy of a Deno-Based Proxy & RAT",
+      "url": "https://dfir.ch/posts/deno/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Dissection of a PHP Backdoor leveraging php-win.exe",
+      "url": "https://dfir.ch/posts/dissection_php_backdoor/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Today I learned: binfmt_misc",
+      "url": "https://dfir.ch/posts/today_i_learned_binfmt_misc/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Linux Capabilities Revisited",
+      "url": "https://dfir.ch/posts/linux_capabilities/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Today I Learned - Protected Symlinks",
+      "url": "https://dfir.ch/posts/today_i_learned_protected_symlinks/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "macOS Extended Attributes: Case Study",
+      "url": "https://dfir.ch/posts/macos_extended_attributes/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Tear Down The Castle - Part 2",
+      "url": "https://dfir.ch/posts/tear_down_castle_part_two/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Oh my .. ! - Suspicious network traffic detected including Ransomware",
+      "url": "https://dfir.ch/posts/suspicious_network_traffic_ransomware/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Tear Down The Castle - Part 1",
+      "url": "https://dfir.ch/posts/tear_down_castle_part_one/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Analysis of Python's .pth files as a persistence mechanism",
+      "url": "https://dfir.ch/posts/publish_python_pth_extension/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Today I Learned - setfacl",
+      "url": "https://dfir.ch/posts/today_i_learned_setfacl/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Shell Script Compiler (shc)",
+      "url": "https://dfir.ch/posts/shell_script_compiler/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Reptile's Custom Kernel-Module Launcher",
+      "url": "https://dfir.ch/posts/reptile_launcher/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "bedevil: Dynamic Linker Patching",
+      "url": "https://dfir.ch/posts/bedevil_dynamic_linker_patching/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Microsoft Defender XDR's Deception Technology",
+      "url": "https://dfir.ch/posts/defender_xdr_deception/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "tmate - Instant Terminal Sharing (or How To Backdoor a Linux Server)",
+      "url": "https://dfir.ch/posts/tmate_as_a_backdoor/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "EDR: The Great Escape - RomHack Training Review",
+      "url": "https://dfir.ch/posts/romhack_edr/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Today I Learned - NSG Flow Log",
+      "url": "https://dfir.ch/posts/today_i_learned_nsg_flow_log/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "ScriptBlock Smuggling",
+      "url": "https://dfir.ch/posts/scriptblock_smuggling/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Botnet Fenix",
+      "url": "https://dfir.ch/posts/botnex_fenix/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Today I Learned - WebDAV Cache",
+      "url": "https://dfir.ch/posts/today_i_learned_webdav_cache/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Abusing the “search-ms” URI protocol handler",
+      "url": "https://dfir.ch/posts/search-ms_protocol_handler/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Tainted Kernels",
+      "url": "https://dfir.ch/posts/tainted_kernels/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Today I Learned - kernel.modules_disabled",
+      "url": "https://dfir.ch/posts/today_i_learned_lkm_kernel.modules_disabled/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Systemd Path Activation - Poor Man's File Integrity",
+      "url": "https://dfir.ch/posts/systemd_path_activation/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "From Dangerous PHP Functions to Webshell Hunting",
+      "url": "https://dfir.ch/posts/php_dangerous_functions_and_webshell/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Today I Learned - Instrument ClamAV to extract AutoIT scripts",
+      "url": "https://dfir.ch/posts/today_i_learned_clamav_autoit/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Today I Learned - Zsh Sessions (even more Timestamps)",
+      "url": "https://dfir.ch/posts/today_i_learned_zsh_sessions/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The 'Invisibility Cloak' - Slash-Proc Magic",
+      "url": "https://dfir.ch/posts/slash-proc/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Removing Traces of RMM Tools",
+      "url": "https://dfir.ch/posts/cleanup_script_rmm/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Today I Learned - Zsh History Timestamps",
+      "url": "https://dfir.ch/posts/today_i_learned_zsh_timestamps/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Canarytokens: Catching Insider Threats (and Threat Actors?)",
+      "url": "https://dfir.ch/posts/canarytokens/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Today I Learned - Device Discovery",
+      "url": "https://dfir.ch/posts/today_i_learned_device_discovery/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Sysrv Infection (Linux Edition)",
+      "url": "https://dfir.ch/posts/sysrv/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "MicroSocks: Convenient access through a compromised SonicWall SMA",
+      "url": "https://dfir.ch/posts/microsocks_sonicwall/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Azure Batch Misused for Crypto Mining",
+      "url": "https://dfir.ch/posts/azure_batch/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Two in a row - You mitigated wrong (Kentico CMS RCE)",
+      "url": "https://dfir.ch/posts/kentico_cms_rce/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "AWS Ransomware",
+      "url": "https://dfir.ch/posts/aws_ransomware/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "[s|l]trace - Linux Malware Analysis",
+      "url": "https://dfir.ch/posts/strace/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Hunting AsyncRAT & QuasarRAT",
+      "url": "https://dfir.ch/posts/asyncrat_quasarrat/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "N-IOCs to Rule Them All",
+      "url": "https://dfir.ch/posts/n-iocs/",
+      "posted_on": "2026-09-17"
+    }
+  ]
+}

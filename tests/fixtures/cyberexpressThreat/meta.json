@@ -1,0 +1,17 @@
+{
+  "scraper": "cyberexpressThreat",
+  "legacy_script": "cyberexpressThreat",
+  "legacy_labels": [
+    "NEW ARTICLE FROM CYBER EXPRESS"
+  ],
+  "source_urls": [
+    "https://feeds.feedburner.com/thecyberexpress/cybernews"
+  ],
+  "http_status": {
+    "https://feeds.feedburner.com/thecyberexpress/cybernews": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

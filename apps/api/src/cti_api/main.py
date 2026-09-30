@@ -20,6 +20,8 @@ from cti_core.db.repositories.auth import AsyncClientRepo
 from cti_core.logging import configure_logging, get_logger
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import text
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from cti_api import __version__
 from cti_api.routers import articles as articles_router
@@ -55,13 +57,37 @@ from cti_api.services.roles import ensure_system_roles
 log = get_logger()
 
 
+_BOOTSTRAP_LOCK_KEY = 7_231_001
+"""Kunci `pg_advisory_xact_lock` buat `bootstrap_reference_rows()`. Angka
+bebas, yang penting konstan dan gak dipakai lock lain di codebase ini."""
+
+
+async def bootstrap_reference_rows(session: AsyncSession) -> None:
+    """Baris referensi yang API butuh ada (client `default`, role sistem).
+
+    Dijalanin TIAP proses uvicorn pas start -- dan `WEB_CONCURRENCY` > 1
+    (default image: 2) artinya BEBERAPA proses start bersamaan. Kedua langkah
+    di bawah pola "cek dulu, baru insert", jadi di DB KOSONG dua proses
+    sama-sama lolos cek lalu tabrakan di `pk_clients` -- proses yang kalah
+    crash di lifespan dan `uvicorn` matiin seluruh container ("Child process
+    failed to start"); ketauan pas smoke test staging Fase 10.B (self-heal
+    lewat restart policy, tapi start pertama selalu flap).
+
+    Fix: advisory lock tingkat-transaksi. Proses kedua NUNGGU di sini sampai
+    yang pertama commit (lock lepas otomatis), lalu cek-nya sudah lihat
+    barisnya -- semua bootstrap terserialkan, tanpa ubah logika repo.
+    """
+    await session.execute(text("SELECT pg_advisory_xact_lock(:key)"), {"key": _BOOTSTRAP_LOCK_KEY})
+    await AsyncClientRepo(session).ensure_default()
+    await ensure_system_roles(session)  # commit di akhir -> lock dilepas
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     settings = get_settings()
     configure_logging(level=settings.log_level, json=settings.environment != "dev")
     async with async_session() as session:
-        await AsyncClientRepo(session).ensure_default()
-        await ensure_system_roles(session)
+        await bootstrap_reference_rows(session)
     log.info("api_startup_done", version=__version__)
     yield
 

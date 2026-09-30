@@ -8,16 +8,29 @@ ini nol-item tiba-tiba"), tipe yang gak dikenal jatuh ke fallback generik
 
 from __future__ import annotations
 
+import re
+
 from cti_scraper.items import (
     ArticleItem,
     CveItem,
+    CveMentionItem,
     CvePocItem,
     IocFeedItem,
     Item,
     MalwareTrendItem,
+    NoticeItem,
     RansomwareVictimItem,
     TweetItem,
 )
+
+
+def _first_line(html_text: str) -> str:
+    """Baris pertama TANPA tag HTML -- pesan notice biasanya diawali `=== <b>JUDUL</b> ===`."""
+    for line in html_text.splitlines():
+        plain = re.sub(r"<[^>]+>", "", line).strip(" =\t")
+        if plain:
+            return plain
+    return ""
 
 
 def display_title_url(item: Item) -> tuple[str, str]:
@@ -35,4 +48,8 @@ def display_title_url(item: Item) -> tuple[str, str]:
         return f"#{item.rank} {item.malware_name}", item.url
     if isinstance(item, IocFeedItem):
         return item.commit_message[:200], item.commit_url
+    if isinstance(item, CveMentionItem):
+        return f"tweet {item.tweet_id}: {', '.join(item.cve_ids)}"[:200], item.url
+    if isinstance(item, NoticeItem):
+        return (item.title or _first_line(item.text))[:200], item.url
     return type(item).__name__, ""

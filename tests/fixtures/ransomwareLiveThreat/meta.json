@@ -1,0 +1,15 @@
+{
+  "scraper": "ransomwareLiveThreat",
+  "legacy_script": "ransomwareLiveThreat",
+  "legacy_labels": [],
+  "source_urls": [
+    "https://api.ransomware.live/v2/victims/2026/9"
+  ],
+  "http_status": {
+    "https://api.ransomware.live/v2/victims/2026/9": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

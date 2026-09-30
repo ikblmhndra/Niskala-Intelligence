@@ -1,0 +1,15 @@
+{
+  "scraper": "splunkThreat",
+  "legacy_script": "splunkThreat",
+  "legacy_labels": [],
+  "source_urls": [
+    "https://www.splunk.com/en_us/blog/security.html"
+  ],
+  "http_status": {
+    "https://www.splunk.com/en_us/blog/security.html": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

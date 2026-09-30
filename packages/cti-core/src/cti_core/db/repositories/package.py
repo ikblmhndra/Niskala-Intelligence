@@ -137,9 +137,9 @@ class AsyncMonitoredPackageRepo:
 
     async def count(self, client_id: str) -> int:
         result = await self.session.execute(
-            select(func.count()).select_from(MonitoredPackage).where(
-                MonitoredPackage.client_id == client_id
-            )
+            select(func.count())
+            .select_from(MonitoredPackage)
+            .where(MonitoredPackage.client_id == client_id)
         )
         return result.scalar_one()
 
@@ -260,14 +260,18 @@ class AsyncPackageVulnRepo:
 
     async def delete_for_package(self, package_name: str, ecosystem: str, client_id: str) -> None:
         rows = (
-            await self.session.execute(
-                select(PackageVuln).where(
-                    PackageVuln.package_name == package_name,
-                    PackageVuln.ecosystem == ecosystem,
-                    PackageVuln.client_id == client_id,
+            (
+                await self.session.execute(
+                    select(PackageVuln).where(
+                        PackageVuln.package_name == package_name,
+                        PackageVuln.ecosystem == ecosystem,
+                        PackageVuln.client_id == client_id,
+                    )
                 )
             )
-        ).scalars().all()
+            .scalars()
+            .all()
+        )
         for row in rows:
             await self.session.delete(row)
         await self.session.flush()
@@ -289,7 +293,9 @@ class AsyncPackageVulnRepo:
         counts: dict[str, int] = {}
         for label in ("CRITICAL", "HIGH", "MEDIUM", "LOW"):
             result = await self.session.execute(
-                select(func.count()).select_from(PackageVuln).where(
+                select(func.count())
+                .select_from(PackageVuln)
+                .where(
                     cf, or_(PackageVuln.severity == label, PackageVuln.adjusted_severity == label)
                 )
             )

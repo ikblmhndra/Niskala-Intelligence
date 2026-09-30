@@ -1,0 +1,17 @@
+{
+  "scraper": "cisaThreat",
+  "legacy_script": "cisaThreat",
+  "legacy_labels": [
+    "NEW CYBERSECURITY ADVISORIES FROM CISA"
+  ],
+  "source_urls": [
+    "https://www.cisa.gov/cybersecurity-advisories/all.xml"
+  ],
+  "http_status": {
+    "https://www.cisa.gov/cybersecurity-advisories/all.xml": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

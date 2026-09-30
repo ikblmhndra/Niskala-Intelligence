@@ -1,0 +1,205 @@
+<?xml version='1.0' encoding='UTF-8'?>
+    <?xml-stylesheet type='text/xsl' href='https://ecrime.ch/app/assets/rss/rss.xsl' media='screen' ?>
+    <rss version='2.0' xmlns:atom='http://www.w3.org/2005/Atom'>
+    <channel>
+    <title>eCrime.ch Ransomware News | RSS</title>
+    <link>https://ecrime.ch/</link>
+    <atom:link href='https://ecrime.ch/app/intel-news.php?rss' rel='self' type='application/rss+xml' />
+    <description>eCrime.ch RSS</description>
+    <language>en-us</language><item>
+        <title>Ransomware Incident Response: Infrastructure Analysis</title>
+        <link><![CDATA[https://www.team-cymru.com/post/ransomware-infrastructure-analysis]]></link>
+        <description><![CDATA[Since April 2025, Team Cymru has worked with a digital forensics and incident response (DFIR) company on more than 20 ransomware investigations, predominantly impacting small-to-medium-sized enterprises located in the United Kingdom. For each investigation, our trusted partner shared live indicators of compromise (IOCs) they uncovered from manual host-based forensic analysis as the incidents were ongoing to provide Team Cymru with the best opportunity to analyze and track the operators in our global netflow data and internet telemetry.
+
+Using all of the IOCs provided by our trusted partner, Team Cymru analyzed the IP address attributes and NetFlow communications. This led us to identify useful trends in hosting, services used, protocols, and software leveraged by multiple ransomware gangs.  ]]></description>
+        <pubDate>Tue, 15 Sep 2026 15:24:13 +0000</pubDate>
+        <guid><![CDATA[https://ecrime.ch/app/intel-news.php#375c71349b295fbe2dcdca9206f20a06]]></guid>
+        </item><item>
+        <title>Swiss court sentences 52-year-old Ukrainian ransomware dev to nearly 13 years in the cooler</title>
+        <link><![CDATA[https://www.theregister.com/security/2026/09/15/swiss-court-sentences-52-year-old-ukrainian-ransomware-dev-to-nearly-13-years-in-the-cooler/5296482]]></link>
+        <description><![CDATA[A Swiss court has sentenced a 52-year-old Ukrainian ransomware developer to 12 years and nine months in prison for his role in attacks on companies including Stadler Rail.
+
+Zurich District Court found that the man developed LockerGoga, MegaCortex, and Nefilim, but was not the mastermind behind the operations. He also received a ten-year ban from Switzerland. The judgment is not final and can be appealed.
+
+He had been held in pretrial detention since October 2021 and consistently denied knowing that his software was being used for criminal purposes.
+
+He said the source code found at his home in Basel-Landschaft came from his consulting work for an unidentified IT security client.
+
+The court rejected that explanation because extortion messages were also found among his data, SWI reported.  ]]></description>
+        <pubDate>Tue, 15 Sep 2026 13:58:53 +0000</pubDate>
+        <guid><![CDATA[https://ecrime.ch/app/intel-news.php#b9f94c77652c9a76fc8a442748cd54bd]]></guid>
+        </item><item>
+        <title>Fenway Health hit with "IT incident," affecting service</title>
+        <link><![CDATA[https://www.axios.com/local/boston/2026/09/13/fenway-health-it-incident]]></link>
+        <description><![CDATA[The Fenway Health website on Friday said, "Fenway Health continues to respond to an IT incident" and to expect delayed MyChart messaging and callbacks.
+The latest: Fenway Health declined to confirm that it experienced a "cyber attack" after announcing its sexual health clinic was closed on Friday, but a spokesperson called the incident an "interruption to IT systems" in an emailed statement to Axios on Saturday.
+
+It is unclear how many days the incident lasted, but by Sunday, the hospital system had removed the IT notification on its website.
+What they're saying: "We have taken multiple steps to limit impacts to patient care," said Ryan Dunn, a Fenway Health spokesperson, adding that the hospital is working with external IT experts to resume operations.  ]]></description>
+        <pubDate>Mon, 14 Sep 2026 06:16:19 +0000</pubDate>
+        <guid><![CDATA[https://ecrime.ch/app/intel-news.php#15231a7ce4ba789d13b722cc5c955834]]></guid>
+        </item><item>
+        <title>Ontario court rules XL Specialty ransomware retention applies to Panasonic claim | Insurance Business</title>
+        <link><![CDATA[https://www.insurancebusinessmag.com/ca/news/legal-insights/ontario-court-rules-xl-specialty-ransomware-retention-applies-to-panasonic-claim-589473.aspx]]></link>
+        <description><![CDATA[The Court of Appeal for Ontario has ruled a $3 million USD retention, not $1.5 million, applies to Panasonic's ransomware claim against XL Specialty.
+
+Panasonic Canada Inc. held a cyber risk policy with XL Specialty Insurance Company that set a $1.5 million USD retention for most first party and third party coverages, including data recovery, data breach response and business interruption. A separate provision, Endorsement #023, set a $3 million USD retention specifically for cyber-extortion reimbursement and ransomware events.
+
+In February 2022, an employee opened a malicious file that let outside attackers into Panasonic's network. The attackers downloaded company files and posted a message warning that data had been encrypted, offering to decrypt two files free of charge. Panasonic's policy was not to negotiate with attackers, and it did not respond to the demand or pay a ransom.
+
+Panasonic hired outside firms to respond to the incident, repaired its network, replaced laptops, and paid staff overtime to manage the fallout. It sought coverage under the base policy's provisions for third party liability, data breach response and crisis management, and business interruption, at the $1.5 million USD retention, and did not invoke Endorsement #023. The parties agreed the claim was worth about $2 million USD.  ]]></description>
+        <pubDate>Sun, 13 Sep 2026 14:18:39 +0000</pubDate>
+        <guid><![CDATA[https://ecrime.ch/app/intel-news.php#01e00f2f4bfcbb7505cb641066f2859b]]></guid>
+        </item><item>
+        <title>Conti ransomware gang member sentenced to 4 years in prison</title>
+        <link><![CDATA[https://www.bleepingcomputer.com/news/security/conti-ransomware-gang-member-sentenced-to-four-years-in-prison/]]></link>
+        <description><![CDATA[A Ukrainian national has been sentenced to four years in prison for his role in Conti ransomware attacks between 2021 and 2022.
+
+44-year-old Oleksii Oleksiyovych Lytvynenko was arrested by the Irish national police (An Garda Síochána) in July 2023 at the request of the United States and was extradited last year.
+
+Lytvynenko and his Conti accomplices deployed ransomware on victim networks in the United States and abroad, stealing data and encrypting devices to extort Bitcoin ransom payments.
+
+"From 2020 until 2022, Conti was used to attack computers and networks in 47 states, 31 foreign countries, the District of Columbia, and Puerto Rico. The FBI estimates that, as of January 2022, there had been victim payouts associated with Conti ransomware exceeding $150,000,000," the Department of Justice said on Thursday.
+
+"Lytvynenko joined that conspiracy as both an intruder and a developer — personally harming at least 12 companies, storing stolen data from victims, and helping build the malicious tools Conti used to extort and threaten communities," added Assistant Attorney General A. Tysen Duva.
+
+The defendant pleaded guilty to conspiracy to commit wire fraud in June 2026 and was facing a maximum sentence of 20 years in prison.  ]]></description>
+        <pubDate>Fri, 11 Sep 2026 12:28:31 +0000</pubDate>
+        <guid><![CDATA[https://ecrime.ch/app/intel-news.php#ef2a4be5473ab0b3cc286e67b1f59f44]]></guid>
+        </item><item>
+        <title>Beaver County Behavioral Health Notice Of Cyber Incident</title>
+        <link><![CDATA[https://www.beavercountypa.gov/departments/behavioral-health/bcbh-notice-of-cyber-incident]]></link>
+        <description><![CDATA[In connection with a July ransomware attack, Beaver County Behavioral Health (“BCBH”) has determined that there was unauthorized access to, and acquisition of, protected health information related to individuals who received services from BCBH. We take this matter very seriously because of our commitment to the privacy and security of all information we maintain. We are providing this notice to inform potentially impacted individuals and suggest ways that individuals can protect their information.
+
+What Happened 
+Beginning on July 8, 2026, BCBH detected suspicious activity on our computer network. As soon as we learned this, we began working to investigate and determine the scope of the incident. We also reported this incident to federal law enforcement and worked with nationally recognized third-party cybersecurity and data forensics consultants. As part of the ongoing investigation, we determined that there was unauthorized access to BCBH’s network. During that time, the cyber criminals copied certain data from our network, which included protected health information. 
+
+We are conducting a thorough review of the impacted data to establish what information may have been involved, who may have been affected, and where those people reside so that we can provide notice. Upon completing our review, we will provide the required written notice to individuals. On September 4, 2026, BCBH mailed notification letters to the identified impacted individuals to date.  ]]></description>
+        <pubDate>Sat, 05 Sep 2026 07:03:00 +0000</pubDate>
+        <guid><![CDATA[https://ecrime.ch/app/intel-news.php#9fe97fff97f089661135d0487843108e]]></guid>
+        </item><item>
+        <title>Thomson Reuters detects cybersecurity incident, says unauthorized party accessed files</title>
+        <link><![CDATA[https://www.reuters.com/legal/litigation/thomson-reuters-detects-cybersecurity-incident-says-unauthorized-party-accessed-2026-09-03/]]></link>
+        <description><![CDATA[A unit of Thomson Reuters detected a cybersecurity incident in 11 U.S. states, the U.S. Virgin Islands and Canada on June 30 involving the company's C-Track case management platform, according to a ​notice from the company on Wednesday and a statement by the chief justices of ‌three Ontario courts, which use the platform for digital court record management.
+A subsequent investigation by Thomson Reuters found that an unauthorized party obtained certain C-Track files in March, the company said on a website created to provide information about the ​incident. The company's investigation found some court records were "affected" and they included names and personal ​information, the website said.  ]]></description>
+        <pubDate>Thu, 03 Sep 2026 06:10:21 +0000</pubDate>
+        <guid><![CDATA[https://ecrime.ch/app/intel-news.php#673271cc47c1a4e77f57e239ed4d28a7]]></guid>
+        </item><item>
+        <title>Ungentlemanly behavior: Insights into a ransomware operation</title>
+        <link><![CDATA[https://www.sophos.com/en-us/blog/ungentlemanly-behavior-insights-into-a-ransomware-operation]]></link>
+        <description><![CDATA[Counter Threat Unit™ (CTU) researchers identified a consistent post-exploitation playbook used in The Gentlemen ransomware-as-a-service (RaaS) scheme, operated by a threat group that CTU™ researchers track as GOLD SHERWOOD. Rapid privilege escalation, adaptive tool usage, and aggressive defense evasion enable ransomware deployment soon after initial access, sometimes within 24 hours of the first identified post-compromise activity. The affiliates leverage legitimate tools and compromised credentials to evade detection and accelerate impact. Organizations should prioritize hardening remote access services, enforcing multi-factor authentication (MFA), monitoring administrative activity, and detecting anomalous use of data exfiltration tools and staging directories.  ]]></description>
+        <pubDate>Wed, 02 Sep 2026 06:40:22 +0000</pubDate>
+        <guid><![CDATA[https://ecrime.ch/app/intel-news.php#5cf21ce30208cfffaa832c6e44bb567d]]></guid>
+        </item><item>
+        <title>Park Dental Partners, Inc. identified unauthorized access to its computer network.</title>
+        <link><![CDATA[https://www.sec.gov/ix?doc=/Archives/edgar/data/2069604/000110465926104300/park-20260828x8k.htm]]></link>
+        <description><![CDATA[On August 28, 2026, Park Dental Partners, Inc. (“we” or the “Company”) identified unauthorized access to its computer network. The Company promptly initiated its incident response protocols, and engaged its external cybersecurity and forensic specialists. The Company is continuing to investigate the nature and scope of this incident, including the scope of any compromise of personal or protected health information. As of the date of this Current Report on Form 8-K, the incident has not materially disrupted the Company’s operations, however, due to the possible access of patient data, we are treating this as a reportable event.  ]]></description>
+        <pubDate>Tue, 01 Sep 2026 20:33:54 +0000</pubDate>
+        <guid><![CDATA[https://ecrime.ch/app/intel-news.php#e721a54a8cf18c8543d44782d9ef681f]]></guid>
+        </item><item>
+        <title>FulcrumSec claims Manchester Airports hack, theft of 86 GB of data</title>
+        <link><![CDATA[https://www.bleepingcomputer.com/news/security/fulcrumsec-claims-manchester-airports-hack-theft-of-86-gb-of-data/]]></link>
+        <description><![CDATA[The Manchester Airports Group data breach has been claimed by extortion group FulcrumSec, which told BleepingComputer that it stole approximately 86 GB of data.
+
+Samples reviewed by BleepingComputer contained information consistent with MAG's disclosure while indicating that the breach exposed considerably more detailed customer, booking, and travel information than initially revealed.  ]]></description>
+        <pubDate>Sun, 30 Aug 2026 15:40:27 +0000</pubDate>
+        <guid><![CDATA[https://ecrime.ch/app/intel-news.php#26751be1181460baf78db8d5eb7aad39]]></guid>
+        </item><item>
+        <title>Nutex Health Inc. recently learned of unauthorized activity involving data stored on its computer network</title>
+        <link><![CDATA[https://www.sec.gov/ix?doc=/Archives/edgar/data/0001479681/000162828026058606/nutx-20260824.htm]]></link>
+        <description><![CDATA[Nutex Health Inc. (the “Company”) recently learned of unauthorized activity involving data stored on its computer network. As a result, the Company has engaged an independent third-party cybersecurity response team and forensic experts, activated a cybersecurity response plan, implemented containment measures and notified law enforcement.
+Based on preliminary findings from the Company’s ongoing investigation, the Company believes that certain information maintained on the Company’s servers was accessed and exfiltrated by an unauthorized third party, including some information that may be private and/or confidential. To date, the Company has not identified any material impact on its business operations or financial reporting systems.
+The Company continues to assess whether, and to what extent, patient, employee, credentialed provider, confidential business and financial information, intellectual property, or other information may have been accessed, acquired, or exfiltrated and continues to evaluate the potential impact of the unauthorized activity on the Company, including any potential disclosure of private and/or confidential information by the third party.  ]]></description>
+        <pubDate>Sun, 30 Aug 2026 12:31:03 +0000</pubDate>
+        <guid><![CDATA[https://ecrime.ch/app/intel-news.php#b59a51a3c0bf9c5228fde841714f523a]]></guid>
+        </item><item>
+        <title>Norcross Cybersecurity Incident • Norcross, GA</title>
+        <link><![CDATA[https://www.norcrossga.net/m/newsflash/home/detail/2028]]></link>
+        <description><![CDATA[The City of Norcross is notifying residents that it recently identified a ransomware incident that occurred on August 1, 2026, and which impacted certain computer systems.
+
+As soon as the incident was detected, the City took immediate steps to respond, including engaging experienced cybersecurity professionals and notifying law enforcement. We continue to actively work with these partners to investigate the incident and to help ensure the continued security of our systems.
+
+Most City systems and services are currently operational. However, residents may continue to experience limited disruptions to certain services as the City completes its restoration efforts and implements additional security measures. The City is working to safely restore all remaining affected systems as quickly as possible while maintaining the security and integrity of its network.
+
+Because the investigation is ongoing, the City is not able to share additional details at this time. As we are able, we will provide more information as the investigation continues and as it becomes available.  ]]></description>
+        <pubDate>Sun, 30 Aug 2026 07:32:11 +0000</pubDate>
+        <guid><![CDATA[https://ecrime.ch/app/intel-news.php#4921f95baf824205e1b13f22d60357a1]]></guid>
+        </item><item>
+        <title>Winona County paid hackers $128K after back-to-back ransomware attacks in 2026, Social Security numbers may be at risk | Crime and Courts | wxow.com</title>
+        <link><![CDATA[https://www.wxow.com/news/crime/winona-county-paid-hackers-128k-after-back-to-back-ransomware-attacks-in-2026-social-security/article_327a85bf-46be-4fdc-a5d8-77b9055efb63.html]]></link>
+        <description><![CDATA[WINONA, Minn. (WXOW) — Winona County paid more than $128,000 to resolve a ransomware attack detected in January, and officials are now investigating a second, unrelated attack from April.
+
+The county detected ransomware on its computer network on Jan. 22. Officials took immediate action to investigate and engaged third-party forensic experts and federal law enforcement, according to a press release.
+
+On May 12, the county provided written notification to impacted individuals, as well as notification on its website and to the media regarding the January ransomware incident.
+
+After careful consideration and guidance from its cybersecurity team, Winona County negotiated and paid a fee of $128,539.57 with assistance from its insurance carrier. Officials said making the payment was a difficult choice but determined it was the necessary approach to best serve the interests of Winona County residents and employees.  ]]></description>
+        <pubDate>Sun, 30 Aug 2026 07:29:42 +0000</pubDate>
+        <guid><![CDATA[https://ecrime.ch/app/intel-news.php#8303a79b1e19a194f1875981be5bdb6f]]></guid>
+        </item><item>
+        <title>Beyond the Hype: AI, Ransomware and Business Models</title>
+        <link><![CDATA[https://www.rusi.org/explore-our-research/publications/commentary/beyond-hype-ai-ransomware-and-business-models]]></link>
+        <description><![CDATA[AI is not (yet) fundamentally reinventing cybercrime. For bold predictions on how it will change, look to history to understand what drives criminal behaviour online.
+
+In the case of ransomware, it is also instructive that when innovation has occurred, it is largely through new business strategies rather than technical capabilities. Early attempts at cyber extortion failed to generate significant revenues until the right economic opportunities aligned with the adoption, by cybercriminals, of new strategies and business models to exploit. The rise of the modern ransomware threat as a cybercriminal business model in the late 2010s was not driven by novel technical capabilities – attacks relied on many elements common to banking malware that had been around for nearly a decade.  ]]></description>
+        <pubDate>Fri, 28 Aug 2026 09:40:03 +0000</pubDate>
+        <guid><![CDATA[https://ecrime.ch/app/intel-news.php#d43ab110ab2489d6b9b2caa394bf920f]]></guid>
+        </item><item>
+        <title>Manchester Airports Group Statement - Data Security Incident - 27.08.26</title>
+        <link><![CDATA[https://www.manchesterairport.co.uk/help/data-security-incident/]]></link>
+        <description><![CDATA[Manchester Airports group has been subject to a cyber security incident by an unauthorised third party. A quantity of customer data has been obtained that relates to car park, lounge and Fast Track bookings and in-airport WIFI sign-ups at Manchester, Stansted, and East Midlands airports.
+
+We immediately contained the risk and have been working with specialist advisors and taking appropriate steps to protect our customers and systems. We have informed and are working with the relevant authorities. At no point has passenger safety or aviation security been compromised.
+
+The incident has not resulted in any operational disruption. Airport operations remain unaffected and customer parking services continue to operate normally.
+
+Neither MAG nor the system accessed hold customers’ bank or payment details. The data that has been accessed includes customers’ email addresses, phone numbers, vehicle registrations and postcodes.  ]]></description>
+        <pubDate>Thu, 27 Aug 2026 11:34:00 +0000</pubDate>
+        <guid><![CDATA[https://ecrime.ch/app/intel-news.php#7c4ede33a62160a19586f6e26eaefacf]]></guid>
+        </item><item>
+        <title>Two WA men charged following AFP-FBI-WAPF disruption of alleged global cybercrime syndicate | Australian Federal Police</title>
+        <link><![CDATA[https://www.afp.gov.au/news-centre/media-release/two-wa-men-charged-following-afp-fbi-wapf-disruption-alleged-global]]></link>
+        <description><![CDATA[Two West Australian men have been charged following a joint investigation between the AFP and Western Australia Police Force (WAPF), working in parallel with the Federal Bureau of Investigation (FBI), into a sophisticated cybercrime syndicate that allegedly created malicious open-source software to rob thousands of global businesses.
+
+It is estimated the malicious code potentially compromised more than 1000 organisations globally, enabling the theft of more than 500,000 credentials, and the exfiltration of at least 300 gigabytes of data.
+
+“These men are allegedly members of the cybercriminal group TeamPCP, whose malicious code potentially compromised more than a thousand organizations worldwide,” Assistant Director Leatherman said.  ]]></description>
+        <pubDate>Thu, 27 Aug 2026 07:28:13 +0000</pubDate>
+        <guid><![CDATA[https://ecrime.ch/app/intel-news.php#ae614c557843b1df326cb29c57225459]]></guid>
+        </item><item>
+        <title>Introducing the Aur0ra Ransomware Group — ActiveSOC Blog</title>
+        <link><![CDATA[https://activesoc.blackhillsinfosec.com/blog/introducing-the-aur0ra-ransomware-group/]]></link>
+        <description><![CDATA[During a recent incident response engagement for an external organization, the BHIS ActiveSOC team investigated activity attributed to the Aur0ra ransomware group. In this incident, initial access was gained through vishing following aggressive email bombing. This foothold was followed up by the deployment of a unique C2 mechanism with noisy lateral movement &amp; ransomware attempts.  ]]></description>
+        <pubDate>Wed, 26 Aug 2026 13:48:39 +0000</pubDate>
+        <guid><![CDATA[https://ecrime.ch/app/intel-news.php#7fea637fd6d02b8f0adf6f7dc36aed93]]></guid>
+        </item><item>
+        <title>Boston Scientific Cybersecurity Incident</title>
+        <link><![CDATA[https://www.sec.gov/ix?doc=/Archives/edgar/data/0000885725/000088572526000056/bsx-20260826.htm]]></link>
+        <description><![CDATA[On August 25, 2026, Boston Scientific Corporation (the “Company”) identified a cybersecurity incident affecting certain of its information technology systems that has resulted in a global disruption to the Company’s operations. Upon detection, the Company activated its incident response protocols and began an investigation with the assistance of third-party cybersecurity experts to assess and to contain the threat.
+
+The incident has caused, and is expected to continue to cause, disruptions and limitations of access to certain of the Company’s information systems and business applications that support aspects of the Company’s operations, including the ability to process and ship customer orders. While the Company is working diligently to restore affected functions and systems access, the timeline for a full restoration is not yet known.
+
+The Company’s investigation of the cybersecurity incident is ongoing, and the full scope, nature and impacts, including operational and financial impacts, of the incident are not yet known. Accordingly, the Company has not yet determined whether the incident is reasonably likely to have a material impact on the Company.  ]]></description>
+        <pubDate>Wed, 26 Aug 2026 12:03:57 +0000</pubDate>
+        <guid><![CDATA[https://ecrime.ch/app/intel-news.php#b618c3210e934362ac261db280128c22]]></guid>
+        </item><item>
+        <title>Security Update - Baylor Genetics</title>
+        <link><![CDATA[https://www.baylorgenetics.com/securityupdate/]]></link>
+        <description><![CDATA[On or around June 15, 2026, Baylor Genetics identified suspicious activity within a limited portion of its information technology environment. We immediately secured affected systems and launched a comprehensive investigation with the assistance of leading independent cybersecurity and digital forensic specialists.
+
+The investigation determined that an unauthorized third party accessed certain portions of our network, and certain data stored on our network, between June 11 and June 17, 2026. Baylor Genetics then conducted a detailed and time-intensive review to determine what information may have been involved and which individuals were potentially affected. That review was completed on or about July 30, 2026.
+
+Following completion of this review, Baylor Genetics provided notice to potentially affected individuals in accordance with applicable legal requirements.  ]]></description>
+        <pubDate>Fri, 21 Aug 2026 07:25:11 +0000</pubDate>
+        <guid><![CDATA[https://ecrime.ch/app/intel-news.php#5d79099fcdf499f12b79770834c0164a]]></guid>
+        </item><item>
+        <title>Clop created custom web shell for Windchill data theft attacks</title>
+        <link><![CDATA[https://www.bleepingcomputer.com/news/security/clop-created-custom-web-shell-for-windchill-data-theft-attacks/]]></link>
+        <description><![CDATA[A custom Java web shell likely linked to the Clop ransomware gang was designed specifically for PTC Windchill and FlexPLM servers, with built-in features to decrypt credentials, enumerate file repositories, and steal files.
+
+Cybersecurity company ReliaQuest analyzed the web shell after it is believed to have been deployed in recent data theft attacks exploiting CVE-2026-12569, a critical remote code execution vulnerability affecting PTC Windchill.
+
+ReliaQuest says the implant is not a generic web shell repurposed for the attacks, but was instead built with detailed knowledge of Windchill's internal APIs, database schema, keystore, and file-vault structure.  ]]></description>
+        <pubDate>Wed, 19 Aug 2026 07:02:55 +0000</pubDate>
+        <guid><![CDATA[https://ecrime.ch/app/intel-news.php#1ef91c212e30e14bf125e9374262401f]]></guid>
+        </item></channel></rss>

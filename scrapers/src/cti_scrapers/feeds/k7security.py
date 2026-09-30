@@ -23,6 +23,6 @@ class K7security(XPathScraper):
         legacy_label="NEW ARTICLE FROM K7 SECURITY",
         legacy_script="k7securityThreat",
     )
-    url = 'https://www.k7computing.com/in/blog'
-    title_xpath = '/html/body/div[3]/div[3]/div[1]/div[3]/div/div/div[1]/div[1]/a[{i}]/div[1]/h2'
-    link_xpath = '/html/body/div[3]/div[3]/div[1]/div[3]/div/div/div[1]/div[1]/a[{i}]'
+    url = "https://www.k7computing.com/in/blog"
+    title_xpath = "/html/body/div[3]/div[3]/div[1]/div[3]/div/div/div[1]/div[1]/a[{i}]/div[1]/h2"
+    link_xpath = "/html/body/div[3]/div[3]/div[1]/div[3]/div/div/div[1]/div[1]/a[{i}]"

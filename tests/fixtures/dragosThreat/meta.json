@@ -1,0 +1,15 @@
+{
+  "scraper": "dragosThreat",
+  "legacy_script": "dragosThreat",
+  "legacy_labels": [],
+  "source_urls": [
+    "https://www.dragos.com/blog/?_block_blog_posts_topics=compliance%2Cransomware%2Cresearch%2Cthreats%2Cyear-in-review"
+  ],
+  "http_status": {
+    "https://www.dragos.com/blog/?_block_blog_posts_topics=compliance%2Cransomware%2Cresearch%2Cthreats%2Cyear-in-review": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

@@ -1,0 +1,1816 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Cyber Triage</title>
+	<atom:link href="https://www.cybertriage.com/feed/" rel="self" type="application/rss+xml" />
+	<link>https://www.cybertriage.com/</link>
+	<description>Digital Forensics Specialized For Rapid Incident Response</description>
+	<lastBuildDate>Wed, 16 Sep 2026 02:30:07 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=7.1</generator>
+	<item>
+		<title>AI in DFIR 101: Why AI isn’t Good for DFIR Collections</title>
+		<link>https://www.cybertriage.com/ai/ai-in-dfir-101-why-ai-isnt-good-for-dfir-collections/</link>
+		
+		<dc:creator><![CDATA[Brian Carrier]]></dc:creator>
+		<pubDate>Thu, 20 Aug 2026 15:18:42 +0000</pubDate>
+				<category><![CDATA[AI]]></category>
+		<category><![CDATA[Blog]]></category>
+		<guid isPermaLink="false">https://www.cybertriage.com/?p=30150</guid>
+
+					<description><![CDATA[<p>AI is useful in investigations, but the collection phase is...</p>
+<p>The post <a href="https://www.cybertriage.com/ai/ai-in-dfir-101-why-ai-isnt-good-for-dfir-collections/">AI in DFIR 101: Why AI isn’t Good for DFIR Collections</a> appeared first on <a href="https://www.cybertriage.com">Cyber Triage</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<p><span style="font-weight: 300;">AI is useful in investigations, but the collection phase is not one of those times. During collection, you may have 1 shot at getting the data you need. You need determinism, which AI doesn’t provide. But, we’ll talk about how AI can be useful when you are desperate and out of options. </span></p>
+<h2><strong>The Collection Phase</strong></h2>
+<p><span style="font-weight: 300;">The collection phase happens early in an investigation when you copy data that could be relevant to your investigation. </span></p>
+<p><strong>Examples:</strong></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Retrieving telemetry or logs from an API.</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Copying registry hives, event logs, and executables from a host.</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Making a full disk or memory image of a host or VM.</span></li>
+</ul>
+<p><span style="font-weight: 300;">Collection happens after the planning phase, which is when you identify what you want to collect.</span></p>
+<p><img fetchpriority="high" decoding="async" class="size-medium wp-image-30152 aligncenter" src="https://www.cybertriage.com/wp-content/uploads/2026/08/20260820-collect-800x246.png" alt="" width="800" height="246" srcset="https://www.cybertriage.com/wp-content/uploads/2026/08/20260820-collect-800x246.png 800w, https://www.cybertriage.com/wp-content/uploads/2026/08/20260820-collect-768x237.png 768w, https://www.cybertriage.com/wp-content/uploads/2026/08/20260820-collect.png 828w" sizes="(max-width: 800px) 100vw, 800px" /></p>
+<p><span style="font-weight: 300;">Your goal is to access the data and get a copy before it goes away. In some situations, you can go back and get more. </span></p>
+<p><span style="font-weight: 300;">In others, you may really have 1 chance.</span></p>
+<h2><strong>Why AI Isn’t Needed for Collection</strong></h2>
+<p><span style="font-weight: 300;">A key part of collecting is reliability. You want to know that if you need a file, you will get it. And you want to avoid having to tell the client you missed some files. That’s why people often used tools like KAPE, UAC, and the <a href="https://www.cybertriage.com/cyber-triage-dfir-collector/">Cyber Triage Collector.</a> </span></p>
+<p><span style="font-weight: 300;">Collection requires determinism, and asking AI to collect data doesn’t give you that. It’s going to make you a disposable script you need to spend time testing and validating. Because every host is different, testing is time-consuming to ensure it works in all scenarios. </span></p>
+<p><span style="font-weight: 300;">It’s also impractical to rely on an LLM when you are on an isolated host. If your collection depends on AI access, then your collection tool needs to embed an LLM or it needs Internet access. If you embed an LLM, that will then depend on what GPU resources the host has.</span></p>
+<p><span style="font-weight: 300;">The basic takeaway is that collection doesn’t need creativity, and it’s most time-efficient for you to rely on validated, deterministic tools. </span></p>
+<p><span style="font-weight: 300;">That being said, your tools can be smart and go beyond basic file copying. The </span><a href="https://www.cybertriage.com/cyber-triage-dfir-collector/"><span style="font-weight: 300;">Cyber Triage Collector</span></a><span style="font-weight: 300;"> is </span><a href="https://www.cybertriage.com/blog/adaptive-vs-static-file-collections-for-dfir/"><span style="font-weight: 300;">adaptive</span></a><span style="font-weight: 300;"> and parses files as it collects them, but it does so using deterministic methods you can test ahead of time. </span></p>
+<h2><strong>New APIs: When AI is Useful</strong></h2>
+<p><span style="font-weight: 300;">Sometimes there aren’t deterministic tools, though, and that’s where GenAI becomes interesting. For example, if you need to access logs from a cloud provider’s API and no tools exist for it. </span></p>
+<p><span style="font-weight: 300;">You can ask GenAI to write you a deterministic script that you can test ahead of time. Then use it in your investigation. </span></p>
+<p><span style="font-weight: 300;">This obviously works best if the API is documented. GenAI may be able to help you reverse-engineer the API and bypass controls, but make sure you are allowed to do that! </span></p>
+<h2><strong>What If You Don’t Know What To Collect</strong></h2>
+<p><span style="font-weight: 300;">I’m sure some of you are saying, “But I don’t always know what to collect, and I think AI can help me with that.” If so, you’re right, but to be a bit pedantic, that’s the planning phase. Planning is where you map your investigative questions (or goals) to what data you should collect. </span></p>
+<p><span style="font-weight: 300;">We talked about that in our </span><a href="https://www.cybertriage.com/blog/ai-in-dfir-101-why-you-should-use-ai-for-planning/"><span style="font-weight: 300;">last post</span></a><span style="font-weight: 300;">. AI is useful there. </span></p>
+<h2><strong>Applying our Framework</strong></h2>
+<p><span style="font-weight: 300;">We’ve been using a </span><a href="https://www.cybertriage.com/blog/dfirai-making-tool-decisions-in-a-genai-world/"><span style="font-weight: 300;">framework</span></a><span style="font-weight: 300;"> for the past few posts to evaluate the effectiveness of GenAI vs deterministic tools. Let&#8217;s go through those to support the conclusions we came up with above.</span></p>
+<p><span style="font-weight: 300;">The more green boxes a column has, the better the solution. </span></p>
+<h3><span style="font-weight: 300;">Device and Data Are Supported</span></h3>
+<p><span style="font-weight: 300;">Let&#8217;s first look at when there are deterministic tools that collect what you need. </span></p>
+<table class="table-4 include-vertical-borders">
+<tbody>
+<tr>
+<th width="16%"></th>
+<th width="28%"><strong>Validated, Deterministic Tool</strong></th>
+<th width="28%"><strong>Non-Validated, Deterministic Tool</strong></th>
+<th width="28%"><strong>Direct GenAI Output</strong></th>
+</tr>
+<tr>
+<td style="background-color: #ffffff !important;"><span style="font-weight: 300;">Feasibility</span></td>
+<td style="background-color: rgba(41,165,154,0.5) !important;">Yes</td>
+<td style="background-color: rgba(41,165,154,0.5) !important;">Yes</td>
+<td style="background-color: #ffffff !important;"><span style="font-weight: 300;">Sometimes. It can make you a script. </span></td>
+</tr>
+<tr>
+<td style="background-color: #ffffff !important;"><span style="font-weight: 300;">Time: Prepare</span></td>
+<td style="background-color: rgba(41,165,154,0.5) !important;">Low</td>
+<td style="background-color: rgba(41,165,154,0.5) !important;">Low</td>
+<td style="background-color: rgba(41,165,154,0.5) !important;">Low</td>
+</tr>
+<tr>
+<td style="background-color: #ffffff !important;"><span style="font-weight: 300;">Time: Perform</span></td>
+<td style="background-color: #ffffff !important;"><span style="font-weight: 300;">Avg</span></td>
+<td style="background-color: #ffffff !important;"><span style="font-weight: 300;">Avg</span></td>
+<td style="background-color: #ffffff !important;"><span style="font-weight: 300;">Avg</span></td>
+</tr>
+<tr>
+<td style="background-color: #ffffff !important;"><span style="font-weight: 300;">Time: Verify</span></td>
+<td style="background-color: rgba(41,165,154,0.5) !important;">Low</td>
+<td style="background-color: #ffffff !important;"><span style="font-weight: 300;">Med</span></td>
+<td style="background-color: rgba(235,10,42,0.5) !important;">High</td>
+</tr>
+<tr>
+<td style="background-color: #ffffff !important;"><span style="font-weight: 300;">Cost</span></td>
+<td style="background-color: #ffffff !important;"><span style="font-weight: 300;">Free/License</span></td>
+<td style="background-color: #ffffff !important;"><span style="font-weight: 300;">Free/License</span></td>
+<td style="background-color: #ffffff !important;"><span style="font-weight: 300;">Tokens, low</span></td>
+</tr>
+<tr>
+<td style="background-color: #ffffff !important;"><span style="font-weight: 300;">Creativity</span></td>
+<td style="background-color: #ffffff !important;"><span style="font-weight: 300;">Not Needed</span></td>
+<td style="background-color: #ffffff !important;"><span style="font-weight: 300;">Not Needed</span></td>
+<td style="background-color: #ffffff !important;"><span style="font-weight: 300;">Not Needed</span></td>
+</tr>
+<tr>
+<td style="background-color: #ffffff !important;"><span style="font-weight: 300;">Defensibility</span></td>
+<td style="background-color: rgba(41,165,154,0.5) !important;">High</td>
+<td style="background-color: #ffffff !important;"><span style="font-weight: 300;">Med</span></td>
+<td style="background-color: rgba(235,10,42,0.5) !important;">Low</td>
+</tr>
+</tbody>
+</table>
+<p><span style="font-weight: 300;">Validated, deterministic tools are the clear winner when they exist. They have the lowest verification time and highest defensibility. </span></p>
+<h3><span style="font-weight: 300;">Unsupported Devices or Services</span></h3>
+<p><span style="font-weight: 300;">If there are no existing deterministic tools, then AI can help to make you one.</span></p>
+<table class="table-4 include-vertical-borders">
+<tbody>
+<tr>
+<th width="16%"></th>
+<th width="28%"><strong>Validated, Deterministic Tool</strong></th>
+<th width="28%"><strong>Non-Validated, Deterministic Tool</strong></th>
+<th width="28%"><strong>Direct GenAI Output</strong></th>
+</tr>
+<tr>
+<td style="background-color: #ffffff !important;"><span style="font-weight: 300;">Feasibility</span></td>
+<td style="background-color: rgba(235,10,42,0.5) !important;">No. None Exists</td>
+<td style="background-color: rgba(235,10,42,0.5) !important;">No. None Exists</td>
+<td style="background-color: #ffffff !important;"><span style="font-weight: 300;">Maybe if it can reverse engineer it or find docs. </span></td>
+</tr>
+<tr>
+<td style="background-color: #ffffff !important;"><span style="font-weight: 300;">Time: Prepare</span></td>
+<td style="background-color: rgba(235,10,42,0.5) !important;">N/A</td>
+<td style="background-color: rgba(235,10,42,0.5) !important;">N/A</td>
+<td style="background-color: rgba(41,165,154,0.5) !important;">Low</td>
+</tr>
+<tr>
+<td style="background-color: #ffffff !important;"><span style="font-weight: 300;">Time: Perform</span></td>
+<td style="background-color: rgba(235,10,42,0.5) !important;">N/A</td>
+<td style="background-color: rgba(235,10,42,0.5) !important;">N/A</td>
+<td style="background-color: rgba(41,165,154,0.5) !important;">Avg</td>
+</tr>
+<tr>
+<td style="background-color: #ffffff !important;"><span style="font-weight: 300;">Time: Verify</span></td>
+<td style="background-color: rgba(235,10,42,0.5) !important;">N/A</td>
+<td style="background-color: rgba(235,10,42,0.5) !important;">N/A</td>
+<td style="background-color: rgba(235,10,42,0.5) !important;">High</td>
+</tr>
+<tr>
+<td style="background-color: #ffffff !important;"><span style="font-weight: 300;">Cost</span></td>
+<td style="background-color: rgba(235,10,42,0.5) !important;">N/A</td>
+<td style="background-color: rgba(235,10,42,0.5) !important;">N/A</td>
+<td style="background-color: #ffffff !important;"><span style="font-weight: 300;">Tokens, low</span></td>
+</tr>
+<tr>
+<td style="background-color: #ffffff !important;"><span style="font-weight: 300;">Creativity</span></td>
+<td style="background-color: rgba(235,10,42,0.5) !important;">N/A</td>
+<td style="background-color: rgba(235,10,42,0.5) !important;">N/A</td>
+<td style="background-color: rgba(41,165,154,0.5) !important;">High</td>
+</tr>
+<tr>
+<td style="background-color: #ffffff !important;"><span style="font-weight: 300;">Defensibility</span></td>
+<td style="background-color: rgba(235,10,42,0.5) !important;">N/A</td>
+<td style="background-color: rgba(235,10,42,0.5) !important;">N/A</td>
+<td style="background-color: #ffffff !important;"><span style="font-weight: 300;">Avg</span></td>
+</tr>
+</tbody>
+</table>
+<p><span style="font-weight: 300;">Basic takeaway is that GenAI may be able to write a script for you if you have credentials to an API that no one else has written a script for. </span></p>
+<h2><strong>Validated, Deterministic First. Then AI. </strong></h2>
+<p><span style="font-weight: 300;">As we’ve seen in this series so far and will continue to see, you’re better off relying on validated, deterministic tools if they meet your requirements. GenAI can write you a program, but you’re going to need to spend time validating it. </span></p>
+<p><span style="font-weight: 300;">If you are looking for a deterministic and validated collection tool that goes beyond a static set of rules, then check out the </span><a href="https://www.cybertriage.com/cyber-triage-dfir-collector/"><span style="font-weight: 300;">Cyber Triage Collector</span></a><span style="font-weight: 300;">. It adapts to what is on the host and collects as many relevant files as possible, even if you don’t know where everything will be ahead of time. That data can then feed into Cyber Triage for you to get analyzed results of Bad and Suspicious files. </span></p>
+<p><span style="font-weight: 300;">You can get it within the </span><a href="https://www.cybertriage.com/download-eval/"><span style="font-weight: 300;">7-day evaluation</span></a><span style="font-weight: 300;">.</span></p>
+<p>The post <a href="https://www.cybertriage.com/ai/ai-in-dfir-101-why-ai-isnt-good-for-dfir-collections/">AI in DFIR 101: Why AI isn’t Good for DFIR Collections</a> appeared first on <a href="https://www.cybertriage.com">Cyber Triage</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>SOC Forensics: 3 DFIR Gaps All EDRs Have</title>
+		<link>https://www.cybertriage.com/blog/soc-forensics-3-dfir-gaps-all-edrs-have/</link>
+		
+		<dc:creator><![CDATA[Alex Detmering]]></dc:creator>
+		<pubDate>Thu, 13 Aug 2026 21:22:23 +0000</pubDate>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[Incident Response]]></category>
+		<guid isPermaLink="false">https://www.cybertriage.com/?p=30067</guid>
+
+					<description><![CDATA[<p>EDRs are great. They are fast, detect most attacks, and...</p>
+<p>The post <a href="https://www.cybertriage.com/blog/soc-forensics-3-dfir-gaps-all-edrs-have/">SOC Forensics: 3 DFIR Gaps All EDRs Have</a> appeared first on <a href="https://www.cybertriage.com">Cyber Triage</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<p>EDRs are great. They are fast, detect most attacks, and collect vast historical data. If you have a SOC in 2026, there’s no way you don’t have one.</p>
+<p>But necessary <strong>does not</strong> mean sufficient.</p>
+<p>After an alert is validated, the investigation process begins: A process that requires evidence and analytics EDRs were never built to provide. This article will outline <strong>3 important gaps</strong>, and suggest how your team can close them.</p>
+<p>Let’s get started.</p>
+<p><a href="##1 Attackers Know How to Evade EDRs">#1 Attackers Know How to Evade EDRs</a><br />
+<a href="##2 EDR Telemetry =/= DFIR Collection">#2 EDR Telemetry =/= DFIR Collection</a><br />
+<a href="##3 EDRs Aren’t Tuned for DFIR">#3 EDRs Aren’t Tuned for DFIR</a><br />
+<a href="#How to Close EDR Gaps with Cyber Triage">How to Close EDR Gaps with Cyber Triage</a></p>
+<h2 id="#1 Attackers Know How to Evade EDRs">#1 Attackers Know How to Evade EDRs</h2>
+<p>In November of 2024, cybersecurity expert Mario Lobo <a href="https://lumu.io/blog/cisa-reveals-ransomware-gangs-bypassing-edrs/">analyzed</a> research by <a href="https://www.cisa.gov/">CISA</a> on 12 major ransomware gangs. As part of this analysis, Lobo found that <strong>every gang</strong> knew how to evade EDRs, and some knew as many as 9 techniques.</p>
+<table class="table-3 include-vertical-borders">
+<tbody>
+<tr>
+<th style="width: 16%;"><strong>Ransomware Group</strong></th>
+<th style="width: 6.4%;"><strong>LOtL &#8211; PowerShell</strong></th>
+<th style="width: 6.4%;"><strong>LOtL &#8211; BYOVD</strong></th>
+<th style="width: 6.4%;"><strong>Own Access Point</strong></th>
+<th style="width: 6.4%;"><strong>Power Tool</strong></th>
+<th style="width: 6.4%;"><strong>WMI</strong></th>
+<th style="width: 6.4%;"><strong>Process Hacker</strong></th>
+<th style="width: 6.4%;"><strong>GMER Anti-Rootkit</strong></th>
+<th style="width: 6.4%;"><strong>Backstab Tool</strong></th>
+<th style="width: 6.4%;"><strong>EDRKillShifter</strong></th>
+<th style="width: 6.4%;"><strong>Universal Virus Sniffer</strong></th>
+<th style="width: 6.4%;"><strong>IOBit Hacking</strong></th>
+<th style="width: 6.4%;"><strong>PCHunter</strong></th>
+<th style="width: 6.4%;"><strong>TDSS Killer</strong></th>
+</tr>
+<tr>
+<td class="blue-col">RansomHub</td>
+<td>✓</td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td class="blue-col">Blacksuit (Royal)</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td class="blue-col">Black Basta</td>
+<td>✓</td>
+<td></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td class="blue-col">Akira</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td class="blue-col">Phobos</td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td>✓</td>
+<td></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td class="blue-col">ALPHV Black</td>
+<td>✓</td>
+<td></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td class="blue-col">Play</td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✓</td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✓</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td class="blue-col">Rhysida</td>
+<td>✓</td>
+<td></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td class="blue-col">AvosLocker</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td class="blue-col">Snatch</td>
+<td>✓</td>
+<td></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td class="blue-col">LockBit 3.0</td>
+<td></td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td class="blue-col">BianLian</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p class="caption" style="text-align: center;">Reproduced from Lobo’s <a href="https://lumu.io/blog/cisa-reveals-ransomware-gangs-bypassing-edrs/">analysis table</a>.</p>
+<p class="text-slate">Lobo’s take on this data was, essentially, that <strong>EDR evasion is inevitable:</strong> “While [EDRs] are important, we have to assume that ransomware gangs will be able to bypass defenses, no matter how they evolve, and plan for catching them on the other side.”</p>
+<p>Is EDR evasion inevitable? Possibly. But if this sample is at all representative, it’s definitely widespread. And, since this analysis was done almost 2 years ago, it’s plausibly even more widespread now.</p>
+<p>SOC and DFIR teams should assume EDRs routinely miss evidence from attacks. The alert may have fired, but what happened in the days (<a href="https://cloud.google.com/blog/topics/threat-intelligence/m-trends-2026">or weeks</a>) before?</p>
+<p>You can get that evidence. But you need a tool attackers aren’t trained to evade.</p>
+<h2 id="#2 EDR Telemetry =/= DFIR Collection">#2 EDR Telemetry =/= DFIR Collection</h2>
+<p>EDRs collect a huge amount of data, and that data is often very useful during investigations. But collecting a lot of data and collecting comprehensive data <strong>are not</strong> the same thing.</p>
+<p>EDRs watch execution. Its sources are sensors that look at process events and logs and record some of the things that happened. You won’t get full file content or every file activity. You can’t see directory listings or view the registry. You just get a series of events.</p>
+<p>DFIR collections are a snapshot of what was on the system. For a single execution, the EDR returns a single event. DFIR artifacts give:</p>
+<ul>
+<li><strong>Prefetch:</strong> Last 8 run times, run count, files touched</li>
+<li><strong>Amcache:</strong> First-execution time, SHA-1, path even for absent binaries</li>
+<li><strong>SRUM:</strong> Bytes sent/received per process</li>
+<li><strong>$MFT/USN journal:</strong> Creation and change timestamps</li>
+</ul>
+<p>EDRs record that a process ran and may record what else it did. DFIR artifacts may give you more of a historical view of that process (past the EDR roll over) and will show you application-layer logs about what the process did.</p>
+<p>Both are useful for DFIR. But only the latter can stand alone for DFIR.</p>
+<h2 id="#3 EDRs Aren’t Tuned for DFIR">#3 EDRs Aren’t Tuned for DFIR</h2>
+<p>Investigation and detection operate under <strong>different paradigms</strong> of suspiciousness.</p>
+<p>To use a very simple analogy, if you walked through your house and you found your wallet on the floor (and you didn’t remember leaving it there), you’d likely pick it up and move on, assuming you just forgot. However, if your burglar alarm went off and then you made this discovery, you might come to a very different conclusion. When all is well, only obviously threats are threatening, but when you could be in danger, even the innocuous can become suspicious.</p>
+<p>EDRs operate under the first paradigm of suspiciousness. They are tuned, by design, to alert security teams when there is “known bad” activity. This is *not* a design flaw. If they set the bar any lower, they’d generate so much noise they’d be useless. (If anything, the issue teams have with EDRs is that the bar is <a href="https://www.reddit.com/r/cybersecurity/comments/1pxj7i9/what_is_the_false_positive_rate_in_your_soc/">already too low</a>).</p>
+<p>But DFIR uses the second paradigm, because DFIR only occurs after the alarm has gone off: during an investigation.</p>
+<p>EDRs are built for detection. But DFIR requires a tool built for investigation.</p>
+<h2 id="How to Close EDR Gaps with Cyber Triage">How to Close EDR Gaps with Cyber Triage</h2>
+<p><strong>Cyber Triage</strong> is an AI-powered investigation platform that is designed for SOC and DFIR teams doing investigations.</p>
+<p><strong>Unlike EDRs:</strong></p>
+<ul>
+<li><strong>Cyber Triage collections can’t be evaded:</strong> <a href="https://www.cybertriage.com/blog/how-edr-evasion-works-attacker-tactics/">Evasion tactics</a> are designed to circumvent EDRs. Not DFIR platforms. Cyber Triage collects and detects attacker activity EDRs miss.</li>
+<li><strong>Cyber Triage comes with a DFIR collector:</strong> EDRs don’t collect the comprehensive evidence DFIR needs. Cyber Triage has an <a href="https://www.cybertriage.com/cyber-triage-dfir-collector/">Adaptive Collector</a> that gives you the depth only artifacts provide.</li>
+<li><strong>Cyber Triage is tuned for DFIR:</strong> EDRs don’t highlight the suspicious activity essential to investigations. Cyber Triage’s <a href="https://www.cybertriage.com/features/prioritize-with-cyber-triage/">automated scoring</a> is built to highlight what’s suspicious.</li>
+</ul>
+<p>But, Cyber Triage is also designed to <strong>work with EDRs</strong>. EDRs are excellent detection platforms, and our investigation platform integrates with them to cover the entire investigation lifecycle: alert to report.</p>
+<p>If you’d like to <strong>test Cyber Triage</strong> in your environment, <a href="https://www.cybertriage.com/download-eval/">try it today</a> for free.</p>
+<p>The post <a href="https://www.cybertriage.com/blog/soc-forensics-3-dfir-gaps-all-edrs-have/">SOC Forensics: 3 DFIR Gaps All EDRs Have</a> appeared first on <a href="https://www.cybertriage.com">Cyber Triage</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>AI in DFIR 101: Why You Should Use AI for Planning</title>
+		<link>https://www.cybertriage.com/blog/ai-in-dfir-101-why-you-should-use-ai-for-planning/</link>
+		
+		<dc:creator><![CDATA[Brian Carrier]]></dc:creator>
+		<pubDate>Thu, 13 Aug 2026 17:32:56 +0000</pubDate>
+				<category><![CDATA[AI]]></category>
+		<category><![CDATA[Blog]]></category>
+		<guid isPermaLink="false">https://www.cybertriage.com/?p=30053</guid>
+
+					<description><![CDATA[<p>The planning phase of an investigation is where GenAI can...</p>
+<p>The post <a href="https://www.cybertriage.com/blog/ai-in-dfir-101-why-you-should-use-ai-for-planning/">AI in DFIR 101: Why You Should Use AI for Planning</a> appeared first on <a href="https://www.cybertriage.com">Cyber Triage</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<p><span style="font-weight: 300;">The planning phase of an investigation is where GenAI can provide a lot of value. Whether it&#8217;s writing a SOC playbook, assigning tasks during an incident, or writing a search warrant, a plan needs knowledge and creativity to know where to find evidence. GenAI can supplement your knowledge to make sure you find the evidence.</span></p>
+<p><span style="font-weight: 300;">This post walks through the 3 phases of planning and shows where a deterministic playbook is enough, and where AI provides value.</span></p>
+<h2><strong>The Planning Phase</strong></h2>
+<p><span style="font-weight: 300;">Investigations start with a set of questions that need to be answered, and the planning phase is where you turn those questions into a set of data to collect (endpoints, logs, etc.) and ideas about how to analyze the data. As an investigation progresses, you’ll learn new things and likely return to mini-planning sessions. </span></p>
+<p><span style="font-weight: 300;">For example, a malware investigation may ask “Was data exfiltrated?” “Was persistence installed?” “Were credentials stolen?” To answer those, the planning process would identify <strong>data sources</strong> such as:</span></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><b>Exfiltration</b><span style="font-weight: 300;">: Process history, browser history, firewall logs, etc. </span></li>
+<li style="font-weight: 300;" aria-level="1"><b>Persistence</b><span style="font-weight: 300;">: Triggered tasks</span></li>
+<li style="font-weight: 300;" aria-level="1"><b>Credentials</b><span style="font-weight: 300;">: Process history, authentication logs, etc. </span></li>
+</ul>
+<p><span style="font-weight: 300;">Planning ensures that you access and consider all possible data sources for evidence. </span></p>
+<h2><strong>Playbooks: Mapping Questions to Data Ahead of Time</strong></h2>
+<p><span style="font-weight: 300;">Because incidents have a lot of time pressure and you want consistency, many organizations will “pre-plan” by writing playbooks for common questions and scenarios. Playbooks map out what data to retrieve and what to look for.</span></p>
+<p><strong>Examples:</strong></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">SOCs have playbooks for common alerts and scenarios. </span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">DFIR teams have playbooks for common incident types, such as ransomware. </span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Law enforcement have plans that map out what types of devices to look for during a search based on the type of crime being investigated. </span></li>
+</ul>
+<p><span style="font-weight: 300;">When the investigation starts, you need to either find an existing playbook or make an equivalent one for this investigation. </span></p>
+<p><span style="font-weight: 300;">One problem with playbooks though is that they either are very specific and can get out of date. Or they are too broad, requiring customization at use time.</span></p>
+<h2><span style="font-weight: 300;"><strong>3 Phases in the Planning Process</strong> </span></h2>
+<p><span style="font-weight: 300;">You can think of the planning process as three phases:</span></p>
+<ol>
+<li style="font-weight: 300;" aria-level="1"><b>Playbook search</b><span style="font-weight: 300;">: Given the questions, does a playbook already exist that gives me a basic plan?</span></li>
+<li style="font-weight: 300;" aria-level="1"><b>Playbook creation</b><span style="font-weight: 300;">: If not, make a basic plan based on the questions. </span></li>
+<li style="font-weight: 300;" aria-level="1"><b>Playbook customization</b><span style="font-weight: 300;">: Make the plan specific by specifying known IPs and the current environment. </span></li>
+</ol>
+<p><span style="font-weight: 300;">For example, a SOC analyst may find a playbook in their SOAR, and specific hostnames get added to the template. Or, if a playbook doesn’t exist, then a plan will be made from scratch. </span></p>
+<h2><strong>Tool Options for Planning</strong></h2>
+<p><span style="font-weight: 300;">As we covered in our <a href="https://www.cybertriage.com/blog/dfirai-making-tool-decisions-in-a-genai-world/">previous post</a>, investigators have 4 basic options for each kind of task, such as the 3 above:</span></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><b>Manual</b><span style="font-weight: 300;">: The investigator&#8217;s own knowledge and effort.</span></li>
+<li style="font-weight: 300;" aria-level="1"><b>Validated, deterministic tool</b><span style="font-weight: 300;">: Established, community-tested tooling.</span></li>
+<li style="font-weight: 300;" aria-level="1"><b>Non-validated, deterministic tool</b><span style="font-weight: 300;">: Existing tool with little track record.</span></li>
+<li style="font-weight: 300;" aria-level="1"><b>Direct GenAI output</b><span style="font-weight: 300;">: GenAI does the task and decides how.</span></li>
+</ul>
+<p><span style="font-weight: 300;">Let&#8217;s look at the 3 steps and see which approaches make the most sense. </span></p>
+<h3><span style="font-weight: 300;">Playbook Search Phase</span></h3>
+<p><span style="font-weight: 300;">This phase would find a playbook based on the investigation questions. </span></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Deterministic tools win when keywords from the questions match the playbook text. For example, using OpenSearch or another similar search in your SOAR.</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">AI wins when the keywords don’t exactly match. For example, pointing AI at your folder of playbook files and asking it to find a relevant one.</span></li>
+</ul>
+<table class="table-4 include-vertical-borders">
+<tbody>
+<tr>
+<th width="16%"></th>
+<th width="21%">Manual</th>
+<th width="21%">Validated, Deterministic Tool</th>
+<th width="21%">Non-Validated, Deterministic Tool</th>
+<th width="21%">Direct GenAI Output</th>
+</tr>
+<tr>
+<td>Feasibility</td>
+<td style="background-color:rgba(41,165,154,0.5) !important;">Yes. Investigators can review a set of them.</td>
+<td style="background-color:rgba(41,165,154,0.5) !important;">Yes. If the right keywords are used.</td>
+<td style="background-color:rgba(41,165,154,0.5) !important;">Yes. If the right keywords are used.</td>
+<td style="background-color:rgba(41,165,154,0.5) !important;">Yes and could find playbooks that have different keywords.</td>
+</tr>
+<tr>
+<td>Time: Prepare</td>
+<td style="background-color:rgba(41,165,154,0.5) !important;">Low</td>
+<td style="background-color:rgba(41,165,154,0.5) !important;">Low</td>
+<td style="background-color:rgba(41,165,154,0.5) !important;">Low</td>
+<td style="background-color:rgba(41,165,154,0.5) !important;">Low</td>
+</tr>
+<tr>
+<td>Time: Perform</td>
+<td>Med. Depends on how many playbooks there are.</td>
+<td style="background-color:rgba(41,165,154,0.5) !important;">Low</td>
+<td style="background-color:rgba(41,165,154,0.5) !important;">Low</td>
+<td style="background-color:rgba(41,165,154,0.5) !important;">Low</td>
+</tr>
+<tr>
+<td>Time: Verify</td>
+<td style="background-color:rgba(41,165,154,0.5) !important;">Low</td>
+<td style="background-color:rgba(41,165,154,0.5) !important;">Low</td>
+<td>Low-Med</td>
+<td>Med. Confirm the mapping it found is actually relevant</td>
+</tr>
+<tr>
+<td>Cost</td>
+<td>Labor</td>
+<td>License</td>
+<td>License</td>
+<td>Tokens, low</td>
+</tr>
+<tr>
+<td>Creativity</td>
+<td style="background-color:rgba(41,165,154,0.5) !important;">Some. If the question uses different keywords than the playbook.</td>
+<td style="background-color:rgba(235,10,42,0.5) !important;">None</td>
+<td style="background-color:rgba(235,10,42,0.5) !important;">None</td>
+<td style="background-color:rgba(41,165,154,0.5) !important;">Some. If the question uses different keywords than the playbook.</td>
+</tr>
+<tr>
+<td>Defensibility</td>
+<td>Low-Med. Depends on how many you have.</td>
+<td style="background-color:rgba(41,165,154,0.5) !important;">High</td>
+<td>Med</td>
+<td>Med</td>
+</tr>
+</tbody>
+</table>
+<h3><span style="font-weight: 300;">Playbook Creation Phase</span></h3>
+<p><span style="font-weight: 300;">This phase maps a question to its data sources, either during playbook creation or when the investigation starts. </span></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Deterministic tools don’t exist for this phase because they, by definition, would need something to have provided them the mapping ahead of time</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">AI and humans together can be a good fit here because AI brings in vast knowledge about how to approach the problem. </span></li>
+</ul>
+<table class="table-4 include-vertical-borders">
+<tbody>
+<tr>
+<th width="16%"></th>
+<th width="21%">Manual</th>
+<th width="21%">Validated, Deterministic Tool</th>
+<th width="21%">Non-Validated, Deterministic Tool</th>
+<th width="21%">Direct GenAI Output</th>
+</tr>
+<tr>
+<td>Feasibility</td>
+<td style="background-color:rgba(41,165,154,0.5) !important;">Yes, bounded by experience</td>
+<td style="background-color:rgba(235,10,42,0.5) !important;">None</td>
+<td style="background-color:rgba(235,10,42,0.5) !important;">None</td>
+<td style="background-color:rgba(41,165,154,0.5) !important;">Yes</td>
+</tr>
+<tr>
+<td>Time: Prepare</td>
+<td style="background-color:rgba(235,10,42,0.5) !important;">High</td>
+<td style="background-color:rgba(235,10,42,0.5) !important;">N/A</td>
+<td style="background-color:rgba(235,10,42,0.5) !important;">N/A</td>
+<td style="background-color:rgba(41,165,154,0.5) !important;">Low</td>
+</tr>
+<tr>
+<td>Time: Perform</td>
+<td style="background-color:rgba(235,10,42,0.5) !important;">High</td>
+<td style="background-color:rgba(235,10,42,0.5) !important;">N/A</td>
+<td style="background-color:rgba(235,10,42,0.5) !important;">N/A</td>
+<td style="background-color:rgba(41,165,154,0.5) !important;">Low</td>
+</tr>
+<tr>
+<td>Time: Verify</td>
+<td style="background-color:rgba(41,165,154,0.5) !important;">Low</td>
+<td style="background-color:rgba(235,10,42,0.5) !important;">N/A</td>
+<td style="background-color:rgba(235,10,42,0.5) !important;">N/A</td>
+<td>Med — review coverage/logic</td>
+</tr>
+<tr>
+<td>Cost</td>
+<td style="background-color:rgba(235,10,42,0.5) !important;">High (labor)</td>
+<td style="background-color:rgba(235,10,42,0.5) !important;">N/A</td>
+<td style="background-color:rgba(235,10,42,0.5) !important;">N/A</td>
+<td style="background-color:rgba(41,165,154,0.5) !important;">Tokens, low</td>
+</tr>
+<tr>
+<td>Creativity</td>
+<td>Depends on seniority</td>
+<td style="background-color:rgba(235,10,42,0.5) !important;">N/A</td>
+<td style="background-color:rgba(235,10,42,0.5) !important;">N/A</td>
+<td style="background-color:rgba(41,165,154,0.5) !important;">Potentially high</td>
+</tr>
+<tr>
+<td>Defensibility</td>
+<td>High if senior, weaker if junior</td>
+<td style="background-color:rgba(235,10,42,0.5) !important;">N/A</td>
+<td style="background-color:rgba(235,10,42,0.5) !important;">N/A</td>
+<td>Reasonable — a candidate list, not a conclusion</td>
+</tr>
+</tbody>
+</table>
+<h3><span style="font-weight: 300;">Customization Phase</span></h3>
+<p><span style="font-weight: 300;">This phase adapts the general playbook to this incident. It could be as simple as entering an IP address to investigate. Or it may involve identifying which EDR is being used in that part of the network, and that information may not be well documented. </span></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Deterministic wins if everything is clearly documented, configured, and mapped out. </span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">AI can be beneficial when deciding what systems are applicable in a given network. </span></li>
+</ul>
+<table class="table-4 include-vertical-borders">
+<tbody>
+<tr>
+<th width="16%"></th>
+<th width="21%">Manual</th>
+<th width="21%">Validated, Deterministic Tool</th>
+<th width="21%">Non-Validated, Deterministic Tool</th>
+<th width="21%">Direct GenAI Output</th>
+</tr>
+<tr>
+<td>Feasibility</td>
+<td style="background-color:rgba(41,165,154,0.5) !important;">Yes</td>
+<td style="background-color:rgba(41,165,154,0.5) !important;">Yes, for simple substitution</td>
+<td style="background-color:rgba(41,165,154,0.5) !important;">Yes, for simple substitution</td>
+<td style="background-color:rgba(41,165,154,0.5) !important;">Yes, for substitution and querying other systems if additional data is needed.</td>
+</tr>
+<tr>
+<td>Time: Prepare</td>
+<td style="background-color:rgba(41,165,154,0.5) !important;">Low</td>
+<td style="background-color:rgba(41,165,154,0.5) !important;">Low</td>
+<td style="background-color:rgba(41,165,154,0.5) !important;">Low</td>
+<td style="background-color:rgba(41,165,154,0.5) !important;">Low</td>
+</tr>
+<tr>
+<td>Time: Perform</td>
+<td>Med — checking relevance by hand</td>
+<td style="background-color:rgba(41,165,154,0.5) !important;">Low</td>
+<td style="background-color:rgba(41,165,154,0.5) !important;">Low</td>
+<td style="background-color:rgba(41,165,154,0.5) !important;">Low</td>
+</tr>
+<tr>
+<td>Time: Verify</td>
+<td style="background-color:rgba(41,165,154,0.5) !important;">Low</td>
+<td style="background-color:rgba(41,165,154,0.5) !important;">Low</td>
+<td>Low-Med</td>
+<td>Medium. Especially if the AI used other sources to fill in unknown details.</td>
+</tr>
+<tr>
+<td>Cost</td>
+<td>Labor</td>
+<td>License</td>
+<td>License</td>
+<td>Tokens, low</td>
+</tr>
+<tr>
+<td>Creativity</td>
+<td style="background-color:rgba(41,165,154,0.5) !important;">Some. They can reason about what to use and what is out of date.</td>
+<td style="background-color:rgba(235,10,42,0.5) !important;">None</td>
+<td style="background-color:rgba(235,10,42,0.5) !important;">None</td>
+<td style="background-color:rgba(41,165,154,0.5) !important;">Some. They can reason about what to use and what is out of date.</td>
+</tr>
+<tr>
+<td>Defensibility</td>
+<td style="background-color:rgba(41,165,154,0.5) !important;">High</td>
+<td style="background-color:rgba(41,165,154,0.5) !important;">High</td>
+<td>Med</td>
+<td>Med</td>
+</tr>
+</tbody>
+</table>
+<h2><strong>Conclusion</strong></h2>
+<p><span style="font-weight: 300;">AI has a clear advantage during the Playbook Creation process because there are no deterministic tools. During the other phases, deterministic tools can be effective if the right keywords are used and they are properly maintained. But, AI can be a great fallback to find non-exact match playbooks and to resolve information when not everything is documented. </span></p>
+<p><img decoding="async" class="size-full wp-image-30058 aligncenter" src="https://www.cybertriage.com/wp-content/uploads/2026/08/2026-08-planning-phases.png" alt="" width="585" height="462" /></p>
+<p><span style="font-weight: 300;">For organizations looking to use more AI, planning is an easy way to start with because it doesn’t need any of your sensitive data. You can create a folder with your playbooks and point your AI tools at it. Then ask AI to find the playbook for your questions.</span></p>
+<p><span style="font-weight: 300;">Our Cyber Triage tool uses deterministic approaches to planning. It focuses on data and analytics common to intrusion investigations, and those are automatically collected and analyzed for you to review. It has a built-in playbook. We’ll be expanding its support for using AI during planning in future releases, but you can try its automated collection and analysis with a <a href="https://www.cybertriage.com/get-cyber-triage-free-for-7-days/">7-day eval here</a>.</span></p>
+<p>The post <a href="https://www.cybertriage.com/blog/ai-in-dfir-101-why-you-should-use-ai-for-planning/">AI in DFIR 101: Why You Should Use AI for Planning</a> appeared first on <a href="https://www.cybertriage.com">Cyber Triage</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>DFIR + AI: Making Tool Decisions in a GenAI World</title>
+		<link>https://www.cybertriage.com/blog/dfirai-making-tool-decisions-in-a-genai-world/</link>
+		
+		<dc:creator><![CDATA[Brian Carrier]]></dc:creator>
+		<pubDate>Thu, 06 Aug 2026 14:59:50 +0000</pubDate>
+				<category><![CDATA[AI]]></category>
+		<category><![CDATA[Blog]]></category>
+		<guid isPermaLink="false">https://www.cybertriage.com/?p=29835</guid>
+
+					<description><![CDATA[<p>Build vs Buy. Deterministic vs Non-Deterministic. Validated vs Disposable. With...</p>
+<p>The post <a href="https://www.cybertriage.com/blog/dfirai-making-tool-decisions-in-a-genai-world/">DFIR + AI: Making Tool Decisions in a GenAI World</a> appeared first on <a href="https://www.cybertriage.com">Cyber Triage</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<p><strong>Build vs Buy. Deterministic vs Non-Deterministic. Validated vs Disposable. </strong></p>
+<p><span style="font-weight: 300;">With GenAI, such as Claude and ChatGPT, investigators now have more options about what tools they use during an investigation. Do they use the tools they&#8217;ve used for years, have GenAI write a disposable script, or reach for a new &#8220;AI-native&#8221; tool?</span></p>
+<p><span style="font-weight: 300;">Organizations should take a systematic approach to making these decisions because GenAI is powerful for some things and a waste of time for others. This post gives you a consistent way to evaluate that choice, task by task, rather than picking a side once and sticking with it.</span></p>
+<h2><strong>Changes Caused by GenAI</strong></h2>
+<p><span style="font-weight: 300;">Investigators have always had tool options, including manual vs automated and commercial vs open source. </span></p>
+<p><span style="font-weight: 300;">But GenAI has changed the options in <strong>4 ways:</strong></span></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><b>More open source:</b><span style="font-weight: 300;"> There are far more free, open source tools on GitHub that have been built completely by AI with unknown validation. Anyone can develop software now. </span></li>
+<li style="font-weight: 300;" aria-level="1"><b>Disposable tools</b><span style="font-weight: 300;">: GenAI will build a tool for you, and you are responsible for testing. It may get used only once, and it was not written to be maintained. </span></li>
+<li style="font-weight: 300;" aria-level="1"><b>AI-native tools</b><span style="font-weight: 300;">: There are new, commercial tools that are advertised as AI-forward and “AI Native.” What does that actually mean for your results? </span></li>
+<li style="font-weight: 300;" aria-level="1"><b>AI decision making:</b><span style="font-weight: 300;"> GenAI can decide for you how to solve a problem, which may include building a brand new tool or using an existing, unvalidated tool. That could go great or terrible.</span></li>
+</ul>
+<p><span style="font-weight: 300;">Investigators now have more decisions about how to approach investigations.</span></p>
+<h2><strong>Key Underlying GenAI Concepts</strong></h2>
+<p><span style="font-weight: 300;">Because everyone is adopting (or rejecting) AI at different levels, let&#8217;s cover some basic topics first that will help you understand how to pick tools. </span></p>
+<h3><span style="font-weight: 300;">GenAI Needs Text. Not Binary Files</span></h3>
+<p><span style="font-weight: 300;">GenAI doesn’t know what to do with most binary files. The dominant GenAI models focus mostly on text and a little on images and videos. </span></p>
+<p><span style="font-weight: 300;">They don’t have any built-in ability to process disk images, executables, or other binary files. They rely on external tools to convert the binary data to text. For example, it may download The Sleuth Kit to list and extract files from a disk image. Or, it could instead decide to download another GitHub project that you’ve never heard of and use that instead to parse NTFS.</span></p>
+<p><span style="font-weight: 300;">Some GenAI clients can reverse engineer binary files by making hex dumps of the files or running other static analysis tools to get text. From there, it could make a disposable parser that is intended for only one use. See the DFIR+AI challenge we hosted for an example where Claude<a href="https://github.com/SleuthKitLabs/2026_ai_challenge_submissions/tree/main/11"> reverse engineered a drone</a>.</span></p>
+<h3><span style="font-weight: 300;">GenAI Will Write Programs That Need to Be Validated</span></h3>
+<p><span style="font-weight: 300;">GenAI will happily make you a program to achieve a goal, such as parsing or analyzing a file. And it can be super gratifying because, within minutes, it will look like the task is near completion.</span></p>
+<p><span style="font-weight: 300;">But, then starts the tedious process of testing. You are now responsible for validating that your custom tool output is correct. </span></p>
+<p><span style="font-weight: 300;">For example, I asked Claude to add a disk imaging feature to our Cyber Triage Collector that would upload the E01 files to S3. Claude said it was complete within 30 minutes. But, we’ve since spent many days testing it and working out the bugs. We’ve delayed releasing the feature until we have enough time to fully test it. </span></p>
+<h3><span style="font-weight: 300;">GenAI Is Non-Deterministic</span></h3>
+<p><span style="font-weight: 300;">By design, GenAI will give you different answers each time. Sometimes they are stylistically different, such as the colors in a report. And sometimes they come to different conclusions, such as the meaning of data. </span></p>
+<p><span style="font-weight: 300;">You need to verify the output of GenAI each time because just because it was correct the day before, it doesn’t mean that it will be correct today. Compare that with deterministic parsers that will always give you the same answer when you give it the same data.</span></p>
+<h2><strong>Your Tool Options</strong></h2>
+<p><span style="font-weight: 300;">During your investigation, you’ll need tools to parse files, search data, and score artifacts. </span></p>
+<p><span style="font-weight: 300;">For each task, you now have <strong>4 basic options: </strong></span></p>
+<ol>
+<li><b>Manual</b><span style="font-weight: 300;">: Use minimal technology and rely mostly on the investigator’s knowledge and skills.</span>
+<ul>
+<li><span style="font-weight: 300;">Example: Manually parsing a file system in a hex editor or reviewing every entry in an event log.</span></li>
+</ul>
+</li>
+<li><b>Existing, validated, deterministic tool:</b><span style="font-weight: 300;"> Use the “traditional” investigation tools that have years of testing and are used by hundreds in the community. </span>
+<ul>
+<li><span style="font-weight: 300;">Example: File system parsing by The Sleuth Kit or Magnet. Event log scoring from Cyber Triage or Hayabusa. </span></li>
+</ul>
+</li>
+<li><b>Existing, non-validated, deterministic tool:</b><span style="font-weight: 300;"> Use an existing tool that you found on GitHub, a partner, or that GenAI previously created for you. It has little community use, but also wasn’t created just for this investigation. </span>
+<ul>
+<li><span style="font-weight: 300;">Example: You find a new repo on GitHub. </span></li>
+</ul>
+</li>
+<li><b>Non-deterministic reasoning from GenAI</b><span style="font-weight: 300;">: Use GenAI to do the task and let it decide how. It could write a custom script for you to run or download a validated, open-source tool.</span>
+<ul>
+<li><span style="font-weight: 300;">Example: You ask Claude about events and if they are suspicious. Using an agentic AI system. </span></li>
+</ul>
+</li>
+</ol>
+<p><span style="font-weight: 300;">You now have more “non-validated, deterministic tools” to choose from and the ability to get non-deterministic answers from GenAI. </span></p>
+<h2><strong>How to Decide When to Use AI</strong></h2>
+<p><span style="font-weight: 300;">As you consider the previous AI vs non-AI options, the <strong>5 things</strong> to think about are:</span></p>
+<ol>
+<li style="font-weight: 300;" aria-level="1"><b>Feasibility</b><span style="font-weight: 300;">: Can the method solve the task? Has someone already created a validated, deterministic tool, or is this task new? </span></li>
+<li style="font-weight: 300;" aria-level="1"><b>Time</b><span style="font-weight: 300;">: How much total time will be required between when you start thinking about the task and when it&#8217;s completed? This includes time to:</span>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><b>Prepare</b><span style="font-weight: 300;">: The time required to build and test a new tool, install an existing tool, and train to do it manually. </span></li>
+<li style="font-weight: 300;" aria-level="1"><b>Perform</b><span style="font-weight: 300;">: The time required to actually do the work and run the tool or do the manual work. </span></li>
+<li style="font-weight: 300;" aria-level="1"><b>Verify</b><span style="font-weight: 300;">: The time required to verify the results are accurate and make sense. If you have a brand new tool or you are looking at GenAI output, you’ll spend more time here than if you are using a validated, deterministic tool.</span></li>
+</ul>
+</li>
+<li style="font-weight: 300;" aria-level="1"><b>Cost</b><span style="font-weight: 300;">: What does it cost to use this method? Does it require a commercial license? Does it require someone with specialized training? Does it require AI tokens?</span></li>
+<li style="font-weight: 300;" aria-level="1"><b>Creativity / reasoning</b><span style="font-weight: 300;">: Some tasks require creativity about how to approach a problem and how to solve it. You need to think about what levels of creativity and reasoning will get brought in by a “typical investigator” or the GenAI. Not all tasks require creativity, though. Running a tool to parse a known data structure, such as NTFS, does not require creativity. </span></li>
+<li style="font-weight: 300;" aria-level="1"><b>Defensibility</b>: While not relevant to all types of investigations, some will need to undergo a legal or regulatory review of how they reached conclusions. Once you diverge from established methods, you need to defend those decisions more. You need to decide if it is worth it. Presumably, if you spent the right time verifying results, this should not be a technical problem.</li>
+</ol>
+<p><span style="font-weight: 300;">Some of these are a bit subjective and imprecise to measure, but they are the basic concepts to think through. Let&#8217;s look at some examples.</span></p>
+<h2><strong>Examples</strong></h2>
+<p><span style="font-weight: 300;">Let&#8217;s look at a couple of simple examples. We’ll dive into more of these in future posts. </span></p>
+<h3><span style="font-weight: 300;">NTFS File System Parsing</span></h3>
+<p><span style="font-weight: 300;">If you get a disk image, you need to parse it to get files. Let&#8217;s look at how to decide between your options for this well-established process. </span></p>
+<table border="1">
+<tbody>
+<tr>
+<td></td>
+<td><b>Manual</b></td>
+<td><b>Validated, Deterministic Tool</b></td>
+<td><b>Non-Validated, Deterministic Tool</b></td>
+<td><b>Direct GenAI Output</b></td>
+</tr>
+<tr>
+<td><b>Feasibility</b></td>
+<td style="background-color: #7fc4b3;">Yes. Buy a copy of File System Forensic Analysis and a hex editor.</td>
+<td style="background-color: #7fc4b3;">Yes. Sleuth Kit, Magnet, EnCase, etc.</td>
+<td style="background-color: #7fc4b3;">Yes, there are GitHub parsers from school or side projects.</td>
+<td style="background-color: #7fc4b3;">Yes. GenAI can decide to either download a validated tool, a non-validated tool, or make a custom parser for you.</td>
+</tr>
+<tr>
+<td><b>Time: Prepare</b></td>
+<td><span style="font-weight: 300;">High. You need to learn about file system structures. </span></td>
+<td style="background-color: #7fc4b3;">Low</td>
+<td style="background-color: #7fc4b3;">Low</td>
+<td><span style="font-weight: 300;">Unknown: Could take a long time to reverse engineer NTFS. Or it could be quick to download The Sleuth Kit. </span></td>
+</tr>
+<tr>
+<td><b>Time: Perform</b></td>
+<td style="background-color: #d97a77;">High</td>
+<td><span style="font-weight: 300;">Avg</span></td>
+<td><span style="font-weight: 300;">Avg</span></td>
+<td><span style="font-weight: 300;">Avg</span></td>
+</tr>
+<tr>
+<td><b>Time: Verify</b></td>
+<td style="background-color: #d97a77;">High</td>
+<td style="background-color: #7fc4b3;">Low</td>
+<td style="background-color: #d97a77;">High. You need to make sure it&#8217;s correct.</td>
+<td style="background-color: #d97a77;">Medium to High: You need to understand what it did. Did it make you a parser that is untested that needs a lot of time to verify. Or did it download a validated tool?</td>
+</tr>
+<tr>
+<td><b>Cost</b></td>
+<td style="background-color: #d97a77;">High</td>
+<td><span style="font-weight: 300;">Free to Avg</span></td>
+<td><span style="font-weight: 300;">Free to Avg</span></td>
+<td><span style="font-weight: 300;">Tokens</span></td>
+</tr>
+<tr>
+<td><b>Creativity</b></td>
+<td><span style="font-weight: 300;">Not needed</span></td>
+<td><span style="font-weight: 300;">Not needed</span></td>
+<td><span style="font-weight: 300;">Not needed</span></td>
+<td><span style="font-weight: 300;">Not needed</span></td>
+</tr>
+<tr>
+<td><b>Defensibility</b></td>
+<td style="background-color: #d97a77;">Low &#8211; Hard to justify why you’d do this.</td>
+<td style="background-color: #7fc4b3;">High</td>
+<td style="background-color: #d97a77;">Low &#8211; Hard to justify why you’d not use a validated tool.</td>
+<td style="background-color: #d97a77;">Low &#8211; Hard to justify why you’d not use a validated tool.</td>
+</tr>
+</tbody>
+</table>
+<p><span style="font-weight: 300;">The clear winner here for NTFS is a validated, deterministic tool. They are tested and reliable. </span></p>
+<h3><span style="font-weight: 300;">Unknown File Format Parsing</span></h3>
+<p><span style="font-weight: 300;">Now, let&#8217;s look at a file whose format is unknown, and there is no existing parser. </span></p>
+<table border="2">
+<tbody>
+<tr>
+<td></td>
+<td><b>Manual</b></td>
+<td><b>Validated, Deterministic Tool</b></td>
+<td><b>Non-Validated, Deterministic Tool</b></td>
+<td><b>Direct GenAI Output</b></td>
+</tr>
+<tr>
+<td><b>Feasibility</b></td>
+<td style="background-color: #7fc4b3;">Yes. If the person can reverse engineer it.</td>
+<td style="background-color: #d97a77;">None</td>
+<td style="background-color: #d97a77;">None</td>
+<td style="background-color: #7fc4b3;">Yes. GenAI can reverse engineer it and create a custom parser.</td>
+</tr>
+<tr>
+<td><b>Time: Prepare</b></td>
+<td style="background-color: #d97a77;">Super high if you need to manually reverse engineer.</td>
+<td style="background-color: #d97a77;">N/A</td>
+<td style="background-color: #d97a77;">N/A</td>
+<td style="background-color: #d97a77;">High: Time required for GenAI to reverse engineer and test its script.</td>
+</tr>
+<tr>
+<td><b>Time: Perform</b></td>
+<td style="background-color: #d97a77;">High</td>
+<td style="background-color: #d97a77;">N/A</td>
+<td style="background-color: #d97a77;">N/A</td>
+<td><span style="font-weight: 300;">Avg</span></td>
+</tr>
+<tr>
+<td><b>Time: Verify</b></td>
+<td style="background-color: #d97a77;">High</td>
+<td style="background-color: #d97a77;">N/A</td>
+<td style="background-color: #d97a77;">N/A</td>
+<td style="background-color: #d97a77;">High. You need to make sure it&#8217;s correct.</td>
+</tr>
+<tr>
+<td><b>Cost</b></td>
+<td style="background-color: #d97a77;">High</td>
+<td style="background-color: #d97a77;">N/A</td>
+<td style="background-color: #d97a77;">N/A</td>
+<td><span style="font-weight: 300;">Tokens</span></td>
+</tr>
+<tr>
+<td><b>Creativity</b></td>
+<td><span style="font-weight: 300;">Avg</span></td>
+<td style="background-color: #d97a77;">N/A</td>
+<td style="background-color: #d97a77;">N/A</td>
+<td style="background-color: #7fc4b3;">Potentially high</td>
+</tr>
+<tr>
+<td><b>Defensibility</b></td>
+<td><span style="font-weight: 300;">Avg</span></td>
+<td style="background-color: #d97a77;">N/A</td>
+<td style="background-color: #d97a77;">N/A</td>
+<td><span style="font-weight: 300;">Avg</span></td>
+</tr>
+</tbody>
+</table>
+<p><span style="font-weight: 300;">For this situation, it is much easier to justify using GenAI because its creativity and knowledge may be far better than a typical investigator doing manual reverse engineering. </span></p>
+<h2><strong>Hybrid Is the Solution</strong></h2>
+<p><span style="font-weight: 300;">As promised, GenAI is powerful for some tasks and a waste of time for others. The difference comes down to whether creativity is genuinely required. NTFS parsing doesn&#8217;t need it, so a validated tool wins outright. Reverse-engineering an unknown format does, so GenAI provides value.</span></p>
+<p><span style="font-weight: 300;">This means most investigations should use a mix of AI and non-AI methods rather than picking 1 for everything. Build vs buy, deterministic vs non-deterministic, validated vs disposable are decisions that should be made per task. The 5 criteria above are how you can make them. We&#8217;ll apply this same framework to each investigative phase in follow-up posts (planning, collection, scoring, etc.). </span></p>
+<p><span style="font-weight: 300;">Our </span><a href="https://www.cybertriage.com/how-we-use-ai-in-cyber-triage/"><span style="font-weight: 300;">hybrid approach</span></a><span style="font-weight: 300;"> with Cyber Triage reflects this: We rely on deterministic tools for parsing and initial scoring and bring in AI on those results. Version 4, launching next month, automatically integrates GenAI to add knowledge about artifacts and their use. Current versions expose an MCP server so you can direct AI at the Cyber Triage findings. Try out the latest MCP version </span><a href="https://www.cybertriage.com/download-eval/"><span style="font-weight: 300;">here</span></a><span style="font-weight: 300;">.</span></p>
+<p>The post <a href="https://www.cybertriage.com/blog/dfirai-making-tool-decisions-in-a-genai-world/">DFIR + AI: Making Tool Decisions in a GenAI World</a> appeared first on <a href="https://www.cybertriage.com">Cyber Triage</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>SANS vs SKL DFIR AI Frameworks: When to Use Each</title>
+		<link>https://www.cybertriage.com/ai/sans-vs-skl-which-ai-framework-should-you-use/</link>
+		
+		<dc:creator><![CDATA[Alex Detmering]]></dc:creator>
+		<pubDate>Thu, 16 Jul 2026 17:43:27 +0000</pubDate>
+				<category><![CDATA[AI]]></category>
+		<category><![CDATA[Blog]]></category>
+		<guid isPermaLink="false">https://www.cybertriage.com/?p=29446</guid>
+
+					<description><![CDATA[<p>Heather Barnhart has done great work helping develop the SANS...</p>
+<p>The post <a href="https://www.cybertriage.com/ai/sans-vs-skl-which-ai-framework-should-you-use/">SANS vs SKL DFIR AI Frameworks: When to Use Each</a> appeared first on <a href="https://www.cybertriage.com">Cyber Triage</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<p><a href="https://www.linkedin.com/in/hbarnhart/"><span style="font-weight: 300;">Heather Barnhart</span></a><span style="font-weight: 300;"> has done great work helping develop the </span><a href="https://www.linkedin.com/posts/hbarnhart_ai-dfir-digitalforensics-activity-7463670255727407104-u97H"><span style="font-weight: 300;">SANS DFIR AI Framework</span></a><span style="font-weight: 300;">. If you haven’t seen it, I recommend reading it. </span></p>
+<p><span style="font-weight: 300;">That said, it differs from how we’ve been talking about AI.</span></p>
+<p><span style="font-weight: 300;">This post dives into if the two views are actually in conflict or just looking at the problem from different angles.</span></p>
+<p><b>TLDR:</b><span style="font-weight: 300;"> They&#8217;re complementary. The SANS framework is more helpful for an investigator to map AI to their process. Ours is more useful for thinking about what to validate. </span></p>
+<h2><b>The SANS / SWGDE AI Framework </b></h2>
+<p><span style="font-weight: 300;">Developed by </span><a href="https://www.linkedin.com/in/hbarnhart/"><span style="font-weight: 300;">Heather Barnhart</span></a><span style="font-weight: 300;"> and others, the SANS framework organizes AI guidance around </span><b>SWGDE investigation phases: </b></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Identification</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Collection/Preservation</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Triage</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Examination/Analysis</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Validation</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Reporting</span></li>
+</ul>
+<p><span style="font-weight: 300;">For each phase, it assigns a</span> risk level: <span style="font-weight: 300;">AI recommended, AI optional, or AI never. </span></p>
+<p><span style="font-weight: 300;">These phases map cleanly to how investigators were taught to do investigations and, presumably, how they approach them. This is a clean mental model to help investigators map AI to where it fits into</span> <span style="font-weight: 300;">their current workflow. </span></p>
+<p><span style="font-weight: 300;">This is the right model when </span><b>training investigators</b><span style="font-weight: 300;"> about where to expect AI. </span></p>
+<p><a href="https://www.cybertriage.com/wp-content/uploads/2026/07/Heathers-phases.jpeg"><img decoding="async" class="aligncenter wp-image-29448 size-medium" src="https://www.cybertriage.com/wp-content/uploads/2026/07/Heathers-phases-800x581.jpeg" alt="" width="800" height="581" srcset="https://www.cybertriage.com/wp-content/uploads/2026/07/Heathers-phases-800x581.jpeg 800w, https://www.cybertriage.com/wp-content/uploads/2026/07/Heathers-phases-768x558.jpeg 768w, https://www.cybertriage.com/wp-content/uploads/2026/07/Heathers-phases.jpeg 1144w" sizes="(max-width: 800px) 100vw, 800px" /></a></p>
+<h2><b>The &#8220;SKL AI Framework&#8221;</b></h2>
+<p>We haven&#8217;t formally documented &#8220;our framework&#8221;, but we show it in our webinars and refer to it in blog posts. We&#8217;ll get a blog post out soon that maps it out in more detail.</p>
+<p><span style="font-weight: 300;">We have been more focused on specific tool features that can benefit from AI, and what happens to data during an investigation. Forensic tools are fundamentally data processing pipelines, so we&#8217;ve organized our thinking around </span>data operations<span style="font-weight: 300;"> (rather than investigation phases):</span></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><b>Collect:</b><span style="font-weight: 300;"> Copy data from a device to a file or database.</span></li>
+<li style="font-weight: 300;" aria-level="1"><b>Parse:</b><span style="font-weight: 300;"> Convert collected data to a more useful format.</span></li>
+<li style="font-weight: 300;" aria-level="1"><b>Normalize:</b><span style="font-weight: 300;"> Map data and events to their semantic meaning (i.e. Prefetch → Process).</span></li>
+<li style="font-weight: 300;" aria-level="1"><b>Enrich:</b><span style="font-weight: 300;"> Add context through lookups, detections, threat intel, summarization.</span></li>
+<li style="font-weight: 300;" aria-level="1"><b>Score:</b><span style="font-weight: 300;"> Determine if an artifact is relevant to the case.</span></li>
+<li style="font-weight: 300;" aria-level="1"><b>Display/Publish:</b><span style="font-weight: 300;"> Present results in human or machine-readable form</span></li>
+<li style="font-weight: 300;" aria-level="1"><b>Query:</b><span style="font-weight: 300;"> Find items based on criteria.</span></li>
+<li style="font-weight: 300;" aria-level="1"><b>Co-pilot:</b><span style="font-weight: 300;"> Chat interface to answer investigator questions.</span></li>
+<li style="font-weight: 300;" aria-level="1"><b>Validate:</b><span style="font-weight: 300;"> Double-check findings and conclusions.</span></li>
+</ul>
+<p><span style="font-weight: 300;">For each phase, we’ve been mapping out if AI provides value for that type of operation and how much human validation is required.</span></p>
+<p><span style="font-weight: 300;">This is the right model when thinking about what AI can do and what to <strong>validate</strong>. </span></p>
+<h2><b>One Level Deeper</b></h2>
+<p><span style="font-weight: 300;">Fundamentally, the SANS framework operates at the human layer, and our approach has been at the data layer. Their recommendations seem consistent with ours, just at a higher level of abstraction.</span></p>
+<p><span style="font-weight: 300;">Take their Triage phase, which they mark &#8220;AI Recommended.&#8221; We agree with that conclusion. </span></p>
+<p><span style="font-weight: 300;">But within that phase are several distinct data operations, each with a </span><b>different AI validation</b><span style="font-weight: 300;"> burden:</span></p>
+<p><img loading="lazy" decoding="async" class=" wp-image-29449 aligncenter" src="https://www.cybertriage.com/wp-content/uploads/2026/07/image-1.png" alt="" width="443" height="469" /></p>
+<p><span style="font-weight: 300;">One investigation phase with five different types of potential validations. Knowing the phase tells you AI is appropriate. Knowing the operation tells you what to check.</span></p>
+<h2><b>They&#8217;re Asking Different Questions</b></h2>
+<p><span style="font-weight: 300;">The SANS framework answers: </span><em><span style="font-weight: 300;">“Where in my investigation is AI appropriate?” </span></em></p>
+<p><span style="font-weight: 300;">Our phases answer: </span><em><span style="font-weight: 300;">“What did AI actually do, and how do I verify it?”</span></em></p>
+<p><span style="font-weight: 300;">Both questions matter. </span></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">As you start to think about AI, the investigation phases matter for mental framing.</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">As you use AI and need to validate the outputs, you need to think about the data processing. </span></li>
+</ul>
+<p><span style="font-weight: 300;">During triage or examination, you may come across an unknown file format. If AI parses it, then you need to validate the output. If you don’t need AI to parse an unknown file format, then no special validation is required. </span></p>
+<p><span style="font-weight: 300;">See the drone reversing engineering submission to the </span><a href="https://www.cybertriage.com/blog/dfir_ai-2026-challenge-winners/"><span style="font-weight: 300;">DFIR+AI challenge</span></a><span style="font-weight: 300;"> for an example where AI can be really powerful at parsing unknown formats, but can also have errors. That submission incorrectly parsed a drone data set, but we were able to get it to parse correctly when we gave Claude more data. </span></p>
+<p><span style="font-weight: 300;">You need to know what kinds of operations that AI did in your investigation to know what to validate. </span></p>
+<h2><b>How We Are Using Our Framework</b></h2>
+<p><span style="font-weight: 300;">We are incrementally rolling out AI into Cyber Triage and Autopsy with a focus on enabling you to validate. </span></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">The first releases were read-only MCP so that your original data never changed. All AI-generated data was within your AI client.</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Cyber Triage 3.18 added some limited ways to write data, but limited to enrichment and scoring (two of our phases). AI-generated data is clearly prefixed with “[AI]”. You should validate those findings. </span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Cyber Triage 4.0 will automatically summarize a host, provide AI-based threat intelligence, and suggest remediation steps. These will be clearly labeled as AI for you to validate.</span></li>
+</ul>
+<p><span style="font-weight: 300;">If you want to try Cyber Triage with MCP, then you can download the latest </span><a href="https://www.cybertriage.com/download-eval/"><span style="font-weight: 300;">evaluation version</span></a><span style="font-weight: 300;"> and </span><a href="https://docs.cybertriage.com/en/latest/chapters/integrations/claude_client.html"><span style="font-weight: 300;">setup your MCP client</span></a><span style="font-weight: 300;">. </span></p>
+<p>The post <a href="https://www.cybertriage.com/ai/sans-vs-skl-which-ai-framework-should-you-use/">SANS vs SKL DFIR AI Frameworks: When to Use Each</a> appeared first on <a href="https://www.cybertriage.com">Cyber Triage</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>DFIR+AI 2026 Challenge Winners</title>
+		<link>https://www.cybertriage.com/blog/dfir_ai-2026-challenge-winners/</link>
+		
+		<dc:creator><![CDATA[Brian Carrier]]></dc:creator>
+		<pubDate>Wed, 08 Jul 2026 20:39:02 +0000</pubDate>
+				<category><![CDATA[Blog]]></category>
+		<guid isPermaLink="false">https://www.cybertriage.com/?p=29240</guid>
+
+					<description><![CDATA[<p>Our DFIR+AI Challenge is complete, and our judges awarded the...</p>
+<p>The post <a href="https://www.cybertriage.com/blog/dfir_ai-2026-challenge-winners/">DFIR+AI 2026 Challenge Winners</a> appeared first on <a href="https://www.cybertriage.com">Cyber Triage</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<p><span style="font-weight: 300;">Our DFIR+AI Challenge is complete, and our judges awarded the winners. This post provides a summary of the challenge.</span></p>
+<h2><strong>Challenge Recap</strong></h2>
+<p><span style="font-weight: 300;">The goal of this <a href="https://www.cybertriage.com/blog/aidfir-2026-challenge-the-good-vs-the-ugly/">challenge</a> was to see how people are using AI in DFIR and share the best and worst ways of using it. My goal was to keep it simple and make submissions with low effort. </span></p>
+<p><strong>People had to submit:</strong></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Tools they used.</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Why they thought it was a success or failure.</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Screenshots.</span></li>
+</ul>
+<p><span style="font-weight: 300;">The plan was to have public voting, and we’d award a best success and a best disaster. </span></p>
+<h2><strong>Overview of the Submissions</strong></h2>
+<p><span style="font-weight: 300;">We got 12 complete submissions. You can find them on the </span><a href="https://github.com/SleuthKitLabs/2026_ai_challenge_submissions"><span style="font-weight: 300;">GitHub repo</span></a><span style="font-weight: 300;">. </span></p>
+<p><span style="font-weight: 300;">I want to first say Thank You to everyone who submitted! It can be hard to find the courage to submit something when the best practices of this technology are so undefined. </span></p>
+<p><span style="font-weight: 300;"><strong>We</strong> learned as we reviewed them that we didn’t ask for enough information to fairly evaluate them!</span></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">It was hard to know what AI did versus the underlying parsing tools.</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">It was hard to know if the results in the screenshots were accurate.</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Sometimes we picked up on things in the output that the submitter didn’t.</span></li>
+</ul>
+<p><span style="font-weight: 300;">To truly get precise answers on the value of AI, we needed more information. Some submissions were both successes and failures in different dimensions. So, we pivoted from our plan. </span></p>
+<p><span style="font-weight: 300;">Instead of public voting and a single winner for success and failure, we made different categories. </span></p>
+<h2><strong>Recap of Some Submissions</strong></h2>
+<p><span style="font-weight: 300;">Here are some of the notable submissions and the discussions from the webinar we held (you can watch the <a href="https://register.gotowebinar.com/recording/2241228465966030688">webinar here</a>)</span></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><a href="https://github.com/SleuthKitLabs/2026_ai_challenge_submissions/tree/main/2"><span style="font-weight: 300;">#2 from Naveen Hariharan Vijaya</span></a><span style="font-weight: 300;">: This submission used a SANS memory image, Cyber Triage MCP server, and Claude. A very thorough prompt was used, and several AI-generated reports were generated.</span>
+<ul>
+<li style="font-weight: 300;" aria-level="2"><span style="font-weight: 300;">Judges like the prompt used.</span></li>
+<li style="font-weight: 300;" aria-level="2"><span style="font-weight: 300;">This was a classic example of where it was hard to know what Claude did versus Cyber Triage versus MemProcFs or Volatility (which Cyber Triage integrates) to know the value of AI alone. </span></li>
+<li style="font-weight: 300;" aria-level="2"><span style="font-weight: 300;">One of the judges mentioned that lots of the IOCs came from the same offset, but it wasn’t clear if that was OK, if AI caused that, or if that came out of the underlying tools.</span></li>
+</ul>
+</li>
+<li style="font-weight: 300;" aria-level="1"><a href="https://github.com/SleuthKitLabs/2026_ai_challenge_submissions/tree/main/6"><span style="font-weight: 300;">#6 from Matti Saarelma</span></a><span style="font-weight: 300;">: This submission used the built-in Gemini within Timesketch. They validated the results and pointed out that Gemini assumed that “DC” referred to a domain controller instead of the XP recycle bin.</span>
+<ul>
+<li style="font-weight: 300;" aria-level="2"><span style="font-weight: 300;">This was a great example of the user validating the results.</span></li>
+<li style="font-weight: 300;" aria-level="2"><span style="font-weight: 300;">It’s also a great example of how, without much context, any AI will guess at the context and come to the wrong conclusion.</span></li>
+<li style="font-weight: 300;" aria-level="2"><span style="font-weight: 300;">This was a good example of how it was hard to judge because we don’t know how many other submissions had hallucinations and the submitter didn’t notice. </span></li>
+</ul>
+</li>
+<li style="font-weight: 300;" aria-level="1"><a href="https://github.com/SleuthKitLabs/2026_ai_challenge_submissions/tree/main/16"><span style="font-weight: 300;">#16 From nhantouli</span></a><span style="font-weight: 300;">: This submission was from an undergraduate project, and they wrote their own MCP server for Autopsy before we made one, so it has different tools. </span>
+<ul>
+<li style="font-weight: 300;" aria-level="2"><span style="font-weight: 300;">This is an example of a thorough analysis of AI and its pros and cons. The judges appreciated the honesty and transparency.</span></li>
+<li style="font-weight: 300;" aria-level="2"><span style="font-weight: 300;">This provided an interesting example where the user asked about an OS time, and there was no Autopsy artifact for that. So, the AI proceeded to parse the registry to find it. This is a powerful example of how AI can find data even if another tool hasn’t found it. </span></li>
+<li style="font-weight: 300;" aria-level="2"><span style="font-weight: 300;">This data is probably in the Autopsy-generated RegRipper report, but that may not have been exposed via MCP. </span></li>
+</ul>
+</li>
+<li style="font-weight: 300;" aria-level="1"><a href="https://github.com/SleuthKitLabs/2026_ai_challenge_submissions/tree/main/11"><span style="font-weight: 300;">#11 from Maryam</span></a><span style="font-weight: 300;">: This submission was one of the most interesting. They gave it four files from a NIST drone data set (there were over 80 relevant files on the drone). Claude proceeded to reverse-engineer the files and make a parser. </span>
+<ul>
+<li style="font-weight: 300;" aria-level="2"><span style="font-weight: 300;">This concept has super interesting potential because it gives capabilities to an analyst when they have a file format that can’t be parsed.</span></li>
+<li style="font-weight: 300;" aria-level="2"><span style="font-weight: 300;">This scenario, though, went bad because Claude got the parser wrong. It placed the drone over the Strait of Hormuz and explained away other errors from GPS jamming. The NIST data sets were not flown over the Strait of Hormuz.</span></li>
+<li style="font-weight: 300;" aria-level="2"><span style="font-weight: 300;">BUT, I loaded the full data set into Claude, and with the additional data, it got it correct!</span></li>
+<li style="font-weight: 300;" aria-level="2"><span style="font-weight: 300;">This was a great example of awesome potential, but it&#8217;s super important to verify the results.</span></li>
+</ul>
+</li>
+<li style="font-weight: 300;" aria-level="1"><a href="https://github.com/SleuthKitLabs/2026_ai_challenge_submissions/tree/main/15"><span style="font-weight: 300;">#15 from Aleem ladha</span></a><span style="font-weight: 300;"> and #</span><a href="https://github.com/SleuthKitLabs/2026_ai_challenge_submissions/tree/main/8"><span style="font-weight: 300;">8 from Serhiy B</span></a><span style="font-weight: 300;">: These were “vibe coded” apps written to do investigations. The #15 submission has several screenshots of the numerous reports that its 50 agents created. The #8 submission focused more on the internals of the tool. </span>
+<ul>
+<li style="font-weight: 300;" aria-level="2"><span style="font-weight: 300;">Allowing more people to write programs is going to be a game changer in all industries. </span></li>
+<li style="font-weight: 300;" aria-level="2"><span style="font-weight: 300;">But, you still need to test and validate the programs. Writing is the easy part.</span></li>
+<li style="font-weight: 300;" aria-level="2"><span style="font-weight: 300;">We couldn’t tell from these submissions how much they relied on existing command-line tools that are well -ested and established versus how much they vibe-coded file system and file parsers. The more “new” code is written, the more verification is needed. </span></li>
+<li style="font-weight: 300;" aria-level="2"><span style="font-weight: 300;">We couldn’t tell if their results were any different from other approaches that have less untested software. Again, a limitation of what data we asked people to submit. </span></li>
+</ul>
+</li>
+<li style="font-weight: 300;" aria-level="1"><a href="https://github.com/SleuthKitLabs/2026_ai_challenge_submissions/tree/main/5"><span style="font-weight: 300;">#5 from Flip Forensics</span></a><span style="font-weight: 300;">: They wrote their own tool and tried to see if they could trick the LLM by adding a file name into the prompt that didn’t exist. </span>
+<ul>
+<li style="font-weight: 300;" aria-level="2"><span style="font-weight: 300;">Ultimately, the response mentioned the file name but didn’t include it in a timeline.</span></li>
+<li style="font-weight: 300;" aria-level="2"><span style="font-weight: 300;">The approach of adding false data to prompts is an interesting approach to testing LLMs to see what they ignore versus what they focus on.</span></li>
+</ul>
+</li>
+<li style="font-weight: 300;" aria-level="1"><a href="https://github.com/SleuthKitLabs/2026_ai_challenge_submissions/tree/main/10"><span style="font-weight: 300;">#10 from Pier Noel Asuncion</span></a><span style="font-weight: 300;">: They used the Cyber Triage MCP server and a NIST data set. </span>
+<ul>
+<li style="font-weight: 300;" aria-level="2"><span style="font-weight: 300;">One interesting part of this submission is how hard it is to know how to validate AI results.</span></li>
+<li style="font-weight: 300;" aria-level="2"><span style="font-weight: 300;">The authors did a good job of trying to validate the AI, and they gave it a JSON to confirm, but the JSON also came from Cyber Triage. So, ultimately, they were comparing the Cyber Triage MCP versus Cyber Triage JSON. </span></li>
+<li style="font-weight: 300;" aria-level="2"><span style="font-weight: 300;">Neat findings, but it shows it&#8217;s hard to validate. </span></li>
+</ul>
+</li>
+</ul>
+<h2><strong>Winners</strong></h2>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;"><strong>Best validation</strong>: </span><a href="https://github.com/SleuthKitLabs/2026_ai_challenge_submissions/tree/main/6"><span style="font-weight: 300;">Matti Saarelma (#6) (DC = Domain Controller)</span></a></li>
+<li style="font-weight: 300;" aria-level="1"><strong>Best rigorous evaluation: </strong><a href="https://github.com/SleuthKitLabs/2026_ai_challenge_submissions/tree/main/16"><span style="font-weight: 300;">nhantouli (#16) (Custom Autopsy MCP)</span></a></li>
+<li style="font-weight: 300;" aria-level="1"><strong>Best vibe coded: </strong><a href="https://github.com/SleuthKitLabs/2026_ai_challenge_submissions/tree/main/15"><span style="font-weight: 300;">Aleem ladha (#15) (50 AI Agents)</span></a></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;"><strong>Best enabler &amp; cautionary tale:</strong> </span><a href="https://github.com/SleuthKitLabs/2026_ai_challenge_submissions/tree/main/11"><span style="font-weight: 300;">Maryam (#11) (Drone Reverse Engineering)</span></a></li>
+</ul>
+<p><span style="font-weight: 300;">Congrats to them and thanks again to the judges and all who submitted. We’re thinking about doing this again in 6 months as everyone has played more with AI in their investigations. </span></p>
+<p>The post <a href="https://www.cybertriage.com/blog/dfir_ai-2026-challenge-winners/">DFIR+AI 2026 Challenge Winners</a> appeared first on <a href="https://www.cybertriage.com">Cyber Triage</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>3 AI Prompts for More Confident DFIR Investigations</title>
+		<link>https://www.cybertriage.com/blog/3-ai-prompts-for-more-confident-dfir-investigations/</link>
+		
+		<dc:creator><![CDATA[Brian Carrier]]></dc:creator>
+		<pubDate>Wed, 01 Jul 2026 16:33:26 +0000</pubDate>
+				<category><![CDATA[AI]]></category>
+		<category><![CDATA[Blog]]></category>
+		<guid isPermaLink="false">https://www.cybertriage.com/?p=29224</guid>
+
+					<description><![CDATA[<p>As we all experiment with AI prompts and DFIR data...</p>
+<p>The post <a href="https://www.cybertriage.com/blog/3-ai-prompts-for-more-confident-dfir-investigations/">3 AI Prompts for More Confident DFIR Investigations</a> appeared first on <a href="https://www.cybertriage.com">Cyber Triage</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<p><span style="font-weight: 300;">As we all experiment with AI prompts and DFIR data sets, here are 3 that I’ve found useful when using the Cyber Triage <a href="https://www.cybertriage.com/ai/intro-to-mcp-servers-for-dfir-and-soc-investigations-using-ai/">MCP integration</a> to make sure all of the evidence is found. </span></p>
+<p><span style="font-weight: 300;">These prompts will work on other tools too, but the benefit of Cyber Triage is that it provides the AI with a starting point of bad and suspicious artifacts. It is not letting the AI start with hundreds of thousands of events and letting it get too distracted with false positives. </span></p>
+<h2><b>Prompt 1: Impact of Bad Items</b></h2>
+<p><span style="font-weight: 300;">At some point, you’re going to have a list of bad events, logins, processes, etc. Either from manual analysis or automated scoring. You need to work backward from those items to figure out what had to be true for them to happen. For example: Did this event require admin privileges?</span></p>
+<p><span style="font-weight: 300;"><strong>Here’s a prompt</strong> you can use for that:</span></p>
+<blockquote><p><span style="font-weight: 300;">For each bad item found on the host, analyze what prerequisites must have been in place for that item to exist or execute. Consider if it required compromised credentials, administrative access, or downloaded tools. Consider if a process was launched by a script or a user. For each dimension, state if it must have been true or not required. Cite the specific Cyber Triage evidence that supports your conclusion, and flag any dimension where the evidence is absent and further investigation is needed. Cite websites that provide supporting information. </span></p></blockquote>
+<p><span style="font-weight: 300;">The <strong>important elements:</strong></span></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Have it consider specific examples of what you care about (admin, scripts, tools).</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Have it cite artifacts for you to verify.</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Have it cite external sources for you to verify.</span></li>
+</ul>
+<p><span style="font-weight: 300;">Here is an example from a ransomware data set. Claude grouped the bad items, and <strong>this is its output</strong> for the Sliver implant that was found: </span></p>
+<p><a href="https://www.cybertriage.com/wp-content/uploads/2026/07/2026-07-01-prompt1.png"><img loading="lazy" decoding="async" class="aligncenter wp-image-29225 size-medium" src="https://www.cybertriage.com/wp-content/uploads/2026/07/2026-07-01-prompt1-566x800.png" alt="" width="566" height="800" srcset="https://www.cybertriage.com/wp-content/uploads/2026/07/2026-07-01-prompt1-566x800.png 566w, https://www.cybertriage.com/wp-content/uploads/2026/07/2026-07-01-prompt1.png 698w" sizes="auto, (max-width: 566px) 100vw, 566px" /></a></p>
+<h2><b>Prompt 2: Context of Suspicious Items</b></h2>
+<p><span style="font-weight: 300;">You’ll also have a list of suspicious items that could be related to an attack or not. These can come from a manual review or an automated scoring tool like Cyber Triage. </span></p>
+<p><span style="font-weight: 300;">For these, you need a prompt that can <strong>help make that decision</strong> based on:</span></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">The LLM’s knowledge about attacks and threat intelligence</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">The other bad and suspicious items and if they tell a plausible story (this assumes the bad items are accurate)</span></li>
+</ul>
+<p><span style="font-weight: 300;"><strong>Here’s a prompt</strong> that you can use for that:</span></p>
+<blockquote><p><span style="font-weight: 300;">For each suspicious item found on the host, review them, group them, and propose if they are related to the attack or a false positive. Consider if they are in the same location or in similar time frames as other bad items. Consider if they match TTPs of threat actors associated with the bad items. Cite websites that support your conclusion. </span></p></blockquote>
+<p><span style="font-weight: 300;">The <strong>important elements:</strong></span></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Have it group them to consider them as a whole.</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Have it focus on things like locations, timing, and TTPs.</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Have it cite external sources for you to verify.</span></li>
+</ul>
+<p><span style="font-weight: 300;">Here’s an example from Claude’s analysis of our data set that <strong>highlights</strong> a set of suspicious registry queries and <strong>recommends</strong> making these bad based on TTPs and its timing with the Sliver implant.</span></p>
+<p><a href="https://www.cybertriage.com/wp-content/uploads/2026/07/2026-07-01-prompt2.png"><img loading="lazy" decoding="async" class="aligncenter wp-image-29226 size-medium" src="https://www.cybertriage.com/wp-content/uploads/2026/07/2026-07-01-prompt2-694x800.png" alt="" width="694" height="800" srcset="https://www.cybertriage.com/wp-content/uploads/2026/07/2026-07-01-prompt2-694x800.png 694w, https://www.cybertriage.com/wp-content/uploads/2026/07/2026-07-01-prompt2.png 698w" sizes="auto, (max-width: 694px) 100vw, 694px" /></a></p>
+<h2><b>Prompt 3: Challenge the Narrative</b></h2>
+<p><span style="font-weight: 300;">After you have your set of bad items, it’s important to challenge the story to make sure it makes sense. Is it consistent? Are there gaps? </span></p>
+<p><span style="font-weight: 300;"><strong>Here’s a prompt</strong> you can use for that:</span></p>
+<blockquote><p><span style="font-weight: 300;">Review the bad items and identify any that are inconsistent with the dominant attack narrative, such as timeline conflicts, redundant capabilities, unexpected locations, or tools that don&#8217;t match the threat actor behaviors. For each anomaly, assess whether it suggests a second threat actor, a pivot in the attacker&#8217;s approach, or a false positive.</span></p></blockquote>
+<p><span style="font-weight: 300;">The<strong> important elements:</strong></span></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Provide examples of what makes the narrative inconsistent.</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Provide examples of causes of inconsistencies.</span></li>
+</ul>
+<p><span style="font-weight: 300;">Here is an example expanding on the Sliver detection that <strong>highlights the dwell time</strong>, and that it should be investigated to see if there was in fact activity in the 3 days. </span></p>
+<p><a href="https://www.cybertriage.com/wp-content/uploads/2026/07/2026-07-01-prompt3.png"><img loading="lazy" decoding="async" class="aligncenter wp-image-29227 size-medium" src="https://www.cybertriage.com/wp-content/uploads/2026/07/2026-07-01-prompt3-610x800.png" alt="" width="610" height="800" srcset="https://www.cybertriage.com/wp-content/uploads/2026/07/2026-07-01-prompt3-610x800.png 610w, https://www.cybertriage.com/wp-content/uploads/2026/07/2026-07-01-prompt3.png 698w" sizes="auto, (max-width: 610px) 100vw, 610px" /></a></p>
+<h2><b>Good Prompts and Good Data are Important</b></h2>
+<p><span style="font-weight: 300;">Using the right prompts at the right time can make your investigations faster and more complete (but you still need to verify the AI output!). These prompts work best when you have a starting set of bad and suspicious items. </span></p>
+<p><span style="font-weight: 300;">If you don’t have an automated way of getting bad and suspicious items, you can try Cyber Triage’s scoring and MCP server. A 7-day eval can be <a href="https://www.cybertriage.com/get-cyber-triage-free-for-7-days/">found here</a>. Cyber Triage scores your forensic collections and telemetry to give you a starting point for your investigations. </span></p>
+<p><span style="font-weight: 300;">Good prompts need a good starting point. That&#8217;s what the scoring gets you.</span></p>
+<p>The post <a href="https://www.cybertriage.com/blog/3-ai-prompts-for-more-confident-dfir-investigations/">3 AI Prompts for More Confident DFIR Investigations</a> appeared first on <a href="https://www.cybertriage.com">Cyber Triage</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>SOC Forensics: How to Set Up Automatic DFIR Analysis in the Cloud</title>
+		<link>https://www.cybertriage.com/blog/soc-forensics-how-to-set-up-automatic-dfir-analysis-in-the-cloud/</link>
+		
+		<dc:creator><![CDATA[Brian Carrier]]></dc:creator>
+		<pubDate>Tue, 23 Jun 2026 10:00:11 +0000</pubDate>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[New Features]]></category>
+		<guid isPermaLink="false">https://www.cybertriage.com/?p=28993</guid>
+
+					<description><![CDATA[<p>SOC analysts need the best data available to make decisions...</p>
+<p>The post <a href="https://www.cybertriage.com/blog/soc-forensics-how-to-set-up-automatic-dfir-analysis-in-the-cloud/">SOC Forensics: How to Set Up Automatic DFIR Analysis in the Cloud</a> appeared first on <a href="https://www.cybertriage.com">Cyber Triage</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<p><span style="font-weight: 300;">SOC analysts need the best data available to make decisions about alerts, and that often involves collecting endpoint artifacts. I’m going to show how to get artifacts collected and analyzed with minimal effort using cloud infrastructure. </span></p>
+<p><span style="font-weight: 300;">The <strong>cloud-based process</strong> can happen while the analyst is reviewing telemetry: </span></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Artifacts are uploaded to cloud storage (S3 or Azure blob).</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">A cloud function (Lambda, functions, etc.) will be triggered and start the analysis.</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">The results will be ready when the telemetry review is complete.</span></li>
+</ul>
+<p><img loading="lazy" decoding="async" class="size-medium wp-image-28998 aligncenter" src="https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda-1-800x138.png" alt="" width="800" height="138" srcset="https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda-1-800x138.png 800w, https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda-1-768x132.png 768w, https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda-1.png 923w" sizes="auto, (max-width: 800px) 100vw, 800px" /></p>
+<h2><b>Why Telemetry Alone Isn’t Enough</b></h2>
+<p><span style="font-weight: 300;">EDR telemetry and the SIEM are often the first places analysts look for evidence of an intrusion. EDR telemetry is great, but there <strong>may not be telemetry</strong> if:</span></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><b>The attacker disabled the EDR agent. </b><span style="font-weight: 300;">For example, </span><a href="https://github.com/netero1010/EDRSilencer"><span style="font-weight: 300;">EDR Silencer</span></a><span style="font-weight: 300;"> will cause data to not be sent to the EDR server. There are many other similar tools. </span></li>
+<li style="font-weight: 300;" aria-level="1"><b>The agent doesn’t monitor that data type. </b><span style="font-weight: 300;">For example, Windows Defender has very limited visibility about web browser activity, and you’ll see IP addresses in network traffic, but not what URL they visited. Refer to the </span><a href="https://www.edr-telemetry.com/"><span style="font-weight: 300;">EDR Telemetry project</span></a><span style="font-weight: 300;"> for details on what EDRs don’t collect. </span></li>
+<li style="font-weight: 300;" aria-level="1"><b>The agent wasn’t installed. </b></li>
+</ul>
+<p><span style="font-weight: 300;">An analyst should start their analysis with the EDR telemetry because it’s fastest to access, but in parallel, they should send out an artifact collector to get more information. </span></p>
+<h2><b>Artifact Collector Basics</b></h2>
+<p><span style="font-weight: 300;">Artifact collectors run on an endpoint and make copies of targeted files and volatile data that are likely to contain evidence. Some, like the Cyber Triage Collector, are </span><a href="https://www.cybertriage.com/blog/adaptive-vs-static-file-collections-for-dfir/"><span style="font-weight: 300;">adaptive</span></a><span style="font-weight: 300;"> and also parse the files to resolve and collect additional files. </span></p>
+<p><span style="font-weight: 300;">Example collectors include the </span><a href="https://www.cybertriage.com/cyber-triage-dfir-collector/"><span style="font-weight: 300;">Cyber Triage Collector</span></a><span style="font-weight: 300;">, </span><a href="https://www.kroll.com/en/services/cyber/incident-response-recovery/kroll-artifact-parser-and-extractor-kape"><span style="font-weight: 300;">KAPE</span></a><span style="font-weight: 300;">, </span><a href="https://github.com/tclahr/uac"><span style="font-weight: 300;">UAC</span></a><span style="font-weight: 300;">, and EDRs often have their own versions (because they know you will need to go beyond telemetry). </span></p>
+<p><b>An artifact collector can:</b></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Get data the attacker hid from the EDR.</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Get the data the EDR ignored (like application-layer artifacts).</span></li>
+</ul>
+<p><span style="font-weight: 300;">Having both telemetry and a forensic collection provides the most comprehensive view of what happened on a host. </span></p>
+<h2><b>Analysis Is the Hard Part</b></h2>
+<table style="width: 100%; border-collapse: collapse;">
+<tbody>
+<tr>
+<td style="width: 66%; vertical-align: top;"><span style="font-weight: 300;">Deploying a collector is one thing, but being able to analyze the results in a timely fashion is another. Many of the collectors will give you a dozen or more text files to manually review and identify what is suspicious. </span></p>
+<p>It’s time-consuming and error-prone.</p>
+<p><span style="font-weight: 300;">To ensure your analysts can get fast artifact-based results, you need to have an automated analysis system that can score the artifacts and identify which are bad and suspicious. Then the analyst can review those instead of looking at thousands of non-interesting ones. </span></td>
+<td style="width: 33%; vertical-align: top;"><img loading="lazy" decoding="async" class="alignnone size-full wp-image-29014" src="https://www.cybertriage.com/wp-content/uploads/2026/06/2026-2-ScoreMatrix2.png" alt="" width="234" height="181" /></td>
+</tr>
+</tbody>
+</table>
+<h2><b>Analyzing Artifacts in the Cloud</b></h2>
+<p><span style="font-weight: 300;">A common destination for collector uploads is cloud storage, such as S3 or Azure blobs. So, it is fastest to analyze them there too.</span></p>
+<p><span style="font-weight: 300;">In AWS, one way to do that is to create a “lambda” that runs based on S3 file creation </span><a href="https://docs.aws.amazon.com/lambda/latest/dg/with-s3.html"><span style="font-weight: 300;">events</span></a><span style="font-weight: 300;"> (Azure has a similar concept). Lambdas themselves can’t do much processing because they aren’t designed to run for long (the default timeout is 3 seconds). </span></p>
+<p><span style="font-weight: 300;">Use the lambda to <strong>either:</strong></span></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Pass the path to an existing server’s API to process.</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Load a VM to analyze the file.</span></li>
+</ul>
+<p><span style="font-weight: 300;">To <strong>set up AWS</strong> to do this, you would: </span></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Create and register a lambda, which is typically a Python script.</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Create the S3 bucket that the artifacts will be uploaded to.</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Create an “Event Notification” on the bucket that will call your lambda when files are created in the bucket (s3:ObjectCreated:*).</span></li>
+</ul>
+<p><img loading="lazy" decoding="async" class="size-medium wp-image-29000 aligncenter" src="https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda-2-800x69.png" alt="" width="800" height="69" srcset="https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda-2-800x69.png 800w, https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda-2-768x67.png 768w, https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda-2.png 923w" sizes="auto, (max-width: 800px) 100vw, 800px" /></p>
+<h2><b>Analyzing Artifacts with Cyber Triage and a Lambda</b></h2>
+<p><span style="font-weight: 300;">You can analyze your uploaded artifacts with Cyber Triage and cloud functions. This can all happen in the background while an analyst is reviewing telemetry. </span></p>
+<p><b>Step 1 (analyst): Start the investigation: </b><span style="font-weight: 300;">Your analyst uses a SOAR playbook or EDR console to start the process. After they do this, they can start reviewing the telemetry while Cyber Triage does its work. </span></p>
+<p><span style="font-weight: 300;">This is an example using a Tines page: </span></p>
+<p><a href="https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda-4.png"><img loading="lazy" decoding="async" class="aligncenter wp-image-29002 " src="https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda-4-300x300.png" alt="" width="325" height="325" /></a></p>
+<p><b>Step 2 (backend): Deploy the Collector:</b><span style="font-weight: 300;"> The Cyber Triage Collector is deployed and run using existing IT infrastructure, such as EDR agents or PowerShell. </span></p>
+<p><span style="font-weight: 300;">For the initial triage, we recommend using the &#8220;&#8211;fast&#8221; setting, which prevents a full scan of the system. The goal is to get copies of critical data from lateral movement, data exfiltration, and remote access within 10 minutes.</span></p>
+<p><img loading="lazy" decoding="async" class="size-medium wp-image-29001 aligncenter" src="https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda-3-800x143.png" alt="" width="800" height="143" srcset="https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda-3-800x143.png 800w, https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda-3-768x138.png 768w, https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda-3.png 959w" sizes="auto, (max-width: 800px) 100vw, 800px" /></p>
+<p><b>Step 3 (backend): Upload to S3 / Azure</b><span style="font-weight: 300;">: The Collector automatically </span><a href="https://docs.cybertriage.com/en/latest/chapters/install/config.html#config-cloud-storage"><span style="font-weight: 300;">uploads its data to an S3 or Azure bucket</span></a><span style="font-weight: 300;">. The bucket name, identifiers, and </span><a href="https://docs.cybertriage.com/en/latest/chapters/install/config.html#configure-collector-output-encryption"><span style="font-weight: 300;">encryption keys</span></a><span style="font-weight: 300;"> were all preconfigured.</span></p>
+<p><img loading="lazy" decoding="async" class="size-medium wp-image-29003 aligncenter" src="https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda_bucket-800x345.png" alt="" width="800" height="345" srcset="https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda_bucket-800x345.png 800w, https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda_bucket-1200x518.png 1200w, https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda_bucket-768x331.png 768w, https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda_bucket.png 1388w" sizes="auto, (max-width: 800px) 100vw, 800px" /></p>
+<p><b>Step 4 (backend): Analysis of uploaded files:</b><span style="font-weight: 300;"> The upload causes an AWS Lambda or Azure Function to be called. The lambda passes the path to Cyber Triage’s REST API. </span>You can find a sample AWS Lambda for Cyber Triage in our <a href="https://github.com/SleuthKitLabs/cybertriage_aws/tree/main/lambda_ingest" target="_blank" rel="noopener">GitHub repo</a>.</p>
+<p><span style="font-weight: 300;">Cyber Triage takes the path and starts to process it. It ingests the collected data, saves it to its database, and scores the artifacts as bad and suspicious using a variety of rules, malware scanning engines, and AI. </span></p>
+<p><span style="font-weight: 300;">You can see the jobs running in the <strong>Cyber Triage Queue:</strong></span></p>
+<p><img loading="lazy" decoding="async" class="size-medium wp-image-29004 aligncenter" src="https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda_queue_v2-800x203.png" alt="" width="800" height="203" srcset="https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda_queue_v2-800x203.png 800w, https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda_queue_v2-1200x305.png 1200w, https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda_queue_v2-768x195.png 768w, https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda_queue_v2-1536x390.png 1536w, https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda_queue_v2-2048x520.png 2048w" sizes="auto, (max-width: 800px) 100vw, 800px" /></p>
+<p><b>Step 5 (analyst): Review triage results:</b><span style="font-weight: 300;"> The analyst logs into Cyber Triage to review the results. They immediately see the number of bad and suspicious items and a timeline. The analyst can compare the bad items with what the EDR detected and review the suspicious items. </span></p>
+<p><a href="https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda-bad_items_timeline.png"><img loading="lazy" decoding="async" class="aligncenter wp-image-29005 size-medium" src="https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda-bad_items_timeline-800x349.png" alt="" width="800" height="349" srcset="https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda-bad_items_timeline-800x349.png 800w, https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda-bad_items_timeline-768x335.png 768w, https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda-bad_items_timeline.png 1167w" sizes="auto, (max-width: 800px) 100vw, 800px" /></a></p>
+<p><span style="font-weight: 300;">As they review the suspicious items, a <strong>timeline of activity</strong> will form on the incident around data exfiltration, lateral movement, and remote access. </span></p>
+<p><a href="https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda-5.png"><img loading="lazy" decoding="async" class="aligncenter wp-image-29008 size-medium" src="https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda-5-800x297.png" alt="" width="800" height="297" srcset="https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda-5-800x297.png 800w, https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda-5-1200x446.png 1200w, https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda-5-768x285.png 768w, https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda-5-1536x571.png 1536w, https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda-5.png 1967w" sizes="auto, (max-width: 800px) 100vw, 800px" /></a></p>
+<p><span style="font-weight: 300;">The Cyber Triage report helps answer those questions. The analyst can use an AI co-pilot to ask additional questions about the findings. For example, you can <strong>ask Claude</strong> to help decode the suspicious PowerShell entry:</span></p>
+<p><img loading="lazy" decoding="async" class="size-medium wp-image-29009 aligncenter" src="https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda-6-800x444.png" alt="" width="800" height="444" srcset="https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda-6-800x444.png 800w, https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda-6-1200x665.png 1200w, https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda-6-768x426.png 768w, https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda-6.png 1259w" sizes="auto, (max-width: 800px) 100vw, 800px" /></p>
+<p><b>Step 6 (analyst): Make decision:</b><span style="font-weight: 300;"> Based on the telemetry and the collection results, decide to escalate to an IR team or not. The DFIR team can log into Cyber Triage and immediately start looking at the data further to establish what happened. </span></p>
+<p><img loading="lazy" decoding="async" class="aligncenter wp-image-29010" src="https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda-7-800x679.png" alt="" width="600" height="509" srcset="https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda-7-800x679.png 800w, https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda-7-768x652.png 768w, https://www.cybertriage.com/wp-content/uploads/2026/06/2026-06-lambda-7.png 967w" sizes="auto, (max-width: 600px) 100vw, 600px" /></p>
+<h2><b>Alternative Non-Cloud Approaches</b></h2>
+<p><span style="font-weight: 300;">There are other ways to use Cyber Triage to give analysts quick results:</span></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">The Collector can make a </span><b>direct network connection </b><span style="font-weight: 300;">back to the Cyber Triage server instead of using Azure or S3. This requires the suspect endpoint to have connectivity back to the Cyber Triage server, which can be challenging for remote hosts. </span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Save the output to </span><b>a file</b><span style="font-weight: 300;"> and manually import it. This is the most manual. The Collector would save results to a local file, and the analyst would copy that file and import it. </span></li>
+</ul>
+<h2><b>Resources</b></h2>
+<p><span style="font-weight: 300;">The Cyber Triage user manual has links to set up this infrastructure:</span></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><a href="https://docs.cybertriage.com/en/latest/chapters/integrations/index.html#deploy-via-edr-agents"><span style="font-weight: 300;">Deploy via EDR agents</span></a></li>
+<li style="font-weight: 300;" aria-level="1"><a href="https://docs.cybertriage.com/en/latest/chapters/advanced/cloud_storage.html"><span style="font-weight: 300;">Configure Cloud Storage</span></a></li>
+<li style="font-weight: 300;" aria-level="1"><a href="https://docs.cybertriage.com/en/latest/chapters/integrations/cloud_functions.html"><span style="font-weight: 300;">Configure Cloud Functions</span></a></li>
+</ul>
+<h2><b>Conclusion</b></h2>
+<p><span style="font-weight: 300;">It’s critical for an analyst to have as much useful data as possible, and a triaged set of forensic artifacts can provide a more complete view. Cyber Triage can start its analysis as soon as the data is uploaded so your team can focus on the bad and suspicious items it finds. </span></p>
+<p><span style="font-weight: 300;">To try this out in your cloud, </span><a href="https://www.cybertriage.com/contact/"><span style="font-weight: 300;">Contact Us</span></a><span style="font-weight: 300;"> for a demo. Or, try it out on your desktop with the free </span><a href="https://www.cybertriage.com/download-eval/"><span style="font-weight: 300;">7-day evaluation</span></a><span style="font-weight: 300;">. </span></p>
+<p>The post <a href="https://www.cybertriage.com/blog/soc-forensics-how-to-set-up-automatic-dfir-analysis-in-the-cloud/">SOC Forensics: How to Set Up Automatic DFIR Analysis in the Cloud</a> appeared first on <a href="https://www.cybertriage.com">Cyber Triage</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Cyber Triage 3.18: New AI + Cloud Automation Capabilities</title>
+		<link>https://www.cybertriage.com/blog/cyber-triage-3-18-new-ai-cloud-automation-capabilities/</link>
+		
+		<dc:creator><![CDATA[Alex Detmering]]></dc:creator>
+		<pubDate>Wed, 10 Jun 2026 23:48:15 +0000</pubDate>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[New Features]]></category>
+		<category><![CDATA[Releases]]></category>
+		<guid isPermaLink="false">https://www.cybertriage.com/?p=28793</guid>
+
+					<description><![CDATA[<p>The 3.18 release brings expanded MCP and cloud automation capabilities...</p>
+<p>The post <a href="https://www.cybertriage.com/blog/cyber-triage-3-18-new-ai-cloud-automation-capabilities/">Cyber Triage 3.18: New AI + Cloud Automation Capabilities</a> appeared first on <a href="https://www.cybertriage.com">Cyber Triage</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<p><span style="font-weight: 300;">The <strong>3.18 release</strong> brings expanded MCP and cloud automation capabilities to make sure your investigations are fast and complete.</span></p>
+<p><b>New features: </b></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Directly save your AI results.</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Start analyzing in the cloud automatically.</span></li>
+</ul>
+<p><span style="font-weight: 300;">You can test drive 3.18 with a </span><a href="https://www.cybertriage.com/download-eval/"><span style="font-weight: 300;">free trial</span></a><span style="font-weight: 300;"> of Cyber Triage. </span></p>
+<h2><b>Directly Save Your AI Results</b></h2>
+<p><span style="font-weight: 300;">The new release allows AI clients, such as Claude Desktop, to write “enrichment notes” and scores back to Cyber Triage. This saves you time and reduces error from you needing to manually transfer data. </span></p>
+<p><span style="font-weight: 300;">This feature works for </span><b>any of the LLMs</b><span style="font-weight: 300;">, including: </span></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">ChatGPT in AWS</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Anthropic servers</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Local LLMs</span></li>
+</ul>
+<p><span style="font-weight: 300;">The previous release of Cyber Triage added a read-only MCP server to perform research and generate reports. With that version, you had to manually jump between the AI client and Cyber Triage to score items or create notes. </span></p>
+<p><span style="font-weight: 300;">With this release, your GenAI client can </span><b>do it for you.</b></p>
+<p><span style="font-weight: 300;">We believe in making sure you know what data is from AI, and these are the only</span><b> 2 ways</b><span style="font-weight: 300;"> that AI can write data into your incident database:</span></p>
+<ol>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">AI Enrichment notes that start with “[AI].” </span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Suspicious scores with a type of “AI-Suggested Finding.”</span></li>
+</ol>
+<p><span style="font-weight: 300;">Here’s an example prompt that uses the </span><b>enrichment note </b><span style="font-weight: 300;">feature: </span></p>
+<p><img loading="lazy" decoding="async" class="aligncenter wp-image-28795 size-full" src="https://www.cybertriage.com/wp-content/uploads/2026/06/Screenshot-2026-06-10-at-12.56.20-PM.png" alt=" Example prompt that uses the enrichment note feature." width="695" height="167" /></p>
+<p><span style="font-weight: 300;">Claude then provides </span><b>its analysis </b><span style="font-weight: 300;">of the suspicious items in the incident:</span></p>
+<p><img loading="lazy" decoding="async" class="aligncenter wp-image-28796 size-full" src="https://www.cybertriage.com/wp-content/uploads/2026/06/Screenshot-2026-06-10-at-12.59.23-PM.png" alt="Example of Claude providing its analysis of the suspicious items in the incident. " width="694" height="557" /></p>
+<p><span style="font-weight: 300;">You can see the result back in the application under the new</span><b> “AI Enrichment” </b><span style="font-weight: 300;">section:</span></p>
+<p><a href="https://www.cybertriage.com/wp-content/uploads/2026/06/Screenshot-2026-06-10-at-5.16.27-PM.png"><img loading="lazy" decoding="async" class="aligncenter wp-image-28797 size-medium" src="https://www.cybertriage.com/wp-content/uploads/2026/06/Screenshot-2026-06-10-at-5.16.27-PM-800x58.png" alt="Example of the AI results appearing back in the application under the new “AI Enrichment” section. This is a new Cyber Triage 3.18 feature. " width="800" height="58" srcset="https://www.cybertriage.com/wp-content/uploads/2026/06/Screenshot-2026-06-10-at-5.16.27-PM-800x58.png 800w, https://www.cybertriage.com/wp-content/uploads/2026/06/Screenshot-2026-06-10-at-5.16.27-PM-1200x86.png 1200w, https://www.cybertriage.com/wp-content/uploads/2026/06/Screenshot-2026-06-10-at-5.16.27-PM-768x55.png 768w, https://www.cybertriage.com/wp-content/uploads/2026/06/Screenshot-2026-06-10-at-5.16.27-PM.png 1473w" sizes="auto, (max-width: 800px) 100vw, 800px" /></a></p>
+<p><span style="font-weight: 300;">Similarly, your LLM may want to score an item as suspicious as you are chatting with it. Those will be listed alongside the other suspicious items with a label of </span><b>“AI-Suggested Finding”: </b></p>
+<p><a href="https://www.cybertriage.com/wp-content/uploads/2026/06/Screenshot-2026-06-10-at-5.41.59-PM.png"><img loading="lazy" decoding="async" class="aligncenter wp-image-28798 size-medium" src="https://www.cybertriage.com/wp-content/uploads/2026/06/Screenshot-2026-06-10-at-5.41.59-PM-800x113.png" alt="Example of an LLM scoring an item suspicious and it being listed alongside the other suspicious items with a label of “AI-Suggested Finding.” This is a new Cyber Triage 3.18 feature. " width="800" height="113" srcset="https://www.cybertriage.com/wp-content/uploads/2026/06/Screenshot-2026-06-10-at-5.41.59-PM-800x113.png 800w, https://www.cybertriage.com/wp-content/uploads/2026/06/Screenshot-2026-06-10-at-5.41.59-PM-768x109.png 768w, https://www.cybertriage.com/wp-content/uploads/2026/06/Screenshot-2026-06-10-at-5.41.59-PM.png 1065w" sizes="auto, (max-width: 800px) 100vw, 800px" /></a></p>
+<p><span style="font-weight: 300;">The LLM version and justification should also be given (also starting with “[AI]”) in the</span><b> details: </b></p>
+<p><a href="https://www.cybertriage.com/wp-content/uploads/2026/06/Screenshot-2026-06-10-at-5.15.52-PM.png"><img loading="lazy" decoding="async" class="aligncenter wp-image-28799 size-medium" src="https://www.cybertriage.com/wp-content/uploads/2026/06/Screenshot-2026-06-10-at-5.15.52-PM-800x111.png" alt=" Example of AI justification given (also starting with “[AI]”) in the details. This is a new Cyber Triage 3.18 feature. " width="800" height="111" srcset="https://www.cybertriage.com/wp-content/uploads/2026/06/Screenshot-2026-06-10-at-5.15.52-PM-800x111.png 800w, https://www.cybertriage.com/wp-content/uploads/2026/06/Screenshot-2026-06-10-at-5.15.52-PM-1200x166.png 1200w, https://www.cybertriage.com/wp-content/uploads/2026/06/Screenshot-2026-06-10-at-5.15.52-PM-768x106.png 768w, https://www.cybertriage.com/wp-content/uploads/2026/06/Screenshot-2026-06-10-at-5.15.52-PM.png 1242w" sizes="auto, (max-width: 800px) 100vw, 800px" /></a></p>
+<p><span style="font-weight: 300;">We at Sleuth Kit Labs believe AI can provide value in investigations, but that it’s important to know where it is being used so that you can properly validate the findings. This release saves you time over the previous read-only MCP server, but still makes it easy to know what was </span><b>original data </b><span style="font-weight: 300;">vs </span><b>AI-generated. </b></p>
+<h2><b>Automatically Start Analyzing in the Cloud</b></h2>
+<p><span style="font-weight: 300;">Getting results fast is important in a SOC, and you can now start the analysis as soon as data is uploaded to S3 or Azure buckets. This means that SOC analysts will quickly see what else happened that may not be in their EDR. </span></p>
+<p><span style="font-weight: 300;">The <strong>Enterprise version of Team</strong> server has a new API that can be passed in the URL of an S3 or Azure blob. That adds it to Cyber Triage’s queue for analysis. </span></p>
+<p><span style="font-weight: 300;">With this API, an analyst can use a SOAR playbook to start a collection, it goes up to cloud storage, and an AWS Lambda or Azure function will detect it. It notifies Cyber Triage, which then begins reviewing it. Minutes later, an analyst logs in to see the results. </span></p>
+<p><span style="font-weight: 300;">They get </span><b>scored forensic artifacts</b><span style="font-weight: 300;"> without needing direct interaction:</span></p>
+<p><img loading="lazy" decoding="async" class="aligncenter wp-image-28800 size-medium" src="https://www.cybertriage.com/wp-content/uploads/2026/06/Screenshot-2026-06-10-at-5.45.53-PM-800x513.png" alt="Diagram of Cyber Triage 3.18's new cloud ingest capability." width="800" height="513" srcset="https://www.cybertriage.com/wp-content/uploads/2026/06/Screenshot-2026-06-10-at-5.45.53-PM-800x513.png 800w, https://www.cybertriage.com/wp-content/uploads/2026/06/Screenshot-2026-06-10-at-5.45.53-PM-768x492.png 768w, https://www.cybertriage.com/wp-content/uploads/2026/06/Screenshot-2026-06-10-at-5.45.53-PM.png 952w" sizes="auto, (max-width: 800px) 100vw, 800px" /></p>
+<p>The <a href="https://docs.cybertriage.com/en/v3.18.0/chapters/integrations/cloud_functions.html">user manual</a> has more details.</p>
+<h2><b>Test Drive 3.18</b></h2>
+<p><span style="font-weight: 300;">3.18’s new features will make your investigations faster and more comprehensive. If you’d like to try the <strong>new AI feature</strong>, request a <a href="https://www.cybertriage.com/download-eval/">free trial</a> of Cyber Triage</span><span style="font-weight: 300;">. </span></p>
+<p><span style="font-weight: 300;">If you’re interested in the <strong>new cloud automation feature</strong>, </span><a href="https://www.cybertriage.com/contact/"><span style="font-weight: 300;">contact us</span></a><span style="font-weight: 300;"> and request a demo of Cyber Triage Enterprise.</span></p>
+<p>The post <a href="https://www.cybertriage.com/blog/cyber-triage-3-18-new-ai-cloud-automation-capabilities/">Cyber Triage 3.18: New AI + Cloud Automation Capabilities</a> appeared first on <a href="https://www.cybertriage.com">Cyber Triage</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>DFIR+AI Primer: When Not to Use GenAI</title>
+		<link>https://www.cybertriage.com/ai/dfirai-primer-when-not-to-use-genai/</link>
+		
+		<dc:creator><![CDATA[Brian Carrier]]></dc:creator>
+		<pubDate>Thu, 04 Jun 2026 21:29:49 +0000</pubDate>
+				<category><![CDATA[AI]]></category>
+		<category><![CDATA[Blog]]></category>
+		<guid isPermaLink="false">https://www.cybertriage.com/?p=28765</guid>
+
+					<description><![CDATA[<p>When thinking about where to use GenAI in your investigations,...</p>
+<p>The post <a href="https://www.cybertriage.com/ai/dfirai-primer-when-not-to-use-genai/">DFIR+AI Primer: When Not to Use GenAI</a> appeared first on <a href="https://www.cybertriage.com">Cyber Triage</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<p><span style="font-weight: 300;">When thinking about where to use GenAI in your investigations, you must </span><b>consider 3 things:</b></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">How much faster did you get an answer from GenAI? </span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">How error-prone is the prompt on your GenAI model?</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">How much verification will be needed given the stakes of the investigation? </span></li>
+</ul>
+<p><span style="font-weight: 300;">If your verification time is bigger than the time savings of getting the initial answer, don’t use GenAI. </span></p>
+<h2><b>Different Prompts Can Produce Different Errors</b></h2>
+<p><span style="font-weight: 300;">GenAI makes errors when the prompt requires it to interpret data, reason about data, or draw conclusions from incomplete data.</span></p>
+<p><span style="font-weight: 300;">Errors commonly happen <strong>because the model:</strong></span></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Makes bad assumptions.</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Uses flawed logic.</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Lacks relevant knowledge or context.</span></li>
+</ul>
+<p><span style="font-weight: 300;">More complicated queries increase the chances of an error. </span></p>
+<h2><b>Different Models Produce Different Errors</b></h2>
+<p><span style="font-weight: 300;">GenAI is only as good as its <strong>model:</strong></span></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">A large, general model (Claude, ChatGPT, etc.) has broad reasoning ability, but may produce errors on specialized or obscure DFIR topics where training data is limited.</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">A small, general local model (Qwen, LLama) has less data and reasoning ability. These have the highest risk of errors. </span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">A small, but fine-tuned model with DFIR specialization could outperform both. </span></li>
+</ul>
+<p><span style="font-weight: 300;">The likelihood of an error is based on both the prompt and the model. </span></p>
+<h2><b>Verify Results Proportional to the Stakes of the Investigation</b></h2>
+<p><span style="font-weight: 300;">Not all errors will have the same impact. GenAI outputs should be verified based on the stakes of the investigation (see <a href="https://www.cybertriage.com/ai/dfirai-primer-how-to-combat-hallucinations/">previous blog post</a>) and the likelihood of error: </span></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><b>Low stakes</b><span style="font-weight: 300;">: A low-severity EDR alert investigation may require only minimal human verification or a judgement from an independent LLM. </span></li>
+<li style="font-weight: 300;" aria-level="1"><b>Average:</b><span style="font-weight: 300;"> A medium-severity EDR alert is higher stakes and may require a human to review the timeline and double-check nothing else was missed. </span></li>
+<li style="font-weight: 300;" aria-level="1"><b>Very high stakes:</b><span style="font-weight: 300;"> A criminal case where someone could go to jail is very high stakes and a human should verify every item in the final result. </span></li>
+</ul>
+<p><span style="font-weight: 300;">Verifications can happen by:</span></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Manual review </span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Judging by other LLMs</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Deterministic confirmation</span></li>
+</ul>
+<h2><b>When Not to Use GenAI</b></h2>
+<p><span style="font-weight: 300;">Don&#8217;t use GenAI if the <strong>verification is longer</strong> than the GenAI time savings. </span></p>
+<h3><span style="font-weight: 300;">Don’t Parse Known Structures Using GenAI</span></h3>
+<p><span style="font-weight: 300;">Do not use GenAI to create your own, for example, FAT file system parser from scratch. It will take the same amount of time to run your new tool versus existing ones (i.e. no time savings during an investigation), but you will need to spend a lot more time verifying the results from your untested parser. </span></p>
+<p><span style="font-weight: 300;">You should consider using GenAI though to parse new and unknown versions of structured files, such as JSON, XML, or SQLite. GenAI will more quickly allow you to understand these formats and convert them to a more useful format.</span></p>
+<h3><span style="font-weight: 300;">Don’t Replace Curated Threat Intelligence with GenAI</span></h3>
+<p><span style="font-weight: 300;">If you have a subscription to a curated threat intelligence source, be careful replacing it with a general GenAI. The lookup speeds will be nearly similar (i.e. no time savings during an investigation), but you’ll need to verify the sources of the GenAI output to make sure they are legit. The curated threat intelligence was already vetted. </span></p>
+<p><span style="font-weight: 300;">But, you should also <strong>consider using:</strong></span></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">GenAI models specialized for threat intelligence and therefore from trustworthy sources</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">GenAI if the curated threat intelligence doesn’t know about the item.</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">GenAI to summarize the outputs from multiple curated threat intelligence sources. </span></li>
+</ul>
+<h3><span style="font-weight: 300;">Don’t Replace High-Quality Detections with GenAI</span></h3>
+<p><span style="font-weight: 300;">If you have a detection or investigation platform with low false positive rules and heuristics, then be careful replacing them with GenAI. The detection speeds will be similar, but you may get more errors from the GenAI and therefore spend more time verifying. </span></p>
+<p><span style="font-weight: 300;">Instead, use GenAI in addition to the rules and heuristics so that you can reach the best conclusions. GenAI can easily go beyond simple matching for detections.</span></p>
+<h2><b>Cyber Triage Is Using Hybrid Approaches</b></h2>
+<p><span style="font-weight: 300;">Cyber Triage is taking a hybrid approach with its integration of GenAI. It will continue to use internal rules and heuristics for scoring, traditional parsers, and curated threat intelligence. </span></p>
+<p><span style="font-weight: 300;">But, it will leverage GenAI to <strong>expand</strong> the capabilities: </span></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Items scored as bad and suspicious will be enriched with GenAI to provide more context.</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">GenAI will be used in addition to its existing rules and heuristics to score items as suspicious.</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Custom reports can be generated based on user’s specific needs.</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">GenAI will be used to safely decode data. </span></li>
+</ul>
+<p><span style="font-weight: 300;">Cyber Triage’s MCP server is clearly a model of supplementing its existing approach with AI since the user needs to prompt the AI to bring in more data. </span></p>
+<p><img loading="lazy" decoding="async" class="size-full wp-image-28751 aligncenter" src="https://www.cybertriage.com/wp-content/uploads/2026/05/2025-05-28-AI-hall-1.png" alt="" width="733" height="190" /></p>
+<p><span style="font-weight: 300;">Version 4 of Cyber Triage in July will automatically prompt for artifact enrichment and to reason about scoring. <strong>All results</strong> will be clearly identified to enable human verification. </span></p>
+<h2><b>Try GenAI in Cyber Triage</b></h2>
+<p><span style="font-weight: 300;">If you are looking to incorporate AI into your investigations, <a href="https://www.cybertriage.com/get-cyber-triage-free-for-7-days/">try out Cyber Triage</a> with its MCP server. It’s BYOAI and you can use your Claude account, AWS Bedrock, or local models. Setup instructions are in the <a href="https://docs.cybertriage.com/en/latest/chapters/integrations/claude_client.html">user manual</a>. </span></p>
+<p>The post <a href="https://www.cybertriage.com/ai/dfirai-primer-when-not-to-use-genai/">DFIR+AI Primer: When Not to Use GenAI</a> appeared first on <a href="https://www.cybertriage.com">Cyber Triage</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>DFIR + AI Primer: How to Combat Hallucinations</title>
+		<link>https://www.cybertriage.com/ai/dfirai-primer-how-to-combat-hallucinations/</link>
+		
+		<dc:creator><![CDATA[Brian Carrier]]></dc:creator>
+		<pubDate>Thu, 28 May 2026 17:49:08 +0000</pubDate>
+				<category><![CDATA[AI]]></category>
+		<category><![CDATA[Blog]]></category>
+		<guid isPermaLink="false">https://www.cybertriage.com/?p=28748</guid>
+
+					<description><![CDATA[<p>GenAI outputs require verification because of hallucinations. As you integrate...</p>
+<p>The post <a href="https://www.cybertriage.com/ai/dfirai-primer-how-to-combat-hallucinations/">DFIR + AI Primer: How to Combat Hallucinations</a> appeared first on <a href="https://www.cybertriage.com">Cyber Triage</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<p><span style="font-weight: 300;">GenAI outputs require verification because of hallucinations. As you integrate AI into your investigations, it is important to understand why hallucinations happen and how to address them based on your risk thresholds. </span></p>
+<p><span style="font-weight: 300;">GenAI can provide value to an investigation, but it’s not for free. </span></p>
+<h2><b>Why does GenAI Hallucinate?</b></h2>
+<p><span style="font-weight: 300;">GenAI algorithms use probabilities to generate sequences of words. It can ultimately generate a sequence of words that are probable, but not accurate. </span></p>
+<p><span style="font-weight: 300;">This most often comes into play when you ask GenAI to enrich and reason about your data when it doesn’t actually know much about it. It can generate false information about an artifact and come to conclusions it can’t actually justify.</span></p>
+<p><span style="font-weight: 300;">Here is a recent DFIR example I had (paraphrasing for brevity):</span></p>
+<blockquote><p><b>Claude</b><span style="font-weight: 300;">: ‘co1bld’ is a standard hostname that appears in the LNK files created on Microsoft&#8217;s internal build infrastructure during the Windows build process. These LNK files are not suspicious even though they were created on a different machine. </span></p>
+<p><b>Me</b><span style="font-weight: 300;">: Do you have a reference for that hostname?</span></p>
+<p><b>Claude</b><span style="font-weight: 300;">: Honestly, no — I don&#8217;t have a reliable citation for that. When I said it, I was drawing on what seems like plausible pattern-matching (the naming convention, the context), but I can&#8217;t point you to a public source that definitively documents co1bld as a Microsoft internal build hostname.</span></p></blockquote>
+<p><span style="font-weight: 300;">We ultimately decided not to take Claude’s advice and could not find any Internet references to it. Cyber Triage will still flag LNK files that have ‘co1bld’ as their hostname. </span></p>
+<h2><b>Combating Hallucinations</b></h2>
+<p><span style="font-weight: 300;">There are several ways to verify data is not a hallucination:</span></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><b>Query for item existence</b><span style="font-weight: 300;">: You can automatically confirm that items referred to by AI are actually in the original data set with a simple deterministic query by their path, time, etc. </span></li>
+<li style="font-weight: 300;" aria-level="1"><b>Manual:</b><span style="font-weight: 300;"> Confirm enrichment with other deterministic data sources, such as threat intelligence feeds or websites that were cited for the conclusion. This often requires a human to reason that the data source and the AI conclusion are equivalent. </span></li>
+<li style="font-weight: 300;" aria-level="1"><b>Judging LLM</b><span style="font-weight: 300;">: Have an independent LLM review the enrichment and storyline to confirm that it agrees (i.e., Claude vs ChatGPT). This can still have errors, but it can increase your overall confidence. </span></li>
+</ul>
+<p><span style="font-weight: 300;">The Judging LLM approach can help with reasoning errors, and one model could identify a logical mistake made by another. But it may not catch knowledge errors because they may both have the same knowledge gaps or wrong data (i.e., the internet is wrong about something).</span></p>
+<h2><b>Know Your Investigation and AI Risk Levels</b></h2>
+<p><span style="font-weight: 300;">Not every investigation has the same impact, and therefore each can have different risk thresholds for how much to verify the results.</span></p>
+<p><b>Examples: </b></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">A low-severity EDR alert investigation could have a high-risk threshold and be OK with little human verification or with a judging LLM. </span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">A medium-severity EDR alert may want a human to review the timeline and double-check that nothing else was missed. </span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">A criminal case where someone could go to jail should have a low-risk threshold, and a human verifies every item in the final result. </span></li>
+</ul>
+<p><span style="font-weight: 300;">Know your investigation risk thresholds. </span></p>
+<h2><b>Verify the Critical Findings</b></h2>
+<p><span style="font-weight: 300;">GenAI provides value because it can enrich and reason at scale much faster than a human can when looking at thousands of artifacts. Most artifacts in an investigation are not relevant. They are part of normal device activity. </span></p>
+<p><span style="font-weight: 300;">As you are coming up with your storyline and identifying which artifacts are relevant, that’s when you should focus on</span><b> verifying what AI introduced:</b></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">If it enriched the data, verify it. </span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">If it came up with a storyline, verify the data it&#8217;s using is correct, and the storyline makes sense. </span></li>
+</ul>
+<p><span style="font-weight: 300;">You do not need to review enrichment of items that are not relevant to the case. </span></p>
+<p><span style="font-weight: 300;">To do this, it’s critical for your tools to</span><b> identify what came from AI</b><span style="font-weight: 300;"> so you know what to verify. </span></p>
+<h2><b>AI Results in Cyber Triage</b></h2>
+<p><span style="font-weight: 300;">As we’ve been integrating AI into Cyber Triage using the MCP server, we clearly identify what came from AI to make sure you know what to verify. </span></p>
+<p><span style="font-weight: 300;">The following are from the <a href="https://www.cybertriage.com/blog/cyber-triage-3-18-new-ai-cloud-automation-capabilities/">3.18 release</a>, which allows the MCP server to add notes and score items as suspicious. </span></p>
+<p><span style="font-weight: 300;">Any enrichment from AI is stored in an </span><b>“AI Enrichment”</b><span style="font-weight: 300;"> field, and the text starts with </span><b>“[AI]”</b><span style="font-weight: 300;">:</span></p>
+<p><img loading="lazy" decoding="async" class="size-medium wp-image-28751 aligncenter" src="https://www.cybertriage.com/wp-content/uploads/2026/05/2025-05-28-AI-hall-1.png" alt="" width="733" height="190" /></p>
+<p><span style="font-weight: 300;">For scoring, the MCP server can also score items as suspicious so that the user has to manually upgrade to Bad (i.e. human review).</span></p>
+<p><span style="font-weight: 300;">Those items are</span><b> clearly marked</b><span style="font-weight: 300;"> as coming from AI:</span></p>
+<p><a href="https://www.cybertriage.com/wp-content/uploads/2026/05/2025-05-28-AI-hall-2.png"><img loading="lazy" decoding="async" class="aligncenter wp-image-28749 size-medium" src="https://www.cybertriage.com/wp-content/uploads/2026/05/2025-05-28-AI-hall-2-800x109.png" alt="" width="800" height="109" srcset="https://www.cybertriage.com/wp-content/uploads/2026/05/2025-05-28-AI-hall-2-800x109.png 800w, https://www.cybertriage.com/wp-content/uploads/2026/05/2025-05-28-AI-hall-2-1200x164.png 1200w, https://www.cybertriage.com/wp-content/uploads/2026/05/2025-05-28-AI-hall-2-768x105.png 768w, https://www.cybertriage.com/wp-content/uploads/2026/05/2025-05-28-AI-hall-2.png 1289w" sizes="auto, (max-width: 800px) 100vw, 800px" /></a></p>
+<p><span style="font-weight: 300;">Further, the justification is</span><b> clearly marked </b><span style="font-weight: 300;">as AI, and the LLM is also identified:</span></p>
+<p><img loading="lazy" decoding="async" class="size-medium wp-image-28750 aligncenter" src="https://www.cybertriage.com/wp-content/uploads/2026/05/2025-05-28-AI-hall-3.png" alt="" width="756" height="232" /></p>
+<h2><b>Try GenAI in Cyber Triage</b></h2>
+<p><span style="font-weight: 300;">If you are looking to incorporate AI into your investigations, try out <a href="https://www.cybertriage.com/get-cyber-triage-free-for-7-days/">Cyber Triage</a> with its MCP server.</span></p>
+<p>It has <strong>features like: </strong></p>
+<ul>
+<li><strong>AI flagging:</strong> AI-generated scores are clearly marked so you know what to verify.</li>
+<li><span style="font-weight: 300;"><strong>BYOAI:</strong> </span>Use your Claude account, AWS Bedrock, or local models.</li>
+</ul>
+<p>Setup instructions are in the <a href="https://docs.cybertriage.com/en/latest/chapters/integrations/claude_client.html">user manual</a>.</p>
+<p>The post <a href="https://www.cybertriage.com/ai/dfirai-primer-how-to-combat-hallucinations/">DFIR + AI Primer: How to Combat Hallucinations</a> appeared first on <a href="https://www.cybertriage.com">Cyber Triage</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>How to Use EDR Telemetry in DFIR: 3 Investigation Methods Compared</title>
+		<link>https://www.cybertriage.com/blog/how-to-use-edr-telemetry-in-dfir-3-investigation-methods-compared/</link>
+		
+		<dc:creator><![CDATA[Alex Detmering]]></dc:creator>
+		<pubDate>Fri, 22 May 2026 02:13:32 +0000</pubDate>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[Incident Response]]></category>
+		<guid isPermaLink="false">https://www.cybertriage.com/?p=28729</guid>
+
+					<description><![CDATA[<p>EDR telemetry is one of the fastest and most complete...</p>
+<p>The post <a href="https://www.cybertriage.com/blog/how-to-use-edr-telemetry-in-dfir-3-investigation-methods-compared/">How to Use EDR Telemetry in DFIR: 3 Investigation Methods Compared</a> appeared first on <a href="https://www.cybertriage.com">Cyber Triage</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<p><span style="font-weight: 300;">EDR telemetry is one of the fastest and most complete sources of evidence for intrusion investigations. </span></p>
+<p><span style="font-weight: 300;">But what’s the best way to investigate with it? </span></p>
+<p><span style="font-weight: 300;">This post covers the <strong>3 most common ways</strong> SOC analysts and DFIR teams investigate using EDR data, breaks down the pros and cons, and provides quick, step-by-step how-tos for each method.</span></p>
+<p><b>Let’s get to it…</b></p>
+<p><b>Jump to a section</b></p>
+<p><a href="#Top 3 Ways to Investigate Telemetry">Top 3 Ways to Investigate Telemetry</a><br />
+<a href="#Method 1: Use the EDR Console">Method 1: Use the EDR Console</a><br />
+<a href="#Method 2: Import into Excel">Method 2: Import into Excel</a><br />
+<a href="#Method 3: Import into Investigation Platform">Method 3: Import into Investigation Platform</a><br />
+<a href="#How to Investigate EDR Telemetry with Cyber Triage">How to Investigate EDR Telemetry with Cyber Triage</a></p>
+<h2 id="Top 3 Ways to Investigate Telemetry"><b>Top 3 Ways to Investigate Telemetry</b></h2>
+<p><span style="font-weight: 300;">The 3 most common methods for <strong>investigating EDR telemetry</strong> are: </span></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">EDR console</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Excel export</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Investigation platform</span><span style="font-weight: 300;"><br />
+</span></li>
+</ul>
+<p><span style="font-weight: 300;">We dive into each of these methods below, but this table is a summary of how they compare across<strong> 10 features: </strong></span></p>
+<table class="table-4">
+<tbody>
+<tr>
+<th width="25%">Feature</th>
+<th width="25%">EDR Console</th>
+<th width="25%">Excel export</th>
+<th width="25%">Investigation platform</th>
+</tr>
+<tr>
+<td class="blue-col">Data access speed</td>
+<td><strong>Fastest &#8211;</strong> Real-time</td>
+<td><strong>Slow &#8211;</strong> Manual export/import</td>
+<td><strong>Fast &#8211;</strong> Direct ingest via API</td>
+</tr>
+<tr>
+<td class="blue-col">Multi-source evidence</td>
+<td><strong>No &#8211;</strong> Limited to EDR data</td>
+<td><strong>No &#8211;</strong> Only what’s exported</td>
+<td><strong>Yes &#8211;</strong> SIEMs, other sources</td>
+</tr>
+<tr>
+<td class="blue-col">DFIR-grade collection</td>
+<td><strong>No &#8211;</strong> Limited to telemetry</td>
+<td><strong>No &#8211;</strong> Only what’s exported</td>
+<td><strong>Yes &#8211;</strong> Native DFIR collector</td>
+</tr>
+<tr>
+<td class="blue-col">Data retention</td>
+<td><strong>Limited &#8211;</strong> Rolls over</td>
+<td><strong>Yes &#8211;</strong> Long-term retention</td>
+<td><strong>Yes &#8211;</strong> Long-term retention</td>
+</tr>
+<tr>
+<td class="blue-col">DFIR-grade UI</td>
+<td><strong>Moderate &#8211;</strong> Detection focus</td>
+<td><strong>No &#8211;</strong> General purpose</td>
+<td><strong>Yes &#8211;</strong> Investigation focus</td>
+</tr>
+<tr>
+<td class="blue-col">DFIR-grade scoring</td>
+<td><strong>No &#8211;</strong> Alert-level analysis</td>
+<td><strong>No &#8211;</strong> All manual analysis</td>
+<td><strong>Yes &#8211;</strong> Investigation-level analysis</td>
+</tr>
+<tr>
+<td class="blue-col">Clue detection</td>
+<td><strong>No &#8211;</strong> Bad item focus</td>
+<td><strong>No &#8211;</strong> All manual analysis</td>
+<td><strong>Yes &#8211;</strong> Bad and suspicious focus</td>
+</tr>
+<tr>
+<td class="blue-col">Case management</td>
+<td><strong>No</strong></td>
+<td><strong>No</strong></td>
+<td><strong>Yes &#8211;</strong> Labeling, collaboration, etc.</td>
+</tr>
+<tr>
+<td class="blue-col">Learning curve</td>
+<td><strong>Moderate &#8211;</strong> Query language</td>
+<td><strong>Low &#8211;</strong> Familiar tool</td>
+<td><strong>Moderate &#8211;</strong> New tool</td>
+</tr>
+<tr>
+<td class="blue-col">Best for</td>
+<td>Alert triage</td>
+<td>Not recommended</td>
+<td>Endpoint triage, full investigations</td>
+</tr>
+</tbody>
+</table>
+<p><span style="font-weight: 300;">Now, let’s take a look at each method in more detail. </span><br />
+<div class="note-dark background-slate text-white"><p><strong>NOTE</strong><br />
+<span style="font-weight: 300;">Cyber Triage is an investigation platform that supports all these features and many more. Want to see if it could improve your investigations? </span><span style="font-weight: 300;"><br />
+</span><span style="font-weight: 300;"><br />
+</span><span style="font-weight: 300;"><a href="https://www.cybertriage.com/contact/">Contact us</a> and ask for a demo of the Enterprise tier of Cyber Triage. </span></p>
+</div></p>
+<h3 id="Method 1: Use the EDR Console"><b>Method 1: Use the EDR Console</b></h3>
+<p><b>Description: </b><span style="font-weight: 300;">Use the EDR or XDR web-based console to review activity. </span></p>
+<p><b>Recommended for:</b><span style="font-weight: 300;"> Tier 1 investigations like validating alerts </span><span style="font-weight: 300;">(AKA <a href="https://www.cybertriage.com/blog/alert-triage-vs-endpoint-triage/">alert triage)</a>.</span></p>
+<p><b>How: </b></p>
+<p><b>Step 1:</b><span style="font-weight: 300;"> Login: The same place you see alerts.</span></p>
+<p><img loading="lazy" decoding="async" class="size-medium wp-image-28730 aligncenter" src="https://www.cybertriage.com/wp-content/uploads/2026/05/Defender_Incident_Overview-800x426.png" alt="" width="800" height="426" srcset="https://www.cybertriage.com/wp-content/uploads/2026/05/Defender_Incident_Overview-800x426.png 800w, https://www.cybertriage.com/wp-content/uploads/2026/05/Defender_Incident_Overview-1200x639.png 1200w, https://www.cybertriage.com/wp-content/uploads/2026/05/Defender_Incident_Overview-768x409.png 768w, https://www.cybertriage.com/wp-content/uploads/2026/05/Defender_Incident_Overview-1536x818.png 1536w, https://www.cybertriage.com/wp-content/uploads/2026/05/Defender_Incident_Overview.png 1918w" sizes="auto, (max-width: 800px) 100vw, 800px" /></p>
+<p><b>Step 2: </b><span style="font-weight: 300;">Jump to the timeline.</span></p>
+<p><img loading="lazy" decoding="async" class="size-medium wp-image-28731 aligncenter" src="https://www.cybertriage.com/wp-content/uploads/2026/05/Defender_Jump_To_Timeline-800x540.png" alt="" width="800" height="540" srcset="https://www.cybertriage.com/wp-content/uploads/2026/05/Defender_Jump_To_Timeline-800x540.png 800w, https://www.cybertriage.com/wp-content/uploads/2026/05/Defender_Jump_To_Timeline-1200x810.png 1200w, https://www.cybertriage.com/wp-content/uploads/2026/05/Defender_Jump_To_Timeline-768x518.png 768w, https://www.cybertriage.com/wp-content/uploads/2026/05/Defender_Jump_To_Timeline.png 1440w" sizes="auto, (max-width: 800px) 100vw, 800px" /></p>
+<p><b>Step 3: </b><span style="font-weight: 300;">Review the data available.</span></p>
+<p><img loading="lazy" decoding="async" class="size-medium wp-image-28732 aligncenter" src="https://www.cybertriage.com/wp-content/uploads/2026/05/Defender_Device_Timeline_View-800x428.png" alt="" width="800" height="428" srcset="https://www.cybertriage.com/wp-content/uploads/2026/05/Defender_Device_Timeline_View-800x428.png 800w, https://www.cybertriage.com/wp-content/uploads/2026/05/Defender_Device_Timeline_View-1200x643.png 1200w, https://www.cybertriage.com/wp-content/uploads/2026/05/Defender_Device_Timeline_View-768x411.png 768w, https://www.cybertriage.com/wp-content/uploads/2026/05/Defender_Device_Timeline_View-1536x822.png 1536w, https://www.cybertriage.com/wp-content/uploads/2026/05/Defender_Device_Timeline_View.png 1918w" sizes="auto, (max-width: 800px) 100vw, 800px" /></p>
+<div class="note-dark background-slate text-white"><p><strong>NOTE</strong><br />
+<span style="font-weight: 300;">Most often have their own query language. Ex: Defender uses Kusto Query Language (KQL)</span></p>
+</div>
+<table class="table-3">
+<tbody>
+<tr>
+<th width="50%"><b>Pros</b></th>
+<th>Cons</th>
+</tr>
+<tr>
+<td width="50%">Fastest access: Just log in.</td>
+<td>Lots of data to look at. Potentially overwhelming so easier to miss important items and evidence.</td>
+</tr>
+<tr>
+<td width="50%">No additional software required.</td>
+<td>Doesn’t show you suspicious data (AKA clues).</td>
+</tr>
+<tr>
+<td width="50%">Boosts the ROI of EDR spend.</td>
+<td>Doesn’t offer labeling and other case management features.</td>
+</tr>
+<tr>
+<td width="50%">Is the preferred method for relatively straightforward investigations like validating an alert (alert triage).</td>
+<td>Doesn’t offer easy collaboration to have someone review specific data.</td>
+</tr>
+<tr>
+<td width="50%"></td>
+<td>Investigation is not an EDR’s primary function: Built for detection first, not DFIR-grade analysis.</td>
+</tr>
+<tr>
+<td width="50%"></td>
+<td>Requires knowledge of the EDRs query language when the investigator wants to pivot.</td>
+</tr>
+<tr>
+<td width="50%"></td>
+<td>Only shows XDR or EDR data. Other data may be in a separate location and could require manual importing and correlation. This is also particularly important in cases where EDR evasion may have been used, where using other sources is critical to the investigation.</td>
+</tr>
+<tr>
+<td width="50%"></td>
+<td>Data rolls over and is lost for future audits.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Method 2: Import into Excel"><b>Method 2: Import into Excel</b></h3>
+<p><b>Description: </b><span style="font-weight: 300;">Export data from the EDR console and import into Excel (or similar).</span></p>
+<p><b>Recommended for:</b><span style="font-weight: 300;"> Not our first recommendation for any type of investigation, but some practitioners prefer it.</span></p>
+<p><b>How: </b></p>
+<p><b>Step 1:</b><span style="font-weight: 300;"> Login: The same place you see alerts.</span></p>
+<p><img loading="lazy" decoding="async" class="size-medium wp-image-28733 aligncenter" src="https://www.cybertriage.com/wp-content/uploads/2026/05/Defender_Manual_Import_S1-800x401.png" alt="" width="800" height="401" srcset="https://www.cybertriage.com/wp-content/uploads/2026/05/Defender_Manual_Import_S1-800x401.png 800w, https://www.cybertriage.com/wp-content/uploads/2026/05/Defender_Manual_Import_S1-1200x602.png 1200w, https://www.cybertriage.com/wp-content/uploads/2026/05/Defender_Manual_Import_S1-768x385.png 768w, https://www.cybertriage.com/wp-content/uploads/2026/05/Defender_Manual_Import_S1-1536x770.png 1536w, https://www.cybertriage.com/wp-content/uploads/2026/05/Defender_Manual_Import_S1.png 1917w" sizes="auto, (max-width: 800px) 100vw, 800px" /></p>
+<p><b>Step 2: </b><span style="font-weight: 300;">Navigate to the host&#8217;s device timeline. </span></p>
+<p><img loading="lazy" decoding="async" class=" wp-image-28734 aligncenter" src="https://www.cybertriage.com/wp-content/uploads/2026/05/Defender_Manual_Import_S2-644x800.png" alt="" width="453" height="563" srcset="https://www.cybertriage.com/wp-content/uploads/2026/05/Defender_Manual_Import_S2-644x800.png 644w, https://www.cybertriage.com/wp-content/uploads/2026/05/Defender_Manual_Import_S2.png 730w" sizes="auto, (max-width: 453px) 100vw, 453px" /></p>
+<p><b>Step 3:</b><span style="font-weight: 300;"> Export data.</span></p>
+<p><img loading="lazy" decoding="async" class="wp-image-28735 aligncenter" src="https://www.cybertriage.com/wp-content/uploads/2026/05/Defender_Manual_Import_S3-800x540.png" alt="" width="723" height="488" srcset="https://www.cybertriage.com/wp-content/uploads/2026/05/Defender_Manual_Import_S3-800x540.png 800w, https://www.cybertriage.com/wp-content/uploads/2026/05/Defender_Manual_Import_S3-1200x809.png 1200w, https://www.cybertriage.com/wp-content/uploads/2026/05/Defender_Manual_Import_S3-768x518.png 768w, https://www.cybertriage.com/wp-content/uploads/2026/05/Defender_Manual_Import_S3.png 1432w" sizes="auto, (max-width: 723px) 100vw, 723px" /></p>
+<p><b>Step 4:</b><span style="font-weight: 300;"> Import into Excel. </span></p>
+<p><img loading="lazy" decoding="async" class="size-medium wp-image-28736 aligncenter" src="https://www.cybertriage.com/wp-content/uploads/2026/05/Defender_Manual_Import_S4-800x333.png" alt="" width="800" height="333" srcset="https://www.cybertriage.com/wp-content/uploads/2026/05/Defender_Manual_Import_S4-800x333.png 800w, https://www.cybertriage.com/wp-content/uploads/2026/05/Defender_Manual_Import_S4-1200x500.png 1200w, https://www.cybertriage.com/wp-content/uploads/2026/05/Defender_Manual_Import_S4-768x320.png 768w, https://www.cybertriage.com/wp-content/uploads/2026/05/Defender_Manual_Import_S4-1536x640.png 1536w, https://www.cybertriage.com/wp-content/uploads/2026/05/Defender_Manual_Import_S4.png 1830w" sizes="auto, (max-width: 800px) 100vw, 800px" /></p>
+<div class="note-dark background-slate text-white"><p><strong>NOTES</strong></p>
+<p>While Defender has a timeline view you can export as we covered above, sometimes, you’ll need to navigate to different data types (processes vs network connections) and export each one. Then import into Excel and filter. Using scripts initially can be a solution.</p>
+<p>Defender timeline can only export 7 days of data per export.</p>
+</div>
+<table class="table-3">
+<tbody>
+<tr>
+<th width="50%"><b>Pros</b></th>
+<th>Cons</th>
+</tr>
+<tr>
+<td width="50%">No additional software required.</td>
+<td>Lots of data to look at. Potentially overwhelming, so it’s easier to miss important items or evidence.</td>
+</tr>
+<tr>
+<td width="50%">Excel filtering can be easier than KQL (and other EDR query languages) for simple queries.</td>
+<td>Doesn’t show you suspicious data (AKA clues).</td>
+</tr>
+<tr>
+<td width="50%">Can be the preferred method for some experienced practitioners.</td>
+<td>Maybe too much for Excel without further reductions from the export or a script.</td>
+</tr>
+<tr>
+<td width="50%">Excel skills are transferable (unlike EDR query languages).</td>
+<td>Doesn’t offer labeling and other case management features.</td>
+</tr>
+<tr>
+<td width="50%">Sometimes the only option for consultants that don&#8217;t get access to a customer&#8217;s EDR (they are just sent data).</td>
+<td>Doesn’t offer easy collaboration to have someone review specific data.</td>
+</tr>
+<tr>
+<td width="50%">It’s easy to do. For example, exporting data from tables is much easier than exporting via API or knowing the right queries to get the data.</td>
+<td>Investigation is not Excel’s primary function: Built for general-purpose data analysis.</td>
+</tr>
+<tr>
+<td width="50%"></td>
+<td>Only shows exported data in a single table.</td>
+</tr>
+<tr>
+<td width="50%"></td>
+<td>Other data may be in a separate location and could require manual importing and correlation. This is particularly important in cases where EDR evasion may have been used, where using other sources is critical to the investigation.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Method 3: Import into Investigation Platform"><b>Method 3: Import into Investigation Platform</b></h3>
+<p><b>Description:</b><span style="font-weight: 300;"> Export data from the EDR and import into an investigation platform.</span></p>
+<p><b>Recommended for: </b><span style="font-weight: 300;">Most investigations, but particularly complex investigations like validating an incident (AKA </span><span style="font-weight: 300;"><a href="https://www.cybertriage.com/blog/alert-triage-vs-endpoint-triage/">endpoint triage</a>)</span><span style="font-weight: 300;"> or investigating an incident (AKA full investigation).</span></p>
+<p><b>How:</b></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">Either export data via CSV (similar to above) or connect the platform directly to the EDR API.</span></li>
+<li style="font-weight: 300;" aria-level="1"><span style="font-weight: 300;">The platform imports data and then normalizes and scores to highlight what to focus on.</span></li>
+</ul>
+<p><span style="font-weight: 300;">For a full walkthrough of how to do this with our investigation platform (Cyber Triage), see the </span><strong>step-by-step guide</strong><span style="font-weight: 300;"> below. </span></p>
+<table class="table-3">
+<tbody>
+<tr>
+<th width="50%"><b>Pros</b></th>
+<th>Cons</th>
+</tr>
+<tr>
+<td width="50%">Automatically highlights suspicious items and clues so important items are prioritized (and less likely to be missed).</td>
+<td>Additional software to purchase.</td>
+</tr>
+<tr>
+<td width="50%">Offers case management with labeling and collaboration.</td>
+<td><span style="font-weight: 300;">Investigators have to learn to use an additional tool. </span></td>
+</tr>
+<tr>
+<td width="50%">Retains data after the investigation is completed for future analysis, re-examination, etc.</td>
+<td><span style="font-weight: 300;">This requires integration, so there is some setup involved.</span></td>
+</tr>
+<tr>
+<td width="50%">Investigation is the platform’s primary function (as opposed to EDRs or Excel, where investigation is at best a secondary function).</td>
+<td>May introduce a delay vs just opening the EDR console.</td>
+</tr>
+<tr>
+<td width="50%">Can import data from other sources (SIEMS, etc.) for more comprehensive evidence and analysis.</td>
+<td></td>
+</tr>
+<tr>
+<td width="50%">Is the preferred method for most investigations, but particularly complex investigations like validating an incident (endpoint triage) or investigating an incident (full investigation).</td>
+<td></td>
+</tr>
+<tr>
+<td width="50%">Can execute collection of DFIR-grade evidence. This almost always good practice, but it’s critical in cases where EDR evasion may have been used.</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="How to Investigate EDR Telemetry with Cyber Triage"><b>Walkthrough: How to Investigate EDR Telemetry with Cyber Triage</b></h2>
+<p><span style="font-weight: 300;">Here’s how to import and analyze Defender telemetry in our investigation platform, Cyber Triage, using the API import option we mentioned above. </span></p>
+<h3><b>How to Ingest EDR Data in Cyber Triage</b></h3>
+<p><span style="font-weight: 300;">The steps below are all you need to do after setting up the API. </span><a href="https://docs.cybertriage.com/en/latest/chapters/integrations/defender.html"><span style="font-weight: 300;">Here’s how to do that for Defender</span></a><span style="font-weight: 300;">.</span></p>
+<p><b>Step 1: </b>Open up Add Host and select EDR telemetry.</p>
+<p><img loading="lazy" decoding="async" class="size-medium wp-image-28737 aligncenter" src="https://www.cybertriage.com/wp-content/uploads/2026/05/Cyber_Triage_Import_EDR-800x473.png" alt="" width="800" height="473" srcset="https://www.cybertriage.com/wp-content/uploads/2026/05/Cyber_Triage_Import_EDR-800x473.png 800w, https://www.cybertriage.com/wp-content/uploads/2026/05/Cyber_Triage_Import_EDR-1200x710.png 1200w, https://www.cybertriage.com/wp-content/uploads/2026/05/Cyber_Triage_Import_EDR-768x454.png 768w, https://www.cybertriage.com/wp-content/uploads/2026/05/Cyber_Triage_Import_EDR-1536x909.png 1536w, https://www.cybertriage.com/wp-content/uploads/2026/05/Cyber_Triage_Import_EDR.png 1918w" sizes="auto, (max-width: 800px) 100vw, 800px" /></p>
+<p><b>Step 2: </b>Find the hostname in Cyber Triage.</p>
+<p><img loading="lazy" decoding="async" class="size-medium wp-image-28738 aligncenter" src="https://www.cybertriage.com/wp-content/uploads/2026/05/Cyber_Triage_EDR_Host_Lookup-800x471.png" alt="" width="800" height="471" srcset="https://www.cybertriage.com/wp-content/uploads/2026/05/Cyber_Triage_EDR_Host_Lookup-800x471.png 800w, https://www.cybertriage.com/wp-content/uploads/2026/05/Cyber_Triage_EDR_Host_Lookup-1200x707.png 1200w, https://www.cybertriage.com/wp-content/uploads/2026/05/Cyber_Triage_EDR_Host_Lookup-768x452.png 768w, https://www.cybertriage.com/wp-content/uploads/2026/05/Cyber_Triage_EDR_Host_Lookup-1536x905.png 1536w, https://www.cybertriage.com/wp-content/uploads/2026/05/Cyber_Triage_EDR_Host_Lookup.png 1918w" sizes="auto, (max-width: 800px) 100vw, 800px" /></p>
+<p><span style="font-weight: 300;">Choose the “Lookup” button and then search for and pick the hostname. (This list comes from Defender). </span></p>
+<p><span style="font-weight: 300;">Doing this will pull <strong>30 days of Defender telemetry</strong> into Cyber Triage.</span></p>
+<div class="note-dark background-slate text-white"><p><strong>NOTE</strong></p>
+<p><span style="font-weight: 300;">You can also import via a CSV file. Here’s how to do that: </span></p>
+<p><span style="font-weight: 300;">1 </span><a href="https://docs.cybertriage.com/en/latest/chapters/integrations/defender.html#integ-defender-csv"><span style="font-weight: 300;">Export Defender telemetry</span></a><span style="font-weight: 300;">. </span></p>
+<p><span style="font-weight: 300;">2 </span><a href="https://docs.cybertriage.com/en/latest/chapters/importing/edr_telemetry.html#"><span style="font-weight: 300;">Import into Cyber Triage</span></a><span style="font-weight: 300;">.</span></p>
+</div>
+<h3><b>How to Analyze EDR Data in Cyber Triage</b></h3>
+<p><span style="font-weight: 300;">Let’s use a scenario to explain the difference between analyzing EDR telemetry in the EDR console vs using an investigation platform like Cyber Triage.</span></p>
+<div class="note-dark background-slate text-white"><p><strong>NOTE</strong></p>
+<p><span style="font-weight: 300;">This scenario was run by our team on an endpoint monitored by Defender in November of 2025.</span></p>
+</div>
+<p><span style="font-weight: 300;">In our scenario, an attacker has spent 6 days in our environment: Nov 25 &#8211; Nov 30. They gained access through a fishing email on November 25 and installed AnyDesk. From Nov 26 &#8211; Nov 29, they scanned the local network, mapped network shares, saved browser creds, exfiled data, etc. </span></p>
+<p><span style="font-weight: 300;">Finally, on Nov 30, Defender fires an alert.</span></p>
+<p><span style="font-weight: 300;">In Defender, the first item flagged in the timeline relevant to this intrusion was on November 30. <strong>Nothing else is highlighted</strong> as notable or important:</span></p>
+<p><img loading="lazy" decoding="async" class="size-medium wp-image-28739 aligncenter" src="https://www.cybertriage.com/wp-content/uploads/2026/05/EDR_Alert_3-800x421.png" alt="" width="800" height="421" srcset="https://www.cybertriage.com/wp-content/uploads/2026/05/EDR_Alert_3-800x421.png 800w, https://www.cybertriage.com/wp-content/uploads/2026/05/EDR_Alert_3-1200x631.png 1200w, https://www.cybertriage.com/wp-content/uploads/2026/05/EDR_Alert_3-768x404.png 768w, https://www.cybertriage.com/wp-content/uploads/2026/05/EDR_Alert_3-1536x808.png 1536w, https://www.cybertriage.com/wp-content/uploads/2026/05/EDR_Alert_3.png 1821w" sizes="auto, (max-width: 800px) 100vw, 800px" /></p>
+<p><span style="font-weight: 300;">But analyzing the same telemetry in Cyber Triage<strong> tells a different story:</strong> </span></p>
+<p><img loading="lazy" decoding="async" class="size-medium wp-image-28740 aligncenter" src="https://www.cybertriage.com/wp-content/uploads/2026/05/Cyber_Triage_EDR_Suspicious_Items-800x425.png" alt="" width="800" height="425" srcset="https://www.cybertriage.com/wp-content/uploads/2026/05/Cyber_Triage_EDR_Suspicious_Items-800x425.png 800w, https://www.cybertriage.com/wp-content/uploads/2026/05/Cyber_Triage_EDR_Suspicious_Items-1200x638.png 1200w, https://www.cybertriage.com/wp-content/uploads/2026/05/Cyber_Triage_EDR_Suspicious_Items-768x408.png 768w, https://www.cybertriage.com/wp-content/uploads/2026/05/Cyber_Triage_EDR_Suspicious_Items-1536x817.png 1536w, https://www.cybertriage.com/wp-content/uploads/2026/05/Cyber_Triage_EDR_Suspicious_Items.png 1913w" sizes="auto, (max-width: 800px) 100vw, 800px" /></p>
+<p><span style="font-weight: 300;">Numerous items from the first day of the intrusion (Nov 25) are flagged, including the installation of AnyDesk. And many more are scored &#8220;Bad&#8221; and &#8220;Suspicious&#8221; between that day and Nov 30 (the day the alert fired). None of this attacker activity is highlighted by Defender. </span></p>
+<p><span style="font-weight: 300;">The reason is </span><b>design: </b></p>
+<ul>
+<li style="font-weight: 300;" aria-level="1"><b>EDRs are designed</b><span style="font-weight: 300;"> to highlight the bad. This is ideal for the detections that drive alerts. </span></li>
+<li style="font-weight: 300;" aria-level="1"><b>Investigation platforms are designed</b><span style="font-weight: 300;"> to highlight the bad and the suspicious. This is ideal for the detections that drive investigations. ’</span></li>
+</ul>
+<p><span style="font-weight: 300;">This is just 1 example of the value of investigation platforms for analyzing EDR telemetry during an intrusion, but there are many more. </span></p>
+<p><span style="font-weight: 300;">If you’d like to see if this method has value for your team, <a href="https://www.cybertriage.com/contact/">contact us</a> and ask for a demo of the Enterprise Tier of Cyber Triage. </span></p>
+<p><span style="font-weight: 300;">This version of Cyber Triage is specifically built to combine automated DFIR analysis with data from EDRs and other important sources.</span></p>
+<p><span style="font-weight: 300;">Give it a try, and tell us what you think! </span></p>
+<p>The post <a href="https://www.cybertriage.com/blog/how-to-use-edr-telemetry-in-dfir-3-investigation-methods-compared/">How to Use EDR Telemetry in DFIR: 3 Investigation Methods Compared</a> appeared first on <a href="https://www.cybertriage.com">Cyber Triage</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+	</channel>
+</rss>

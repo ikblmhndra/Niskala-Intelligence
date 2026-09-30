@@ -1,0 +1,504 @@
+{
+  "2026-09-17": [
+    {
+      "title": "GuardBreaker: Derailing AI-assisted malware analysis with a code comment",
+      "url": "https://www.welivesecurity.com/en/business-security/guardbreaker-derailing-ai-assisted-malware-analysis-code-comment/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Safe word: What is it and why do you need one?",
+      "url": "https://www.welivesecurity.com/en/cybersecurity/safe-word-what-why-need-one/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "I’ve been deepfaked: What do I do?",
+      "url": "https://www.welivesecurity.com/en/how-to/ive-been-deepfaked-what-do/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "This month in security with Tony Anscombe – August 2026 edition",
+      "url": "https://www.welivesecurity.com/en/videos/month-security-tony-anscombe-august-2026/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "AI-driven OSINT in the wrong hands – and why everyone could be a target for fraud",
+      "url": "https://www.welivesecurity.com/en/privacy/ai-powered-osint-why-everyone-viable-target-fraud/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "How QR-code phishing can slip past corporate security measures",
+      "url": "https://www.welivesecurity.com/en/business-security/qr-code-phishing-slip-past-corporate-security-measures/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Black Hat USA 2026: Will vulnerability discovery eventually decline in the AI era?",
+      "url": "https://www.welivesecurity.com/en/business-security/black-hat-usa-2026-vulnerability-discovery-decline-ai-era/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Black Hat USA 2026: What the Hugging Face hack tells us about human responsibility",
+      "url": "https://www.welivesecurity.com/en/business-security/black-hat-usa-2026-hugging-face-hack-human-responsibility/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Black Hat USA 2026: AI is racing ahead of cybersecurity controls",
+      "url": "https://www.welivesecurity.com/en/business-security/black-hat-usa-2026-ai-racing-cybersecurity-controls/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Are AI tutors safe for your kids?",
+      "url": "https://www.welivesecurity.com/en/kids-online/ai-tutors-safe-kids/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "This month in security with Tony Anscombe – July 2026 edition",
+      "url": "https://www.welivesecurity.com/en/videos/month-security-tony-anscombe-july-2026/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Beyond the screenshot: Why you should verify what you see",
+      "url": "https://www.welivesecurity.com/en/cybersecurity/beyond-screenshot-why-verify-you-see/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Forgotten UEFI shims undermining Secure Boot",
+      "url": "https://www.welivesecurity.com/en/eset-research/forgotten-uefi-shims-undermining-secure-boot/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "ESET Threat Report H1 2026",
+      "url": "https://www.welivesecurity.com/en/eset-research/eset-threat-report-h1-2026/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Cyber readiness for SMBs: Getting the basics right",
+      "url": "https://www.welivesecurity.com/en/business-security/cyber-readiness-smbs-getting-basics-right/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "This month in security with Tony Anscombe – June 2026 edition",
+      "url": "https://www.welivesecurity.com/en/videos/month-security-tony-anscombe-june-2026/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Inside the inbox: Why cybercriminals want to break into your email account",
+      "url": "https://www.welivesecurity.com/en/cybersecurity/inside-inbox-cybercriminals-want-break-email-account/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "SMB cyber readiness: the road to resilience starts here",
+      "url": "https://www.welivesecurity.com/en/business-security/smb-cyber-readiness-road-resilience-starts-here/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Gamaredon in 2025: Leveraging tunnels, workers, dead drops, and new alliances",
+      "url": "https://www.welivesecurity.com/en/eset-research/gamaredon-2025-leveraging-tunnels-workers-dead-drops-new-alliances/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "ESET takes part in Operation Endgame to disrupt Amadey and Stealc",
+      "url": "https://www.welivesecurity.com/en/eset-research/eset-takes-part-operation-endgame-disrupt-amadey-stealc/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Killing me gently: Inside Gentlemen’s EDR killer framework",
+      "url": "https://www.welivesecurity.com/en/eset-research/killing-me-gently-inside-gentlemens-edr-killer-framework/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Protecting legacy OT systems against modern cyberthreats",
+      "url": "https://www.welivesecurity.com/en/critical-infrastructure/protecting-legacy-ot-systems-modern-threats/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "FishMonger’s arsenal upgraded: SprySOCKS for Windows",
+      "url": "https://www.welivesecurity.com/en/eset-research/fishmongers-arsenal-upgraded-sprysocks-windows/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "EvilTokens: A phishing attack that doesn’t steal your password",
+      "url": "https://www.welivesecurity.com/en/cybercrime/eviltokens-phishing-doesnt-steal-password/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "OceanLotus: From external espionage to domestic targeting",
+      "url": "https://www.welivesecurity.com/en/eset-research/oceanlotus-external-espionage-domestic-targeting/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Unpacking SMB cyber-readiness – and what makes or breaks it",
+      "url": "https://www.welivesecurity.com/en/business-security/smb-cyber-readiness-what-makes-breaks-it/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Cybercriminals: the 'auditors' you never hired",
+      "url": "https://www.welivesecurity.com/en/business-security/cybercriminals-auditors-never-hired/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Lessons for life: Why children’s data is a long-term identity risk",
+      "url": "https://www.welivesecurity.com/en/kids-online/lessons-life-childrens-data-long-term-identity-risk/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "This month in security with Tony Anscombe – May 2026 edition",
+      "url": "https://www.welivesecurity.com/en/videos/month-security-tony-anscombe-may-2026/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "ESET APT Activity Report Q4 2025–Q1 2026",
+      "url": "https://www.welivesecurity.com/en/eset-research/eset-apt-activity-report-q4-2025-q1-2026/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "What to consider before asking an AI chatbot for health advice",
+      "url": "https://www.welivesecurity.com/en/privacy/what-consider-asking-ai-chatbot-health-advice/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "BTMOB: A stealthy RAT burrowing deep into Android devices",
+      "url": "https://www.welivesecurity.com/en/malware/btmob-stealthy-rat-burrowing-deep-android-devices/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Foul play: Fake FIFA websites target soccer fans looking for World Cup tickets, merchandise",
+      "url": "https://www.welivesecurity.com/en/cybersecurity/foul-play-fake-fifa-world-cup-websites-tickets/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Webworm: New burrowing techniques",
+      "url": "https://www.welivesecurity.com/en/eset-research/webworm-new-burrowing-techniques/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The quest for greater tech independence",
+      "url": "https://www.welivesecurity.com/en/cybersecurity/quest-greater-tech-independence/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Why geopolitical turmoil is a gift for scammers, and how to stay safe",
+      "url": "https://www.welivesecurity.com/en/scams/geopolitical-turmoil-gift-scammers-how-stay-safe/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "FrostyNeighbor: Fresh mischief and digital shenanigans",
+      "url": "https://www.welivesecurity.com/en/eset-research/frostyneighbor-fresh-mischief-digital-shenanigans/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Eyes wide open: How to mitigate the security and privacy risks of smart glasses",
+      "url": "https://www.welivesecurity.com/en/privacy/eyes-wide-open-mitigate-security-privacy-risks-smart-glasses/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Fake call logs, real payments: How CallPhantom tricks Android users",
+      "url": "https://www.welivesecurity.com/en/eset-research/fake-call-logs-real-payments-how-callphantom-tricks-android-users/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Fixing the password problem is as easy as 123456",
+      "url": "https://www.welivesecurity.com/en/cybersecurity/fixing-password-problem-as-easy-as-123456/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "A rigged game: ScarCruft compromises gaming platform in a supply-chain attack",
+      "url": "https://www.welivesecurity.com/en/eset-research/rigged-game-scarcruft-compromises-gaming-platform-supply-chain-attack/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "This month in security with Tony Anscombe – April 2026 edition",
+      "url": "https://www.welivesecurity.com/en/videos/month-security-tony-anscombe-april-2026/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The calm before the ransom: What you see is not all there is",
+      "url": "https://www.welivesecurity.com/en/ransomware/calm-ransom-what-you-see-is-not-all-there-is/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "GopherWhisper: A burrow full of malware",
+      "url": "https://www.welivesecurity.com/en/eset-research/gopherwhisper-burrow-full-malware/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "New NGate variant hides in a trojanized NFC payment app",
+      "url": "https://www.welivesecurity.com/en/eset-research/new-ngate-variant-hides-in-a-trojanized-nfc-payment-app/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "What the ransom note won’t say",
+      "url": "https://www.welivesecurity.com/en/ransomware/what-ransom-note-doesnt-say/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "That data breach alert might be a trap",
+      "url": "https://www.welivesecurity.com/en/scams/data-breach-alert-might-be-trap/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Supply chain dependencies: Have you checked your blind spot?",
+      "url": "https://www.welivesecurity.com/en/business-security/supply-chain-dependencies-have-you-checked-your-blind-spot/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Recovery scammers hit you when you’re down: Here’s how to avoid a second strike",
+      "url": "https://www.welivesecurity.com/en/scams/recovery-scammers-hit-when-down-avoid-second-strike/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "As breakout time accelerates, prevention-first cybersecurity takes center stage",
+      "url": "https://www.welivesecurity.com/en/business-security/breakout-time-accelerates-prevention-first-cybersecurity-center-stage/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Digital assets after death: Managing risks to your loved one’s digital estate",
+      "url": "https://www.welivesecurity.com/en/cybersecurity/digital-assets-death-managing-risks-your-loved-ones-digital-estate/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "This month in security with Tony Anscombe – March 2026 edition",
+      "url": "https://www.welivesecurity.com/en/videos/month-security-tony-anscombe-march-2026/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "RSAC 2026 wrap-up – Week in security with Tony Anscombe",
+      "url": "https://www.welivesecurity.com/en/videos/rsac-2026-wrap-up-week-security-tony-anscombe/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "A cunning predator: How Silver Fox preys on Japanese firms this tax season",
+      "url": "https://www.welivesecurity.com/en/business-security/cunning-predator-how-silver-fox-preys-japanese-firms-tax-season/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Virtual machines, virtually everywhere – and with real security gaps",
+      "url": "https://www.welivesecurity.com/en/business-security/virtual-machines-virtually-everywhere-real-security-gaps/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Cloud workload security: Mind the gaps",
+      "url": "https://www.welivesecurity.com/en/business-security/cloud-workload-security-mind-gaps/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Move fast and save things: A quick guide to recovering a hacked account",
+      "url": "https://www.welivesecurity.com/en/cybersecurity/move-fast-save-things-quick-guide-recovering-hacked-account/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "EDR killers explained: Beyond the drivers",
+      "url": "https://www.welivesecurity.com/en/eset-research/edr-killers-explained-beyond-the-drivers/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Face value: What it takes to fool facial recognition",
+      "url": "https://www.welivesecurity.com/en/privacy/face-value-what-takes-fool-facial-recognition/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Cyber fallout from the Iran war: What to have on your radar",
+      "url": "https://www.welivesecurity.com/en/business-security/cyber-fallout-iran-war-what-have-radar/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Sednit reloaded: Back in the trenches",
+      "url": "https://www.welivesecurity.com/en/eset-research/sednit-reloaded-back-trenches/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "What cybersecurity actually does for your business",
+      "url": "https://www.welivesecurity.com/en/business-security/what-cybersecurity-actually-does-for-your-business/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "How SMBs use threat research and MDR to build a defensive edge",
+      "url": "https://www.welivesecurity.com/en/business-security/how-smbs-use-threat-research-mdr-build-defensive-edge/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Protecting education: How MDR can tip the balance in favor of schools",
+      "url": "https://www.welivesecurity.com/en/business-security/protecting-education-how-mdr-can-tip-balance-favor-schools/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "This month in security with Tony Anscombe – February 2026 edition",
+      "url": "https://www.welivesecurity.com/en/videos/month-security-tony-anscombe-february-2026/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Mobile app permissions (still) matter more than you may think",
+      "url": "https://www.welivesecurity.com/en/mobile-security/mobile-app-permissions-still-matter-more-think/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Faking it on the phone: How to tell if a voice call is AI or not",
+      "url": "https://www.welivesecurity.com/en/business-security/faking-it-phone-how-tell-voice-call-ai/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "PromptSpy ushers in the era of Android threats using GenAI",
+      "url": "https://www.welivesecurity.com/en/eset-research/promptspy-ushers-in-era-android-threats-using-genai/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Is Poshmark safe? How to buy and sell without getting scammed",
+      "url": "https://www.welivesecurity.com/en/scams/poshmark-safe-buy-sell-scammed/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Is it OK to let your children post selfies online?",
+      "url": "https://www.welivesecurity.com/en/kids-online/children-selfies-online/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Naming and shaming: How ransomware groups tighten the screws on victims",
+      "url": "https://www.welivesecurity.com/en/ransomware/naming-shaming-ransomware-groups-tighten-screws-victims/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Taxing times: Top IRS scams to look out for in 2026",
+      "url": "https://www.welivesecurity.com/en/scams/taxing-times-top-irs-scams-look-out-2026/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "OfferUp scammers are out in force: Here’s what you should know",
+      "url": "https://www.welivesecurity.com/en/scams/offerup-scammers-out-force-heres-what-you-should-know/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "A slippery slope: Beware of Winter Olympics scams and other cyberthreats",
+      "url": "https://www.welivesecurity.com/en/cybersecurity/slippery-slope-winter-olympics-scams-cyberthreats/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "This month in security with Tony Anscombe – January 2026 edition",
+      "url": "https://www.welivesecurity.com/en/videos/month-security-tony-anscombe-january-2026-edition/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "DynoWiper update: Technical analysis and attribution",
+      "url": "https://www.welivesecurity.com/en/eset-research/dynowiper-update-technical-analysis-attribution/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Love? Actually: Fake dating app used as lure in targeted spyware campaign in Pakistan",
+      "url": "https://www.welivesecurity.com/en/eset-research/love-actually-fake-dating-app-used-lure-targeted-spyware-campaign-pakistan/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Drowning in spam or scam emails? Here’s probably why",
+      "url": "https://www.welivesecurity.com/en/cybersecurity/drowning-spam-scam-emails-why/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "ESET Research: Sandworm behind cyberattack on Poland’s power grid in late 2025",
+      "url": "https://www.welivesecurity.com/en/eset-research/eset-research-sandworm-cyberattack-poland-power-grid-late-2025/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Children and chatbots: What parents should know",
+      "url": "https://www.welivesecurity.com/en/kids-online/children-chatbots-what-parents-should-know/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Common Apple Pay scams, and how to stay safe",
+      "url": "https://www.welivesecurity.com/en/scams/common-apple-pay-scams-how-stay-safe/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Old habits die hard: 2025’s most common passwords were as predictable as ever",
+      "url": "https://www.welivesecurity.com/en/cybersecurity/old-habits-die-hard-2025-most-common-passwords/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Why LinkedIn is a hunting ground for threat actors – and how to protect yourself",
+      "url": "https://www.welivesecurity.com/en/social-media/linkedin-hunting-ground-threat-actors-how-protect-yourself/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Is it time for internet services to adopt identity verification?",
+      "url": "https://www.welivesecurity.com/en/social-media/time-internet-services-adopt-identity-verification/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Your personal information is on the dark web. What happens next?",
+      "url": "https://www.welivesecurity.com/en/privacy/information-dark-web-what-happens-next/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Credential stuffing: What it is and how to protect yourself",
+      "url": "https://www.welivesecurity.com/en/cybersecurity/credential-stuffing-what-it-is-how-protect-yourself/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "This month in security with Tony Anscombe – December 2025 edition",
+      "url": "https://www.welivesecurity.com/en/videos/month-security-tony-anscombe-december-2025/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "A brush with online fraud: What are brushing scams and how do I stay safe?",
+      "url": "https://www.welivesecurity.com/en/scams/brush-online-fraud-what-are-brushing-scams-how-do-i-stay-safe/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Revisiting CVE-2025-50165: A critical flaw in Windows Imaging Component",
+      "url": "https://www.welivesecurity.com/en/eset-research/revisiting-cve-2025-50165-critical-flaw-windows-imaging-component/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "LongNosedGoblin tries to sniff out governmental affairs in Southeast Asia and Japan",
+      "url": "https://www.welivesecurity.com/en/eset-research/longnosedgoblin-tries-sniff-out-governmental-affairs-southeast-asia-japan/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "ESET Threat Report H2 2025",
+      "url": "https://www.welivesecurity.com/en/eset-research/eset-threat-report-h2-2025/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Black Hat Europe 2025: Was that device designed to be on the internet at all?",
+      "url": "https://www.welivesecurity.com/en/internet-of-things/black-hat-europe-2025-device-designed-internet/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Black Hat Europe 2025: Reputation matters – even in the ransomware economy",
+      "url": "https://www.welivesecurity.com/en/business-security/black-hat-europe-2025-reputation-ransomware/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Locks, SOCs and a cat in a box: What Schrödinger can teach us about cybersecurity",
+      "url": "https://www.welivesecurity.com/en/business-security/locks-socs-cat-box-what-schrodinger-can-teach-us-about-cybersecurity/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Seeking symmetry during ATT&CK® season: How to harness today’s diverse analyst and tester landscape to paint a security masterpiece",
+      "url": "https://www.welivesecurity.com/en/business-security/seeking-symmetry-attck-season-harness-todays-diverse-analyst-tester-landscape-paint-security-masterpiece/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The big catch: How whaling attacks target top executives",
+      "url": "https://www.welivesecurity.com/en/business-security/big-catch-how-whaling-attacks-target-top-executives/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Phishing, privileges and passwords: Why identity is critical to improving cybersecurity posture",
+      "url": "https://www.welivesecurity.com/en/business-security/phishing-privileges-passwords-identity-cybersecurity-posture/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "MuddyWater: Snakes by the riverbank",
+      "url": "https://www.welivesecurity.com/en/eset-research/muddywater-snakes-riverbank/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Oversharing is not caring: What’s at stake if your employees post too much online",
+      "url": "https://www.welivesecurity.com/en/business-security/oversharing-is-not-caring-stake-employees-post-too-much-online/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "This month in security with Tony Anscombe – November 2025 edition",
+      "url": "https://www.welivesecurity.com/en/videos/month-security-tony-anscombe-november-2025/",
+      "posted_on": "2026-09-17"
+    }
+  ]
+}

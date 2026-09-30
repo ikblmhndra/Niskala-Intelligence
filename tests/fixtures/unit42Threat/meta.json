@@ -1,0 +1,17 @@
+{
+  "scraper": "unit42Threat",
+  "legacy_script": "unit42Threat",
+  "legacy_labels": [
+    "NEW ARTICLE FROM UNIT42"
+  ],
+  "source_urls": [
+    "https://unit42.paloaltonetworks.com/feed/"
+  ],
+  "http_status": {
+    "https://unit42.paloaltonetworks.com/feed/": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

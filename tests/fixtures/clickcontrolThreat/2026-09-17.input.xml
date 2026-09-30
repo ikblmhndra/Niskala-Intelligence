@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>ClickControl IT &amp; Cybersecurity</title>
+	<atom:link href="https://clickcontrol.com/feed/" rel="self" type="application/rss+xml" />
+	<link>https://clickcontrol.com</link>
+	<description>IT, Cybersecurity, Hospitality Service Provider in USA and Canada</description>
+	<lastBuildDate>Mon, 27 Oct 2025 15:15:22 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=7.1</generator>
+
+<image>
+	<url>https://clickcontrol.com/wp-content/uploads/2023/06/icon.png</url>
+	<title>ClickControl IT &amp; Cybersecurity</title>
+	<link>https://clickcontrol.com</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+	<item>
+		<title>Windows 11 October Update Cripples Developer Tools: Localhost Connections Mysteriously Fail</title>
+		<link>https://clickcontrol.com/cyber-threat/windows-11-october-update-cripples-developer-tools-localhost-connections-mysteriously-fail/</link>
+					<comments>https://clickcontrol.com/cyber-threat/windows-11-october-update-cripples-developer-tools-localhost-connections-mysteriously-fail/#respond</comments>
+		
+		<dc:creator><![CDATA[ClickControl]]></dc:creator>
+		<pubDate>Mon, 27 Oct 2025 15:09:57 +0000</pubDate>
+				<category><![CDATA[Cyber Threat]]></category>
+		<category><![CDATA[HTTP/2 protocol issue]]></category>
+		<category><![CDATA[localhost connection error]]></category>
+		<category><![CDATA[Microsoft Windows 11 bug]]></category>
+		<category><![CDATA[Visual Studio debugging fix]]></category>
+		<category><![CDATA[Windows 11 update KB5066835]]></category>
+		<category><![CDATA[Windows localhost 127.0.0.1]]></category>
+		<guid isPermaLink="false">https://clickcontrol.com/?p=66923</guid>
+
+					<description><![CDATA[Microsoft resolved a critical Windows 11 bug that broke localhost connections (127.0.0.1) over HTTP/2 protocols, affecting developers and enterprise applications. The issue, introduced by October updates KB5066835 and KB5065789, prevented Visual Studio debugging, SQL Server Management Studio authentication, and other critical applications from functioning properly. Microsoft fixed the problem through a Known Issue Rollback (KIR) update, which users can install via Windows Update followed by a system restart to restore localhost functionality.]]></description>
+										<content:encoded><![CDATA[<p>Microsoft Fixes Critical Windows 11 Bug That Broke Localhost Connections **Update October 17, 2025:** Microsoft has resolved the issue through a Known Issue Rollback (KIR) update, with additional details provided below. Microsoft’s October Windows 11 updates introduced a significant bug that disabled localhost functionality, preventing applications from connecting to the local IP address 127.0.0.</p>
+<p><a href="https://clickcontrol.com/cyber-threat/windows-11-october-update-cripples-developer-tools-localhost-connections-mysteriously-fail/" rel="nofollow">Source</a></p>]]></content:encoded>
+					
+					<wfw:commentRss>https://clickcontrol.com/cyber-threat/windows-11-october-update-cripples-developer-tools-localhost-connections-mysteriously-fail/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>266,000+ F5 BIG-IP Systems Left Vulnerable After Nation-State Hackers Steal Critical Security Flaws</title>
+		<link>https://clickcontrol.com/cyber-attack/266000-f5-big-ip-systems-left-vulnerable-after-nation-state-hackers-steal-critical-security-flaws/</link>
+					<comments>https://clickcontrol.com/cyber-attack/266000-f5-big-ip-systems-left-vulnerable-after-nation-state-hackers-steal-critical-security-flaws/#respond</comments>
+		
+		<dc:creator><![CDATA[ClickControl]]></dc:creator>
+		<pubDate>Mon, 27 Oct 2025 15:06:50 +0000</pubDate>
+				<category><![CDATA[Cyber Attack]]></category>
+		<category><![CDATA[Brickstorm malware attack]]></category>
+		<category><![CDATA[CISA emergency directive]]></category>
+		<category><![CDATA[cybersecurity vulnerabilities patch]]></category>
+		<category><![CDATA[F5 BIG-IP security breach]]></category>
+		<category><![CDATA[nation-state hackers UNC5291]]></category>
+		<category><![CDATA[network infrastructure security]]></category>
+		<guid isPermaLink="false">https://clickcontrol.com/?p=66922</guid>
+
+					<description><![CDATA[A major cybersecurity breach at F5 Networks has exposed over 266,000 BIG-IP devices worldwide to potential attacks. Chinese nation-state hackers from group UNC5291 infiltrated F5's network for at least a year, stealing source code and vulnerability information while deploying Brickstorm malware. F5 has released patches for 44 vulnerabilities, and CISA issued emergency directives requiring federal agencies to update systems by October 31. The breach is particularly concerning as compromised F5 devices can provide attackers with network access, credential theft capabilities, and persistent backdoors into critical infrastructure systems.]]></description>
+										<content:encoded><![CDATA[<p>Major Security Breach Exposes Over 266,000 F5 BIG-IP Devices Worldwide A significant cybersecurity incident has left hundreds of thousands of critical network devices vulnerable to attack, following a major breach at technology giant F5 Networks. ## The Breach Details F5, a Fortune 500 company serving over 23,000 customers including 48 of the Fortune 50 companies, disclosed this week that nation…</p>
+<p><a href="https://clickcontrol.com/cyber-attack/266000-f5-big-ip-systems-left-vulnerable-after-nation-state-hackers-steal-critical-security-flaws/" rel="nofollow">Source</a></p>]]></content:encoded>
+					
+					<wfw:commentRss>https://clickcontrol.com/cyber-attack/266000-f5-big-ip-systems-left-vulnerable-after-nation-state-hackers-steal-critical-security-flaws/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Microsoft Patches &#8220;Highest Ever&#8221; Severity Flaw That Could Hijack User Credentials in ASP.NET Core</title>
+		<link>https://clickcontrol.com/cyber-threat/microsoft-patches-highest-ever-severity-flaw-that-could-hijack-user-credentials-in-asp-net-core/</link>
+					<comments>https://clickcontrol.com/cyber-threat/microsoft-patches-highest-ever-severity-flaw-that-could-hijack-user-credentials-in-asp-net-core/#respond</comments>
+		
+		<dc:creator><![CDATA[ClickControl]]></dc:creator>
+		<pubDate>Mon, 27 Oct 2025 15:03:43 +0000</pubDate>
+				<category><![CDATA[Cyber Threat]]></category>
+		<category><![CDATA[.NET Core critical update]]></category>
+		<category><![CDATA[ASP.NET Core vulnerability]]></category>
+		<category><![CDATA[CVE-2025-55315]]></category>
+		<category><![CDATA[HTTP request smuggling]]></category>
+		<category><![CDATA[Kestrel web server security]]></category>
+		<category><![CDATA[Microsoft security patch]]></category>
+		<guid isPermaLink="false">https://clickcontrol.com/?p=66921</guid>
+
+					<description><![CDATA[Microsoft has patched a critical ASP.NET Core vulnerability (CVE-2025-55315) affecting the Kestrel web server with the platform's highest-ever severity rating. This HTTP request smuggling flaw allows authenticated attackers to hijack credentials, bypass security controls, access sensitive data, modify server files, and crash servers. Microsoft urges immediate updates for all ASP.NET Core users across .NET 8+, .NET 2.3, and self-contained applications, with specific installation instructions for each version. The fix was part of January's Patch Tuesday addressing 172 total security flaws, making this a high-priority update for organizations running ASP.NET Core applications.]]></description>
+										<content:encoded><![CDATA[<p>Microsoft Patches Critical ASP.NET Core Vulnerability with Highest-Ever Severity Rating Microsoft has addressed a critical security flaw in ASP.NET Core that received the highest severity rating ever assigned to this platform. The vulnerability, designated CVE-2025-55315, affects the Kestrel web server and poses significant risks to web applications worldwide. ## Understanding the Threat This…</p>
+<p><a href="https://clickcontrol.com/cyber-threat/microsoft-patches-highest-ever-severity-flaw-that-could-hijack-user-credentials-in-asp-net-core/" rel="nofollow">Source</a></p>]]></content:encoded>
+					
+					<wfw:commentRss>https://clickcontrol.com/cyber-threat/microsoft-patches-highest-ever-severity-flaw-that-could-hijack-user-credentials-in-asp-net-core/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Europol Crushes Massive SIM-Box Empire That Fueled 3,200 Fraud Cases and €4.5M in Losses</title>
+		<link>https://clickcontrol.com/cyber-crime/europol-crushes-massive-sim-box-empire-that-fueled-3200-fraud-cases-and-e4-5m-in-losses/</link>
+					<comments>https://clickcontrol.com/cyber-crime/europol-crushes-massive-sim-box-empire-that-fueled-3200-fraud-cases-and-e4-5m-in-losses/#respond</comments>
+		
+		<dc:creator><![CDATA[ClickControl]]></dc:creator>
+		<pubDate>Mon, 27 Oct 2025 15:00:36 +0000</pubDate>
+				<category><![CDATA[Cyber Crime]]></category>
+		<category><![CDATA[cybercrime investigation]]></category>
+		<category><![CDATA[European law enforcement operation]]></category>
+		<category><![CDATA[international cybercriminal network]]></category>
+		<category><![CDATA[online account verification scams]]></category>
+		<category><![CDATA[SIM-box fraud]]></category>
+		<category><![CDATA[telecommunications fraud]]></category>
+		<guid isPermaLink="false">https://clickcontrol.com/?p=66920</guid>
+
+					<description><![CDATA[European law enforcement dismantled a massive SIM-box fraud network in Operation SIMCARTEL, shutting down illegal services operating through gogetsms.com and apisim.com. The criminal enterprise used 1,200 SIM-box devices with 40,000 SIM cards from 80+ countries to generate 49 million fraudulent online accounts, facilitating over 3,200 fraud cases including phishing, investment scams, and police impersonation schemes. Coordinated raids across Austria, Estonia, Finland, and Latvia resulted in seven arrests and seizure of criminal infrastructure, €431,000 in frozen accounts, $333,000 in cryptocurrency, and luxury vehicles. The operation caused millions in damages, with Austria reporting €4.5 million and Latvia €420,000 in losses.]]></description>
+										<content:encoded><![CDATA[<p>European Police Dismantle Massive SIM-Box Fraud Network in Operation SIMCARTEL European law enforcement has successfully shut down a sophisticated cybercriminal operation that facilitated over 3,200 fraud cases and caused millions in financial losses across multiple countries. ## The Criminal Enterprise Operation SIMCARTEL targeted an illegal SIM-box service that operated through two websites…</p>
+<p><a href="https://clickcontrol.com/cyber-crime/europol-crushes-massive-sim-box-empire-that-fueled-3200-fraud-cases-and-e4-5m-in-losses/" rel="nofollow">Source</a></p>]]></content:encoded>
+					
+					<wfw:commentRss>https://clickcontrol.com/cyber-crime/europol-crushes-massive-sim-box-empire-that-fueled-3200-fraud-cases-and-e4-5m-in-losses/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Microsoft Clears Path for Windows 11 24H2: Two Major Update Blocks Removed After Critical Fixes</title>
+		<link>https://clickcontrol.com/technology/microsoft-clears-path-for-windows-11-24h2-two-major-update-blocks-removed-after-critical-fixes/</link>
+					<comments>https://clickcontrol.com/technology/microsoft-clears-path-for-windows-11-24h2-two-major-update-blocks-removed-after-critical-fixes/#respond</comments>
+		
+		<dc:creator><![CDATA[ClickControl]]></dc:creator>
+		<pubDate>Mon, 27 Oct 2025 14:57:29 +0000</pubDate>
+				<category><![CDATA[Technology]]></category>
+		<category><![CDATA[Microsoft compatibility blocks]]></category>
+		<category><![CDATA[security software compatibility]]></category>
+		<category><![CDATA[wallpaper application problems]]></category>
+		<category><![CDATA[Windows 11 2025 update]]></category>
+		<category><![CDATA[Windows 11 24H2 update]]></category>
+		<category><![CDATA[Windows 11 upgrade issues]]></category>
+		<guid isPermaLink="false">https://clickcontrol.com/?p=66919</guid>
+
+					<description><![CDATA[Microsoft has removed two compatibility blocks preventing Windows 11 24H2 upgrades, resolving issues with enterprise security software using SenseShield Technology drivers that caused system crashes, and wallpaper applications that created desktop display problems. The company previously lifted restrictions related to camera functionality and Bluetooth audio issues. Additionally, Windows 11 25H2 (2025 Update) is now available for users with early update settings enabled, while Home and Pro users receive automatic updates with postponement options.]]></description>
+										<content:encoded><![CDATA[<p>Microsoft Removes Windows 11 24H2 Update Blocks, Clearing Path for More Users Microsoft has lifted two additional compatibility restrictions that were preventing users from upgrading to Windows 11 24H2, making the update available to a broader range of devices. ## Security Software Compatibility Resolved The first restriction, implemented in April 2024, affected systems running enterprise…</p>
+<p><a href="https://clickcontrol.com/technology/microsoft-clears-path-for-windows-11-24h2-two-major-update-blocks-removed-after-critical-fixes/" rel="nofollow">Source</a></p>]]></content:encoded>
+					
+					<wfw:commentRss>https://clickcontrol.com/technology/microsoft-clears-path-for-windows-11-24h2-two-major-update-blocks-removed-after-critical-fixes/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>North Korean Hackers Weaponize Blockchain to Deploy Evolved Malware Arsenal in Stealth Attacks</title>
+		<link>https://clickcontrol.com/cyber-espionage/north-korean-hackers-weaponize-blockchain-to-deploy-evolved-malware-arsenal-in-stealth-attacks/</link>
+					<comments>https://clickcontrol.com/cyber-espionage/north-korean-hackers-weaponize-blockchain-to-deploy-evolved-malware-arsenal-in-stealth-attacks/#respond</comments>
+		
+		<dc:creator><![CDATA[ClickControl]]></dc:creator>
+		<pubDate>Mon, 27 Oct 2025 14:54:18 +0000</pubDate>
+				<category><![CDATA[Cyber Espionage]]></category>
+		<category><![CDATA[blockchain command control]]></category>
+		<category><![CDATA[Contagious Interview campaign]]></category>
+		<category><![CDATA[cryptocurrency theft]]></category>
+		<category><![CDATA[malware evolution]]></category>
+		<category><![CDATA[North Korean hackers]]></category>
+		<category><![CDATA[social engineering attacks]]></category>
+		<guid isPermaLink="false">https://clickcontrol.com/uncategorized/north-korean-hackers-weaponize-blockchain-to-deploy-evolved-malware-arsenal-in-stealth-attacks/</guid>
+
+					<description><![CDATA[North Korean hackers behind the "Contagious Interview" campaign are evolving their malware arsenal by merging BeaverTail and OtterCookie capabilities and pioneering the use of blockchain networks as command-and-control servers. The group targets job seekers through fake recruitment scams, deploying sophisticated malware with enhanced keylogging, screenshot capture, cryptocurrency theft, and remote access capabilities. Recent attacks involved malicious Node.js applications and compromised npm packages, demonstrating the threat actors' continued innovation in social engineering tactics and technical sophistication to evade detection while maximizing data theft impact.]]></description>
+										<content:encoded><![CDATA[<p>North Korean Hackers Evolve Malware Arsenal in Ongoing “Contagious Interview” Campaign North Korean cybercriminals behind the notorious “Contagious Interview” campaign are actively upgrading their malware toolkit, merging capabilities from two separate programs to create more sophisticated attack tools, according to new research from Cisco Talos. ## Campaign Evolution and New Capabilities The…</p>
+<p><a href="https://clickcontrol.com/cyber-espionage/north-korean-hackers-weaponize-blockchain-to-deploy-evolved-malware-arsenal-in-stealth-attacks/" rel="nofollow">Source</a></p>]]></content:encoded>
+					
+					<wfw:commentRss>https://clickcontrol.com/cyber-espionage/north-korean-hackers-weaponize-blockchain-to-deploy-evolved-malware-arsenal-in-stealth-attacks/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>North Korean Hackers Deploy Sophisticated AkdoorTea Backdoor in Massive Crypto Developer Infiltration Campaign</title>
+		<link>https://clickcontrol.com/cyber-espionage/north-korean-hackers-deploy-sophisticated-akdoortea-backdoor-in-massive-crypto-developer-infiltration-campaign/</link>
+					<comments>https://clickcontrol.com/cyber-espionage/north-korean-hackers-deploy-sophisticated-akdoortea-backdoor-in-massive-crypto-developer-infiltration-campaign/#respond</comments>
+		
+		<dc:creator><![CDATA[ClickControl]]></dc:creator>
+		<pubDate>Thu, 25 Sep 2025 17:16:17 +0000</pubDate>
+				<category><![CDATA[Cyber Espionage]]></category>
+		<category><![CDATA[AkdoorTea backdoor malware]]></category>
+		<category><![CDATA[Contagious Interview cyber campaign]]></category>
+		<category><![CDATA[cryptocurrency Web3 security threats]]></category>
+		<category><![CDATA[North Korean hackers]]></category>
+		<category><![CDATA[social engineering job scams]]></category>
+		<category><![CDATA[software developers cybersecurity]]></category>
+		<guid isPermaLink="false">https://clickcontrol.com/?p=66769</guid>
+
+					<description><![CDATA[North Korean hackers are conducting a sophisticated multi-platform cyber campaign called "Contagious Interview," targeting software developers worldwide with advanced malware including the newly discovered AkdoorTea backdoor. The attackers pose as recruiters on job platforms like LinkedIn and Upwork, using fake video assessments and malicious coding exercises to deploy malware across Windows, Linux, and macOS systems. The campaign specifically targets cryptocurrency and Web3 developers, utilizing tools like BeaverTail, InvisibleFerret, and the advanced TsunamiKit for data theft and system persistence. This operation connects to North Korea's broader fraudulent IT worker scheme, combining traditional identity theft with advanced cyber operations to infiltrate legitimate companies using stolen identities.]]></description>
+										<content:encoded><![CDATA[<p>North Korean Hackers Target Software Developers with Sophisticated Multi-Platform Campaign North Korean threat actors have launched an advanced cyber campaign called “Contagious Interview,” targeting software developers worldwide with a previously unknown backdoor called AkdoorTea. The campaign, tracked by Slovak cybersecurity firm ESET as “DeceptiveDevelopment…</p>
+<p><a href="https://clickcontrol.com/cyber-espionage/north-korean-hackers-deploy-sophisticated-akdoortea-backdoor-in-massive-crypto-developer-infiltration-campaign/" rel="nofollow">Source</a></p>]]></content:encoded>
+					
+					<wfw:commentRss>https://clickcontrol.com/cyber-espionage/north-korean-hackers-deploy-sophisticated-akdoortea-backdoor-in-massive-crypto-developer-infiltration-campaign/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>DDoS Attacks Surge 41% as Hackers Unleash Record-Breaking 2.2 Tbps Assault on Tech Companies</title>
+		<link>https://clickcontrol.com/cyber-attack/ddos-attacks-surge-41-as-hackers-unleash-record-breaking-2-2-tbps-assault-on-tech-companies/</link>
+					<comments>https://clickcontrol.com/cyber-attack/ddos-attacks-surge-41-as-hackers-unleash-record-breaking-2-2-tbps-assault-on-tech-companies/#respond</comments>
+		
+		<dc:creator><![CDATA[ClickControl]]></dc:creator>
+		<pubDate>Thu, 25 Sep 2025 17:13:08 +0000</pubDate>
+				<category><![CDATA[Cyber Attack]]></category>
+		<category><![CDATA[cyber attack mitigation]]></category>
+		<category><![CDATA[cybersecurity threats]]></category>
+		<category><![CDATA[DDoS attacks]]></category>
+		<category><![CDATA[distributed denial-of-service]]></category>
+		<category><![CDATA[network security vulnerabilities]]></category>
+		<category><![CDATA[technology sector targeting]]></category>
+		<guid isPermaLink="false">https://clickcontrol.com/?p=66768</guid>
+
+					<description><![CDATA[DDoS attacks surged 41% year-over-year with a record-breaking 2.2 Tbps assault, while attack frequency jumped 21% to 1.17 million incidents in H1 2025. The technology sector now faces 30% of all attacks, overtaking gaming as the primary target, followed by financial services at 21%. Cybercriminals are deploying more sophisticated multi-vector strategies with longer durations and application-layer attacks rising to 38% of incidents. Factors driving this escalation include accessible DDoS-for-hire services, IoT vulnerabilities, geopolitical tensions, and advanced attack techniques targeting business logic flaws in e-commerce and payment systems.]]></description>
+										<content:encoded><![CDATA[<p>DDoS Attacks Surge 41% as Cybercriminals Target Technology Sector A new cybersecurity report reveals alarming trends in distributed denial-of-service (DDoS) attacks, with threat actors launching increasingly sophisticated campaigns that are reshaping the digital threat landscape. ## Record-Breaking Attack Volumes The latest Gcore Radar report analyzing Q1-Q2 2025 data shows a dramatic 41%</p>
+<p><a href="https://clickcontrol.com/cyber-attack/ddos-attacks-surge-41-as-hackers-unleash-record-breaking-2-2-tbps-assault-on-tech-companies/" rel="nofollow">Source</a></p>]]></content:encoded>
+					
+					<wfw:commentRss>https://clickcontrol.com/cyber-attack/ddos-attacks-surge-41-as-hackers-unleash-record-breaking-2-2-tbps-assault-on-tech-companies/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Hackers Infiltrate Rust Package Registry: 8,400+ Downloads of Fake Crates Designed to Steal Crypto Wallet Keys</title>
+		<link>https://clickcontrol.com/cyber-attack/hackers-infiltrate-rust-package-registry-8400-downloads-of-fake-crates-designed-to-steal-crypto-wallet-keys/</link>
+					<comments>https://clickcontrol.com/cyber-attack/hackers-infiltrate-rust-package-registry-8400-downloads-of-fake-crates-designed-to-steal-crypto-wallet-keys/#respond</comments>
+		
+		<dc:creator><![CDATA[ClickControl]]></dc:creator>
+		<pubDate>Thu, 25 Sep 2025 17:09:59 +0000</pubDate>
+				<category><![CDATA[Cyber Attack]]></category>
+		<category><![CDATA[crates.io security vulnerability]]></category>
+		<category><![CDATA[cryptocurrency wallet attack]]></category>
+		<category><![CDATA[Ethereum Solana private keys]]></category>
+		<category><![CDATA[malicious Rust packages]]></category>
+		<category><![CDATA[supply chain security]]></category>
+		<category><![CDATA[typosquatting attack]]></category>
+		<guid isPermaLink="false">https://clickcontrol.com/?p=66767</guid>
+
+					<description><![CDATA[Cybersecurity researchers discovered a sophisticated supply chain attack targeting cryptocurrency developers through malicious Rust packages. Two fake libraries—faster_log and async_println—impersonated the legitimate fast_log library, accumulating over 8,400 downloads before detection. The packages used typosquatting tactics, copied original documentation for cover, and embedded code to scan for Ethereum and Solana private keys in source files, transmitting stolen wallet credentials to command-and-control servers. The malicious packages were removed from crates.io following responsible disclosure, but the incident highlights critical supply chain security risks in cryptocurrency development where stolen private keys can cause immediate financial losses.]]></description>
+										<content:encoded><![CDATA[<p>Malicious Rust Packages Target Cryptocurrency Wallets in Supply Chain Attack Cybersecurity researchers have uncovered a sophisticated supply chain attack targeting cryptocurrency developers through malicious Rust programming packages. Two fake libraries designed to steal digital wallet credentials were recently discovered and removed from the official Rust package registry. ##</p>
+<p><a href="https://clickcontrol.com/cyber-attack/hackers-infiltrate-rust-package-registry-8400-downloads-of-fake-crates-designed-to-steal-crypto-wallet-keys/" rel="nofollow">Source</a></p>]]></content:encoded>
+					
+					<wfw:commentRss>https://clickcontrol.com/cyber-attack/hackers-infiltrate-rust-package-registry-8400-downloads-of-fake-crates-designed-to-steal-crypto-wallet-keys/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Critical Cisco SNMP Flaw Under Active Attack Grants Hackers Root Access to Network Devices</title>
+		<link>https://clickcontrol.com/cyber-threat/critical-cisco-snmp-flaw-under-active-attack-grants-hackers-root-access-to-network-devices/</link>
+					<comments>https://clickcontrol.com/cyber-threat/critical-cisco-snmp-flaw-under-active-attack-grants-hackers-root-access-to-network-devices/#respond</comments>
+		
+		<dc:creator><![CDATA[ClickControl]]></dc:creator>
+		<pubDate>Thu, 25 Sep 2025 17:06:51 +0000</pubDate>
+				<category><![CDATA[Cyber Threat]]></category>
+		<category><![CDATA[Cisco IOS vulnerability]]></category>
+		<category><![CDATA[Cisco security vulnerability]]></category>
+		<category><![CDATA[CVE-2025-20352]]></category>
+		<category><![CDATA[IOS XE software]]></category>
+		<category><![CDATA[network security patch]]></category>
+		<category><![CDATA[SNMP exploit]]></category>
+		<guid isPermaLink="false">https://clickcontrol.com/?p=66766</guid>
+
+					<description><![CDATA[Cisco has issued an urgent alert for CVE-2025-20352, a high-severity vulnerability (CVSS 7.7) in IOS and IOS XE software's SNMP subsystem that's being actively exploited. The flaw allows attackers to cause denial-of-service or execute arbitrary code as root, depending on their privilege level. All Cisco IOS/IOS XE versions with SNMP enabled, Meraki MS390 switches, and Catalyst 9300 Series switches are affected. IT teams must immediately upgrade to IOS XE Release 17.15.4a or later, restrict SNMP access, and review administrator credentials to mitigate this critical security risk.]]></description>
+										<content:encoded><![CDATA[<p>Critical Cisco Security Flaw Exploited in the Wild: What IT Teams Need to Know Cisco has issued an urgent security alert regarding a high-severity vulnerability in its IOS and IOS XE software that cybercriminals are already exploiting in real-world attacks. ## The Vulnerability Details The security flaw, designated **CVE-2025-20352** with a CVSS score of 7.7, affects the Simple Network…</p>
+<p><a href="https://clickcontrol.com/cyber-threat/critical-cisco-snmp-flaw-under-active-attack-grants-hackers-root-access-to-network-devices/" rel="nofollow">Source</a></p>]]></content:encoded>
+					
+					<wfw:commentRss>https://clickcontrol.com/cyber-threat/critical-cisco-snmp-flaw-under-active-attack-grants-hackers-root-access-to-network-devices/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+	</channel>
+</rss>

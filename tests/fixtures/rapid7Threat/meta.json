@@ -1,0 +1,17 @@
+{
+  "scraper": "rapid7Threat",
+  "legacy_script": "rapid7Threat",
+  "legacy_labels": [
+    "NEW ARTICLE FROM RAPID7"
+  ],
+  "source_urls": [
+    "https://www.rapid7.com/rss.xml"
+  ],
+  "http_status": {
+    "https://www.rapid7.com/rss.xml": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

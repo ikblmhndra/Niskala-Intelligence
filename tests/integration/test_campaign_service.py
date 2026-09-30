@@ -159,9 +159,7 @@ async def test_get_recent_campaigns_uses_diamond_model_ta_profile(
         },
     )
 
-    campaigns = await campaign_service.get_recent_campaigns(
-        async_db_session, days=7, min_size=2
-    )
+    campaigns = await campaign_service.get_recent_campaigns(async_db_session, days=7, min_size=2)
     assert len(campaigns) == 1
     dm = campaigns[0]["diamond_model"]
     assert dm["adversary"]["sophistication"] == "nation-state"
@@ -213,9 +211,7 @@ async def test_get_recent_campaigns_links_related_campaigns_by_shared_actor(
         )
         await repo.set_enrichment(a, threat_actors=["Apt41"])
 
-    campaigns = await campaign_service.get_recent_campaigns(
-        async_db_session, days=7, min_size=2
-    )
+    campaigns = await campaign_service.get_recent_campaigns(async_db_session, days=7, min_size=2)
     assert len(campaigns) == 2
     for c in campaigns:
         assert len(c["related_campaigns"]) == 1

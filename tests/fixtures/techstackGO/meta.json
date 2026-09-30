@@ -1,0 +1,19 @@
+{
+  "scraper": "techstackGO",
+  "legacy_script": "techstackGO",
+  "legacy_labels": [],
+  "source_urls": [
+    "https://api.deps.dev/v3/systems/go/packages/github.com%2Fdocker%2Fdocker",
+    "https://api.deps.dev/v3/systems/go/packages/github.com%2Fdocker%2Fdocker/versions/v28.5.3-0.20260325154449-523f56ce36c6+incompatible",
+    "https://api.osv.dev/v1/vulns/GHSA-pxq6-2prw-chj9"
+  ],
+  "http_status": {
+    "https://api.deps.dev/v3/systems/go/packages/github.com%2Fdocker%2Fdocker": 200,
+    "https://api.deps.dev/v3/systems/go/packages/github.com%2Fdocker%2Fdocker/versions/v28.5.3-0.20260325154449-523f56ce36c6+incompatible": 200,
+    "https://api.osv.dev/v1/vulns/GHSA-pxq6-2prw-chj9": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ValueError"
+}

@@ -9,7 +9,7 @@ import abc
 from collections.abc import Iterator
 from contextlib import contextmanager
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import UTC, datetime
 from typing import TYPE_CHECKING, Any, ClassVar, Literal
 
 if TYPE_CHECKING:
@@ -23,10 +23,48 @@ from cti_scraper.items import Item
 Runtime = Literal["light", "browser"]
 
 
+def _utcnow_naive() -> datetime:
+    """Pengganti `datetime.utcnow()` (deprecated sejak 3.12 -- di test jadi
+    ERROR lewat `filterwarnings` pyproject, dan baru ketauan Fase 10 karena
+    sebelumnya gak ada test yang lewat `Runner` asli). Nilainya SAMA persis:
+    UTC NAIVE, bukan aware -- sebagian scraper bergantung ke naive-nya
+    (lihat komentar di `feeds/unit42_github.py`)."""
+    return datetime.now(UTC).replace(tzinfo=None)
+
+
 class ConfigError(Exception):
     """Kesalahan SETUP (runtime mismatch, dependency belum ke-install) --
     beda dari `cti_scraper.errors.ScraperError` yang soal hasil fetch. Ini
     harus keliatan pas dev/CI, bukan diam-diam gagal di produksi."""
+
+
+@dataclass(frozen=True, slots=True)
+class OptionChoice:
+    """Satu pilihan di `ScraperOption`."""
+
+    value: str
+    label: str
+    credential: str | None = None
+    """Kredensial yang dipasang `Runner` KALAU pilihan ini aktif (menggantikan
+    `ScraperMeta.credential`). `None` = pakai `ScraperMeta.credential` apa adanya."""
+
+
+@dataclass(frozen=True, slots=True)
+class ScraperOption:
+    """Pilihan yang boleh diubah admin dari control plane TANPA deploy (mis. sumber data
+    Twitter: twitterapi.io vs API resmi X). Disimpan di `ScraperConfig.options`
+    (`{key: value}`), dibaca `Runner` tiap run, dan sampai ke `fetch()` lewat
+    `ctx.options`. Sengaja HANYA tipe pilihan-tertutup (`choices`): nilai bebas dari UI
+    bisa berisi apa saja, pilihan tertutup bisa divalidasi penuh di API.
+
+    Kode scraper selalu jalan dengan `default` kalau admin tidak memilih apa-apa -- opsi
+    yang tidak pernah disentuh tidak mengubah perilaku."""
+
+    key: str
+    label: str
+    choices: tuple[OptionChoice, ...]
+    default: str
+    description: str = ""
 
 
 @dataclass(frozen=True, slots=True)
@@ -81,6 +119,10 @@ class ScraperMeta:
     `ctx.http.get(url)` biasa, header auth udah nempel. `None` (default) =
     scraper publik, gak butuh apa-apa."""
 
+    options: tuple[ScraperOption, ...] = ()
+    """Pilihan yang bisa diubah dari control plane (lihat `ScraperOption`). `()` =
+    tidak ada -- mayoritas scraper. Nilai efektif: `cti_scraper.options.resolve_options()`."""
+
     reference_data: tuple[str, ...] = ()
     """Nama dataset internal (Postgres KITA, bukan sumber eksternal) yang
     `fetch()` butuh baca -- mis. "techstack", "true_positive_cves". Sama
@@ -128,9 +170,14 @@ class ScrapeContext:
     run_id: str
     http: ScraperHttpClient
     log: structlog.typing.FilteringBoundLogger
-    now: datetime = field(default_factory=datetime.utcnow)
+    now: datetime = field(default_factory=_utcnow_naive)
     """Injectable buat test deterministik -- jangan panggil
     `datetime.now()` langsung di `fetch()`, pakai `ctx.now`."""
+
+    options: dict[str, str] = field(default_factory=dict)
+    """Nilai EFEKTIF `ScraperMeta.options` (default kode + pilihan admin + override CLI),
+    key -> value. `{}` kalau scraper tidak mendeklarasikan opsi. `fetch()` cuma membaca
+    -- pilihan yang berimbas ke kredensial sudah diterapkan `Runner` sebelum sampai sini."""
 
     reference: dict[str, Any] = field(default_factory=dict)
     """Diisi `Runner` dari `ScraperMeta.reference_data` SEBELUM `fetch()`

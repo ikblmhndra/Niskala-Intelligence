@@ -23,7 +23,7 @@ class Proofpoint(XPathScraper):
         legacy_label="NEW THREAT INSIGHT ARTICLE FROM PROOFPOINT",
         legacy_script="proofpointThreat",
     )
-    url = 'https://www.proofpoint.com/us/blog/threat-insight'
-    title_xpath = '/html/body/div[2]/div[1]/div[2]/main/section/div/div/div/div/div[5]/div/div[2]/div[1]/div[{i}]/div/div[2]/a[1]/h3'
-    link_xpath = '/html/body/div[2]/div[1]/div[2]/main/section/div/div/div/div/div[5]/div/div[2]/div[1]/div[{i}]/div/div[2]/a[1]'
+    url = "https://www.proofpoint.com/us/blog/threat-insight"
+    title_xpath = "/html/body/div[2]/div[1]/div[2]/main/section/div/div/div/div/div[5]/div/div[2]/div[1]/div[{i}]/div/div[2]/a[1]/h3"
+    link_xpath = "/html/body/div[2]/div[1]/div[2]/main/section/div/div/div/div/div[5]/div/div[2]/div[1]/div[{i}]/div/div[2]/a[1]"
     base_url = "https://www.proofpoint.com"

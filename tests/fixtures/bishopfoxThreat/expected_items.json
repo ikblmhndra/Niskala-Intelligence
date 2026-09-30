@@ -1,0 +1,254 @@
+{
+  "2026-09-17": [
+    {
+      "title": "CVE-2026-82329: Unauthenticated Administrative Access in JFrog Artifactory via an Empty Cluster Join Key",
+      "url": "https://bishopfox.com/blog/cve-2026-82329-unauthenticated-administrative-access-in-jfrog-artifactory-via-an-empty-cluster-join-key",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Mind the Config: Detecting and Weaponizing NetScaler CVE-2026-19490",
+      "url": "https://bishopfox.com/blog/mind-the-config-detecting-and-weaponizing-netscaler-cve-2026-19490",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Signature Optional - Analysis of CVE-2026-28323",
+      "url": "https://bishopfox.com/blog/signature-optional-analysis-of-cve-2026-28323",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Traefik | Version Through 3.7.11",
+      "url": "https://bishopfox.com/blog/traefik-version-through-3-7-11",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "A GUID is Not a Credential: Unauthenticated RCE in Veeam Service Provider Console",
+      "url": "https://bishopfox.com/blog/a-guid-is-not-a-credential-unauthenticated-rce-in-veeam-service-provider-console",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "No Crash Required: Verifying the Citrix NetScaler SAML Patch for CVE-2026-8452",
+      "url": "https://bishopfox.com/blog/no-crash-required-verifying-the-citrix-netscaler-saml-patch-for-cve-2026-8452",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "CTEM 101: Moving From Spreadsheets to Continuous Risk Reduction",
+      "url": "https://bishopfox.com/blog/ctem-101-moving-from-spreadsheets-to-continuous-risk-reduction",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Critical SQL Injection in Metabase via Password Reset: CVE-2026-72898",
+      "url": "https://bishopfox.com/blog/critical-sql-injection-in-metabase-via-password-reset-cve-2026-72898",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Python Software Foundation - Python 3.11.0a3 to 3.15.0b2",
+      "url": "https://bishopfox.com/blog/python-software-foundation-python-3-11-0a3-to-3-15-0b2",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "What Security Leaders Think About Frontier AI Models: Firsthand of Mythos",
+      "url": "https://bishopfox.com/blog/what-security-leaders-think-about-frontier-ai-models-firsthand-mythos",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "A Millisecond of Predictability: Why CVE-2026-11374 Is Hard to Exploit",
+      "url": "https://bishopfox.com/blog/millisecond-of-predictability-why-cve-2026-11374-hard-to-exploit",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Using MCP Agents for Penetration Testing",
+      "url": "https://bishopfox.com/blog/using-mcp-agents-for-penetration-testing",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Introducing snowpick: Testing ServiceNow for Public Data Exposure",
+      "url": "https://bishopfox.com/blog/introducing-snowpick-testing-servicenow-for-public-data-exposure",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Cracking Firmware with Claude: Senior-Level Skill, Junior-Level Autonomy",
+      "url": "https://bishopfox.com/blog/cracking-firmware-with-claude-senior-level-skill-junior-level-autonomy",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "On Favicons: From Browser Icons to Attack Surface Intelligence",
+      "url": "https://bishopfox.com/blog/on-favicons-from-browser-icons-to-attack-surface-intelligence",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "AI Finds Vulnerabilities. Security Experts Find Impact.",
+      "url": "https://bishopfox.com/blog/ai-finds-vulnerabilities-security-experts-find-impact",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Shynet | VERSION 0.13.1",
+      "url": "https://bishopfox.com/blog/shynet-version-0-13-1",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The Smash-and-Grab Era",
+      "url": "https://bishopfox.com/blog/the-smash-and-grab-era",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "A Crash, Not a Shell: SolarWinds Serv-U CVE-2026-28318",
+      "url": "https://bishopfox.com/blog/a-crash-not-a-shell-solarwinds-serv-u-cve-2026-28318",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Enabling Proper PCI Testing with Internal Penetration Tests",
+      "url": "https://bishopfox.com/blog/enabling-proper-pci-testing-with-internal-penetration-tests",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Mythos Doesn't Deploy Itself",
+      "url": "https://bishopfox.com/blog/mythos-doesnt-deploy-itself",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Popping Root on UniFi OS Server: Unauthenticated RCE Chain Detection & Analysis",
+      "url": "https://bishopfox.com/blog/popping-root-on-unifi-os-server-unauthenticated-rce-chain-detection-analysis",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Otto Support - Testing MCP Servers",
+      "url": "https://bishopfox.com/blog/otto-support-testing-mcp-servers",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Looting UniFi Controllers: Detecting and Weaponizing CVE-2026-22557",
+      "url": "https://bishopfox.com/blog/looting-unifi-controllers-detecting-and-weaponizing-cve-2026-22557",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Sparkplug B Protocol Fuzzing with AI Assistance",
+      "url": "https://bishopfox.com/blog/sparkplug-b-protocol-fuzzing-with-ai-assistance",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Detecting CVE-2026-0265 at Scale: PAN-OS CAS Authentication Bypass",
+      "url": "https://bishopfox.com/blog/detecting-cve-2026-0265-at-scale-pan-os-cas-authentication-bypass",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "CVE-2026-27886: Unauthenticated Boolean-Oracle Exfiltration of Administrator Secrets in Strapi",
+      "url": "https://bishopfox.com/blog/cve-2026-27886-unauthenticated-boolean-oracle-exfiltration-of-administrator-secrets-in-strapi",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Otto Support - Logging and Visibility in MCP Servers",
+      "url": "https://bishopfox.com/blog/otto-support-logging-visibility-in-mcp-servers",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Otto-Support - Supply Chain Risks in MCP Servers",
+      "url": "https://bishopfox.com/blog/otto-support-supply-chain-risks-mcp-servers",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Introducing Joro: Using AI to Build Security Tooling",
+      "url": "https://bishopfox.com/blog/introducing-joro-using-ai-build-security-tooling",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Otto Support - The Confused Deputy",
+      "url": "https://bishopfox.com/blog/otto-support-confused-deputy",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Otto Support - SSRF and Token Passthrough with MCP",
+      "url": "https://bishopfox.com/blog/otto-support-ssrf-token-passthrough-with-mcp",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Otto Support - Excessive Agency and Tool Privileges",
+      "url": "https://bishopfox.com/blog/otto-support-excessive-agency-and-tool-privileges",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "CVE-2026-42208: Pre-Authentication SQL Injection in LiteLLM Proxy",
+      "url": "https://bishopfox.com/blog/cve-2026-42208-pre-authentication-sql-injection-in-litellm-proxy",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Azure Hacking: New Cloudfoxable Challenges",
+      "url": "https://bishopfox.com/blog/azure-hacking-new-cloudfoxable-challenges",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Introducing AIMap: Security Testing For AI Agent Infrastructure",
+      "url": "https://bishopfox.com/blog/introducing-aimap-security-testing-for-ai-agent-infrastructure",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Otto Support – An MCP, Agentic-AI Security Challenge",
+      "url": "https://bishopfox.com/blog/otto-support-an-mcp-agentic-ai-security-challenge",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Understanding the CVE Ecosystem and NIST’s Changing Role",
+      "url": "https://bishopfox.com/blog/understanding-the-cve-ecosystem-and-nists-changing-role",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Taking Maestro in Stride: AI Threat Modeling Frameworks",
+      "url": "https://bishopfox.com/blog/taking-maestro-in-stride-ai-threat-modeling-frameworks",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Anthropic’s Claude Mythos Preview: The AI Cybersecurity Inflection Point",
+      "url": "https://bishopfox.com/blog/anthropics-claude-mythos-preview-the-ai-cybersecurity-inflection-point",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Inside Cirro: Attack Paths, Cloud Graphs, and Extensible Schemas",
+      "url": "https://bishopfox.com/blog/inside-cirro-attack-paths-cloud-graphs-and-extensible-schemas",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "API Authentication Bypass in FortiClient EMS 7.4.5-7.4.6–CVE-2026-35616",
+      "url": "https://bishopfox.com/blog/api-authentication-bypass-in-forticlient-ems-7-4-5-7-4-6-cve-2026-35616",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Delivered by Trust: What the Axios Supply Chain Attack Means for Security Leaders",
+      "url": "https://bishopfox.com/blog/delivered-by-trust-what-the-axios-supply-chain-attack-means-for-security-leaders",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "strongSwan CVE-2026-25075: Integer Underflow in VPN Authentication",
+      "url": "https://bishopfox.com/blog/strongswan-cve-2026-25075-integer-underflow-in-vpn-authentication",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Accidental Engineer: Building My First Hardware Tool the Hard Way",
+      "url": "https://bishopfox.com/blog/accidental-engineer-building-my-first-hardware-tool-the-hard-way",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Winning CTFs: A Proving Ground at HackMex & Ekoparty",
+      "url": "https://bishopfox.com/blog/winning-ctfs-a-proving-ground-at-hackmex-ekoparty",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Pre-Authentication SQL Injection in FortiClient EMS 7.4.4 - CVE-2026-21643",
+      "url": "https://bishopfox.com/blog/cve-2026-21643-pre-authentication-sql-injection-in-forticlient-ems-7-4-4",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Beyond Electron: Attacking Alternative Desktop Application Frameworks",
+      "url": "https://bishopfox.com/blog/beyond-electron-attacking-alternative-desktop-application-frameworks",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Introducing CloudFox GCP: Attack Path Identification for Google Cloud",
+      "url": "https://bishopfox.com/blog/introducing-cloudfox-gcp-attack-path-identification-for-google-cloud",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Samsung Tizen OS | Version Through 9.0",
+      "url": "https://bishopfox.com/blog/samsung-tizen-os-version-through-9-0",
+      "posted_on": "2026-09-17"
+    }
+  ]
+}

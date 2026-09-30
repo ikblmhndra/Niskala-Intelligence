@@ -1,0 +1,17 @@
+{
+  "scraper": "bitdefenderThreat",
+  "legacy_script": "bitdefenderThreat",
+  "legacy_labels": [
+    "NEW ARTICLE FROM BITDEFENDER"
+  ],
+  "source_urls": [
+    "https://www.bitdefender.com/nuxt/api/en-us/rss/labs/"
+  ],
+  "http_status": {
+    "https://www.bitdefender.com/nuxt/api/en-us/rss/labs/": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

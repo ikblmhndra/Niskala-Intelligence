@@ -20,5 +20,5 @@ class Tenable(RSSScraper):
         legacy_label="NEW ARTICLE FROM TENABLE",
         legacy_script="tenableThreat",
     )
-    feeds = ('https://feeds.feedburner.com/tenable/qaXL',)
+    feeds = ("https://feeds.feedburner.com/tenable/qaXL",)
     date_path = None  # scraper lama pakai waktu-scrape, bukan tanggal artikel asli

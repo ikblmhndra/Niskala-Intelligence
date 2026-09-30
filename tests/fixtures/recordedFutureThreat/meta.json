@@ -1,0 +1,17 @@
+{
+  "scraper": "recordedFutureThreat",
+  "legacy_script": "recordedFutureThreat",
+  "legacy_labels": [
+    "NEW ARTICLE FROM RECORDEDFUTURE"
+  ],
+  "source_urls": [
+    "https://www.recordedfuture.com/feed/research"
+  ],
+  "http_status": {
+    "https://www.recordedfuture.com/feed/research": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

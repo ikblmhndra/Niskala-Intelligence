@@ -20,5 +20,5 @@ class NquiringMinds(RSSScraper):
         legacy_label="NEW ARTICLE FROM NQUIRINGMINDS",
         legacy_script="nquiringMindsThreat",
     )
-    feeds = ('https://nquiringminds.com/feed/',)
+    feeds = ("https://nquiringminds.com/feed/",)
     date_path = None  # scraper lama pakai waktu-scrape, bukan tanggal artikel asli

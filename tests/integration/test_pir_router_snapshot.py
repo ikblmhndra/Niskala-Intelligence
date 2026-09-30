@@ -28,6 +28,8 @@ _NORMALIZE = path_type(
         r"(.*\.)?created_at$": (str,),
         r"(.*\.)?updated_at$": (str,),
         r"(.*\.)?posted_on$": (str,),
+        # tanggal artikel terbaru yang cocok = `today() - 2 hari` dari seed
+        r"(.*\.)?last_match$": (str,),
         r"(.*\.)?exported_at$": (str,),
         # `_article_export_dict()` nulis `"_id": str(article.id)` -- key
         # "_id" (bukan "id") dan nilainya STRING (bukan int, beda dari

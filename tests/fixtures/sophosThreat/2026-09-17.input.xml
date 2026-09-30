@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sophos Blogs</title>
+    <link>https://www.sophos.com/en-us/blog</link>
+    <description>Latest blog posts and insights from Sophos</description>
+    <language>en-us</language>
+    <atom:link href="https://www.sophos.com/en-us/blog/feed" rel="self" type="application/rss+xml"/>
+    
+    <item>
+      <title>The industry turned XDR and SIEM into categories. Sophos turned them into outcomes.</title>
+      <link>https://www.sophos.com/en-us/blog/sophos-next-gen-siem</link>
+      <description><![CDATA[<p>Sophos Next-Gen SIEM, now generally available as part of Sophos Fusion, brings security operations and compliance together through shared context.</p>]]></description>
+      <pubDate>Tue, 15 Sep 2026 00:00:00 GMT</pubDate>
+      <guid isPermaLink="false">blt2d4844e573eaa2a3</guid>
+    </item>
+
+    <item>
+      <title>Messageboards are all they need</title>
+      <link>https://www.sophos.com/en-us/blog/ai-research-messageboards</link>
+      <description><![CDATA[<p>This article was first published on LinkedIn.</p>]]></description>
+      <pubDate>Tue, 15 Sep 2026 00:00:00 GMT</pubDate>
+      <guid isPermaLink="false">blt63552c92c7ef980f</guid>
+    </item>
+
+    <item>
+      <title>Cisco Secure Email Gateway vulnerability (CVE-2026-76461) in active exploitation</title>
+      <link>https://www.sophos.com/en-us/blog/cisco-secure-email-gateway-vulnerability-cve-2026-76461-in-active-exploitation</link>
+      <description><![CDATA[]]></description>
+      <pubDate>Tue, 15 Sep 2026 00:00:00 GMT</pubDate>
+      <guid isPermaLink="false">blt7a9a5a595fbc6c7e</guid>
+    </item>
+
+    <item>
+      <title>MSP Perspectives 2026: The evolution of the MSP cybersecurity value proposition</title>
+      <link>https://www.sophos.com/en-us/blog/the-evolution-of-the-msp-cybersecurity-value-proposition</link>
+      <description><![CDATA[<p>MSPs are no longer simply being asked to manage technology; increasingly, customers are expecting them to provide cybersecurity leadership, deliver compliance programs, and guide security investment.</p>]]></description>
+      <pubDate>Tue, 15 Sep 2026 00:00:00 GMT</pubDate>
+      <guid isPermaLink="false">blt94f98cc306c52516</guid>
+    </item>
+
+    <item>
+      <title>Devil’s advocate? Uncensored Luciferus AI service advertised underground</title>
+      <link>https://www.sophos.com/en-us/blog/uncensored-luciferus-ai-service-advertised-underground</link>
+      <description><![CDATA[<p>Uncensored refers to a lack of typical guardrails or ethical restrictions, lowering the technical barrier of entry into cybercrime</p>]]></description>
+      <pubDate>Mon, 14 Sep 2026 00:00:00 GMT</pubDate>
+      <guid isPermaLink="false">blt178dcfd4843d9fca</guid>
+    </item>
+
+    <item>
+      <title>ATT&amp;CK grew a 15th tactic: A practical DFIR field guide to the Stealth / Defense Impairment split</title>
+      <link>https://www.sophos.com/en-us/blog/mitre-enterprise-attack-grew-15th-tactic-practical-dfir-field-guide</link>
+      <description><![CDATA[<p>Artifacts and tooling for the new Enterprise MITRE ATT&amp;CK matrix tactics, distilled from the field.</p>]]></description>
+      <pubDate>Mon, 14 Sep 2026 00:00:00 GMT</pubDate>
+      <guid isPermaLink="false">blt10fe9c7e5e3333fa</guid>
+    </item>
+
+    <item>
+      <title>“Eye” spy: Cyclops Blink returns with extended capabilities</title>
+      <link>https://www.sophos.com/en-us/blog/-eye-spy-cyclops-blink-returns-with-extended-capabilities</link>
+      <description><![CDATA[<p>Upgraded modular malware observed in attacks on Cisco Firewall Management Center (FMC) devices</p>]]></description>
+      <pubDate>Fri, 11 Sep 2026 00:00:00 GMT</pubDate>
+      <guid isPermaLink="false">blt7be1114f3c8915a2</guid>
+    </item>
+
+    <item>
+      <title>Dissecting a PHP web server rootkit</title>
+      <link>https://www.sophos.com/en-us/blog/dissecting-a-php-web-server-rootkit</link>
+      <description><![CDATA[<p>Sophos X-Ops takes a deep dive into an insidious piece of malware</p>]]></description>
+      <pubDate>Mon, 07 Sep 2026 00:00:00 GMT</pubDate>
+      <guid isPermaLink="false">blt2261442cf10e35bf</guid>
+    </item>
+
+    <item>
+      <title>SonicWall SMA1000 vulnerabilities (CVE-2026-83548, CVE-2026-83549) in active exploitation</title>
+      <link>https://www.sophos.com/en-us/blog/sonicwall-83548-83549</link>
+      <description><![CDATA[]]></description>
+      <pubDate>Wed, 02 Sep 2026 00:00:00 GMT</pubDate>
+      <guid isPermaLink="false">bltfa0a0d20e6efc1c9</guid>
+    </item>
+  </channel>
+</rss>

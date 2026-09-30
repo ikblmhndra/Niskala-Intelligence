@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0" xml:base="https://www.bitsight.com/">
+  <channel>
+    <title>BitSight Security Ratings Blog</title>
+    <link>https://www.bitsight.com/</link>
+    <description>Read our Security Ratings blog for cybersecurity news, improving security performance, third-party risk management, &amp; more.</description>
+    <language>en</language>
+    
+    <item>
+  <title>From CVE Disclosure to Internet-Wide Exposure: How Bitsight Uses AI to Accelerate Product Fingerprinting</title>
+  <link>https://www.bitsight.com/blog/how-bitsight-uses-ai-to-accelerate-product-fingerprinting</link>
+  <description>Learn how Bitsight uses AI product fingerprinting &amp;amp; internet-wide data to uncover CVE exposure faster, map affected organizations, and prioritize remediation.</description>
+  <pubDate>Wed, 09/16/2026 - 07:25</pubDate>
+    <dc:creator>BitSight</dc:creator>
+    <guid isPermaLink="false">a5332491-b603-4410-a1fe-6cacdbc3e013</guid>
+    </item>
+<item>
+  <title>13 essential cybersecurity frameworks, standards, and regulations explained </title>
+  <link>https://www.bitsight.com/blog/top-cybersecurity-frameworks-to-reduce-cyber-risk</link>
+  <description>Learn about the top cybersecurity frameworks every organization needs to know, from NIST CSF 2.0 to ISO 27001 to DORA, and how to align your security program with each.</description>
+  <pubDate>Fri, 09/11/2026 - 09:30</pubDate>
+    <dc:creator>BitSight</dc:creator>
+    <guid isPermaLink="false">ccdac7ef-f121-42aa-a83e-99db994beb67</guid>
+    </item>
+<item>
+  <title>How to Audit AI Compliance from Both Sides of the Table</title>
+  <link>https://www.bitsight.com/blog/how-to-audit-ai-compliance</link>
+  <description>While there isn't a universal "AI compliance audit," it's useful to start with what organizations need to understand and be able to demonstrate. Learn now.</description>
+  <pubDate>Thu, 09/10/2026 - 07:25</pubDate>
+    <dc:creator>BitSight</dc:creator>
+    <guid isPermaLink="false">fe70f494-39ff-40fb-aa66-ab9a4d93f190</guid>
+    </item>
+<item>
+  <title>From Hotspots to Lookalike Domains: 3 Phishing Tactics to Watch</title>
+  <link>https://www.bitsight.com/blog/3-phishing-tactics-to-watch</link>
+  <description>Bitsight discusses at 3 phishing techniques that continue to put organizations and individuals at risk: evil twin phishing, domain spoofing, &amp;amp; email phishing.</description>
+  <pubDate>Thu, 09/03/2026 - 07:25</pubDate>
+    <dc:creator>BitSight</dc:creator>
+    <guid isPermaLink="false">8a4d6e87-f494-4e66-a178-76c92e389a04</guid>
+    </item>
+<item>
+  <title>The Invisible Expansion of the Attack Surface: Shadow AI, MCP, and Third-Party Risk</title>
+  <link>https://www.bitsight.com/blog/shadow-ai-and-the-expanding-attack-surface</link>
+  <description>Shadow AI is expanding the attack surface. Learn how AI tools, MCP servers, integrations, and vendors create new third-party security risks.</description>
+  <pubDate>Mon, 08/31/2026 - 07:25</pubDate>
+    <dc:creator>BitSight</dc:creator>
+    <guid isPermaLink="false">5ac27d83-fb59-40cf-b80c-13a46a616c2a</guid>
+    </item>
+<item>
+  <title>‘The Gentlemen’ Profile: Why This Ransomware Group Wants In Before It Locks You Out</title>
+  <link>https://www.bitsight.com/blog/the-gentlemen-ransomware-group-threat-actor-deep-dive</link>
+  <description>Bitsight dives into detail about The Gentlemen ransomware group, including operations, activity, encryption behavior, and what defenders should watch for.</description>
+  <pubDate>Wed, 08/26/2026 - 07:30</pubDate>
+    <dc:creator>BitSight</dc:creator>
+    <guid isPermaLink="false">3e920844-8554-42b8-971a-3ee20ef4b012</guid>
+    </item>
+<item>
+  <title>New Bitsight Research Shows AI Abuse Is Moving Beyond the Jailbreak Prompt</title>
+  <link>https://www.bitsight.com/blog/ai-jailbreak-prompts-evolving-cyber-threats</link>
+  <description>New Bitsight research reveals how AI jailbreak prompts are evolving into agent abuse, prompt injection, MCP risks, and real-world cyber operations.</description>
+  <pubDate>Tue, 08/25/2026 - 08:30</pubDate>
+    <dc:creator>BitSight</dc:creator>
+    <guid isPermaLink="false">ba315a24-475b-4c4c-9af2-5850c20e5643</guid>
+    </item>
+<item>
+  <title>Focus on the Threats That Actually Matter to your Organization with Sectoral Intelligence</title>
+  <link>https://www.bitsight.com/blog/bitsight-sectoral-intelligence-focuses-on-sector-geography-intelligence</link>
+  <description>Discover how Sectoral Intelligence helps security teams identify threats targeting their sector and region to prioritize defenses &amp;amp; reduce cyber risk.</description>
+  <pubDate>Wed, 08/19/2026 - 07:25</pubDate>
+    <dc:creator>BitSight</dc:creator>
+    <guid isPermaLink="false">ed0461f1-5d1a-4524-8d27-2d37b1262d4a</guid>
+    </item>
+<item>
+  <title>Who Invited Aisuru to the LAN Party?</title>
+  <link>https://www.bitsight.com/blog/who-invited-aisuru-lan-party</link>
+  <description>Explore Bitsight TRACE research into Aisuru’s DDoS operations, C2 infrastructure, ADB exploitation, and evolution toward a new proxy network.</description>
+  <pubDate>Tue, 08/18/2026 - 08:01</pubDate>
+    <dc:creator>BitSight</dc:creator>
+    <guid isPermaLink="false">0ad6e375-8912-4cd5-817c-1d688d1a7cc9</guid>
+    </item>
+<item>
+  <title>Insurance Is Still in the Crosshairs: What Recent Dark Web Chatter Says About Sector Targeting</title>
+  <link>https://www.bitsight.com/blog/insurance-cybersecurity-why-cybercriminals-target-insurance</link>
+  <description>Why do cybercriminals target insurance data? Explore emerging threats, dark web activity, third-party risk, and what insurance security teams should watch.</description>
+  <pubDate>Wed, 08/12/2026 - 07:25</pubDate>
+    <dc:creator>BitSight</dc:creator>
+    <guid isPermaLink="false">127726a3-706d-451f-b06f-b03c24b3eaa7</guid>
+    </item>
+
+  </channel>
+</rss>

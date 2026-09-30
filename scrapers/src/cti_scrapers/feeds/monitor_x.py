@@ -28,10 +28,28 @@ Bandingkan sama script lama:
   lewat mekanisme sendiri.
 - `time.sleep(5)`/`time.sleep(1)` manual antar-request -- `meta.rate_limit`
   (token bucket per-domain, Fase 3) yang urus, bukan sleep hardcode.
+- Backoff 429 (Fase 10.G): free tier twitterapi.io ~1 request/5 dtk, sedangkan scraper ini satu
+  query PER AKUN (18 akun berturut-turut) -> di staging tiap run kena `HTTP 429` dan gagal
+  `fetch_error`. Sekarang lewat `_twitterapi._get_with_backoff` (tunggu 6 dtk, ulang maks 3x) --
+  helper yang sama dengan `tweet_alerts`/`trending_cve`. Sengaja TIDAK dipindah ke lapisan sumber
+  netral (`collectors/_twitter.py`): scraper ini bergantung pada `since_id` per akun dan field
+  tambahan (avatar, followers, media) yang tak ada di `Tweet` netral.
+- Pacing proaktif + `rate_limit` disamakan (Fase 10.G2, permintaan user "kasih delay biar gak kena
+  rate limit"): dua bug ketemu di staging. (1) `rate_limit="15/minute"` beda dari 3 scraper lain
+  yang mukul domain SAMA (`tweet_alerts_1h`/`tweet_alerts_30m`/`trending_cve`, semua "10/minute")
+  -- melanggar invarian modul `cti_scraper.ratelimit` sendiri ("dua scraper yang mukul host sama
+  harus berbagi budget yang sama"), jadi disamakan ke "10/minute". (2) 18 akun berturut-turut
+  TANPA jeda menghabiskan budget lokal SEBELUM server sempat balas 429 sama sekali -- run selesai
+  status `rate_limited` di akun pertama, backoff 429 gak pernah ke-trigger. Sekarang jeda `window_s
+  / capacity` (dari `rate_limit` yang sama -- SATU sumber, bukan angka baru) DI ANTARA akun,
+  proaktif sebelum limitnya abis, bukan cuma reaktif sesudahnya (itu tetap ada di
+  `_get_with_backoff`, buat kasus limit tetap abis walau sudah dijeda -- concurrent run
+  `tweet_alerts`/`trending_cve` di domain yang sama, di luar kendali loop akun ini).
 """
 
 from __future__ import annotations
 
+import time
 from collections.abc import Iterator
 from datetime import datetime, timedelta
 from typing import Any
@@ -40,9 +58,11 @@ from cti_enrich.stages.classify import ClassifyResult, OpenAIQuotaExhausted, cla
 from cti_enrich.stages.score import ScoreResult, score_with_lists
 from cti_scraper.base import BaseScraper, ScrapeContext, ScraperMeta
 from cti_scraper.items import TweetItem
+from cti_scraper.ratelimit import parse_rate
 from cti_scraper.schedule import spread
 
-_SEARCH_URL = "https://api.twitterapi.io/twitter/tweet/advanced_search"
+from cti_scrapers.collectors import _twitterapi
+
 _MAX_PAGES_PER_ACCOUNT = 3
 _FIRST_RUN_WINDOW = timedelta(hours=3)
 
@@ -72,7 +92,7 @@ def _fetch_tweets_for_account(
     for _page in range(_MAX_PAGES_PER_ACCOUNT):
         if next_cursor:
             params["cursor"] = next_cursor
-        resp = ctx.http.get(_SEARCH_URL, params=params)
+        resp = _twitterapi._get_with_backoff(ctx, params)
         if resp.status_code != 200:
             # Port cek eksplisit `monitorX.py:280-281` -- `ScraperHttpClient`
             # gak auto-raise di 4xx (cuma 429/5xx, lihat http.py), dan
@@ -151,7 +171,7 @@ class MonitorX(BaseScraper):
         id="monitor_x",
         source="X/Twitter Intel Monitor",
         schedule=spread("*/15 * * * *", "monitor_x"),
-        rate_limit="15/minute",
+        rate_limit="10/minute",  # SAMA dengan tweet_alerts_1h/30m + trending_cve -- domain dibagi
         max_items=200,
         credential="twitter",
         reference_data=(
@@ -177,10 +197,19 @@ class MonitorX(BaseScraper):
         group_list: list[str] = ctx.reference["threat_actor_groups"]
         apac_people_list: list[str] = ctx.reference["monitored_people"]
 
+        capacity, window_s = parse_rate(self.meta.rate_limit)
+        account_delay_s = window_s / capacity
+        """Jeda proaktif ANTAR akun -- spasi rata di dalam jendela rate limit, diturunkan dari
+        `rate_limit` yang sama (bukan angka baru), supaya berubah otomatis kalau limit-nya diubah.
+        Bukan pengganti `_get_with_backoff`: itu tetap jaring pengaman reaktif kalau limit tetap
+        abis (run lain di domain sama, jam jatuh di kelipatan 15 menit yang sama)."""
+
         found = 0
-        for account in accounts:
+        for i, account in enumerate(accounts):
             if found >= self.meta.max_items:
                 return
+            if i > 0:
+                time.sleep(account_delay_s)
 
             raw_tweets = _fetch_tweets_for_account(ctx, account, last_seen.get(account))
             raw_tweets.sort(key=lambda t: int(t["id"]))

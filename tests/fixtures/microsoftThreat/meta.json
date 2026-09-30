@@ -1,0 +1,17 @@
+{
+  "scraper": "microsoftThreat",
+  "legacy_script": "microsoftThreat",
+  "legacy_labels": [
+    "NEW ARTICLE FROM MICROSOFT"
+  ],
+  "source_urls": [
+    "https://www.microsoft.com/en-us/security/blog/topic/threat-intelligence/feed/"
+  ],
+  "http_status": {
+    "https://www.microsoft.com/en-us/security/blog/topic/threat-intelligence/feed/": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

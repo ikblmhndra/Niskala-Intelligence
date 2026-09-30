@@ -1,0 +1,1208 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>ASEC</title>
+	<atom:link href="https://asec.ahnlab.com/en/feed/" rel="self" type="application/rss+xml" />
+	<link>https://asec.ahnlab.com/en/</link>
+	<description>AhnLab</description>
+	<lastBuildDate>Mon, 14 Sep 2026 07:45:30 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	
+
+<image>
+	<url>https://asec.ahnlab.com/wp-content/uploads/2024/03/cropped-스크린샷-2024-03-06-151555-100x100.png</url>
+	<title>ASEC</title>
+	<link>https://asec.ahnlab.com/en/</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+<site xmlns="com-wordpress:feed-additions:1">230193226</site>	<item>
+		<title>August 2026 Dark Web Breach Incident Trend Report</title>
+		<link>https://asec.ahnlab.com/en/95385/</link>
+		
+		<dc:creator><![CDATA[ATCP]]></dc:creator>
+		<pubDate>Sun, 13 Sep 2026 15:00:00 +0000</pubDate>
+				<category><![CDATA[Darkweb]]></category>
+		<category><![CDATA[Private]]></category>
+		<category><![CDATA[0xCAFE]]></category>
+		<category><![CDATA[Argentina]]></category>
+		<category><![CDATA[Bolivia]]></category>
+		<category><![CDATA[Brazil]]></category>
+		<category><![CDATA[BreachForums]]></category>
+		<category><![CDATA[China]]></category>
+		<category><![CDATA[credential-sale]]></category>
+		<category><![CDATA[Czech-Republic]]></category>
+		<category><![CDATA[DarkForums]]></category>
+		<category><![CDATA[DarkWeb]]></category>
+		<category><![CDATA[data-breach]]></category>
+		<category><![CDATA[data-leak]]></category>
+		<category><![CDATA[Dominican-Republic]]></category>
+		<category><![CDATA[Education]]></category>
+		<category><![CDATA[도미니카공화국]]></category>
+		<category><![CDATA[모로코]]></category>
+		<category><![CDATA[미국]]></category>
+		<category><![CDATA[볼리비아]]></category>
+		<category><![CDATA[브라질]]></category>
+		<category><![CDATA[딥웹]]></category>
+		<category><![CDATA[다크웹]]></category>
+		<category><![CDATA[fake-data]]></category>
+		<category><![CDATA[Finance]]></category>
+		<category><![CDATA[France]]></category>
+		<category><![CDATA[government]]></category>
+		<category><![CDATA[Healthcare]]></category>
+		<category><![CDATA[Hong-Kong]]></category>
+		<category><![CDATA[IAB]]></category>
+		<category><![CDATA[India]]></category>
+		<category><![CDATA[Indonesia]]></category>
+		<category><![CDATA[Iran]]></category>
+		<category><![CDATA[스위스]]></category>
+		<category><![CDATA[스웨덴]]></category>
+		<category><![CDATA[이란]]></category>
+		<category><![CDATA[인도]]></category>
+		<category><![CDATA[인도네시아]]></category>
+		<category><![CDATA[일본]]></category>
+		<category><![CDATA[중국]]></category>
+		<category><![CDATA[체코]]></category>
+		<category><![CDATA[카타르]]></category>
+		<category><![CDATA[태국]]></category>
+		<category><![CDATA[영국]]></category>
+		<category><![CDATA[사우디아라비아]]></category>
+		<category><![CDATA[프랑스]]></category>
+		<category><![CDATA[한국]]></category>
+		<category><![CDATA[아랍에미리트]]></category>
+		<category><![CDATA[아르헨티나]]></category>
+		<category><![CDATA[싱가포르]]></category>
+		<category><![CDATA[홍콩]]></category>
+		<category><![CDATA[Japan]]></category>
+		<category><![CDATA[law-enforcement]]></category>
+		<category><![CDATA[Manufacturing]]></category>
+		<category><![CDATA[Morocco]]></category>
+		<category><![CDATA[PwnForums]]></category>
+		<category><![CDATA[Qatar]]></category>
+		<category><![CDATA[RaidForums]]></category>
+		<category><![CDATA[religious-organization]]></category>
+		<category><![CDATA[Retail]]></category>
+		<category><![CDATA[Saudi-Arabia]]></category>
+		<category><![CDATA[ShinyHunters]]></category>
+		<category><![CDATA[Singapore]]></category>
+		<category><![CDATA[South-Korea]]></category>
+		<category><![CDATA[spear]]></category>
+		<category><![CDATA[stalkerware]]></category>
+		<category><![CDATA[Sweden]]></category>
+		<category><![CDATA[Switzerland]]></category>
+		<category><![CDATA[Thailand]]></category>
+		<category><![CDATA[United-Arab-Emirates]]></category>
+		<category><![CDATA[United-Kingdom]]></category>
+		<category><![CDATA[United-States]]></category>
+		<guid isPermaLink="false">https://asec.ahnlab.com/95385/</guid>
+
+					<description><![CDATA[Note In August 2026, widespread instances of database leaks, the sale of internal data, and the trading of initial access privileges were observed on dark web and deep web forums. Due to the nature of the sources, it was difficult to fully verify the accuracy of some posts. Major Issues ShinyHunters continued to make claims [&#8230;]]]></description>
+		
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">95385</post-id>	</item>
+		<item>
+		<title>August 2026 Dark Web Threat Actor Trend Report</title>
+		<link>https://asec.ahnlab.com/en/95390/</link>
+		
+		<dc:creator><![CDATA[ATCP]]></dc:creator>
+		<pubDate>Sun, 13 Sep 2026 15:00:00 +0000</pubDate>
+				<category><![CDATA[Darkweb]]></category>
+		<category><![CDATA[Private]]></category>
+		<category><![CDATA[Arrest]]></category>
+		<category><![CDATA[Australia]]></category>
+		<category><![CDATA[BD-Anonymous]]></category>
+		<category><![CDATA[China]]></category>
+		<category><![CDATA[Dark-Storm-Team]]></category>
+		<category><![CDATA[DarkWeb]]></category>
+		<category><![CDATA[DDoS]]></category>
+		<category><![CDATA[Eclipse]]></category>
+		<category><![CDATA[Energy]]></category>
+		<category><![CDATA[미국]]></category>
+		<category><![CDATA[딥웹]]></category>
+		<category><![CDATA[노르웨이]]></category>
+		<category><![CDATA[다크웹]]></category>
+		<category><![CDATA[Finance]]></category>
+		<category><![CDATA[government]]></category>
+		<category><![CDATA[Hacktivism]]></category>
+		<category><![CDATA[IAB]]></category>
+		<category><![CDATA[Iran]]></category>
+		<category><![CDATA[이란]]></category>
+		<category><![CDATA[일본]]></category>
+		<category><![CDATA[중국]]></category>
+		<category><![CDATA[영국]]></category>
+		<category><![CDATA[호주]]></category>
+		<category><![CDATA[싱가포르]]></category>
+		<category><![CDATA[Japan]]></category>
+		<category><![CDATA[law-enforcement]]></category>
+		<category><![CDATA[LockBitSupp]]></category>
+		<category><![CDATA[Manufacturing]]></category>
+		<category><![CDATA[NoName05716]]></category>
+		<category><![CDATA[norway]]></category>
+		<category><![CDATA[Panzer]]></category>
+		<category><![CDATA[QScan]]></category>
+		<category><![CDATA[QTFY]]></category>
+		<category><![CDATA[RaaS]]></category>
+		<category><![CDATA[Ransom-Cartel]]></category>
+		<category><![CDATA[Retail]]></category>
+		<category><![CDATA[rootor]]></category>
+		<category><![CDATA[seizure]]></category>
+		<category><![CDATA[Sentencing]]></category>
+		<category><![CDATA[Singapore]]></category>
+		<category><![CDATA[Social-Engineering]]></category>
+		<category><![CDATA[Storm]]></category>
+		<category><![CDATA[supply-chain-attack]]></category>
+		<category><![CDATA[T1ER0NE]]></category>
+		<category><![CDATA[TeamPCP]]></category>
+		<category><![CDATA[transportation]]></category>
+		<category><![CDATA[unauthorized-access]]></category>
+		<category><![CDATA[United-Kingdom]]></category>
+		<category><![CDATA[United-States]]></category>
+		<category><![CDATA[vulnerability-exploitation]]></category>
+		<category><![CDATA[XSS]]></category>
+		<category><![CDATA[Zero-Day]]></category>
+		<guid isPermaLink="false">https://asec.ahnlab.com/95390/</guid>
+
+					<description><![CDATA[Note The August 2026 Dark Web Threat Actor Trend Report focuses on trends among threat actors—including hacktivists—active on the deep web and dark web. It is noted that the accuracy of some information could not be verified. Major Issues NoName057(16), BD Anonymous, and Dark Storm Team claimed responsibility for repeated DDoS attacks targeting websites of [&#8230;]]]></description>
+		
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">95390</post-id>	</item>
+		<item>
+		<title>August 2026 Dark Web Issue Trend Report</title>
+		<link>https://asec.ahnlab.com/en/95391/</link>
+		
+		<dc:creator><![CDATA[ATCP]]></dc:creator>
+		<pubDate>Sun, 13 Sep 2026 15:00:00 +0000</pubDate>
+				<category><![CDATA[Darkweb]]></category>
+		<category><![CDATA[Private]]></category>
+		<category><![CDATA[BreachForums]]></category>
+		<category><![CDATA[Carders]]></category>
+		<category><![CDATA[copyright-infringement]]></category>
+		<category><![CDATA[cybercrime-forum]]></category>
+		<category><![CDATA[DamageLib]]></category>
+		<category><![CDATA[DarkForums]]></category>
+		<category><![CDATA[DarkWeb]]></category>
+		<category><![CDATA[data-leak-repository]]></category>
+		<category><![CDATA[domain-migration]]></category>
+		<category><![CDATA[딥웹]]></category>
+		<category><![CDATA[다크웹]]></category>
+		<category><![CDATA[game-leak]]></category>
+		<category><![CDATA[GitHub]]></category>
+		<category><![CDATA[law-enforcement]]></category>
+		<category><![CDATA[LeakZone]]></category>
+		<category><![CDATA[Leek-Road]]></category>
+		<category><![CDATA[PwnForums]]></category>
+		<category><![CDATA[RaidForums]]></category>
+		<category><![CDATA[UpDap-Forums]]></category>
+		<category><![CDATA[WHOIS-change]]></category>
+		<category><![CDATA[XSS-Forum]]></category>
+		<guid isPermaLink="false">https://asec.ahnlab.com/95391/</guid>
+
+					<description><![CDATA[Note The August 2026 Dark Web Issue Trend Report summarizes Major Issues that occurred on the deep web and dark web. The report notes that, due to the nature of its sources, it may contain some information whose accuracy cannot be fully verified. Major Issue After the RaidForums domain was suspended, a new domain was [&#8230;]]]></description>
+		
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">95391</post-id>	</item>
+		<item>
+		<title>Ransom &#038; Dark Web Issues Week 2, September 2026</title>
+		<link>https://asec.ahnlab.com/en/95338/</link>
+		
+		<dc:creator><![CDATA[ATCP]]></dc:creator>
+		<pubDate>Wed, 09 Sep 2026 15:00:00 +0000</pubDate>
+				<category><![CDATA[Darkweb]]></category>
+		<category><![CDATA[Public]]></category>
+		<category><![CDATA[Argentina]]></category>
+		<category><![CDATA[AuditTeam]]></category>
+		<category><![CDATA[Canada]]></category>
+		<category><![CDATA[DarkWeb]]></category>
+		<category><![CDATA[DataBreach]]></category>
+		<category><![CDATA[DataLeak]]></category>
+		<category><![CDATA[DDW]]></category>
+		<category><![CDATA[DeepWeb]]></category>
+		<category><![CDATA[랜섬웨어]]></category>
+		<category><![CDATA[데이터유출]]></category>
+		<category><![CDATA[데이터탈취]]></category>
+		<category><![CDATA[독일]]></category>
+		<category><![CDATA[개인정보유출]]></category>
+		<category><![CDATA[개인정보탈취]]></category>
+		<category><![CDATA[공공]]></category>
+		<category><![CDATA[대한민국]]></category>
+		<category><![CDATA[국방]]></category>
+		<category><![CDATA[딥웹]]></category>
+		<category><![CDATA[다크웹]]></category>
+		<category><![CDATA[Germany]]></category>
+		<category><![CDATA[운송]]></category>
+		<category><![CDATA[정부기관]]></category>
+		<category><![CDATA[캐나다]]></category>
+		<category><![CDATA[항공]]></category>
+		<category><![CDATA[아르헨티나]]></category>
+		<category><![CDATA[Korea]]></category>
+		<category><![CDATA[Lapsus]]></category>
+		<category><![CDATA[Leaked]]></category>
+		<category><![CDATA[Ransom]]></category>
+		<category><![CDATA[Ransomware]]></category>
+		<category><![CDATA[SouthKorea]]></category>
+		<category><![CDATA[TheGentlemen]]></category>
+		<guid isPermaLink="false">https://asec.ahnlab.com/95338/</guid>
+
+					<description><![CDATA[ASEC Blog publishes Ransom &#38; Dark Web Issues Week 2, September 2026 &#160; &#160; &#160; &#160; &#160; The Gentlemen Ransomware Attack on a Canadian Airline LAPSUS$ Group Resumes Chapter II and Teases New Victim Disclosure AUDIT TEAM Data Extortion Attacks on Four Organizations in South Korea, Germany, and Argentina]]></description>
+		
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">95338</post-id>	</item>
+		<item>
+		<title>Attack Cases in Korea Involving the Installation of Radmin and UltraVNC</title>
+		<link>https://asec.ahnlab.com/en/95230/</link>
+		
+		<dc:creator><![CDATA[ATCP]]></dc:creator>
+		<pubDate>Wed, 02 Sep 2026 15:00:00 +0000</pubDate>
+				<category><![CDATA[Malware]]></category>
+		<category><![CDATA[Public]]></category>
+		<category><![CDATA[CCProxy]]></category>
+		<category><![CDATA[Netch-gateway]]></category>
+		<category><![CDATA[Proxy]]></category>
+		<category><![CDATA[Radmin]]></category>
+		<category><![CDATA[RemoteAdmin]]></category>
+		<category><![CDATA[SoftEther]]></category>
+		<category><![CDATA[SoftEtherVPN]]></category>
+		<category><![CDATA[UltraVNC]]></category>
+		<category><![CDATA[VNC]]></category>
+		<category><![CDATA[vpn]]></category>
+		<guid isPermaLink="false">https://asec.ahnlab.com/95230/</guid>
+
+					<description><![CDATA[The AhnLab SEcurity intelligence Center (ASEC) recently identified attack cases that exploited Radmin and UltraVNC. Although the Initial Intrusion method remains unknown, the attackers installed Radmin—a remote control tool—and then installed UltraVNC. The threat actors exploited the remote control tools to gain control of the infected systems and installed Netch and CCProxy to use the [&#8230;]]]></description>
+		
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">95230</post-id>	</item>
+		<item>
+		<title>Detection and Removal of the Syslogk Rootkit in a Linux Environment</title>
+		<link>https://asec.ahnlab.com/en/95254/</link>
+		
+		<dc:creator><![CDATA[ATCP]]></dc:creator>
+		<pubDate>Wed, 02 Sep 2026 15:00:00 +0000</pubDate>
+				<category><![CDATA[EndPoint]]></category>
+		<category><![CDATA[Malware]]></category>
+		<category><![CDATA[Public]]></category>
+		<category><![CDATA[루트킷]]></category>
+		<category><![CDATA[리눅스루트킷]]></category>
+		<category><![CDATA[Larva-25010]]></category>
+		<category><![CDATA[Syslogk]]></category>
+		<guid isPermaLink="false">https://asec.ahnlab.com/95254/</guid>
+
+					<description><![CDATA[1. Overview The AhnLab SEcurity intelligence Center (ASEC) continuously monitors various threats targeting Linux environments. Techniques that modify the Linux kernel to conceal malware and signs of compromise have been used for a long time, and Syslogk is one such rootkit that operates in this manner. This document provides an analysis of the key features [&#8230;]]]></description>
+		
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">95254</post-id>	</item>
+		<item>
+		<title>I just trusted the security certificate prompt&#8230; Beware of the LegionLoader malware being distributed via the ClickFix method</title>
+		<link>https://asec.ahnlab.com/en/95374/</link>
+		
+		<dc:creator><![CDATA[ATCP]]></dc:creator>
+		<pubDate>Wed, 02 Sep 2026 15:00:00 +0000</pubDate>
+				<category><![CDATA[EndPoint]]></category>
+		<category><![CDATA[Malware]]></category>
+		<category><![CDATA[Phishing/Scam]]></category>
+		<category><![CDATA[Public]]></category>
+		<category><![CDATA[.cfd]]></category>
+		<category><![CDATA[.monster]]></category>
+		<category><![CDATA[ClickFix]]></category>
+		<category><![CDATA[Cloudflare]]></category>
+		<category><![CDATA[dallasbackstage.com]]></category>
+		<category><![CDATA[Email]]></category>
+		<category><![CDATA[나무위키]]></category>
+		<category><![CDATA[gemscocl.com]]></category>
+		<category><![CDATA[악성코드]]></category>
+		<category><![CDATA[신혼희망타운]]></category>
+		<category><![CDATA[LegionLoader]]></category>
+		<category><![CDATA[Loader]]></category>
+		<category><![CDATA[malware]]></category>
+		<category><![CDATA[nback.php]]></category>
+		<category><![CDATA[nfront.php]]></category>
+		<category><![CDATA[Phishing]]></category>
+		<category><![CDATA[PhishingEmail]]></category>
+		<guid isPermaLink="false">https://asec.ahnlab.com/95374/</guid>
+
+					<description><![CDATA[The AhnLab SEcurity intelligence Center (ASEC) recently identified the LegionLoader malware, which is currently being distributed via the ClickFix method. There are two main distribution methods identified so far; both involve tricking users into visiting a malicious URL and then prompting them to directly execute malicious PowerShell commands through a fake Cloudflare CAPTCHA screen. &#160; [&#8230;]]]></description>
+		
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">95374</post-id>	</item>
+		<item>
+		<title>Ransom &#038; Dark Web Issues Week 1, September 2026</title>
+		<link>https://asec.ahnlab.com/en/95223/</link>
+		
+		<dc:creator><![CDATA[ATCP]]></dc:creator>
+		<pubDate>Wed, 02 Sep 2026 15:00:00 +0000</pubDate>
+				<category><![CDATA[Darkweb]]></category>
+		<category><![CDATA[Public]]></category>
+		<category><![CDATA[asset]]></category>
+		<category><![CDATA[Austria]]></category>
+		<category><![CDATA[Automotive]]></category>
+		<category><![CDATA[BlackX]]></category>
+		<category><![CDATA[Brazil]]></category>
+		<category><![CDATA[Canada]]></category>
+		<category><![CDATA[Czechia]]></category>
+		<category><![CDATA[DarkWeb]]></category>
+		<category><![CDATA[DataBreach]]></category>
+		<category><![CDATA[DataLeak]]></category>
+		<category><![CDATA[DDW]]></category>
+		<category><![CDATA[DeepWeb]]></category>
+		<category><![CDATA[랜섬웨어]]></category>
+		<category><![CDATA[데이터유출]]></category>
+		<category><![CDATA[데이터탈취]]></category>
+		<category><![CDATA[독일]]></category>
+		<category><![CDATA[미국]]></category>
+		<category><![CDATA[개인정보유출]]></category>
+		<category><![CDATA[브라질]]></category>
+		<category><![CDATA[금융]]></category>
+		<category><![CDATA[대한민국]]></category>
+		<category><![CDATA[딥웹]]></category>
+		<category><![CDATA[뉴질랜드]]></category>
+		<category><![CDATA[다크웹]]></category>
+		<category><![CDATA[Finance]]></category>
+		<category><![CDATA[Germany]]></category>
+		<category><![CDATA[investment]]></category>
+		<category><![CDATA[자동차부품]]></category>
+		<category><![CDATA[자산운용]]></category>
+		<category><![CDATA[제조]]></category>
+		<category><![CDATA[체코]]></category>
+		<category><![CDATA[캐나다]]></category>
+		<category><![CDATA[투자관리]]></category>
+		<category><![CDATA[오스트리아]]></category>
+		<category><![CDATA[사이버범죄포럼]]></category>
+		<category><![CDATA[신규랜섬웨어]]></category>
+		<category><![CDATA[Leaked]]></category>
+		<category><![CDATA[NewZealand]]></category>
+		<category><![CDATA[Ransom]]></category>
+		<category><![CDATA[Ransomware]]></category>
+		<category><![CDATA[SouthKorea]]></category>
+		<category><![CDATA[USA]]></category>
+		<category><![CDATA[ZaWoo]]></category>
+		<guid isPermaLink="false">https://asec.ahnlab.com/95223/</guid>
+
+					<description><![CDATA[ASEC Blog publishes Ransom &#38; Dark Web Issues Week 1, September 2026 &#160; &#160; &#160; &#160; &#160; ZaWoo Data Extortion Attacks Against Multiple Organizations Worldwide Black X Ransomware Attack on a South Korean Automotive Parts Manufacturer Internal Data of a South Korean Asset Management and Investment Firm Offered for Sale]]></description>
+		
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">95223</post-id>	</item>
+		<item>
+		<title>&#8220;Evasive&#8221; Malware Attack Tactics: Hiding, Bypassing, and Reappearing</title>
+		<link>https://asec.ahnlab.com/en/95211/</link>
+		
+		<dc:creator><![CDATA[ATCP]]></dc:creator>
+		<pubDate>Tue, 01 Sep 2026 15:00:00 +0000</pubDate>
+				<category><![CDATA[Malware]]></category>
+		<category><![CDATA[Phishing/Scam]]></category>
+		<category><![CDATA[Public]]></category>
+		<guid isPermaLink="false">https://asec.ahnlab.com/95211/</guid>
+
+					<description><![CDATA[&#160; People who initially seem fine but tend to subtly avoid others as the relationship deepens or when conflicts arise—and who disappear when pressured—are commonly referred to as “avoidant types.” By repeatedly pulling away only to reappear, they drain the other person’s emotions and energy, ultimately undermining the relationship. The attack pattern of the recently [&#8230;]]]></description>
+		
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">95211</post-id>	</item>
+		<item>
+		<title>Kim Sooki again? This time, it was disguised as a request for seafood ingredients</title>
+		<link>https://asec.ahnlab.com/en/95217/</link>
+		
+		<dc:creator><![CDATA[ATCP]]></dc:creator>
+		<pubDate>Tue, 01 Sep 2026 15:00:00 +0000</pubDate>
+				<category><![CDATA[Malware]]></category>
+		<category><![CDATA[Phishing/Scam]]></category>
+		<category><![CDATA[Public]]></category>
+		<guid isPermaLink="false">https://asec.ahnlab.com/95217/</guid>
+
+					<description><![CDATA[A request to review the purchase of seafood ingredients arrived. When the file is opened, a normal hwp document appears, but while the user is reviewing the contents, a malicious script runs in the background and even registers a scheduled task. It then extracts system information to an external location, downloads and executes additional commands, [&#8230;]]]></description>
+		
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">95217</post-id>	</item>
+		<item>
+		<title>July 2026 Threat Trend Report on APT Attacks (South Korea)</title>
+		<link>https://asec.ahnlab.com/en/95171/</link>
+		
+		<dc:creator><![CDATA[ATCP]]></dc:creator>
+		<pubDate>Thu, 27 Aug 2026 15:00:00 +0000</pubDate>
+				<category><![CDATA[APT]]></category>
+		<category><![CDATA[Private]]></category>
+		<category><![CDATA[AutoIT]]></category>
+		<category><![CDATA[backdoor]]></category>
+		<category><![CDATA[Decoy]]></category>
+		<category><![CDATA[미끼문서]]></category>
+		<category><![CDATA[백도어]]></category>
+		<category><![CDATA[바로가기]]></category>
+		<category><![CDATA[GitHub]]></category>
+		<category><![CDATA[HTA]]></category>
+		<category><![CDATA[피싱]]></category>
+		<category><![CDATA[Keylogger]]></category>
+		<category><![CDATA[Kimsuky]]></category>
+		<category><![CDATA[LNK]]></category>
+		<category><![CDATA[mshta]]></category>
+		<category><![CDATA[Phishing]]></category>
+		<category><![CDATA[PowerShell]]></category>
+		<category><![CDATA[Python]]></category>
+		<category><![CDATA[RAT]]></category>
+		<category><![CDATA[SpearPhishing]]></category>
+		<guid isPermaLink="false">https://asec.ahnlab.com/95171/</guid>
+
+					<description><![CDATA[Overview AhnLab monitored APT (Advanced Persistent Threat) attacks targeting entities in Korea using its own infrastructure. This report summarizes the classification, statistics, and functional characteristics for each type of domestic APT attacks identified during the month of July 2026. Trends of APT Attacks in South Korea Most APT attacks detected in South Korea were distributed [&#8230;]]]></description>
+		
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">95171</post-id>	</item>
+		<item>
+		<title>Ransom &#038; Dark Web Issues Week 4, August 2026</title>
+		<link>https://asec.ahnlab.com/en/95141/</link>
+		
+		<dc:creator><![CDATA[ATCP]]></dc:creator>
+		<pubDate>Wed, 26 Aug 2026 15:00:00 +0000</pubDate>
+				<category><![CDATA[Darkweb]]></category>
+		<category><![CDATA[Public]]></category>
+		<category><![CDATA[BDAnonymous]]></category>
+		<category><![CDATA[CyberAttacks]]></category>
+		<category><![CDATA[DarkWeb]]></category>
+		<category><![CDATA[DataBreach]]></category>
+		<category><![CDATA[DataLeak]]></category>
+		<category><![CDATA[DDoS]]></category>
+		<category><![CDATA[DDW]]></category>
+		<category><![CDATA[DeepWeb]]></category>
+		<category><![CDATA[랜섬웨어]]></category>
+		<category><![CDATA[데이터유출]]></category>
+		<category><![CDATA[데이터탈취]]></category>
+		<category><![CDATA[문화시설]]></category>
+		<category><![CDATA[미디어엔터테인먼트]]></category>
+		<category><![CDATA[개인정보유출]]></category>
+		<category><![CDATA[개인정보탈취]]></category>
+		<category><![CDATA[공공]]></category>
+		<category><![CDATA[대한민국]]></category>
+		<category><![CDATA[딥웹]]></category>
+		<category><![CDATA[디도스]]></category>
+		<category><![CDATA[다크웹]]></category>
+		<category><![CDATA[스트리밍]]></category>
+		<category><![CDATA[운송]]></category>
+		<category><![CDATA[일본]]></category>
+		<category><![CDATA[제조]]></category>
+		<category><![CDATA[헥티비스트]]></category>
+		<category><![CDATA[사우디아라비아]]></category>
+		<category><![CDATA[사이버공격]]></category>
+		<category><![CDATA[산업용가스]]></category>
+		<category><![CDATA[Japan]]></category>
+		<category><![CDATA[Leaked]]></category>
+		<category><![CDATA[NoName057]]></category>
+		<category><![CDATA[NoName05716]]></category>
+		<category><![CDATA[Ransom]]></category>
+		<category><![CDATA[Ransomware]]></category>
+		<category><![CDATA[Safepay]]></category>
+		<category><![CDATA[SaudiArabia]]></category>
+		<category><![CDATA[SouthKorea]]></category>
+		<guid isPermaLink="false">https://asec.ahnlab.com/95141/</guid>
+
+					<description><![CDATA[ASEC Blog publishes Ransom &#38; Dark Web Issues Week 4, August2026 &#160; &#160; &#160; &#160; &#160; Saudi Arabian Digital Entertainment Streaming Service User Data Offered for Sale SAFEPAY Ransomware Attack on a South Korean Industrial Gas Manufacturer and Supplier NoName057(16) and BD Anonymous Claim DDoS Attacks Against Major Japanese Organizations and Companies [1] [2] [3] [&#8230;]]]></description>
+		
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">95141</post-id>	</item>
+		<item>
+		<title>July 2026 Threat Trend Report on Ransomware</title>
+		<link>https://asec.ahnlab.com/en/95112/</link>
+		
+		<dc:creator><![CDATA[ATCP]]></dc:creator>
+		<pubDate>Sun, 23 Aug 2026 15:00:00 +0000</pubDate>
+				<category><![CDATA[Darkweb]]></category>
+		<category><![CDATA[Malware]]></category>
+		<category><![CDATA[Private]]></category>
+		<category><![CDATA[Trend]]></category>
+		<category><![CDATA[Akira]]></category>
+		<category><![CDATA[DragonForce]]></category>
+		<category><![CDATA[Gentlemen]]></category>
+		<category><![CDATA[INCRansom]]></category>
+		<category><![CDATA[Qilin]]></category>
+		<category><![CDATA[Safepay]]></category>
+		<guid isPermaLink="false">https://asec.ahnlab.com/95112/</guid>
+
+					<description><![CDATA[Purpose and Scope The July 2026 Threat Trend Report on Ransomware summarizes major Korean &#038; global ransomware issues based on statistics regarding the quantity of new ransomware samples, the number of compromised systems, and statistics on targeted businesses. Statistics on targeted businesses were compiled based on information published on DLS (Dedicated Leak Sites, also referred [&#8230;]]]></description>
+		
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">95112</post-id>	</item>
+		<item>
+		<title>July 2026 Threat Trend Report on APT Groups</title>
+		<link>https://asec.ahnlab.com/en/95040/</link>
+		
+		<dc:creator><![CDATA[ATCP]]></dc:creator>
+		<pubDate>Wed, 19 Aug 2026 15:00:00 +0000</pubDate>
+				<category><![CDATA[APT]]></category>
+		<category><![CDATA[Private]]></category>
+		<category><![CDATA[APT-C-60]]></category>
+		<category><![CDATA[APT28]]></category>
+		<category><![CDATA[APT38]]></category>
+		<category><![CDATA[APT42]]></category>
+		<category><![CDATA[APTTrend202607]]></category>
+		<category><![CDATA[ArmoredLikho]]></category>
+		<category><![CDATA[AwakenLikho]]></category>
+		<category><![CDATA[CavernManticore]]></category>
+		<category><![CDATA[CloudAtlas]]></category>
+		<category><![CDATA[CoreWerewolf]]></category>
+		<category><![CDATA[Daxin]]></category>
+		<category><![CDATA[DoNot]]></category>
+		<category><![CDATA[EagleWerewolf]]></category>
+		<category><![CDATA[FamousChollima]]></category>
+		<category><![CDATA[GOFFEE]]></category>
+		<category><![CDATA[Kimsuky]]></category>
+		<category><![CDATA[Larva-25001]]></category>
+		<category><![CDATA[LaundryBear]]></category>
+		<category><![CDATA[OceanLotus]]></category>
+		<category><![CDATA[RareWerewolf]]></category>
+		<category><![CDATA[TA458]]></category>
+		<category><![CDATA[TAG-182]]></category>
+		<category><![CDATA[UAT-7810]]></category>
+		<category><![CDATA[UNK_MassTraction]]></category>
+		<category><![CDATA[ViceroyTiger]]></category>
+		<category><![CDATA[VoidBlizzard]]></category>
+		<guid isPermaLink="false">https://asec.ahnlab.com/95040/</guid>
+
+					<description><![CDATA[Purpose and Scope The July 2026 Threat Trend Report on APT Groups summarizes the trend in which state-sponsored threat actors and financially motivated attackers are employing a combination of supply chain attacks, account takeovers, cloud breaches, and social engineering techniques. Key targets include Microsoft 365, webmail accounts, cloud infrastructure, GitHub and development environments, VPN and [&#8230;]]]></description>
+		
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">95040</post-id>	</item>
+		<item>
+		<title>Ransom &#038; Dark Web Issues Week 3, August 2026</title>
+		<link>https://asec.ahnlab.com/en/95046/</link>
+		
+		<dc:creator><![CDATA[ATCP]]></dc:creator>
+		<pubDate>Wed, 19 Aug 2026 15:00:00 +0000</pubDate>
+				<category><![CDATA[Darkweb]]></category>
+		<category><![CDATA[Public]]></category>
+		<category><![CDATA[DarkWeb]]></category>
+		<category><![CDATA[DataBreach]]></category>
+		<category><![CDATA[DDW]]></category>
+		<category><![CDATA[DeepWeb]]></category>
+		<category><![CDATA[데이터유출]]></category>
+		<category><![CDATA[데이터탈취]]></category>
+		<category><![CDATA[데이터센터]]></category>
+		<category><![CDATA[라이브스트리밍]]></category>
+		<category><![CDATA[미국]]></category>
+		<category><![CDATA[배달플랫폼]]></category>
+		<category><![CDATA[고객정보]]></category>
+		<category><![CDATA[대한민국]]></category>
+		<category><![CDATA[딥웹]]></category>
+		<category><![CDATA[다크웹]]></category>
+		<category><![CDATA[클라우드]]></category>
+		<category><![CDATA[일본]]></category>
+		<category><![CDATA[정보유출]]></category>
+		<category><![CDATA[정보탈취]]></category>
+		<category><![CDATA[플랫폼]]></category>
+		<category><![CDATA[서비스운영]]></category>
+		<category><![CDATA[Japan]]></category>
+		<category><![CDATA[Leaked]]></category>
+		<category><![CDATA[ShinyHunters]]></category>
+		<category><![CDATA[SouthKorea]]></category>
+		<category><![CDATA[UnitedStates]]></category>
+		<category><![CDATA[USA]]></category>
+		<guid isPermaLink="false">https://asec.ahnlab.com/95046/</guid>
+
+					<description><![CDATA[ASEC Blog publishes Ransom &#38; Dark Web Issues Week 3, August 2026 &#160; &#160; &#160; &#160; Customer and Operational Data of a South Korean Delivery Platform Offered for Sale Unauthorized Access Incident at a Japanese Cloud and Data Center Services Company ShinyHunters Threatens Data Disclosure Against a U.S. Live-Streaming Platform]]></description>
+		
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">95046</post-id>	</item>
+		<item>
+		<title>Ransom &#038; Dark Web Issues Week 2, August 2026</title>
+		<link>https://asec.ahnlab.com/en/94968/</link>
+		
+		<dc:creator><![CDATA[ATCP]]></dc:creator>
+		<pubDate>Wed, 12 Aug 2026 15:00:00 +0000</pubDate>
+				<category><![CDATA[Darkweb]]></category>
+		<category><![CDATA[Public]]></category>
+		<category><![CDATA[DarkWeb]]></category>
+		<category><![CDATA[DataBreach]]></category>
+		<category><![CDATA[DDW]]></category>
+		<category><![CDATA[DeepWeb]]></category>
+		<category><![CDATA[DragonForce]]></category>
+		<category><![CDATA[랜섬웨어]]></category>
+		<category><![CDATA[데이터탈취]]></category>
+		<category><![CDATA[로봇]]></category>
+		<category><![CDATA[로봇기계]]></category>
+		<category><![CDATA[모터]]></category>
+		<category><![CDATA[미국]]></category>
+		<category><![CDATA[개인정보탈취]]></category>
+		<category><![CDATA[대한민국]]></category>
+		<category><![CDATA[교육]]></category>
+		<category><![CDATA[딥웹]]></category>
+		<category><![CDATA[디지털헬스케어]]></category>
+		<category><![CDATA[다크웹]]></category>
+		<category><![CDATA[자격증]]></category>
+		<category><![CDATA[의료]]></category>
+		<category><![CDATA[제조]]></category>
+		<category><![CDATA[온라인교육]]></category>
+		<category><![CDATA[헬스케어소프트웨어]]></category>
+		<category><![CDATA[Qilin]]></category>
+		<category><![CDATA[Ransom]]></category>
+		<category><![CDATA[Ransomware]]></category>
+		<category><![CDATA[ShinyHunters]]></category>
+		<category><![CDATA[SouthKorea]]></category>
+		<category><![CDATA[UnitedStates]]></category>
+		<category><![CDATA[USA]]></category>
+		<guid isPermaLink="false">https://asec.ahnlab.com/94968/</guid>
+
+					<description><![CDATA[ASEC Blog publishes Ransom &#38; Dark Web Issues Week 2, August 2026. &#160; &#160; &#160; &#160; &#160; DragonForce Ransomware Attack on a South Korean Online Education Company Qilin Ransomware Attack on a South Korean Motor and Robotics Manufacturer ShinyHunters Claims Data Leak from a U.S. Digital Healthcare Company]]></description>
+		
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">94968</post-id>	</item>
+		<item>
+		<title>Beware of phishing emails disguised as requests to review quotes (PhantomStealer)</title>
+		<link>https://asec.ahnlab.com/en/95000/</link>
+		
+		<dc:creator><![CDATA[ATCP]]></dc:creator>
+		<pubDate>Tue, 11 Aug 2026 15:00:00 +0000</pubDate>
+				<category><![CDATA[Malware]]></category>
+		<category><![CDATA[Public]]></category>
+		<category><![CDATA[Email]]></category>
+		<category><![CDATA[injector]]></category>
+		<category><![CDATA[이메일]]></category>
+		<category><![CDATA[정보탈취]]></category>
+		<category><![CDATA[피싱]]></category>
+		<category><![CDATA[피싱메일]]></category>
+		<category><![CDATA[phantomstealer]]></category>
+		<category><![CDATA[Phishing]]></category>
+		<category><![CDATA[SMTP]]></category>
+		<guid isPermaLink="false">https://asec.ahnlab.com/95000/</guid>
+
+					<description><![CDATA[The AhnLab SEcurity intelligence Center (ASEC) recently identified a phishing email campaign that disguised itself as a request to review a quote. The threat actor impersonated a sales team member at a specific overseas company and, by claiming that a previous quote needed to be revised and product versions verified, tricked recipients into opening the [&#8230;]]]></description>
+		
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">95000</post-id>	</item>
+		<item>
+		<title>July 2026 Infostealer Trend Report</title>
+		<link>https://asec.ahnlab.com/en/95066/</link>
+		
+		<dc:creator><![CDATA[ATCP]]></dc:creator>
+		<pubDate>Tue, 11 Aug 2026 15:00:00 +0000</pubDate>
+				<category><![CDATA[Malware]]></category>
+		<category><![CDATA[Private]]></category>
+		<category><![CDATA[Trend]]></category>
+		<category><![CDATA[ACRStealer]]></category>
+		<category><![CDATA[AGENTTESLA]]></category>
+		<category><![CDATA[동향]]></category>
+		<category><![CDATA[Infostealer]]></category>
+		<category><![CDATA[정보탈취]]></category>
+		<category><![CDATA[악성코드]]></category>
+		<category><![CDATA[LummaC2]]></category>
+		<category><![CDATA[Remcos]]></category>
+		<category><![CDATA[Remus]]></category>
+		<category><![CDATA[Vidar]]></category>
+		<guid isPermaLink="false">https://asec.ahnlab.com/95066/</guid>
+
+					<description><![CDATA[Content This report summarizes the distribution channels, number of Infostealers, number of detections, and target companies that were disguised as Infostealers collected during the month of July 2026. It was compiled based on results from AhnLab SEcurity intelligence Center (ASEC)’s automated data collection system, email honeypots, and automated C2 analysis, as well as diagnostic logs [&#8230;]]]></description>
+		
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">95066</post-id>	</item>
+		<item>
+		<title>July 2026 Dark Web Threat Actor Trend Report</title>
+		<link>https://asec.ahnlab.com/en/94917/</link>
+		
+		<dc:creator><![CDATA[ATCP]]></dc:creator>
+		<pubDate>Mon, 10 Aug 2026 15:00:00 +0000</pubDate>
+				<category><![CDATA[Darkweb]]></category>
+		<category><![CDATA[Private]]></category>
+		<category><![CDATA[Arrest]]></category>
+		<category><![CDATA[BD-Anonymous]]></category>
+		<category><![CDATA[BlackCat]]></category>
+		<category><![CDATA[Bolt]]></category>
+		<category><![CDATA[BreachForums]]></category>
+		<category><![CDATA[CoinbaseCartel]]></category>
+		<category><![CDATA[DarkMatter]]></category>
+		<category><![CDATA[DarkWeb]]></category>
+		<category><![CDATA[data-breaches]]></category>
+		<category><![CDATA[DDoS]]></category>
+		<category><![CDATA[DeepWeb]]></category>
+		<category><![CDATA[ExploitGym]]></category>
+		<category><![CDATA[딥웹]]></category>
+		<category><![CDATA[다크웹]]></category>
+		<category><![CDATA[Finance]]></category>
+		<category><![CDATA[government]]></category>
+		<category><![CDATA[Hacktivism]]></category>
+		<category><![CDATA[Handala]]></category>
+		<category><![CDATA[Healthcare]]></category>
+		<category><![CDATA[HuggingFace]]></category>
+		<category><![CDATA[IAB]]></category>
+		<category><![CDATA[Indictment]]></category>
+		<category><![CDATA[Kratos]]></category>
+		<category><![CDATA[law-enforcement]]></category>
+		<category><![CDATA[logistics]]></category>
+		<category><![CDATA[Media]]></category>
+		<category><![CDATA[Military]]></category>
+		<category><![CDATA[ModernStealer]]></category>
+		<category><![CDATA[OpenAI]]></category>
+		<category><![CDATA[RaaS]]></category>
+		<category><![CDATA[Retail]]></category>
+		<category><![CDATA[REvil]]></category>
+		<category><![CDATA[sandbox-escape]]></category>
+		<category><![CDATA[SCATTEREDSPIDER]]></category>
+		<category><![CDATA[Sentencing]]></category>
+		<category><![CDATA[ShinyHunters]]></category>
+		<category><![CDATA[Stormous]]></category>
+		<category><![CDATA[TakeDown]]></category>
+		<category><![CDATA[Telecommunications]]></category>
+		<category><![CDATA[Z-Pentest]]></category>
+		<guid isPermaLink="false">https://asec.ahnlab.com/94917/</guid>
+
+					<description><![CDATA[Note The July 2026 Dark Web Threat Actor Trend Report focuses on trends among threat actors—including hacktivists—active on the deep web and dark web. It is explicitly noted that the factual accuracy of some content could not be verified. Major Issues Handala claimed to have compromised the core infrastructure of an Internet service provider in [&#8230;]]]></description>
+		
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">94917</post-id>	</item>
+		<item>
+		<title>July 2026 Dark Web Issue Trend Report</title>
+		<link>https://asec.ahnlab.com/en/94918/</link>
+		
+		<dc:creator><![CDATA[ATCP]]></dc:creator>
+		<pubDate>Mon, 10 Aug 2026 15:00:00 +0000</pubDate>
+				<category><![CDATA[Darkweb]]></category>
+		<category><![CDATA[Private]]></category>
+		<category><![CDATA[AML-drainer]]></category>
+		<category><![CDATA[BreachForums]]></category>
+		<category><![CDATA[BreachStars]]></category>
+		<category><![CDATA[card-fraud]]></category>
+		<category><![CDATA[Cardy-Shop]]></category>
+		<category><![CDATA[DamageLib]]></category>
+		<category><![CDATA[DarkWeb]]></category>
+		<category><![CDATA[data-leak-forum]]></category>
+		<category><![CDATA[DeepWeb]]></category>
+		<category><![CDATA[딥웹]]></category>
+		<category><![CDATA[다크웹]]></category>
+		<category><![CDATA[HasanBroker]]></category>
+		<category><![CDATA[Lapsus]]></category>
+		<category><![CDATA[marketplace]]></category>
+		<category><![CDATA[RaaS]]></category>
+		<category><![CDATA[RaidBin]]></category>
+		<category><![CDATA[RaidForums]]></category>
+		<category><![CDATA[SevyWare]]></category>
+		<guid isPermaLink="false">https://asec.ahnlab.com/94918/</guid>
+
+					<description><![CDATA[Note The July 2026 Dark Web Issue Trend Report summarizes major issues that occurred on the deep web and dark web. Due to the nature of some sources, it may be difficult to fully verify the accuracy of certain information; therefore, it is necessary to cross-check these details against official announcements. Major Issues RaidForums changed [&#8230;]]]></description>
+		
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">94918</post-id>	</item>
+		<item>
+		<title>Attack Cases for Domestic Web Servers Running SoftEther VPN in Korea</title>
+		<link>https://asec.ahnlab.com/en/94995/</link>
+		
+		<dc:creator><![CDATA[ATCP]]></dc:creator>
+		<pubDate>Mon, 10 Aug 2026 15:00:00 +0000</pubDate>
+				<category><![CDATA[Malware]]></category>
+		<category><![CDATA[Public]]></category>
+		<category><![CDATA[IIS]]></category>
+		<category><![CDATA[MS-SQL]]></category>
+		<category><![CDATA[SoftEther]]></category>
+		<category><![CDATA[SoftEtherVPN]]></category>
+		<category><![CDATA[SqlShell]]></category>
+		<category><![CDATA[Webserver]]></category>
+		<category><![CDATA[Webshell]]></category>
+		<guid isPermaLink="false">https://asec.ahnlab.com/94995/</guid>
+
+					<description><![CDATA[The AhnLab SEcurity intelligence Center (ASEC) recently identified attack cases in which attackers targeted web servers in Korea to install SoftEther VPN. Attack cases involving the installation of SoftEther VPN, an open-source VPN, were previously discussed in the 2024 ASEC blog post titled “Analysis of Attack Cases Targeting ERP Servers in Korea to Install SoftEther [&#8230;]]]></description>
+		
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">94995</post-id>	</item>
+		<item>
+		<title>July 2026 Dark Web Breach Incident Trend Report</title>
+		<link>https://asec.ahnlab.com/en/94912/</link>
+		
+		<dc:creator><![CDATA[ATCP]]></dc:creator>
+		<pubDate>Mon, 10 Aug 2026 15:00:00 +0000</pubDate>
+				<category><![CDATA[Darkweb]]></category>
+		<category><![CDATA[Private]]></category>
+		<category><![CDATA[0-day]]></category>
+		<category><![CDATA[Argentina]]></category>
+		<category><![CDATA[Bahrain]]></category>
+		<category><![CDATA[Bolivia]]></category>
+		<category><![CDATA[Brazil]]></category>
+		<category><![CDATA[BreachForums]]></category>
+		<category><![CDATA[DarkForums]]></category>
+		<category><![CDATA[DarkWeb]]></category>
+		<category><![CDATA[data-breach]]></category>
+		<category><![CDATA[data-leak]]></category>
+		<category><![CDATA[DeepWeb]]></category>
+		<category><![CDATA[DRC]]></category>
+		<category><![CDATA[Education]]></category>
+		<category><![CDATA[exploit]]></category>
+		<category><![CDATA[러시아]]></category>
+		<category><![CDATA[멕시코]]></category>
+		<category><![CDATA[미국]]></category>
+		<category><![CDATA[바레인]]></category>
+		<category><![CDATA[베네수엘라]]></category>
+		<category><![CDATA[볼리비아]]></category>
+		<category><![CDATA[브라질]]></category>
+		<category><![CDATA[딥웹]]></category>
+		<category><![CDATA[다크웹]]></category>
+		<category><![CDATA[Finance]]></category>
+		<category><![CDATA[France]]></category>
+		<category><![CDATA[GORZ-ROSTAM]]></category>
+		<category><![CDATA[government]]></category>
+		<category><![CDATA[Healthcare]]></category>
+		<category><![CDATA[IAB]]></category>
+		<category><![CDATA[India]]></category>
+		<category><![CDATA[Indonesia]]></category>
+		<category><![CDATA[Israel]]></category>
+		<category><![CDATA[우크라이나]]></category>
+		<category><![CDATA[튀르키예]]></category>
+		<category><![CDATA[폴란드]]></category>
+		<category><![CDATA[이스라엘]]></category>
+		<category><![CDATA[인도]]></category>
+		<category><![CDATA[인도네시아]]></category>
+		<category><![CDATA[일본]]></category>
+		<category><![CDATA[콩고민주공화국]]></category>
+		<category><![CDATA[파키스탄]]></category>
+		<category><![CDATA[영국]]></category>
+		<category><![CDATA[사우디아라비아]]></category>
+		<category><![CDATA[프랑스]]></category>
+		<category><![CDATA[세이셸]]></category>
+		<category><![CDATA[한국]]></category>
+		<category><![CDATA[아랍에미리트]]></category>
+		<category><![CDATA[아르헨티나]]></category>
+		<category><![CDATA[Japan]]></category>
+		<category><![CDATA[MEXICO]]></category>
+		<category><![CDATA[Military]]></category>
+		<category><![CDATA[Pakistan]]></category>
+		<category><![CDATA[Poland]]></category>
+		<category><![CDATA[PwnForums]]></category>
+		<category><![CDATA[RaidForums]]></category>
+		<category><![CDATA[Retail]]></category>
+		<category><![CDATA[Russia]]></category>
+		<category><![CDATA[SaudiArabia]]></category>
+		<category><![CDATA[Seychelles]]></category>
+		<category><![CDATA[ShinyHunters]]></category>
+		<category><![CDATA[source-code-leak]]></category>
+		<category><![CDATA[SouthKorea]]></category>
+		<category><![CDATA[spear]]></category>
+		<category><![CDATA[SSRF]]></category>
+		<category><![CDATA[Telecommunications]]></category>
+		<category><![CDATA[Turkey]]></category>
+		<category><![CDATA[UAE]]></category>
+		<category><![CDATA[UK]]></category>
+		<category><![CDATA[Ukraine]]></category>
+		<category><![CDATA[United-States]]></category>
+		<category><![CDATA[Venezuela]]></category>
+		<guid isPermaLink="false">https://asec.ahnlab.com/94912/</guid>
+
+					<description><![CDATA[Note The July 2026 Dark Web Breach Incident Trend Report was compiled based on data breach cases posted on deep web and dark web forums. Due to the nature of some posts, it is difficult to fully verify their accuracy; some posts related to South Korea included AI-generated false data or cases where it could [&#8230;]]]></description>
+		
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">94912</post-id>	</item>
+		<item>
+		<title>Beware of Phishing Emails Disguised as Transaction Receipts</title>
+		<link>https://asec.ahnlab.com/en/95001/</link>
+		
+		<dc:creator><![CDATA[ATCP]]></dc:creator>
+		<pubDate>Sun, 09 Aug 2026 15:00:00 +0000</pubDate>
+				<category><![CDATA[Malware]]></category>
+		<category><![CDATA[Phishing/Scam]]></category>
+		<category><![CDATA[Public]]></category>
+		<category><![CDATA[피싱]]></category>
+		<category><![CDATA[피싱메일]]></category>
+		<category><![CDATA[원격제어]]></category>
+		<category><![CDATA[PDF]]></category>
+		<category><![CDATA[Phishing]]></category>
+		<category><![CDATA[ScreenConnect]]></category>
+		<category><![CDATA[vbs]]></category>
+		<guid isPermaLink="false">https://asec.ahnlab.com/95001/</guid>
+
+					<description><![CDATA[Recently, the AhnLab SEcurity intelligence Center (ASEC) identified instances of phishing emails that were disguised as transaction receipts. The emails impersonated employees of a specific US company. The body of the message stated that a transaction receipt was attached and asked the recipient to review it and confirm whether funds had been deposited into their [&#8230;]]]></description>
+		
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">95001</post-id>	</item>
+		<item>
+		<title>July 2026 Security Issues in Korean &#038; Global Financial Sector</title>
+		<link>https://asec.ahnlab.com/en/95109/</link>
+		
+		<dc:creator><![CDATA[ATCP]]></dc:creator>
+		<pubDate>Sun, 09 Aug 2026 15:00:00 +0000</pubDate>
+				<category><![CDATA[Darkweb]]></category>
+		<category><![CDATA[Malware]]></category>
+		<category><![CDATA[Phishing/Scam]]></category>
+		<category><![CDATA[Private]]></category>
+		<category><![CDATA[Trend]]></category>
+		<category><![CDATA[Alfa-Bank]]></category>
+		<category><![CDATA[Amelia]]></category>
+		<category><![CDATA[America]]></category>
+		<category><![CDATA[Attachment]]></category>
+		<category><![CDATA[Bahrain]]></category>
+		<category><![CDATA[Banco]]></category>
+		<category><![CDATA[bank]]></category>
+		<category><![CDATA[Blackrock]]></category>
+		<category><![CDATA[BreachForums]]></category>
+		<category><![CDATA[DarkForums]]></category>
+		<category><![CDATA[DarkWeb]]></category>
+		<category><![CDATA[DeepWeb]]></category>
+		<category><![CDATA[DeutscheBank]]></category>
+		<category><![CDATA[Deutsche_Bank]]></category>
+		<category><![CDATA[DNI]]></category>
+		<category><![CDATA[Email]]></category>
+		<category><![CDATA[Everest]]></category>
+		<category><![CDATA[러시아]]></category>
+		<category><![CDATA[랜섬웨어]]></category>
+		<category><![CDATA[독일]]></category>
+		<category><![CDATA[미국]]></category>
+		<category><![CDATA[바레인]]></category>
+		<category><![CDATA[금융권]]></category>
+		<category><![CDATA[블랙록]]></category>
+		<category><![CDATA[딥웹]]></category>
+		<category><![CDATA[다크웹]]></category>
+		<category><![CDATA[financial]]></category>
+		<category><![CDATA[Fiserv]]></category>
+		<category><![CDATA[German]]></category>
+		<category><![CDATA[GORZ-ROSTAM]]></category>
+		<category><![CDATA[GORZROSTAM]]></category>
+		<category><![CDATA[GORZ_ROSTAM]]></category>
+		<category><![CDATA[Gulf]]></category>
+		<category><![CDATA[Hasan]]></category>
+		<category><![CDATA[IBAN]]></category>
+		<category><![CDATA[스페인]]></category>
+		<category><![CDATA[아랍에미리트]]></category>
+		<category><![CDATA[libertymutual]]></category>
+		<category><![CDATA[OperationSevenStagess]]></category>
+		<category><![CDATA[Phishing]]></category>
+		<category><![CDATA[Ransomware]]></category>
+		<category><![CDATA[Russia]]></category>
+		<category><![CDATA[Santander]]></category>
+		<category><![CDATA[Spain]]></category>
+		<category><![CDATA[UAEBanks]]></category>
+		<category><![CDATA[unsafe]]></category>
+		<guid isPermaLink="false">https://asec.ahnlab.com/95109/</guid>
+
+					<description><![CDATA[Statistics on Malware Distributed to the Financial Sector In Attack Stage 1, phishing (a technique that tricks users into opening malicious links or attachments) had the highest rate at 1.7, Down from 2.3 The previous month. In Attack Stage 2, Dropper/Downloader (a type that downloads additional malware) was the most prevalent at 1.7, Up from [&#8230;]]]></description>
+		
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">95109</post-id>	</item>
+		<item>
+		<title>Ransom &#038; Dark Web Issues Week 1, August 2026</title>
+		<link>https://asec.ahnlab.com/en/94844/</link>
+		
+		<dc:creator><![CDATA[ATCP]]></dc:creator>
+		<pubDate>Wed, 05 Aug 2026 15:00:00 +0000</pubDate>
+				<category><![CDATA[Darkweb]]></category>
+		<category><![CDATA[Public]]></category>
+		<category><![CDATA[DarkWeb]]></category>
+		<category><![CDATA[DataBreach]]></category>
+		<category><![CDATA[DataLeak]]></category>
+		<category><![CDATA[DDW]]></category>
+		<category><![CDATA[DeepWeb]]></category>
+		<category><![CDATA[랜섬웨어]]></category>
+		<category><![CDATA[데이터유출]]></category>
+		<category><![CDATA[데이터탈취]]></category>
+		<category><![CDATA[개인정보유출]]></category>
+		<category><![CDATA[개인정보탈취]]></category>
+		<category><![CDATA[법률회계컨설팅]]></category>
+		<category><![CDATA[대한민국]]></category>
+		<category><![CDATA[딥웹]]></category>
+		<category><![CDATA[다크웹]]></category>
+		<category><![CDATA[Gunra]]></category>
+		<category><![CDATA[HR컨설팅]]></category>
+		<category><![CDATA[튀르키예]]></category>
+		<category><![CDATA[자동차부품]]></category>
+		<category><![CDATA[제조]]></category>
+		<category><![CDATA[중장비부품]]></category>
+		<category><![CDATA[생산관리]]></category>
+		<category><![CDATA[품질관리]]></category>
+		<category><![CDATA[신소재]]></category>
+		<category><![CDATA[Leaked]]></category>
+		<category><![CDATA[Ransom]]></category>
+		<category><![CDATA[Ransomware]]></category>
+		<category><![CDATA[SouthKorea]]></category>
+		<category><![CDATA[Turkey]]></category>
+		<guid isPermaLink="false">https://asec.ahnlab.com/94844/</guid>
+
+					<description><![CDATA[ASEC Blog publishes Ransom &#38; Dark Web Issues Week 1, August 2026 &#160; &#160; &#160; &#160; &#160; South Korean Automotive Parts Manufacturer’s Internal Server Access and Database Offered for Sale Data of a Turkish HR Consulting Company Offered for Sale Gunra Ransomware Attack on a South Korean Heavy Equipment Parts and Advanced Materials Manufacturer]]></description>
+		
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">94844</post-id>	</item>
+		<item>
+		<title>Analysis of the Connection Between Xctdoor and Past CRAT Attack Cases (Larva-26005)</title>
+		<link>https://asec.ahnlab.com/en/94847/</link>
+		
+		<dc:creator><![CDATA[ATCP]]></dc:creator>
+		<pubDate>Mon, 03 Aug 2026 15:00:00 +0000</pubDate>
+				<category><![CDATA[APT]]></category>
+		<category><![CDATA[Malware]]></category>
+		<category><![CDATA[Public]]></category>
+		<category><![CDATA[backdoor]]></category>
+		<category><![CDATA[Downloader]]></category>
+		<category><![CDATA[Hansom]]></category>
+		<category><![CDATA[HansomRansomware]]></category>
+		<category><![CDATA[LNK]]></category>
+		<category><![CDATA[XcLoader]]></category>
+		<guid isPermaLink="false">https://asec.ahnlab.com/94847/</guid>
+
+					<description><![CDATA[1. Overview AhnLab SEcurity intelligence Center (ASEC) recently confirmed that the Larva-26005 threat actor is distributing Xctdoor to users in Korea. Xctdoor was disclosed through the ASEC blog in 2024, and [1] In March 2026, Hauri disclosed an attack case in which the malware was disguised as an integrated security program. [2] &#160; While analyzing [&#8230;]]]></description>
+		
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">94847</post-id>	</item>
+		<item>
+		<title>Analysis of a Phishing Email Attack Case by the Larva-24009 Threat Actor</title>
+		<link>https://asec.ahnlab.com/en/94786/</link>
+		
+		<dc:creator><![CDATA[ATCP]]></dc:creator>
+		<pubDate>Sun, 02 Aug 2026 15:00:00 +0000</pubDate>
+				<category><![CDATA[Malware]]></category>
+		<category><![CDATA[Public]]></category>
+		<category><![CDATA[ChromePassView]]></category>
+		<category><![CDATA[Keylogger]]></category>
+		<category><![CDATA[LastActivityView]]></category>
+		<category><![CDATA[LNK]]></category>
+		<category><![CDATA[NetworkPasswordRecovery]]></category>
+		<category><![CDATA[PowerShell]]></category>
+		<category><![CDATA[RDP]]></category>
+		<category><![CDATA[SpearPhishing]]></category>
+		<category><![CDATA[UltraVNC]]></category>
+		<category><![CDATA[WebBrowserBookmarksView]]></category>
+		<guid isPermaLink="false">https://asec.ahnlab.com/94786/</guid>
+
+					<description><![CDATA[The Larva-24009 threat actor has been active since at least 2023, carrying out phishing email attacks targeting users both in Korea and globally to install malware. ASEC (AhnLab SEcurity intelligence Center (ASEC) has previously disclosed attack cases by this threat actor in 2024, and [1] [2] [3] Subsequently, Cyble also identified this same attack campaign [&#8230;]]]></description>
+		
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">94786</post-id>	</item>
+		<item>
+		<title>[Joint Cybersecurity Advisory] Operation Double Barrel (The Relationship Between a State-Sponsored Threat Actor and the Gunra Ransomware Group)</title>
+		<link>https://asec.ahnlab.com/en/94696/</link>
+		
+		<dc:creator><![CDATA[ATCP]]></dc:creator>
+		<pubDate>Wed, 29 Jul 2026 15:00:00 +0000</pubDate>
+				<category><![CDATA[APT]]></category>
+		<category><![CDATA[Malware]]></category>
+		<category><![CDATA[Public]]></category>
+		<category><![CDATA[backdoor]]></category>
+		<category><![CDATA[Certipy]]></category>
+		<category><![CDATA[COPPERHEDGE]]></category>
+		<category><![CDATA[exploit]]></category>
+		<category><![CDATA[FileZilla]]></category>
+		<category><![CDATA[fingerprint]]></category>
+		<category><![CDATA[GitHub]]></category>
+		<category><![CDATA[Gunra]]></category>
+		<category><![CDATA[GunraRansomware]]></category>
+		<category><![CDATA[HookShot]]></category>
+		<category><![CDATA[Impacket]]></category>
+		<category><![CDATA[MS-SQL]]></category>
+		<category><![CDATA[Nircmd]]></category>
+		<category><![CDATA[OpenSSH]]></category>
+		<category><![CDATA[PetitPotam]]></category>
+		<category><![CDATA[Plink]]></category>
+		<category><![CDATA[PsExec]]></category>
+		<category><![CDATA[Ransomware]]></category>
+		<category><![CDATA[SIGNBT]]></category>
+		<category><![CDATA[Socat]]></category>
+		<category><![CDATA[SpearPhishing]]></category>
+		<category><![CDATA[Struggle]]></category>
+		<category><![CDATA[SupplyChain]]></category>
+		<category><![CDATA[TightVNC]]></category>
+		<category><![CDATA[tistory]]></category>
+		<category><![CDATA[Tunneling]]></category>
+		<category><![CDATA[UACBypass]]></category>
+		<category><![CDATA[UACMe]]></category>
+		<category><![CDATA[Vulnerability]]></category>
+		<category><![CDATA[WateringHole]]></category>
+		<category><![CDATA[Webshell]]></category>
+		<category><![CDATA[Whale]]></category>
+		<category><![CDATA[WinSCP]]></category>
+		<guid isPermaLink="false">https://asec.ahnlab.com/?p=94696</guid>
+
+					<description><![CDATA[This technical analysis report was prepared as part of the joint cybersecurity advisory titled “Advisory on Cyberattacks Targeting Korean Citizens and Businesses by State-Sponsored Hacking Groups” issued by the Republic of Korea’s National Intelligence Service (NIS), National Police Agency (NPA), Korea Internet &#38; Security Agency (KISA), and Financial Security Institute (FSI). &#160; OverView AhnLab SEcurity [&#8230;]]]></description>
+		
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">94696</post-id>	</item>
+		<item>
+		<title>Ransom &#038; Dark Web Issues Week 5, July 2026</title>
+		<link>https://asec.ahnlab.com/en/94707/</link>
+		
+		<dc:creator><![CDATA[ATCP]]></dc:creator>
+		<pubDate>Wed, 29 Jul 2026 15:00:00 +0000</pubDate>
+				<category><![CDATA[Darkweb]]></category>
+		<category><![CDATA[Public]]></category>
+		<category><![CDATA[DarkWeb]]></category>
+		<category><![CDATA[DataBreach]]></category>
+		<category><![CDATA[DataLeak]]></category>
+		<category><![CDATA[DDW]]></category>
+		<category><![CDATA[DeepWeb]]></category>
+		<category><![CDATA[랜섬웨어]]></category>
+		<category><![CDATA[데이터탈취]]></category>
+		<category><![CDATA[미국]]></category>
+		<category><![CDATA[개인정보탈취]]></category>
+		<category><![CDATA[법률회계컨설팅]]></category>
+		<category><![CDATA[비영리의료기관]]></category>
+		<category><![CDATA[대한민국]]></category>
+		<category><![CDATA[딥웹]]></category>
+		<category><![CDATA[다크웹]]></category>
+		<category><![CDATA[회계]]></category>
+		<category><![CDATA[IT인프라]]></category>
+		<category><![CDATA[IT서비스]]></category>
+		<category><![CDATA[클라우드]]></category>
+		<category><![CDATA[의료]]></category>
+		<category><![CDATA[의료서비스]]></category>
+		<category><![CDATA[정신건강]]></category>
+		<category><![CDATA[컨설팅]]></category>
+		<category><![CDATA[세무]]></category>
+		<category><![CDATA[소프트웨어]]></category>
+		<category><![CDATA[Leaked]]></category>
+		<category><![CDATA[Ransom]]></category>
+		<category><![CDATA[Ransomware]]></category>
+		<category><![CDATA[ShinyHunters]]></category>
+		<category><![CDATA[SouthKorea]]></category>
+		<category><![CDATA[USA]]></category>
+		<guid isPermaLink="false">https://asec.ahnlab.com/94707/</guid>
+
+					<description><![CDATA[ASEC Blog publishes Ransom &#38; Dark Web Issues Week 5, July 2026 &#160; &#160; &#160; &#160; &#160; Termite Ransomware Attack on a U.S. Nonprofit Healthcare Provider ShinyHunters Claims Data Leak Involving a Global Accounting and Consulting Firm The Gentlemen Ransomware Attack on a South Korean IT Software Distributor and Infrastructure Service Provider]]></description>
+		
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">94707</post-id>	</item>
+		<item>
+		<title>Not Every Fox is Silver: Inside an AtlasRAT loader chain</title>
+		<link>https://asec.ahnlab.com/en/94704/</link>
+		
+		<dc:creator><![CDATA[ATCP]]></dc:creator>
+		<pubDate>Mon, 27 Jul 2026 23:25:07 +0000</pubDate>
+				<category><![CDATA[APT]]></category>
+		<category><![CDATA[Malware]]></category>
+		<category><![CDATA[Private]]></category>
+		<category><![CDATA[AtlasRAT]]></category>
+		<category><![CDATA[China]]></category>
+		<category><![CDATA[중국]]></category>
+		<category><![CDATA[RAT]]></category>
+		<category><![CDATA[Shellcode]]></category>
+		<category><![CDATA[SilverFox]]></category>
+		<guid isPermaLink="false">https://asec.ahnlab.com/94704/</guid>
+
+					<description><![CDATA[Summary AtlasRAT is a Windows-based remote access malware. This report analyzes a four-stage in-memory loader chain—which begins with a Delphi executable that is disguised as AGE Flash Player—and its final RAT functionality. The final payload performs TLS-based ChaCha20-encrypted C2 communication, executes modular plugins, performs offline keylogging, and injects DLLs into WeChat processes. Group Characteristics Public [&#8230;]]]></description>
+		
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">94704</post-id>	</item>
+	</channel>
+</rss>

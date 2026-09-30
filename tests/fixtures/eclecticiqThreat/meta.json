@@ -1,0 +1,17 @@
+{
+  "scraper": "eclecticiqThreat",
+  "legacy_script": "eclecticiqThreat",
+  "legacy_labels": [
+    "NEW ARTICLE FROM ECLECTICIQ"
+  ],
+  "source_urls": [
+    "https://blog.eclecticiq.com/rss.xml"
+  ],
+  "http_status": {
+    "https://blog.eclecticiq.com/rss.xml": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

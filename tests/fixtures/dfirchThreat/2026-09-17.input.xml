@@ -1,0 +1,665 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on dfir.ch</title>
+    <link>https://dfir.ch/posts/</link>
+    <description>Recent content in Posts on dfir.ch</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-GB</language>
+    <lastBuildDate>Wed, 16 Sep 2026 19:58:20 +0200</lastBuildDate><atom:link href="https://dfir.ch/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Living Inside the Shell: zsh Modules on macOS</title>
+      <link>https://dfir.ch/posts/zsh_modules/</link>
+      <pubDate>Wed, 16 Sep 2026 19:58:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/zsh_modules/</guid>
+      
+      <description>&lt;h3 id=&#34;introduction&#34;&gt;Introduction&lt;/h3&gt;
+&lt;p&gt;When investigating shell-based activity on macOS, it is tempting to focus on the usual suspects: &lt;code&gt;curl&lt;/code&gt;, &lt;code&gt;osascript&lt;/code&gt;, &lt;code&gt;python&lt;/code&gt;, &lt;code&gt;xattr&lt;/code&gt;, and similar utilities. But &lt;code&gt;zsh&lt;/code&gt; itself provides considerably more functionality than simply executing commands. macOS uses &lt;code&gt;zsh&lt;/code&gt; as the default interactive shell, and &lt;strong&gt;zsh ships with a module system that can extend the shell with networking, file manipulation, extended-attribute access, and other functionality.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Functionality commonly associated with separate utilities can instead be performed by builtins inside the already-running &lt;code&gt;zsh&lt;/code&gt; process. As a result, there may be no corresponding &lt;code&gt;curl&lt;/code&gt;, &lt;code&gt;rm&lt;/code&gt;, or &lt;code&gt;xattr&lt;/code&gt; process for an analyst to find. Detection gaps can arise when detection logic relies primarily on process execution and command-line telemetry.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Field Notes: From AV Alert to Impacket</title>
+      <link>https://dfir.ch/posts/field_notes_av_impacket/</link>
+      <pubDate>Fri, 11 Sep 2026 06:04:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/field_notes_av_impacket/</guid>
+      
+      <description>&lt;p&gt;When analysing AV alerts, always look &lt;strong&gt;left and right of the alert&lt;/strong&gt;. If you&amp;rsquo;ve been following me for a while, you probably know that I&amp;rsquo;m a big fan of analysing the &lt;code&gt;MFT&lt;/code&gt; (&lt;strong&gt;Master File Table&lt;/strong&gt;) during incident response. This case is a good example of why.&lt;/p&gt;
+&lt;p&gt;When starting a new IR case, one of the first things I collect is AV/EDR telemetry. Why? Because attackers very often trigger at least one alert somewhere along the way. Even when the alert itself is not particularly exciting, it gives you something extremely valuable: &lt;strong&gt;a timestamp and a system to pivot from&lt;/strong&gt;.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Field Notes: NSSM - the Non-Sucking Service Manager</title>
+      <link>https://dfir.ch/posts/field_notes_nssm/</link>
+      <pubDate>Mon, 27 Jul 2026 06:04:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/field_notes_nssm/</guid>
+      
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;While analyzing Autoruns entries during a Compromise Assessment or an Incident Response case, would you take a second look at the &lt;code&gt;nssm.exe&lt;/code&gt; binary running as a service?  Hopefully. In a recent case, attackers used &lt;code&gt;nssm.exe&lt;/code&gt; to start &lt;a href=&#34;https://lolrmm.io/tools/ngrok&#34;&gt;ngrok&lt;/a&gt; as a service to maintain a persistent backdoor. Here is a practical breakdown of how this mechanism works and how you can hunt for it in your environment.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://dfir.ch/images/nssm/autoruns.jpeg&#34; alt=&#34;nssm service&amp;lt;&#34; title=&#34;nssm service&amp;lt;&#34;&gt;&lt;/p&gt;
+&lt;figcaption&gt;Figure 1: NSSM service&lt;/figcaption&gt;
+&lt;h2 id=&#34;why-attackers-love-nssm&#34;&gt;Why Attackers Love NSSM&lt;/h2&gt;
+&lt;p&gt;NSSM (the &lt;code&gt;Non-Sucking Service Manager&lt;/code&gt;) is a legitimate tool designed to run standard executables as Windows services. The installer simply takes an application path and arguments, allowing the service name to be freely configured.  For an attacker, installing a backdoor via NSSM brings two  advantages:&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Fantastic clear-text passwords and where to collect them (Part 2 - Windows)</title>
+      <link>https://dfir.ch/posts/fantastic_passwords_windows/</link>
+      <pubDate>Mon, 29 Jun 2026 01:03:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/fantastic_passwords_windows/</guid>
+      
+      <description>&lt;h2 id=&#34;1-introduction&#34;&gt;1. Introduction&lt;/h2&gt;
+&lt;p&gt;This post is an expansion of a talk I recently gave about moving beyond standard memory dumping. Pentesters and attackers often rely on dumping the LSASS process to get passwords, but in modern environments, this triggers massive alerts. We are going to explore more sophisticated, alternative methods for attackers to obtain cleartext passwords within a Windows environment. We will look at &amp;ldquo;quick wins&amp;rdquo; such as searching for passwords in Group Policy Objects or command lines, and then dive into more advanced techniques like Security Support Providers and Password Filters, which capture passwords in cleartext as users log in.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Fantastic clear-text passwords and where to collect them (Part 1 - Linux)</title>
+      <link>https://dfir.ch/posts/fantastic_passwords_linux/</link>
+      <pubDate>Mon, 22 Jun 2026 01:03:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/fantastic_passwords_linux/</guid>
+      
+      <description>&lt;h2 id=&#34;1-introduction&#34;&gt;1. Introduction&lt;/h2&gt;
+&lt;p&gt;During Digital Forensics and Incident Response (DFIR) investigations, we frequently observe Threat Actors (TAs) using various methods to harvest clear-text credentials on Linux endpoints. While defense teams focus heavily on Windows credential dumping (like LSASS parsing), Linux infrastructure remains a fertile ground for credential theft.&lt;/p&gt;
+&lt;p&gt;In many discussions with clients and security experts, the question often arises: &lt;em&gt;If an attacker has already gained root privileges on a Linux server, why is it still relevant to collect additional plaintext passwords?&lt;/em&gt; The answer comes down to lateral movement and privilege escalation beyond the local host. Compromised Linux servers are often gateways; collecting passwords there can unlock the wider network, cross-platform infrastructure, and cloud environments.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Anatomy of a Deno-Based Proxy &amp; RAT</title>
+      <link>https://dfir.ch/posts/deno/</link>
+      <pubDate>Mon, 15 Jun 2026 10:03:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/deno/</guid>
+      
+      <description>&lt;p&gt;This is a copy of a blog post I wrote for my employee for &lt;a href=&#34;https://labs.infoguard.ch/&#34;&gt;InfoGuard LABS&lt;/a&gt;.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;executive-summary&#34;&gt;Executive Summary&lt;/h2&gt;
+&lt;p&gt;In a recent investigation, we encountered malware that combined aggressive social engineering with the unconventional use of &lt;strong&gt;Deno&lt;/strong&gt;, a secure JavaScript and TypeScript runtime built on V8.&lt;/p&gt;
+&lt;p&gt;The attack began with a large-scale email flooding campaign, commonly referred to as mailbombing, designed to overwhelm employees and create confusion. Shortly afterward, the targeted users received Microsoft Teams calls from an attacker impersonating internal IT support. One employee engaged with the caller and was persuaded to download and execute a malicious archive from a fake self-service portal.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Dissection of a PHP Backdoor leveraging php-win.exe</title>
+      <link>https://dfir.ch/posts/dissection_php_backdoor/</link>
+      <pubDate>Sun, 16 Nov 2025 16:04:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/dissection_php_backdoor/</guid>
+      
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;During a recent Incident Response engagement, my colleague &lt;a href=&#34;https://www.linkedin.com/in/asgerstrunk/&#34;&gt;Asger Deleuran Strunk&lt;/a&gt; identified an unusual Scheduled Task while reviewing AutoRuns data from all servers and workstations across the network. The task, named &lt;code&gt;ClockLauncher&lt;/code&gt;, referenced a batch file located at:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;C:\Windows\Temp\{0b1281f3-c9bc-4b85-ad92-0803ed04208f}\php_2\run-clock.bat&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Here is the content of the file &lt;code&gt;run-clock.bat&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-batch&#34; data-lang=&#34;batch&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;@&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;echo&lt;/span&gt; off
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;cd&lt;/span&gt; /d &lt;span class=&#34;s2&#34;&gt;&amp;#34;C:\Windows\Temp\{0B1281F3-C9BC-4B85-AD92-0803ED04208F}\php_2\&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;C:\Windows\Temp\{0B1281F3-C9BC-4B85-AD92-0803ED04208F}\php_2\php-win.exe&amp;#34;&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;C:\Windows\Temp\{0B1281F3-C9BC-4B85-AD92-0803ED04208F}\php_2\5.php&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;exit&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The executable &lt;code&gt;php-win.exe&lt;/code&gt; is running &lt;code&gt;5.php&lt;/code&gt; from a non-standard directory, &lt;code&gt;C:\Windows\Temp\{0B1281F3-C9BC-4B85-AD92-0803ED04208F}\php_2\&lt;/code&gt;. The whole chain, starting from the filename to the directory, looks highly suspicious. Let’s investigate. 🕵️‍♂️&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Today I learned: binfmt_misc</title>
+      <link>https://dfir.ch/posts/today_i_learned_binfmt_misc/</link>
+      <pubDate>Thu, 30 Oct 2025 04:04:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/today_i_learned_binfmt_misc/</guid>
+      
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;binfmt_misc&lt;/code&gt; (short for Binary Format Miscellaneous) is a Linux kernel feature that allows the system to recognize and execute files based on custom binary formats. It’s part of the Binary Format (&lt;code&gt;binfmt&lt;/code&gt;) subsystem, which determines how the kernel runs an executable file.&lt;/p&gt;
+&lt;p&gt;Normally, Linux only knows how to run native binaries (like ELF files compiled for the system’s CPU architecture, and a few other file types). &lt;code&gt;binfmt_misc&lt;/code&gt; extends this by allowing other kinds of files, scripts, binaries for other architectures, or even custom file types, to be executed as if they were native.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Linux Capabilities Revisited</title>
+      <link>https://dfir.ch/posts/linux_capabilities/</link>
+      <pubDate>Fri, 16 May 2025 03:04:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/linux_capabilities/</guid>
+      
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Notes to kernel developers&lt;/strong&gt;: &lt;em&gt;The goal of capabilities is divide the power of superuser into pieces, such that if a program that has one or more capabilities is compromised, its power to do damage to the system would be less than the same program running with root privilege.&lt;/em&gt; &lt;a href=&#34;https://man7.org/linux/man-pages/man7/capabilities.7.html&#34;&gt;Capabilities(7) — Linux manual page&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;Capabilities&lt;/code&gt; are a fine-grained access control mechanism in Linux, allowing more granular permissions than the traditional superuser (&lt;code&gt;root&lt;/code&gt;) model. Capabilities divide the privileges typically associated with the root user into distinct units that can be independently enabled or disabled for different processes. This allows for more secure and controlled privilege management.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Today I Learned - Protected Symlinks</title>
+      <link>https://dfir.ch/posts/today_i_learned_protected_symlinks/</link>
+      <pubDate>Mon, 24 Feb 2025 04:04:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/today_i_learned_protected_symlinks/</guid>
+      
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;A long-standing class of security issues is the symlink-based time-of-check-time-of-use race, most commonly seen in world-writable directories like /tmp. The common method of exploitation of this flaw is to cross privilege boundaries when following a given symlink (i.e. a root process follows a symlink belonging to another user). For a likely incomplete list of hundreds of examples across the years, please see: &lt;a href=&#34;http://cve.mitre.org/cgi-bin/cvekey.cgi?keyword=/tmp&#34;&gt;http://cve.mitre.org/cgi-bin/cvekey.cgi?keyword=/tmp&lt;/a&gt;&lt;/em&gt;.  &lt;strong&gt;Source:&lt;/strong&gt; &lt;a href=&#34;https://sysctl-explorer.net/fs/protected_symlinks/&#34;&gt;Sysctl Explorer&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;protected_symlinks&lt;/code&gt; setting within the Linux Kernel helps prevent &lt;code&gt;TOCTOU&lt;/code&gt; (time-of-check-time-of-use) vulnerabilities in privileged processes. Without this protection, a malicious user could trick a privileged process (such as a root-owned service) into following a symlink and overwriting or reading sensitive files. &lt;a href=&#34;https://www.linkedin.com/in/0xdf/&#34;&gt;0xdf&lt;/a&gt; showcases the &amp;ldquo;problem&amp;rdquo; with protected symlinks in his writeup on the HackTheBox machine &lt;a href=&#34;https://0xdf.gitlab.io/2024/01/20/htb-bookworm.html&#34;&gt;Bookworm&lt;/a&gt;.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>macOS Extended Attributes: Case Study</title>
+      <link>https://dfir.ch/posts/macos_extended_attributes/</link>
+      <pubDate>Sat, 15 Feb 2025 12:04:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/macos_extended_attributes/</guid>
+      
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;Extended attributes&lt;/code&gt; (EAs) are a powerful and sometimes overlooked feature of macOS&amp;rsquo;s file system, storing additional metadata about files beyond what standard attributes like file name, size, and permissions allow. While these attributes are invisible in typical file interactions, they play a critical role in various macOS features and workflows.&lt;/p&gt;
+&lt;h2 id=&#34;inspecting-extended-attributes&#34;&gt;Inspecting Extended Attributes&lt;/h2&gt;
+&lt;p&gt;macOS provides several tools for working with extended attributes. These include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;The &lt;code&gt;ls&lt;/code&gt; command (the &lt;code&gt;@&lt;/code&gt; at the end of the permissions indicates extended attributes):
+&lt;code&gt;-rw-r--r--@ 1 malmoeb  staff  202767345 Jan  6 13:29 Webex.dmg&lt;/code&gt;&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Tear Down The Castle - Part 2</title>
+      <link>https://dfir.ch/posts/tear_down_castle_part_two/</link>
+      <pubDate>Thu, 30 Jan 2025 11:04:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/tear_down_castle_part_two/</guid>
+      
+      <description>&lt;p&gt;This is the second part of a two-part series about Active Directory security. Read the first part &lt;a href=&#34;https://dfir.ch/posts/tear_down_castle_part_one/&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;To gain insight into common issues and patterns of misconfiguration, we analyzed 250 PingCastle reports collected from Incident Response cases and Compromise Assessments. We indicate how many of the 250 domains checked were affected by the finding (Affected Domains: N/250)&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.pingcastle.com/&#34;&gt;PingCastle&lt;/a&gt; is a popular tool for auditing the security of Active Directory environments, pinpointing vulnerabilities, and offering actionable recommendations for improvement. We are following along &lt;a href=&#34;https://dfir.ch/tweets/varia/#10-ad-commandments&#34;&gt;The Ten AD Commandments&lt;/a&gt;, mapping every point to the corresponding PingCastle finding(s).&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Oh my .. ! - Suspicious network traffic detected including Ransomware</title>
+      <link>https://dfir.ch/posts/suspicious_network_traffic_ransomware/</link>
+      <pubDate>Wed, 22 Jan 2025 12:04:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/suspicious_network_traffic_ransomware/</guid>
+      
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;A customer contacted us due to a high-severity ransomware alert in &lt;code&gt;Windows Defender for Endpoint&lt;/code&gt; (Figure 1).&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://dfir.ch/images/suspicious_network_traffic/alert.png&#34; alt=&#34;Suspicious network traffic detected, including Ransomware&#34; title=&#34;Suspicious network traffic detected including Ransomware&#34;&gt;&lt;/p&gt;
+&lt;figcaption&gt;Figure 1: Suspicious network traffic detected including Ransomware&lt;/figcaption&gt;
+&lt;p&gt;Clicking on one of the alerts does not reveal additional details besides the IP address (Figure 2).&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://dfir.ch/images/suspicious_network_traffic/process_tree.png&#34; alt=&#34;Process Tree&#34; title=&#34;Process Tree&#34;&gt;&lt;/p&gt;
+&lt;figcaption&gt;Figure 2: Process Tree&lt;/figcaption&gt;
+&lt;p&gt;After further clicks, we end up at the explanation in Figure 3, which doesn’t inspire confidence. What exactly is happening here, and which process on the host is responsible for these network connections?&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Tear Down The Castle - Part 1</title>
+      <link>https://dfir.ch/posts/tear_down_castle_part_one/</link>
+      <pubDate>Sun, 19 Jan 2025 04:04:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/tear_down_castle_part_one/</guid>
+      
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;In the realm of IT infrastructure, Active Directory (AD) serves as a crucial backbone, enabling organizations to manage users, devices, and resources efficiently. However, given its central role, it also presents a significant security target, and maintaining its integrity is paramount. Misconfigurations and overlooked security gaps in AD can expose an organization to critical vulnerabilities, leading to potential breaches, data theft, and system downtime.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;To gain insight into common issues and patterns of misconfiguration, we analyzed 250 PingCastle reports collected from Incident Response cases and Compromise Assessments. We indicate how many of the 250 domains checked were affected by the finding (Affected Domains: N/250)&lt;/strong&gt;.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Analysis of Python&#39;s .pth files as a persistence mechanism</title>
+      <link>https://dfir.ch/posts/publish_python_pth_extension/</link>
+      <pubDate>Tue, 14 Jan 2025 03:04:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/publish_python_pth_extension/</guid>
+      
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;The purpose of the update.py script is to deploy a backdoor to the following path: /usr/lib/python3.6/site-packages/system.pth. The backdoor, written in Python, starts by an import and its main content is stored as a base64 encoded blob. The .pth extension is used to append additional paths to a Python module. Starting with the release of Python 3.5, lines in .pth files beginning with the text “import” followed by a space or a tab, are executed as described in the official documentation. Therefore, by creating this file, each time any other code on the device attempts to import the module, the malicious code is executed.&lt;/em&gt;&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Today I Learned - setfacl</title>
+      <link>https://dfir.ch/posts/today_i_learned_setfacl/</link>
+      <pubDate>Tue, 17 Dec 2024 08:04:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/today_i_learned_setfacl/</guid>
+      
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;setfacl&lt;/code&gt; is a command-line utility in Linux/Unix systems used to set &lt;code&gt;Access Control Lists&lt;/code&gt; (ACLs) on files and directories. ACLs provide a more flexible permission mechanism than the traditional owner-group-other model. They allow for the assignment of specific permissions to individual users or groups beyond what the basic file system permissions support.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;setfacl [options] [permissions] file/directory
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;Options:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;-m&lt;/strong&gt;: Modify or add an ACL entry.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;-x&lt;/strong&gt;: Remove an ACL entry.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;-b&lt;/strong&gt;: Remove all ACL entries.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;-k&lt;/strong&gt;: Remove the default ACL.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;-R&lt;/strong&gt;: Apply recursively to directories.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Permissions:&lt;/strong&gt;&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Shell Script Compiler (shc)</title>
+      <link>https://dfir.ch/posts/shell_script_compiler/</link>
+      <pubDate>Wed, 11 Dec 2024 14:04:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/shell_script_compiler/</guid>
+      
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;After installing the payload, the shell script inst.sh runs a backdoor binary that matches the target device’s architecture. The backdoor is a shell script compiled using an open-source project called Shell Script Compiler (shc), and enables the threat actors to perform subsequent malicious activities and deploy additional tools on affected systems.&amp;quot;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Source:&lt;/strong&gt; &lt;a href=&#34;https://www.microsoft.com/en-us/security/blog/2023/06/22/iot-devices-and-linux-based-systems-targeted-by-openssh-trojan-campaign/&#34;&gt;IoT devices and Linux-based systems targeted by OpenSSH trojan campaign, Microsoft Threat Intelligence&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;In this blog post, we will analyze Shc - &lt;code&gt;A generic shell script compiler&lt;/code&gt;, mentioned by Microsoft in the linked blog post above.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Reptile&#39;s Custom Kernel-Module Launcher</title>
+      <link>https://dfir.ch/posts/reptile_launcher/</link>
+      <pubDate>Sun, 10 Nov 2024 14:04:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/reptile_launcher/</guid>
+      
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;“In REPTILE version 2.0, the original developer of REPTILE altered how the Kernel-level component is loaded, switching from using insmod to a custom launcher. The launcher Mandiant observed UNC3886 use throughout their operations, based on the custom launcher, was updated with a new function to daemonize a process.” — Mandiant, Cloaked and Covert: Uncovering UNC3886 Espionage Operations, 2024.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;This analysis will examine how the Reptile rootkit loader bypasses the standard Linux &lt;code&gt;insmod&lt;/code&gt; command for loading Kernel modules and will explore methods for detecting the use of this custom loader.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>bedevil: Dynamic Linker Patching</title>
+      <link>https://dfir.ch/posts/bedevil_dynamic_linker_patching/</link>
+      <pubDate>Sat, 19 Oct 2024 11:03:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/bedevil_dynamic_linker_patching/</guid>
+      
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;bedevil (bdvl), according to the &lt;a href=&#34;https://github.com/Error996/bdvl&#34;&gt;GitHub page&lt;/a&gt;, &lt;em&gt;is an LD_PRELOAD rootkit. Therefore, this rootkit runs in userland.&lt;/em&gt; The group &lt;code&gt;Muddled Libra&lt;/code&gt; used bedevil to target VMware vCenter servers, according to Palo Alto&amp;rsquo;s &lt;a href=&#34;https://unit42.paloaltonetworks.com/muddled-libra/&#34;&gt;Unit42 Blog, 2024&lt;/a&gt;. The rootkit comes with a nifty feature called &lt;code&gt;Dynamic Linker Patching&lt;/code&gt;:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Upon installation, the rootkit will patch the dynamic linker libraries. Before anything, the rootkit will search for a valid ld.so on the system to patch. When running ./bdv uninstall from a backdoor shell, the rootkit will revert the libraries back to having the original path. (/etc/ld.so.preload)&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Microsoft Defender XDR&#39;s Deception Technology</title>
+      <link>https://dfir.ch/posts/defender_xdr_deception/</link>
+      <pubDate>Thu, 10 Oct 2024 10:04:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/defender_xdr_deception/</guid>
+      
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;This week wasn&amp;rsquo;t the first time we&amp;rsquo;ve investigated a case where a customer reported suspicious accounts that couldn&amp;rsquo;t be linked to any employees. In this case, two domain admin users were found on the affected network, but neither is employed by the company. Both accounts had logged into nearly every device within the organization, which understandably caused concern among those responsible, prompting them to ask us to investigate further.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>tmate - Instant Terminal Sharing (or How To Backdoor a Linux Server)</title>
+      <link>https://dfir.ch/posts/tmate_as_a_backdoor/</link>
+      <pubDate>Sun, 06 Oct 2024 05:04:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/tmate_as_a_backdoor/</guid>
+      
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Over the last three years, various cyber security companies wrote about TeamTNT TTPs, notably about the use of tmate as their tool of choice for backdooring Linux servers after a compromise:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://intezer.com/wp-content/uploads/2021/09/TeamTNT-Cryptomining-Explosion.pdf&#34;&gt;TeamTNT: Cryptomining Explosion (Intezer, 2021)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://asec.ahnlab.com/en/40263/&#34;&gt;Attackers Abusing Various Remote Control Tools (ASEC, 2022)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.aquasec.com/blog/teamtnt-reemerged-with-new-aggressive-cloud-campaign/&#34;&gt;TeamTNT Reemerged with New Aggressive Cloud Campaign (Aqua, 2023)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In this short blog post, we examine the traces left behind from a tmate installation and some hints on where to find traces when actively looking for backdoored Linux servers with an active tmate instance running. To showcase the installation and configuration of tmate during a real attack, the shell script &lt;code&gt;tmate.sh&lt;/code&gt;, as mentioned by Aqua, is available on &lt;a href=&#34;https://www.virustotal.com/gui/file/2531b25cb663c445991b71e3f03ff3d759e55725022a209c8a0ca5255751c6e2&#34;&gt;VirusTotal&lt;/a&gt;.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>EDR: The Great Escape - RomHack Training Review</title>
+      <link>https://dfir.ch/posts/romhack_edr/</link>
+      <pubDate>Mon, 30 Sep 2024 11:04:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/romhack_edr/</guid>
+      
+      <description>&lt;p&gt;&lt;img src=&#34;https://dfir.ch/images/romhack_edr/logo.png&#34; alt=&#34;Romhack Logo&#34; title=&#34;Romhack Logo&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;This course aims to provide a comprehensive understanding of the architecture of modern EDRs and their underlying Antivirus (AV) systems. It delves deeply into the complexity of modern EDRs, their structure, including the components responsible for real-time monitoring, data collection, and threat analysis.&lt;/p&gt;
+&lt;p&gt;[..]&lt;/p&gt;
+&lt;p&gt;50% of the course will be dedicated to hands-on labs showing how to translate the theory principles into practice. Labs are designed to provide flexibility in terms of complexity and include bonus tracks to ensure that you always feel engaged and have something interesting to explore and learn. This course is valuable not only for red team operators but also for blue team professionals. Blue team members can gain insights into how their detection systems may be bypassed, helping them enhance their security measures and stay one step ahead of potential threats. This course equips security professionals with a deep understanding of modern EDRs and their AV systems, enabling them to better simulate advanced threat scenarios, improve their evasion detection skills, and contribute to the overall enhancement of security within enterprise networks.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Today I Learned - NSG Flow Log</title>
+      <link>https://dfir.ch/posts/today_i_learned_nsg_flow_log/</link>
+      <pubDate>Sat, 21 Sep 2024 05:04:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/today_i_learned_nsg_flow_log/</guid>
+      
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Azure flow logs are a feature in Azure that allows you to capture and analyze network traffic to and from virtual network interfaces (NICs) in Azure. Specifically, flow logs provide granular data about IP traffic flowing through a Network Security Group (NSG). Azure automatically creates a network security group (NSG) when you create a virtual machine: &lt;code&gt;$vmname-nsg&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;This data includes information on the source and destination IP addresses, ports, and protocols, as well as traffic allowed or denied by NSG rules. Flow logs are useful for security analysis, network monitoring, and troubleshooting in Azure environments. They can be stored in Azure Storage, analyzed with Azure Monitor, or visualized with an SIEM.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>ScriptBlock Smuggling</title>
+      <link>https://dfir.ch/posts/scriptblock_smuggling/</link>
+      <pubDate>Fri, 13 Sep 2024 05:04:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/scriptblock_smuggling/</guid>
+      
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;PowerShell&amp;rsquo;s Script Block Logging is a security feature that records and logs the contents of all scripts and commands executed within PowerShell. This includes both legitimate administrative scripts and potentially malicious commands. When enabled, Script Block Logging generates detailed logs stored in the Windows Event Log under &lt;code&gt;Microsoft-Windows-PowerShell/Operational&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;I have previously tweeted several times about PowerShell and why monitoring the executed PowerShell scripts is so important. A few of these tweets are listed &lt;a href=&#34;https://dfir.ch/tweets/dfir/#powershell&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Botnet Fenix</title>
+      <link>https://dfir.ch/posts/botnex_fenix/</link>
+      <pubDate>Thu, 22 Aug 2024 12:04:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/botnex_fenix/</guid>
+      
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;To improve my rusty reverse-engineering skills, I&amp;rsquo;m going to analyze various malware samples that have come up in our incident response cases in loose succession. The first sample belongs to the Fenix botnet (sample &lt;a href=&#34;https://www.virustotal.com/gui/file/efa676feeaa65665740c56cd5ae2805faaafb817bde207d7caafde83090abc0d&#34;&gt;here&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;In this post, we analyze a sophisticated malware infection chain that begins with a user downloading a ZIP file from a Dropbox link and culminates in the execution of a malicious shellcode.&lt;/p&gt;
+&lt;h2 id=&#34;first-stage&#34;&gt;First Stage&lt;/h2&gt;
+&lt;p&gt;The infection chain begins when the user downloads a ZIP file from Dropbox using the Edge browser.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Today I Learned - WebDAV Cache</title>
+      <link>https://dfir.ch/posts/today_i_learned_webdav_cache/</link>
+      <pubDate>Fri, 09 Aug 2024 01:04:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/today_i_learned_webdav_cache/</guid>
+      
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;User &lt;a href=&#34;https://x.com/karol_paciorek/&#34;&gt;@karol_paciorek&lt;/a&gt; recently tweeted about an open directory containing malware, depicted in Figure 1. You can find the original post &lt;a href=&#34;https://x.com/karol_paciorek/status/1820442575339188265&#34;&gt;here&lt;/a&gt;:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://dfir.ch/images/webdav_cache/tweet.png&#34; alt=&#34;opendir: 216.9.224[.]58:5555&#34; title=&#34;opendir: 216.9.224[.]58:5555&#34;&gt;&lt;/p&gt;
+&lt;figcaption&gt;Figure 1: opendir: 216.9.224[.]58:5555&lt;/figcaption&gt;
+&lt;p&gt;Along with the &lt;strong&gt;MS_calendar.lnk&lt;/strong&gt; file mentioned in the tweet from @karol_paciorek, there are additional files publicly available on that server:&lt;/p&gt;
+&lt;h2 id=&#34;lnk-analysis&#34;&gt;LNK Analysis&lt;/h2&gt;
+&lt;p&gt;We will examine the LNK file &lt;strong&gt;schedule.lnk&lt;/strong&gt; (MD5: 62d5389d43931237e9d3d1aa77c87483), located in the same directory as the MS_calendar.lnk file. To analyze it, we will use LECMD.exe, a handy tool developed by &lt;a href=&#34;https://ericzimmerman.github.io/#!index.md&#34;&gt;Eric Zimmermann&lt;/a&gt;.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Abusing the “search-ms” URI protocol handler</title>
+      <link>https://dfir.ch/posts/search-ms_protocol_handler/</link>
+      <pubDate>Sun, 04 Aug 2024 05:04:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/search-ms_protocol_handler/</guid>
+      
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Last month, I stumbled upon a blog post from Trustwave titled &lt;em&gt;Search &amp;amp; Spoof: Abuse of Windows Search to Redirect to Malware&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://dfir.ch/images/windows_search/1.png&#34; alt=&#34;Search &amp;amp; Spoof&#34; title=&#34;Search &amp;amp; Spoof&#34;&gt;&lt;/p&gt;
+&lt;figcaption&gt;Figure 1: Search &amp; Spoof: Abuse of Windows Search to Redirect to Malware (Source: Trustwave)&lt;/figcaption&gt;
+&lt;p&gt;&lt;em&gt;Trustwave SpiderLabs has detected a sophisticated malware campaign that leverages the Windows search functionality embedded in HTML code to deploy malware. We found the threat actors utilizing a sophisticated understanding of system vulnerabilities and user behaviors.&lt;/em&gt; &lt;a href=&#34;https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/search-spoof-abuse-of-windows-search-to-redirect-to-malware/&#34;&gt;Source: Trustwave&lt;/a&gt;&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Tainted Kernels</title>
+      <link>https://dfir.ch/posts/tainted_kernels/</link>
+      <pubDate>Fri, 12 Jul 2024 05:04:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/tainted_kernels/</guid>
+      
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;A tainted kernel in Linux refers to a kernel that has been marked with one or more flags indicating that it is in a state that might affect its stability or functionality. &lt;em&gt;Detecting tainted kernel module loads is crucial for ensuring system security and integrity, as malicious or unauthorized modules can compromise the kernel and lead to system vulnerabilities or unauthorized access.&lt;/em&gt; Source: &lt;a href=&#34;https://www.elastic.co/guide/en/security/8.14/tainted-out-of-tree-kernel-module-load.html&#34;&gt;elastic&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Here are the main reasons a kernel might become tainted (list might not be exhaustive):&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Today I Learned - kernel.modules_disabled</title>
+      <link>https://dfir.ch/posts/today_i_learned_lkm_kernel.modules_disabled/</link>
+      <pubDate>Wed, 10 Jul 2024 03:04:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/today_i_learned_lkm_kernel.modules_disabled/</guid>
+      
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;The kernel.modules_disabled parameter is a security feature in the Linux kernel that prevents the loading and unloading of kernel modules. This setting is particularly useful for hardening a system against certain types of attacks, such as attempts to load malicious kernel modules (think rootkits) or manipulate the system at a low level. Mandiant recently published a blog post where they found, among other toolings used by the attackers, REPTILE. &lt;em&gt;REPTILE is an open-source Linux rootkit, implemented as a loadable kernel module (LKM), that provides backdoor access to a system.&lt;/em&gt; &lt;a href=&#34;https://cloud.google.com/blog/topics/threat-intelligence/uncovering-unc3886-espionage-operations?hl=en&#34;&gt;Source: Cloaked and Covert: Uncovering UNC3886 Espionage Operations&lt;/a&gt;&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Systemd Path Activation - Poor Man&#39;s File Integrity</title>
+      <link>https://dfir.ch/posts/systemd_path_activation/</link>
+      <pubDate>Sat, 22 Jun 2024 05:04:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/systemd_path_activation/</guid>
+      
+      <description>&lt;p&gt;&lt;em&gt;This blog post outlines a method for monitoring changes to files and directories in Linux using path units. Administrators and defenders can be notified of modifications by creating a new path unit, which watches for changes to files and directories and links it to a service unit that executes a script when changes are detected. This setup might be particularly useful for detecting unauthorized access in environments where installing EDR solutions is not feasible.&lt;/em&gt;&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>From Dangerous PHP Functions to Webshell Hunting</title>
+      <link>https://dfir.ch/posts/php_dangerous_functions_and_webshell/</link>
+      <pubDate>Mon, 17 Jun 2024 09:04:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/php_dangerous_functions_and_webshell/</guid>
+      
+      <description>&lt;p&gt;&lt;em&gt;This blog post discusses how to enhance PHP security using the disable_functions directive, which prevents specific PHP functions from being executed. We further explore webshell detection techniques, highlighting the challenges of identifying webshells using Yara rules, proposing alternatives like manual analysis, frequency analysis of web server logs, and utilizing tools like Velociraptor and UAC along the way.&lt;/em&gt;&lt;/p&gt;
+&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;The disable_functions directive in PHP is a security feature that allows administrators to disable specific PHP functions from being executed within PHP scripts. When the disable_functions directive is set in the PHP configuration file (php.ini), any functions listed in its value will be prohibited from being called by PHP scripts.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Today I Learned - Instrument ClamAV to extract AutoIT scripts</title>
+      <link>https://dfir.ch/posts/today_i_learned_clamav_autoit/</link>
+      <pubDate>Sun, 09 Jun 2024 04:04:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/today_i_learned_clamav_autoit/</guid>
+      
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;A customer contacted us because they intend to use &lt;a href=&#34;https://github.com/htcfreek/SimpleLapsGui&#34;&gt;SimpleLAPS-GUI&lt;/a&gt; in their company. However, multiple AV vendors flag the precompiled binary (SimpleLapsGui.exe) as malicious (see &lt;a href=&#34;https://www.virustotal.com/gui/file/5f63b09b003bebb8fc3b43f115225be98d3dd164d67fa53135e2e04ccdaf7eaa/behavior&#34;&gt;here&lt;/a&gt;). According to the FAQ on the GitHub repository from SimpleLAPS-GUI:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Does the exe version contains viruses? It is reported on &amp;ldquo;virustotal.com&amp;rdquo;.&lt;/strong&gt;&lt;br&gt;
+&lt;em&gt;No it doesn&amp;rsquo;t. This happens because of the AutoIT v3 executable used as wrapper. You can download the PowerShell version instead. (Please note that the PowerShell script doesn&amp;rsquo;t hide its window.)&lt;/em&gt;&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Today I Learned - Zsh Sessions (even more Timestamps)</title>
+      <link>https://dfir.ch/posts/today_i_learned_zsh_sessions/</link>
+      <pubDate>Sun, 26 May 2024 09:04:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/today_i_learned_zsh_sessions/</guid>
+      
+      <description>&lt;h2 id=&#34;zsh-sessions&#34;&gt;Zsh Sessions&lt;/h2&gt;
+&lt;p&gt;In a previous blog post (&lt;a href=&#34;https://dfir.ch/posts/today_i_learned_zsh_timestamps/&#34;&gt;Today I Learned - Zsh History Timestamps&lt;/a&gt;), we discussed how Zsh records commands entered in the shell along with a timestamp, provided that the session remains open. This is useful for live response scenarios if we still have access to the session and can run commands like fc -lf or fc -li 100. However, Zsh also utilizes the .zsh_sessions directory, located at the root level of the user&amp;rsquo;s home directory. Here&amp;rsquo;s an excerpt from my .zsh_sessions directory:&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>The &#39;Invisibility Cloak&#39; - Slash-Proc Magic</title>
+      <link>https://dfir.ch/posts/slash-proc/</link>
+      <pubDate>Thu, 16 May 2024 10:40:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/slash-proc/</guid>
+      
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;While working my way through the excellent &amp;ldquo;Linux Attack, Detection and Live Forensics&amp;rdquo; course from &lt;a href=&#34;defensive-security.com&#34;&gt;Defensive Security&lt;/a&gt;, I read the following line: &lt;em&gt;If you are looking for a simple way how to hide your process from the process list, then the bind mount operation is the answer.&lt;/em&gt; In order not to violate any copyright, I googled around and found the following gist from &lt;a href=&#34;https://twitter.com/timb_machine&#34;&gt;Timb-machine&lt;/a&gt;, where the same commands of the course are reflected:&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Removing Traces of RMM Tools</title>
+      <link>https://dfir.ch/posts/cleanup_script_rmm/</link>
+      <pubDate>Fri, 10 May 2024 09:26:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/cleanup_script_rmm/</guid>
+      
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://twitter.com/banthisguy9349&#34;&gt;Fox_threatintel&lt;/a&gt; tweeted recently about an open directory on 91.215.85.18:9380/. I downloaded all the files from this directory and stumbled upon a &amp;lsquo;cleaner&amp;rsquo; script, which we will examine in this short blog post. The original script is available on &lt;a href=&#34;https://www.virustotal.com/gui/file/c96c0efc04c9bc99c2b472362d81e61511d9bf28f472ee92d8b9ea8a15f4e470/detection&#34;&gt;VirusTotal&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://dfir.ch/images/cleaning_traces_rmm_tools/tweet.png&#34; alt=&#34;Tweet from Fox_threatintel&#34; title=&#34;Tweet from Fox_threatintel&#34;&gt;&lt;/p&gt;
+&lt;figcaption&gt;Figure 1: Tweet from Fox_threatintel&lt;/figcaption&gt;
+&lt;h2 id=&#34;find-installed-software&#34;&gt;Find installed software&lt;/h2&gt;
+&lt;p&gt;First, the script defines an array ($uninstallKeys), holding two registry keys:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-PowerShell&#34; data-lang=&#34;PowerShell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;$uninstallKeys&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;vm&#34;&gt;@&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;In our case, the script explicitly searches for the RMM products Atera and Splashtop:&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Today I Learned - Zsh History Timestamps</title>
+      <link>https://dfir.ch/posts/today_i_learned_zsh_timestamps/</link>
+      <pubDate>Tue, 07 May 2024 19:58:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/today_i_learned_zsh_timestamps/</guid>
+      
+      <description>&lt;h2 id=&#34;zsh-timestamps&#34;&gt;Zsh Timestamps&lt;/h2&gt;
+&lt;p&gt;In Zsh, which serves as the default shell for Kali, Gentoo, and macOS (replacing Bash in macOS Catalina), among others, the shell session retains the command history with timestamps in memory. Throughout the session, each executed command is logged in the history along with a timestamp denoting its execution time.&lt;/p&gt;
+&lt;p&gt;To view the command history on a live system, we can execute one of the following commands, which not only display the history but also include the timestamps adjacent to the commands:&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Canarytokens: Catching Insider Threats (and Threat Actors?)</title>
+      <link>https://dfir.ch/posts/canarytokens/</link>
+      <pubDate>Mon, 06 May 2024 09:15:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/canarytokens/</guid>
+      
+      <description>&lt;h2 id=&#34;insider-threat&#34;&gt;Insider Threat?&lt;/h2&gt;
+&lt;p&gt;We were contacted by a company that regularly sends emails to customers promoting new services and discounts. An Excel is uploaded to a web server, where a job processes the file to create an email per customer, taking the email addresses from the uploaded Excel file.&lt;/p&gt;
+&lt;p&gt;For a significant period of time, the company has been struggling with a serious issue - its competitors are reaching out to the same customers they intend to contact in the upcoming mailing, often a day or two earlier. This is not an isolated incident. Every customer listed in the Excel sheet for the forthcoming mailing has been contacted earlier by competitors (in plural), posing a significant threat to our customer base.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Today I Learned - Device Discovery</title>
+      <link>https://dfir.ch/posts/today_i_learned_device_discovery/</link>
+      <pubDate>Sat, 27 Apr 2024 08:04:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/today_i_learned_device_discovery/</guid>
+      
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;A client contacted us following an alert triggered by their Network Detection and Response sensor (NDR), which flagged suspicious network behavior originating from a server within their internal network. The detected activity resembled a port scan, suggesting that the server might have been compromised and was possibly being exploited by an attacker for initial reconnaissance. What added to the concern was the specific choice of ports scanned during the activity.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Sysrv Infection (Linux Edition)</title>
+      <link>https://dfir.ch/posts/sysrv/</link>
+      <pubDate>Sun, 14 Apr 2024 15:04:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/sysrv/</guid>
+      
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;On a recent incident response case, a customer contacted us regarding their EDR detecting a crypto miner on a Linux endpoint. The identified malicious file, named &lt;strong&gt;41hs1z&lt;/strong&gt;, is accessible on &lt;a href=&#34;https://www.virustotal.com/gui/file/24788e4f29cc4c28e92bb0aad2c3f7d56666f850afbc6eb02957f066b99d6fb3&#34;&gt;VirusTotal&lt;/a&gt;. The folders and paths associated with each execution of the crypto miner may differ; however, here are some paths we encountered:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;/backup/files/excel/41hs1z&lt;/li&gt;
+&lt;li&gt;/backup/files/xml/dotnet115/BeID/41hs1z&lt;/li&gt;
+&lt;li&gt;/backup/files/xml/dotnet115/layouts/defaults/41hs1z&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Upon analysis, we discovered that the malware is a component of the &lt;strong&gt;Sysrv&lt;/strong&gt; botnet. In this short blog post, we will examine the ELF binary to uncover its capabilities and identify IOCs associated with the sample.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>MicroSocks: Convenient access through a compromised SonicWall SMA</title>
+      <link>https://dfir.ch/posts/microsocks_sonicwall/</link>
+      <pubDate>Sat, 30 Mar 2024 08:15:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/microsocks_sonicwall/</guid>
+      
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;In a recent investigation conducted by my colleague, &lt;a href=&#34;https://www.linkedin.com/in/giuseppe-paternicola-7a4b5089/&#34;&gt;Giuseppe Paternicola&lt;/a&gt;, it was discovered that the initial entry point that ultimately led to the deployment of the Abyss ransomware was a compromised SonicWall Secure Mobile Access (SonicWall SMA) device. The threat actor exploited &lt;a href=&#34;https://attackerkb.com/topics/9szJhq46lw/cve-2021-20039/rapid7-analysis&#34;&gt;CVE-2021-20039&lt;/a&gt; to gain access (Authenticated Command Injection). Subsequent analysis of the SonicWall revealed that the attacker had placed two files on the device, as illustrated in Figure 1.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://dfir.ch/images/sonicwall/overview.png&#34; alt=&#34;Files left behind by the attacker&#34; title=&#34;Files left behind by the attacker&#34;&gt;&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Azure Batch Misused for Crypto Mining</title>
+      <link>https://dfir.ch/posts/azure_batch/</link>
+      <pubDate>Fri, 15 Mar 2024 07:04:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/azure_batch/</guid>
+      
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;A huge thanks to the &lt;a href=&#34;https://www.invictus-ir.com/&#34;&gt;Invictus-IR&lt;/a&gt; team for proofreading this blog post&lt;/em&gt; &amp;#x1f64f;&lt;/p&gt;
+&lt;p&gt;Recently, I posted a &lt;a href=&#34;https://twitter.com/malmoeb/status/1764585545596797143&#34;&gt;tweet&lt;/a&gt; regarding an unpatched TeamCity server that an attacker exploited to deploy a CoinMiner. In response to my tweet, the X (former Twitter) user,  &lt;em&gt;the cybersecurity doge&lt;/em&gt;, shared another story they investigated:&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;An attacker obtained access to an administrator Azure environment user. Once logged on the tenant he created a resource group, and built 3 different batch accounts insides. Meanwhile, he opened a ticket to MS support asking for the increase of batch&amp;rsquo;s limit. Why? The limit increase was needed in order to boost on mining capacity. In fact, once the batch accounts were created, he built on these a complete autonomous crypto-mining system. The attacker used the miner reported above to mine crypto currency.&lt;/em&gt; &lt;a href=&#34;https://twitter.com/red_cth/status/1754970064560763199&#34;&gt;[1]&lt;/a&gt;&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Two in a row - You mitigated wrong (Kentico CMS RCE)</title>
+      <link>https://dfir.ch/posts/kentico_cms_rce/</link>
+      <pubDate>Wed, 06 Mar 2024 20:04:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/kentico_cms_rce/</guid>
+      
+      <description>&lt;h2 id=&#34;how-it-started&#34;&gt;How it started&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;https://dfir.ch/images/kentico/w3wp.png&#34; alt=&#34;An unhandled exception occurred in w3wp.exe&#34; title=&#34;An unhandled exception occurred in w3wp.exe&#34;&gt;&lt;/p&gt;
+&lt;figcaption&gt;Figure 1: An unhandled exception occurred in w3wp.exe&lt;/figcaption&gt;
+&lt;p&gt;The customer contacted us regarding sporadic crashes of the IIS worker process (w3wp.exe). Before engaging an Incident Response company, the customer attempted to resolve the issue by repeatedly restoring the websites from backup. Moreover, they set up an entirely new server and migrated the affected sites to it, only to encounter the same outcomes (crashing the w3wp process). Additionally, the client passed on the following information:&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>AWS Ransomware</title>
+      <link>https://dfir.ch/posts/aws_ransomware/</link>
+      <pubDate>Wed, 21 Feb 2024 05:04:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/aws_ransomware/</guid>
+      
+      <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
+&lt;p&gt;A customer contacted us reporting that an attacker had deleted several AWS S3 buckets (before allegedly downloading the data). Subsequently, the attacker left a ransom note (depicted below, sensitive information has been redacted). In this blog, we examine a recovery binary left behind by the attackers after deleting the buckets and show that the binary is nothing more than a red herring to increase the pressure on the victim.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>[s|l]trace - Linux Malware Analysis</title>
+      <link>https://dfir.ch/posts/strace/</link>
+      <pubDate>Thu, 01 Feb 2024 08:04:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/strace/</guid>
+      
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.linkedin.com/in/craighrowland/&#34;&gt;Craig Rowland&lt;/a&gt;, Founder and CEO of &lt;a href=&#34;https://sandflysecurity.com/&#34;&gt;Sandfly Security&lt;/a&gt;, delivered a presentation titled &lt;em&gt;Evasive Linux Malware&lt;/em&gt; at the Oslo Cold Incident Response Conference last year (Slides &lt;a href=&#34;https://sandflysecurity.com/sharing/evasive-linux-backdoors-cold-incident-response-conference-2023.pdf&#34;&gt;here&lt;/a&gt;, Presentation &lt;a href=&#34;https://sandflysecurity.com/blog/evasive-linux-malware-detection-video-presentation-bpfdoor/&#34;&gt;here&lt;/a&gt;), dissecting the notorious &lt;a href=&#34;https://malpedia.caad.fkie.fraunhofer.de/details/elf.bpfdoor&#34;&gt;BPFDoor&lt;/a&gt; malware. In this post, we will analyze the BPFDoor backdoor only with the Linux utility &lt;em&gt;strace&lt;/em&gt;, trying to get as much information as possible about the malware by tracing the executed syscalls from the binary. Swift assessments of malware samples like these can prove particularly beneficial for Incident Response teams in identifying Indicators of Compromise (IOC) for creating detection mechanisms or hunting purposes.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Hunting AsyncRAT &amp; QuasarRAT</title>
+      <link>https://dfir.ch/posts/asyncrat_quasarrat/</link>
+      <pubDate>Mon, 15 Jan 2024 16:04:20 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/asyncrat_quasarrat/</guid>
+      
+      <description>&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.recordedfuture.com/&#34;&gt;Recorded Future&lt;/a&gt; writes in their &lt;a href=&#34;https://www.recordedfuture.com/2023-adversary-infrastructure-report&#34;&gt;Adversary Infrastructure Report 2023&lt;/a&gt;:&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;The top 5 malware families we detected this year are AsyncRAT, Quasar RAT, PlugX, ShadowPad, and DarkComet. Interestingly, the top 2 detections are open-source, and the last 3 are well-established tools, showing that our statement from last year&amp;rsquo;s report remains true:&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;[The] high level of commodity tool use indicates that threat actors are more concerned with blending in and being non-attributable rather than being undetectable, or have simply determined that their targets are not likely to detect even these well-known tools.&lt;/em&gt;&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>N-IOCs to Rule Them All</title>
+      <link>https://dfir.ch/posts/n-iocs/</link>
+      <pubDate>Sun, 31 Dec 2023 19:13:36 +0200</pubDate>
+      
+      <guid>https://dfir.ch/posts/n-iocs/</guid>
+      
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;&lt;p&gt;Introduction&lt;/p&gt;&lt;/h2&gt;
+&lt;p&gt;We analyzed the top ten malware families in Switzerland (according to govcert.ch) during the period April - December 2022 to find patterns and overlaps in the forensic artifacts that a successful infection leaves on an endpoint.&lt;/p&gt;
+&lt;p&gt;We explicitly did not analyze the infection chain (how the infection happens – macros, wscript, hta, etc.), but rather the traces left by the second stage, i.e., the final malware executed on the endpoint.&lt;/p&gt;</description>
+      
+    </item>
+    
+  </channel>
+</rss>

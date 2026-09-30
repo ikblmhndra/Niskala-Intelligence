@@ -1,0 +1,15 @@
+{
+  "scraper": "koisecThreat",
+  "legacy_script": "koisecThreat",
+  "legacy_labels": [],
+  "source_urls": [
+    "https://www.koi.security/blog"
+  ],
+  "http_status": {
+    "https://www.koi.security/blog": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

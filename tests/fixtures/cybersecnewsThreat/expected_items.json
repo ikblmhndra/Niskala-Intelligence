@@ -1,0 +1,54 @@
+{
+  "2026-09-17": [
+    {
+      "title": "Windows 11 KB5124008 Update Breaks Active Directory Domain Trust and Blocks User Logins",
+      "url": "https://cybersecuritynews.com/windows-11-kb5124008-update/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Check Point Vulnerability Lets Remote Hackers Gain Root Access Without Authentication",
+      "url": "https://cybersecuritynews.com/check-point-root-access-flaw/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "CenterPoint Energy Data Breach – Hackers Stolen Customer’s Personal Data",
+      "url": "https://cybersecuritynews.com/centerpoint-energy-data-breach/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "CISA Warns of Critical ScreenConnect Vulnerability Actively Exploited in Attacks",
+      "url": "https://cybersecuritynews.com/screenconnect-vulnerability-exploited/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "German Manufacturer Shrinks Security Alert Response While Protecting 10,000 Endpoints",
+      "url": "https://cybersecuritynews.com/german-manufacturer-security-alerts/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Critical WSO2 Vulnerability Allow Hackers to Gain Full Admin Access",
+      "url": "https://cybersecuritynews.com/critical-wso2-vulnerability/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "GhostCode Phishing Kit Bypasses Microsoft 365 MFA to Hijack Accounts in 78 Seconds",
+      "url": "https://cybersecuritynews.com/ghostcode-phishing-kit/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Microsoft 365 Hit by New Outage as Users Report Widespread 502 and 503 Errors",
+      "url": "https://cybersecuritynews.com/microsoft-365-hit-by-new-outage/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Hackers Can Rent VectraRAT for $250 a Month to Take Control of Windows PCs",
+      "url": "https://cybersecuritynews.com/hackers-can-rent-vectrarat/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Hackers Use Cross-Platform Noodle RAT to Secretly Control Windows and Linux Systems",
+      "url": "https://cybersecuritynews.com/cross-platform-noodle-rat/",
+      "posted_on": "2026-09-17"
+    }
+  ]
+}

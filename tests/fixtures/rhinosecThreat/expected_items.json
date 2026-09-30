@@ -1,0 +1,54 @@
+{
+  "2026-09-17": [
+    {
+      "title": "Multiple Vulnerabilities in Frappe LMS Leading to Remote Code Execution",
+      "url": "https://rhinosecuritylabs.com/research/multiple-vulnerabilities-in-frappe-lms-leading-to-remote-code-execution/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Referral Beware, Your Rewards are Mine (Part 1)",
+      "url": "https://rhinosecuritylabs.com/research/referral-beware-your-rewards-are-mine-part-1/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Multiple CVEs in Infoblox NetMRI: RCE, Auth Bypass, SQLi, and File Read Vulnerabilities  ",
+      "url": "https://rhinosecuritylabs.com/research/infoblox-multiple-cves/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "CVE-2025-26147: Authenticated RCE In Denodo Scheduler ",
+      "url": "https://rhinosecuritylabs.com/research/cve-2025-26147-authenticated-rce-in-denodo/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "New Pacu Module: Secret Enumeration in Elastic Beanstalk",
+      "url": "https://rhinosecuritylabs.com/tools/new-pacu-module-enumerating-elastic-beanstalk/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "CVE-2024-55963: Unauthenticated RCE in Default-Install of Appsmith",
+      "url": "https://rhinosecuritylabs.com/research/cve-2024-55963-unauthenticated-rce-in-appsmith/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "CVE-2025-0693:  AWS IAM User Enumeration",
+      "url": "https://rhinosecuritylabs.com/research/unauthenticated-username-enumeration-in-aws/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "CVE-2024-46506: Unauthenticated RCE in NetAlertx",
+      "url": "https://rhinosecuritylabs.com/research/cve-2024-46506-rce-in-netalertx/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "CVE-2024-46507: Yeti Platform  Server-Side Template Injection (SSTI)",
+      "url": "https://rhinosecuritylabs.com/research/cve-2024-46507-yeti-server-side-template-injection-ssti/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "CloudGoat Official Walkthrough Series: ‘sqs_flag_shop’",
+      "url": "https://rhinosecuritylabs.com/research/cloudgoat-walkthrough-sqs_flag_shop/",
+      "posted_on": "2026-09-17"
+    }
+  ]
+}

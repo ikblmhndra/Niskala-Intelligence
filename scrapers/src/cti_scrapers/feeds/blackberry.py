@@ -1,4 +1,4 @@
-"""Name -- hasil migrasi otomatis dari `ScraperNews/blackberryThreat.py`
+"""BlackBerry -- hasil migrasi otomatis dari `ScraperNews/blackberryThreat.py`
 (codemod Fase 4, family XPath runtime="browser"). Cek
 `migration_report.json` buat detail ekstraksi. WAJIB lewat `dry-run` +
 `verify` sebelum `enable` -- lihat docs/ADDING_A_SCRAPER.md.
@@ -14,7 +14,7 @@ from cti_scraper.schedule import spread
 class Blackberry(XPathScraper):
     meta = ScraperMeta(
         id="blackberry",
-        source="Name",
+        source="BlackBerry",
         schedule=spread("0 * * * *", "blackberry"),
         runtime="browser",
         rate_limit="6/minute",
@@ -23,6 +23,8 @@ class Blackberry(XPathScraper):
         legacy_label="NEW ARTICLE FROM NAME",
         legacy_script="blackberryThreat",
     )
-    url = 'https://blogs.blackberry.com/en/category/research-and-intelligence'
-    title_xpath = '/html/body/main/div[2]/section/div/div[2]/div[1]/div[{i}]/div/div/div/a[2]/text()'
-    link_xpath = '/html/body/main/div[2]/section/div/div[2]/div[1]/div[{i}]/div/div/div/a[2]/@href'
+    url = "https://blogs.blackberry.com/en/category/research-and-intelligence"
+    title_xpath = (
+        "/html/body/main/div[2]/section/div/div[2]/div[1]/div[{i}]/div/div/div/a[2]/text()"
+    )
+    link_xpath = "/html/body/main/div[2]/section/div/div[2]/div[1]/div[{i}]/div/div/div/a[2]/@href"

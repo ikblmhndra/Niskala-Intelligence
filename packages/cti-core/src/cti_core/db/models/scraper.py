@@ -114,6 +114,11 @@ class ScraperConfig(TimestampMixin, Base):
     rate_limit: Mapped[str | None] = mapped_column(String(30))
     max_items: Mapped[int | None] = mapped_column(Integer)
     paused_reason: Mapped[str | None] = mapped_column(Text)
+    options: Mapped[dict[str, str] | None] = mapped_column(JSONB)
+    """Pilihan admin buat `ScraperMeta.options` (`{key: value}`, mis. `{"provider":
+    "x_official"}`) -- null/kosong = semua opsi pakai default kode. Divalidasi API
+    (`cti_scraper.options.validate_options`); `Runner` menolerir isi usang (lihat
+    `resolve_options`)."""
     updated_by: Mapped[str | None] = mapped_column(String(200))
 
 

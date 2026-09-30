@@ -1,0 +1,17 @@
+{
+  "scraper": "bishopfoxThreat",
+  "legacy_script": "bishopfoxThreat",
+  "legacy_labels": [
+    "NEW ARTICLE FROM BISHOP FOX"
+  ],
+  "source_urls": [
+    "https://bishopfox.com/feeds/blog.rss"
+  ],
+  "http_status": {
+    "https://bishopfox.com/feeds/blog.rss": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

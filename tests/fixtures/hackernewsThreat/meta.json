@@ -1,0 +1,17 @@
+{
+  "scraper": "hackernewsThreat",
+  "legacy_script": "hackernewsThreat",
+  "legacy_labels": [
+    "NEW ARTICLE FROM HACKERNEWS"
+  ],
+  "source_urls": [
+    "https://feeds.feedburner.com/TheHackersNews"
+  ],
+  "http_status": {
+    "https://feeds.feedburner.com/TheHackersNews": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

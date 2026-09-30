@@ -20,5 +20,5 @@ class Unit42(RSSScraper):
         legacy_label="NEW ARTICLE FROM UNIT42",
         legacy_script="unit42Threat",
     )
-    feeds = ('https://unit42.paloaltonetworks.com/feed/',)
+    feeds = ("https://unit42.paloaltonetworks.com/feed/",)
     date_path = None  # scraper lama pakai waktu-scrape, bukan tanggal artikel asli

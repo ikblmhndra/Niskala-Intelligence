@@ -1,0 +1,17 @@
+{
+  "scraper": "ecrimeThreat",
+  "legacy_script": "ecrimeThreat",
+  "legacy_labels": [
+    "NEW ARTICLE FROM ECRIMECH"
+  ],
+  "source_urls": [
+    "https://ecrime.ch/app/intel-news.php?rss"
+  ],
+  "http_status": {
+    "https://ecrime.ch/app/intel-news.php?rss": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

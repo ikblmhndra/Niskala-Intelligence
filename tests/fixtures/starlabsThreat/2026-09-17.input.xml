@@ -1,0 +1,565 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Blog on STAR Labs</title>
+    <link>https://starlabs.sg/blog/</link>
+    <description>Recent content in Blog on STAR Labs</description>
+    <generator>Hugo</generator>
+    <language>en-sg</language>
+    <lastBuildDate>Mon, 27 Jul 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://starlabs.sg/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>When AI Makes 0-Days Feel Like N-Days</title>
+      <link>https://starlabs.sg/blog/2026/07-when-ai-makes-0-days-feel-like-n-days/</link>
+      <pubDate>Mon, 27 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2026/07-when-ai-makes-0-days-feel-like-n-days/</guid>
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;&#xA;&lt;p&gt;After my n-day analysis on net/tls bugs and exploit writing for a patched net/rxrpc bug, I moved on to 0-day bug hunting. With the help of AI, I found a UAF bug in net/sched, and went about creating an LPE exploit based on it. This blog goes into the technical details of that exploit, and how I optimized it to target CentOS 9 desktop in TyphoonPwn 2026.&lt;/p&gt;&#xA;&lt;p&gt;Additionally, I will show a glimpse of two other exploitable bugs I found in kernel/events/core.c (with an LPE exploit for one).&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Old Bug, Harder Rules : Exploiting CVE-2023-36802 Without the Usual Shortcuts</title>
+      <link>https://starlabs.sg/blog/2026/06-old-bug-harder-rules-exploiting-cve-2023-36802-without-the-usual-shortcuts/</link>
+      <pubDate>Wed, 24 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2026/06-old-bug-harder-rules-exploiting-cve-2023-36802-without-the-usual-shortcuts/</guid>
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;&#xA;&lt;p&gt;There are already good writeups on &lt;code&gt;CVE-2023-36802&lt;/code&gt;, a type confusion bug in Microsoft&amp;rsquo;s Streaming Service Proxy driver &lt;code&gt;mskssrv.sys&lt;/code&gt;. Most of them were written before recent mitigations closed off the usual paths. This one was written after.&lt;/p&gt;&#xA;&lt;p&gt;The bug was known. The patch was out. The writeups existed. My mentor &lt;strong&gt;Dang Nguyen&lt;/strong&gt; (&lt;a href=&#34;https://x.com/MochiNishimiya&#34;&gt;@MochiNishimiya&lt;/a&gt;) gave it to me anyway.&lt;/p&gt;&#xA;&lt;p&gt;The constraint was simple: exploit it without relying on &lt;code&gt;NtQuery*&lt;/code&gt; APIs&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; for kernel address leaks or &lt;code&gt;PreviousMode&lt;/code&gt;&lt;sup id=&#34;fnref:2&#34;&gt;&lt;a href=&#34;#fn:2&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;sup id=&#34;fnref:3&#34;&gt;&lt;a href=&#34;#fn:3&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;3&lt;/a&gt;&lt;/sup&gt; for arbitrary read/write. Build the exploit the way you&amp;rsquo;d have to build it today, under the mitigations that exist now, not the ones that existed when the bug was first disclosed.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Old Wine in a New Bottle: A Decade-Old lxd-Group Root, Re-Armed</title>
+      <link>https://starlabs.sg/blog/2026/06-old-wine-in-a-new-bottle-a-decade-old-lxd-group-root-re-armed/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2026/06-old-wine-in-a-new-bottle-a-decade-old-lxd-group-root-re-armed/</guid>
+      <description>&lt;h2 id=&#34;tldr&#34;&gt;TL;DR&lt;/h2&gt;&#xA;&lt;p&gt;On a default &lt;strong&gt;Ubuntu Server&lt;/strong&gt; install, the first user account is silently placed in the &lt;code&gt;lxd&lt;/code&gt; group, and &lt;code&gt;lxd&lt;/code&gt;-group membership is &lt;strong&gt;root-equivalent by design&lt;/strong&gt;. From &lt;strong&gt;24.04&lt;/strong&gt; onward LXD isn&amp;rsquo;t even pre-installed, yet the seeded &lt;code&gt;lxd-installer&lt;/code&gt; socket (owned &lt;code&gt;root:lxd&lt;/code&gt;, mode &lt;code&gt;0660&lt;/code&gt;) lets any &lt;code&gt;lxd&lt;/code&gt;-group user install LXD &lt;strong&gt;password-free&lt;/strong&gt;, launch a privileged container with the host filesystem mounted, and walk straight to &lt;strong&gt;root on the host, without the sudo password ever being entered&lt;/strong&gt;. Every individual link is documented, intended behaviour; the weakness is the &lt;strong&gt;insecure default composition&lt;/strong&gt;. We confirmed the full chain to &lt;code&gt;euid=0&lt;/code&gt; end-to-end on &lt;strong&gt;20.04, 22.04, 24.04 and 26.04&lt;/strong&gt;. The vendor reviewed it, settled on a &lt;strong&gt;won&amp;rsquo;t-fix&lt;/strong&gt; (a deliberate business decision), and cleared this research for publication.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Race Against The Patch: The Evolution of Four Exploit Chains in LiteLLM</title>
+      <link>https://starlabs.sg/blog/2026/05-race-against-the-patch-the-evolution-of-four-exploit-chains-in-litellm/</link>
+      <pubDate>Fri, 29 May 2026 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2026/05-race-against-the-patch-the-evolution-of-four-exploit-chains-in-litellm/</guid>
+      <description>&lt;h2 id=&#34;the-arena-and-the-target&#34;&gt;The Arena and The Target&lt;/h2&gt;&#xA;&lt;p&gt;It all started with Pwn2Own Berlin 2026. As AI technology explodes, major security competitions are turning their attention to AI infrastructure. In the official rules for this Pwn2Own, the highly anticipated Local Inference Category was introduced. One of the targets is &lt;a href=&#34;https://github.com/BerriAI/litellm&#34;&gt;LiteLLM&lt;/a&gt;.&lt;/p&gt;&#xA;&lt;p&gt;For those who aren&amp;rsquo;t familiar with LiteLLM: it&amp;rsquo;s a popular lightweight LLM gateway/proxy tool. It allows developers to call hundreds of different LLM model services through a unified API format. As a gateway, it naturally sits at the core hub of application-layer interactions. It not only has to handle complex Authentication, Routing, and Billing, but also process a massive amount of input data from clients.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Three Bugs Walk Into a PDF: Prototype Pollution, Served Cold</title>
+      <link>https://starlabs.sg/blog/2026/04-three-bugs-walk-into-a-pdf-prototype-pollution-served-cold/</link>
+      <pubDate>Wed, 29 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2026/04-three-bugs-walk-into-a-pdf-prototype-pollution-served-cold/</guid>
+      <description>&lt;h2 id=&#34;tldr&#34;&gt;TL;DR&lt;/h2&gt;&#xA;&lt;p&gt;In April 2026, Adobe disclosed three critical security issues (&lt;a href=&#34;https://helpx.adobe.com/security/products/acrobat/apsb26-43.html&#34;&gt;CVE-2026-34621&lt;/a&gt;,&lt;a href=&#34;https://helpx.adobe.com/security/products/acrobat/apsb26-44.html&#34;&gt;CVE-2026-34622,CVE-2026-34626&lt;/a&gt;) affecting Acrobat DC, Acrobat Reader DC, and Acrobat 2024. According to Adobe’s advisories, these vulnerabilities could allow attackers to execute arbitrary code and leak user information through a malicious PDF file via a prototype pollution chain and they were reportedly exploited in the wild. The initial issue, &lt;code&gt;CVE-2026-34621&lt;/code&gt;, was first identified by &lt;a href=&#34;https://justhaifei1.blogspot.com/2026/04/expmon-detected-sophisticated-zero-day-adobe-reader.html?m=1&#34;&gt;EXPMON&lt;/a&gt;.&lt;/p&gt;&#xA;&lt;p&gt;While several reports have already covered the threat intelligence and malware-analysis aspects of the ITW samples, we were more interested in the underlying vulnerabilities themselves and how Adobe patched them.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>CHECK Removed, Context Confused, Checkmate Achieved</title>
+      <link>https://starlabs.sg/blog/2026/04-check-removed-context-confused-checkmate-achieved/</link>
+      <pubDate>Wed, 01 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2026/04-check-removed-context-confused-checkmate-achieved/</guid>
+      <description>&lt;h2 id=&#34;tldr&#34;&gt;TL;DR&lt;/h2&gt;&#xA;&lt;p&gt;In January 2026, the &lt;a href=&#34;https://chromereleases.googleblog.com/2026/01/&#34;&gt;Chrome Releases&lt;/a&gt; blog announced several security fixes across different Chrome components. One entry caught our attention: &lt;strong&gt;&lt;a href=&#34;https://www.cve.org/CVERecord?id=CVE-2026-0899&#34;&gt;CVE-2026-0899&lt;/a&gt;&lt;/strong&gt;, an Out-of-Bounds memory access in V8 discovered by &lt;a href=&#34;https://x.com/p1nky4745&#34;&gt;@p1nky4745&lt;/a&gt;.&lt;/p&gt;&#xA;&lt;p&gt;Vulnerabilities in V8, especially OOB and Type Confusions are always interesting from a security research perspective. We decided to take a closer look. At the time of writing, the issue was still restricted and no public proof-of-concept was available. After reverse engineering the patch fix, we identified the root cause of the vulnerability and developed a trigger PoC.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Pickling the Mailbox: A Deep Dive into CVE-2025-20393</title>
+      <link>https://starlabs.sg/blog/2026/02-pickling-the-mailbox-a-deep-dive-into-cve-2025-20393/</link>
+      <pubDate>Thu, 05 Feb 2026 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2026/02-pickling-the-mailbox-a-deep-dive-into-cve-2025-20393/</guid>
+      <description>&lt;h2 id=&#34;tldr&#34;&gt;TL;DR&lt;/h2&gt;&#xA;&lt;p&gt;In December 2025, Cisco published &lt;a href=&#34;https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-sma-attack-N9bf4&#34;&gt;https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-sma-attack-N9bf4&lt;/a&gt; addressing CVE-2025-20393, a critical vulnerability (CVSS 10.0) affecting Cisco Secure Email Gateway and Secure Email and Web Manager. The advisory was notably sparse on technical details, describing only &amp;ldquo;Improper Input Validation&amp;rdquo; (CWE-20).&lt;/p&gt;&#xA;&lt;p&gt;We decided to dig deeper. Through reverse engineering and code analysis of AsyncOS 15.5.3, we uncovered the root cause: a single-byte integer overflow in the EUQ RPC protocol that bypasses authentication and chains into Python pickle deserialization — achieving unauthenticated remote code execution with a single HTTP request.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>8th Anniversary: Embrace the new but don&#39;t forget the old</title>
+      <link>https://starlabs.sg/blog/2026/01-8th-anniversary-embrace-the-new-but-dont-forget-the-old/</link>
+      <pubDate>Thu, 08 Jan 2026 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2026/01-8th-anniversary-embrace-the-new-but-dont-forget-the-old/</guid>
+      <description>&lt;p&gt;Eight years ago today, I started STAR Labs by hiring several fresh grads with no working experiences.&lt;/p&gt;&#xA;&lt;p&gt;Today, I stand here with a different group of faces. Some of you were there from the beginning. Some of you joined along the way. Some of you just started last month.&lt;/p&gt;&#xA;&lt;p&gt;And some of the people who were here&amp;hellip; weren&amp;rsquo;t anymore.&lt;/p&gt;&#xA;&lt;p&gt;Not because they failed. Not because we failed them. But because life called them in different directions.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>2025: WE BROKE THINGS, WE BUILT THINGS, WE BROKE EVEN MORE THINGS</title>
+      <link>https://starlabs.sg/blog/2025/12-2025-we-broke-things-we-built-things-we-broke-even-more-things/</link>
+      <pubDate>Sat, 27 Dec 2025 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2025/12-2025-we-broke-things-we-built-things-we-broke-even-more-things/</guid>
+      <description>&lt;p&gt;Most will talk about the success in their year-end posts. Great. Nobody talks about the failures. Nobody talks about what ACTUALLY happened.&lt;/p&gt;&#xA;&lt;p&gt;Well, we are going to tell you about OUR STORY - the success AND the failures. The whole thing. Because that&amp;rsquo;s how we actually learn&amp;hellip;from our own mistakes.&lt;/p&gt;&#xA;&lt;p&gt;So here it is, UNFILTERED. Buckle up.&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;pwn2own-2025-berlin--ireland&#34;&gt;PWN2OWN 2025 BERLIN &amp;amp; IRELAND&lt;/h2&gt;&#xA;&lt;p&gt;We could only bring one of our interns, Gerrard Tai, along with us to Pwn2Own. Not to watch from the sidelines, but to COMPETE. He was right there with us, building exploit chains, debugging our team members&amp;rsquo; codes while under pressure and experiencing the absolute rush of pwning devices on the world stage.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>HEX ADVENT 2025: Crack the Advent, Conquer the Threat 🐛</title>
+      <link>https://starlabs.sg/blog/2025/11-hex-advent-2025-crack-the-advent-conquer-the-threat/</link>
+      <pubDate>Tue, 18 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2025/11-hex-advent-2025-crack-the-advent-conquer-the-threat/</guid>
+      <description>&lt;h1 id=&#34;hex-advent-2025-crack-the-advent-conquer-the-threat-&#34;&gt;HEX ADVENT 2025: Crack the Advent, Conquer the Threat 🐛&lt;/h1&gt;&#xA;&lt;p&gt;&lt;strong&gt;Last chance to register! Registration closing on 20 Dec 2025, 09:00 SGT!&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;WELCOME TO HEX ADVENT 2025&lt;/strong&gt;, ‘tis the season to &lt;strong&gt;Unwrap Your Potential! 🎁&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;HEX ADVENT 2025 is a Christmas-themed CTF Advent Calendar, &lt;strong&gt;designed for women, by women&lt;/strong&gt;.&lt;/p&gt;&#xA;&lt;h2 id=&#34;what-to-expect&#34;&gt;What to Expect&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;12 Days, 12 Challenges&lt;/strong&gt;: A structured schedule to build mastery across different CTF categories.&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Focus Areas&lt;/strong&gt;:&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Pwn (Binary Exploitation)&lt;/li&gt;&#xA;&lt;li&gt;Cryptography&lt;/li&gt;&#xA;&lt;li&gt;Reverse Engineering&lt;/li&gt;&#xA;&lt;li&gt;Forensics&lt;/li&gt;&#xA;&lt;li&gt;OSINT&lt;/li&gt;&#xA;&lt;li&gt;Web Exploitation&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Our Mission&lt;/strong&gt;: To empower women in cybersecurity, create visible role models, and cultivate a robust local talent pool.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;table&gt;&#xA;  &lt;thead&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;th&gt;&lt;strong&gt;Date&lt;/strong&gt;&lt;/th&gt;&#xA;          &lt;th&gt;&lt;strong&gt;What To Expect?&lt;/strong&gt;&lt;/th&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/thead&gt;&#xA;  &lt;tbody&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;1 to 12 Dec 2025&lt;/td&gt;&#xA;          &lt;td&gt;New challenges unlocked at &lt;strong&gt;09:00 SGT&lt;/strong&gt; daily&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;1 to 31 Dec 2025&lt;/td&gt;&#xA;          &lt;td&gt;Challenges open until &lt;strong&gt;31 Dec 2025, 23:59 SGT&lt;/strong&gt;&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;1 Dec 2025 to 5 Jan 2026&lt;/td&gt;&#xA;          &lt;td&gt;Write-up submissions will close on &lt;strong&gt;5 Jan 2026, 23:59 SGT&lt;/strong&gt;&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/tbody&gt;&#xA;&lt;/table&gt;&#xA;&lt;p&gt;✍🏻➡️ &lt;a href=&#34;https://hex-advent.starlabs.sg/&#34;&gt;&lt;strong&gt;REGISTER&lt;/strong&gt;&lt;/a&gt; TO PLAY NOW&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>HEX ADVENT 2025: Rules &amp; Information</title>
+      <link>https://starlabs.sg/blog/2025/11-hex-advent-2025-rules-information/</link>
+      <pubDate>Mon, 10 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2025/11-hex-advent-2025-rules-information/</guid>
+      <description>&lt;h2 id=&#34;information&#34;&gt;&lt;strong&gt;Information&lt;/strong&gt;&lt;/h2&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;This is a solo CTF event open to women residing in Singapore or Malaysia.&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;To register and be eligible for the prizes:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Register on &lt;a href=&#34;https://hex-advent.starlabs.sg/&#34;&gt;CTFd&lt;/a&gt;, and select the &lt;strong&gt;&amp;ldquo;eligible&amp;rdquo;&lt;/strong&gt; bracket.&lt;/li&gt;&#xA;&lt;li&gt;Confirm your eligibility by filling in the &lt;a href=&#34;https://forms.gle/eFHFebXVNTfRZusW6&#34;&gt;Google Form&lt;/a&gt;.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;The flag format is described by this regex: /^HEX{.*}$/&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;There are a total of 12 challenges. One challenge will be released each day at 09:00 SGT within the period of 1 December 2025 to 12 December 2025. All challenges will be announced on the STAR Labs blog, and the challenges can be accessed through the CTFd platform within the period of 1 December 2025, 09:00 SGT to 31 December 2025, 23:59 SGT.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Breaking Into a Brother (MFC-J1010DW): Three Security Flaws in a Seemingly Innocent Printer</title>
+      <link>https://starlabs.sg/blog/2025/11-breaking-into-a-brother-mfc-j1010dw-three-security-flaws-in-a-seemingly-innocent-printer/</link>
+      <pubDate>Mon, 03 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2025/11-breaking-into-a-brother-mfc-j1010dw-three-security-flaws-in-a-seemingly-innocent-printer/</guid>
+      <description>&lt;h2 id=&#34;the-target-brother-mfc-j1010dw&#34;&gt;The Target: Brother MFC-J1010DW&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Affected Models: &lt;code&gt;Brother Printer MFC-J1010DW&lt;/code&gt;&lt;/li&gt;&#xA;&lt;li&gt;Vulnerable Firmware: &lt;code&gt;Version &amp;lt;= 1.18&lt;/code&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;tldr-the-vulnerability-chain&#34;&gt;TL;DR: The Vulnerability Chain&lt;/h2&gt;&#xA;&lt;p&gt;We discovered three vulnerabilities that when chained together, allow for complete remote compromise:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;Authentication Bypass via SNMP&lt;/strong&gt; - Retrieve the printer&amp;rsquo;s serial number without authentication, allowing attackers to derive the default admin password&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Unauthenticated Firmware Rollback&lt;/strong&gt; - Downgrade to vulnerable firmware versions over the network, no credentials required&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Buffer Overflow via Referer Header&lt;/strong&gt; - Execute arbitrary code by crafting malicious HTTP headers&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;The result? We made the printer display our chosen message of &lt;strong&gt;&amp;ldquo;STAR LABS!&amp;rdquo;&lt;/strong&gt; on its screen—but this is just a proof of concept. A real attacker could do much worse.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Summer Pwnables: lz1 Solution</title>
+      <link>https://starlabs.sg/blog/2025/09-summer-pwnables-lz1-solution/</link>
+      <pubDate>Mon, 15 Sep 2025 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2025/09-summer-pwnables-lz1-solution/</guid>
+      <description>&lt;h2 id=&#34;tldr-&#34;&gt;TL;DR 🚀&lt;/h2&gt;&#xA;&lt;p&gt;We&amp;rsquo;re turning a simple compression library into a shell delivery service! This writeup exploits a buffer overflow in lz1/lz77 decompression by crafting malicious compressed data that overflows the stack and chains ROP gadgets for code execution.&#xA;Ever wondered how a simple file compression tool could hand you the keys to a system? Well, buckle up because we&amp;rsquo;re about to turn andyherbert&amp;rsquo;s innocent &lt;a href=&#34;https://github.com/andyherbert/lz1&#34;&gt;lz1 compressor&lt;/a&gt; into our personal shell delivery service! 🎭&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Summer Pwnables: Temporal Paradox Engine Solution</title>
+      <link>https://starlabs.sg/blog/2025/09-summer-pwnables-temporal-paradox-engine-solution/</link>
+      <pubDate>Mon, 15 Sep 2025 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2025/09-summer-pwnables-temporal-paradox-engine-solution/</guid>
+      <description>&lt;p&gt;Last month, Jacob asked me to create a CTF challenge for the Summer Pwnables event. I went with a kernel pwnable since my goal was to teach students some more advanced Linux kernel exploitation techniques - something that wouldn&amp;rsquo;t get solved in a day (and hopefully not by AI either).&lt;/p&gt;&#xA;&lt;p&gt;After building both the challenge and solution, I figured students should be able to crack it within 3-7 days. Turns out I was right about the timeline, but only one person actually solved it. &lt;a href=&#34;https://www.linkedin.com/in/jro-sg/&#34;&gt;Jun Rong Lam&lt;/a&gt;, he is the first solver by solving this challenge in a week. The next week &lt;a href=&#34;https://www.linkedin.com/in/lucas-tan-yi-jie/&#34;&gt;Lucas Tan Yi Je&lt;/a&gt; solved it. In third week, &lt;a href=&#34;https://www.linkedin.com/in/elijah-chia&#34;&gt;Elijah Chia&lt;/a&gt; solved this challenge, so 3 weeks in total. I really amaze by these students skills and persistence.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Lost in Translation: Apache Vulnerabilities That Don&#39;t Count (Literally)</title>
+      <link>https://starlabs.sg/blog/2025/09-lost-in-translation-apache-vulnerabilities-that-dont-count-literally/</link>
+      <pubDate>Thu, 11 Sep 2025 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2025/09-lost-in-translation-apache-vulnerabilities-that-dont-count-literally/</guid>
+      <description>&lt;p&gt;During our security research in 2024, we discovered several vulnerabilities in Apache Foundation projects that seem to have gotten &amp;rsquo;lost in translation&amp;rsquo; between our bug reports and the CVE assignment process. While we&amp;rsquo;ve been patiently waiting for these findings to officially &amp;lsquo;count,&amp;rsquo; they&amp;rsquo;ve apparently been stuck longer than a software update on a Friday afternoon. Almost a year went by without any CVEs assigned and which we completely forgot about until now. So we figured it was time to let these vulnerabilities see the light of day, even if they&amp;rsquo;re destined to remain the security world&amp;rsquo;s &amp;lsquo;ones that got away.&amp;rsquo; The following vulnerabilities were responsibly disclosed to Apache and have been addressed, though they continue to exist in that special category of bugs that are real enough to fix but without CVEs.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Fuzzing a Printer: Pre-auth RCE in a Network IoT Device</title>
+      <link>https://starlabs.sg/blog/2025/09-fuzzing-a-printer-pre-auth-rce-in-a-network-iot-device/</link>
+      <pubDate>Tue, 02 Sep 2025 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2025/09-fuzzing-a-printer-pre-auth-rce-in-a-network-iot-device/</guid>
+      <description>&lt;p&gt;Printers have three things going for them from an attacker&amp;rsquo;s perspective: they live on the corporate network, they trust far too much from far too many protocols, and nobody patches them. Over the last quarter we&amp;rsquo;ve been building out a fuzzing harness for enterprise MFPs.&lt;/p&gt;&#xA;&lt;h2 id=&#34;the-harness&#34;&gt;The harness&lt;/h2&gt;&#xA;&lt;p&gt;We emulate the device&amp;rsquo;s firmware in a QEMU-based sandbox with a hooked network stack, then let AFL++ drive crafted PJL, SNMP, and IPP messages into the exposed listeners. The hard part isn&amp;rsquo;t the fuzzer. It&amp;rsquo;s the harness getting realistic enough that findings translate to the physical device.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>[Updates] Summer Pwnables 🔥</title>
+      <link>https://starlabs.sg/blog/2025/08-updates-summer-pwnables/</link>
+      <pubDate>Mon, 18 Aug 2025 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2025/08-updates-summer-pwnables/</guid>
+      <description>&lt;h1 id=&#34;updates-summer-pwnables-2025&#34;&gt;[Updates] Summer Pwnables 2025&lt;/h1&gt;&#xA;&lt;h2 id=&#34;major-announcement-isd-sponsorship&#34;&gt;Major Announcement: ISD Sponsorship&lt;/h2&gt;&#xA;&lt;p&gt;We are pleased to announce that &lt;strong&gt;&lt;a href=&#34;https://www.mha.gov.sg/isd&#34;&gt;Internal Security Department (ISD)&lt;/a&gt;&lt;/strong&gt; is sponsoring Summer Pwnables Challenge #0002 Challenge #003.&lt;/p&gt;&#xA;&lt;h2 id=&#34;distribution-rule&#34;&gt;Distribution Rule&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Challenge #002 and #003 are meant for Singaporean students.&lt;/li&gt;&#xA;&lt;li&gt;Each Singaporean student can only win &lt;strong&gt;once&lt;/strong&gt; across all challenges to ensure broader community recognition. However, they can still submit their solutions in order to win the new &amp;ldquo;Grand Prize&amp;rdquo;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&lt;strong&gt;Prizes&lt;/strong&gt; are still $100 SGD + the &amp;ldquo;From Day Zero to Zero Day&amp;rdquo; book written by &lt;a href=&#34;https://www.linkedin.com/in/eugene1337/&#34;&gt;Eugene &amp;ldquo;Spaceraccoon&amp;rdquo; Lim&lt;/a&gt; for the first five solvers.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Summer Pwnables: When the Heat Rises, So Do the C-Shells 🔥</title>
+      <link>https://starlabs.sg/blog/2025/08-summer-pwnables-when-the-heat-rises-so-do-the-c-shells/</link>
+      <pubDate>Tue, 12 Aug 2025 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2025/08-summer-pwnables-when-the-heat-rises-so-do-the-c-shells/</guid>
+      <description>&lt;h1 id=&#34;-summer-pwnables-2025-&#34;&gt;🌴☀️ &lt;strong&gt;SUMMER PWNABLES 2025&lt;/strong&gt; ☀️🌴&lt;/h1&gt;&#xA;&lt;h2 id=&#34;the-hottest-hacking-challenge-on-this-side-of-southeast-asia&#34;&gt;&lt;em&gt;The hottest hacking challenge on this side of Southeast Asia!&lt;/em&gt;&lt;/h2&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://starlabs.sg/blog/2025/images/landscape%20size%20challenge%20poster%20v2.jpg&#34; alt=&#34;Summer Pwnables Poster&#34;&gt;&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;p&gt;&lt;strong&gt;Think you can handle the heat? Time to prove your l33t skills are more than just talk!&lt;/strong&gt; 😎🔥&lt;/p&gt;&#xA;&lt;p&gt;The summer sun isn&amp;rsquo;t the only thing burning bright – we have cooked up some &lt;strong&gt;seriously spicy&lt;/strong&gt; challenges that will test whether you are a true shell wizard! 🧙‍♂️✨&lt;/p&gt;&#xA;&lt;h3 id=&#34;-eligibility-requirements&#34;&gt;📍 &lt;strong&gt;ELIGIBILITY REQUIREMENTS&lt;/strong&gt;&lt;/h3&gt;&#xA;&lt;p&gt;&lt;strong&gt;This challenge is exclusively open to Singapore-based students only!&lt;/strong&gt;&lt;br&gt;&#xA;&lt;em&gt;You must be currently enrolled in a Singapore educational institution to participate.&lt;/em&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>My `Blind Date` with CVE-2025-29824</title>
+      <link>https://starlabs.sg/blog/2025/07-my-blind-date-with-cve-2025-29824/</link>
+      <pubDate>Wed, 16 Jul 2025 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2025/07-my-blind-date-with-cve-2025-29824/</guid>
+      <description>&lt;p&gt;In April 2025, Microsoft patched a vulnerability that had become a key component in sophisticated ransomware attack chains. &lt;code&gt;CVE-2025-29824&lt;/code&gt;, an use-after-free bug in the Windows Common Log File System (CLFS) driver, wasn&amp;rsquo;t the initial entry point for attackers. Instead, &lt;a href=&#34;https://www.security.com/threat-intelligence/play-ransomware-zero-day&#34;&gt;threat actors first compromised Cisco ASA firewalls&lt;/a&gt;, then used this Windows kernel vulnerability as the crucial privilege escalation step that transformed limited network access into complete system domination. This multi-stage approach represents the evolution of modern ransomware operations: sophisticated threat actors chaining together network infrastructure vulnerabilities with Windows kernel bugs to devastating effect.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Fooling the Sandbox: A Chrome-atic Escape</title>
+      <link>https://starlabs.sg/blog/2025/07-fooling-the-sandbox-a-chrome-atic-escape/</link>
+      <pubDate>Thu, 10 Jul 2025 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2025/07-fooling-the-sandbox-a-chrome-atic-escape/</guid>
+      <description>&lt;p&gt;For my internship, I was tasked by my mentor Le Qi to analyze CVE-2024-30088, a double-fetch race condition bug in the Windows Kernel Image &lt;code&gt;ntoskrnl.exe&lt;/code&gt;. A public POC demonstrating EoP from Medium Integrity Level to SYSTEM is available on GitHub &lt;a href=&#34;https://github.com/tykawaii98/CVE-2024-30088&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;&#xA;&lt;p&gt;Additionally, I was challenged (more like forced 💀) to chain the exploit to escape the Chrome Renderer Sandbox, achieving EoP from Untrusted Integrity Level to SYSTEM.&lt;/p&gt;&#xA;&lt;p&gt;&lt;em&gt;Easy, right?&lt;/em&gt; 🤡&lt;/p&gt;&#xA;&lt;p&gt;Note: CVE-2024-30088 came out &lt;a href=&#34;https://windows-internals.com/kaslr-leaks-restriction/&#34;&gt;before 24H2&lt;/a&gt;, so I analyzed it using a 23H2 Windows VM instead&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Solo: A Pixel 6 Pro Story (When one bug is all you need)</title>
+      <link>https://starlabs.sg/blog/2025/06-solo-a-pixel-6-pro-story-when-one-bug-is-all-you-need/</link>
+      <pubDate>Thu, 05 Jun 2025 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2025/06-solo-a-pixel-6-pro-story-when-one-bug-is-all-you-need/</guid>
+      <description>&lt;p&gt;During my internship I was tasked to analyze a &lt;a href=&#34;https://github.com/0x36/Pixel_GPU_Exploit&#34;&gt;Mali GPU exploit&lt;/a&gt; on Pixel 7/8 devices and adapt it to make it work on another device: the Pixel 6 Pro.&lt;/p&gt;&#xA;&lt;p&gt;While the exploit process itself is relatively straightforward to reproduce (in theory we just need to find the correct symbol offsets and signatures for our target device), what&amp;rsquo;s interesting about Pixel 6 Pro is that &lt;a href=&#34;https://github.com/0x36/Pixel_GPU_Exploit/issues/6&#34;&gt;it uses a different Mali GPU from the Pixel 7/8&lt;/a&gt;, which lacked support for a feature that one of the two vulnerabilities within the exploit relied on:&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Gone in 5 Seconds: How WARN_ON Stole 10 Minutes</title>
+      <link>https://starlabs.sg/blog/2025/05-gone-in-5-seconds-how-warn_on-stole-10-minutes/</link>
+      <pubDate>Fri, 30 May 2025 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2025/05-gone-in-5-seconds-how-warn_on-stole-10-minutes/</guid>
+      <description>&lt;p&gt;As part of my internship at STAR Labs, I was tasked to conduct N-day analysis of CVE-2023-6241. The original PoC can be found &lt;a href=&#34;https://github.com/github/securitylab/tree/main/SecurityExploits/Android/Mali/CVE_2023_6241&#34;&gt;here&lt;/a&gt;, along with the accompanying &lt;a href=&#34;https://github.blog/security/vulnerability-research/gaining-kernel-code-execution-on-an-mte-enabled-pixel-8/&#34;&gt;write-up&lt;/a&gt;.&lt;/p&gt;&#xA;&lt;p&gt;In this blog post, I will explain the root cause as well as an alternative exploitation technique used to exploit the page UAF, achieving arbitrary kernel code execution.&lt;/p&gt;&#xA;&lt;p&gt;The following exploit was tested on a Pixel 8 running the latest version available prior to the patch.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Badge &amp; Lanyard Challenges @ OBO 2025</title>
+      <link>https://starlabs.sg/blog/2025/05-badge-lanyard-challenges-@-obo-2025/</link>
+      <pubDate>Wed, 28 May 2025 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2025/05-badge-lanyard-challenges-@-obo-2025/</guid>
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;&#xA;&lt;p&gt;We are back with Round 2 of the Off-By-One conference — where bits meet breadboards and bugs are celebrated! 🐛⚡&lt;/p&gt;&#xA;&lt;p&gt;If you are into hardware and IoT security, you&amp;rsquo;ll know one thing&amp;rsquo;s for sure: the STAR Labs SG badge is not your average conference bling bling. This year&amp;rsquo;s badge isn&amp;rsquo;t just a collector&amp;rsquo;s item — it&amp;rsquo;s a playground for the curious, packed with new challenges inspired by months&amp;rsquo;s worth of research and hackery. And yes, the CTF is back, with even more nerdy goodness.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Lessons From Pwn2Own Berlin 2025: Building a Hypervisor Escape</title>
+      <link>https://starlabs.sg/blog/2025/05-lessons-from-pwn2own-berlin-2025-building-a-hypervisor-escape/</link>
+      <pubDate>Tue, 20 May 2025 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2025/05-lessons-from-pwn2own-berlin-2025-building-a-hypervisor-escape/</guid>
+      <description>&lt;p&gt;At Pwn2Own Berlin 2025, STAR Labs took home Master of Pwn for a chain that escaped a major hypervisor from inside a guest VM. This is the short version of how we got there. Longer write-up to follow after all patches are deployed.&lt;/p&gt;&#xA;&lt;h2 id=&#34;target-selection&#34;&gt;Target selection&lt;/h2&gt;&#xA;&lt;p&gt;We started with three candidate attack surfaces: the device-emulation path, the virtio back-ends, and the nested-virtualization code path. We picked device emulation because it sees the most attacker-controlled input per unit of code, and because prior research suggested the maintainers had been less aggressive about fuzzing it than the core dispatcher.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Breaking Out of Restricted Mode: XSS to RCE in Visual Studio Code</title>
+      <link>https://starlabs.sg/blog/2025/05-breaking-out-of-restricted-mode-xss-to-rce-in-visual-studio-code/</link>
+      <pubDate>Wed, 14 May 2025 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2025/05-breaking-out-of-restricted-mode-xss-to-rce-in-visual-studio-code/</guid>
+      <description>&lt;p&gt;In April 2024, I discovered a high-severity vulnerability in Visual Studio Code (VS Code &amp;lt;= 1.89.1) that allows attackers to escalate a Cross-Site Scripting (XSS) bug into full Remote Code Execution (RCE)—even in Restricted Mode.&lt;/p&gt;&#xA;&lt;p&gt;The desktop version of Visual Studio Code runs on Electron. Renderer processes are sandboxed and communicate with the main process through &lt;a href=&#34;https://www.electronjs.org/docs/latest/tutorial/ipc&#34;&gt;Electron&amp;rsquo;s IPC mechanism&lt;/a&gt;.&lt;/p&gt;&#xA;&lt;p&gt;An XSS vulnerability in the newly-introduced &lt;a href=&#34;https://code.visualstudio.com/updates/v1_89#_minimal-error-renderer&#34;&gt;minimal error rendering&lt;/a&gt; mode for Jupyter notebooks enables arbitrary JavaScript code to be executed within the &lt;code&gt;vscode-app&lt;/code&gt; WebView for the notebook renderer. The vulnerability can be triggered by opening a crafted &lt;code&gt;.ipynb&lt;/code&gt; file if the user has the setting enabled, or by opening a folder containing a crafted &lt;code&gt;settings.json&lt;/code&gt; file in VS Code and opening a malicious ipynb file within the folder. This vulnerability can be triggered even when Restricted Mode is enabled (which is the default for workspaces that have not been explicitly trusted by the user).&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>CimFS: Crashing in memory, Finding SYSTEM (Kernel Edition)</title>
+      <link>https://starlabs.sg/blog/2025/03-cimfs-crashing-in-memory-finding-system-kernel-edition/</link>
+      <pubDate>Tue, 25 Mar 2025 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2025/03-cimfs-crashing-in-memory-finding-system-kernel-edition/</guid>
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;&#xA;&lt;p&gt;Many vulnerability writeups nowadays focus on the exploitation process when it comes to software bugs. The term &amp;ldquo;Exploit Developer&amp;rdquo; is also still used synonymously with Vulnerability Research, presumably coming from the early 2000s where bugs were easily discoverable and the community was just beginning to explore the art of exploitation. However nowadays with SDL and continuous fuzzing, the discovery of unknown vulnerabilities in crucial systems is getting more important, arguably more than the exploitation process. In order to encourage more writing on the aspect of Vulnerability Discovery, we are releasing this blogpost discussing the journey of finding and exploiting a kernel 0day in Windows 11 for Local Privilege Escalation.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>STAR Labs Windows Exploitation Challenge 2025 Writeup</title>
+      <link>https://starlabs.sg/blog/2025/03-star-labs-windows-exploitation-challenge-2025-writeup/</link>
+      <pubDate>Mon, 17 Mar 2025 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2025/03-star-labs-windows-exploitation-challenge-2025-writeup/</guid>
+      <description>&lt;h1 id=&#34;star-labs-windows-exploitation-challenge-writeup&#34;&gt;STAR Labs Windows Exploitation Challenge Writeup&lt;/h1&gt;&#xA;&lt;p&gt;Over the past few months, the STAR Labs team has been hosting a &lt;a href=&#34;https://starlabs.sg/blog/2025/01-star-labs-2025-new-year-exploitation-challenge/&#34;&gt;Windows exploitation challenge&lt;/a&gt;. I was lucky enough to solve it and got myself a ticket to Off-By-One conference. Here is my writeup for the challenge!&lt;/p&gt;&#xA;&lt;h2 id=&#34;analyzing-the-binary&#34;&gt;Analyzing the binary&lt;/h2&gt;&#xA;&lt;p&gt;We are given a Windows kernel driver. Basic analysis shows that it is used to receive and save messages sent from usermode.&lt;/p&gt;&#xA;&lt;h3 id=&#34;important-structures&#34;&gt;Important structures&lt;/h3&gt;&#xA;&lt;p&gt;There are two key structures used in this driver: &lt;code&gt;handle&lt;/code&gt; and &lt;code&gt;message entry&lt;/code&gt;. &lt;code&gt;Message entry&lt;/code&gt; is the storage unit that saves our message from usermode, its structure is described below:&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Mali-cious Intent: Exploiting GPU Vulnerabilities (CVE-2022-22706 / CVE-2021-39793)</title>
+      <link>https://starlabs.sg/blog/2025/02-mali-cious-intent-exploiting-gpu-vulnerabilities-cve-2022-22706-/-cve-2021-39793/</link>
+      <pubDate>Sun, 02 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2025/02-mali-cious-intent-exploiting-gpu-vulnerabilities-cve-2022-22706-/-cve-2021-39793/</guid>
+      <description>&lt;p&gt;Imagine downloading a game from a third-party app store. You grant it seemingly innocuous permissions, but hidden within the app is a malicious exploit that allows attackers to steal your photos, eavesdrop on your conversations, or even take complete control of your device. This is the kind of threat posed by vulnerabilities like &lt;code&gt;CVE-2022-22706&lt;/code&gt; and &lt;code&gt;CVE-2021-39793&lt;/code&gt;, which we&amp;rsquo;ll be dissecting in this post. These vulnerabilities affect Mali GPUs, commonly found in many Android devices, and allow unprivileged apps to gain root access.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>CVE-2024-26230: Windows Telephony Service - It&#39;s Got Some Call-ing Issues (Elevation of Privilege)</title>
+      <link>https://starlabs.sg/blog/2025/01-cve-2024-26230-windows-telephony-service-its-got-some-call-ing-issues-elevation-of-privilege/</link>
+      <pubDate>Fri, 24 Jan 2025 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2025/01-cve-2024-26230-windows-telephony-service-its-got-some-call-ing-issues-elevation-of-privilege/</guid>
+      <description>&lt;h2 id=&#34;executive-summary&#34;&gt;Executive Summary&lt;/h2&gt;&#xA;&lt;p&gt;&lt;code&gt;CVE-2024-26230&lt;/code&gt; is a critical vulnerability found in the Windows Telephony Service (TapiSrv), which can lead to an elevation of privilege on affected systems. The exploit leverages a use-after-free in &lt;code&gt;FreeDialogInstance&lt;/code&gt;. By manipulating the registry, an attacker controls memory allocation to create a fake object, triggering the UAF in &lt;code&gt;TUISPIDLLCallback&lt;/code&gt; to gain code execution. This is further chained with techniques to bypass mitigations like CFG and ultimately load a malicious DLL, escalating privileges to SYSTEM via &lt;a href=&#34;https://github.com/itm4n/PrintSpoofer&#34;&gt;PrintSpoofer&lt;/a&gt;. In this blog post, we will take an in-depth look at how this vulnerability works, how it can be exploited, and the mitigation strategies that can help defend against it.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Celebrating 7 Years of STAR Labs SG</title>
+      <link>https://starlabs.sg/blog/2025/01-celebrating-7-years-of-star-labs-sg/</link>
+      <pubDate>Sun, 12 Jan 2025 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2025/01-celebrating-7-years-of-star-labs-sg/</guid>
+      <description>&lt;p&gt;🎉🎊 Cheers to 7 Amazing Years! 🎊🎉&lt;/p&gt;&#xA;&lt;p&gt;On 8th January 2018, STAR Labs SG Pte. Ltd. was born with a simple but bold idea: to do fun offensive research that protects customers. Seven years later, that spark of curiosity and innovation has grown into something extraordinary. 🚀&lt;/p&gt;&#xA;&lt;h2 id=&#34;our-humble-beginnings-&#34;&gt;Our Humble Beginnings 🛠️&lt;/h2&gt;&#xA;&lt;p&gt;It all started when STAR Labs had a small, passionate group of researchers: Shi Ji, Wei Lei, Phạm Hồng Phi, Phan Thanh Duy, and Tạ Đình Sung.&#xA;These pioneers didn’t just lay the foundation. They inspired others to join this wild roller coaster ride.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>STAR Labs 2025 New Year Exploitation Challenge</title>
+      <link>https://starlabs.sg/blog/2025/01-star-labs-2025-new-year-exploitation-challenge/</link>
+      <pubDate>Wed, 01 Jan 2025 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2025/01-star-labs-2025-new-year-exploitation-challenge/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;Think you’ve got what it takes to pop shells and snag your ticket to&amp;hellip; &lt;a href=&#34;https://re-verse.io/&#34;&gt;RE//verse&lt;/a&gt; and &lt;a href=&#34;https://offbyone.sg/&#34;&gt;Off-By-One&lt;/a&gt;?&lt;/strong&gt; 😏&lt;/p&gt;&#xA;&lt;h3 id=&#34;-windows-exploitation-challenge-&#34;&gt;🔥 &lt;strong&gt;Windows Exploitation Challenge&lt;/strong&gt; 🔥&lt;/h3&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;Get &lt;strong&gt;SYSTEM privileges&lt;/strong&gt; by exploiting a bug in the downloadable driver below. (pwn it!)&lt;/li&gt;&#xA;&lt;li&gt;Keep the OS alive and happy — &lt;strong&gt;no BSODs, no excuses!&lt;/strong&gt;&lt;/li&gt;&#xA;&lt;li&gt;Your exploit &lt;strong&gt;must work&lt;/strong&gt; on &lt;strong&gt;Windows 11 24H2&lt;/strong&gt;.&lt;/li&gt;&#xA;&lt;li&gt;Submit your winning solutions(&lt;strong&gt;exploit source code&lt;/strong&gt; and &lt;strong&gt;writeup&lt;/strong&gt;) to &lt;a href=&#34;mailto:info@starlabs.sg&#34;&gt;info@starlabs.sg&lt;/a&gt;.&lt;/li&gt;&#xA;&lt;li&gt;If you think you&amp;rsquo;ve figured out the bug but can&amp;rsquo;t exploit it in time, feel free to send us a writeup too describing how you would exploit it!&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;&lt;strong&gt;🏆 Prizes up for grabs!&lt;/strong&gt;&lt;br&gt;&#xA;🥇 &lt;strong&gt;First to submit a working exploit wins a conference ticket to &lt;a href=&#34;https://re-verse.io/&#34;&gt;RE//verse&lt;/a&gt;!&lt;/strong&gt;&lt;br&gt;&#xA;🥈 &lt;strong&gt;Second to submit bags a conference ticket to &lt;a href=&#34;https://offbyone.sg/&#34;&gt;Off-By-One&lt;/a&gt;!&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>All I Want for Christmas is a CVE-2024-30085 Exploit</title>
+      <link>https://starlabs.sg/blog/2024/12-all-i-want-for-christmas-is-a-cve-2024-30085-exploit/</link>
+      <pubDate>Tue, 24 Dec 2024 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2024/12-all-i-want-for-christmas-is-a-cve-2024-30085-exploit/</guid>
+      <description>&lt;h1 id=&#34;tldr&#34;&gt;TLDR&lt;/h1&gt;&#xA;&lt;p&gt;CVE-2024-30085 is a heap-based buffer overflow vulnerability affecting the Windows Cloud Files Mini Filter Driver &lt;code&gt;cldflt.sys&lt;/code&gt;. By crafting a custom reparse point, it is possible to trigger the buffer overflow to corrupt an adjacent &lt;code&gt;_WNF_STATE_DATA&lt;/code&gt; object. The corrupted &lt;code&gt;_WNF_STATE_DATA&lt;/code&gt; object can be used to leak a kernel pointer from an ALPC handle table object. A second buffer overflow is then used to corrupt another &lt;code&gt;_WNF_STATE_DATA&lt;/code&gt; object, which is then used to corrupt an adjacent &lt;code&gt;PipeAttribute&lt;/code&gt; object. By forging a &lt;code&gt;PipeAttribute&lt;/code&gt; object in userspace, we are able to leak the token address and override privileges to escalate privileges to NT AUTHORITY\SYSTEM.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Behind the Scenes: Understanding CVE-2022-24547</title>
+      <link>https://starlabs.sg/blog/2024/12-behind-the-scenes-understanding-cve-2022-24547/</link>
+      <pubDate>Tue, 24 Dec 2024 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2024/12-behind-the-scenes-understanding-cve-2022-24547/</guid>
+      <description>&lt;h1 id=&#34;tldr&#34;&gt;TL;dr&lt;/h1&gt;&#xA;&lt;p&gt;Vulnerabilities can often be found in places we don’t expect, and &lt;code&gt;CVE-2022-24547&lt;/code&gt; in &lt;code&gt;CastSrv.exe&lt;/code&gt; is one of the examples. CVE-2022-24547 is a privilege escalation vulnerability in CastSrv.exe, allowing attackers to bypass security and gain elevated privileges. We’ll break down how the bug works, its exploitation, and how to protect against it.&lt;/p&gt;&#xA;&lt;h2 id=&#34;summary&#34;&gt;Summary&lt;/h2&gt;&#xA;&lt;table&gt;&#xA;  &lt;thead&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;th&gt;&lt;/th&gt;&#xA;          &lt;th&gt;&lt;/th&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/thead&gt;&#xA;  &lt;tbody&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;&lt;strong&gt;Vendor&lt;/strong&gt;&lt;/td&gt;&#xA;          &lt;td&gt;Microsoft&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;&lt;strong&gt;Security Impact&lt;/strong&gt;&lt;/td&gt;&#xA;          &lt;td&gt;Elevation of Privilege&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;&lt;strong&gt;CVE ID&lt;/strong&gt;&lt;/td&gt;&#xA;          &lt;td&gt;&lt;a href=&#34;https://msrc.microsoft.com/update-guide/en-US/advisory/CVE-2022-24547&#34;&gt;CVE-2022-24547&lt;/a&gt;&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/tbody&gt;&#xA;&lt;/table&gt;&#xA;&lt;h2 id=&#34;cvss31-scoring-system&#34;&gt;CVSS3.1 Scoring System:&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;Base Score:&lt;/strong&gt;   7.8&#xA;&lt;strong&gt;Vector String:&lt;/strong&gt; &lt;code&gt;CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H&lt;/code&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>#BadgeLife @ Off-By-One Conference 2024</title>
+      <link>https://starlabs.sg/blog/2024/07-%23badgelife-@-off-by-one-conference-2024/</link>
+      <pubDate>Mon, 22 Jul 2024 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2024/07-%23badgelife-@-off-by-one-conference-2024/</guid>
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;&#xA;&lt;p&gt;As promised, we are releasing the firmware and this post for the Off-By-One badge about one month after the event, allowing interested participants the opportunity to explore it. If you&amp;rsquo;re interested in learning more about the badge design process, please let us know. We were thrilled to introduce the Octopus Badge at the first-ever Off-By-One Conference 2024. The badge was a one of the highlight at the conference, as it included hardware-focused CTF challenges. In this post, we will explore the ideation and design process of the badge and discuss the concepts needed to solve the challenges.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Send()-ing Myself Belated Christmas Gifts - GitHub.com&#39;s Environment Variables &amp; GHES Shell</title>
+      <link>https://starlabs.sg/blog/2024/05-send-ing-myself-belated-christmas-gifts-github.coms-environment-variables-ghes-shell/</link>
+      <pubDate>Mon, 06 May 2024 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2024/05-send-ing-myself-belated-christmas-gifts-github.coms-environment-variables-ghes-shell/</guid>
+      <description>&lt;p&gt;Earlier this year, in mid-January, you might have come across &lt;a href=&#34;https://github.blog/2024-01-16-rotating-credentials-for-github-com-and-new-ghes-patches/&#34;&gt;this security announcement&lt;/a&gt; by GitHub.&lt;/p&gt;&#xA;&lt;p&gt;In this article, I will unveil the shocking story of how I discovered &lt;a href=&#34;https://www.cve.org/CVERecord?id=CVE-2024-0200&#34;&gt;CVE-2024-0200&lt;/a&gt;, a deceptively simple, one-liner vulnerability which I initially assessed to likely be of low impact, and how I turned it into one of the most impactful bugs in GitHub&amp;rsquo;s bug bounty history.&lt;/p&gt;&#xA;&lt;p&gt;&lt;em&gt;&lt;strong&gt;Spoiler:&lt;/strong&gt; The vulnerability enabled disclosure of &lt;strong&gt;all&lt;/strong&gt; environment variables of a production container on &lt;code&gt;GitHub.com&lt;/code&gt;, including numerous access keys and secrets. Additionally, this vulnerability can be further escalated to achieve remote code execution (RCE) on GitHub Enterprise Servers (GHES), but not on &lt;code&gt;GitHub.com&lt;/code&gt;. More on this later.&lt;/em&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Send()-ing Myself Belated Christmas Gifts: GitHub.com&#39;s Environment Variables &amp; GHES Shell</title>
+      <link>https://starlabs.sg/blog/2024/04-send-ing-myself-belated-christmas-gifts-github.coms-environment-variables-ghes-shell/</link>
+      <pubDate>Mon, 15 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2024/04-send-ing-myself-belated-christmas-gifts-github.coms-environment-variables-ghes-shell/</guid>
+      <description>&lt;p&gt;Short version: while poking at GitHub Enterprise Server (GHES) for an unrelated reason the day after Christmas, I noticed an unvalidated &lt;code&gt;Kernel#send()&lt;/code&gt; call in the organization repository settings component. I expected it to be mildly useful, at most leaking file paths or affecting my own organisation. Production GitHub.com proved otherwise.&lt;/p&gt;&#xA;&lt;h2 id=&#34;the-primitive&#34;&gt;The primitive&lt;/h2&gt;&#xA;&lt;p&gt;The component in &lt;code&gt;app/components/organizations/settings/repository_items_component.rb&lt;/code&gt; forwards a user-controlled &lt;code&gt;rid_key&lt;/code&gt; parameter directly to &lt;code&gt;send()&lt;/code&gt; on the repository dependency object. Ruby&amp;rsquo;s &lt;code&gt;Kernel#send&lt;/code&gt; dispatches the argument as a method name, which (with the right object graph) gives you a read primitive over arbitrary methods of the target object.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Route to Safety: Navigating Router Pitfalls</title>
+      <link>https://starlabs.sg/blog/2024/03-route-to-safety-navigating-router-pitfalls/</link>
+      <pubDate>Mon, 18 Mar 2024 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2024/03-route-to-safety-navigating-router-pitfalls/</guid>
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;&#xA;&lt;p&gt;Wi-Fi routers have always been an attractive target for attackers. When taken over, an attacker may gain access to a victim&amp;rsquo;s internal network or sensitive data. Additionally, there has been an ongoing trend of attackers continually &lt;a href=&#34;https://www.zerodayinitiative.com/blog/2023/4/21/tp-link-wan-side-vulnerability-cve-2023-1389-added-to-the-mirai-botnet-arsenal&#34;&gt;incorporating new router exploits into their arsenal for use in botnets, such as the Mirai Botnet&lt;/a&gt;.&lt;/p&gt;&#xA;&lt;p&gt;Consumer grade devices are especially attractive to attackers, due to many security flaws in them. Devices with lower security often contain multiple bugs that attackers can exploit easily, rendering them vulnerable targets. On the other hand, there are more secure devices that offer valuable insights and lessons to learn from.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Exploitation of a kernel pool overflow from a restrictive chunk size (CVE-2021-31969)</title>
+      <link>https://starlabs.sg/blog/2023/11-exploitation-of-a-kernel-pool-overflow-from-a-restrictive-chunk-size-cve-2021-31969/</link>
+      <pubDate>Fri, 24 Nov 2023 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2023/11-exploitation-of-a-kernel-pool-overflow-from-a-restrictive-chunk-size-cve-2021-31969/</guid>
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;&#xA;&lt;p&gt;The prevalence of memory corruption bugs persists, posing a persistent challenge for exploitation. This increased difficulty arises from advancements in defensive mechanisms and the escalating complexity of software systems. While a basic proof of concept often suffices for bug patching, the development of a functional exploit capable of bypassing existing countermeasures provides valuable insights into the capabilities of advanced threat actors. This holds particularly true for the scrutinized driver, &lt;code&gt;cldflt.sys&lt;/code&gt;, which has consistently received patches every Patch Tuesday since June. Notably, it has become a focal point for threat actors, following the exploits on &lt;code&gt;clfs.sys&lt;/code&gt; and &lt;code&gt;afd.sys&lt;/code&gt; drivers. In this article, we aim to highlight the significance of cldflt.sys and advocate for increased research into this driver and its associated components.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Analysis of NodeBB Account Takeover Vulnerability (CVE-2022-46164)</title>
+      <link>https://starlabs.sg/blog/2023/09-analysis-of-nodebb-account-takeover-vulnerability-cve-2022-46164/</link>
+      <pubDate>Fri, 29 Sep 2023 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2023/09-analysis-of-nodebb-account-takeover-vulnerability-cve-2022-46164/</guid>
+      <description>&lt;p&gt;Back in January 2023, I tasked one of our web security interns, River Koh (&lt;a href=&#34;https://twitter.com/oceankex&#34;&gt;@oceankex&lt;/a&gt;), to perform n-day analysis of &lt;a href=&#34;https://www.cve.org/CVERecord?id=CVE-2022-46164&#34;&gt;CVE-2022-46164&lt;/a&gt; as part of his internship with STAR Labs. The overall goal is to perform an objective assessment of the vulnerability based on the facts gathered. In addition, I challenged him to reproduce the vulnerability without referencing any other materials besides the textual contents of the &lt;a href=&#34;https://github.com/NodeBB/NodeBB/security/advisories/GHSA-rf3g-v8p5-p675&#34;&gt;official advisory by NodeBB&lt;/a&gt;.&lt;/p&gt;&#xA;&lt;h2 id=&#34;about-cve-2022-46164&#34;&gt;About CVE-2022-46164&lt;/h2&gt;&#xA;&lt;p&gt;CVE-2022-46164 affects NodeBB, an open-source community forum platform built on Node.js with the addition of either a Redis, MongoDB, or PostgreSQL database. One of the features of the platform is the utilization of the Socket.IO for instant interactions and real-time notifications.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>[P2O Vancouver 2023] SharePoint Pre-Auth RCE chain (CVE-2023–29357 &amp; CVE-2023–24955)</title>
+      <link>https://starlabs.sg/blog/2023/09-p2o-vancouver-2023-sharepoint-pre-auth-rce-chain-cve-202329357-cve-202324955/</link>
+      <pubDate>Mon, 25 Sep 2023 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2023/09-p2o-vancouver-2023-sharepoint-pre-auth-rce-chain-cve-202329357-cve-202324955/</guid>
+      <description>&lt;h2 id=&#34;brief&#34;&gt;Brief&lt;/h2&gt;&#xA;&lt;p&gt;I may have achieved successful exploitation of a SharePoint target during Pwn2Own Vancouver 2023. While the live demonstration lasted only approximately 30 seconds, it is noteworthy that the process of discovering and crafting the exploit chain consumed nearly a year of meticulous effort and research to complete the full exploit chain.&lt;/p&gt;&#xA;&lt;p&gt;This exploit chain leverages two vulnerabilities to achieve pre-auth remote code execution (RCE) on the SharePoint server:&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;Authentication Bypass &amp;ndash; An unauthenticated attacker can impersonate as any SharePoint user by spoofing valid JSON Web Tokens (JWTs), using the &lt;code&gt;none&lt;/code&gt; signing algorithm to subvert signature validation checks when verifying JWT tokens used for OAuth authentication. This vulnerability has been found right after I started this project for two days.&lt;/li&gt;&#xA;&lt;li&gt;Code Injection &amp;ndash; A SharePoint user with &lt;code&gt;Sharepoint Owners&lt;/code&gt; permission can inject arbitrary code by replacing &lt;code&gt;/BusinessDataMetadataCatalog/BDCMetadata.bdcm&lt;/code&gt; file in the web root directory to cause compilation of the injected code into an assembly that is subsequently executed by SharePoint. This vulnerability was found on Feb 2022.&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;The specific part of the Authentication Bypass vuln is: it can access to SharePoint API only. So, the most difficult part is to find the post-auth RCE chain that using SP API.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>nftables Adventures: Bug Hunting and N-day Exploitation (CVE-2023-31248)</title>
+      <link>https://starlabs.sg/blog/2023/09-nftables-adventures-bug-hunting-and-n-day-exploitation-cve-2023-31248/</link>
+      <pubDate>Mon, 25 Sep 2023 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2023/09-nftables-adventures-bug-hunting-and-n-day-exploitation-cve-2023-31248/</guid>
+      <description>&lt;p&gt;During my internship, I have been researching and trying to find bugs within the nftables subsystem. In this blog post, I will talk about a bug I have found, as well as the exploitation of an n-day discovered by Mingi Cho &amp;ndash; &lt;a href=&#34;https://nvd.nist.gov/vuln/detail/CVE-2023-31248&#34;&gt;CVE-2023-31248&lt;/a&gt;.&lt;/p&gt;&#xA;&lt;h2 id=&#34;introduction-to-nftables&#34;&gt;Introduction to nftables&lt;/h2&gt;&#xA;&lt;p&gt;nftables is a modern packet filtering framework that aims to replace the legacy {ip,ip6,arp,eb}_tables (xtables) infrastructure. It reuses the existing netfilter hooks, which act as entry points for handlers that perform various operations on packets. Nftables table objects contain a list of chain objects, which contain a list of rule objects, which finally contain expressions, which perform the operations of the pseudo-state machine.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Under The Hood - Disassembling of IKEA-Sonos Symfonisk Speaker Lamp</title>
+      <link>https://starlabs.sg/blog/2023/08-under-the-hood-disassembling-of-ikea-sonos-symfonisk-speaker-lamp/</link>
+      <pubDate>Tue, 01 Aug 2023 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2023/08-under-the-hood-disassembling-of-ikea-sonos-symfonisk-speaker-lamp/</guid>
+      <description>&lt;p&gt;We are excited to embark on a series of teardowns to explore the inner workings of various devices. In this particular teardown, our focus will be on the &lt;code&gt;1st-Generation of IKEA-SONOS SYMFONISK Speaker Lamp&lt;/code&gt;, unraveling its captivating inner workings.&lt;/p&gt;&#xA;&lt;p&gt;Please note that due to prior testing, certain screws, wires, and components have been temporarily removed from the appliance and may not be present during this analysis. However, for the purpose of this exercise, we have meticulously reassembled the SYMFONISK to its approximate original state.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>A new method for container escape using file-based DirtyCred</title>
+      <link>https://starlabs.sg/blog/2023/07-a-new-method-for-container-escape-using-file-based-dirtycred/</link>
+      <pubDate>Tue, 25 Jul 2023 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2023/07-a-new-method-for-container-escape-using-file-based-dirtycred/</guid>
+      <description>&lt;p&gt;Recently, I was trying out various exploitation techniques against a Linux kernel vulnerability, &lt;a href=&#34;https://nvd.nist.gov/vuln/detail/CVE-2022-3910&#34;&gt;CVE-2022-3910&lt;/a&gt;. After successfully writing an exploit which made use of DirtyCred to gain local privilege escalation, my mentor Billy asked me if it was possible to tweak my code to facilitate a container escape by overwriting &lt;code&gt;/proc/sys/kernel/modprobe&lt;/code&gt; instead.&lt;/p&gt;&#xA;&lt;p&gt;The answer was more complicated than expected; this led me down a long and dark rabbit hole&amp;hellip;&lt;/p&gt;&#xA;&lt;p&gt;In this post, I will discuss the root cause of the vulnerability, as well as the various methods I used to exploit it.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>prctl anon_vma_name: An Amusing Linux Kernel Heap Spray</title>
+      <link>https://starlabs.sg/blog/2023/07-prctl-anon_vma_name-an-amusing-linux-kernel-heap-spray/</link>
+      <pubDate>Tue, 25 Jul 2023 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2023/07-prctl-anon_vma_name-an-amusing-linux-kernel-heap-spray/</guid>
+      <description>&lt;h2 id=&#34;tldr&#34;&gt;TLDR&lt;/h2&gt;&#xA;&lt;p&gt;&lt;code&gt;prctl PR_SET_VMA (PR_SET_VMA_ANON_NAME)&lt;/code&gt; can be used as a (possibly new!) heap spray method targeting the &lt;code&gt;kmalloc-8&lt;/code&gt; to &lt;code&gt;kmalloc-96&lt;/code&gt; caches. The sprayed object, &lt;code&gt;anon_vma_name&lt;/code&gt;, is dynamically sized, and can range from larger than 4 bytes to a maximum of 84 bytes. The object can be easily allocated and freed via the &lt;code&gt;prctl&lt;/code&gt; syscall, and leaked information can be obtained via reading the &lt;code&gt;proc/pid/maps&lt;/code&gt; file. The advantage of this method is that it does not require a cross-cache attack from cg/other caches (unlike other objects such as &lt;code&gt;msg_msg&lt;/code&gt;) as &lt;code&gt;anon_vma_name&lt;/code&gt; is allocated with the &lt;code&gt;GFP_KERNEL&lt;/code&gt; flag.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Breaking the Code - Exploiting and Examining CVE-2023-1829 in cls_tcindex Classifier Vulnerability</title>
+      <link>https://starlabs.sg/blog/2023/06-breaking-the-code-exploiting-and-examining-cve-2023-1829-in-cls_tcindex-classifier-vulnerability/</link>
+      <pubDate>Mon, 19 Jun 2023 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2023/06-breaking-the-code-exploiting-and-examining-cve-2023-1829-in-cls_tcindex-classifier-vulnerability/</guid>
+      <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;&#xA;&lt;p&gt;The discovery and analysis of vulnerabilities is a critical aspect of cybersecurity research. Today, we will dive into &lt;a href=&#34;https://nvd.nist.gov/vuln/detail/CVE-2023-1829&#34;&gt;CVE-2023-1829&lt;/a&gt;, a vulnerability in the &lt;code&gt;cls_tcindex&lt;/code&gt; network traffic classifier found by Valis. We will explore the process of exploiting and examining this vulnerability, shedding light on the intricate details and potential consequences. We have thoroughly tested our exploit on &lt;code&gt;Ubuntu 22.04&lt;/code&gt; with kernel version &lt;code&gt;5.15.0-25&lt;/code&gt;, which was built from the official &lt;code&gt;5.15.0-25.25&lt;/code&gt; source code.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>The Old, The New and The Bypass - One-click/Open-redirect to own Samsung S22 at Pwn2Own 2022</title>
+      <link>https://starlabs.sg/blog/2023/06-the-old-the-new-and-the-bypass-one-click/open-redirect-to-own-samsung-s22-at-pwn2own-2022/</link>
+      <pubDate>Wed, 14 Jun 2023 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2023/06-the-old-the-new-and-the-bypass-one-click/open-redirect-to-own-samsung-s22-at-pwn2own-2022/</guid>
+      <description>&lt;h2 id=&#34;tldr&#34;&gt;TLDR;&lt;/h2&gt;&#xA;&lt;p&gt;We began our work on Samsung immediately after the release of the &lt;a href=&#34;https://www.zerodayinitiative.com/blog/2022/8/29/announcing-pwn2own-toronto-2022-and-introducing-the-soho-smashup&#34;&gt;Pwn2Own Toronto 2022 target list&lt;/a&gt;.&lt;/p&gt;&#xA;&lt;p&gt;In this article, we will dive into the details of an open-redirect vulnerability discovered during the Pwn2Own 2022 event and how we exploited it on a Samsung S22 device. By breaking down the technical aspects and using code snippets, we aim to provide a comprehensive overview of this critical security flaw.&lt;/p&gt;&#xA;&lt;p&gt;To begin, I revisited our team&amp;rsquo;s paper (written by &lt;a href=&#34;https://twitter.com/cursered&#34;&gt;Li Jiantao&lt;/a&gt; and &lt;a href=&#34;https://twitter.com/hi_im_d4rkn3ss&#34;&gt;Nguyễn Hoàng Thạch&lt;/a&gt;) from previous year, where two bugs were identified. One of these bugs was exploited in P2O, while the other was promptly addressed. Interestingly, detailed documentation on one of these bugs is available &lt;a href=&#34;https://ssd-disclosure.com/ssd-advisory-galaxy-store-applications-installation-launching-without-user-interaction/&#34;&gt;here&lt;/a&gt;, allowing readers to gain a better understanding of this specific vulnerability.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Microsoft Exchange Powershell Remoting Deserialization leading to RCE (CVE-2023-21707)</title>
+      <link>https://starlabs.sg/blog/2023/04-microsoft-exchange-powershell-remoting-deserialization-leading-to-rce-cve-2023-21707/</link>
+      <pubDate>Fri, 28 Apr 2023 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2023/04-microsoft-exchange-powershell-remoting-deserialization-leading-to-rce-cve-2023-21707/</guid>
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;&#xA;&lt;p&gt;While analyzing &lt;code&gt;CVE-2022-41082&lt;/code&gt;, also known as ProxyNotShell, we discovered this vulnerability which we have detailed in this blog. However, for a comprehensive understanding, we highly recommend reading the &lt;a href=&#34;https://www.zerodayinitiative.com/blog/2022/11/14/control-your-types-or-get-pwned-remote-code-execution-in-exchange-powershell-backend&#34;&gt;thorough analysis&lt;/a&gt; written by team ZDI.&lt;/p&gt;&#xA;&lt;p&gt;To aid in understanding, we present a visual representation of &lt;code&gt;CVE-2022-41082&lt;/code&gt; below.&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://starlabs.sg/blog/2023/images/CVE-2023-21707_0x0001.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;The sink of ProxyNotShell:&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-CSharp&#34; data-lang=&#34;CSharp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#8b949e;font-style:italic&#34;&gt;//System.Management.Automation.InternalDeserializer.ReadOneObject()&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ff7b72&#34;&gt;internal&lt;/span&gt; &lt;span style=&#34;color:#ff7b72&#34;&gt;object&lt;/span&gt; ReadOneObject(&lt;span style=&#34;color:#ff7b72&#34;&gt;out&lt;/span&gt; &lt;span style=&#34;color:#ff7b72&#34;&gt;string&lt;/span&gt; streamName)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;{&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#8b949e;font-style:italic&#34;&gt;//...&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Type targetTypeForDeserialization = psobject.GetTargetTypeForDeserialization(&lt;span style=&#34;color:#ff7b72&#34;&gt;this&lt;/span&gt;._typeTable); &lt;span style=&#34;color:#8b949e;font-style:italic&#34;&gt;//[1]&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#ff7b72&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#79c0ff&#34;&gt;null&lt;/span&gt; != targetTypeForDeserialization)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        Exception ex = &lt;span style=&#34;color:#79c0ff&#34;&gt;null&lt;/span&gt;;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#ff7b72&#34;&gt;try&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#ff7b72&#34;&gt;object&lt;/span&gt; obj2 = LanguagePrimitives.ConvertTo(obj, targetTypeForDeserialization, &lt;span style=&#34;color:#79c0ff&#34;&gt;true&lt;/span&gt;, CultureInfo.InvariantCulture, &lt;span style=&#34;color:#ff7b72&#34;&gt;this&lt;/span&gt;._typeTable); &lt;span style=&#34;color:#8b949e;font-style:italic&#34;&gt;//[2]&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#8b949e;font-style:italic&#34;&gt;//...&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;At &lt;strong&gt;[2]&lt;/strong&gt;, if &lt;code&gt;targetTypeForDeserialization&lt;/code&gt; != null, it will continue to call &lt;code&gt;LanguagePrimitives.ConvertTo()&lt;/code&gt; to convert the original &lt;code&gt;obj&lt;/code&gt; to the Type specified by &lt;code&gt;targetTypeForDeserialization&lt;/code&gt;.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>CS-Cart PDF Plugin Unauthenticated Command Injection</title>
+      <link>https://starlabs.sg/blog/2023/03-cs-cart-pdf-plugin-unauthenticated-command-injection/</link>
+      <pubDate>Fri, 03 Mar 2023 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2023/03-cs-cart-pdf-plugin-unauthenticated-command-injection/</guid>
+      <description>&lt;h2 id=&#34;summary&#34;&gt;Summary&lt;/h2&gt;&#xA;&lt;p&gt;A command injection vulnerability exists in CS-Cart&amp;rsquo;s HTML to PDF converter (&lt;a href=&#34;https://github.com/cscart/pdf&#34;&gt;https://github.com/cscart/pdf&lt;/a&gt;) allowing unauthenticated attackers to achieve remote command execution (RCE). The vulnerability only affects the HTML to PDF converter service and the default hosted service at &lt;code&gt;converter.cart-services.com&lt;/code&gt; (maintained by CS-Cart&amp;rsquo;s development team) used by the PDF converter plugin, and does not allow for RCE against base installations of CS-Cart.&lt;/p&gt;&#xA;&lt;h2 id=&#34;product-background&#34;&gt;Product Background&lt;/h2&gt;&#xA;&lt;p&gt;In CS-Cart v4.13.2, the HTML to PDF converter is an optional plugin (disabled by default) for printing PDF documents in CS-Cart. However, the plugin is built-in and enabled by default in CS-Cart v4.13.1 or below.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Microsoft Azure Account Takeover via DOM-based XSS in Cosmos DB Explorer</title>
+      <link>https://starlabs.sg/blog/2023/02-microsoft-azure-account-takeover-via-dom-based-xss-in-cosmos-db-explorer/</link>
+      <pubDate>Fri, 24 Feb 2023 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2023/02-microsoft-azure-account-takeover-via-dom-based-xss-in-cosmos-db-explorer/</guid>
+      <description>&lt;p&gt;Upon finding the vulnerability, our team member, Ngo Wei Lin (&lt;a href=&#34;https://twitter.com/creastery&#34;&gt;@Creastery&lt;/a&gt;), immediately reported it to the Microsoft Security Response Center (MSRC) on 19th March 2022, who fixed the important issue with a &lt;a href=&#34;https://github.com/Azure/cosmos-explorer/commit/496f596f385e732e47579bd1b45b9ee5868fafac&#34;&gt;fix commited in the repo&lt;/a&gt; within seven days, which is impressive and a much faster response than other Microsoft bugs which we reported previously. The fix was pushed down to &lt;a href=&#34;https://cosmos.azure.com&#34;&gt;Azure Cosmos DB Explorer&lt;/a&gt; on 31st March 2022.&lt;/p&gt;&#xA;&lt;h2 id=&#34;about-the-dom-xss-vulnerability&#34;&gt;About the DOM XSS Vulnerability&lt;/h2&gt;&#xA;&lt;p&gt;The Azure Cosmos DB Explorer incorrectly accepts and processs cross-origin messages from certain domains. A remote attacker can take over a victim Azure user&amp;rsquo;s account by delivering a DOM-based XSS payload via a cross-origin message.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>STAR LABS SG PTE. LTD. has been authorized by the CVE Program as a CVE Numbering Authority (CNA)</title>
+      <link>https://starlabs.sg/blog/2023/02-star-labs-sg-pte.-ltd.-has-been-authorized-by-the-cve-program-as-a-cve-numbering-authority-cna/</link>
+      <pubDate>Wed, 22 Feb 2023 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2023/02-star-labs-sg-pte.-ltd.-has-been-authorized-by-the-cve-program-as-a-cve-numbering-authority-cna/</guid>
+      <description>&lt;p&gt;STAR LABS SG PTE. LTD. (STAR Labs) announced today that it has become a &lt;a href=&#34;https://www.cve.org/Media/News/item/news/2023/02/21/STAR-Labs-SG-Added-as-CNA&#34;&gt;CVE Numbering Authority (CNA)&lt;/a&gt; for the Common Vulnerabilities and Exposures (CVE®) system, a global cybersecurity community.&lt;/p&gt;&#xA;&lt;p&gt;As a CNA, STAR LABS is authorized to assign CVE Identifiers（CVE IDs）to newly discovered vulnerabilities and publicly disclose information about these vulnerabilities through CVE Records. Identifying vulnerabilities with CVE IDs can speed up the awareness and understanding of those vulnerabilities, enabling security researchers and system managers to expedite solutions. Going forward, as a CNA, STAR LABS will practice responsible and timely disclosure when publishing CVE Records for vulnerabilities we discover, enhancing coverage and cyber security for the industry.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Gotta KEP-tcha &#39;Em All - Bypassing Anti-Debugging methods in KEPServerEX</title>
+      <link>https://starlabs.sg/blog/2023/02-gotta-kep-tcha-em-all-bypassing-anti-debugging-methods-in-kepserverex/</link>
+      <pubDate>Fri, 17 Feb 2023 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2023/02-gotta-kep-tcha-em-all-bypassing-anti-debugging-methods-in-kepserverex/</guid>
+      <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;&#xA;&lt;p&gt;Lately, my focus has been on discovering any potential vulnerabilities in &lt;a href=&#34;https://www.ptc.com/en/products/kepware/kepserverex&#34;&gt;KEPServerEX&lt;/a&gt;.&#xA;KEPServerEX is the industry&amp;rsquo;s leading connectivity platform that provides a single source of industrial automation data to all your applications. Users can connect, manage, monitor, and control diverse automation devices and software applications through one intuitive user interface.&lt;/p&gt;&#xA;&lt;p&gt;This software employs multiple anti-debugging measures, making it challenging to discover any vulnerabilities and performing fuzzing on it. In this regard, I would like to share my perspective on the issue and my strategy for circumventing these measures.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Dissecting the Vulnerabilities - A Comprehensive Teardown of acmailer&#39;s N-Days</title>
+      <link>https://starlabs.sg/blog/2023/02-dissecting-the-vulnerabilities-a-comprehensive-teardown-of-acmailers-n-days/</link>
+      <pubDate>Thu, 16 Feb 2023 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2023/02-dissecting-the-vulnerabilities-a-comprehensive-teardown-of-acmailers-n-days/</guid>
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;&#xA;&lt;p&gt;In this post, one of our recent intern, Wang Hengyue (&lt;a href=&#34;https://twitter.com/w_hy_04&#34;&gt;@w_hy_04&lt;/a&gt;) was given the task to analyse &lt;a href=&#34;https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-20617&#34;&gt;CVE-2021-20617&lt;/a&gt; &amp;amp; &lt;a href=&#34;https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-20618&#34;&gt;CVE-2021-20618&lt;/a&gt; in &lt;a href=&#34;https://www.acmailer.jp/download/index.html&#34;&gt;acmailer&lt;/a&gt; since there isn&amp;rsquo;t any public information on it. Today, we&amp;rsquo;ll be sharing his journey in dissecting the vulnerabilities in acmailer. Both vulnerabilities were originally found by &lt;a href=&#34;https://twitter.com/bulkneets&#34;&gt;ma.la&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;acmailer is a Perl-based email delivery application that provides functionality centered around sending mass emails, with associated functions such as registration and unregistration forms, surveys, and email templating.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Deconstructing and Exploiting CVE-2020-6418</title>
+      <link>https://starlabs.sg/blog/2022/12-deconstructing-and-exploiting-cve-2020-6418/</link>
+      <pubDate>Wed, 21 Dec 2022 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2022/12-deconstructing-and-exploiting-cve-2020-6418/</guid>
+      <description>&lt;p&gt;As part of my internship at STAR Labs, I conducted n-day analysis of CVE-2020-6418. This vulnerability lies in the V8 engine of Google Chrome, namely its optimizing compiler Turbofan. Specifically, the vulnerable version is in Google Chrome&amp;rsquo;s V8 prior to 80.0.3987.122. In this article, I will give a step-by-step analysis of the vulnerability, from the root cause to exploitation.&lt;/p&gt;&#xA;&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;&#xA;&lt;p&gt;In JavaScript, objects do not have a fixed type. Instead, V8 assigns each object a Map that reflects its type. This Map is considered reliable if it is guaranteed to be correct at that specific point in time, and it is unreliable if it could have been modified by another node beforehand. If the Map is unreliable, the object must be checked to have the correct type before it is used. This is done by insertion of &lt;code&gt;CheckMaps&lt;/code&gt; nodes or &lt;code&gt;CodeDependencies&lt;/code&gt;. When trying to optimise, Turbofan aims to insert as few Map checks as possible, and tries to do so only when necessary (i.e when the Map is unreliable and is going to be accessed).&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>The Last Breath of Our Netgear RAX30 Bugs - A Tragic Tale before Pwn2Own Toronto 2022</title>
+      <link>https://starlabs.sg/blog/2022/12-the-last-breath-of-our-netgear-rax30-bugs-a-tragic-tale-before-pwn2own-toronto-2022/</link>
+      <pubDate>Tue, 06 Dec 2022 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2022/12-the-last-breath-of-our-netgear-rax30-bugs-a-tragic-tale-before-pwn2own-toronto-2022/</guid>
+      <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;&#xA;&lt;p&gt;Some time ago, we were playing with some Netgear routers and we learned so much from this target.&lt;/p&gt;&#xA;&lt;p&gt;However, Netgear recently patched several vulnerabilities in their RAX30 router firmware, including the two vulnerabilities in the DHCP interface for the LAN side and one remote code execution vulnerability on the WAN side which we prepared for Pwn2Own Toronto 2022. This blog post focuses on the vulnerabilities found in version &lt;code&gt;1.0.7.78&lt;/code&gt;You can download the firmware from this &lt;a href=&#34;https://kb.netgear.com/000064989/RAX30-Firmware-Version-1-0-7-78&#34;&gt;link&lt;/a&gt;, and easily extract the firmware by using &lt;code&gt;binwalk&lt;/code&gt;. All vulnerabilities were found and tested in version &lt;code&gt;1.0.7.78&lt;/code&gt; of Netgear RAX30. Versions &lt;code&gt;1.0.7.78&lt;/code&gt; and earlier are known to be susceptible as well.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>TheHole New World - how a small leak will sink a great browser (CVE-2021-38003)</title>
+      <link>https://starlabs.sg/blog/2022/12-thehole-new-world-how-a-small-leak-will-sink-a-great-browser-cve-2021-38003/</link>
+      <pubDate>Tue, 06 Dec 2022 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2022/12-thehole-new-world-how-a-small-leak-will-sink-a-great-browser-cve-2021-38003/</guid>
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;&#xA;&lt;p&gt;CVE-2021-38003 is a vulnerability that exists in the V8 Javascript engine. The vulnerability affects the Chrome browser before stable version &lt;code&gt;95.0.4638.69&lt;/code&gt;, and was disclosed in October 2021 in &lt;a href=&#34;https://chromereleases.googleblog.com/2021/10/stable-channel-update-for-desktop_28.html&#34;&gt;google&amp;rsquo;s chrome release blog&lt;/a&gt;, while the &lt;a href=&#34;https://bugs.chromium.org/p/chromium/issues/detail?id=1263462&#34;&gt;bug report&lt;/a&gt; was made public in February 2022.&lt;/p&gt;&#xA;&lt;p&gt;The vulnerability will cause a special value in V8 called &lt;code&gt;TheHole&lt;/code&gt; being leaked to the script. This can lead to a renderer RCE in a Chromium-based browser, and &lt;a href=&#34;https://blog.google/threat-analysis-group/protecting-android-users-from-0-day-attacks/&#34;&gt;has been used in the wild.&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Multiple Vulnerabilities in Proxmox VE &amp; Proxmox Mail Gateway</title>
+      <link>https://starlabs.sg/blog/2022/12-multiple-vulnerabilities-in-proxmox-ve-proxmox-mail-gateway/</link>
+      <pubDate>Fri, 02 Dec 2022 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2022/12-multiple-vulnerabilities-in-proxmox-ve-proxmox-mail-gateway/</guid>
+      <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;&#xA;&lt;p&gt;Proxmox Virtual Environment (Proxmox VE or PVE) is an open-source type-1 hypervisor. It includes a web-based management interface programmed in Perl. Another Proxmox product written in Perl, Proxmox Mail Gateway (PMG), comes with a similar web management interface. They share some of the codebases.&lt;/p&gt;&#xA;&lt;p&gt;In this article, I will introduce how to debug PVE&amp;rsquo;s web service step-by-step and analyse three bugs I have found in PVE and PMG.&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;[UPDATE] This is a quick and minor update to this blog post. MITRE email back to us on 9th December 2022 assigned CVE-2022-35507 &amp;amp; CVE-2022-35508 for the remaining 2 bugs&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Microsoft SharePoint Server Post-Authentication Server-Side Request Forgery vulnerability</title>
+      <link>https://starlabs.sg/blog/2022/10-microsoft-sharepoint-server-post-authentication-server-side-request-forgery-vulnerability/</link>
+      <pubDate>Tue, 25 Oct 2022 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2022/10-microsoft-sharepoint-server-post-authentication-server-side-request-forgery-vulnerability/</guid>
+      <description>&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;Disclaimer:&lt;/strong&gt; No anime characters or animals were harmed during the research. The bug had been fixed but it did not meet that criterion required to get CVE.&lt;/p&gt;&#xA;&lt;p&gt;Recently, we have found a Server-Side Request Forgery (SSRF) in Microsoft SharePoint Server 2019 which allows remote authenticated users to send HTTP(S) requests to arbitrary URL and read the responses. The endpoint &lt;code&gt;&amp;lt;site&amp;gt;/_api/web/ExecuteRemoteLOB&lt;/code&gt; is vulnerable to Server-Side Request Forgery (SSRF). The HTTP(S) request is highly customizable in request method, path, headers and bodies. An attacker with the ability to perform SSRF attacks can scan the internal network, check for the existence of services on the host&amp;rsquo;s local network and potentially exploit other web services.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Apple CoreText - An Unexpected Journey to Learn about Failure</title>
+      <link>https://starlabs.sg/blog/2022/09-apple-coretext-an-unexpected-journey-to-learn-about-failure/</link>
+      <pubDate>Thu, 29 Sep 2022 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2022/09-apple-coretext-an-unexpected-journey-to-learn-about-failure/</guid>
+      <description>&lt;p&gt;Late last year, I have focused my research on the CoreText framework for 2-3 months. In particular, the code related to the text shaping engine and the code responsible for parsing the AAT tables.&lt;/p&gt;&#xA;&lt;p&gt;During this research, I found an OOB (Out-Of-Bounds) Write in the &lt;a href=&#34;https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6morx.html&#34;&gt;&lt;code&gt;morx table&lt;/code&gt;&lt;/a&gt;. This series of writeups is to document my whole process, from selecting this attack surface to finding the bug to writing an exploit for it in Safari. I hope this is helpful for anyone interested in starting researching in this area or who wants to help finish the exploit on Safari (because it&amp;rsquo;s not done yet) :D&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Step-by-Step Walkthrough of CVE-2022-32792 - WebKit B3ReduceStrength Out-of-Bounds Write</title>
+      <link>https://starlabs.sg/blog/2022/09-step-by-step-walkthrough-of-cve-2022-32792-webkit-b3reducestrength-out-of-bounds-write/</link>
+      <pubDate>Thu, 08 Sep 2022 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2022/09-step-by-step-walkthrough-of-cve-2022-32792-webkit-b3reducestrength-out-of-bounds-write/</guid>
+      <description>&lt;p&gt;Recently, ZDI released the advisory for a &lt;a href=&#34;https://www.zerodayinitiative.com/advisories/ZDI-22-1123/&#34;&gt;Safari out-of-bounds write vulnerability&lt;/a&gt; exploited by Manfred Paul (@_manfp) in Pwn2Own. We decided to take a look at the &lt;a href=&#34;https://github.com/WebKit/WebKit/commit/6983e76741a1bad811783ceac0959ff9953c175d?diff=unified&#34;&gt;patch&lt;/a&gt; and try to exploit it.&lt;/p&gt;&#xA;&lt;p&gt;The patch is rather simple: it creates a new function (&lt;code&gt;IntRange::sExt&lt;/code&gt;) that is used to decide the integer range after applying a sign extension operation (in &lt;code&gt;rangeFor&lt;/code&gt;). Before this patch, the program assumes that the range stays the same after applying sign extension. This is incorrect and can result in wrongly removing an overflow/underflow check.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Exploiting WebKit JSPropertyNameEnumerator Out-of-Bounds Read (CVE-2021-1789)</title>
+      <link>https://starlabs.sg/blog/2022/08-exploiting-webkit-jspropertynameenumerator-out-of-bounds-read-cve-2021-1789/</link>
+      <pubDate>Fri, 19 Aug 2022 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2022/08-exploiting-webkit-jspropertynameenumerator-out-of-bounds-read-cve-2021-1789/</guid>
+      <description>&lt;p&gt;Initially, our team member, &lt;a href=&#34;https://twitter.com/tuanit96&#34;&gt;Đỗ Minh Tuấn&lt;/a&gt;, wanted to write about the RCA (Root Cause Analysis) of CVE-2021-1870 which APT used. But &lt;a href=&#34;https://github.com/googleprojectzero/0days-in-the-wild/pull/14&#34;&gt;Maddie Stone pointed it to us that it was actually CVE-2021-1789&lt;/a&gt;.  None-the-less, we would still want to share with everyone the analysis done by &lt;a href=&#34;https://twitter.com/tuanit96&#34;&gt;Đỗ Minh Tuấn&lt;/a&gt;.&lt;/p&gt;&#xA;&lt;p&gt;The bug is assigned &lt;strong&gt;CVE-2021-1789&lt;/strong&gt; in &lt;a href=&#34;https://support.apple.com/en-us/HT212147&#34;&gt;security content of Safari 14.0.3&lt;/a&gt;. We successfully exploited it on WebKitGTK &amp;lt;= 2.30.5 or equivalent on WebKit.&lt;/p&gt;&#xA;&lt;p&gt;&lt;code&gt;JSPropertyNameEnumerator&lt;/code&gt; is an internal object that helps JSC handle &lt;code&gt;for...in&lt;/code&gt; loop. JavaScriptCore (JSC) uses this object to cache information about the base object we put into the loop. JSC also allows iterating through the prototype chain of the base object, which means it can go through a proxy with a trap callback. However, JSC does not check the final size of the base object after iterating, leading to an out-of-bounds read.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Gitlab Project Import RCE Analysis (CVE-2022-2185)</title>
+      <link>https://starlabs.sg/blog/2022/07-gitlab-project-import-rce-analysis-cve-2022-2185/</link>
+      <pubDate>Thu, 21 Jul 2022 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2022/07-gitlab-project-import-rce-analysis-cve-2022-2185/</guid>
+      <description>&lt;p&gt;At the beginning of this month, GitLab released a security patch for versions 14-&amp;gt;15. Interestingly in the advisory, there was a mention of a post-auth RCE bug with CVSS 9.9.&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://starlabs.sg/blog/2022/images/07-20-01.png&#34; alt=&#34;image.png&#34;&gt;&#xA;The bug exists in GitLab&amp;rsquo;s &lt;code&gt;Project Imports&lt;/code&gt; feature, which was found by &lt;a href=&#34;https://hackerone.com/vakzz&#34;&gt;@vakzz&lt;/a&gt;. Incidentally, when I rummaged in the author&amp;rsquo;s h1 profile. I discovered that four months ago, he also found a bug in the import project feature:&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://starlabs.sg/blog/2022/images/07-20-02.png&#34; alt=&#34;image.png&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;Initially, I thought it was tempting after seeing the bounty, so I started learning Rails and debugged this bug! (who would have thought that 30k wouldn&amp;rsquo;t be so easy ( ° ͜ʖ ͡°) )&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>io_uring - new code, new bugs, and a new exploit technique</title>
+      <link>https://starlabs.sg/blog/2022/06-io_uring-new-code-new-bugs-and-a-new-exploit-technique/</link>
+      <pubDate>Fri, 24 Jun 2022 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2022/06-io_uring-new-code-new-bugs-and-a-new-exploit-technique/</guid>
+      <description>&lt;p&gt;For the past few weeks, &lt;a href=&#34;https://twitter.com/junr0n&#34;&gt;I&lt;/a&gt; have been working on conducting N-day analysis and bug hunting in the io_uring subsystem of the Linux kernel with the guidance of my mentors, &lt;a href=&#34;https://twitter.com/st424204&#34;&gt;Billy&lt;/a&gt; and &lt;a href=&#34;https://twitter.com/n0psledbyte&#34;&gt;Ramdhan&lt;/a&gt;.&lt;/p&gt;&#xA;&lt;p&gt;In this article, I will briefly discuss the io_uring subsystem, as well as my approach to discovering and developing a new kernel exploit technique during my N-day analysis of &lt;code&gt;CVE-2021-41073&lt;/code&gt;. I will also discuss two bugs I found while analyzing a new io_uring feature.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Trying To Exploit A Windows Kernel Arbitrary Read Vulnerability</title>
+      <link>https://starlabs.sg/blog/2022/06-trying-to-exploit-a-windows-kernel-arbitrary-read-vulnerability/</link>
+      <pubDate>Tue, 07 Jun 2022 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2022/06-trying-to-exploit-a-windows-kernel-arbitrary-read-vulnerability/</guid>
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;&#xA;&lt;p&gt;I recently discovered a very interesting kernel vulnerability that allows the reading of arbitrary kernel-mode address. Sadly, the vulnerability was patched in Windows 21H2 (OS Build 22000.675), and I am unsure of the CVE being assigned to it. In this short blog post, I will share my journey of trying to exploit this vulnerability. Although I didn&amp;rsquo;t finish the exploit in the end, I have decided to share this with everyone anyway. This is also my attempt to find an answer based on this &lt;a href=&#34;https://twitter.com/jonasLyk/status/1506393490598637568&#34;&gt;discussion&lt;/a&gt;.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>New Wine in Old Bottle - Microsoft Sharepoint Post-Auth Deserialization RCE (CVE-2022-29108)</title>
+      <link>https://starlabs.sg/blog/2022/05-new-wine-in-old-bottle-microsoft-sharepoint-post-auth-deserialization-rce-cve-2022-29108/</link>
+      <pubDate>Thu, 12 May 2022 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2022/05-new-wine-in-old-bottle-microsoft-sharepoint-post-auth-deserialization-rce-cve-2022-29108/</guid>
+      <description>&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;&#xA;&lt;p&gt;Recently, I have had a some work which is related to Sharepoint, so I was learning on how to setup and debug old bugs of Sharepoint.&lt;/p&gt;&#xA;&lt;p&gt;In February, there was a Deserialization bug CVE-2022-22005 (post-auth of course). There is already a detailed analysis blog post about that written by a Vietnamese guy (&lt;a href=&#34;https://blog.viettelcybersecurity.com/cve-2022-22005-microsoft-sharepoint-rce/&#34;&gt;here&lt;/a&gt;). The blog is written with great enthusiasm and detail. I also rely on the details in that blog to setup and debug. And because the bug written in this article will be related to it, I recommend you read through the article above once to easily understand this article!&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>The Cat Escaped from the Chrome Sandbox</title>
+      <link>https://starlabs.sg/blog/2022/01-the-cat-escaped-from-the-chrome-sandbox/</link>
+      <pubDate>Fri, 21 Jan 2022 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2022/01-the-cat-escaped-from-the-chrome-sandbox/</guid>
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;&#xA;&lt;p&gt;On 13th September 2021, Google &lt;a href=&#34;https://chromereleases.googleblog.com/2021/09/stable-channel-update-for-desktop.html&#34;&gt;published the security advisory&lt;/a&gt; for Google Chrome. That advisory states that Google is aware of two vulnerabilities exploited in the wild, &lt;strong&gt;CVE-2021-30632&lt;/strong&gt; as RCE and &lt;strong&gt;CVE-2021-30633&lt;/strong&gt; as Sandbox Escape.&lt;/p&gt;&#xA;&lt;p&gt;In this post, I will talk about the bypass sandbox vulnerability &lt;strong&gt;CVE-2021-30633&lt;/strong&gt;. &lt;a href=&#34;https://github.com/m-y-mo&#34;&gt;Man Yue Mo&lt;/a&gt; had published a very detailed &lt;a href=&#34;https://securitylab.github.com/research/in_the_wild_chrome_cve_2021_30632/&#34;&gt;blog post&lt;/a&gt; explaining &lt;strong&gt;CVE-2021-30632&lt;/strong&gt;, which is a Type Confusion bug that leads to RCE in Chrome.&lt;/p&gt;&#xA;&lt;p&gt;In summary, the sandbox bypass is made possible because of a &lt;strong&gt;&lt;code&gt;Use-After-Free (UAF)&lt;/code&gt;&lt;/strong&gt; bug in the &lt;code&gt;IndexedDB&lt;/code&gt; API, chained with a &lt;strong&gt;&lt;code&gt;Out-of-Bounds (OOB) Write&lt;/code&gt;&lt;/strong&gt; bug in V8, and triggered via Mojo IPC connection. As a disclaimer, this is not a bug that I had found. I made this post to help me organise my thoughts to understand the bug and the exploit. I will carry out a root cause analysis of the Sandbox Escape and discuss my observation and understanding of the full-chain exploit.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Diving into Open-source LMS Codebases</title>
+      <link>https://starlabs.sg/blog/2021/11-diving-into-open-source-lms-codebases/</link>
+      <pubDate>Tue, 16 Nov 2021 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2021/11-diving-into-open-source-lms-codebases/</guid>
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;&#xA;&lt;p&gt;Looking to practice on source code review, I had been diving into how open-source LMS codebases are structured in order to find undiscovered vulnerabilities. Initially, my main focus had been on &lt;a href=&#34;https://chamilo.org/en/&#34;&gt;Chamilo LMS&lt;/a&gt; (their source code can be found on &lt;a href=&#34;https://github.com/chamilo/chamilo-lms&#34;&gt;GitHub&lt;/a&gt;). Afterwards, I looked into &lt;a href=&#34;https://moodle.org/&#34;&gt;Moodle LMS&lt;/a&gt; (their source code can also be found on &lt;a href=&#34;https://github.com/moodle/moodle&#34;&gt;GitHub&lt;/a&gt;).&lt;/p&gt;&#xA;&lt;p&gt;The majority of the findings that were found are the ones you would think of when you hear the words &amp;ldquo;common web application vulnerabilities&amp;rdquo;, such as:&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Analysis of CVE-2021-1758 (CoreText Out-Of-Bounds Read)</title>
+      <link>https://starlabs.sg/blog/2021/09-analysis-of-cve-2021-1758-coretext-out-of-bounds-read/</link>
+      <pubDate>Tue, 14 Sep 2021 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2021/09-analysis-of-cve-2021-1758-coretext-out-of-bounds-read/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;References:&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://starlabs.sg/advisories/21-1758/&#34;&gt;STARLabs Advisory STAR-21-1758&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;In February, &lt;a href=&#34;https://twitter.com/peternguyen14&#34;&gt;Peter&lt;/a&gt; found a OOB read vulnerability in libFontParser.dylib. The latest tested version with the vulnerability is macOS Catalina 10.15.4 (19E287).&lt;/p&gt;&#xA;&lt;p&gt;&lt;em&gt;I wrote a &lt;a href=&#34;https://daniao.ws/notes/macos/macos-on-vmware-fusion&#34;&gt;guide&lt;/a&gt; earlier on setting up a testing environment.&lt;/em&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;mac-resource-fork-font-file&#34;&gt;Mac Resource Fork Font File&lt;/h2&gt;&#xA;&lt;p&gt;References:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://fontforge.org/docs/techref/macformats.html&#34;&gt;Font Forge: Macintosh Font Formats&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://developer.apple.com/library/archive/documentation/mac/pdf/MoreMacintoshToolbox.pdf#page=34&#34;&gt;Apple: MoreMacintoshToolbx&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://fonttools.readthedocs.io/en/latest/misc/macRes.html&#34;&gt;fontTools: macRes&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;It turns out that macOS can load something called a Mac Resource Fork font file. Looks like a legacy thing.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Identifying Bugs in Router Firmware at Scale with Taint Analysis</title>
+      <link>https://starlabs.sg/blog/2021/08-identifying-bugs-in-router-firmware-at-scale-with-taint-analysis/</link>
+      <pubDate>Wed, 04 Aug 2021 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2021/08-identifying-bugs-in-router-firmware-at-scale-with-taint-analysis/</guid>
+      <description>&lt;p&gt;In the past few months, Akash and I (&lt;a href=&#34;https://twitter.com/daniellimws&#34;&gt;@daniellimws&lt;/a&gt;) worked on developing a taint analysis tool to find bugs in routers, with the guidance of Shi Ji (&lt;a href=&#34;https://twitter.com/puzzorsj&#34;&gt;@puzzor&lt;/a&gt;) and Thach (&lt;a href=&#34;https://twitter.com/hi_im_d4rkn3ss&#34;&gt;@d4rkn3ss&lt;/a&gt;). We had developed a tool based on &lt;a href=&#34;https://cve.mitre.org/cgi-bin/cvekey.cgi?keyword=dir-878+1.12A1&#34;&gt;CVE-2019-8312 to CVE-2019-8319&lt;/a&gt;, which are command injection vulnerabilities on the D-Link DIR-878 router with firmware version 1.12A1. The goal was to automate the detection of such bugs. Ideally, the tool should be faster than finding the bugs manually.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Simple Vulnerability Regression Monitoring with V8Harvest</title>
+      <link>https://starlabs.sg/blog/2021/06-simple-vulnerability-regression-monitoring-with-v8harvest/</link>
+      <pubDate>Fri, 25 Jun 2021 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2021/06-simple-vulnerability-regression-monitoring-with-v8harvest/</guid>
+      <description>&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;&#xA;&lt;p&gt;During my research into Javascript Engine (V8), I have created a &lt;a href=&#34;https://github.com/star-sg/V8Harvest&#34;&gt;small tool&lt;/a&gt; to help you view recent V8 bugs that contains regression test on a single page. Since most of the time, regression test often contains PoC to trigger the bug, it’s pretty useful to analyze them to find the root cause and writing exploit for the n-day bug.&lt;/p&gt;&#xA;&lt;p&gt;For example, &lt;a href=&#34;https://chromium.googlesource.com/v8/v8/+/fb0a60e15695466621cf65932f9152935d859447/test/mjsunit/compiler/regress-1053604.js&#34;&gt;regress-1053604.js&lt;/a&gt; contains the PoC to trigger the side-effect in kJSCreate opcode (&lt;strong&gt;CVE-2020-6418&lt;/strong&gt;).&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>You Talking To Me?</title>
+      <link>https://starlabs.sg/blog/2021/04-you-talking-to-me/</link>
+      <pubDate>Mon, 12 Apr 2021 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2021/04-you-talking-to-me/</guid>
+      <description>&lt;h1 id=&#34;what-is-webdriver-and-how-does-it-work&#34;&gt;What is WebDriver and How does it work?&lt;/h1&gt;&#xA;&lt;p&gt;WebDriver is a protocol used for web browser automation. It can drive a browser to perform various tests on web pages as if a real user was navigating through them. It allows simulating user actions such as clicking links, entering text and submitting forms, which can help test if your website is working as intended. It is usually used for front-end testing and web crawling in a headless environment. WebDriver clients (such as Selenium WebDriver) interact with WebDriver servers (e.g. chromedriver, geckodriver) to launch and control browsers. In Capture-the-Flag (CTF) competitions, WebDriver clients are often used to play the role of a victim user (aka. XSS bot) and simulate user interactions to trigger player-supplied XSS payload.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Chrome 1-Day Hunting - Uncovering and Exploiting CVE-2020-15999</title>
+      <link>https://starlabs.sg/blog/2021/01-chrome-1-day-hunting-uncovering-and-exploiting-cve-2020-15999/</link>
+      <pubDate>Sat, 09 Jan 2021 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2021/01-chrome-1-day-hunting-uncovering-and-exploiting-cve-2020-15999/</guid>
+      <description>&lt;h1 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h1&gt;&#xA;&lt;p&gt;This blog post details the exploitation process for the vulnerability CVE 2020-15999 in Google Chrome 86.0.4222.0 on Linux. While CVE 2020-15999 is a heap-based buffer overflow in the font-loading library Freetype rather than Chrome proper, its extensive use in the latter enables us to achieve code execution in the browser’s renderer. This post will not be focused on the analysis of the bug, but rather its exploitation, as extensive explanation and analysis can be found &lt;a href=&#34;https://savannah.nongnu.org/bugs/?59308&#34;&gt;here&lt;/a&gt;. In essence, Truetype font files that contain bitmaps (i.e. raster images) store them in the &lt;a href=&#34;https://docs.microsoft.com/en-us/typography/opentype/spec/sbix&#34;&gt;sbix&lt;/a&gt; table of the font. When Freetype loads an embedded PNG image in the sbix table with dimensions exceeding the int16 limit, an integer overflow to buffer overflow (&lt;a href=&#34;https://cwe.mitre.org/data/definitions/680.html&#34;&gt;IO2BO&lt;/a&gt;) occurs. A PoC to achieve code execution in the renderer and pop calculator can be found in the last section of this post.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Instrumenting Adobe Reader with Frida</title>
+      <link>https://starlabs.sg/blog/2020/11-instrumenting-adobe-reader-with-frida/</link>
+      <pubDate>Fri, 13 Nov 2020 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2020/11-instrumenting-adobe-reader-with-frida/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://frida.re/&#34;&gt;Frida&lt;/a&gt; is an open-source dynamic instrumentation toolkit that has become popular in recent years, and its use in mobile security is especially prevalent.&lt;/p&gt;&#xA;&lt;p&gt;In this post, I would like to provide a general introduction to the tool and show some examples of how it can also be used on the Windows platform.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Analysis &amp; Exploitation of a Recent TP-Link Archer A7 Vulnerability</title>
+      <link>https://starlabs.sg/blog/2020/10-analysis-exploitation-of-a-recent-tp-link-archer-a7-vulnerability/</link>
+      <pubDate>Fri, 16 Oct 2020 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2020/10-analysis-exploitation-of-a-recent-tp-link-archer-a7-vulnerability/</guid>
+      <description>&lt;p&gt;This post provides detailed analysis and an exploit achieving remote code execution for &lt;strong&gt;CVE-2020-10882&lt;/strong&gt;, which was used at Pwn2Own 2019, on the TP-Link Archer C7:&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;This vulnerability allows network-adjacent attackers to execute arbitrary code on affected installations of TP-Link Archer A7 AC1750 routers. Authentication is not required to exploit this vulnerability.&lt;/p&gt;&#xA;&lt;p&gt;The specific flaw exists within the tdpServer service, which listens on UDP port 20002 by default. When parsing the slave_mac parameter, the process does not properly validate a user-supplied string before using it to execute a system call. An attacker can leverage this vulnerability to execute code in the context of the root user.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Pwn2Own 2020: Oracle VirtualBox Escape</title>
+      <link>https://starlabs.sg/blog/2020/09-pwn2own-2020-oracle-virtualbox-escape/</link>
+      <pubDate>Fri, 25 Sep 2020 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2020/09-pwn2own-2020-oracle-virtualbox-escape/</guid>
+      <description>&lt;p&gt;In this post, we will cover the vulnerabilities used at Pwn2Own 2020 for the Oracle VirtualBox escape.&#xA;These two vulnerabilities affect Oracle VirtualBox 6.1.4 and prior versions.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>This Font is not Your Type</title>
+      <link>https://starlabs.sg/blog/2020/09-this-font-is-not-your-type/</link>
+      <pubDate>Fri, 04 Sep 2020 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2020/09-this-font-is-not-your-type/</guid>
+      <description>&lt;p&gt;Half a year ago, I found a vulnerability in &lt;code&gt;libFontParser.dylib&lt;/code&gt;, which&#xA;is a part of CoreGraphics library that is widely used in macOS, iOS,&#xA;iPadOS to parse and render fonts. This vulnerability was patched in iOS 13.5.1 &amp;amp; macOS 10.15.5. In this writeup, I will describe the bug in detail in&#xA;hopes that it will help others to better understand this vulnerability.&#xA;This issue could allow an attacker to execute code during the parsing of&#xA;a malicious font.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>ASUSWRT URL Processing Stack Buffer Overflow</title>
+      <link>https://starlabs.sg/blog/2020/08-asuswrt-url-processing-stack-buffer-overflow/</link>
+      <pubDate>Fri, 07 Aug 2020 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2020/08-asuswrt-url-processing-stack-buffer-overflow/</guid>
+      <description>&lt;p&gt;While processing the URL for any blacklisted XSS list like the script tag in the &lt;code&gt;check_xss_blacklist&lt;/code&gt; function, a stack buffer overflow is possible by extending the length of the URL when accessing the web interface of the ASUS Router. To exploit it, stack pivoting technique is used before chaining up ROP gadgets to call our own custom command. In this post, we show how this can be exploited to get a reverse shell.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Oracle VirtualBox VHWA Use-After-Free Privilege Escalation Vulnerability</title>
+      <link>https://starlabs.sg/blog/2020/06-oracle-virtualbox-vhwa-use-after-free-privilege-escalation-vulnerability/</link>
+      <pubDate>Fri, 26 Jun 2020 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2020/06-oracle-virtualbox-vhwa-use-after-free-privilege-escalation-vulnerability/</guid>
+      <description>&lt;p&gt;As part of my month-long internship at STAR Labs, I was introduced to VirtualBox and learnt much about bug hunting and triaging, root-cause analysis and exploitation. This post will detail a use-after-free bug I found during the duration of the internship, and specifics on the VM escape exploit that I wrote utilising the bug. The latest version at the point of reporting was VirtualBox 6.1.2 r135662.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>TianFu Cup 2019: Adobe Reader Exploitation</title>
+      <link>https://starlabs.sg/blog/2020/04-tianfu-cup-2019-adobe-reader-exploitation/</link>
+      <pubDate>Fri, 10 Apr 2020 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2020/04-tianfu-cup-2019-adobe-reader-exploitation/</guid>
+      <description>&lt;p&gt;Last year, I participated in the &lt;a href=&#34;http://www.tianfucup.com/&#34;&gt;TianFu Cup&lt;/a&gt; competition in Chengdu, China. The chosen target was the Adobe Reader. This post will detail a use-after-free bug of JSObject. My exploit is not clean and not an optimal solution. I have finished this exploit through lots of trial and error.  It involves lots of heap shaping code which I no longer remember exactly why they are there. I would highly suggest that you read the full exploit code and do the debugging yourself if necessary. This blog post was written based on a Windows 10 host with Adobe Reader.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Adventures in Hypervisor: Oracle VirtualBox Research</title>
+      <link>https://starlabs.sg/blog/2020/04-adventures-in-hypervisor-oracle-virtualbox-research/</link>
+      <pubDate>Fri, 03 Apr 2020 00:00:00 +0000</pubDate>
+      <guid>https://starlabs.sg/blog/2020/04-adventures-in-hypervisor-oracle-virtualbox-research/</guid>
+      <description>&lt;p&gt;I have been into the vulnerability research field for a while now, and VirtualBox is my very first target. I have learned a lot along the way and I hope that anyone who are interested in escaping hypervisors can find something useful from these notes.&#xA;I assume that you have some basic knowledge on memory corruption, hypervisor architecture and device I/O.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

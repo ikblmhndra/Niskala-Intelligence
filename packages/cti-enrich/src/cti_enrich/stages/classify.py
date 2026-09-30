@@ -30,6 +30,8 @@ from dataclasses import dataclass, field
 from cti_core.llm.client import get_llm_client, parse_json_response, store_param
 from openai import RateLimitError
 
+from cti_enrich.stages.llm_messages import build_messages
+
 _PROMPT = """
         As a Threat Intelligence analyst, determine whether the following article title provides meaningful insight into the cybersecurity threat landscape.
 
@@ -198,15 +200,14 @@ dilaporkan apa adanya di hasil korpus test, bukan disembunyiin."""
 def classify(title: str) -> ClassifyResult:
     client, model_name = get_llm_client()
     last_error: json.JSONDecodeError | None = None
-    for _attempt in range(_MAX_ATTEMPTS):
+    for attempt in range(_MAX_ATTEMPTS):
         try:
             completion = client.chat.completions.create(
                 model=model_name,
                 response_format={"type": "json_object"},
-                messages=[
-                    {"role": "system", "content": _PROMPT},
-                    {"role": "user", "content": title},
-                ],
+                # Percobaan 1 verbatim; retry pakai bentuk yang dikuatkan (lihat
+                # `llm_messages.py` -- persona "Kiro" di gateway dev).
+                messages=build_messages(_PROMPT, title, attempt=attempt, tag="article_title"),
                 temperature=0,
                 n=1,
                 max_tokens=_MAX_TOKENS,

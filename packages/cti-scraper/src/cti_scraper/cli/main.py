@@ -31,6 +31,24 @@ app = typer.Typer(
 
 DEFAULT_FIXTURES_DIR = Path("tests/fixtures")
 
+_OPTION_HELP = (
+    "Timpa satu opsi scraper SEKALI JALAN, format key=value (boleh diulang), mis. "
+    "--option provider=x_official. Tidak menulis apa pun ke DB; pilihan admin di "
+    "control plane tidak berubah."
+)
+
+
+def _parse_options(pairs: list[str]) -> dict[str, str]:
+    options: dict[str, str] = {}
+    for pair in pairs:
+        key, sep, value = pair.partition("=")
+        if not sep or not key.strip():
+            raise typer.BadParameter(
+                f"format harus key=value, dapat '{pair}'", param_hint="--option"
+            )
+        options[key.strip()] = value.strip()
+    return options
+
 
 @app.command("list")
 def list_scrapers(
@@ -53,26 +71,37 @@ def list_scrapers(
 
 
 @app.command("dry-run")
-def dry_run(scraper_id: str) -> None:
+def dry_run(
+    scraper_id: str,
+    option: list[str] = typer.Option([], "--option", "-o", help=_OPTION_HELP),
+) -> None:
     """Jalanin fetch() beneran lawan sumber ASLI, TANPA nulis DB/dedup/alert.
 
     Ini yang gak ada sama sekali di sistem lama -- satu-satunya cara nguji
     scraper dulu adalah nyalain di produksi dan nungguin.
     """
+    from cti_scraper.options import OptionError
     from cti_scraper.runner import Runner
 
     cls = registry.get(scraper_id)
+    options = _parse_options(option)
 
-    if cls.meta.reference_data:
-        # Reference data (techstack, dst) dibaca dari Postgres KITA, bukan
-        # sumber eksternal -- dry-run tetap butuh session buat baca ini
-        # walau gak nulis apa-apa (sink/dedup tetap di-skip di bawah).
-        from cti_core.db.engine import sync_session
+    try:
+        if cls.meta.reference_data:
+            # Reference data (techstack, dst) dibaca dari Postgres KITA, bukan
+            # sumber eksternal -- dry-run tetap butuh session buat baca ini
+            # walau gak nulis apa-apa (sink/dedup tetap di-skip di bawah).
+            from cti_core.db.engine import sync_session
 
-        with sync_session() as session:
-            result = Runner(cls, session=session, dry_run=True).execute(trigger="manual")
-    else:
-        result = Runner(cls, dry_run=True).execute(trigger="manual")
+            with sync_session() as session:
+                result = Runner(cls, session=session, dry_run=True, options=options).execute(
+                    trigger="manual"
+                )
+        else:
+            result = Runner(cls, dry_run=True, options=options).execute(trigger="manual")
+    except OptionError as e:
+        typer.echo(f"opsi ditolak: {e}", err=True)
+        raise typer.Exit(2) from e
 
     typer.echo(
         f"status={result.status} items_found={result.items_found} duration_ms={result.duration_ms}"
@@ -84,15 +113,32 @@ def dry_run(scraper_id: str) -> None:
 
 
 @app.command("run")
-def run_scraper(scraper_id: str) -> None:
+def run_scraper(
+    scraper_id: str,
+    prime: bool = typer.Option(
+        False,
+        "--prime",
+        help="Tandai SEMUA item yang ketemu sebagai sudah-terlihat TANPA mengirim/menyimpan "
+        "apa pun (buat cutover: scraper yang dedup-nya gak bisa dibawa dari sistem lama).",
+    ),
+    option: list[str] = typer.Option([], "--option", "-o", help=_OPTION_HELP),
+) -> None:
     """Jalanin beneran -- nulis DB, dedup aktif, heartbeat kecatat."""
     from cti_core.db.engine import sync_session
 
+    from cti_scraper.options import OptionError
     from cti_scraper.runner import Runner
 
     cls = registry.get(scraper_id)
-    with sync_session() as session:
-        result = Runner(cls, session=session, dry_run=False).execute(trigger="manual")
+    options = _parse_options(option)
+    try:
+        with sync_session() as session:
+            result = Runner(
+                cls, session=session, dry_run=False, prime=prime, options=options
+            ).execute(trigger="manual")
+    except OptionError as e:
+        typer.echo(f"opsi ditolak: {e}", err=True)
+        raise typer.Exit(2) from e
 
     typer.echo(
         f"status={result.status} items_found={result.items_found} "

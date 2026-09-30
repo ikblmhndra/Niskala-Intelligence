@@ -23,6 +23,6 @@ class Aquasec(XPathScraper):
         legacy_label="NEW ARTICLE FROM AQUASEC",
         legacy_script="aquasecThreat",
     )
-    url = 'https://www.aquasec.com/blog/'
-    title_xpath = '/html/body/div/div[2]/div[1]/div/div[4]/div/div/div[{i}]/a/div[1]/div/div/div[2]'
-    link_xpath = '/html/body/div/div[2]/div[1]/div/div[4]/div/div/div[{i}]/a'
+    url = "https://www.aquasec.com/blog/"
+    title_xpath = "/html/body/div/div[2]/div[1]/div/div[4]/div/div/div[{i}]/a/div[1]/div/div/div[2]"
+    link_xpath = "/html/body/div/div[2]/div[1]/div/div[4]/div/div/div[{i}]/a"

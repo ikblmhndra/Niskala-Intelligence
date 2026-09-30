@@ -164,8 +164,8 @@
             'confidence': 'low',
             'direction': 'inbound',
             'timestamps': dict({
-              'first_seen': '2026-09-24',
-              'last_seen': '2026-09-24',
+              'first_seen': str,
+              'last_seen': str,
             }),
           }),
           'victim': dict({
@@ -184,7 +184,7 @@
         'dominant_tas': list([
           'Apt41',
         ]),
-        'first_seen': '2026-09-24',
+        'first_seen': str,
         'iocs': list([
         ]),
         'kill_chain': dict({
@@ -282,7 +282,7 @@
             'impact',
           ]),
         }),
-        'last_seen': '2026-09-24',
+        'last_seen': str,
         'matched_pirs': list([
         ]),
         'member_article_ids': list([

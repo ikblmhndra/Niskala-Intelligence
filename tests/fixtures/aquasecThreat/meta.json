@@ -1,0 +1,15 @@
+{
+  "scraper": "aquasecThreat",
+  "legacy_script": "aquasecThreat",
+  "legacy_labels": [],
+  "source_urls": [
+    "https://www.aquasec.com/blog/"
+  ],
+  "http_status": {
+    "https://www.aquasec.com/blog/": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

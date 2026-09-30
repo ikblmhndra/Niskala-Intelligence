@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Cyber Attacks and Breaches - Arctic Wolf Blog</title>
+	<atom:link href="https://arcticwolf.com/resources/tag/cyberattacks-breaches/feed/" rel="self" type="application/rss+xml" />
+	<link>https://arcticwolf.com/resources/tag/cyberattacks-breaches/</link>
+	<description>The Leaders in Security Operations</description>
+	<lastBuildDate>Thu, 21 May 2026 21:17:11 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=7.1</generator>
+
+<image>
+	<url>https://arcticwolf.com/wp-content/uploads/2019/11/aw-favicon-rebrand-150x150.png</url>
+	<title>Cyber Attacks and Breaches - Arctic Wolf Blog</title>
+	<link>https://arcticwolf.com/resources/tag/cyberattacks-breaches/</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+	<item>
+		<title>The Top 10 Manufacturing Industry Cyber Attacks</title>
+		<link>https://arcticwolf.com/resources/blog/top-8-manufacturing-industry-cyberattacks/</link>
+		
+		<dc:creator><![CDATA[Arctic Wolf]]></dc:creator>
+		<pubDate>Thu, 22 Jan 2026 17:31:00 +0000</pubDate>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[Cyber Attacks and Breaches]]></category>
+		<category><![CDATA[Manufacturing]]></category>
+		<guid isPermaLink="false">https://arcticwolf.com/uncategorized/top-8-manufacturing-industry-cyberattacks/</guid>
+
+					<description><![CDATA[It’s no secret that the manufacturing industry has found themselves in the crosshairs of threat actors in recent years. With low tolerance for downtime, international operational footprints, and servers full of valuable information, these organizations represent riches for ransomware gangs and individual hackers alike. Plus, manufacturers often hold valuable information about industrial processes and customers, <a href="https://arcticwolf.com/resources/blog/top-8-manufacturing-industry-cyberattacks/" class="more-link">...<span class="screen-reader-text">  The Top 10 Manufacturing Industry Cyber Attacks</span></a>]]></description>
+		
+		
+		
+			</item>
+		<item>
+		<title>The Continuing Risk of Remote Code Execution</title>
+		<link>https://arcticwolf.com/resources/blog/the-continuing-rise-of-remote-code-execution/</link>
+		
+		<dc:creator><![CDATA[Arctic Wolf]]></dc:creator>
+		<pubDate>Fri, 16 Jan 2026 16:29:22 +0000</pubDate>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[Cyber Attacks and Breaches]]></category>
+		<category><![CDATA[Managed Detection and Response]]></category>
+		<guid isPermaLink="false">https://arcticwolf.com/?p=94724</guid>
+
+					<description><![CDATA[In 2025, there were more than 48,000 vulnerabilities published, amounting to over a 20% increase from 2024. More troubling than the sheer volume of vulnerabilities in 2025 is that more than a third of them were given a rating of “high” or “critical” severity.  For security teams already stretched too thin, a proactive vulnerability management plan that patches or otherwise <a href="https://arcticwolf.com/resources/blog/the-continuing-rise-of-remote-code-execution/" class="more-link">...<span class="screen-reader-text">  The Continuing Risk of Remote Code Execution</span></a>]]></description>
+		
+		
+		
+			</item>
+		<item>
+		<title>How To Combat AI-Enhanced Social Engineering Attacks</title>
+		<link>https://arcticwolf.com/resources/blog/how-to-combat-ai-enhanced-social-engineering-attacks/</link>
+		
+		<dc:creator><![CDATA[Arctic Wolf]]></dc:creator>
+		<pubDate>Tue, 25 Nov 2025 15:53:06 +0000</pubDate>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[Cyber Attacks and Breaches]]></category>
+		<category><![CDATA[Security Awareness]]></category>
+		<guid isPermaLink="false">https://arcticwolf.com/?p=128674</guid>
+
+					<description><![CDATA[Artificial intelligence (AI) has supercharged social engineering. Global management consulting firm McKinsey &#38; Company reported a 1,200% global surge in phishing attacks since the rise of generative AI in the latter half of 2022. And it’s not just the number of attacks that’s climbing; it’s also the success rate. Arctic Wolf’s Human Risk Behavior Snapshot: <a href="https://arcticwolf.com/resources/blog/how-to-combat-ai-enhanced-social-engineering-attacks/" class="more-link">...<span class="screen-reader-text">  How To Combat AI-Enhanced Social Engineering Attacks</span></a>]]></description>
+		
+		
+		
+			</item>
+		<item>
+		<title>What’s Behind The Rise of Spear Phishing Attacks on IT Leaders?</title>
+		<link>https://arcticwolf.com/resources/blog/whats-behind-the-rise-of-spear-phishing-attacks-on-it-leaders/</link>
+		
+		<dc:creator><![CDATA[Arctic Wolf]]></dc:creator>
+		<pubDate>Tue, 11 Nov 2025 16:21:12 +0000</pubDate>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[Cyber Attacks and Breaches]]></category>
+		<category><![CDATA[Security Awareness]]></category>
+		<guid isPermaLink="false">https://arcticwolf.com/?p=128357</guid>
+
+					<description><![CDATA[Phishing has been a mainstay of cybercrime for decades – and for good reason. Threat actors continually evolve their phishing tactics, techniques, and procedures (TTPs), adapting the method with new tools and technologies to ensure it remains highly effective. IT leaders have become especially attractive targets: their privileged access amplifies the impact of a successful <a href="https://arcticwolf.com/resources/blog/whats-behind-the-rise-of-spear-phishing-attacks-on-it-leaders/" class="more-link">...<span class="screen-reader-text">  What’s Behind The Rise of Spear Phishing Attacks on IT Leaders?</span></a>]]></description>
+		
+		
+		
+			</item>
+		<item>
+		<title>The Top 10 Ransomware TTPs</title>
+		<link>https://arcticwolf.com/resources/blog/the-top-10-ransomware-ttps/</link>
+		
+		<dc:creator><![CDATA[Arctic Wolf]]></dc:creator>
+		<pubDate>Mon, 10 Nov 2025 16:00:12 +0000</pubDate>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[Cyber Attacks and Breaches]]></category>
+		<category><![CDATA[Threat Detection]]></category>
+		<guid isPermaLink="false">https://arcticwolf.com/?p=101934</guid>
+
+					<description><![CDATA[With both attacks and attack complexity increasing, it’s understandable that IT and security teams may feel like they’re fighting a losing battle against ransomware. But Arctic Wolf’s threat intelligence researchers have identified ten major threat actor tactics, techniques, and procedures (TTPs) found in the majority of our incident response engagements. Understanding how these TTPs are <a href="https://arcticwolf.com/resources/blog/the-top-10-ransomware-ttps/" class="more-link">...<span class="screen-reader-text">  The Top 10 Ransomware TTPs</span></a>]]></description>
+		
+		
+		
+			</item>
+		<item>
+		<title>Supply Chain Compromise</title>
+		<link>https://arcticwolf.com/resources/glossary/supply-chain-attack/</link>
+		
+		<dc:creator><![CDATA[Arctic Wolf]]></dc:creator>
+		<pubDate>Fri, 31 Oct 2025 19:04:16 +0000</pubDate>
+				<category><![CDATA[Glossary]]></category>
+		<category><![CDATA[Cyber Attacks and Breaches]]></category>
+		<guid isPermaLink="false">https://arcticwolf.com/?p=65354</guid>
+
+					<description><![CDATA[What Is a Supply Chain Compromise? A supply chain compromise occurs when threat actors infiltrate an organization by targeting and exploiting a trusted third-party vendor, partner, or software provider. Rather than attacking their ultimate target directly, attackers compromise a less secure element in the supply chain and use that foothold to reach multiple downstream organizations simultaneously. These <a href="https://arcticwolf.com/resources/glossary/supply-chain-attack/" class="more-link">...<span class="screen-reader-text">  Supply Chain Compromise</span></a>]]></description>
+		
+		
+		
+			</item>
+		<item>
+		<title>Botnet</title>
+		<link>https://arcticwolf.com/resources/glossary/botnet/</link>
+		
+		<dc:creator><![CDATA[Arctic Wolf]]></dc:creator>
+		<pubDate>Mon, 13 Oct 2025 15:23:03 +0000</pubDate>
+				<category><![CDATA[Glossary]]></category>
+		<category><![CDATA[Cyber Attacks and Breaches]]></category>
+		<guid isPermaLink="false">https://arcticwolf.com/?p=64988</guid>
+
+					<description><![CDATA[What Is a Botnet? A botnet is a network of bot‑compromised machines that can be controlled and used to launch massive attacks by a bot‑herder. Formed from the words robot and network, a botnet can be used for mass actions like distributed denial of service (DDoS) attacks, cryptomining, malware infections, or to crash a network. <a href="https://arcticwolf.com/resources/glossary/botnet/" class="more-link">...<span class="screen-reader-text">  Botnet</span></a>]]></description>
+		
+		
+		
+			</item>
+		<item>
+		<title>Cyber Attack</title>
+		<link>https://arcticwolf.com/resources/glossary/cyber-attack/</link>
+		
+		<dc:creator><![CDATA[Arctic Wolf]]></dc:creator>
+		<pubDate>Mon, 13 Oct 2025 07:52:43 +0000</pubDate>
+				<category><![CDATA[Glossary]]></category>
+		<category><![CDATA[Cyber Attacks and Breaches]]></category>
+		<guid isPermaLink="false">https://arcticwolf.com/?p=65095</guid>
+
+					<description><![CDATA[What Is a Cyber Attack? A cyber attack is any attempt – successful or otherwise — by cybercriminals to access a cloud or computer network and system in order to steal data, cause disruption, expose data, or for financial gain.    When Was the First Cyber Attack?  The first known cyber attack happened long before the <a href="https://arcticwolf.com/resources/glossary/cyber-attack/" class="more-link">...<span class="screen-reader-text">  Cyber Attack</span></a>]]></description>
+		
+		
+		
+			</item>
+		<item>
+		<title>Understanding Account Takeovers</title>
+		<link>https://arcticwolf.com/resources/blog/understanding-account-takeovers/</link>
+		
+		<dc:creator><![CDATA[Arctic Wolf]]></dc:creator>
+		<pubDate>Fri, 10 Oct 2025 14:19:59 +0000</pubDate>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[Cyber Attacks and Breaches]]></category>
+		<category><![CDATA[Security Awareness]]></category>
+		<guid isPermaLink="false">https://arcticwolf.com/?p=122781</guid>
+
+					<description><![CDATA[The identity attack surface is expanding faster than ever. Every new cloud application, remote login, and digital touchpoint creates another entryway threat actors can exploit, targeting the very credentials that give employees, customers, and partners access to critical systems. One of the top, tried-and-true identity attack techniques threat actors have utilized with great success is <a href="https://arcticwolf.com/resources/blog/understanding-account-takeovers/" class="more-link">...<span class="screen-reader-text">  Understanding Account Takeovers</span></a>]]></description>
+		
+		
+		
+			</item>
+		<item>
+		<title>Brute-Force Attack</title>
+		<link>https://arcticwolf.com/resources/glossary/brute-force-attack/</link>
+		
+		<dc:creator><![CDATA[Arctic Wolf]]></dc:creator>
+		<pubDate>Mon, 29 Sep 2025 17:30:37 +0000</pubDate>
+				<category><![CDATA[Glossary]]></category>
+		<category><![CDATA[Cyber Attacks and Breaches]]></category>
+		<guid isPermaLink="false">https://arcticwolf.com/?p=65237</guid>
+
+					<description><![CDATA[What Is a Brute-Force Attack? A brute-force attack is a tactic used by threat actors to gain unauthorized access to an account, system, or encrypted data by systematically trying every possible password, encryption key, or credential combination until the correct one is found. These attacks rely on trial-and-error and can be automated with software that <a href="https://arcticwolf.com/resources/glossary/brute-force-attack/" class="more-link">...<span class="screen-reader-text">  Brute-Force Attack</span></a>]]></description>
+		
+		
+		
+			</item>
+	</channel>
+</rss>

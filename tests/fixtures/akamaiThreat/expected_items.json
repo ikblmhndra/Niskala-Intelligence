@@ -1,0 +1,499 @@
+{
+  "2026-09-17": [
+    {
+      "title": "Akamai a Strong Performer in 2026 Gartner Peer Insights™ Report for SEB",
+      "url": "https://www.akamai.com/blog/security/2026/sep/akamai-strong-performer-gartner-peer-insights-report-seb",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "CVE-2026-75650: StyleSmuggler — Critical RCE in Adobe Commerce and Magento",
+      "url": "https://www.akamai.com/blog/security-research/2026/sep/cve-2026-75650-stylesmuggler-adobe-commerce-magento",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Introducing AI Assistant for Akamai Web Security Analytics",
+      "url": "https://www.akamai.com/blog/security/2026/sep/introducing-ai-assistant-web-security-analytics",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "NIS2 Compliance in the AI Age: Why Traditional Cybersecurity Isn’t Enough",
+      "url": "https://www.akamai.com/blog/security/2026/sep/nis2-compliance-ai-age-traditional-cybersecurity-isnt-enough",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Inside AI-Powered WAF Detections: Architecture and Safety Controls",
+      "url": "https://www.akamai.com/blog/security/2026/sep/ai-powered-waf-detections-architecture-safety-controls",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Introducing More Granular Controls for AI Bot Traffic",
+      "url": "https://www.akamai.com/blog/security/2026/sep/introducing-more-granular-controls-ai-bot-traffic",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Analyzing a Go-Based IoT Self-Propagating DDoS Botnet",
+      "url": "https://www.akamai.com/blog/security-research/2026/sep/analyzing-go-based-iot-self-propagating-ddos-botnet",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Your DNS Is Hiding in HTTPS — This Is Why It Matters",
+      "url": "https://www.akamai.com/blog/security/2026/sep/your-dns-hiding-https-why-it-matters",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Streamlining Application and API Discovery and Governance",
+      "url": "https://www.akamai.com/blog/security/2026/aug/from-discovery-to-governance-application-api-risk",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Zero-Day Dominance: How Akamai Defends Before the Industry Discloses",
+      "url": "https://www.akamai.com/blog/security/2026/aug/zero-day-akamai-defends-before-industry-discloses",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Akamai’s Customer-First Approach to Application Protection Costs",
+      "url": "https://www.akamai.com/blog/security/2026/aug/customer-first-approach-web-application-security-costs",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Identifying Agentic Automation with Behavioral Telemetry: Part 2",
+      "url": "https://www.akamai.com/blog/security-research/2026/aug/identifying-agentic-automation-behavioral-telemetry-part-2",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The New Face of Financial Fraud: AI-Powered Brand Abuse",
+      "url": "https://www.akamai.com/blog/security/2026/aug/new-face-financial-fraud-ai-powered-brand-abuse",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Deconstructing the Architecture of AI-Orchestrated Web Attacks",
+      "url": "https://www.akamai.com/blog/security/2026/aug/deconstructing-architecture-oai-orchestrated-web-attacks",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Closing the Gap Between Detection and Protection with AI-Assisted Custom Rules",
+      "url": "https://www.akamai.com/blog/security/2026/aug/closing-gap-detection-protection-ai-custom-rules",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "PacketFence Cloud: Enterprise Network Access Control, Now a Managed Service",
+      "url": "https://www.akamai.com/blog/security/2026/aug/packetfence-cloud-network-access-control-managed-service",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Identifying Agentic Automation with Behavioral Telemetry",
+      "url": "https://www.akamai.com/blog/security-research/2026/aug/identifying-agentic-automation-behavioral-telemetry",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Future-Proofing the Internet: Akamai Achieves End-to-End PQC",
+      "url": "https://www.akamai.com/blog/security/2026/aug/future-proofing-internet-akamai-achieves-end-to-end-pqc",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Akamai Named a Leader in The Forrester Wave™: Microsegmentation Solutions, Q3 2026",
+      "url": "https://www.akamai.com/blog/security/2026/aug/akamai-2026-forrester-wave-leader-microsegmentation",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The OWASP Top 10 for LLM Applications 2026: From Model Risks to Agentic Security",
+      "url": "https://www.akamai.com/blog/ai/2026/aug/owasp-top-10-llm-applications-2026-realistic-security-model",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Bring Your Own EDR: How to Turn a Commercial EDR into a Trojan Horse",
+      "url": "https://www.akamai.com/blog/security-research/2026/aug/bring-your-own-edr-turn-commercial-edr-trojan-horse",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Shadow AI, Rogue Agents, and Data Leaks: A Special Report on Navigating AI Risk",
+      "url": "https://www.akamai.com/blog/security/2026/aug/navigating-ai-risk-special-soti-report",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "OMB M-26-14 Compliance: Adaptive Edge Logging for Federal CISOs",
+      "url": "https://www.akamai.com/blog/security/2026/aug/omb-m-26-14-compliance-adaptive-edge-logging-federal-cisos",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Operationalizing Offensive AI: An Open Framework for Modern Security",
+      "url": "https://www.akamai.com/blog/security/2026/jul/operationalizing-offensive-ai-open-framework-security",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "API Security for Government Services: Protecting Citizen-Facing Applications",
+      "url": "https://www.akamai.com/blog/security/2026/jul/api-security-government-citizen-facing-applications",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "CVE-2026-66066: Defending Against the “KindaRails2Shell” Pre-Auth RCE",
+      "url": "https://www.akamai.com/blog/security-research/2026/jul/rails-active-storage-rce-cve-2026-66066",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "PQC Migration Now Has a Deadline. Does Your DNS Estate?",
+      "url": "https://www.akamai.com/blog/security/2026/jul/pqc-migration-deadline-dns-estate",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Secure Healthcare Networks with Zero Trust Device Segmentation",
+      "url": "https://www.akamai.com/blog/security/2026/jul/secure-healthcare-networks-zero-trust-device-segmentation",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Akamai Security Hub: Operational Intelligence for Modern Security Teams",
+      "url": "https://www.akamai.com/blog/security/2026/jul/security-hub-operational-intelligence-modern-security",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "CVE-2026-63030 and CVE-2026-60137: Mitigating a Critical Unauthenticated RCE Chain in WordPress",
+      "url": "https://www.akamai.com/blog/security-research/2026/jul/wordpress-unauthenticated-rce-cve-2026-63030-cve-2026-60137",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "From Recon to Free Flights: Precision Prompt Attacks on AI Agents",
+      "url": "https://www.akamai.com/blog/security/2026/jul/recon-free-flights-precision-prompt-attacks-ai-agents",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Using Microsegmentation to Contain Autonomous AI Agents ",
+      "url": "https://www.akamai.com/blog/security/2026/jul/microsegmentation-contain-autonomous-ai-agents",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Smash and Grab at Scale: Agentic AI Is Reshaping the Threat to Commerce",
+      "url": "https://www.akamai.com/blog/security/2026/jul/smash-grab-scale-agentic-ai-reshaping-threat-commerce",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Post-Quantum Cryptography: What’s Next for Edge Security",
+      "url": "https://www.akamai.com/blog/security/2026/jul/post-quantum-cryptography-whats-next-edge-security",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Langflow Exploited to Build Custom DDoS Gafgyt Botnets",
+      "url": "https://www.akamai.com/blog/security-research/2026/jul/langflow-exploited-build-custom-ddos-gafgyt-botnets",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Boardroom Conversations Shift to Surviving a Breach",
+      "url": "https://www.akamai.com/blog/security/2026/jul/podcast-boardroom-conversations-shift-surviving-breach",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Beyond Cloud Uptime: API Security and AI Resilience for 2026",
+      "url": "https://www.akamai.com/blog/security/2026/jul/beyond-cloud-uptime-api-security-ai-resilience-2026",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "CVE-2026-48282: Mitigating a Critical Vulnerability in Adobe ColdFusion",
+      "url": "https://www.akamai.com/blog/security-research/2026/jul/adobe-coldfusion-critical-path-traversal-cve-2026-48282",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Adaptive AI for Detecting Modern DGA Attacks",
+      "url": "https://www.akamai.com/blog/security/2026/jul/adaptive-ai-detecting-modern-dga-attacks",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The New MCP Specification: What Security Teams Must Prepare For",
+      "url": "https://www.akamai.com/blog/security-research/2026/jun/new-mcp-specification-security-teams-must-prepare",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "AI Reconnaissance: The Missing Layer in Chatbot Security",
+      "url": "https://www.akamai.com/blog/security/2026/jun/ai-reconnaissance-missing-layer-chatbot-security",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "DNS Is Your Most Critical — and Most Misconfigured — Security Control",
+      "url": "https://www.akamai.com/blog/security/2026/jun/dns-most-critical-most-misconfigured-security-control",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "How Akamai Defended an Indian Bank Against Record-Breaking DDoS Attacks",
+      "url": "https://www.akamai.com/blog/security/2026/jun/akamai-defended-indian-bank-record-breaking-ddos-attacks",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Microsegmentation: Your Digital First Responder to LLM Threats",
+      "url": "https://www.akamai.com/blog/security/2026/jun/microsegmentation-digital-first-responder-llm-threats",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "AI Security at Machine Speed: A Roadmap for Modern AppSec",
+      "url": "https://www.akamai.com/blog/security/2026/jun/ai-security-machine-speed-roadmap-modern-appsec",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Decentralized Threat: Stealthy P2P Cryptominer Targeting Ollama Endpoints",
+      "url": "https://www.akamai.com/blog/security-research/2026/may/stealthy-p2p-cryptominer-ollama-endpoints",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "CVE-2026-9082: Mitigating a Critical SQL Injection Vulnerability in Drupal",
+      "url": "https://www.akamai.com/blog/security-research/2026/may/cve-2026-9082-mitigating-critical-sql-injection-drupal",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "This Is a Hold-Up: Financial Services Under Attack",
+      "url": "https://www.akamai.com/blog/security/2026/may/hold-up-financial-services-under-attack",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "CVE-2026-42945: Mitigating a Critical Heap Buffer Overflow Vulnerability in NGINX ",
+      "url": "https://www.akamai.com/blog/security-research/2026/may/nginx-critical-heap-buffer-overflow-cve-2026-42945",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Mini Shai-Hulud: The Worm Returns and Goes Public",
+      "url": "https://www.akamai.com/blog/security-research/2026/may/mini-shai-hulud-worm-returns-goes-public",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "One Is a Fluke, 3 Is a Pattern: MCP Back-End Vulnerabilities",
+      "url": "https://www.akamai.com/blog/security-research/2026/may/one-fluke-3-pattern-mcp-back-end-vulnerabilities",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Advancing Collective Defense with Project Glasswing",
+      "url": "https://www.akamai.com/blog/security/2026/may/akamai-anthropic-collective-defense-project-glasswing",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "How Akamai's Zero Trust Framework Meets Critical U.S. Government Mandates",
+      "url": "https://www.akamai.com/blog/security/2026/may/akamai-zero-trust-framework-meets-us-government-mandates",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The Other Side of the MCP Threat Conversation",
+      "url": "https://www.akamai.com/blog/security/2026/may/other-side-mcp-threat-conversation",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The New Ouroboros Technique and How It Fits in dMSA’s Security Model",
+      "url": "https://www.akamai.com/blog/security-research/2026/may/ouroboros-technique-how-fits-dmsas-security-model",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The API Weak Spot: Study Shows AI Is Compounding Security Pressures",
+      "url": "https://www.akamai.com/blog/security/2026/apr/api-weak-spot-study-ai-compounding-security-pressures",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The Industrialization of Exploitation: Why Defensive AI Must Outpace Offensive AI",
+      "url": "https://www.akamai.com/blog/security/2026/apr/defensive-ai-outpace-offensive-ai",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "A Shortcut to Coercion: Incomplete Patch of APT28's Zero-Day Leads to CVE-2026-32202",
+      "url": "https://www.akamai.com/blog/security-research/2026/apr/incomplete-patch-apt28s-zero-day-cve-2026-32202",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "CVE-2025-29635: Mirai Campaign Targets D-Link Devices",
+      "url": "https://www.akamai.com/blog/security-research/2026/apr/cve-2025-29635-mirai-campaign-targets-d-link-devices",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The AI Threat Multiplier: Why Architectural Flaws Are the New Frontier",
+      "url": "https://www.akamai.com/blog/security-research/2026/apr/ai-threat-multiplier-architectural-flaws-new-frontier",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Why AI-Powered Vulnerability Discovery Strengthens Akamai's Security Mission",
+      "url": "https://www.akamai.com/blog/security/2026/apr/ai-powered-vulnerability-discovery-strengthens-security",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "How Microsegmentation Helps Governments Meet CJIS Compliance",
+      "url": "https://www.akamai.com/blog/security/2026/apr/microsegmentation-helps-governments-meet-cjis-compliance",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Protecting Publishing: The Real Cost of AI Bots",
+      "url": "https://www.akamai.com/blog/security/2026/apr/protecting-publishing-real-cost-ai-bots",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Compliance Won’t Save Healthcare: Reducing the Blast Radius Will",
+      "url": "https://www.akamai.com/blog/security/2026/apr/compliance-wont-save-healthcare-reducing-blast-radius-will",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Digital Transformation in Africa: Security, Scale, and Control ",
+      "url": "https://www.akamai.com/blog/partners/2026/apr/digital-transformation-africa-security-scale-control",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Akamai Enterprise Application Access Achieves FedRAMP Moderate Authorization",
+      "url": "https://www.akamai.com/blog/security/2026/mar/enterprise-application-access-fedramp-moderate-authorization",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Magento Polyshell — The Latest Magento Threat (APSB25-94)",
+      "url": "https://www.akamai.com/blog/security-research/2026/mar/magento-polyshell-latest-magento-threat-apsb25-94",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The Telnyx SDK on PyPI Compromise and the 2026 TeamPCP Supply Chain Attacks ",
+      "url": "https://www.akamai.com/blog/security-research/2026/mar/telnyx-sdk-pypi-2026-teampcp-supply-chain-attacks",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Extend Application Security Visibility from Code to Runtime",
+      "url": "https://www.akamai.com/blog/security/2026/mar/extending-application-security-visibility-code-runtime",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Akamai Leads the Way: 2026 GigaOm Radar for Microsegmentation",
+      "url": "https://www.akamai.com/blog/security/2026/mar/akamai-leads-2026-gigaom-radar-microsegmentation",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Machine Learning Operations: Yesterday, Today, and Tomorrow",
+      "url": "https://www.akamai.com/blog/security/2026/mar/machine-learning-operations-yesterday-today-tomorrow",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Microsegmentation and Zero Trust: Control the Blast Radius by Design",
+      "url": "https://www.akamai.com/blog/security/2026/mar/microsegmentation-zero-trust-control-blast-radius-design",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "CVE-2026-31979: The Symlink Trap — Root Privilege Escalation in Himmelblau ",
+      "url": "https://www.akamai.com/blog/security-research/2026/mar/cve-2026-31979-symlink-root-privilege-escalation-himmelblau",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Akamai Helps Authorities Disrupt the World’s Largest IoT Botnets",
+      "url": "https://www.akamai.com/blog/security-research/2026/mar/akamai-helps-disrupt-worlds-largest-iot-botnets",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The Top 10 Threats Related to Agent Skills",
+      "url": "https://www.akamai.com/blog/security/2026/mar/top-10-threats-related-agent-skills",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The Agentic Security Crisis: Why You Need to Act Now",
+      "url": "https://www.akamai.com/blog/trends/2026/mar/agentic-security-crisis-why-you-need-act-now",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Apps, APIs, and DDoS 2026: The Industrialization of Cyberattack Campaigns",
+      "url": "https://www.akamai.com/blog/security/2026/mar/apps-apis-ddos-2026-industrialization-cyberattack-campaigns",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Secure the AI Factory: Data Center Security for Accelerated Intelligence",
+      "url": "https://www.akamai.com/blog/security/2026/mar/secure-ai-factory-data-center-security-accelerated-intelligence",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "AI in Vulnerability Discovery: A Call for Human Oversight and Caution",
+      "url": "https://www.akamai.com/blog/security-research/2026/mar/ai-vulnerability-discovery-human-oversight-caution",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Fortify Your Network Security from Emerging Geopolitical Cyberthreats",
+      "url": "https://www.akamai.com/blog/security/2026/mar/fortify-network-security-emerging-geopolitical-cyberthreats",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "RSAC 2026: Tag in a Partner for the AI Security Showdown",
+      "url": "https://www.akamai.com/blog/partners/2026/mar/rsac-2026-tag-partner-ai-security-showdown",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Build Transformative Security with AI-Powered WAF Detections",
+      "url": "https://www.akamai.com/blog/security/2026/mar/build-transformative-security-ai-powered-waf-detections",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Avoid Evasive Scraping with Stronger Content Protection",
+      "url": "https://www.akamai.com/blog/security/2026/mar/avoid-evasive-scraping-stronger-content-protection",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Post-Quantum Cryptography Beyond TLS: Remain Quantum Safe",
+      "url": "https://www.akamai.com/blog/security/2026/mar/post-quantum-cryptography-beyond-tls",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Zerobot Malware Targets n8n Automation Platform",
+      "url": "https://www.akamai.com/blog/security-research/2026/feb/zerobot-malware-targets-n8n-automation-platform",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "When Uptime Is Non-Negotiable: Rethinking Zero Trust for OT Environments",
+      "url": "https://www.akamai.com/blog/security/2026/feb/uptime-non-negotiable-rethinking-zero-trust-ot-environments",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Inside the Fix: Analysis of In-the-Wild Exploit of CVE-2026-21513",
+      "url": "https://www.akamai.com/blog/security-research/2026/feb/inside-the-fix-cve-2026-21513-mshtml-exploit-analysis",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "From Clawdbot to OpenClaw: Practical Lessons in Building Secure Agents",
+      "url": "https://www.akamai.com/blog/security/2026/feb/clawdbot-openclaw-practical-lessons-building-secure-agents",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Zero Trust Switching: Why Firewalls Alone Can’t Secure AI Workloads",
+      "url": "https://www.akamai.com/blog/security/2026/feb/zero-trust-switching-firewalls-cant-secure-ai-workloads",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Understand the Shift Toward AI-Driven Interactions: ​A Guide to MCP",
+      "url": "https://www.akamai.com/blog/security/2026/feb/leaders-guide-mcp-understand-shift-toward-ai-interactions",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Industrialized Ransomware: Confronting the New Reality",
+      "url": "https://www.akamai.com/blog/security/2026/feb/industrialized-ransomware-confronting-new-reality",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Akamai Named a 2026 Gartner Peer Insights™ Customers’ Choice for Network Security",
+      "url": "https://www.akamai.com/blog/security/2026/jan/akamai-2026-gartner-customers-choice-network-security",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Enhancements to Akamai API Security, Q4 2025",
+      "url": "https://www.akamai.com/blog/security/2026/jan/enhancements-akamai-api-security-q4-2025",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "CVE-2026-23864: React and Next.js Denial of Service via Memory Exhaustion",
+      "url": "https://www.akamai.com/blog/security-research/2026/jan/cve-2026-23864-react-nextjs-denial-of-service",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Why Asia’s Public Sector Is Rethinking Cyber Resilience",
+      "url": "https://www.akamai.com/blog/security/2026/jan/why-asias-public-sector-is-rethinking-cyber-resilience",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Command Injection in Vivotek Legacy Firmware: What You Need to Know",
+      "url": "https://www.akamai.com/blog/security-research/2026/jan/command-injection-vivotek-legacy-firmware-need-to-know",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Dangling DNS: The Most Overlooked Attack Surface in the AI Era",
+      "url": "https://www.akamai.com/blog/security/2026/jan/dangling-dns-most-overlooked-attack-surface-ai-era",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "East-West Is the New North-South: Rethink Security for the AI-Driven Data Center",
+      "url": "https://www.akamai.com/blog/security/2026/jan/east-west-north-south-rethink-security-ai-driven-data-center",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "AI Pulse: How AI Bots and Agents Will Shape 2026",
+      "url": "https://www.akamai.com/blog/security/2026/jan/ai-pulse-how-ai-bots-agents-will-shape-2026",
+      "posted_on": "2026-09-17"
+    }
+  ]
+}

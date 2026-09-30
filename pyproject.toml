@@ -42,6 +42,8 @@ cti-api = { workspace = true }
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+# Root repo di sys.path -- test yang ngeimpor `tools.*` (mis. tools/llm/probe_json.py).
+pythonpath = ["."]
 asyncio_mode = "auto"
 # "session" (bukan default "function") -- `cti_core.db.engine.get_async_engine()`
 # di-@lru_cache SEKALI per proses (Fase 2, disengaja: satu pool koneksi,

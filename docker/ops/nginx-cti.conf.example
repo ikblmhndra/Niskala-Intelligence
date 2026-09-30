@@ -1,0 +1,52 @@
+# ALTERNATIF: nginx MILIK HOST sendiri di depan platform CTI. Default sekarang BUKAN ini -- platform
+# membawa nginx sendiri (service `nginx` di docker-compose.yml + docker/nginx/, sertifikat self-signed
+# otomatis; lihat docs/CUTOVER_RUNBOOK.md bagian 2.4). Pakai file ini hanya kalau nginx host tetap
+# dipertahankan (mis. TLS dari CA perusahaan yang sudah dikelola di sana); bila begitu, jangan nyalakan
+# service `nginx` compose (port 80/443 bentrok) dan arahkan upstream ke WEB_PORT di bawah.
+# Salin ke /etc/nginx/conf.d/cti.conf, ganti nama/sertifikat.
+#
+# WAJIB: `X-Forwarded-For $proxy_add_x_forwarded_for`. Rate limit login memakai IP klien dari header
+# ini (`TRUSTED_PROXY_HOPS=1` di stack.env = SATU proxy, yaitu nginx ini). Tanpa header ini API
+# melihat IP nginx untuk semua orang -> satu orang salah password 5x mengunci login SEMUA orang.
+# Kalau ada proxy lain di depan nginx ini (load balancer), naikkan TRUSTED_PROXY_HOPS.
+#
+# Hanya WEB (Next.js BFF) yang diekspos. API TIDAK boleh dipublish keluar: browser tidak pernah
+# memanggil cti-api langsung, semua lewat /api/proxy/* di web. Port API (127.0.0.1:${API_PORT})
+# untuk debug dari host saja.
+
+upstream cti_web {
+    server 127.0.0.1:3000;          # = WEB_PORT di docker/stack.env
+    keepalive 16;
+}
+
+server {
+    listen 80;
+    server_name cti.example.internal;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    http2 on;
+    server_name cti.example.internal;
+
+    ssl_certificate     /etc/nginx/tls/cti.crt;
+    ssl_certificate_key /etc/nginx/tls/cti.key;
+
+    client_max_body_size 20m;       # upload (mis. impor STIX/CSV); sesuaikan bila perlu
+
+    location / {
+        proxy_pass http://cti_web;
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+        # $http_host (bukan $host): $host membuang port, jadi di port non-standar Origin/redirect web tak cocok.
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;   # <- WAJIB, lihat atas
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Host $http_host;
+        # Dry-run scraper, ekspor, dan ringkasan LLM bisa berjalan puluhan detik.
+        proxy_read_timeout 300s;
+        proxy_send_timeout 300s;
+    }
+}

@@ -1,0 +1,17 @@
+{
+  "scraper": "landthThreat",
+  "legacy_script": "landthThreat",
+  "legacy_labels": [],
+  "source_urls": [
+    "https://www.landh.tech/blog/",
+    "https://depi.security/blog/"
+  ],
+  "http_status": {
+    "https://www.landh.tech/blog/": 301,
+    "https://depi.security/blog/": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "IndexError"
+}

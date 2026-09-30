@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:dcterms="http://purl.org/dc/terms/"
+>
+
+<channel>
+	<title>Unit 42</title>
+	<atom:link href="https://unit42.paloaltonetworks.com/feed/" rel="self" type="application/rss+xml" />
+	<link>https://unit42.paloaltonetworks.com/</link>
+	<description>Palo Alto Networks</description>
+	<lastBuildDate>Wed, 16 Sep 2026 16:50:27 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=7.0.4</generator>
+
+<image>
+	<url>https://unit42.paloaltonetworks.com/wp-content/uploads/2024/06/icon-Unit42-180x180-1.png</url>
+	<title>Unit 42</title>
+	<link>https://unit42.paloaltonetworks.com/</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+	<item>
+		<title>Atomic macOS (AMOS) Stealer Activity</title>
+		<link>https://unit42.paloaltonetworks.com/atomic-macos-amos-stealer-activity/</link>
+		
+		<dc:creator><![CDATA[Bradley Duncan]]></dc:creator>
+		<pubDate>Wed, 16 Sep 2026 10:00:06 +0000</pubDate>
+				<category><![CDATA[General]]></category>
+		<category><![CDATA[Insights]]></category>
+		<category><![CDATA[Malware]]></category>
+		<category><![CDATA[macOS]]></category>
+		<category><![CDATA[threat intelligence]]></category>
+		<category><![CDATA[Unit 42]]></category>
+		<guid isPermaLink="false">https://unit42.paloaltonetworks.com/?p=187032</guid>
+
+					<description><![CDATA[<p>Modern macOS malware uses deceptive setup guides to steal credentials and sensitive user data. Learn how to identify and block these threats.</p>
+<p>The post <a href="https://unit42.paloaltonetworks.com/atomic-macos-amos-stealer-activity/">Atomic macOS (AMOS) Stealer Activity</a> appeared first on <a href="https://unit42.paloaltonetworks.com">Unit 42</a>.</p>
+]]></description>
+		
+		
+		
+		<readTime>7</readTime>
+		<featuredImage>https://unit42.paloaltonetworks.com/wp-content/uploads/2026/09/04_Myth-Busting_Overview_1920x900-300x300.jpg</featuredImage>
+		<dcterms:extent>7</dcterms:extent>
+		<enclosure url="https://unit42.paloaltonetworks.com/wp-content/uploads/2026/09/04_Myth-Busting_Overview_1920x900.jpg" type="image/jpeg"  length="1173612"/>
+			</item>
+		<item>
+		<title>Unmasking Cloud Identities: From Behavioral Clustering to Automated Detection</title>
+		<link>https://unit42.paloaltonetworks.com/behavioral-clustering-map-to-cloud-identities/</link>
+		
+		<dc:creator><![CDATA[Osher Jacob]]></dc:creator>
+		<pubDate>Mon, 14 Sep 2026 10:00:01 +0000</pubDate>
+				<category><![CDATA[Cloud Cybersecurity Research]]></category>
+		<category><![CDATA[Threat Research]]></category>
+		<category><![CDATA[AWS CloudTrail]]></category>
+		<category><![CDATA[cloud detection]]></category>
+		<category><![CDATA[DevOps]]></category>
+		<category><![CDATA[IAM]]></category>
+		<category><![CDATA[SQL]]></category>
+		<guid isPermaLink="false">https://unit42.paloaltonetworks.com/?p=186821</guid>
+
+					<description><![CDATA[<p>We designed a behavioral clustering model to map cloud identity roles from audit logs, enabling continuous threat detection using standard SQL queries.</p>
+<p>The post <a href="https://unit42.paloaltonetworks.com/behavioral-clustering-map-to-cloud-identities/">Unmasking Cloud Identities: From Behavioral Clustering to Automated Detection</a> appeared first on <a href="https://unit42.paloaltonetworks.com">Unit 42</a>.</p>
+]]></description>
+		
+		
+		
+		<readTime>12</readTime>
+		<featuredImage>https://unit42.paloaltonetworks.com/wp-content/uploads/2026/09/12_Cloud_cybersecurity_research_Overview_1920x900-2-300x300.jpg</featuredImage>
+		<dcterms:extent>12</dcterms:extent>
+		<enclosure url="https://unit42.paloaltonetworks.com/wp-content/uploads/2026/09/12_Cloud_cybersecurity_research_Overview_1920x900-2.jpg" type="image/jpeg"  length="1163529"/>
+			</item>
+		<item>
+		<title>The Machine With Many Faces: Post-Exploitation Identity Misuse in SPIFFE/SPIRE</title>
+		<link>https://unit42.paloaltonetworks.com/kubernetes-spiffe-spire-identity-spoofing/</link>
+		
+		<dc:creator><![CDATA[Eviatar Garzi]]></dc:creator>
+		<pubDate>Thu, 10 Sep 2026 10:00:43 +0000</pubDate>
+				<category><![CDATA[Malware]]></category>
+		<category><![CDATA[Threat Research]]></category>
+		<category><![CDATA[API]]></category>
+		<category><![CDATA[cryptographic]]></category>
+		<category><![CDATA[JSON]]></category>
+		<category><![CDATA[Linux]]></category>
+		<category><![CDATA[node]]></category>
+		<category><![CDATA[SPIFFE]]></category>
+		<category><![CDATA[SPIRE]]></category>
+		<category><![CDATA[spoofing]]></category>
+		<guid isPermaLink="false">https://unit42.paloaltonetworks.com/?p=186732</guid>
+
+					<description><![CDATA[<p>Learn how root access on a compromised K8s node allows attackers to utilize SPIFFE/SPIRE metadata to spoof and harvest co-located workload identities.</p>
+<p>The post <a href="https://unit42.paloaltonetworks.com/kubernetes-spiffe-spire-identity-spoofing/">The Machine With Many Faces: Post-Exploitation Identity Misuse in SPIFFE/SPIRE</a> appeared first on <a href="https://unit42.paloaltonetworks.com">Unit 42</a>.</p>
+]]></description>
+		
+		
+		
+		<readTime>11</readTime>
+		<featuredImage>https://unit42.paloaltonetworks.com/wp-content/uploads/2026/09/12_Security-Technology_Category_1920x900-300x300.jpg</featuredImage>
+		<dcterms:extent>11</dcterms:extent>
+		<enclosure url="https://unit42.paloaltonetworks.com/wp-content/uploads/2026/09/12_Security-Technology_Category_1920x900.jpg" type="image/jpeg"  length="736161"/>
+			</item>
+		<item>
+		<title>Untracked Nightmares: The Threats Hiding Behind Commodity Infrastructure</title>
+		<link>https://unit42.paloaltonetworks.com/ppi-network-malware-campaign-analysis/</link>
+		
+		<dc:creator><![CDATA[Rem Dudas]]></dc:creator>
+		<pubDate>Wed, 09 Sep 2026 10:00:55 +0000</pubDate>
+				<category><![CDATA[Malware]]></category>
+		<category><![CDATA[Threat Research]]></category>
+		<category><![CDATA[ARKTunnel]]></category>
+		<category><![CDATA[C2]]></category>
+		<category><![CDATA[CL-CRI-1171]]></category>
+		<category><![CDATA[Docro Hijacker]]></category>
+		<category><![CDATA[pay-per-install]]></category>
+		<category><![CDATA[payload]]></category>
+		<guid isPermaLink="false">https://unit42.paloaltonetworks.com/?p=186615</guid>
+
+					<description><![CDATA[<p>An investigation into how cybercriminals used YouTube gaming lures and SEO poisoning to deliver multi-payload malware to enterprise networks.</p>
+<p>The post <a href="https://unit42.paloaltonetworks.com/ppi-network-malware-campaign-analysis/">Untracked Nightmares: The Threats Hiding Behind Commodity Infrastructure</a> appeared first on <a href="https://unit42.paloaltonetworks.com">Unit 42</a>.</p>
+]]></description>
+		
+		
+		
+		<readTime>18</readTime>
+		<featuredImage>https://unit42.paloaltonetworks.com/wp-content/uploads/2026/09/04_Malware_Category_1920x900-6-300x300.jpg</featuredImage>
+		<dcterms:extent>18</dcterms:extent>
+		<enclosure url="https://unit42.paloaltonetworks.com/wp-content/uploads/2026/09/04_Malware_Category_1920x900-6.jpg" type="image/jpeg"  length="1400619"/>
+			</item>
+		<item>
+		<title>Attackers Expose Ongoing AI Tool Use Targeting Organizations in Latin America</title>
+		<link>https://unit42.paloaltonetworks.com/ai-tool-use-targeting-latam-orgs/</link>
+		
+		<dc:creator><![CDATA[Reese Lewis and Sara McBroom]]></dc:creator>
+		<pubDate>Thu, 03 Sep 2026 10:00:58 +0000</pubDate>
+				<category><![CDATA[Malware]]></category>
+		<category><![CDATA[Threat Research]]></category>
+		<category><![CDATA[Agentic AI]]></category>
+		<category><![CDATA[ChatGPT]]></category>
+		<category><![CDATA[CL-CRI-1131]]></category>
+		<category><![CDATA[CL-CRI-1163]]></category>
+		<category><![CDATA[Claude code]]></category>
+		<category><![CDATA[financial sector]]></category>
+		<category><![CDATA[NextChat]]></category>
+		<category><![CDATA[Shipping and Transportation]]></category>
+		<category><![CDATA[SOCKS5]]></category>
+		<category><![CDATA[SockTz]]></category>
+		<guid isPermaLink="false">https://unit42.paloaltonetworks.com/?p=186340</guid>
+
+					<description><![CDATA[<p>Explore how attackers targeting Latin American entities use AI for data exfiltration and how basic OpSec errors allow defenders to disrupt operations.</p>
+<p>The post <a href="https://unit42.paloaltonetworks.com/ai-tool-use-targeting-latam-orgs/">Attackers Expose Ongoing AI Tool Use Targeting Organizations in Latin America</a> appeared first on <a href="https://unit42.paloaltonetworks.com">Unit 42</a>.</p>
+]]></description>
+		
+		
+		
+		<readTime>8</readTime>
+		<featuredImage>https://unit42.paloaltonetworks.com/wp-content/uploads/2026/09/AdobeStock_768915868-2-1-300x300.jpg</featuredImage>
+		<dcterms:extent>8</dcterms:extent>
+		<enclosure url="https://unit42.paloaltonetworks.com/wp-content/uploads/2026/09/AdobeStock_768915868-2-1.jpg" type="image/jpeg"  length="1897600"/>
+			</item>
+		<item>
+		<title>An AI-Assisted Cyber Attack: Inside a Unit 42 Investigation</title>
+		<link>https://unit42.paloaltonetworks.com/ai-assisted-cyber-attack-inside-a-unit-42-investigation/</link>
+		
+		<dc:creator><![CDATA[Renzon Cruz, Nicolas Bareil, Eric Semaan and Omar Jbari]]></dc:creator>
+		<pubDate>Wed, 02 Sep 2026 10:00:46 +0000</pubDate>
+				<category><![CDATA[General]]></category>
+		<category><![CDATA[Insights]]></category>
+		<category><![CDATA[Threat Research]]></category>
+		<category><![CDATA[Agentic AI]]></category>
+		<category><![CDATA[Frontier AI]]></category>
+		<guid isPermaLink="false">https://unit42.paloaltonetworks.com/?p=186408</guid>
+
+					<description><![CDATA[<p>Using autonomous AI agents, an attacker breached an enterprise network in a matter of hours. Understand how to address and defend against agentic attacks.</p>
+<p>The post <a href="https://unit42.paloaltonetworks.com/ai-assisted-cyber-attack-inside-a-unit-42-investigation/">An AI-Assisted Cyber Attack: Inside a Unit 42 Investigation</a> appeared first on <a href="https://unit42.paloaltonetworks.com">Unit 42</a>.</p>
+]]></description>
+		
+		
+		
+		<readTime>4</readTime>
+		<featuredImage>https://unit42.paloaltonetworks.com/wp-content/uploads/2026/09/07_Opinion_Overview_1920x900-1-300x300.jpg</featuredImage>
+		<dcterms:extent>4</dcterms:extent>
+		<enclosure url="https://unit42.paloaltonetworks.com/wp-content/uploads/2026/09/07_Opinion_Overview_1920x900-1.jpg" type="image/jpeg"  length="887924"/>
+			</item>
+		<item>
+		<title>Spring Ring: An Inside Look at Voice Phishing Campaigns in Microsoft Teams</title>
+		<link>https://unit42.paloaltonetworks.com/spring-ring-voice-phishing-campaigns/</link>
+		
+		<dc:creator><![CDATA[Noam Sala]]></dc:creator>
+		<pubDate>Mon, 31 Aug 2026 10:00:36 +0000</pubDate>
+				<category><![CDATA[Malware]]></category>
+		<category><![CDATA[Threat Research]]></category>
+		<category><![CDATA[Cloaked Ursa]]></category>
+		<category><![CDATA[Entra ID]]></category>
+		<category><![CDATA[Microsoft Teams]]></category>
+		<category><![CDATA[payload]]></category>
+		<category><![CDATA[PowerShell]]></category>
+		<category><![CDATA[Remote Access Trojan]]></category>
+		<category><![CDATA[Spoof]]></category>
+		<category><![CDATA[Vishing]]></category>
+		<guid isPermaLink="false">https://unit42.paloaltonetworks.com/?p=186248</guid>
+
+					<description><![CDATA[<p>Learn how the Spring Ring campaign abuses Microsoft Teams and voice phishing to deploy malware and target enterprise domain controllers.</p>
+<p>The post <a href="https://unit42.paloaltonetworks.com/spring-ring-voice-phishing-campaigns/">Spring Ring: An Inside Look at Voice Phishing Campaigns in Microsoft Teams</a> appeared first on <a href="https://unit42.paloaltonetworks.com">Unit 42</a>.</p>
+]]></description>
+		
+		
+		
+		<readTime>13</readTime>
+		<featuredImage>https://unit42.paloaltonetworks.com/wp-content/uploads/2026/08/01_Malware_Category_1920x900-5-300x300.jpg</featuredImage>
+		<dcterms:extent>13</dcterms:extent>
+		<enclosure url="https://unit42.paloaltonetworks.com/wp-content/uploads/2026/08/01_Malware_Category_1920x900-5.jpg" type="image/jpeg"  length="611028"/>
+			</item>
+		<item>
+		<title>Perturbation Probing: A New Diagnostic for the Fragility of LLM Safety</title>
+		<link>https://unit42.paloaltonetworks.com/perturbation-probing-llm-safety/</link>
+		
+		<dc:creator><![CDATA[Tony Li, Hongliang Liu and Yuhao Wu]]></dc:creator>
+		<pubDate>Fri, 28 Aug 2026 22:00:07 +0000</pubDate>
+				<category><![CDATA[General]]></category>
+		<category><![CDATA[Insights]]></category>
+		<category><![CDATA[AI]]></category>
+		<category><![CDATA[Jailbreak]]></category>
+		<category><![CDATA[LLM]]></category>
+		<guid isPermaLink="false">https://unit42.paloaltonetworks.com/?p=186235</guid>
+
+					<description><![CDATA[<p>New research reveals that AI safety refusal lives in a thin neural layer, highlighting the critical need for external, multi-layered security.</p>
+<p>The post <a href="https://unit42.paloaltonetworks.com/perturbation-probing-llm-safety/">Perturbation Probing: A New Diagnostic for the Fragility of LLM Safety</a> appeared first on <a href="https://unit42.paloaltonetworks.com">Unit 42</a>.</p>
+]]></description>
+		
+		
+		
+		<readTime>4</readTime>
+		<featuredImage>https://unit42.paloaltonetworks.com/wp-content/uploads/2026/08/02_General_Overview_1920x900-300x300.jpg</featuredImage>
+		<dcterms:extent>4</dcterms:extent>
+		<enclosure url="https://unit42.paloaltonetworks.com/wp-content/uploads/2026/08/02_General_Overview_1920x900.jpg" type="image/jpeg"  length="749555"/>
+			</item>
+		<item>
+		<title>The State of AI-Enabled Malware August 2026: From Brand Abuse to Agentic Execution</title>
+		<link>https://unit42.paloaltonetworks.com/ai-enabled-malware-analysis/</link>
+		
+		<dc:creator><![CDATA[Sara McBroom]]></dc:creator>
+		<pubDate>Tue, 25 Aug 2026 10:00:57 +0000</pubDate>
+				<category><![CDATA[Malware]]></category>
+		<category><![CDATA[Threat Research]]></category>
+		<category><![CDATA[backdoor]]></category>
+		<category><![CDATA[Bitcoin]]></category>
+		<category><![CDATA[DLL hijacking]]></category>
+		<category><![CDATA[ransomware]]></category>
+		<category><![CDATA[Sandbox]]></category>
+		<category><![CDATA[VirusTotal]]></category>
+		<guid isPermaLink="false">https://unit42.paloaltonetworks.com/?p=186148</guid>
+
+					<description><![CDATA[<p>Explore Unit 42 research on AI-enabled malware. Learn how existing behavioral detection and endpoint analytics stop AI-authored code before execution.</p>
+<p>The post <a href="https://unit42.paloaltonetworks.com/ai-enabled-malware-analysis/">The State of AI-Enabled Malware August 2026: From Brand Abuse to Agentic Execution</a> appeared first on <a href="https://unit42.paloaltonetworks.com">Unit 42</a>.</p>
+]]></description>
+		
+		
+		
+		<readTime>7</readTime>
+		<featuredImage>https://unit42.paloaltonetworks.com/wp-content/uploads/2026/08/AdobeStock_1270203474-2-1-300x300.png</featuredImage>
+		<dcterms:extent>7</dcterms:extent>
+		<enclosure url="https://unit42.paloaltonetworks.com/wp-content/uploads/2026/08/AdobeStock_1270203474-2-1.png" type="image/png"  length="2092628"/>
+			</item>
+		<item>
+		<title>Connecting the Dots: Securing the Overlooked Corners of the Software Development Lifecycle (SDLC) Supply Chain</title>
+		<link>https://unit42.paloaltonetworks.com/sdlc-supply-chain/</link>
+		
+		<dc:creator><![CDATA[Yaron Avital]]></dc:creator>
+		<pubDate>Fri, 21 Aug 2026 23:00:21 +0000</pubDate>
+				<category><![CDATA[General]]></category>
+		<category><![CDATA[Insights]]></category>
+		<category><![CDATA[ChainDrop]]></category>
+		<category><![CDATA[npm packages]]></category>
+		<category><![CDATA[software supply-chain attack]]></category>
+		<category><![CDATA[supply chain]]></category>
+		<guid isPermaLink="false">https://unit42.paloaltonetworks.com/?p=185935</guid>
+
+					<description><![CDATA[<p>Attackers are targeting CI/CD pipelines and developer tools instead of application code, requiring total SDLC visibility and strict security controls</p>
+<p>The post <a href="https://unit42.paloaltonetworks.com/sdlc-supply-chain/">Connecting the Dots: Securing the Overlooked Corners of the Software Development Lifecycle (SDLC) Supply Chain</a> appeared first on <a href="https://unit42.paloaltonetworks.com">Unit 42</a>.</p>
+]]></description>
+		
+		
+		
+		<readTime>4</readTime>
+		<featuredImage>https://unit42.paloaltonetworks.com/wp-content/uploads/2026/08/09_Myth-Busting_Category_1505x922-300x300.jpg</featuredImage>
+		<dcterms:extent>4</dcterms:extent>
+		<enclosure url="https://unit42.paloaltonetworks.com/wp-content/uploads/2026/08/09_Myth-Busting_Category_1505x922.jpg" type="image/jpeg"  length="776234"/>
+			</item>
+		<item>
+		<title>Identity Abuse Through Trusted Communication Channels</title>
+		<link>https://unit42.paloaltonetworks.com/communication-channel-identity-risks/</link>
+		
+		<dc:creator><![CDATA[Bill Batchelor]]></dc:creator>
+		<pubDate>Thu, 20 Aug 2026 10:00:25 +0000</pubDate>
+				<category><![CDATA[Malware]]></category>
+		<category><![CDATA[Threat Research]]></category>
+		<category><![CDATA[authentication]]></category>
+		<category><![CDATA[identity theft]]></category>
+		<category><![CDATA[malware]]></category>
+		<category><![CDATA[MFA]]></category>
+		<category><![CDATA[remote access software]]></category>
+		<category><![CDATA[social engineering]]></category>
+		<guid isPermaLink="false">https://unit42.paloaltonetworks.com/?p=185799</guid>
+
+					<description><![CDATA[<p>Unit 42 details how attackers exploit enterprise collaboration tools for identity phishing and credential theft. Discover key defense strategies.</p>
+<p>The post <a href="https://unit42.paloaltonetworks.com/communication-channel-identity-risks/">Identity Abuse Through Trusted Communication Channels</a> appeared first on <a href="https://unit42.paloaltonetworks.com">Unit 42</a>.</p>
+]]></description>
+		
+		
+		
+		<readTime>12</readTime>
+		<featuredImage>https://unit42.paloaltonetworks.com/wp-content/uploads/2026/08/02_Malware_Category_1920x900-2-300x300.jpg</featuredImage>
+		<dcterms:extent>12</dcterms:extent>
+		<enclosure url="https://unit42.paloaltonetworks.com/wp-content/uploads/2026/08/02_Malware_Category_1920x900-2.jpg" type="image/jpeg"  length="1869627"/>
+			</item>
+		<item>
+		<title>Threat Brief: Mitigating Large-Scale Credential Attacks (Updated August 18)</title>
+		<link>https://unit42.paloaltonetworks.com/large-scale-credential-attacks/</link>
+		
+		<dc:creator><![CDATA[Unit 42]]></dc:creator>
+		<pubDate>Tue, 18 Aug 2026 19:05:33 +0000</pubDate>
+				<category><![CDATA[General]]></category>
+		<category><![CDATA[High Profile Threats]]></category>
+		<category><![CDATA[credential-based attacks]]></category>
+		<category><![CDATA[MFA]]></category>
+		<category><![CDATA[password spraying]]></category>
+		<category><![CDATA[thehatman]]></category>
+		<guid isPermaLink="false">https://unit42.paloaltonetworks.com/?p=182713</guid>
+
+					<description><![CDATA[<p>In August 2026, the actor TheHatman claimed to have stolen large volume of credentials from organizations' Microsoft Entra tenants. We provide guidance on mitigating large-scale credential attacks. </p>
+<p>The post <a href="https://unit42.paloaltonetworks.com/large-scale-credential-attacks/">Threat Brief: Mitigating Large-Scale Credential Attacks (Updated August 18)</a> appeared first on <a href="https://unit42.paloaltonetworks.com">Unit 42</a>.</p>
+]]></description>
+		
+		
+		
+		<readTime>6</readTime>
+		<featuredImage>https://unit42.paloaltonetworks.com/wp-content/uploads/2026/06/07_Vulnerabilities_1920x900-1-300x300.jpg</featuredImage>
+		<dcterms:extent>6</dcterms:extent>
+		<enclosure url="https://unit42.paloaltonetworks.com/wp-content/uploads/2026/06/07_Vulnerabilities_1920x900-1.jpg" type="image/jpeg"  length="1486607"/>
+			</item>
+		<item>
+		<title>Kimwolf v7: An Evolution of the Kimwolf Botnet</title>
+		<link>https://unit42.paloaltonetworks.com/kimwolf-v7-botnet-malware/</link>
+		
+		<dc:creator><![CDATA[Asher Davila, Chris Navarrete and Doel Santos]]></dc:creator>
+		<pubDate>Tue, 11 Aug 2026 10:00:16 +0000</pubDate>
+				<category><![CDATA[Malware]]></category>
+		<category><![CDATA[Threat Research]]></category>
+		<category><![CDATA[Android APK]]></category>
+		<category><![CDATA[Ethereum]]></category>
+		<category><![CDATA[HTTP]]></category>
+		<category><![CDATA[IoT botnets]]></category>
+		<category><![CDATA[Kimwolf v7]]></category>
+		<category><![CDATA[Linux]]></category>
+		<category><![CDATA[RPC]]></category>
+		<category><![CDATA[spoofing]]></category>
+		<guid isPermaLink="false">https://unit42.paloaltonetworks.com/?p=185086</guid>
+
+					<description><![CDATA[<p>Discover how Kimwolf v7 targets Android IoT devices with HTTP/2 DDoS fingerprinting, Ethereum ENS C2 resolution and Tor backup routing.</p>
+<p>The post <a href="https://unit42.paloaltonetworks.com/kimwolf-v7-botnet-malware/">Kimwolf v7: An Evolution of the Kimwolf Botnet</a> appeared first on <a href="https://unit42.paloaltonetworks.com">Unit 42</a>.</p>
+]]></description>
+		
+		
+		
+		<readTime>11</readTime>
+		<featuredImage>https://unit42.paloaltonetworks.com/wp-content/uploads/2026/08/07_Malware_Category_1920x900-3-300x300.jpg</featuredImage>
+		<dcterms:extent>11</dcterms:extent>
+		<enclosure url="https://unit42.paloaltonetworks.com/wp-content/uploads/2026/08/07_Malware_Category_1920x900-3.jpg" type="image/jpeg"  length="919617"/>
+			</item>
+		<item>
+		<title>The Permanent Threat: Analyzing Aeternum’s Blockchain-Based C2 Operations and Communications</title>
+		<link>https://unit42.paloaltonetworks.com/aeternum-blockchain-c2-analysis/</link>
+		
+		<dc:creator><![CDATA[Chris Navarrete, Sai Sathvik Ruppa and Haozhe Zhang]]></dc:creator>
+		<pubDate>Mon, 10 Aug 2026 22:00:02 +0000</pubDate>
+				<category><![CDATA[Malware]]></category>
+		<category><![CDATA[Threat Research]]></category>
+		<category><![CDATA[Aeternum]]></category>
+		<category><![CDATA[infection chain]]></category>
+		<category><![CDATA[JSON]]></category>
+		<category><![CDATA[Python]]></category>
+		<category><![CDATA[RPC]]></category>
+		<category><![CDATA[Telegram]]></category>
+		<category><![CDATA[XMRig]]></category>
+		<category><![CDATA[XOR]]></category>
+		<guid isPermaLink="false">https://unit42.paloaltonetworks.com/?p=185207</guid>
+
+					<description><![CDATA[<p>Analysis of the Aeternum botnet loader, a threat leveraging Polygon blockchain smart contracts for decentralized C2 infrastructure and payload execution.</p>
+<p>The post <a href="https://unit42.paloaltonetworks.com/aeternum-blockchain-c2-analysis/">The Permanent Threat: Analyzing Aeternum’s Blockchain-Based C2 Operations and Communications</a> appeared first on <a href="https://unit42.paloaltonetworks.com">Unit 42</a>.</p>
+]]></description>
+		
+		
+		
+		<readTime>18</readTime>
+		<featuredImage>https://unit42.paloaltonetworks.com/wp-content/uploads/2026/08/04_Malware_Category_1920x900-4-300x300.jpg</featuredImage>
+		<dcterms:extent>18</dcterms:extent>
+		<enclosure url="https://unit42.paloaltonetworks.com/wp-content/uploads/2026/08/04_Malware_Category_1920x900-4.jpg" type="image/jpeg"  length="1400619"/>
+			</item>
+		<item>
+		<title>Inside the Modern SOC: The Identity Front Door</title>
+		<link>https://unit42.paloaltonetworks.com/soc-identity-front-door/</link>
+		
+		<dc:creator><![CDATA[Sharon Maydar]]></dc:creator>
+		<pubDate>Fri, 07 Aug 2026 23:00:01 +0000</pubDate>
+				<category><![CDATA[Inside the Modern SOC]]></category>
+		<category><![CDATA[Insights]]></category>
+		<category><![CDATA[AI]]></category>
+		<category><![CDATA[identity]]></category>
+		<category><![CDATA[social engineering]]></category>
+		<category><![CDATA[Unit 42 Incident Response Report]]></category>
+		<guid isPermaLink="false">https://unit42.paloaltonetworks.com/?p=184235</guid>
+
+					<description><![CDATA[<p>Identity-based attacks drive 90% of incidents. Learn how modern attackers exploit identities and what SOC leaders can do to respond.</p>
+<p>The post <a href="https://unit42.paloaltonetworks.com/soc-identity-front-door/">Inside the Modern SOC: The Identity Front Door</a> appeared first on <a href="https://unit42.paloaltonetworks.com">Unit 42</a>.</p>
+]]></description>
+		
+		
+		
+		<readTime>3</readTime>
+		<featuredImage>https://unit42.paloaltonetworks.com/wp-content/uploads/2026/01/04_Listicle_Overview_1920x900-300x300.jpg</featuredImage>
+		<dcterms:extent>3</dcterms:extent>
+		<enclosure url="https://unit42.paloaltonetworks.com/wp-content/uploads/2026/01/04_Listicle_Overview_1920x900.jpg" type="image/jpeg"  length="854997"/>
+			</item>
+	</channel>
+</rss>

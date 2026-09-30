@@ -20,5 +20,5 @@ class Dfirch(RSSScraper):
         legacy_label="NEW ARTICLE FROM DFIRCH",
         legacy_script="dfirchThreat",
     )
-    feeds = ('https://dfir.ch/posts/index.xml',)
+    feeds = ("https://dfir.ch/posts/index.xml",)
     date_path = None  # scraper lama pakai waktu-scrape, bukan tanggal artikel asli

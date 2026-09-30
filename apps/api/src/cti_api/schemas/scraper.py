@@ -22,6 +22,9 @@ class ScraperConfigOut(BaseModel):
     rate_limit: str | None
     max_items: int | None
     paused_reason: str | None
+    options: dict[str, str] | None
+    """Pilihan admin apa adanya (`{key: value}`); `None` = tidak ada, semua default kode.
+    Nilai EFEKTIF per opsi ada di `ScraperDetail.options`."""
     updated_by: str | None
     updated_at: str | None
 
@@ -54,6 +57,23 @@ class ScraperListResponse(BaseModel):
     total: int
 
 
+class ScraperOptionChoiceOut(BaseModel):
+    value: str
+    label: str
+
+
+class ScraperOptionOut(BaseModel):
+    """Satu opsi yang dideklarasikan scraper (`ScraperMeta.options`) -- buat dropdown di UI."""
+
+    key: str
+    label: str
+    description: str
+    default: str
+    choices: list[ScraperOptionChoiceOut]
+    value: str
+    """EFEKTIF sekarang: pilihan admin kalau valid, else `default`."""
+
+
 class ScraperDetail(BaseModel):
     id: str
     source: str
@@ -70,6 +90,8 @@ class ScraperDetail(BaseModel):
     default_max_retries: int
     default_dedup_ttl_days: int
     queue: str
+    options: list[ScraperOptionOut]
+    """Kosong buat mayoritas scraper (tidak ada yang bisa dipilih)."""
     config: ScraperConfigOut
 
 
@@ -138,6 +160,10 @@ class ScraperConfigUpdateBody(BaseModel):
     rate_limit: str | None = None
     max_items: int | None = None
     paused_reason: str | None = None
+    options: dict[str, str] | None = None
+    """`{key: value}` -- HANYA yang beda dari default yang perlu dikirim; `null`/`{}` =
+    hapus semua pilihan (balik ke default kode). Key/nilai yang tidak dideklarasikan
+    scraper ditolak 422."""
 
 
 class ScraperDisableBody(BaseModel):

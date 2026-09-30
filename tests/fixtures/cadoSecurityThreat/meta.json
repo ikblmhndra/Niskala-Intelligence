@@ -1,0 +1,17 @@
+{
+  "scraper": "cadoSecurityThreat",
+  "legacy_script": "cadoSecurityThreat",
+  "legacy_labels": [],
+  "source_urls": [
+    "https://www.cadosecurity.com/blog/rss.xml",
+    "https://www.darktrace.com/forensic-acquisition-investigation"
+  ],
+  "http_status": {
+    "https://www.cadosecurity.com/blog/rss.xml": 301,
+    "https://www.darktrace.com/forensic-acquisition-investigation": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ParseError"
+}

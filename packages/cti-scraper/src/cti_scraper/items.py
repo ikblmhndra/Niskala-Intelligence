@@ -45,6 +45,56 @@ class ArticleItem(Item):
         return canonicalize_url(self.url)
 
 
+class NoticeItem(Item):
+    """Pesan Telegram MURNI -- gak lewat enrichment (LLM/klasifikasi) dan gak
+    nulis tabel apa pun. Jalur keluar buat job lama yang cuma "pantau sesuatu ->
+    kabari channel": watcher commit GitHub, advisory library, alert tweet
+    (Fase 10.E). Beda dari `ArticleItem`: artikel itu MATERI yang dianalisis;
+    notice itu SUDAH jadi pesan, tinggal dikirim.
+
+    `key` = identitas dedup (SHA commit, id advisory, id tweet, dst) -- dipilih
+    penulis scraper, BUKAN URL, karena satu commit bisa jadi banyak notice dan
+    sebaliknya. Kegagalan kirim TIDAK ditelan (lihat sink): item di-release dan
+    dicoba lagi di run berikutnya -- notice yang hilang diam-diam itu dulu jadi
+    masalah `send_alert_*` lama (`except Exception: pass`)."""
+
+    topic: str
+    """Kunci `TELEGRAM__THREAD_IDS` (mis. "apt", "vendor_report")."""
+    text: str
+    """Badan pesan, HTML Telegram. Field dari sumber luar WAJIB di-`html.escape`
+    oleh scraper -- satu `<` liar bikin Telegram nolak seluruh pesan."""
+    key: str
+    title: str = ""
+    """Ringkasan satu baris buat log `ScraperItem`; kosong -> diambil dari `text`."""
+    url: str = ""
+    posted_on: datetime.date | None = None
+    """Cuma buat mengurutkan "terbaru dulu" di cold-start cap."""
+    attachment_name: str | None = None
+    attachment_text: str | None = None
+    """Kalau diisi, pesan dikirim sebagai DOKUMEN (`attachment_name`) dgn `text`
+    sbg caption -- gantiin `send_report_file` lama."""
+
+    def dedup_key(self) -> str:
+        return self.key
+
+
+class CveMentionItem(Item):
+    """Mention CVE di SATU tweet -> naikkan penghitung `cve_mentions` (scope tweet)
+    buat laporan "Top CVE 6 jam" (Fase 10.E, gantiin `TwitterScrap/trendingCve.py`).
+    Tanpa alert langsung: cuma menghitung. `dedup_key()` = id tweet, jadi tweet yang
+    muncul lagi di jendela pencarian berikutnya TIDAK menghitung dobel -- itu yang
+    dulu dikerjakan kursor `offset/lastTweetId.txt`."""
+
+    tweet_id: str
+    cve_ids: list[str]
+    """Unik per tweet (satu tweet menyebut CVE yang sama dua kali dihitung SEKALI,
+    sama dengan `dict.fromkeys(re.findall(...))` skrip lama)."""
+    url: str = ""
+
+    def dedup_key(self) -> str:
+        return self.tweet_id
+
+
 class RansomwareVictimItem(Item):
     """Nulis langsung ke `ransomware_victims`, MELEWATI pipeline enrichment
     artikel -- lihat sinks.py. Ini contoh kanonik "scraper bespoke", gantiin

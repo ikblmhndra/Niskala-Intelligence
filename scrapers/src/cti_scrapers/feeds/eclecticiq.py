@@ -20,7 +20,10 @@ class Eclecticiq(RSSScraper):
         legacy_label="NEW ARTICLE FROM ECLECTICIQ",
         legacy_script="eclecticiqThreat",
     )
-    feeds = ('https://blog.eclecticiq.com/rss.xml',)
+    feeds = ("https://blog.eclecticiq.com/rss.xml",)
     date_path = None  # scraper lama pakai waktu-scrape, bukan tanggal artikel asli
-    xml_fixups = (('&ndash;', ''), ('&', '&amp;'),)
+    xml_fixups = (
+        ("&ndash;", ""),
+        ("&", "&amp;"),
+    )
     html_unescape = True  # feed lama pakai html.unescape() sebelum parse XML

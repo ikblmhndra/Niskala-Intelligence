@@ -25,6 +25,11 @@ from syrupy.matchers import path_type
 
 pytestmark = pytest.mark.asyncio
 
+# Dipin ke ISO week 39, 2026 (Senin 2026-09-21 s.d. Minggu 2026-09-27) supaya
+# `week`/`year`/subject line di snapshot gak ikut geser tiap minggu kalender
+# ASLI berganti -- lihat `newsletter_service._now()`.
+_NOW = datetime.datetime(2026, 9, 24, 12, 0, tzinfo=datetime.UTC)
+
 _NORMALIZE = path_type(
     {
         r"(.*\.)?id$": (int,),
@@ -89,7 +94,10 @@ async def test_preview_newsletter(
     snapshot: SnapshotAssertion,
 ) -> None:
     article_id = await _seed_article(api_session)
-    with patch.object(newsletter_service, "_enrich_articles", _fake_enrich_articles()):
+    with (
+        patch.object(newsletter_service, "_enrich_articles", _fake_enrich_articles()),
+        patch.object(newsletter_service, "_now", return_value=_NOW),
+    ):
         resp = await api_client.post(
             "/api/newsletter/preview", headers=auth_header(), json={"highlight": article_id}
         )
@@ -124,7 +132,10 @@ async def test_resend_newsletter(
     snapshot: SnapshotAssertion,
 ) -> None:
     article_id = await _seed_article(api_session)
-    with patch.object(newsletter_service, "_enrich_articles", _fake_enrich_articles()):
+    with (
+        patch.object(newsletter_service, "_enrich_articles", _fake_enrich_articles()),
+        patch.object(newsletter_service, "_now", return_value=_NOW),
+    ):
         preview_resp = await api_client.post(
             "/api/newsletter/preview", headers=auth_header(), json={"highlight": article_id}
         )
@@ -148,6 +159,7 @@ async def test_draft_email(
     article_id = await _seed_article(api_session)
     with (
         patch.object(newsletter_service, "_enrich_articles", _fake_enrich_articles()),
+        patch.object(newsletter_service, "_now", return_value=_NOW),
         patch(
             "cti_api.routers.newsletter.create_graph_draft", MagicMock(return_value="graph-msg-2")
         ),

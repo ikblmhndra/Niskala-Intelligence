@@ -1,0 +1,17 @@
+{
+  "scraper": "githubTTPs",
+  "legacy_script": "githubTTPs",
+  "legacy_labels": [],
+  "source_urls": [
+    "https://api.github.com/repos/crocodyli/ThreatActors-TTPs/commits?per_page=5"
+  ],
+  "http_status": {
+    "https://api.github.com/repos/crocodyli/ThreatActors-TTPs/commits?per_page=5": 401
+  },
+  "blocked_urls": [
+    "https://api.github.com/repos/crocodyli/ThreatActors-TTPs/commits?per_page=5"
+  ],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

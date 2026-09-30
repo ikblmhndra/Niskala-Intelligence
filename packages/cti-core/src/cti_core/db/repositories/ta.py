@@ -47,7 +47,9 @@ class AsyncTARepo:
         LIVE Grup G6. Ambil baris pertama (order gak dijamin stabil
         tanpa `order_by`, tapi cukup buat gate baca non-destruktif ini)."""
         result = await self.session.execute(
-            select(ThreatActorGroup).where(func.lower(ThreatActorGroup.name) == name.lower()).limit(1)
+            select(ThreatActorGroup)
+            .where(func.lower(ThreatActorGroup.name) == name.lower())
+            .limit(1)
         )
         return result.scalars().first()
 

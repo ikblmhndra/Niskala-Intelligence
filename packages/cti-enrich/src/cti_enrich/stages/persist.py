@@ -22,8 +22,10 @@ from __future__ import annotations
 import datetime
 from typing import TYPE_CHECKING
 
+from cti_core.db.models.article import RejectedArticle
 from cti_core.db.repositories.article import ArticleRepo, RejectedArticleRepo
 from cti_core.db.repositories.ioc import IOCRepo
+from sqlalchemy import delete
 
 from cti_enrich.countries import country_code
 from cti_enrich.stages.classify import resolve_industries
@@ -144,6 +146,11 @@ def persist(
                 article_id=article.id,
             )
 
+    # Artikel ini sekarang DITERIMA -- buang catatan "ditolak"/"gagal di-enrich"
+    # (`rejected_articles`) untuk URL yang sama kalau ada. Tanpa ini artikel yang
+    # dulu `[enrichment_failed]` lalu berhasil di-replay muncul DUA kali: sebagai
+    # artikel DAN sebagai "ditolak" di halaman Filtered Articles.
+    session.execute(delete(RejectedArticle).where(RejectedArticle.url_hash == article.url_hash))
     return article
 
 

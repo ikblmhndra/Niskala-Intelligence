@@ -44,9 +44,7 @@ def test_parse_handles_multiple_versions_and_dash_separators(
         "- Fitur awal A\n",
         encoding="utf-8",
     )
-    monkeypatch.setattr(
-        "cti_api.routers.changelog._find_changelog_path", lambda: changelog
-    )
+    monkeypatch.setattr("cti_api.routers.changelog._find_changelog_path", lambda: changelog)
 
     entries = _parse()
     assert [e["version"] for e in entries] == ["0.2.0", "0.1.0"]

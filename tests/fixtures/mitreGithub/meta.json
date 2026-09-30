@@ -1,0 +1,17 @@
+{
+  "scraper": "mitreGithub",
+  "legacy_script": "mitreGithub",
+  "legacy_labels": [],
+  "source_urls": [
+    "https://api.github.com/repos/mitre-attack/attack-stix-data/commits"
+  ],
+  "http_status": {
+    "https://api.github.com/repos/mitre-attack/attack-stix-data/commits": 401
+  },
+  "blocked_urls": [
+    "https://api.github.com/repos/mitre-attack/attack-stix-data/commits"
+  ],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "KeyError"
+}

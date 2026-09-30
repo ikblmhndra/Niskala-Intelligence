@@ -20,5 +20,5 @@ class Starlabs(RSSScraper):
         legacy_label="NEW ARTICLE FROM STARLABS",
         legacy_script="starlabsThreat",
     )
-    feeds = ('https://starlabs.sg/blog/index.xml',)
+    feeds = ("https://starlabs.sg/blog/index.xml",)
     date_path = None  # scraper lama pakai waktu-scrape, bukan tanggal artikel asli

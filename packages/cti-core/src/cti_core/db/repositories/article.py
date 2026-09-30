@@ -13,7 +13,7 @@ re-scrape gak pernah update artikel yang udah ada):
 from __future__ import annotations
 
 import datetime
-from collections.abc import Sequence
+from collections.abc import Callable, Iterable, Sequence
 from typing import Any
 
 from sqlalchemy import Select, func, or_, select
@@ -137,6 +137,81 @@ def _apply_machine_fields(article: Article, machine_fields: dict[str, Any]) -> N
         setattr(article, k, v)
 
 
+def _first_ttp_names(ttps: Sequence[tuple[str, str]]) -> dict[str, str]:
+    first_name_per_id: dict[str, str] = {}
+    for tid, tname in ttps:
+        first_name_per_id.setdefault(tid, tname)
+    return first_name_per_id
+
+
+def _dedup_ttps(ttps: Sequence[tuple[str, str]]) -> list[ArticleTTP]:
+    """DEDUP PER `ttp_id` (kunci `uq_article_ttp` = (article_id, ttp_id)),
+    BUKAN per tuple `(id, nama)`. LLM kadang ngembaliin ID yang SAMA dua kali
+    dgn nama beda ("T1176" -> "Browser Extensions" & "Software Extensions");
+    dedup per tuple meloloskan keduanya -> UniqueViolation -> SELURUH
+    transaksi (artikelnya) ke-rollback dan artikel HILANG. Ketemu di e2e
+    staging Fase 10 (1 dari 10 artikel). Nama pertama yang menang."""
+    return [ArticleTTP(ttp_id=tid, ttp_name=name) for tid, name in _first_ttp_names(ttps).items()]
+
+
+def _reconcile[T, K](
+    current: Iterable[T], wanted: Iterable[K], key_of: Callable[[T], K], make: Callable[[K], T]
+) -> list[T]:
+    """Daftar child baru: baris yang KUNCI-nya masih diinginkan dipakai ULANG
+    (instance yang sama), sisanya dibuat baru; yang tidak lagi diinginkan hilang
+    (delete-orphan).
+
+    Kenapa bukan "buang semua, bikin ulang" (yang dulu dipakai): unit-of-work
+    SQLAlchemy menjalankan INSERT sebelum DELETE di flush yang sama, jadi baris
+    baru berkunci SAMA dengan baris lama yang mau dihapus menabrak
+    `uq_article_*` (`UniqueViolation`). Persist ulang artikel yang sama -- dua
+    scraper meliput URL yang sama (dedup itu per-scraper), atau retry sesudah
+    persist -- gagal, dan artikel yang sehat dicatat `[enrichment_failed]`."""
+    by_key = {key_of(c): c for c in current}
+    return [by_key[k] if k in by_key else make(k) for k in wanted]
+
+
+def _apply_enrichment(
+    article: Article,
+    *,
+    countries: Sequence[tuple[str, str]],
+    industries: Sequence[str],
+    threat_actors: Sequence[str],
+    ttps: Sequence[tuple[str, str]],
+) -> None:
+    """Pasang hasil enrichment ke child rows -- idempoten (lihat `_reconcile`).
+    Dipakai versi sync DAN async, biar logikanya gak bisa drift."""
+    article.countries = _reconcile(
+        article.countries,
+        dict.fromkeys(countries),
+        lambda c: (c.country_code, c.role),
+        lambda k: ArticleCountry(country_code=k[0], role=k[1]),
+    )
+    article.industries = _reconcile(
+        article.industries,
+        dict.fromkeys(industries),
+        lambda c: c.industry,
+        lambda k: ArticleIndustry(industry=k),
+    )
+    article.threat_actors = _reconcile(
+        article.threat_actors,
+        dict.fromkeys(threat_actors),
+        lambda c: c.threat_actor,
+        lambda k: ArticleThreatActor(threat_actor=k),
+    )
+    names = _first_ttp_names(ttps)
+    kept = {t.ttp_id: t for t in article.ttps}
+    rows: list[ArticleTTP] = []
+    for tid, name in names.items():
+        row = kept.get(tid)
+        if row is None:
+            row = ArticleTTP(ttp_id=tid, ttp_name=name)
+        else:
+            row.ttp_name = name
+        rows.append(row)
+    article.ttps = rows
+
+
 class ArticleRepo:
     """Sync -- dipakai scraper/enrichment (Celery task), CLI."""
 
@@ -210,16 +285,13 @@ class ArticleRepo:
         delta yang ditumpuk. Dedup di sini (bukan percaya caller) karena
         `UniqueConstraint` per (article, kolom[, role]) bakal nolak baris
         kembar kalau caller kirim duplikat."""
-        article.countries = [
-            ArticleCountry(country_code=code, role=role) for code, role in dict.fromkeys(countries)
-        ]
-        article.industries = [ArticleIndustry(industry=i) for i in dict.fromkeys(industries)]
-        article.threat_actors = [
-            ArticleThreatActor(threat_actor=t) for t in dict.fromkeys(threat_actors)
-        ]
-        article.ttps = [
-            ArticleTTP(ttp_id=tid, ttp_name=tname) for tid, tname in dict.fromkeys(ttps)
-        ]
+        _apply_enrichment(
+            article,
+            countries=countries,
+            industries=industries,
+            threat_actors=threat_actors,
+            ttps=ttps,
+        )
         self.session.flush()
         return article
 
@@ -288,16 +360,13 @@ class AsyncArticleRepo:
         await self.session.refresh(
             article, attribute_names=["countries", "industries", "threat_actors", "ttps"]
         )
-        article.countries = [
-            ArticleCountry(country_code=code, role=role) for code, role in dict.fromkeys(countries)
-        ]
-        article.industries = [ArticleIndustry(industry=i) for i in dict.fromkeys(industries)]
-        article.threat_actors = [
-            ArticleThreatActor(threat_actor=t) for t in dict.fromkeys(threat_actors)
-        ]
-        article.ttps = [
-            ArticleTTP(ttp_id=tid, ttp_name=tname) for tid, tname in dict.fromkeys(ttps)
-        ]
+        _apply_enrichment(
+            article,
+            countries=countries,
+            industries=industries,
+            threat_actors=threat_actors,
+            ttps=ttps,
+        )
         await self.session.flush()
         return article
 
@@ -381,12 +450,7 @@ class AsyncArticleRepo:
             created_at_start=created_at_start,
         )
         has_join = bool(
-            industries
-            or countries
-            or victim_countries
-            or actor_countries
-            or threat_actors
-            or ttps
+            industries or countries or victim_countries or actor_countries or threat_actors or ttps
         )
 
         count_stmt = select(func.count()).select_from(base.distinct().subquery())
@@ -530,9 +594,7 @@ class AsyncRejectedArticleRepo:
         )
         return result.scalar_one_or_none()
 
-    async def restore(
-        self, rejected: RejectedArticle, article_repo: AsyncArticleRepo
-    ) -> Article:
+    async def restore(self, rejected: RejectedArticle, article_repo: AsyncArticleRepo) -> Article:
         """Port `restore_filtered_article()` -- kalau artikel udah ADA
         (by URL), gak disentuh, apa adanya (legacy juga gak nimpa yang
         udah ada, `find_one` check terus `return True` doang). BUKAN

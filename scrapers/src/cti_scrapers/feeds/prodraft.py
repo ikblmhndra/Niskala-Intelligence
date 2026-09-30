@@ -23,6 +23,6 @@ class Prodraft(XPathScraper):
         legacy_label="NEW ARTICLE FROM PRODAFT",
         legacy_script="prodraftThreat",
     )
-    url = 'https://prodaft.com/blogs'
-    title_xpath = '/html/body/main/div[2]/section[2]/div[2]/div[{i}]/div[1]/h4/text()'
-    link_xpath = '/html/body/main/div[2]/section[2]/div[2]/div[{i}]/div[1]/h4/@href'
+    url = "https://prodaft.com/blogs"
+    title_xpath = "/html/body/main/div[2]/section[2]/div[2]/div[{i}]/div[1]/h4/text()"
+    link_xpath = "/html/body/main/div[2]/section[2]/div[2]/div[{i}]/div[1]/h4/@href"

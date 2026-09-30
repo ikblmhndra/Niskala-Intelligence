@@ -1,5 +1,5 @@
 """Resolusi kredensial buat scraper yang butuh API key (GitHub, NVD,
-Twitter/twitterapi.io). `fetch()` scraper SENGAJA gak pernah pegang objek
+Twitter/twitterapi.io, X resmi). `fetch()` scraper SENGAJA gak pernah pegang objek
 ini langsung (lihat docstring `ScrapeContext` di base.py) -- cuma dipanggil
 dari `Runner`/`_record_baseline` (CLI `verify --record`), yang keduanya
 udah punya akses `cti_core.config` buat bikin `ScraperHttpClient` SEBELUM
@@ -31,6 +31,8 @@ _CREDENTIAL_RESOLVERS: dict[str, _Resolver] = {
     "github": lambda s: {"Authorization": f"Bearer {s.github.token}"} if s.github.token else None,
     "nvd": lambda s: {"apiKey": s.nvd.api_key} if s.nvd.api_key else None,
     "twitter": lambda s: {"X-API-Key": s.twitter.api_key} if s.twitter.api_key else None,
+    # API resmi X (pay-per-use). Beda dari "twitter" (= twitterapi.io): header dan host lain.
+    "x": lambda s: {"Authorization": f"Bearer {s.x.bearer_token}"} if s.x.bearer_token else None,
 }
 
 
@@ -46,8 +48,7 @@ def resolve_credential_headers(name: str, *, settings: Settings | None = None) -
     resolver = _CREDENTIAL_RESOLVERS.get(name)
     if resolver is None:
         raise ConfigError(
-            f"credential '{name}' gak dikenal -- pilihan yang ada: "
-            f"{sorted(_CREDENTIAL_RESOLVERS)}"
+            f"credential '{name}' gak dikenal -- pilihan yang ada: {sorted(_CREDENTIAL_RESOLVERS)}"
         )
 
     if settings is None:
@@ -58,7 +59,6 @@ def resolve_credential_headers(name: str, *, settings: Settings | None = None) -
     headers = resolver(settings)
     if headers is None:
         raise ConfigError(
-            f"credential '{name}' butuh secret yang masih kosong di .env "
-            "(lihat .env.example)"
+            f"credential '{name}' butuh secret yang masih kosong di .env (lihat .env.example)"
         )
     return headers

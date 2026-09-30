@@ -1,0 +1,17 @@
+{
+  "scraper": "threatmonThreat",
+  "legacy_script": "threatmonThreat",
+  "legacy_labels": [
+    "NEW ARTICLE FROM THREATMON"
+  ],
+  "source_urls": [
+    "https://threatmon.io/feed/"
+  ],
+  "http_status": {
+    "https://threatmon.io/feed/": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

@@ -23,7 +23,7 @@ class Cloudflare(XPathScraper):
         legacy_label="NEW ARTICLE FROM CLOUDFLARE",
         legacy_script="cloudflareThreat",
     )
-    url = 'https://www.cloudflare.com/resource-hub/?resourcetype=Report'
-    title_xpath = '/html/body/div[1]/div[1]/div/div[4]/div[2]/div/div[3]/div[1]/div[{i}]/div/h4'
-    link_xpath = '/html/body/div[1]/div[1]/div/div[4]/div[2]/div/div[3]/div[1]/div[{i}]/div/a'
+    url = "https://www.cloudflare.com/resource-hub/?resourcetype=Report"
+    title_xpath = "/html/body/div[1]/div[1]/div/div[4]/div[2]/div/div[3]/div[1]/div[{i}]/div/h4"
+    link_xpath = "/html/body/div[1]/div[1]/div/div[4]/div[2]/div/div[3]/div[1]/div[{i}]/div/a"
     base_url = "https://www.cloudflare.com"

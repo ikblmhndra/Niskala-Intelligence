@@ -207,9 +207,9 @@ class AsyncClientRepo:
 
     async def get(self, client_id: str) -> Client | None:
         result = await self.session.execute(
-            select(Client).options(selectinload(Client.countries)).where(
-                Client.client_id == client_id
-            )
+            select(Client)
+            .options(selectinload(Client.countries))
+            .where(Client.client_id == client_id)
         )
         return result.scalar_one_or_none()
 
@@ -299,9 +299,7 @@ class AsyncAuditLogRepo:
         count_result = await self.session.execute(stmt)
         total = len(count_result.all())
         stmt = (
-            stmt.order_by(AuditLogEntry.at.desc())
-            .offset((page - 1) * page_size)
-            .limit(page_size)
+            stmt.order_by(AuditLogEntry.at.desc()).offset((page - 1) * page_size).limit(page_size)
         )
         result = await self.session.execute(stmt)
         return list(result.scalars().all()), total

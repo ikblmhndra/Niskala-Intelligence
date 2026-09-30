@@ -12,17 +12,22 @@ from __future__ import annotations
 
 import contextlib
 from collections.abc import Callable
+from functools import lru_cache
 from typing import TYPE_CHECKING, Any
 
+from cti_core.config import get_settings
 from sqlalchemy.orm import Session
 
+from cti_scraper.errors import BackpressureError
 from cti_scraper.items import (
     ArticleItem,
     CveItem,
+    CveMentionItem,
     CvePocItem,
     IocFeedItem,
     Item,
     MalwareTrendItem,
+    NoticeItem,
     RansomwareVictimItem,
     TweetItem,
 )
@@ -72,6 +77,42 @@ def dispatch(item: Item, meta: ScraperMeta, session: Session) -> None:
     sink(item, meta, session)
 
 
+_ENRICH_QUEUE = "enrich"
+"""Sama dgn `cti_worker.queues.QUEUE_ENRICH` -- diduplikasi karena package ini
+gak boleh import dari `apps/worker` (arah dependency)."""
+
+
+@lru_cache(maxsize=1)
+def _broker_redis() -> Any:
+    import redis
+
+    return redis.Redis.from_url(get_settings().redis.url)
+
+
+def _enrich_queue_depth() -> int:
+    """Panjang antrian `enrich` di broker. Celery+Redis nyimpen queue sebagai
+    LIST bernama sama dgn queue-nya (gak ada priority steps di app ini), jadi
+    `LLEN` langsung. Yang keitung cuma pesan yang belum diambil worker --
+    yang lagi dikerjain (unacked) gak ikut, cukup buat sinyal "numpuk"."""
+    return int(_broker_redis().llen(_ENRICH_QUEUE))
+
+
+def ensure_enrich_capacity() -> None:
+    """Guard backpressure (Fase 10.1e). Scraper (~detik per run) jauh lebih
+    cepat dari enrichment (~10-13 detik + LLM per artikel), jadi tanpa ini
+    antrian numpuk tanpa batas -- ngabisin RAM Redis dan bikin artikel
+    terkirim berjam-jam setelah kejadian. Raise `BackpressureError` kalau
+    kedalaman udah >= `Settings.scraper.enrich_queue_max_depth` (`<= 0` =
+    guard mati). Angka default (2000) masih tebakan awal -- disetel ulang
+    begitu ada angka nyata dari `worker-nlp` produksi."""
+    limit = get_settings().scraper.enrich_queue_max_depth
+    if limit <= 0:
+        return
+    depth = _enrich_queue_depth()
+    if depth >= limit:
+        raise BackpressureError(f"antrian '{_ENRICH_QUEUE}' {depth} >= batas {limit}")
+
+
 @sink_for(ArticleItem)
 def _article_sink(item: ArticleItem, meta: ScraperMeta, session: Session) -> None:
     """Fase 6: `send_task` ke queue `enrich` (`enrich.article`, lihat
@@ -85,6 +126,7 @@ def _article_sink(item: ArticleItem, meta: ScraperMeta, session: Session) -> Non
     Kontraknya (tipe apa yang boleh masuk sini) gak berubah dari Fase 3."""
     from cti_core.celery_client import get_celery_client
 
+    ensure_enrich_capacity()
     get_celery_client().send_task(
         "enrich.article",
         kwargs={
@@ -94,7 +136,7 @@ def _article_sink(item: ArticleItem, meta: ScraperMeta, session: Session) -> Non
             "source": meta.source,
             "scraper_id": meta.id,
         },
-        queue="enrich",
+        queue=_ENRICH_QUEUE,
     )
 
 
@@ -285,6 +327,45 @@ def _tweet_sink(item: TweetItem, meta: ScraperMeta, session: Session) -> None:
     )
 
 
+@sink_for(CveMentionItem)
+def _cve_mention_sink(item: CveMentionItem, meta: ScraperMeta, session: Session) -> None:
+    """Naikkan `cve_mentions` (scope tweet). Idempoten lewat dedup id tweet."""
+    import datetime
+
+    from cti_core.db.models.report_state import SCOPE_TWEET
+    from cti_core.db.repositories.report_state import CveMentionRepo
+
+    CveMentionRepo(session).bump(
+        SCOPE_TWEET, item.cve_ids, on=datetime.datetime.now(datetime.UTC).date()
+    )
+
+
+_TELEGRAM_TEXT_LIMIT = 4096
+
+
+@sink_for(NoticeItem)
+def _notice_sink(item: NoticeItem, meta: ScraperMeta, session: Session) -> None:
+    """Kirim pesan ke Telegram. Kegagalan SENGAJA gak ditelan (beda dari
+    `_ioc_feed_sink`, yang punya data lain buat diselamatkan): notice itu
+    isinya SATU-SATUNYA, jadi exception -> `Runner` rollback + release dedup ->
+    dicoba lagi run berikutnya. Konsekuensi: at-least-once -- kalau pengiriman
+    sukses tapi commit DB sesudahnya gagal, pesan bisa terkirim dua kali;
+    dipilih daripada notice hilang."""
+    from cti_alerts.telegram import send_alert, send_document
+
+    if len(item.text) > _TELEGRAM_TEXT_LIMIT:
+        raise ValueError(
+            f"notice '{item.key}' {len(item.text)} karakter > batas Telegram "
+            f"{_TELEGRAM_TEXT_LIMIT} -- scraper harus memotong field panjangnya"
+        )
+    if item.attachment_text is None:
+        send_alert(item.topic, item.text)
+    else:
+        send_document(
+            item.topic, item.attachment_name or "notice.txt", item.attachment_text, item.text
+        )
+
+
 def reset() -> None:
     """Testing doang."""
     _SINKS.clear()
@@ -295,3 +376,5 @@ def reset() -> None:
     _SINKS[MalwareTrendItem] = _malware_trend_sink
     _SINKS[IocFeedItem] = _ioc_feed_sink
     _SINKS[TweetItem] = _tweet_sink
+    _SINKS[NoticeItem] = _notice_sink
+    _SINKS[CveMentionItem] = _cve_mention_sink

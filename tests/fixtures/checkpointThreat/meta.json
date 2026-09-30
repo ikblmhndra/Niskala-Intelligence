@@ -1,0 +1,19 @@
+{
+  "scraper": "checkpointThreat",
+  "legacy_script": "checkpointThreat",
+  "legacy_labels": [
+    "NEW ARTICLE FROM CHECKPOINT RESEARCH"
+  ],
+  "source_urls": [
+    "https://research.checkpoint.com/latest-publications/",
+    "https://research.checkpoint.com/intelligence-reports/"
+  ],
+  "http_status": {
+    "https://research.checkpoint.com/latest-publications/": 200,
+    "https://research.checkpoint.com/intelligence-reports/": 202
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

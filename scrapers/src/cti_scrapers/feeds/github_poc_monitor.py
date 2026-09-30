@@ -116,8 +116,7 @@ class GithubPocMonitor(BaseScraper):
             results = []
             for page in (1, 2):
                 url = (
-                    f"{_SEARCH_URL}?q=cve-{year}-*&sort=updated&order=desc"
-                    f"&per_page=50&page={page}"
+                    f"{_SEARCH_URL}?q=cve-{year}-*&sort=updated&order=desc&per_page=50&page={page}"
                 )
                 items = ctx.http.get(url).json().get("items", [])
                 if not items:
@@ -133,9 +132,9 @@ class GithubPocMonitor(BaseScraper):
 
                 repo_name = result["name"]
                 repo_desc = result.get("description") or ""
-                match = _CVE_ID_RE.search(
-                    repo_name.lower().replace("_", "-")
-                ) or _CVE_ID_RE.search(repo_desc.lower().replace("_", "-"))
+                match = _CVE_ID_RE.search(repo_name.lower().replace("_", "-")) or _CVE_ID_RE.search(
+                    repo_desc.lower().replace("_", "-")
+                )
                 if match is None:
                     continue
                 cve_id = match.group(1)

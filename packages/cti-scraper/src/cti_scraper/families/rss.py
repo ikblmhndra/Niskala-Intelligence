@@ -35,6 +35,19 @@ butuh langkah unescape susulan kayak pola `xml_fixups`+`html_unescape`."""
 
 _CDATA_SPLIT = re.compile(r"(<!\[CDATA\[.*?\]\]>)", re.DOTALL)
 
+_ILLEGAL_XML_CHARS = re.compile(r"[\x00-\x08\x0B\x0C\x0E-\x1F]")
+"""Karakter kontrol yang XML 1.0 gak izinkan sama sekali (tab/LF/CR
+dikecualikan). Ketauan lewat port `toxinlabs.py` (Fase 10.1c, 2026-09-30):
+feed Jekyll-nya nge-paste konten analisis malware/IOC mentah yang masih
+bawa byte kontrol (`\\x01`-`\\x05`), bikin `defusedxml` nolak "not
+well-formed". Strip-nya generik di sini, bukan `xml_fixups` per-scraper --
+feed APAPUN yang isinya nge-paste output terminal/hexdump bisa kena
+masalah yang sama."""
+
+
+def strip_illegal_xml_chars(text: str) -> str:
+    return _ILLEGAL_XML_CHARS.sub("", text)
+
 
 def escape_bare_ampersands(text: str) -> str:
     """`BARE_AMPERSAND.sub()` PER-SEGMEN, ngelewatin isi `<![CDATA[...]]>`
@@ -97,6 +110,7 @@ class RSSScraper(BaseScraper):
         # (`.decode("utf-8-sig")` dan/atau `.lstrip()`). Selalu aman di-strip:
         # feed yang udah rapi gak kena dampak apa-apa.
         text = resp.text.lstrip("\ufeff \t\r\n")
+        text = strip_illegal_xml_chars(text)
         for old, new in self.xml_fixups:
             text = text.replace(old, new)
         text = escape_bare_ampersands(text)

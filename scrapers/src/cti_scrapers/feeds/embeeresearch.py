@@ -20,7 +20,10 @@ class Embeeresearch(RSSScraper):
         legacy_label="NEW ARTICLE FROM EMBE RESEARCH",
         legacy_script="embeeresearchThreat",
     )
-    feeds = ('https://www.embeeresearch.io/rss/',)
+    feeds = ("https://www.embeeresearch.io/rss/",)
     date_path = None  # scraper lama pakai waktu-scrape, bukan tanggal artikel asli
-    xml_fixups = (('&ndash;', ''), ('&', '&amp;'),)
+    xml_fixups = (
+        ("&ndash;", ""),
+        ("&", "&amp;"),
+    )
     html_unescape = True  # feed lama pakai html.unescape() sebelum parse XML

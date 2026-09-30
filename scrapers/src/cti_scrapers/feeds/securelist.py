@@ -20,5 +20,5 @@ class Securelist(RSSScraper):
         legacy_label="NEW ARTICLE FROM SECURELIST",
         legacy_script="securelistThreat",
     )
-    feeds = ('https://securelist.com/feed/',)
+    feeds = ("https://securelist.com/feed/",)
     date_path = None  # scraper lama pakai waktu-scrape, bukan tanggal artikel asli

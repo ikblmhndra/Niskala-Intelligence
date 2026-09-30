@@ -18,7 +18,11 @@ from syrupy.matchers import path_type
 
 pytestmark = pytest.mark.asyncio
 
-_TODAY = datetime.date.today()
+# Dipin ke ISO week 39, 2026 (bukan `datetime.date.today()`) -- `week` di
+# `_serialize()` (routers/articles.py) diturunin dari `posted_on`, jadi kalau
+# ini ngikutin tanggal ASLI, snapshot `test_list_articles_dedup` bakal geser
+# tiap minggu kalender berganti.
+_TODAY = datetime.date(2026, 9, 24)
 
 _NORMALIZE = path_type(
     {

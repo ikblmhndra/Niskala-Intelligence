@@ -2856,6 +2856,20 @@
             ],
             "title": "Max Items"
           },
+          "options": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Options"
+          },
           "paused_reason": {
             "anyOf": [
               {
@@ -2918,6 +2932,7 @@
           "rate_limit",
           "max_items",
           "paused_reason",
+          "options",
           "updated_by",
           "updated_at"
         ],
@@ -2937,6 +2952,20 @@
               }
             ],
             "title": "Max Items"
+          },
+          "options": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Options"
           },
           "paused_reason": {
             "anyOf": [
@@ -3027,6 +3056,13 @@
             "title": "Notes",
             "type": "string"
           },
+          "options": {
+            "items": {
+              "$ref": "#/components/schemas/ScraperOptionOut"
+            },
+            "title": "Options",
+            "type": "array"
+          },
           "queue": {
             "title": "Queue",
             "type": "string"
@@ -3070,6 +3106,7 @@
           "default_max_retries",
           "default_dedup_ttl_days",
           "queue",
+          "options",
           "config"
         ],
         "title": "ScraperDetail",
@@ -3440,6 +3477,66 @@
           "total"
         ],
         "title": "ScraperListResponse",
+        "type": "object"
+      },
+      "ScraperOptionChoiceOut": {
+        "properties": {
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "value": {
+            "title": "Value",
+            "type": "string"
+          }
+        },
+        "required": [
+          "value",
+          "label"
+        ],
+        "title": "ScraperOptionChoiceOut",
+        "type": "object"
+      },
+      "ScraperOptionOut": {
+        "description": "Satu opsi yang dideklarasikan scraper (`ScraperMeta.options`) -- buat dropdown di UI.",
+        "properties": {
+          "choices": {
+            "items": {
+              "$ref": "#/components/schemas/ScraperOptionChoiceOut"
+            },
+            "title": "Choices",
+            "type": "array"
+          },
+          "default": {
+            "title": "Default",
+            "type": "string"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "key": {
+            "title": "Key",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "value": {
+            "title": "Value",
+            "type": "string"
+          }
+        },
+        "required": [
+          "key",
+          "label",
+          "description",
+          "default",
+          "choices",
+          "value"
+        ],
+        "title": "ScraperOptionOut",
         "type": "object"
       },
       "ScraperResetDedupResult": {

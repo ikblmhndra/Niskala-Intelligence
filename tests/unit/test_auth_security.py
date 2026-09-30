@@ -1,14 +1,31 @@
 """Unit test `cti_api.security` -- hash password (bcrypt) + JWT
-encode/decode. Murni fungsi, gak nyentuh DB/Redis -- `get_settings()`
-baca `.env` repo apa adanya (JWT_SECRET dkk udah ada di situ), SENGAJA
-gak di-override di sini (lihat `tests/integration/conftest.py`: override
-env var global bocor ke test lain kalau gak lewat `monkeypatch`)."""
+encode/decode. Murni fungsi, gak nyentuh DB/Redis. `create_token`/`decode_token`
+manggil `get_settings()` (butuh `AUTH__JWT_SECRET` dkk), dan dulu diam-diam
+ngandelin `.env` repo -- lolos di laptop, MERAH di CI/checkout bersih (ketauan
+dari simulasi CI Fase 10.D). Sekarang env-nya di-set lewat `monkeypatch`
+(function-scope, gak bocor ke test lain -- lihat catatan
+`tests/integration/conftest.py`), nilainya nilai uji, bukan secret beneran."""
 
 from __future__ import annotations
 
 import pytest
 from cti_api.security import create_token, decode_token, hash_password, verify_password
+from cti_core.config import get_settings
 from jose import JWTError, jwt
+
+
+@pytest.fixture(autouse=True)
+def _auth_settings(monkeypatch: pytest.MonkeyPatch):
+    for key, value in {
+        "DATABASE__URL": "postgresql+asyncpg://x:x@localhost/x",
+        "DATABASE__SYNC_URL": "postgresql+psycopg://x:x@localhost/x",
+        "AUTH__JWT_SECRET": "unit-test-jwt-secret",
+        "AUTH__SESSION_SECRET_KEY": "unit-test-session-secret",
+    }.items():
+        monkeypatch.setenv(key, value)
+    get_settings.cache_clear()
+    yield
+    get_settings.cache_clear()
 
 
 def test_hash_password_roundtrip() -> None:

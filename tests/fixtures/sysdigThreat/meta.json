@@ -1,0 +1,15 @@
+{
+  "scraper": "sysdigThreat",
+  "legacy_script": "sysdigThreat",
+  "legacy_labels": [],
+  "source_urls": [
+    "https://www.sysdig.com/blog/topic/threat-research/feed"
+  ],
+  "http_status": {
+    "https://www.sysdig.com/blog/topic/threat-research/feed": 404
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

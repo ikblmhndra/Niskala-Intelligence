@@ -14,18 +14,33 @@ bukan angka baku beda; sama-sama "jumlah paragraf -> jumlah kalimat ringkasan"."
 
 from __future__ import annotations
 
-import nltk
-from sumy.nlp.stemmers import Stemmer
-from sumy.nlp.tokenizers import Tokenizer
-from sumy.parsers.plaintext import PlaintextParser
-from sumy.summarizers.lsa import LsaSummarizer
-from sumy.utils import get_stop_words
+from typing import Any
 
 _LANGUAGE = "english"
 _nltk_data_checked = False
 
 
-def _ensure_nltk_data() -> None:
+def _import_nlp() -> Any:
+    """Import `nltk`/`sumy` LAZY, bukan di level modul: keduanya cuma ada di
+    image yang bawa extra `nlp` (`worker-nlp`) -- `pipeline.py` meng-import
+    modul ini, dan test/proses tanpa extra itu (CI `--extra dev`, image `worker`
+    ringan) gak boleh gagal cuma karena nge-import pipeline (sama kasusnya
+    dengan spaCy di `score._get_nlp()`).
+
+    Dipanggil DI LUAR `try/except` `summarize()`: dependency yang hilang harus
+    gagal KERAS di sini, bukan ditelan `except Exception` dan diam-diam jadi
+    "ringkasan = teks asli" di produksi."""
+    import nltk
+    from sumy.nlp.stemmers import Stemmer
+    from sumy.nlp.tokenizers import Tokenizer
+    from sumy.parsers.plaintext import PlaintextParser
+    from sumy.summarizers.lsa import LsaSummarizer
+    from sumy.utils import get_stop_words
+
+    return nltk, Stemmer, Tokenizer, PlaintextParser, LsaSummarizer, get_stop_words
+
+
+def _ensure_nltk_data(nltk: Any) -> None:
     """`sumy`'s tokenizer butuh corpus NLTK `punkt_tab` -- BUKAN dapet dari
     `pip install`/`uv sync` (beda dari `en_core_web_sm` di `cti-enrich`'s
     `nlp` extra, yang bisa dipin lewat URL wheel). Download sekali per
@@ -49,8 +64,9 @@ def summarize(text: str) -> str:
     teks penuh kalau ringkasan gagal dibikin)."""
     if not text:
         return ""
+    nltk, Stemmer, Tokenizer, PlaintextParser, LsaSummarizer, get_stop_words = _import_nlp()
     try:
-        _ensure_nltk_data()
+        _ensure_nltk_data(nltk)
         parser = PlaintextParser.from_string(text, Tokenizer(_LANGUAGE))
         stemmer = Stemmer(_LANGUAGE)
         summarizer = LsaSummarizer(stemmer)

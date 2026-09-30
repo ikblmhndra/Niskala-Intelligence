@@ -1,0 +1,504 @@
+{
+  "2026-09-17": [
+    {
+      "title": "What the Hugging Face Incident Teaches Us About Behavioral Detection in Agentic Attacks by Vectra AI Security Research team",
+      "url": "https://www.vectra.ai/blog/what-the-hugging-face-incident-teaches-us-about-behavioral-detection-in-agentic-attacks",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Five AI attacks. The same three blind spots. by Lucie Cardiet",
+      "url": "https://www.vectra.ai/blog/five-ai-attacks-the-same-three-blind-spots",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The Credentials Were Rotated. They Still Worked. by Lucie Cardiet",
+      "url": "https://www.vectra.ai/blog/the-credentials-were-rotated-they-still-worked",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Detecting Account Compromise Is Harder Than Ever. Vectra AI Catches What Native Signals Miss by Jesse Lord",
+      "url": "https://www.vectra.ai/blog/detecting-account-compromise-is-harder-than-ever-vectra-ai-catches-what-native-signals-miss",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "There’s Too Much Security Data. Here’s How Observability Helps. by Gearóid Ó Fearghaíl",
+      "url": "https://www.vectra.ai/blog/security-observability-actionable-insights",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Designing Better Security Dashboards for Better Decisions  by Ada Tirelli",
+      "url": "https://www.vectra.ai/blog/how-to-design-better-security-dashboards",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Vectra AI Pro: Securing the AI Enterprise by Tiffany Nip",
+      "url": "https://www.vectra.ai/blog/blog-vectra-ai-pro-securing-ai-enterprise",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Post-Quantum Cryptography Readiness Starts with Cryptographic Visibility by Campbell Robertson",
+      "url": "https://www.vectra.ai/blog/post-quantum-cryptography-readiness-starts-with-cryptographic-visibility",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "FedRAMP High Authorized: A New Era of AI-Native Security and Observability for Federal Agencies by Nicole Drake",
+      "url": "https://www.vectra.ai/blog/fedramp-high-authorized-a-new-era-of-ai-native-security-and-observability-for-federal-agencies",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Vectra AI’s Approach to AI in the SOC: AI Built by Security Experts for Security Experts  by Zoey Chu",
+      "url": "https://www.vectra.ai/blog/ai-reduces-investigation-latency",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Attackers Create Inbox Rules. They Don't Rewrite Yours.  by Stephan Hoehl ",
+      "url": "https://www.vectra.ai/blog/attackers-create-inbox-rules-they-dont-rewrite-yours",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "An autonomous AI agent compromised Hugging Face. The response is the real story. by Lucie Cardiet",
+      "url": "https://www.vectra.ai/blog/an-autonomous-ai-agent-compromised-hugging-face-the-response-is-the-real-story",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Reduce Your Attack Surface with Threat Exposure Management by Zoey Chu",
+      "url": "https://www.vectra.ai/blog/threat-exposure-management-visibility-to-action",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "AI Is No Longer Optional for your SOC by Gearóid Ó Fearghaíl",
+      "url": "https://www.vectra.ai/blog/using-ai-for-soc-investigations",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "AI Security Solution of the Year: Why Trusted Signal Powers the Agentic SOC by Mark Wojtasiak",
+      "url": "https://www.vectra.ai/blog/agentic-soc-ai-security-solution-of-the-year",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "From Trusted Attack Signal to Definitive Evidence: How Vectra AI and Endace Strengthen Investigations for Federal and Financial Organizations  by Brad Woodberg",
+      "url": "https://www.vectra.ai/blog/vectra-ai-endace-packet-level-evidence",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Customer Perspective: Staying Ahead of AI-Powered Attacks with AI-Powered Correlation and Context  by Tiffany Nip",
+      "url": "https://www.vectra.ai/blog/customer-perspective-staying-ahead-of-ai-powered-attacks-with-ai-powered-correlation-and-context",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "After the exploit, before the impact: A read of Gartner's 2026 threat landscape. by Lucie Cardiet",
+      "url": "https://www.vectra.ai/blog/after-the-exploit-before-the-impact-a-read-of-gartners-2026-threat-landscape",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "When the Wall Stops Working: What Post-Fortress Architecture Teaches Cybersecurity UX  by Padraig Mannion",
+      "url": "https://www.vectra.ai/blog/when-the-wall-stops-working-what-post-fortress-architecture-teaches-cybersecurity-ux",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "VECT and TeamPCP: The Ransomware Kill Chain, Reversed by Lucie Cardiet",
+      "url": "https://www.vectra.ai/blog/vect-and-teampcp-the-ransomware-kill-chain-reversed",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The FBI wrote down the Scattered Spider playbook, and it starts with a phone call by Lucie Cardiet",
+      "url": "https://www.vectra.ai/blog/the-fbi-wrote-down-the-scattered-spider-playbook-and-it-starts-with-a-phone-call",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "FortiBleed: You Cannot Patch a Valid Login by Lucie Cardiet",
+      "url": "https://www.vectra.ai/blog/fortibleed-you-cannot-patch-a-valid-login",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Why Cloud Security Remains Difficult in Multi-Cloud Environments by Aakash Gupta",
+      "url": "https://www.vectra.ai/blog/why-cloud-security-remains-difficult-in-multi-cloud-environments",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "AI Agents in the SOC: Moving from AI Hype to Operational Reality by Fabien Guillot",
+      "url": "https://www.vectra.ai/blog/ai-agents-in-the-soc-moving-from-ai-hype-to-operational-reality",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "A Valid Microsoft Signature Does Not Mean a Driver Is Safe by Lucie Cardiet",
+      "url": "https://www.vectra.ai/blog/a-valid-microsoft-signature-does-not-mean-a-driver-is-safe",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "What Anthropic's Attacker-AI Data Means for Detection by Lucie Cardiet",
+      "url": "https://www.vectra.ai/blog/what-anthropics-attacker-ai-data-means-for-detection",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "In the AI Era, Insider Threats Are Not Just Human. They’re Artificial. by Mark Wojtasiak",
+      "url": "https://www.vectra.ai/blog/in-the-ai-era-insider-threats-are-not-just-human-theyre-artificial",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The Security Event Horizon: Rethinking Cybersecurity Beyond Prevention  by Martin Roesch",
+      "url": "https://www.vectra.ai/blog/the-security-event-horizon-rethinking-cybersecurity-beyond-prevention",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Rethinking Exposure Management for the Modern AI Enterprise by John Mancini",
+      "url": "https://www.vectra.ai/blog/exposure-management-is-broken-heres-why-and-what-needs-to-change",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Why Modern C2 Detection Requires Behavioral Modeling, Not Decryption by John Mancini",
+      "url": "https://www.vectra.ai/blog/why-modern-c2-detection-requires-behavioral-modeling-not-decryption",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "5 Takeaways from the Gartner Security & Risk Management Summit 2026 by Mark Wojtasiak",
+      "url": "https://www.vectra.ai/blog/5-takeaways-from-the-gartner-security-risk-management-summit-2026",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "From Conti to The Gentlemen: tooling evolved, gaps didn't. by Lucie Cardiet",
+      "url": "https://www.vectra.ai/blog/from-conti-to-the-gentlemen-tooling-evolved-gaps-didnt",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Closing Modern Attack Gaps: How Vectra AI + Zscaler Deliver Modern Network Protection  by Brad Woodberg",
+      "url": "https://www.vectra.ai/blog/closing-modern-attack-gaps-how-vectra-ai-zscaler-deliver-modern-network-protection",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Azure’s Hidden Operators: A Threat Model for Platform-Level Managed Identities by Kat Traxler",
+      "url": "https://www.vectra.ai/blog/azures-hidden-operators-a-threat-model-for-platform-level-managed-identities",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "We Were AI Before AI Became a Checkbox  by Tommy Jenkins",
+      "url": "https://www.vectra.ai/blog/we-were-ai-before-ai-became-a-checkbox",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "AI-Driven Network Detection and Response: Insights from a 2026 Gartner® Magic Quadrant™ Leader  by Hitesh Sheth",
+      "url": "https://www.vectra.ai/blog/ai-driven-network-detection-and-response-insights-from-a-2026-gartner-magic-quadrant-leader",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Securing AI Adoption Starts with Visibility by Aakash Gupta",
+      "url": "https://www.vectra.ai/blog/securing-ai-adoption-starts-with-visibility",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The Missing Data Layer Behind SIEM and SOAR by Dale O’Grady",
+      "url": "https://www.vectra.ai/blog/security-telemetry-siem-soar",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Why Most SIEM/SOAR Integrations Break — and How to Fix Them by Dale O’Grady",
+      "url": "https://www.vectra.ai/blog/fixing-siem-soar-integrations",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Shai-Hulud Part 2: When the Worm Forged Its Own Security Certificate by Lucie Cardiet",
+      "url": "https://www.vectra.ai/blog/shai-hulud-part-2-when-the-worm-forged-its-own-security-certificate",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Improve SIEM and SOAR Workflows with Better Security Signal by Gearóid Ó Fearghaíl",
+      "url": "https://www.vectra.ai/blog/improve-siem-soar-workflows",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "ShinyHunters isn’t a group. It’s a pattern. by Lucie Cardiet",
+      "url": "https://www.vectra.ai/blog/shinyhunters-isnt-a-group-its-a-pattern",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "How Vectra AI Secures the AI Enterprise by Aakash Gupta",
+      "url": "https://www.vectra.ai/blog/how-vectra-ai-secures-the-ai-enterprise",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "AI agents: the new workforce — and attack surface. by Tiffany Nip",
+      "url": "https://www.vectra.ai/blog/ai-agents-the-new-workforce-and-attack-surface",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "How Vectra AI Scoring Helps Security Teams Focus on What Matters First  by John Mancini",
+      "url": "https://www.vectra.ai/blog/how-vectra-ai-scoring-helps-security-teams-focus-on-what-matters-first",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "What’s Next for the Enterprise After Two GenAI Tidal Waves?  by Oliver Tavakoli",
+      "url": "https://www.vectra.ai/blog/whats-next-for-the-enterprise-after-two-genai-tidal-waves",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "If An Identity was Compromised, Would We Know? by Zoey Chu",
+      "url": "https://www.vectra.ai/blog/if-an-identity-was-compromised-would-we-know",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Help Over Hype: Claude Mythos, Project Glasswing and the Real Questions CISOs Want Answered by Mark Wojtasiak",
+      "url": "https://www.vectra.ai/blog/help-over-hype-claude-mythos-project-glasswing-and-the-real-questions-cisos-want-answered",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Azure Logging just Changed - Your Detections May be Missing it  by Alex Groyz",
+      "url": "https://www.vectra.ai/blog/azure-logging-just-changed-your-detections-may-be-missing-it",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "When the Defender Becomes the Door: BlueHammer, RedSun, and UnDefend in the Wild by Justin Howe",
+      "url": "https://www.vectra.ai/blog/when-the-defender-becomes-the-door-bluehammer-redsun-and-undefend-in-the-wild",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "AI-Assisted Search: Clarity at the Speed of a Question by Tiffany Nip",
+      "url": "https://www.vectra.ai/blog/introducing-ai-assisted-search-clarity-at-the-speed-of-a-question",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "4 Ways to Improve SOC Efficiency with AI by Jesse Kimbrel",
+      "url": "https://www.vectra.ai/blog/4-ways-to-give-your-soc-valuable-time-back-with-ai",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Why triage alerts - when AI can do it for you? by Brad Woodberg",
+      "url": "https://www.vectra.ai/blog/why-triage-alerts-when-ai-can-do-it-for-you",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The Two Control Points That Will Define the Future of Cybersecurity – Network and Identity  by Tiffany Nip",
+      "url": "https://www.vectra.ai/blog/the-two-control-points-that-will-define-the-future-of-cybersecurity-network-and-identity",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Attackers Don’t Hack In — They Log In: The MFA Blind Spot by Lucie Cardiet",
+      "url": "https://www.vectra.ai/blog/attackers-dont-hack-in-they-log-in-the-mfa-blind-spot",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Supply chain-driven data theft in SaaS: ShinyHunters, Anodot, and the pattern that's repeating. by Lucie Cardiet",
+      "url": "https://www.vectra.ai/blog/the-rise-of-supply-chain-driven-data-theft-in-saas-environments",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "What We Learned from Analyzing Millions of Alerts by Zoey Chu",
+      "url": "https://www.vectra.ai/blog/what-we-learned-from-analyzing-millions-of-alerts",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "EDR Isn’t Enough: Why Forward-Thinking CISOs Are Turning to Network + Identity  by Mark Wojtasiak",
+      "url": "https://www.vectra.ai/blog/edr-isnt-enough-why-forward-thinking-cisos-are-turning-to-network-identity",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "FortiClient EMS Zero-Day: When the Control Plane Becomes Initial Access by Lucie Cardiet",
+      "url": "https://www.vectra.ai/blog/forticlient-ems-zero-day-when-the-control-plane-becomes-initial-access",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Detecting Compromise After the Axios Supply Chain Attack. by Yusri Mohd Yusop",
+      "url": "https://www.vectra.ai/blog/the-axios-breach-a-wake-up-call-for-software-supply-chain-security",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Who’s Doing What on Your Network? by Mark Wojtasiak",
+      "url": "https://www.vectra.ai/blog/whos-doing-what-on-your-network",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Breaking down the axios supply chain incident by Lucie Cardiet",
+      "url": "https://www.vectra.ai/blog/breaking-down-the-axios-supply-chain-incident",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Detecting Sliver C2: When Advanced Beaconing Tries to Hide in Plain Sight by Lucie Cardiet",
+      "url": "https://www.vectra.ai/blog/detecting-sliver-c2-when-advanced-beaconing-tries-to-hide-in-plain-sight",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Prompt Control: How Context Becomes the Command-and-Control Layer for AI Agents by Lucie Cardiet",
+      "url": "https://www.vectra.ai/blog/prompt-control-how-context-becomes-the-command-and-control-layer-for-ai-agents",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "How Attackers Move Through Hybrid Networks After the Initial Breach by Lucie Cardiet",
+      "url": "https://www.vectra.ai/blog/how-attackers-move-through-hybrid-networks-after-the-initial-breach",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "How Attackers Establish Persistence in Hybrid Environments by Lucie Cardiet",
+      "url": "https://www.vectra.ai/blog/how-attackers-establish-persistence-in-hybrid-environments",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "What the Stryker Incident Reveals About Handala’s Attack Playbook by Lucie Cardiet",
+      "url": "https://www.vectra.ai/blog/what-the-stryker-incident-reveals-about-handalas-attack-playbook",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Why Cyber Resilience is Lagging in the AI Era  by Jesse Kimbrel",
+      "url": "https://www.vectra.ai/blog/why-cyber-resilience-is-lagging-in-the-ai-era",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "5-Minute Hunt: Six Queries to Detect Iranian APT Activity by Lucie Cardiet",
+      "url": "https://www.vectra.ai/blog/5-minute-hunt-six-queries-to-detect-iranian-apt-activity",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "AI-Powered Attacks Are Here, But So Is AI-Powered NDR to Stop Them by John Mancini",
+      "url": "https://www.vectra.ai/blog/ai-powered-attacks-are-here-but-so-is-ai-powered-ndr-to-stop-them",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "What is hiding in AI traffic by Anna Baron Garcia",
+      "url": "https://www.vectra.ai/blog/what-is-hiding-in-ai-traffic",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "AWS Compromised by AI Agents in Minutes by Alex Groyz",
+      "url": "https://www.vectra.ai/blog/aws-compromised-by-ai-agents-in-minutes",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The UX of Cybersecurity AI: Designing for Behavior at Machine Speed  by Padraig Mannion",
+      "url": "https://www.vectra.ai/blog/the-ux-of-cybersecurity-ai-designing-for-behavior-at-machine-speed",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Molt Road and the Automation of Underground Marketplaces by Lucie Cardiet",
+      "url": "https://www.vectra.ai/blog/molt-road-and-the-automation-of-underground-marketplaces",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Moltbook and the Illusion of “Harmless” AI-Agent Communities by Lucie Cardiet",
+      "url": "https://www.vectra.ai/blog/moltbook-and-the-illusion-of-harmless-ai-agent-communities",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "From Network Detections to Understanding Risk: The Vectra AI Take on Gartner’s Redefinition of NDR by Mark Wojtasiak",
+      "url": "https://www.vectra.ai/blog/gartner-redefinition-of-ndr-network-detection-and-response",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "From Clawdbot to OpenClaw: When Automation Becomes a Digital Backdoor by Lucie Cardiet",
+      "url": "https://www.vectra.ai/blog/clawdbot-to-moltbot-to-openclaw-when-automation-becomes-a-digital-backdoor",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Securing the AI Enterprise: How I’m Thinking About It as a CEO  by Hitesh Sheth",
+      "url": "https://www.vectra.ai/blog/securing-the-ai-enterprise-how-im-thinking-about-it-as-a-ceo",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Cybersecurity Predictions 2026: AI, Agents, and SOC Defense by Fabien Guillot",
+      "url": "https://www.vectra.ai/blog/security-predictions-for-2026-when-ai-scales-the-offense-defense-must-evolve",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "OPSEC Failures: How Threat Actor Mistakes Help Defenders by Lucie Cardiet",
+      "url": "https://www.vectra.ai/blog/opsec-failures-how-threat-actor-mistakes-help-defenders",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "How Threat Actors Turned AI Into a Weapon by Mauro Paredes",
+      "url": "https://www.vectra.ai/blog/how-threat-actors-turned-ai-into-a-weapon",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "CVE-2025-14847 MongoBleed in the Wild: Identifying MongoDB Exposure and Exploitation with Network Metadata by Fabien Guillot",
+      "url": "https://www.vectra.ai/blog/cve-2025-14847-mongobleed-in-the-wild-identifying-mongodb-exposure-and-exploitation-with-network-metadata",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Pro-Russia Hacktivists Are Targeting Critical Infrastructure by Lucie Cardiet",
+      "url": "https://www.vectra.ai/blog/pro-russia-hacktivists-are-targeting-critical-infrastructure",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "How Vectra AI Connects Network Detections to Endpoint Processes Automatically by Dale O’Grady",
+      "url": "https://www.vectra.ai/blog/how-vectra-ai-connects-network-detections-to-endpoint-processes-automatically",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "How Vectra AI and CrowdStrike Deliver Complete Context Across Endpoint and Network by Tiffany Nip",
+      "url": "https://www.vectra.ai/blog/how-vectra-ai-and-crowdstrike-deliver-complete-context-across-endpoint-and-network",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "You are the Blackboard - AI Agent Assisted Bug Hunting by Kat Traxler",
+      "url": "https://www.vectra.ai/blog/ai-agent-assisted-bug-hunting",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "TCP Reset Does Not Stop Modern Attacks – Here's Why  by Tom Bilen",
+      "url": "https://www.vectra.ai/blog/tcp-reset-does-not-stop-modern-attacks---heres-why",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Shai-Hulud: When a Supply-Chain Incident Turns Into a Worm by Lucie Cardiet",
+      "url": "https://www.vectra.ai/blog/shai-hulud-when-a-supply-chain-incident-turns-into-a-worm",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "How Typhoon APTs Infiltrate Infrastructure Without Leaving a Trace by Lucie Cardiet",
+      "url": "https://www.vectra.ai/blog/how-typhoon-apts-infiltrate-infrastructure-without-leaving-a-trace",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Think Your Microsoft Environment Is Resilient to Attacks? Think Again  by Tiffany Nip",
+      "url": "https://www.vectra.ai/blog/think-your-microsoft-environment-is-resilient-to-attacks-think-again",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Europol Operation ENDGAME: Takedown of Initial Access Brokers by Lucie Cardiet",
+      "url": "https://www.vectra.ai/blog/operation-endgame-and-the-battle-for-initial-access",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "What 400+ NDR Power Users Taught Us About Network Visibility by Nicole Drake",
+      "url": "https://www.vectra.ai/blog/what-400-ndr-power-users-taught-us-about-network-visibility",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "How Attackers Gain Initial Access in Hybrid Environments by Lucie Cardiet",
+      "url": "https://www.vectra.ai/blog/how-attackers-gain-initial-access-in-hybrid-environments",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Can Your SOC's AI Actually Think? Evaluating LLMs with the Vectra AI MCP Server by Fabien Guillot",
+      "url": "https://www.vectra.ai/blog/can-your-socs-ai-actually-think-evaluating-llms-with-the-vectra-ai-mcp-server",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "How Vectra AI Hybrid NDR Enables Proactive Threat Hunting and Outcome-Driven Defense by Tiffany Nip",
+      "url": "https://www.vectra.ai/blog/how-vectra-ai-hybrid-ndr-enables-proactive-threat-hunting-and-outcome-driven-defense",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Introducing the Vectra AI MCP Server for On-Premises (QUX)  by Fabien Guillot",
+      "url": "https://www.vectra.ai/blog/introducing-the-vectra-ai-mcp-server-for-on-premises-qux",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "From Conti to Black Basta to DevMan: The Endless Ransomware Rebrand by Lucie Cardiet",
+      "url": "https://www.vectra.ai/blog/from-conti-to-black-basta-to-devman-the-endless-ransomware-rebrand",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "How the F5 Breach Exposed Critical Edge Security Gaps by Lucie Cardiet",
+      "url": "https://www.vectra.ai/blog/could-the-f5-breach-expose-a-new-edge-security-gap",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Qilin’s 2025 Playbook, and the Security Gap it Exposes by Lucie Cardiet",
+      "url": "https://www.vectra.ai/blog/qilins-2025-playbook-and-the-security-gap-it-exposes",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Vectra Fusion: Extending the Vectra AI Platform to Build Resilience Both Pre and Post Compromise by Mark Wojtasiak",
+      "url": "https://www.vectra.ai/blog/vectra-fusion-extending-the-vectra-ai-platform-to-build-resilience-both-pre-and-post-compromise",
+      "posted_on": "2026-09-17"
+    }
+  ]
+}

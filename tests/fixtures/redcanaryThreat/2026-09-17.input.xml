@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>The Red Canary Blog: Information Security Insights</title>
+	<atom:link href="https://redcanary.com/blog/feed/" rel="self" type="application/rss+xml" />
+	<link>https://redcanary.com/blog/</link>
+	<description></description>
+	<lastBuildDate>
+	Thu, 10 Sep 2026 15:39:08 -0600	</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	
+	<item>
+		<title>Intelligence Insights: August 2026</title>
+		<link>https://redcanary.com/blog/threat-intelligence/intelligence-insights-august-2026/</link>
+				<pubDate>Thu, 20 Aug 2026 20:09:55 +0000</pubDate>
+		<dc:creator><![CDATA[The Red Canary Team]]></dc:creator>
+				<category><![CDATA[Threat intelligence]]></category>
+
+		<guid isPermaLink="false">https://redcanary.com/?p=48369</guid>
+					<description><![CDATA[Debuts, departures, and danger on the blockchain in this month’s edition of Intelligence Insights.]]></description>
+										<content:encoded><![CDATA[Debuts, departures, and danger on the blockchain in this month’s edition of Intelligence Insights]]></content:encoded>
+												</item>
+		<item>
+		<title>Intelligence Insights: July 2026</title>
+		<link>https://redcanary.com/blog/threat-intelligence/intelligence-insights-july-2026/</link>
+				<pubDate>Thu, 23 Jul 2026 17:12:43 +0000</pubDate>
+		<dc:creator><![CDATA[The Red Canary Team]]></dc:creator>
+				<category><![CDATA[Threat intelligence]]></category>
+
+		<guid isPermaLink="false">https://redcanary.com/?p=48167</guid>
+					<description><![CDATA[ClearFake claims the crown again and CastleLoader debuts in this month’s edition of Intelligence Insights.]]></description>
+										<content:encoded><![CDATA[ClearFake claims the crown again and CastleLoader debuts in this month’s edition of Intelligence Insights.]]></content:encoded>
+												</item>
+		<item>
+		<title>Train, triage, repeat: The AI agent changing how we fight phishing</title>
+		<link>https://redcanary.com/blog/threat-detection/phishing-ai-agent/</link>
+				<pubDate>Tue, 30 Jun 2026 12:33:22 +0000</pubDate>
+		<dc:creator><![CDATA[Ryan Morton]]></dc:creator>
+				<category><![CDATA[Product updates]]></category>
+		<category><![CDATA[Threat detection]]></category>
+
+		<guid isPermaLink="false">https://redcanary.com/?p=48078</guid>
+					<description><![CDATA[Learn how Red Canary engineered a super agent—blending ML, a rules engine, similarity, agentic AI, and LLMs—to classify phishing emails.]]></description>
+										<content:encoded><![CDATA[Learn how Red Canary engineered a super agent—blending ML, a rules engine, similarity, agentic AI, and LLMs—to classify phishing emails. <span style="font-weight: 400;">With 94% accuracy, it makes the case for what a hybrid AI SOC can achieve.</span>
+
+&nbsp;
+
+&nbsp;]]></content:encoded>
+												</item>
+		<item>
+		<title>Intelligence Insights: June 2026</title>
+		<link>https://redcanary.com/blog/threat-intelligence/intelligence-insights-june-2026/</link>
+				<pubDate>Thu, 18 Jun 2026 17:49:20 +0000</pubDate>
+		<dc:creator><![CDATA[The Red Canary Team]]></dc:creator>
+				<category><![CDATA[Threat intelligence]]></category>
+
+		<guid isPermaLink="false">https://redcanary.com/?p=48054</guid>
+					<description><![CDATA[ClearFake is the clear-cut number one again and Kali365 debuts in this month’s edition of Intelligence Insights]]></description>
+										<content:encoded><![CDATA[ClearFake is the clear-cut number one again and Kali365 debuts in this month’s edition of Intelligence Insights]]></content:encoded>
+												</item>
+		<item>
+		<title>The dual-use dilemma: Rethinking detection for remote access tool abuse</title>
+		<link>https://redcanary.com/blog/security-operations/rmm-detection/</link>
+				<pubDate>Wed, 17 Jun 2026 16:15:51 +0000</pubDate>
+		<dc:creator><![CDATA[Jason Killam]]></dc:creator>
+				<category><![CDATA[Security operations]]></category>
+
+		<guid isPermaLink="false">https://redcanary.com/?p=48043</guid>
+					<description><![CDATA[A comprehensive guide to the most commonly abused RMM tools, including technical guidance for detection and prevention ]]></description>
+										<content:encoded><![CDATA[<span style="font-weight: 400;">A comprehensive guide to the most commonly abused RMM tools, including technical guidance for detection and prevention.</span>]]></content:encoded>
+												</item>
+		<item>
+		<title>How threat hunting evolves at scale</title>
+		<link>https://redcanary.com/blog/threat-detection/threat-hunting-scaled/</link>
+				<pubDate>Thu, 11 Jun 2026 13:09:00 +0000</pubDate>
+		<dc:creator><![CDATA[Brittany Sattler]]></dc:creator>
+				<category><![CDATA[Threat detection]]></category>
+
+		<guid isPermaLink="false">https://redcanary.com/?p=48030</guid>
+					<description><![CDATA[We offer a practical roadmap for evolving informal, ad hoc threat hunting practices into a mature, scalable program]]></description>
+										<content:encoded><![CDATA[<span style="font-weight: 400;">We offer a practical roadmap for evolving informal, ad hoc threat hunting practices into a mature, scalable program—covering key friction points, structural strategies, and tooling approaches organizations need to grow effectively</span>]]></content:encoded>
+												</item>
+		<item>
+		<title>Investigating suspicious AI workflows in Microsoft Entra Agent ID: Assistive agents</title>
+		<link>https://redcanary.com/blog/threat-detection/entra-id-ai-workflows-assistive-agents/</link>
+				<pubDate>Mon, 08 Jun 2026 15:37:01 +0000</pubDate>
+		<dc:creator><![CDATA[Matt Graeber]]></dc:creator>
+				<category><![CDATA[Threat detection]]></category>
+
+		<guid isPermaLink="false">https://redcanary.com/?p=48014</guid>
+					<description><![CDATA[Assistive AI agents aren't always helpful—it all depends on who they're working on behalf of. ]]></description>
+										<content:encoded><![CDATA[Assistive AI agents aren't always helpful—it all depends on who they're working on behalf of.]]></content:encoded>
+												</item>
+		<item>
+		<title>Red Canary CFP tracker: June 2026</title>
+		<link>https://redcanary.com/blog/news-events/red-canary-cfp-tracker-june-2026/</link>
+				<pubDate>Mon, 01 Jun 2026 18:59:52 +0000</pubDate>
+		<dc:creator><![CDATA[Shelley Moore]]></dc:creator>
+				<category><![CDATA[News & events]]></category>
+
+		<guid isPermaLink="false">https://redcanary.com/?p=47961</guid>
+					<description><![CDATA[Red Canary's monthly roundup of upcoming security conferences and call for papers (CFP) submission deadlines June 2026]]></description>
+										<content:encoded><![CDATA[A monthly roundup of upcoming security conferences and call for papers (CFP) submission deadlines]]></content:encoded>
+												</item>
+		<item>
+		<title>Investigating suspicious AI workflows in Microsoft Entra Agent ID: Agent&#8217;s user account</title>
+		<link>https://redcanary.com/blog/threat-detection/entra-id-ai-workflows-teams/</link>
+				<pubDate>Mon, 01 Jun 2026 13:04:01 +0000</pubDate>
+		<dc:creator><![CDATA[Matt Graeber]]></dc:creator>
+				<category><![CDATA[Threat detection]]></category>
+
+		<guid isPermaLink="false">https://redcanary.com/?p=47878</guid>
+					<description><![CDATA[Entra ID agent users can send malicious content to human users via Microsoft Teams. Here’s what to look out for.]]></description>
+										<content:encoded><![CDATA[Your "agentic coworker" is sending suspicious messages via Microsoft Teams. It's going to need to have a chat with the agentic HR department.]]></content:encoded>
+												</item>
+		<item>
+		<title>Grading on a curve: How to assess a pentest</title>
+		<link>https://redcanary.com/blog/testing-and-validation/pentesting/</link>
+				<pubDate>Thu, 28 May 2026 13:13:04 +0000</pubDate>
+		<dc:creator><![CDATA[Brian Donohue]]></dc:creator>
+				<category><![CDATA[Testing and validation]]></category>
+
+		<guid isPermaLink="false">https://redcanary.com/?p=47873</guid>
+					<description><![CDATA[Defenders don’t need to detect every adversary action to prevent a threat. Here’s a more realistic, optimized approach to testing.]]></description>
+										<content:encoded><![CDATA[<span style="font-weight: 400;">Defenders don’t need to detect every adversary action to prevent a threat. Here’s a more realistic, optimized approach to testing. </span>]]></content:encoded>
+												</item>
+	</channel>
+</rss>

@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
+  <channel>
+    <title>EclecticIQ Blog</title>
+    <link>https://blog.eclecticiq.com</link>
+    <description>Latest on Vulnerability Trends, STIX / TAXII, Beyond the IOC, Ransomware Snapshots, and Threat Analyst enablement</description>
+    <language>en-us</language>
+    <pubDate>Fri, 21 Aug 2026 14:05:21 GMT</pubDate>
+    <dc:date>2026-08-21T14:05:21Z</dc:date>
+    <dc:language>en-us</dc:language>
+    <item>
+      <title>Compromising the Developer: How Modern Dependency Culture Reshaped the Supply Chain Threat Landscape</title>
+      <link>https://blog.eclecticiq.com/compromising-the-developer</link>
+      <description>&lt;h2 style="line-height: 115%;"&gt;&lt;span style="line-height: 115%;"&gt;1. Executive summary&lt;/span&gt;&lt;/h2&gt; 
+&lt;p style="line-height: 1.5;"&gt;&lt;span style="line-height: 115%;"&gt;Modern software is assembled, not written. A single application routinely draws on hundreds of third-party components, pulled in on demand and updated continuously as part of normal process. That convenience has quietly become a dependable initial-access route that bypasses traditional perimeter and endpoint defenses. Rather than breaching a hardened production perimeter, adversaries increasingly compromise the developer, the maintainer account, the build pipeline, or the package registry — and let trusted automation carry their code the rest of the way.&lt;/span&gt;&lt;/p&gt;</description>
+      <content:encoded>&lt;h2 style="line-height: 115%;"&gt;&lt;span style="line-height: 115%;"&gt;1. Executive summary&lt;/span&gt;&lt;/h2&gt; 
+&lt;p style="line-height: 1.5;"&gt;&lt;span style="line-height: 115%;"&gt;Modern software is assembled, not written. A single application routinely draws on hundreds of third-party components, pulled in on demand and updated continuously as part of normal process. That convenience has quietly become a dependable initial-access route that bypasses traditional perimeter and endpoint defenses. Rather than breaching a hardened production perimeter, adversaries increasingly compromise the developer, the maintainer account, the build pipeline, or the package registry — and let trusted automation carry their code the rest of the way.&lt;/span&gt;&lt;/p&gt;  
+&lt;img src="https://track.hubspot.com/__ptq.gif?a=2831317&amp;amp;k=14&amp;amp;r=https%3A%2F%2Fblog.eclecticiq.com%2Fcompromising-the-developer&amp;amp;bu=https%253A%252F%252Fblog.eclecticiq.com&amp;amp;bvt=rss" alt="" width="1" height="1" style="min-height:1px!important;width:1px!important;border-width:0!important;margin-top:0!important;margin-bottom:0!important;margin-right:0!important;margin-left:0!important;padding-top:0!important;padding-bottom:0!important;padding-right:0!important;padding-left:0!important; "&gt;</content:encoded>
+      <category>Intelligence Research</category>
+      <category>CTI</category>
+      <category>npm security</category>
+      <category>software supply chain security</category>
+      <category>open source supply chain attacks</category>
+      <pubDate>Mon, 17 Aug 2026 13:47:39 GMT</pubDate>
+      <guid>https://blog.eclecticiq.com/compromising-the-developer</guid>
+      <dc:date>2026-08-17T13:47:39Z</dc:date>
+      <dc:creator>EclecticIQ Threat Research Team</dc:creator>
+    </item>
+    <item>
+      <title>EclecticIQ Intelligence Center 3.8: Built for the way security teams are actually working now</title>
+      <link>https://blog.eclecticiq.com/intelligence-center-3.8</link>
+      <description>&lt;p&gt;&lt;span&gt;Running a threat intelligence program today means operating across more tools, more workflows, and more organizational complexity than most platforms were originally designed to handle. The intelligence is there. The question is whether the platform is keeping up with how your team actually needs to use it.&lt;/span&gt;&lt;span style="background-color: #c6c6c6;"&gt; &lt;/span&gt;&lt;/p&gt;</description>
+      <content:encoded>&lt;p&gt;&lt;span&gt;Running a threat intelligence program today means operating across more tools, more workflows, and more organizational complexity than most platforms were originally designed to handle. The intelligence is there. The question is whether the platform is keeping up with how your team actually needs to use it.&lt;/span&gt;&lt;span style="background-color: #c6c6c6;"&gt; &lt;/span&gt;&lt;/p&gt;  
+&lt;img src="https://track.hubspot.com/__ptq.gif?a=2831317&amp;amp;k=14&amp;amp;r=https%3A%2F%2Fblog.eclecticiq.com%2Fintelligence-center-3.8&amp;amp;bu=https%253A%252F%252Fblog.eclecticiq.com&amp;amp;bvt=rss" alt="" width="1" height="1" style="min-height:1px!important;width:1px!important;border-width:0!important;margin-top:0!important;margin-bottom:0!important;margin-right:0!important;margin-left:0!important;padding-top:0!important;padding-bottom:0!important;padding-right:0!important;padding-left:0!important; "&gt;</content:encoded>
+      <category>Threat Intelligence Platform</category>
+      <category>Product</category>
+      <category>CTI Ops</category>
+      <category>SOC</category>
+      <category>Release</category>
+      <category>Product Launch</category>
+      <category>MCP Server</category>
+      <category>Agentic AI</category>
+      <pubDate>Thu, 06 Aug 2026 07:44:59 GMT</pubDate>
+      <author>m.karwat@eclecticiq.com (Magdalena Karwat)</author>
+      <guid>https://blog.eclecticiq.com/intelligence-center-3.8</guid>
+      <dc:date>2026-08-06T07:44:59Z</dc:date>
+    </item>
+    <item>
+      <title>EclecticIQ MCP Server: Connect your AI agents directly to your threat intelligence</title>
+      <link>https://blog.eclecticiq.com/eclecticiq-mcp-server</link>
+      <description>&lt;p&gt;&lt;span&gt;SOC and CTI teams have spent the last two years integrating AI tools into real investigative work, and the results have been meaningful. Analysts move faster through reports, surface connections more quickly, and spend less time on the mechanical parts of initial triage. But the threat intelligence platform sitting at the center of that work has remained largely separate from it, a destination analysts navigate to rather than an environment agents can operate inside. The gap between understanding a threat and recording it in a TIP is still, in most teams, a human problem. The EclecticIQ MCP Server is built to close it.&lt;/span&gt;&lt;span style="background-color: #c6c6c6;"&gt; &lt;/span&gt;&lt;/p&gt;</description>
+      <content:encoded>&lt;p&gt;&lt;span&gt;SOC and CTI teams have spent the last two years integrating AI tools into real investigative work, and the results have been meaningful. Analysts move faster through reports, surface connections more quickly, and spend less time on the mechanical parts of initial triage. But the threat intelligence platform sitting at the center of that work has remained largely separate from it, a destination analysts navigate to rather than an environment agents can operate inside. The gap between understanding a threat and recording it in a TIP is still, in most teams, a human problem. The EclecticIQ MCP Server is built to close it.&lt;/span&gt;&lt;span style="background-color: #c6c6c6;"&gt; &lt;/span&gt;&lt;/p&gt;  
+&lt;img src="https://track.hubspot.com/__ptq.gif?a=2831317&amp;amp;k=14&amp;amp;r=https%3A%2F%2Fblog.eclecticiq.com%2Feclecticiq-mcp-server&amp;amp;bu=https%253A%252F%252Fblog.eclecticiq.com&amp;amp;bvt=rss" alt="" width="1" height="1" style="min-height:1px!important;width:1px!important;border-width:0!important;margin-top:0!important;margin-bottom:0!important;margin-right:0!important;margin-left:0!important;padding-top:0!important;padding-bottom:0!important;padding-right:0!important;padding-left:0!important; "&gt;</content:encoded>
+      <category>Threat Intelligence Platform</category>
+      <category>Product</category>
+      <category>AI</category>
+      <category>MCP Server</category>
+      <category>Agentic AI</category>
+      <pubDate>Mon, 13 Jul 2026 07:15:47 GMT</pubDate>
+      <author>m.karwat@eclecticiq.com (Magdalena Karwat)</author>
+      <guid>https://blog.eclecticiq.com/eclecticiq-mcp-server</guid>
+      <dc:date>2026-07-13T07:15:47Z</dc:date>
+    </item>
+    <item>
+      <title>Keyword lists: Stop re-entering the same organizational context across every workflow</title>
+      <link>https://blog.eclecticiq.com/keyword-lists</link>
+      <description>&lt;p&gt;&lt;span&gt;SOC and CTI teams spend a significant part of their day maintaining context that should already be there. The assets they monitor, the technologies they protect, the threat actors they track, this organizational knowledge gets re-entered manually across searches, rules, and requirements, duplicated across individual analyst workflows, and updated inconsistently when environments change. The intelligence keeps up with the threat landscape. The context that scopes it rarely does. That is why Intelligence Center 3.8 introduces Keyword lists, a capability that lets teams define organizational context once and apply it automatically across every workflow.&lt;/span&gt;&lt;span style="background-color: #c6c6c6;"&gt; &lt;/span&gt;&lt;/p&gt;</description>
+      <content:encoded>&lt;p&gt;&lt;span&gt;SOC and CTI teams spend a significant part of their day maintaining context that should already be there. The assets they monitor, the technologies they protect, the threat actors they track, this organizational knowledge gets re-entered manually across searches, rules, and requirements, duplicated across individual analyst workflows, and updated inconsistently when environments change. The intelligence keeps up with the threat landscape. The context that scopes it rarely does. That is why Intelligence Center 3.8 introduces Keyword lists, a capability that lets teams define organizational context once and apply it automatically across every workflow.&lt;/span&gt;&lt;span style="background-color: #c6c6c6;"&gt; &lt;/span&gt;&lt;/p&gt;  
+&lt;img src="https://track.hubspot.com/__ptq.gif?a=2831317&amp;amp;k=14&amp;amp;r=https%3A%2F%2Fblog.eclecticiq.com%2Fkeyword-lists&amp;amp;bu=https%253A%252F%252Fblog.eclecticiq.com&amp;amp;bvt=rss" alt="" width="1" height="1" style="min-height:1px!important;width:1px!important;border-width:0!important;margin-top:0!important;margin-bottom:0!important;margin-right:0!important;margin-left:0!important;padding-top:0!important;padding-bottom:0!important;padding-right:0!important;padding-left:0!important; "&gt;</content:encoded>
+      <category>Threat Intelligence</category>
+      <category>Product</category>
+      <category>CTI Ops</category>
+      <category>Analyst tools</category>
+      <category>SOC</category>
+      <category>TIP</category>
+      <pubDate>Wed, 08 Jul 2026 08:48:31 GMT</pubDate>
+      <author>m.karwat@eclecticiq.com (Magdalena Karwat)</author>
+      <guid>https://blog.eclecticiq.com/keyword-lists</guid>
+      <dc:date>2026-07-08T08:48:31Z</dc:date>
+    </item>
+    <item>
+      <title>The AI Arms Race: How Adversaries are Weaponizing AI for Speed and Scale</title>
+      <link>https://blog.eclecticiq.com/the-ai-arms-race-how-adversaries-are-weaponizing-ai-for-speed-and-scale</link>
+      <description>&lt;h1 style="line-height: 1.5;"&gt;1. Executive summary&lt;/h1&gt; 
+&lt;p style="text-align: justify; line-height: 1.5;"&gt;For a decade, the cyber threat narrative has been one of escalating sophistication. Over the past twelve months, it has become one of escalating speed. Across reporting from Google &lt;a href="https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools"&gt;[1]&lt;/a&gt;, Microsoft &lt;a href="https://www.microsoft.com/en-us/security/blog/2026/03/06/ai-as-tradecraft-how-threat-actors-operationalize-ai/"&gt;[2]&lt;/a&gt;, CrowdStrike &lt;a href="https://www.crowdstrike.com/en-us/global-threat-report/"&gt;[3]&lt;/a&gt;, Mandiant &lt;a href="https://cloud.google.com/blog/topics/threat-intelligence/m-trends-2026"&gt;[4]&lt;/a&gt;, Anthropic &lt;a href="https://www.anthropic.com/news/detecting-countering-misuse-aug-2025"&gt;[5]&lt;/a&gt; and OpenAI &lt;a href="https://openai.com/global-affairs/disrupting-malicious-uses-of-ai-october-2025/"&gt;[6]&lt;/a&gt;, a consistent picture has emerged: artificial intelligence is not fundamentally changing what adversaries can do. Instead, it is letting them execute existing tactics faster, at greater scale, and with fewer skilled people.&lt;/p&gt;</description>
+      <content:encoded>&lt;h1 style="line-height: 1.5;"&gt;1. Executive summary&lt;/h1&gt; 
+&lt;p style="text-align: justify; line-height: 1.5;"&gt;For a decade, the cyber threat narrative has been one of escalating sophistication. Over the past twelve months, it has become one of escalating speed. Across reporting from Google &lt;a href="https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools"&gt;[1]&lt;/a&gt;, Microsoft &lt;a href="https://www.microsoft.com/en-us/security/blog/2026/03/06/ai-as-tradecraft-how-threat-actors-operationalize-ai/"&gt;[2]&lt;/a&gt;, CrowdStrike &lt;a href="https://www.crowdstrike.com/en-us/global-threat-report/"&gt;[3]&lt;/a&gt;, Mandiant &lt;a href="https://cloud.google.com/blog/topics/threat-intelligence/m-trends-2026"&gt;[4]&lt;/a&gt;, Anthropic &lt;a href="https://www.anthropic.com/news/detecting-countering-misuse-aug-2025"&gt;[5]&lt;/a&gt; and OpenAI &lt;a href="https://openai.com/global-affairs/disrupting-malicious-uses-of-ai-october-2025/"&gt;[6]&lt;/a&gt;, a consistent picture has emerged: artificial intelligence is not fundamentally changing what adversaries can do. Instead, it is letting them execute existing tactics faster, at greater scale, and with fewer skilled people.&lt;/p&gt;  
+&lt;img src="https://track.hubspot.com/__ptq.gif?a=2831317&amp;amp;k=14&amp;amp;r=https%3A%2F%2Fblog.eclecticiq.com%2Fthe-ai-arms-race-how-adversaries-are-weaponizing-ai-for-speed-and-scale&amp;amp;bu=https%253A%252F%252Fblog.eclecticiq.com&amp;amp;bvt=rss" alt="" width="1" height="1" style="min-height:1px!important;width:1px!important;border-width:0!important;margin-top:0!important;margin-bottom:0!important;margin-right:0!important;margin-left:0!important;padding-top:0!important;padding-bottom:0!important;padding-right:0!important;padding-left:0!important; "&gt;</content:encoded>
+      <category>Threat Intelligence</category>
+      <category>Threats and Vulnerabilities</category>
+      <category>Intelligence Research</category>
+      <category>Threat Actor APT</category>
+      <category>Threat detection</category>
+      <category>Therat prioritization</category>
+      <pubDate>Thu, 02 Jul 2026 09:01:16 GMT</pubDate>
+      <guid>https://blog.eclecticiq.com/the-ai-arms-race-how-adversaries-are-weaponizing-ai-for-speed-and-scale</guid>
+      <dc:date>2026-07-02T09:01:16Z</dc:date>
+      <dc:creator>EclecticIQ Threat Research Team</dc:creator>
+    </item>
+    <item>
+      <title>Why doctrine is becoming a technology requirement for modern defense intelligence</title>
+      <link>https://blog.eclecticiq.com/why-doctrine-is-becoming-a-technology-requirement-for-modern-defense-intelligence</link>
+      <description>&lt;p&gt;&lt;span&gt;For years, defense organizations have adapted commercially developed cyber threat intelligence platforms to fit military intelligence processes. This arrangement was often accepted as a practical necessity. Commercial platforms delivered valuable capabilities, while intelligence teams developed processes to align outputs with doctrinal requirements, reporting structures, and command expectations.&lt;/span&gt;&lt;/p&gt;</description>
+      <content:encoded>&lt;p&gt;&lt;span&gt;For years, defense organizations have adapted commercially developed cyber threat intelligence platforms to fit military intelligence processes. This arrangement was often accepted as a practical necessity. Commercial platforms delivered valuable capabilities, while intelligence teams developed processes to align outputs with doctrinal requirements, reporting structures, and command expectations.&lt;/span&gt;&lt;/p&gt;  
+&lt;img src="https://track.hubspot.com/__ptq.gif?a=2831317&amp;amp;k=14&amp;amp;r=https%3A%2F%2Fblog.eclecticiq.com%2Fwhy-doctrine-is-becoming-a-technology-requirement-for-modern-defense-intelligence&amp;amp;bu=https%253A%252F%252Fblog.eclecticiq.com&amp;amp;bvt=rss" alt="" width="1" height="1" style="min-height:1px!important;width:1px!important;border-width:0!important;margin-top:0!important;margin-bottom:0!important;margin-right:0!important;margin-left:0!important;padding-top:0!important;padding-bottom:0!important;padding-right:0!important;padding-left:0!important; "&gt;</content:encoded>
+      <category>Threat Intelligence</category>
+      <category>Threat Intelligence Platform</category>
+      <category>defence</category>
+      <category>defense TIP</category>
+      <category>DefenseTIP</category>
+      <category>doctrine</category>
+      <pubDate>Mon, 22 Jun 2026 07:30:38 GMT</pubDate>
+      <author>a.carr@eclecticiq.com (Ash Carr)</author>
+      <guid>https://blog.eclecticiq.com/why-doctrine-is-becoming-a-technology-requirement-for-modern-defense-intelligence</guid>
+      <dc:date>2026-06-22T07:30:38Z</dc:date>
+    </item>
+    <item>
+      <title>The Escalating Cyber Risk Landscape in Regional Conflicts &amp; Strategic Actions for 2026</title>
+      <link>https://blog.eclecticiq.com/the-escalating-cyber-risk-landscape-in-regional-conflicts-strategic-actions-for-2026</link>
+      <description>&lt;h1 style="font-weight: bold; line-height: 1.5;"&gt;Executive Summary&lt;/h1&gt; 
+&lt;p style="text-align: justify; line-height: 1.5;"&gt;The People's Republic of China (PRC) represents the most significant long-term cyber threat to defense-aligned and enterprise organizations. PRC-linked threat groups are pre-positioned inside critical networks at scale. This access appears intended for possible activation during a future geopolitical crisis, likely a Taiwan contingency.&lt;/p&gt;</description>
+      <content:encoded>&lt;h1 style="font-weight: bold; line-height: 1.5;"&gt;Executive Summary&lt;/h1&gt; 
+&lt;p style="text-align: justify; line-height: 1.5;"&gt;The People's Republic of China (PRC) represents the most significant long-term cyber threat to defense-aligned and enterprise organizations. PRC-linked threat groups are pre-positioned inside critical networks at scale. This access appears intended for possible activation during a future geopolitical crisis, likely a Taiwan contingency.&lt;/p&gt;  
+&lt;img src="https://track.hubspot.com/__ptq.gif?a=2831317&amp;amp;k=14&amp;amp;r=https%3A%2F%2Fblog.eclecticiq.com%2Fthe-escalating-cyber-risk-landscape-in-regional-conflicts-strategic-actions-for-2026&amp;amp;bu=https%253A%252F%252Fblog.eclecticiq.com&amp;amp;bvt=rss" alt="" width="1" height="1" style="min-height:1px!important;width:1px!important;border-width:0!important;margin-top:0!important;margin-bottom:0!important;margin-right:0!important;margin-left:0!important;padding-top:0!important;padding-bottom:0!important;padding-right:0!important;padding-left:0!important; "&gt;</content:encoded>
+      <category>Threat Intelligence</category>
+      <category>Threats and Vulnerabilities</category>
+      <category>Intelligence Research</category>
+      <category>threat prioritization</category>
+      <pubDate>Thu, 11 Jun 2026 08:35:11 GMT</pubDate>
+      <guid>https://blog.eclecticiq.com/the-escalating-cyber-risk-landscape-in-regional-conflicts-strategic-actions-for-2026</guid>
+      <dc:date>2026-06-11T08:35:11Z</dc:date>
+      <dc:creator>EclecticIQ Threat Research Team</dc:creator>
+    </item>
+    <item>
+      <title>Customer case study: How Intelligence Center™ helps CTI teams cut through noise and act with confidence</title>
+      <link>https://blog.eclecticiq.com/customer-case-study-how-intelligence-center-helps-cti-teams-cut-through-noise-and-act-with-confidence</link>
+      <description>&lt;p&gt;Cybersecurity teams face a familiar problem. Too much data, not enough insight.&lt;/p&gt;</description>
+      <content:encoded>&lt;p&gt;Cybersecurity teams face a familiar problem. Too much data, not enough insight.&lt;/p&gt;  
+&lt;img src="https://track.hubspot.com/__ptq.gif?a=2831317&amp;amp;k=14&amp;amp;r=https%3A%2F%2Fblog.eclecticiq.com%2Fcustomer-case-study-how-intelligence-center-helps-cti-teams-cut-through-noise-and-act-with-confidence&amp;amp;bu=https%253A%252F%252Fblog.eclecticiq.com&amp;amp;bvt=rss" alt="" width="1" height="1" style="min-height:1px!important;width:1px!important;border-width:0!important;margin-top:0!important;margin-bottom:0!important;margin-right:0!important;margin-left:0!important;padding-top:0!important;padding-bottom:0!important;padding-right:0!important;padding-left:0!important; "&gt;</content:encoded>
+      <category>Threat Intelligence</category>
+      <category>Threat Intelligence Platform</category>
+      <category>Case study</category>
+      <pubDate>Mon, 08 Jun 2026 09:39:51 GMT</pubDate>
+      <guid>https://blog.eclecticiq.com/customer-case-study-how-intelligence-center-helps-cti-teams-cut-through-noise-and-act-with-confidence</guid>
+      <dc:date>2026-06-08T09:39:51Z</dc:date>
+      <dc:creator>EclecticIQ</dc:creator>
+    </item>
+    <item>
+      <title>SEO poisoning campaign leverages Gemini and Claude Code impersonation to deliver infostealer</title>
+      <link>https://blog.eclecticiq.com/seo-poisoning-campaign-leverages-gemini-and-claude-code-impersonation-to-deliver-infostealer</link>
+      <description>&lt;h3&gt;&lt;strong&gt;Executive summary&lt;br&gt;&lt;br&gt;&lt;/strong&gt;&lt;/h3&gt; 
+&lt;ul style="list-style-type: disc;"&gt; 
+ &lt;li style="text-align: justify;"&gt;&lt;span style="line-height: 115%;"&gt;Financially motivated eCrime actors will likely continue to expand opportunistic campaigns by impersonating AI platforms. These campaigns generate direct supply chain risk for enterprises, as threat actors target software developer tooling, including AI coding assistants and package managers, to compromise developer workstations.&lt;/span&gt;&lt;/li&gt; 
+ &lt;li style="text-align: justify;"&gt;&lt;span style="line-height: 115%;"&gt;In early March 2026, EclecticIQ analysts identified an ongoing infostealer campaign targeting Gemini CLI and Claude Code users. Threat actors use SEO poisoning to surface fake domains above legitimate results, directing victims to attacker-controlled infrastructure that mimics genuine AI agent installation pages.&lt;/span&gt;&lt;/li&gt; 
+ &lt;li style="text-align: justify;"&gt;&lt;span style="line-height: 115%;"&gt;The infostealer targets Windows endpoints and executes entirely in memory through PowerShell, harvesting credentials and sensitive data from a wide range of applications before exfiltrating the results in encrypted form to a command-and-control server. &lt;/span&gt;&lt;/li&gt; 
+ &lt;li style="text-align: justify;"&gt;&lt;span style="line-height: 115%;"&gt;Beyond credential theft, the malware provides arbitrary remote code execution capability, which financially motivated operators leverage to transition into hands-on-keyboard intrusions against selected victims and execute interactive code within the compromised environment.&lt;/span&gt;&lt;/li&gt; 
+ &lt;li style="text-align: justify;"&gt;&lt;span style="line-height: 115%;"&gt;Installations from these impersonated websites result in exfiltration of OAuth tokens, CI/CD credentials, corporate VPN details, and sensitive files, giving adversaries a direct path to initial access into the wider enterprise network.&lt;/span&gt;&lt;/li&gt; 
+ &lt;li style="text-align: justify;"&gt;&lt;span style="line-height: 115%;"&gt;This campaign showing that, financially motivated threat actors are capitalizing on widespread enterprise adoption of AI platforms to deliver infostealer malware.&lt;/span&gt;&lt;/li&gt; 
+ &lt;li style="text-align: justify;"&gt;&lt;span style="line-height: 115%;"&gt;Despite sustained law enforcement action, including Operation Magnus against RedLine and META in October 2024 and the May 2025 disruption of LummaC2 infrastructure, infostealer deployment against enterprise targets will likely continue to grow in the near term. Low operating costs and persistent demand for stolen credentials in underground markets sustain this trajectory.&lt;/span&gt;&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;h3 style="text-align: justify;"&gt;Typosquatted domains impersonate Gemini and Claude Code installation&lt;br&gt;&lt;br&gt;&lt;/h3&gt; 
+&lt;p style="text-align: justify;"&gt;&lt;span&gt;The Gemini CLI impersonation campaign was first publicly identified by independent threat researcher @g0njxa &lt;/span&gt;&lt;span&gt;[1]&lt;/span&gt;&lt;span&gt;, whose initial discovery enabled analysis and infrastructure pivoting documented in this report. The infection chain begins with a Google search by a developer looking for the official Gemini CLI &lt;/span&gt;&lt;span&gt;[2]&lt;/span&gt;&lt;span&gt; or Claude Code &lt;/span&gt;&lt;span&gt;[3]&lt;/span&gt;&lt;span&gt; installation page. Threat actors use SEO poisoning to surface a fake domain at the top of search results, above the legitimate source. The victim clicks through, lands on a malicious page visually consistent with a genuine vendor installation guide and is prompted to execute a single command to complete the install.&lt;/span&gt;&lt;/p&gt;</description>
+      <content:encoded>&lt;h3&gt;&lt;strong&gt;Executive summary&lt;br&gt;&lt;br&gt;&lt;/strong&gt;&lt;/h3&gt; 
+&lt;ul style="list-style-type: disc;"&gt; 
+ &lt;li style="text-align: justify;"&gt;&lt;span style="line-height: 115%;"&gt;Financially motivated eCrime actors will likely continue to expand opportunistic campaigns by impersonating AI platforms. These campaigns generate direct supply chain risk for enterprises, as threat actors target software developer tooling, including AI coding assistants and package managers, to compromise developer workstations.&lt;/span&gt;&lt;/li&gt; 
+ &lt;li style="text-align: justify;"&gt;&lt;span style="line-height: 115%;"&gt;In early March 2026, EclecticIQ analysts identified an ongoing infostealer campaign targeting Gemini CLI and Claude Code users. Threat actors use SEO poisoning to surface fake domains above legitimate results, directing victims to attacker-controlled infrastructure that mimics genuine AI agent installation pages.&lt;/span&gt;&lt;/li&gt; 
+ &lt;li style="text-align: justify;"&gt;&lt;span style="line-height: 115%;"&gt;The infostealer targets Windows endpoints and executes entirely in memory through PowerShell, harvesting credentials and sensitive data from a wide range of applications before exfiltrating the results in encrypted form to a command-and-control server. &lt;/span&gt;&lt;/li&gt; 
+ &lt;li style="text-align: justify;"&gt;&lt;span style="line-height: 115%;"&gt;Beyond credential theft, the malware provides arbitrary remote code execution capability, which financially motivated operators leverage to transition into hands-on-keyboard intrusions against selected victims and execute interactive code within the compromised environment.&lt;/span&gt;&lt;/li&gt; 
+ &lt;li style="text-align: justify;"&gt;&lt;span style="line-height: 115%;"&gt;Installations from these impersonated websites result in exfiltration of OAuth tokens, CI/CD credentials, corporate VPN details, and sensitive files, giving adversaries a direct path to initial access into the wider enterprise network.&lt;/span&gt;&lt;/li&gt; 
+ &lt;li style="text-align: justify;"&gt;&lt;span style="line-height: 115%;"&gt;This campaign showing that, financially motivated threat actors are capitalizing on widespread enterprise adoption of AI platforms to deliver infostealer malware.&lt;/span&gt;&lt;/li&gt; 
+ &lt;li style="text-align: justify;"&gt;&lt;span style="line-height: 115%;"&gt;Despite sustained law enforcement action, including Operation Magnus against RedLine and META in October 2024 and the May 2025 disruption of LummaC2 infrastructure, infostealer deployment against enterprise targets will likely continue to grow in the near term. Low operating costs and persistent demand for stolen credentials in underground markets sustain this trajectory.&lt;/span&gt;&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;h3 style="text-align: justify;"&gt;Typosquatted domains impersonate Gemini and Claude Code installation&lt;br&gt;&lt;br&gt;&lt;/h3&gt; 
+&lt;p style="text-align: justify;"&gt;&lt;span&gt;The Gemini CLI impersonation campaign was first publicly identified by independent threat researcher @g0njxa &lt;/span&gt;&lt;span&gt;[1]&lt;/span&gt;&lt;span&gt;, whose initial discovery enabled analysis and infrastructure pivoting documented in this report. The infection chain begins with a Google search by a developer looking for the official Gemini CLI &lt;/span&gt;&lt;span&gt;[2]&lt;/span&gt;&lt;span&gt; or Claude Code &lt;/span&gt;&lt;span&gt;[3]&lt;/span&gt;&lt;span&gt; installation page. Threat actors use SEO poisoning to surface a fake domain at the top of search results, above the legitimate source. The victim clicks through, lands on a malicious page visually consistent with a genuine vendor installation guide and is prompted to execute a single command to complete the install.&lt;/span&gt;&lt;/p&gt;  
+&lt;img src="https://track.hubspot.com/__ptq.gif?a=2831317&amp;amp;k=14&amp;amp;r=https%3A%2F%2Fblog.eclecticiq.com%2Fseo-poisoning-campaign-leverages-gemini-and-claude-code-impersonation-to-deliver-infostealer&amp;amp;bu=https%253A%252F%252Fblog.eclecticiq.com&amp;amp;bvt=rss" alt="" width="1" height="1" style="min-height:1px!important;width:1px!important;border-width:0!important;margin-top:0!important;margin-bottom:0!important;margin-right:0!important;margin-left:0!important;padding-top:0!important;padding-bottom:0!important;padding-right:0!important;padding-left:0!important; "&gt;</content:encoded>
+      <category>Threat Intelligence</category>
+      <category>Threats and Vulnerabilities</category>
+      <category>Intelligence Research</category>
+      <pubDate>Thu, 21 May 2026 09:04:49 GMT</pubDate>
+      <guid>https://blog.eclecticiq.com/seo-poisoning-campaign-leverages-gemini-and-claude-code-impersonation-to-deliver-infostealer</guid>
+      <dc:date>2026-05-21T09:04:49Z</dc:date>
+      <dc:creator>EclecticIQ Threat Research Team</dc:creator>
+    </item>
+    <item>
+      <title>Why commercial cyber threat intelligence is failing defense operations</title>
+      <link>https://blog.eclecticiq.com/why-commercial-cyber-threat-intelligence-is-failing-defence-operations</link>
+      <description>&lt;p&gt;Cyber is no longer a supporting capability. It now shapes how defense organizations plan, assess, and act.&lt;/p&gt;</description>
+      <content:encoded>&lt;p&gt;Cyber is no longer a supporting capability. It now shapes how defense organizations plan, assess, and act.&lt;/p&gt;  
+&lt;img src="https://track.hubspot.com/__ptq.gif?a=2831317&amp;amp;k=14&amp;amp;r=https%3A%2F%2Fblog.eclecticiq.com%2Fwhy-commercial-cyber-threat-intelligence-is-failing-defence-operations&amp;amp;bu=https%253A%252F%252Fblog.eclecticiq.com&amp;amp;bvt=rss" alt="" width="1" height="1" style="min-height:1px!important;width:1px!important;border-width:0!important;margin-top:0!important;margin-bottom:0!important;margin-right:0!important;margin-left:0!important;padding-top:0!important;padding-bottom:0!important;padding-right:0!important;padding-left:0!important; "&gt;</content:encoded>
+      <category>Threat Intelligence Platform</category>
+      <category>cyber security</category>
+      <category>defense TIP</category>
+      <category>doctrine</category>
+      <pubDate>Mon, 18 May 2026 08:07:01 GMT</pubDate>
+      <author>a.carr@eclecticiq.com (Ash Carr)</author>
+      <guid>https://blog.eclecticiq.com/why-commercial-cyber-threat-intelligence-is-failing-defence-operations</guid>
+      <dc:date>2026-05-18T08:07:01Z</dc:date>
+    </item>
+  </channel>
+</rss>

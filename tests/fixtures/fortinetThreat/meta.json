@@ -1,0 +1,19 @@
+{
+  "scraper": "fortinetThreat",
+  "legacy_script": "fortinetThreat",
+  "legacy_labels": [
+    "NEW ARTICLE FROM FORTINET"
+  ],
+  "source_urls": [
+    "https://feeds.fortinet.com/fortinet/blog/psirt",
+    "https://feeds.fortinet.com/fortinet/blogs"
+  ],
+  "http_status": {
+    "https://feeds.fortinet.com/fortinet/blog/psirt": 200,
+    "https://feeds.fortinet.com/fortinet/blogs": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

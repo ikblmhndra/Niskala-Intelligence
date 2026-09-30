@@ -119,7 +119,25 @@ class GithubSettings(_StrictModel):
 
 
 class TwitterSettings(_StrictModel):
+    """twitterapi.io (sumber Twitter DEFAULT) -- BUKAN API resmi X, lihat `XSettings`."""
+
     api_key: str = ""
+
+
+class XSettings(_StrictModel):
+    """API resmi X (pay-per-use, https://api.x.com) -- sumber Twitter ALTERNATIF yang
+    dipilih per-scraper lewat opsi `provider` di control plane.
+
+    Cuma bearer token (app-only) yang dipakai: baca/search tidak butuh yang lain.
+    Consumer key/secret dan access token/secret cuma perlu buat POSTING atau endpoint
+    user-context, dan platform ini tidak posting -- sengaja tidak ada field-nya di sini
+    (least privilege; kalau salah satu tertempel di env, `extra="forbid"` bikin
+    container gagal start, bukan diam-diam terbaca).
+
+    Env: `X__BEARER_TOKEN` (SATU underscore antara BEARER dan TOKEN -- `__` itu
+    pemisah nesting, `X__BEARER__TOKEN` dibaca sebagai `x.bearer.token`)."""
+
+    bearer_token: str = ""
 
 
 class OtxSettings(_StrictModel):
@@ -131,9 +149,13 @@ class ScraperSettings(_StrictModel):
     default_timeout_s: float = 30.0
     dedup_ttl_days: int = 180
     cold_start_max_items: int = 5
-    """Run pertama scraper baru dibatasi segini item. Tanpa ini, DB kosong +
-    ~91 scraper aktif = seluruh isi feed masuk sekaligus di hari pertama
-    (lihat plan, konsekuensi "Postgres + DB kosong")."""
+    """Run "cold" scraper (nol baris `scraper_seen`) cuma enrich segini item
+    TERBARU, sisanya ditandai seen tanpa diproses (`Runner._cold_start_cap`,
+    Fase 10). Tanpa ini, DB kosong + ~91 scraper aktif = seluruh isi feed
+    masuk sekaligus di hari pertama (lihat plan, konsekuensi "Postgres + DB
+    kosong"). Jaring pengaman: jalur cutover utama = warm start (seed
+    `scraper_seen` dari dump lama), jadi cap ini cuma kena scraper baru atau
+    yang habis `reset-dedup`. `<= 0` = guard dimatiin."""
     enrich_queue_max_depth: int = 2000
     """Guard backpressure -- scraper bisa jauh lebih cepat dari enrichment
     (spaCy/LLM). Lihat plan §4.7."""
@@ -161,6 +183,26 @@ class WorkerSettings(_StrictModel):
     """Fase 9 -- tiap berapa menit `scraper.health_digest` jalan (hitung
     ulang status SEMUA scraper, kirim SATU digest Telegram kalau ada yang
     non-`ok`). Gak ada padanan lama."""
+    report_utc_offset_hours: int = 7
+    """Fase 10.E -- zona waktu laporan periodik (jam UTC+N; 7 = WIB). Job Rundeck
+    lama jalan di jam LOKAL server ("23:55", "07:00"), sedangkan beat berjalan
+    UTC: offset ini dipakai untuk (1) menerjemahkan jam laporan ke cron UTC dan
+    (2) menentukan batas "hari ini" (counter harian, berita hari ini). Set 0 kalau
+    server produksi lama ternyata berjalan di UTC."""
+    news_of_the_day_max_titles: int = 400
+    """Fase 10.E -- batas judul yang dikirim ke LLM per kategori per hari."""
+    logbook_interval_days: int = 14
+    logbook_preparer_name: str = "Dyah Retno Palupi"
+    logbook_preparer_title: str = "Threat Intel"
+    logbook_approver_name: str = "Ikbal Mahendra"
+    logbook_approver_title: str = "Infrastructure Security, Lead"
+    """Fase 10.E -- kolom tanda tangan logbook (hardcoded di `logbook.py` lama)."""
+    beat_lock_ttl_s: int = 30
+    """Fase 10.1d -- umur lock singleton beat (`cti_worker.beat_main`).
+    Leader memperpanjangnya tiap `ttl/3` detik; leader mati/macet = standby
+    ambil alih paling lama segini detik. Jangan terlalu kecil (GC pause /
+    Redis lambat bikin lock lepas terus leader ke-kill), jangan terlalu
+    gede (failover lama)."""
 
 
 class Settings(BaseSettings):
@@ -189,6 +231,7 @@ class Settings(BaseSettings):
     nvd: NvdSettings = Field(default_factory=NvdSettings)
     github: GithubSettings = Field(default_factory=GithubSettings)
     twitter: TwitterSettings = Field(default_factory=TwitterSettings)
+    x: XSettings = Field(default_factory=XSettings)
     otx: OtxSettings = Field(default_factory=OtxSettings)
     scraper: ScraperSettings = Field(default_factory=ScraperSettings)
     worker: WorkerSettings = Field(default_factory=WorkerSettings)

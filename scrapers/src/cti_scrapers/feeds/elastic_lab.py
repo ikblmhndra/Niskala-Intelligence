@@ -20,6 +20,6 @@ class ElasticLab(RSSScraper):
         legacy_label="NEW ARTICLE FROM ELASTIC LABS",
         legacy_script="elasticLabThreat",
     )
-    feeds = ('https://www.elastic.co/security-labs/rss/feed.xml',)
+    feeds = ("https://www.elastic.co/security-labs/rss/feed.xml",)
     date_path = None  # scraper lama pakai waktu-scrape, bukan tanggal artikel asli
     html_unescape = True  # feed lama pakai html.unescape() sebelum parse XML

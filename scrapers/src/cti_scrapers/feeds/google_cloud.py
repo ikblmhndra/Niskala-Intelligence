@@ -20,5 +20,5 @@ class GoogleCloud(RSSScraper):
         legacy_label="NEW ARTICLE FROM GOOGLE CLOUD TI",
         legacy_script="googleCloudThreat",
     )
-    feeds = ('https://cloudblog.withgoogle.com/topics/threat-intelligence/rss/',)
+    feeds = ("https://cloudblog.withgoogle.com/topics/threat-intelligence/rss/",)
     date_path = None  # scraper lama pakai waktu-scrape, bukan tanggal artikel asli

@@ -20,7 +20,10 @@ class Threatmon(RSSScraper):
         legacy_label="NEW ARTICLE FROM THREATMON",
         legacy_script="threatmonThreat",
     )
-    feeds = ('https://threatmon.io/feed/',)
+    feeds = ("https://threatmon.io/feed/",)
     date_path = None  # scraper lama pakai waktu-scrape, bukan tanggal artikel asli
-    xml_fixups = (('&ndash;', ''), ('&', '&amp;'),)
+    xml_fixups = (
+        ("&ndash;", ""),
+        ("&", "&amp;"),
+    )
     html_unescape = True  # feed lama pakai html.unescape() sebelum parse XML

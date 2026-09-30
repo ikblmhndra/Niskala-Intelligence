@@ -87,9 +87,7 @@ class TestAsyncRoleRepo:
         with pytest.raises(ValueError, match="sistem"):
             await repo.delete("admin")
 
-    async def test_delete_unknown_role_returns_false(
-        self, async_db_session: AsyncSession
-    ) -> None:
+    async def test_delete_unknown_role_returns_false(self, async_db_session: AsyncSession) -> None:
         assert await AsyncRoleRepo(async_db_session).delete("ghost") is False
 
 
@@ -177,9 +175,7 @@ class TestAsyncUserRepo:
         assert fetched.password_hash == "new-hash"
         assert fetched.force_pw_change is False
 
-    async def test_update_last_sign_in_sets_timestamp(
-        self, async_db_session: AsyncSession
-    ) -> None:
+    async def test_update_last_sign_in_sets_timestamp(self, async_db_session: AsyncSession) -> None:
         await self._make_role(async_db_session)
         await AsyncClientRepo(async_db_session).ensure_default()
         repo = AsyncUserRepo(async_db_session)
@@ -263,9 +259,7 @@ class TestAsyncAuditLogRepo:
 
 
 class TestAsyncPasswordPolicyRepo:
-    async def test_get_returns_defaults_when_no_row(
-        self, async_db_session: AsyncSession
-    ) -> None:
+    async def test_get_returns_defaults_when_no_row(self, async_db_session: AsyncSession) -> None:
         policy = await AsyncPasswordPolicyRepo(async_db_session).get()
         assert policy == {
             "min_length": 8,

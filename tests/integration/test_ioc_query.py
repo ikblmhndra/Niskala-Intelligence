@@ -69,9 +69,7 @@ async def test_list_filtered_pagination(async_db_session: AsyncSession) -> None:
 async def test_get_stats_groups_by_type(async_db_session: AsyncSession) -> None:
     repo = AsyncIOCRepo(async_db_session)
     await _seed(repo)
-    await repo.upsert(
-        type="ip", value="1.1.1.1", source_url="https://d.com", source_name="d"
-    )
+    await repo.upsert(type="ip", value="1.1.1.1", source_url="https://d.com", source_name="d")
 
     stats = await repo.get_stats()
     assert stats["total"] == 4
@@ -201,9 +199,7 @@ class TestAsyncIocAllowlistRepo:
         with pytest.raises(ValueError, match="type harus"):
             await repo.create(entry_type="not-a-type", value="x", added_by="admin1")
 
-    async def test_delete_returns_false_when_missing(
-        self, async_db_session: AsyncSession
-    ) -> None:
+    async def test_delete_returns_false_when_missing(self, async_db_session: AsyncSession) -> None:
         repo = AsyncIocAllowlistRepo(async_db_session)
         assert await repo.delete(999999) is False
 

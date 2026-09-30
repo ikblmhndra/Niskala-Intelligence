@@ -1,0 +1,465 @@
+<?xml version="1.0"?>
+
+
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>bishopfox.com</title>
+    <link>https://bishopfox.com/</link>
+    <atom:link href="https://bishopfox.com/feeds/blog.rss" rel="self" type="application/rss+xml" />
+    <description>The leader in offensive security, providing continuous pen testing, red teaming, attack surface management, and traditional security assessments.</description>
+    <language>en-US</language>
+    <pubDate>Wed, 16 Sep 2026 17:20:36 -0700</pubDate>
+    <lastBuildDate>Wed, 16 Sep 2026 17:20:36 -0700</lastBuildDate>
+
+          <item>
+        <title>CVE-2026-82329: Unauthenticated Administrative Access in JFrog Artifactory via an Empty Cluster Join Key</title>
+        <link>https://bishopfox.com/blog/cve-2026-82329-unauthenticated-administrative-access-in-jfrog-artifactory-via-an-empty-cluster-join-key</link>
+        <pubDate>Fri, 11 Sep 2026 06:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/cve-2026-82329-unauthenticated-administrative-access-in-jfrog-artifactory-via-an-empty-cluster-join-key</guid>
+        <description>
+          <![CDATA[A misconfigured cluster join key in JFrog Artifactory&#039;s default install lets unauthenticated attackers mint a permanent admin token in one request. Bishop Fox reproduced the full chain, confirmed in-the-wild exploitation, and shares a non-invasive detection check and remediation guidance.]]>
+        </description>
+      </item>
+          <item>
+        <title>Mind the Config: Detecting and Weaponizing NetScaler CVE-2026-19490</title>
+        <link>https://bishopfox.com/blog/mind-the-config-detecting-and-weaponizing-netscaler-cve-2026-19490</link>
+        <pubDate>Thu, 10 Sep 2026 06:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/mind-the-config-detecting-and-weaponizing-netscaler-cve-2026-19490</guid>
+        <description>
+          <![CDATA[A single unauthenticated request bypasses authentication on NetScaler Gateway and AAA virtual servers. Whether that means a dead-end session, a proxy into the internal network, or root on the appliance depends entirely on configuration. Bishop Fox maps every branch and shares a safe detection tool.]]>
+        </description>
+      </item>
+          <item>
+        <title>Signature Optional - Analysis of CVE-2026-28323</title>
+        <link>https://bishopfox.com/blog/signature-optional-analysis-of-cve-2026-28323</link>
+        <pubDate>Thu, 03 Sep 2026 06:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/signature-optional-analysis-of-cve-2026-28323</guid>
+        <description>
+          <![CDATA[SolarWinds Web Help Desk treated SAML signature verification as optional and skipped every other validation the spec requires. Bishop Fox confirmed the full exploit end to end: one forged POST request, no credentials, full session takeover. Here is the root cause, the fix, and how to detect it.]]>
+        </description>
+      </item>
+          <item>
+        <title>Traefik | Version Through 3.7.11</title>
+        <link>https://bishopfox.com/blog/traefik-version-through-3-7-11</link>
+        <pubDate>Mon, 31 Aug 2026 06:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/traefik-version-through-3-7-11</guid>
+        <description>
+          <![CDATA[Traefik&#039;s request read timeout is enabled by default and documented without exception, but it has never applied to HTTP/3. Bishop Fox confirmed the gap across four years of releases, measured it against the backend, and reported it to the vendor, who shipped a fix within twelve days.]]>
+        </description>
+      </item>
+          <item>
+        <title>A GUID is Not a Credential: Unauthenticated RCE in Veeam Service Provider Console</title>
+        <link>https://bishopfox.com/blog/a-guid-is-not-a-credential-unauthenticated-rce-in-veeam-service-provider-console</link>
+        <pubDate>Wed, 26 Aug 2026 06:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/a-guid-is-not-a-credential-unauthenticated-rce-in-veeam-service-provider-console</guid>
+        <description>
+          <![CDATA[Two critical vulnerabilities in Veeam Service Provider Console chain into unauthenticated remote code execution on the management server sitting above every tenant&#039;s backups. Bishop Fox confirmed the full chain end to end, breaks down both root causes, and shares a safe detection tool and IOCs.]]>
+        </description>
+      </item>
+          <item>
+        <title>No Crash Required: Verifying the Citrix NetScaler SAML Patch for CVE-2026-8452</title>
+        <link>https://bishopfox.com/blog/no-crash-required-verifying-the-citrix-netscaler-saml-patch-for-cve-2026-8452</link>
+        <pubDate>Fri, 21 Aug 2026 06:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/no-crash-required-verifying-the-citrix-netscaler-saml-patch-for-cve-2026-8452</guid>
+        <description>
+          <![CDATA[CVE-2026-8452 lets an unauthenticated attacker corrupt memory in Citrix NetScaler&#039;s SAML parser with a single request, potentially leading to remote code execution. Bishop Fox breaks down the patch, how to safely verify it across a fleet, and what exploitation actually looks like in the logs.]]>
+        </description>
+      </item>
+          <item>
+        <title>CTEM 101: Moving From Spreadsheets to Continuous Risk Reduction</title>
+        <link>https://bishopfox.com/blog/ctem-101-moving-from-spreadsheets-to-continuous-risk-reduction</link>
+        <pubDate>Thu, 20 Aug 2026 06:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/ctem-101-moving-from-spreadsheets-to-continuous-risk-reduction</guid>
+        <description>
+          <![CDATA[Traditional vulnerability management was built for a smaller, slower problem than most teams face today. This post breaks down CTEM, why it exists, how its five stages work, and what it actually takes to move from a reactive pile of findings to a continuous, prioritized risk reduction program.]]>
+        </description>
+      </item>
+          <item>
+        <title>Critical SQL Injection in Metabase via Password Reset: CVE-2026-72898</title>
+        <link>https://bishopfox.com/blog/critical-sql-injection-in-metabase-via-password-reset-cve-2026-72898</link>
+        <pubDate>Tue, 11 Aug 2026 00:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/critical-sql-injection-in-metabase-via-password-reset-cve-2026-72898</guid>
+        <description>
+          <![CDATA[Immediate action is advised for all organizations running self-hosted Metabase. A critical, unauthenticated SQL injection vulnerability has been disclosed in Metabase&#039;s password reset functionality, and Metabase has confirmed active exploitation in the wild.]]>
+        </description>
+      </item>
+          <item>
+        <title>Python Software Foundation - Python 3.11.0a3 to 3.15.0b2</title>
+        <link>https://bishopfox.com/blog/python-software-foundation-python-3-11-0a3-to-3-15-0b2</link>
+        <pubDate>Wed, 05 Aug 2026 06:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/python-software-foundation-python-3-11-0a3-to-3-15-0b2</guid>
+        <description>
+          <![CDATA[Bishop Fox discovered a privilege escalation vulnerability in Python for Windows affecting versions 3.11.0a3 through 3.15.0b2. A low-privilege user can plant malicious files and wait for a privileged account to run the interpreter, inheriting that account&#039;s elevated access. Patches are available.]]>
+        </description>
+      </item>
+          <item>
+        <title>What Security Leaders Think About Frontier AI Models: Firsthand of Mythos</title>
+        <link>https://bishopfox.com/blog/what-security-leaders-think-about-frontier-ai-models-firsthand-mythos</link>
+        <pubDate>Fri, 31 Jul 2026 06:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/what-security-leaders-think-about-frontier-ai-models-firsthand-mythos</guid>
+        <description>
+          <![CDATA[Frontier AI models are raising the ceiling for skilled attackers and lowering the bar for everyone else. Leaders from Vista Equity, Cisco, and Bishop Fox share what that shift looks like in practice, how the existing security stack needs to change, and how long defenders will stay at a disadvantage.]]>
+        </description>
+      </item>
+          <item>
+        <title>A Millisecond of Predictability: Why CVE-2026-11374 Is Hard to Exploit</title>
+        <link>https://bishopfox.com/blog/millisecond-of-predictability-why-cve-2026-11374-hard-to-exploit</link>
+        <pubDate>Tue, 21 Jul 2026 08:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/millisecond-of-predictability-why-cve-2026-11374-hard-to-exploit</guid>
+        <description>
+          <![CDATA[ManageEngine&#039;s SSO ticket was just the millisecond wall-clock time at login, making unauthenticated account takeover theoretically possible. Bishop Fox confirmed the exploit end to end and breaks down why blind exploitation is still impractical and what defenders should do about it.]]>
+        </description>
+      </item>
+          <item>
+        <title>Using MCP Agents for Penetration Testing</title>
+        <link>https://bishopfox.com/blog/using-mcp-agents-for-penetration-testing</link>
+        <pubDate>Fri, 17 Jul 2026 06:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/using-mcp-agents-for-penetration-testing</guid>
+        <description>
+          <![CDATA[AI agent harnesses are changing how penetration tests get executed. Bishop Fox used MCP agents across external, application, and cloud testing to surface two information leaks totaling over 12 million records in hours rather than days. Here is how the approach works and where it makes sense to use.]]>
+        </description>
+      </item>
+          <item>
+        <title>Introducing snowpick: Testing ServiceNow for Public Data Exposure</title>
+        <link>https://bishopfox.com/blog/introducing-snowpick-testing-servicenow-for-public-data-exposure</link>
+        <pubDate>Tue, 14 Jul 2026 06:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/introducing-snowpick-testing-servicenow-for-public-data-exposure</guid>
+        <description>
+          <![CDATA[ServiceNow portals can expose backend records through public widgets and API endpoints even when the visible portal looks locked down. Bishop Fox built snowpick to test both surfaces systematically, and across 166 authorized assessments, nearly a third of instances returned data they shouldn&#039;t have.]]>
+        </description>
+      </item>
+          <item>
+        <title>Cracking Firmware with Claude: Senior-Level Skill, Junior-Level Autonomy</title>
+        <link>https://bishopfox.com/blog/cracking-firmware-with-claude-senior-level-skill-junior-level-autonomy</link>
+        <pubDate>Wed, 08 Jul 2026 06:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/cracking-firmware-with-claude-senior-level-skill-junior-level-autonomy</guid>
+        <description>
+          <![CDATA[A senior Bishop Fox researcher once cracked SonicWall&#039;s proprietary firmware encryption by hand. We gave Claude the same problem, two artifacts, one instruction, and mostly got out of the way. What happened next reveals something important about where AI-assisted security research is heading.]]>
+        </description>
+      </item>
+          <item>
+        <title>On Favicons: From Browser Icons to Attack Surface Intelligence</title>
+        <link>https://bishopfox.com/blog/on-favicons-from-browser-icons-to-attack-surface-intelligence</link>
+        <pubDate>Thu, 02 Jul 2026 06:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/on-favicons-from-browser-icons-to-attack-surface-intelligence</guid>
+        <description>
+          <![CDATA[Favicons are small, static, and rarely changed, which makes them a surprisingly durable fingerprint for identifying software across the internet. Bishop Fox built an AI-assisted pipeline to hash and enrich them at scale, and this post shares the methodology, the dataset, and why it matters.]]>
+        </description>
+      </item>
+          <item>
+        <title>AI Finds Vulnerabilities. Security Experts Find Impact.</title>
+        <link>https://bishopfox.com/blog/ai-finds-vulnerabilities-security-experts-find-impact</link>
+        <pubDate>Wed, 24 Jun 2026 06:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/ai-finds-vulnerabilities-security-experts-find-impact</guid>
+        <description>
+          <![CDATA[AI got a security consultant 80% of the way through a real web application assessment. The other 20% was where the actual security work happened. This walkthrough shows where AI delivered, where it produced confident but impossible explanations, and why human judgment still drives real findings.]]>
+        </description>
+      </item>
+          <item>
+        <title>Shynet | VERSION 0.13.1</title>
+        <link>https://bishopfox.com/blog/shynet-version-0-13-1</link>
+        <pubDate>Thu, 18 Jun 2026 06:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/shynet-version-0-13-1</guid>
+        <description>
+          <![CDATA[The following document describes identified vulnerabilities in the Shynet application version 0.13.1.]]>
+        </description>
+      </item>
+          <item>
+        <title>The Smash-and-Grab Era</title>
+        <link>https://bishopfox.com/blog/the-smash-and-grab-era</link>
+        <pubDate>Wed, 17 Jun 2026 17:24:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/the-smash-and-grab-era</guid>
+        <description>
+          <![CDATA[We walk through three eras of cyber attacks and makes a troubling case that LLMs are removing the one constraint that kept attackers slow and detectable.]]>
+        </description>
+      </item>
+          <item>
+        <title>A Crash, Not a Shell: SolarWinds Serv-U CVE-2026-28318</title>
+        <link>https://bishopfox.com/blog/a-crash-not-a-shell-solarwinds-serv-u-cve-2026-28318</link>
+        <pubDate>Tue, 16 Jun 2026 06:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/a-crash-not-a-shell-solarwinds-serv-u-cve-2026-28318</guid>
+        <description>
+          <![CDATA[A single unauthenticated request can kill SolarWinds Serv-U, and the heap corruption underneath it looked like it could be more. Bishop Fox chased three separate roads to remote code execution and hit a wall on every one. Here is what we found, why it matters, and how to detect exposure safely.]]>
+        </description>
+      </item>
+          <item>
+        <title>Enabling Proper PCI Testing with Internal Penetration Tests</title>
+        <link>https://bishopfox.com/blog/enabling-proper-pci-testing-with-internal-penetration-tests</link>
+        <pubDate>Thu, 11 Jun 2026 06:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/enabling-proper-pci-testing-with-internal-penetration-tests</guid>
+        <description>
+          <![CDATA[PCI DSS v4.0.1 made internal penetration testing more complex, bringing cloud infrastructure, SaaS apps, and build pipelines explicitly into scope. Derek Rush breaks down how to scope a compliant IPT, what to test, and what a QSA-ready deliverable actually looks like in practice.]]>
+        </description>
+      </item>
+          <item>
+        <title>Mythos Doesn&#039;t Deploy Itself</title>
+        <link>https://bishopfox.com/blog/mythos-doesnt-deploy-itself</link>
+        <pubDate>Tue, 09 Jun 2026 06:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/mythos-doesnt-deploy-itself</guid>
+        <description>
+          <![CDATA[AI is raising the ceiling for skilled researchers and flooding bug bounty programs with polished but inaccurate submissions at the same time. Both things are true, and the reconciling variable is the harness built around the model and the expertise of the person driving it.]]>
+        </description>
+      </item>
+          <item>
+        <title>Popping Root on UniFi OS Server: Unauthenticated RCE Chain Detection &amp; Analysis</title>
+        <link>https://bishopfox.com/blog/popping-root-on-unifi-os-server-unauthenticated-rce-chain-detection-analysis</link>
+        <pubDate>Fri, 05 Jun 2026 06:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/popping-root-on-unifi-os-server-unauthenticated-rce-chain-detection-analysis</guid>
+        <description>
+          <![CDATA[A three-part vulnerability chain in UniFi OS Server lets an unauthenticated attacker bypass the auth gateway, hit a command injection sink, and escalate to root in a single request. Bishop Fox confirmed the chain end to end and breaks down the attack, the impact, and how to detect it safely.]]>
+        </description>
+      </item>
+          <item>
+        <title>Otto Support - Testing MCP Servers</title>
+        <link>https://bishopfox.com/blog/otto-support-testing-mcp-servers</link>
+        <pubDate>Wed, 03 Jun 2026 06:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/otto-support-testing-mcp-servers</guid>
+        <description>
+          <![CDATA[MCP servers introduce a new attack surface, but the security fundamentals are familiar. In this final otto-support post, we use nmap, a Nuclei template, and MCP Inspector to discover, enumerate, and exploit an authorization gap without ever touching an LLM.]]>
+        </description>
+      </item>
+          <item>
+        <title>Looting UniFi Controllers: Detecting and Weaponizing CVE-2026-22557</title>
+        <link>https://bishopfox.com/blog/looting-unifi-controllers-detecting-and-weaponizing-cve-2026-22557</link>
+        <pubDate>Fri, 29 May 2026 06:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/looting-unifi-controllers-detecting-and-weaponizing-cve-2026-22557</guid>
+        <description>
+          <![CDATA[A CVSS 10.0 path traversal in UniFi Network Application lets unauthenticated attackers read controller backups, extract credentials, and take over every managed device on the network. Bishop Fox breaks down the attack paths, the preconditions, and a safe detection tool to check your exposure.]]>
+        </description>
+      </item>
+          <item>
+        <title>Sparkplug B Protocol Fuzzing with AI Assistance</title>
+        <link>https://bishopfox.com/blog/sparkplug-b-protocol-fuzzing-with-ai-assistance</link>
+        <pubDate>Tue, 26 May 2026 06:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/sparkplug-b-protocol-fuzzing-with-ai-assistance</guid>
+        <description>
+          <![CDATA[Sparkplug B is the dominant protocol in ICS and SCADA environments, but no public security fuzzer existed for it until now. Bishop Fox used AI-assisted development to build one from scratch, covering all 9 message types, 19 data types, and 87+ field paths from the full specification.]]>
+        </description>
+      </item>
+          <item>
+        <title>Detecting CVE-2026-0265 at Scale: PAN-OS CAS Authentication Bypass</title>
+        <link>https://bishopfox.com/blog/detecting-cve-2026-0265-at-scale-pan-os-cas-authentication-bypass</link>
+        <pubDate>Fri, 22 May 2026 06:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/detecting-cve-2026-0265-at-scale-pan-os-cas-authentication-bypass</guid>
+        <description>
+          <![CDATA[CVE-2026-0265 lets unauthenticated attackers forge a JWT and log in as any trusted user on CAS-enabled PAN-OS deployments. Bishop Fox built a detection tool that returns a definitive verdict from a single anonymous request, and breaks down exactly how the bug works and what to do about it.]]>
+        </description>
+      </item>
+          <item>
+        <title>CVE-2026-27886: Unauthenticated Boolean-Oracle Exfiltration of Administrator Secrets in Strapi</title>
+        <link>https://bishopfox.com/blog/cve-2026-27886-unauthenticated-boolean-oracle-exfiltration-of-administrator-secrets-in-strapi</link>
+        <pubDate>Fri, 22 May 2026 00:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/cve-2026-27886-unauthenticated-boolean-oracle-exfiltration-of-administrator-secrets-in-strapi</guid>
+        <description>
+          <![CDATA[A sanitization bypass in Strapi 4.0.0 through 5.36.1 lets unauthenticated attackers extract an admin&#039;s password reset token character by character and take over the account. With over 20,000 internet-facing hosts exposed, Bishop Fox breaks down how the exploit works and how to remediate it.]]>
+        </description>
+      </item>
+          <item>
+        <title>Otto Support - Logging and Visibility in MCP Servers</title>
+        <link>https://bishopfox.com/blog/otto-support-logging-visibility-in-mcp-servers</link>
+        <pubDate>Thu, 14 May 2026 06:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/otto-support-logging-visibility-in-mcp-servers</guid>
+        <description>
+          <![CDATA[If any of the MCP attack classes in this series happened in your environment today, would you detect it? Most MCP servers log only a tool name and a timestamp. This post walks through what that gap looks like in practice, how EchoLeak exploited it, and what proper audit logging actually requires.]]>
+        </description>
+      </item>
+          <item>
+        <title>Otto-Support - Supply Chain Risks in MCP Servers</title>
+        <link>https://bishopfox.com/blog/otto-support-supply-chain-risks-mcp-servers</link>
+        <pubDate>Wed, 13 May 2026 06:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/otto-support-supply-chain-risks-mcp-servers</guid>
+        <description>
+          <![CDATA[What if the MCP server itself is the attacker? Supply chain risk in MCP tools is structural, and the postmark-mcp and ClawHub compromises made it concrete. This post pairs those case studies with otto-support&#039;s selfpwn module to show exactly what a hostile MCP server can access the moment it runs.]]>
+        </description>
+      </item>
+          <item>
+        <title>Introducing Joro: Using AI to Build Security Tooling</title>
+        <link>https://bishopfox.com/blog/introducing-joro-using-ai-build-security-tooling</link>
+        <pubDate>Tue, 12 May 2026 06:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/introducing-joro-using-ai-build-security-tooling</guid>
+        <description>
+          <![CDATA[Bishop Fox is releasing Joro, a collaborative web exploitation framework built almost entirely with AI. From intercepting proxy to C2 integration, this post covers how it was built, what it does, and what AI-assisted security tool development actually looks like in practice.]]>
+        </description>
+      </item>
+          <item>
+        <title>Otto Support - The Confused Deputy</title>
+        <link>https://bishopfox.com/blog/otto-support-confused-deputy</link>
+        <pubDate>Fri, 08 May 2026 06:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/otto-support-confused-deputy</guid>
+        <description>
+          <![CDATA[When an agent reads attacker-controlled content and acts on it using its own privileges, the user&#039;s name ends up on every audit log entry. From Microsoft Copilot to ConfusedPilot, this post walks through how confused deputy attacks work and the layered controls that help contain them.]]>
+        </description>
+      </item>
+          <item>
+        <title>Otto Support - SSRF and Token Passthrough with MCP</title>
+        <link>https://bishopfox.com/blog/otto-support-ssrf-token-passthrough-with-mcp</link>
+        <pubDate>Thu, 07 May 2026 06:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/otto-support-ssrf-token-passthrough-with-mcp</guid>
+        <description>
+          <![CDATA[SSRF and token passthrough are not new, but MCP servers are reintroducing them at scale. From a chained SSRF-to-RCE in mcp-atlassian to Microsoft&#039;s MarkItDown and OpenClaw, this post walks through three recent disclosures and the controls that actually prevent them.]]>
+        </description>
+      </item>
+          <item>
+        <title>Otto Support - Excessive Agency and Tool Privileges</title>
+        <link>https://bishopfox.com/blog/otto-support-excessive-agency-and-tool-privileges</link>
+        <pubDate>Wed, 06 May 2026 06:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/otto-support-excessive-agency-and-tool-privileges</guid>
+        <description>
+          <![CDATA[AI agents connected to too many tools don&#039;t just create risk, they&#039;ve already caused real damage. From deleted databases to mass-wiped mailboxes, excessive agency has a track record. This post breaks down what it looks like in practice and how role-aware tool registration can help contain it.]]>
+        </description>
+      </item>
+          <item>
+        <title>CVE-2026-42208: Pre-Authentication SQL Injection in LiteLLM Proxy</title>
+        <link>https://bishopfox.com/blog/cve-2026-42208-pre-authentication-sql-injection-in-litellm-proxy</link>
+        <pubDate>Wed, 06 May 2026 06:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/cve-2026-42208-pre-authentication-sql-injection-in-litellm-proxy</guid>
+        <description>
+          <![CDATA[Bishop Fox researchers confirmed a critical pre-authentication SQL injection in LiteLLM proxy affecting versions 1.81.16 through 1.83.6. Attackers can exploit it without credentials, and it blends into normal logs. In-the-wild exploitation was observed within 36 hours of the advisory going public.]]>
+        </description>
+      </item>
+          <item>
+        <title>Azure Hacking: New Cloudfoxable Challenges</title>
+        <link>https://bishopfox.com/blog/azure-hacking-new-cloudfoxable-challenges</link>
+        <pubDate>Mon, 04 May 2026 06:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/azure-hacking-new-cloudfoxable-challenges</guid>
+        <description>
+          <![CDATA[Cloudfoxable started as a hands-on AWS security training tool. Now it&#039;s expanding. Bishop Fox has launched the first set of Azure challenges, giving security professionals a safe, intentionally misconfigured environment to explore identity-driven attack paths and privilege escalation in Azure.]]>
+        </description>
+      </item>
+          <item>
+        <title>Introducing AIMap: Security Testing For AI Agent Infrastructure</title>
+        <link>https://bishopfox.com/blog/introducing-aimap-security-testing-for-ai-agent-infrastructure</link>
+        <pubDate>Thu, 30 Apr 2026 05:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/introducing-aimap-security-testing-for-ai-agent-infrastructure</guid>
+        <description>
+          <![CDATA[Attackers can already find, connect to, and probe your exposed AI agent infrastructure. AIMap gives defenders that same visibility. Built by Bishop Fox, this open-source tool discovers, scores, and tests exposed AI endpoints so you can understand your real attack surface before someone else does.]]>
+        </description>
+      </item>
+          <item>
+        <title>Otto Support – An MCP, Agentic-AI Security Challenge</title>
+        <link>https://bishopfox.com/blog/otto-support-an-mcp-agentic-ai-security-challenge</link>
+        <pubDate>Thu, 23 Apr 2026 06:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/otto-support-an-mcp-agentic-ai-security-challenge</guid>
+        <description>
+          <![CDATA[Bishop Fox built a vulnerable MCP-based customer support tool and turned it into a security challenge. Explore how AI agents interact with tools, escalate privileges, and expose sensitive data. If you work with AI systems, this CTF shows exactly how these architectures fail in the real world.]]>
+        </description>
+      </item>
+          <item>
+        <title>Understanding the CVE Ecosystem and NIST’s Changing Role</title>
+        <link>https://bishopfox.com/blog/understanding-the-cve-ecosystem-and-nists-changing-role</link>
+        <pubDate>Wed, 22 Apr 2026 06:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/understanding-the-cve-ecosystem-and-nists-changing-role</guid>
+        <description>
+          <![CDATA[NIST just announced it&#039;s prioritizing CVE enrichment for government systems and deprioritizing everything else. For security teams that rely on NVD data, the gap is real. Here&#039;s what changed, why it&#039;s been coming for years, and what your team should do to stay ahead of the risk.]]>
+        </description>
+      </item>
+          <item>
+        <title>Taking Maestro in Stride: AI Threat Modeling Frameworks</title>
+        <link>https://bishopfox.com/blog/taking-maestro-in-stride-ai-threat-modeling-frameworks</link>
+        <pubDate>Thu, 16 Apr 2026 06:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/taking-maestro-in-stride-ai-threat-modeling-frameworks</guid>
+        <description>
+          <![CDATA[AI agents don’t fit traditional threat models. They act like users, services, and data pipelines at once. Learn why STRIDE alone falls short, how MAESTRO fills the gaps, and why modern AI systems must be treated as insider threats.]]>
+        </description>
+      </item>
+          <item>
+        <title>Anthropic’s Claude Mythos Preview: The AI Cybersecurity Inflection Point</title>
+        <link>https://bishopfox.com/blog/anthropics-claude-mythos-preview-the-ai-cybersecurity-inflection-point</link>
+        <pubDate>Tue, 14 Apr 2026 06:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/anthropics-claude-mythos-preview-the-ai-cybersecurity-inflection-point</guid>
+        <description>
+          <![CDATA[AI just crossed a threshold. Anthropic’s Claude Mythos can discover and chain vulnerabilities at scale—faster than teams can remediate. What does this mean for your security program, your providers, and your ability to keep up before attackers do?]]>
+        </description>
+      </item>
+          <item>
+        <title>Inside Cirro: Attack Paths, Cloud Graphs, and Extensible Schemas</title>
+        <link>https://bishopfox.com/blog/inside-cirro-attack-paths-cloud-graphs-and-extensible-schemas</link>
+        <pubDate>Thu, 09 Apr 2026 12:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/inside-cirro-attack-paths-cloud-graphs-and-extensible-schemas</guid>
+        <description>
+          <![CDATA[Cloud risk doesn’t live in a single permission, it lives in the relationships between them. Discover how Cirro maps hidden attack paths across Azure identities, resources, and data to reveal what attackers actually see.]]>
+        </description>
+      </item>
+          <item>
+        <title>API Authentication Bypass in FortiClient EMS 7.4.5-7.4.6–CVE-2026-35616</title>
+        <link>https://bishopfox.com/blog/api-authentication-bypass-in-forticlient-ems-7-4-5-7-4-6-cve-2026-35616</link>
+        <pubDate>Tue, 07 Apr 2026 06:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/api-authentication-bypass-in-forticlient-ems-7-4-5-7-4-6-cve-2026-35616</guid>
+        <description>
+          <![CDATA[Bishop Fox researchers expanded on Fortinet&#039;s disclosure of CVE-2026-35616 by identifying the root cause via the released hotfix.]]>
+        </description>
+      </item>
+          <item>
+        <title>Delivered by Trust: What the Axios Supply Chain Attack Means for Security Leaders</title>
+        <link>https://bishopfox.com/blog/delivered-by-trust-what-the-axios-supply-chain-attack-means-for-security-leaders</link>
+        <pubDate>Mon, 06 Apr 2026 08:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/delivered-by-trust-what-the-axios-supply-chain-attack-means-for-security-leaders</guid>
+        <description>
+          <![CDATA[A trusted package turned into an attacker’s gateway overnight. The Axios supply chain breach shows how quickly risk can spread—and why security leaders must rethink trust in modern development.]]>
+        </description>
+      </item>
+          <item>
+        <title>strongSwan CVE-2026-25075: Integer Underflow in VPN Authentication</title>
+        <link>https://bishopfox.com/blog/strongswan-cve-2026-25075-integer-underflow-in-vpn-authentication</link>
+        <pubDate>Thu, 26 Mar 2026 06:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/strongswan-cve-2026-25075-integer-underflow-in-vpn-authentication</guid>
+        <description>
+          <![CDATA[Bishop Fox researchers took a deep dive into a new strongSwan vulnerability that allows unauthenticated attackers to take VPN services offline. We created an easy tool to test your strongSwan deployment &amp; recommend upgrading to version 6.0.5 and later.]]>
+        </description>
+      </item>
+          <item>
+        <title>Accidental Engineer: Building My First Hardware Tool the Hard Way</title>
+        <link>https://bishopfox.com/blog/accidental-engineer-building-my-first-hardware-tool-the-hard-way</link>
+        <pubDate>Tue, 17 Mar 2026 06:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/accidental-engineer-building-my-first-hardware-tool-the-hard-way</guid>
+        <description>
+          <![CDATA[I set out to build a rugged badge-cloning tool for field use, with zero hardware background. This is the story of learning electrical engineering from scratch, navigating bad assumptions, and discovering that curiosity, persistence, and hands-on testing can take you further than you think.]]>
+        </description>
+      </item>
+          <item>
+        <title>Winning CTFs: A Proving Ground at HackMex &amp; Ekoparty</title>
+        <link>https://bishopfox.com/blog/winning-ctfs-a-proving-ground-at-hackmex-ekoparty</link>
+        <pubDate>Fri, 13 Mar 2026 06:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/winning-ctfs-a-proving-ground-at-hackmex-ekoparty</guid>
+        <description>
+          <![CDATA[CTF competitions push offensive security skills to their limits. In 2025, the Bishop Fox Mexico team claimed first place at both HackMex Finals and EkoParty Red Team Space. Discover how the team navigated web exploitation, infrastructure compromise, and AWS attack paths to win.]]>
+        </description>
+      </item>
+          <item>
+        <title>Pre-Authentication SQL Injection in FortiClient EMS 7.4.4 - CVE-2026-21643</title>
+        <link>https://bishopfox.com/blog/cve-2026-21643-pre-authentication-sql-injection-in-forticlient-ems-7-4-4</link>
+        <pubDate>Mon, 09 Mar 2026 06:00:00 -0700</pubDate>
+                <guid>https://bishopfox.com/blog/cve-2026-21643-pre-authentication-sql-injection-in-forticlient-ems-7-4-4</guid>
+        <description>
+          <![CDATA[FortiClient EMS 7.4.4 contains a pre-authentication SQL injection vulnerability (CVSS 9.1) in its multi-tenant site routing middleware. An unauthenticated attacker can inject arbitrary SQL by sending a crafted Site HTTP header to any pre-auth endpoint.]]>
+        </description>
+      </item>
+          <item>
+        <title>Beyond Electron: Attacking Alternative Desktop Application Frameworks</title>
+        <link>https://bishopfox.com/blog/beyond-electron-attacking-alternative-desktop-application-frameworks</link>
+        <pubDate>Tue, 03 Mar 2026 06:00:00 -0800</pubDate>
+                <guid>https://bishopfox.com/blog/beyond-electron-attacking-alternative-desktop-application-frameworks</guid>
+        <description>
+          <![CDATA[Tauri promises a lighter, security-first future beyond Electron—but does it actually reduce risk? Carlos Yanez uncovers how XSS and permissive configs can still be chained into RCE, walking through real-world exploitation techniques every appsec team should understand.]]>
+        </description>
+      </item>
+          <item>
+        <title>Introducing CloudFox GCP: Attack Path Identification for Google Cloud</title>
+        <link>https://bishopfox.com/blog/introducing-cloudfox-gcp-attack-path-identification-for-google-cloud</link>
+        <pubDate>Thu, 26 Feb 2026 06:00:00 -0800</pubDate>
+                <guid>https://bishopfox.com/blog/introducing-cloudfox-gcp-attack-path-identification-for-google-cloud</guid>
+        <description>
+          <![CDATA[Meet CloudFox GCP, an offensive security tool built to map identities, enumerate resources, and uncover real attack paths in Google Cloud. Designed for practitioners, it exposes privilege escalation, lateral movement, and data exfiltration risks so you can secure GCP before attackers exploit it.]]>
+        </description>
+      </item>
+          <item>
+        <title>Samsung Tizen OS | Version Through 9.0</title>
+        <link>https://bishopfox.com/blog/samsung-tizen-os-version-through-9-0</link>
+        <pubDate>Tue, 24 Feb 2026 06:00:00 -0800</pubDate>
+                <guid>https://bishopfox.com/blog/samsung-tizen-os-version-through-9-0</guid>
+        <description>
+          <![CDATA[Bishop Fox identified a low-risk command injection flaw in Samsung Tizen OS (through 9.0) that allows OS-level code execution on smart TVs with developer mode enabled. Exploitation requires local access and the configured developer IP. Organizations should disable developer mode or use kiosk mode.]]>
+        </description>
+      </item>
+      </channel>
+</rss>

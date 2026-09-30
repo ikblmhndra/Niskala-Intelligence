@@ -109,6 +109,28 @@ def sync_session() -> Iterator[Session]:
             raise
 
 
+def discard_inherited_connections() -> None:
+    """Panggil di PROSES ANAK sesaat setelah fork (Celery prefork:
+    `worker_process_init`, lihat `cti_worker.celery_app`).
+
+    Engine di-cache di proses INDUK (`lru_cache`) -- dan induk Celery beneran
+    buka koneksi sebelum fork (`build_beat_schedule()` baca `ScraperConfig`
+    pas import). Anak yang di-fork mewarisi socket yang SAMA; dua anak yang
+    make koneksi itu barengan ngerusak protokol Postgres:
+    `OperationalError: server closed the connection unexpectedly`, lalu
+    `PendingRollbackError` di task berikutnya (kejadian nyata di e2e staging
+    Fase 10, run scraper nyangkut `running`).
+
+    `dispose(close=False)`: buang POOL warisan tanpa nutup koneksinya --
+    nutup dari anak bakal ngirim Terminate ke server lewat socket yang masih
+    dipakai induk. Engine tetap dipakai ulang, tinggal pool BARU per anak."""
+    for factory in (get_sync_engine, get_async_engine):
+        if factory.cache_info().currsize:  # belum pernah dibuat = gak ada yang diwarisi
+            engine = factory()
+            sync_engine = engine.sync_engine if isinstance(engine, AsyncEngine) else engine
+            sync_engine.dispose(close=False)
+
+
 def reset_engines() -> None:
     """Testing doang -- buang semua engine/sessionmaker singleton kalau
     Settings berubah di antar-test (mis. arah ke Postgres scratch beda)."""

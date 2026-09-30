@@ -1,0 +1,2639 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Articles | InfoStealers</title>
+	<atom:link href="https://www.infostealers.com/learn-info-stealers/feed/" rel="self" type="application/rss+xml" />
+	<link>https://www.infostealers.com/learn-info-stealers/</link>
+	<description>InfoStealers</description>
+	<lastBuildDate>Tue, 15 Sep 2026 17:31:59 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=6.9.7</generator>
+
+<image>
+	<url>https://www.infostealers.com/wp-content/uploads/2023/08/favicon-150x150.png</url>
+	<title>Articles | InfoStealers</title>
+	<link>https://www.infostealers.com/learn-info-stealers/</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+	<item>
+		<title>Revolut Hackers Used Infostealers for Elaborate Social Engineering</title>
+		<link>https://www.infostealers.com/article/revolut-hackers-used-infostealers-for-elaborate-social-engineering/</link>
+		
+		<dc:creator><![CDATA[InfoStealers]]></dc:creator>
+		<pubDate>Tue, 15 Sep 2026 17:31:58 +0000</pubDate>
+				<category><![CDATA[Blog Post]]></category>
+		<category><![CDATA[Hudson Rock]]></category>
+		<guid isPermaLink="false">https://www.infostealers.com/?post_type=article&#038;p=6824</guid>
+
+					<description><![CDATA[<p>Revolut Hackers Exploited Infostealers for Social Engineering Revolut Hackers Used Infostealers for Elaborate Social Engineering BREAKING: The investigations team at Duel has established contact with the hacker behind&#8230;</p>
+<p>The post <a href="https://www.infostealers.com/article/revolut-hackers-used-infostealers-for-elaborate-social-engineering/">Revolut Hackers Used Infostealers for Elaborate Social Engineering</a> appeared first on <a href="https://www.infostealers.com">InfoStealers</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<div>
+
+    <h1>Revolut Hackers Used Infostealers for Elaborate Social Engineering</h1>
+
+    <p><strong>BREAKING:</strong> The investigations team at Duel has established contact with the hacker behind the recent Revolut incident, revealing alarming new details about the methods used to compromise the financial institution.</p>
+
+    <h2>The Anatomy of the Attack</h2>
+    
+    <p>According to the information gathered, the attack was a sophisticated blend of technical compromise and social engineering:</p>
+
+    <ul>
+        <li><strong>Initial Access via Infostealers:</strong> The hacker gained access to government employee accounts using an infostealer. After gaining entry to an employee&#8217;s email, they would log in, add a recovery email under their control, begin logging activities, and silently monitor communications.</li>
+        <li><strong>Evading Detection:</strong> To avoid raising suspicion, the hacker instantly deleted any outgoing emails they sent that were not intended for the original employee. They monitored the inbox 24/7 for responses. Upon receiving a reply to their fraudulent emails, they would immediately download it as a .eml file and delete it before the actual account owner noticed.</li>
+        <li><strong>Targeting the Right Entity:</strong> The hacker admitted that while they initially tried forging court orders (a tactic presumably used against other companies), they quickly realized this wouldn&#8217;t succeed with Revolut. After conducting research, they determined the optimal target was Revolut&#8217;s Lithuania-based subsidiary, Revolut Bank UAB, which is obligated to respond to a European Investigation Order.</li>
+    </ul>
+
+    <div>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/09/iffnfn.png" alt="Tweet from Korra detailing the Duel investigation findings" />
+        <p>Details of the investigation shared by the Duel team outlining the hacker&#8217;s methodology.</p>
+    </div>
+
+    <ul>
+        <li><strong>The Initial Breach:</strong> Using a compromised email account, the hacker sent a single, fraudulent request approximately five months ago. Revolut, believing the communication originated from the Italian government, complied with the fabricated order.</li>
+        <li><strong>Sustained Control:</strong> From the compromised inbox, the hacker managed and terminated email threads that appeared to genuinely originate from multiple Italian government addresses.</li>
+        <li><strong>A Five-Month Campaign:</strong> The hacker continuously sent requests over a five-month period. Astonishingly, Revolut reportedly never questioned the requests or withheld information. In one instance, when the hacker accidentally sent an incorrect document, Revolut&#8217;s support team allegedly guided them on how to correct it rather than detecting the fraud.</li>
+    </ul>
+
+    <div>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/09/infostealeeee.png" alt="Email correspondence showing a pec.interno.it address communicating with Revolut" />
+        <p>Correspondence demonstrating the hacker utilizing an Italian government email address to communicate with Revolut&#8217;s legal department.</p>
+    </div>
+
+    <div>
+        <p>&#8220;We remain in contact with the hacker and we&#8217;ve requested exclusivity of information related to the story to be kept with Duel. We believe it is in the public&#8217;s best interest for EVERY piece of information related to this to be released, so that the extent of Revolut&#8217;s failure can be brought to light, as well as the sheer stupidity of the manner in which the KYC paradigm is currently conducted.&#8221;</p>
+        
+        <p>&#8220;The Duel team hopes that Revolut will be held accountable for their lack of due diligence and betraying their customers in such a severe manner, especially given the breadth and depth of the breach. Lives are now at risk. I&#8217;m personal friends with one of the victims, and he&#8217;ll probably have to move houses due to the continued (credible) kidnap threats.&#8221;</p>
+        
+        <p><em>&#8211; The Duel Investigations Team</em></p>
+    </div>
+
+    <h2>Hudson Rock&#8217;s Analysis &#038; Intelligence</h2>
+
+    <div>
+        <h3>New Insight from Hudson Rock</h3>
+        <p>While the Revolut hackers claimed they used Infostealers (initially telling researchers they used a &#8216;RAT&#8217;) to actively infect Italian government employees, Hudson Rock&#8217;s intelligence suggests a different scenario.</p>
+        
+        <p>Images from the campaign clearly show correspondence with Revolut was conducted using <strong>&#8216;pec.interno.it&#8217;</strong> email addresses, which belong to the Italian Ministry of the Interior.</p>
+        
+        <p>By checking Hudson Rock&#8217;s extensive cybercrime database, we identified approximately <strong>300 compromised pec.interno.it webmail logins</strong> stemming from already infected machines. Based on this intelligence, we assess that it is highly unlikely the hacker actively infected these specific employees themselves. Instead, they likely purchased or utilized existing Infostealer logs containing these credentials, attempting to obfuscate their true method of initial access.</p>
+    </div>
+
+    <div>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/09/pec2.png" alt="Hudson Rock database showing compromised credentials for interno.it" />
+        <p>Hudson Rock&#8217;s Cybercrime Intelligence database revealing numerous compromised credentials for the &#8216;interno.it&#8217; domain, providing an easy avenue for the attackers.</p>
+    </div>
+
+    <div>
+        <h3>Protect Your Organization</h3>
+        <p>To learn more about how Hudson Rock protects companies from imminent intrusions caused by info-stealer infections of employees, partners, and users, as well as how we enrich existing cybersecurity solutions with our cybercrime intelligence API, please schedule a call with us here:</p>
+        <p><a href="https://www.hudsonrock.com/schedule-demo" target="_blank" rel="noopener noreferrer">https://www.hudsonrock.com/schedule-demo</a></p>
+        
+        <p>We also provide access to various free cybercrime intelligence tools that you can find here:</p>
+        <p><a href="https://www.hudsonrock.com/free-tools" target="_blank" rel="noopener noreferrer">www.hudsonrock.com/free-tools</a></p>
+        
+        <p><strong>Thanks for reading, Rock Hudson Rock!</strong></p>
+        
+        <p>Follow us on LinkedIn: <a href="https://www.linkedin.com/company/hudson-rock" target="_blank" rel="noopener noreferrer">https://www.linkedin.com/company/hudson-rock</a><br>
+        Follow us on Twitter: <a href="https://www.twitter.com/RockHudsonRock" target="_blank" rel="noopener noreferrer">https://www.twitter.com/RockHudsonRock</a></p>
+    </div>
+
+</div><p>The post <a href="https://www.infostealers.com/article/revolut-hackers-used-infostealers-for-elaborate-social-engineering/">Revolut Hackers Used Infostealers for Elaborate Social Engineering</a> appeared first on <a href="https://www.infostealers.com">InfoStealers</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>HBO Max ads on a compromised Reddit account exposed a massive PasteSwitch ClickFix operation</title>
+		<link>https://www.infostealers.com/article/hbo-max-ads-on-a-compromised-reddit-account-exposed-a-massive-pasteswitch-clickfix-operation/</link>
+		
+		<dc:creator><![CDATA[InfoStealers]]></dc:creator>
+		<pubDate>Mon, 14 Sep 2026 14:36:46 +0000</pubDate>
+				<category><![CDATA[Blog Post]]></category>
+		<category><![CDATA[Hudson Rock]]></category>
+		<guid isPermaLink="false">https://www.infostealers.com/?post_type=article&#038;p=6819</guid>
+
+					<description><![CDATA[<p>HBO Max ads on a compromised Reddit account exposed a massive PasteSwitch ClickFix operation HBO Max ads on a compromised Reddit account exposed a massive PasteSwitch ClickFix operation&#8230;</p>
+<p>The post <a href="https://www.infostealers.com/article/hbo-max-ads-on-a-compromised-reddit-account-exposed-a-massive-pasteswitch-clickfix-operation/">HBO Max ads on a compromised Reddit account exposed a massive PasteSwitch ClickFix operation</a> appeared first on <a href="https://www.infostealers.com">InfoStealers</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<h1>HBO Max ads on a compromised Reddit account exposed a massive PasteSwitch ClickFix operation</h1>
+
+<p>In September 2026, the cybersecurity community uncovered a massive, highly coordinated malvertising campaign leveraging the official, verified HBO Max Reddit account (<code>u/hbomax</code>). Over a frantic 48-hour period, the compromised account pushed 108 distinct &#8220;ClickFix&#8221; advertisements to users across the platform.</p>
+
+<p>Through joint research conducted by <strong><a href="https://www.hudsonrock.com" target="_blank">Hudson Rock</a></strong> and <strong><a href="https://adamnet.works/blog/hbo-max-ads-exposed-the-pasteswitch-clickfix-operation/" target="_blank">Kirk from ADAMnetworks</a></strong> (with additional thanks to Tuxxin from Whack.sh and Emiliano from The Matrix Project), we can confirm this incident is part of a massive, cross-platform delivery operation we are dubbing <strong>PasteSwitch</strong>. This operation spans macOS stealers, Windows loaders, deceptive TLS tactics, and contract-controlled cryptocurrency clippers.</p>
+
+<h2>Initial Discovery</h2>
+
+<p>The incident was brought to light by Alex Cutts in the <code>r/cybersecurity</code> subreddit. While browsing the platform, they encountered an official Reddit advertisement authored by the verified <code>u/hbomax</code> account. The ad aggressively promoted a native macOS application for HBO Max, a standalone application that does not currently exist.</p>
+
+<p>Intrigued, the user followed the advertisement to a highly convincing landing page. Upon clicking the download button, the site did not initiate a standard file transfer. Instead, it triggered a classic &#8220;ClickFix&#8221; social engineering prompt, instructing the visitor to copy and paste a terminal command to install the software.</p>
+
+<figure>
+  <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/09/reddit_thread.jpg" alt="Initial Reddit report of the malvertising">
+  <figcaption>The initial report on r/cybersecurity detailing the suspicious official u/hbomax advertisement, first discovered by Alex Cutts.</figcaption>
+</figure>
+
+<h2>The Lure: Exploiting Trust and ClickFix Mechanics</h2>
+
+<p>The threat actors utilized highly polished assets to establish trust before delivering the malicious payload. By hijacking a verified corporate account, they bypassed the initial skepticism many users apply to internet advertisements.</p>
+
+<figure>
+  <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/09/official_hbo_reddit_ad.png" alt="Screenshot of the malicious Reddit ad">
+  <figcaption>A screenshot of the fraudulent advertisement natively displayed on Reddit, posted by the verified HBO Max account. (source: Alex Cutts)</figcaption>
+</figure>
+
+<figure>
+  <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/09/clickfix_website_overview.png" alt="Fake HBO Max landing page at hbomaxx.us">
+  <figcaption>The fraudulent landing page hosted at hbomaxx[.]us, designed to perfectly mimic the official HBO Max branding.</figcaption>
+</figure>
+
+<figure>
+  <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/09/clickfix-delivery.png" alt="ClickFix terminal prompt">
+  <figcaption>The ClickFix prompt shown by the HBO Max lure, instructing users to run malicious code in their Terminal.</figcaption>
+</figure>
+
+<p>Once the victim engaged with the download button, the site deployed the PasteSwitch ClickFix overlay. This tactic relies entirely on tricking the user into executing code themselves via the terminal or run dialog, successfully bypassing many standard browser-based download protections.</p>
+
+<h2>A Broader 48-Hour Malvertising Blitz</h2>
+
+<p>Further investigation utilizing OSINT tools revealed that the <code>u/hbomax</code> hijacking was not an isolated test run, but a massive 48-hour malvertising blitz. The threat actors squeezed as much value as possible out of the verified account&#8217;s status, pivoting quickly when domains were burned.</p>
+
+<p>In total, the attackers pushed <strong>108 distinct ads</strong> spanning multiple software lures. Beyond HBO Max, they targeted developers and power users seeking AI tools and disk cleaners.</p>
+
+<figure>
+  <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/09/rosint_dev.png" alt="Archived activity from the compromised HBO Max Reddit account">
+  <figcaption>The archived account activity using PullPush to count the 108 advertisements pushed by the hijacked u/hbomax account.</figcaption>
+</figure>
+
+<table>
+  <thead>
+    <tr>
+      <th>Lure Destination</th>
+      <th>Ad Volume</th>
+      <th>Target Theme</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>hbomaxx[.]app</code></td>
+      <td>40 ads</td>
+      <td>Streaming / Entertainment</td>
+    </tr>
+    <tr>
+      <td><code>codex-craft[.]com</code></td>
+      <td>36 ads</td>
+      <td>AI Tools / Developers</td>
+    </tr>
+    <tr>
+      <td><code>apple.clean-disk-guide[.]com</code></td>
+      <td>15 ads</td>
+      <td>macOS System Utilities</td>
+    </tr>
+    <tr>
+      <td><code>code-desktop[.]com</code></td>
+      <td>11 ads</td>
+      <td>AI Tools / Developers</td>
+    </tr>
+    <tr>
+      <td><code>hbomax-macos[.]com</code></td>
+      <td>6 ads</td>
+      <td>Streaming / Entertainment</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Unveiling PasteSwitch: Cross-Platform Delivery</h2>
+
+<p>The HBO Max ads provided one entry into a larger delivery system. Recovered pages and payloads showed separate services for lures, visitor qualification, staging, telemetry, payload delivery, C2, and exfiltration. The name <strong>PasteSwitch</strong> describes the stable action at the center of each route: the victim pastes an attacker-supplied command, and the delivery system dynamically switches among platform, campaign, payload, and monetization branches based on visitor qualification checks.</p>
+
+<div>
+  <div>
+    <h4>The macOS Branch: MacSync, AMOS, and Fake Wallets</h4>
+    <p>On macOS, PasteSwitch relies heavily on <code>curl | zsh</code> commands. The payloads included:</p>
+    <ul>
+      <li><strong>MacSync:</strong> Used transaction tokens (<code>/dynamic?txd=</code>) and chunked uploads to exfiltrate browser credentials, Gecko profiles, Telegram data, Apple Notes, and macOS passwords via a <code>/tmp/osalogging.zip</code> stage. The same execution pattern appeared in campaigns previously documented by <a href="https://www.zscaler.com/blogs/security-research/claudefix-shared-claude-chats-meet-clickfix" target="_blank">Zscaler</a>, <a href="https://www.microsoft.com/en-us/security/blog/2026/08/18/hunting-macsync-stealer-infrastructure-through-behavioral-pivots/" target="_blank">Microsoft</a>, and <a href="https://www.rstcloud.com/macsync-stealer-c2-infrastructure-rotation/" target="_blank">RST Cloud</a>.</li>
+      <li><strong>AMOS Helper:</strong> An execution chain utilizing <code>xattr -c</code> and <code>chmod +x</code> to run native helpers that persist under <code>.com.apple.accountsd</code>. The helper enrolls the victim into continuing tasking via endpoints like <code>/api/join/</code> and <code>/api/tasks/&lt;bot-id&gt;</code>. Similar persistence designs were independently documented by <a href="https://fieldeffect.com/blog/field-effect-detects-amos-stealer-delivered-via-cursor-ai-agent-session" target="_blank">Field Effect</a>.</li>
+      <li><strong>Fake Wallet Applications:</strong> Deployed via routes like <code>loop-lumen[.]com/zxc/</code>, these included Swift-based fake Ledger, Trezor Suite, and Exodus applications designed to directly steal 12 and 24 word BIP39 recovery phrases.</li>
+      <li><strong>Filequanticore Reuse:</strong> Attackers also reused the copied command model across domains like <code>filequanticore[.]com</code>, serving a visible page advertising a DMG file while underlying JavaScript loaded the malicious copied command from a text file, successfully bypassing simple scans.
+        <figure>
+          <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/09/homebrew_clickfix.png" alt="Homebrew clickfix campaign documented by Lostsh">
+          <figcaption>Homebrew ClickFix campaign documented by <a href="https://lostsh.github.io/blog/posts/2026-09-03/fake-homebrew.html" target="_blank">Lostsh</a>, utilizing the same loader grammar and telemetry paths.</figcaption>
+        </figure>
+      </li>
+    </ul>
+  </div>
+
+  <div>
+    <h4>The Windows Branch: InstallFix and Amatera</h4>
+    <p>If the PasteSwitch gate detected a Windows user, it dynamically delivered a different payload path utilizing <code>mshta</code> and PowerShell. Examples included:</p>
+    <ul>
+      <li><strong>InstallFix via mshta:</strong> Victims were prompted to run commands downloading an MP3/HTA polyglot. The HTA created a scheduled task, launched 32-bit PowerShell, disabled AMSI, and calculated a victim-specific subdomain based on the computer name and username.</li>
+      <li><strong>In-Memory Loading:</strong> The subsequent stages used arithmetic fog, opaque predicates, and shellcode to inject the Amatera Stealer PE directly into memory without touching the disk.</li>
+      <li><strong>Deceptive TLS SNI Spoofing:</strong> Once running, Amatera connected directly to an attacker IP (<code>77.91.65.13:443</code>) but presented <code>facebook.com</code> through TLS SNI and HTTP authority. By configuring Schannel for manual credential validation (<code>SCH_CRED_MANUAL_CRED_VALIDATION</code>), the malware bypasses certificate chain checks. Basic network telemetry mistakenly logs a connection to Facebook rather than the malicious C2, completely evading standard SNI-based filtering.</li>
+    </ul>
+  </div>
+  
+  <div>
+    <h4>The Cryptocurrency Clipper Branch: Smart Contract C2 Rotation</h4>
+    <p>For persistent clipboard replacement (swapping crypto addresses when victims try to copy or paste), PasteSwitch delivered AnimateClipper and ZigClipper.</p>
+    <p>These clippers utilized <strong>Binance Smart Chain (BSC) contracts</strong> as mutable C2 dead drops. The malware queries specific smart contracts (e.g., calling <code>getData()</code> or <code>balanceOf(address)</code>) to fetch the current active Command and Control domain (like <code>lb.propertyfind.cc</code>).</p>
+    <p>Between March and July 2026, researchers observed 36 mainnet changes executed by the same attacker controller address. Because the C2 domain is hosted directly on the blockchain, the infrastructure demonstrates dynamic resilience, allowing the threat actors to easily rotate burned domains.</p>
+  </div>
+</div>
+
+<div>
+  <h4>Read the Full Technical Breakdown</h4>
+  <p>For an exhaustive deep dive into the malware staging, network infrastructure, and a complete technical teardown of the PasteSwitch operation, please read the companion report by Kirk from ADAMnetworks: <strong><a href="https://adamnet.works/blog/hbo-max-ads-exposed-the-pasteswitch-clickfix-operation/" target="_blank">HBO Max Ads Exposed: The PasteSwitch ClickFix Operation</a></strong>.</p>
+</div>
+
+<h2>Reddit&#8217;s Intervention</h2>
+
+<p>Following community reports and an escalating volume of malicious ads, Reddit administrators successfully intervened. They paused the affected ads and launched an internal investigation alongside their Security and Safety teams to secure the verified account.</p>
+
+<figure>
+  <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/09/reddit_admin.jpg" alt="Reddit administrator response confirming ads are paused">
+  <figcaption>A Reddit administrator confirming the malicious ads have been paused pending a security investigation.</figcaption>
+</figure>
+
+<h2>Conclusion</h2>
+
+<p>The HBO Max account provided PasteSwitch with a trusted advertising identity for 48 hours. The copied command exposed a delivery system that had already operated across software brands, operating systems, malware families, and infrastructure generations.</p>
+
+<p>PasteSwitch kept its visible lures disposable while preserving operational structure. The same route grammar, API keys, helper identifiers, telemetry endpoints, staging conventions, task protocol, persistence paths, and registration patterns appeared after individual domains changed. On Windows, the operation combined InstallFix with layered in-memory loading and an Amatera client that presented <code>facebook.com</code> over a direct socket to <code>77.91.65.13</code>. In the clipper branch, one controller synchronized C2 changes across testnet and mainnet contracts while two related binaries retained the same 21-address fallback configuration.</p>
+
+<p>Those recurring controls provide the durable detection surface. Process ancestry exposes copied-command execution. Route tokens and API keys connect rotating macOS hosts. Destination, SNI, certificate, and DNS correlation expose deceptive TLS identity. Contract setter monitoring reveals new clipper C2 domains as they are published. Brand names and lure domains change; the systems behind them retain the signals needed to follow PasteSwitch.</p>
+
+<div>
+  <h3>Indicators of Compromise (IOCs)</h3>
+  <p>The inventory below covers the directly observed routes, recovered artifacts, infrastructure, and contract state described in this article. Published MacSync and gated-ClickFix domain sets remain available through the inline Microsoft, Zscaler, RST Cloud, Cato, and lostsh references.</p>
+
+  <h4>Addresses</h4>
+  <table>
+    <thead>
+      <tr>
+        <th>Address</th>
+        <th>Branch</th>
+        <th>Role</th>
+        <th>Source</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><code>45.94.47.204:80</code></td><td>AMOS helper</td><td>Enrollment, task polling, and acknowledgement</td><td>April PCAP and helper analysis</td></tr>
+      <tr><td><code>77.91.65.13:443</code></td><td>Amatera</td><td>Direct-to-IP TLS C2 using <code>facebook.com</code> SNI</td><td>Exact PE execution</td></tr>
+      <tr><td><code>165.22.199.85</code></td><td>September macOS</td><td>Telemetry and <code>/contact</code> exfiltration</td><td>September macOS execution</td></tr>
+      <tr><td><code>164.90.161.147:80</code></td><td>September macOS</td><td>Post-execution HTTP contact</td><td>September macOS execution</td></tr>
+      <tr><td><code>92.246.136.14</code></td><td>AMOS helper</td><td>Fallback <code>/contact</code> exfiltration</td><td>Helper configuration and published AMOS reporting</td></tr>
+      <tr><td><code>62.60.226.69</code></td><td>Shared provisioning</td><td>Nova and macOS-tool cluster</td><td>DNS, registration, and infrastructure records</td></tr>
+      <tr><td><code>176.53.159.66</code></td><td>Shared delivery</td><td>Teardown, TLS, and Windows executable cluster</td><td>DNS, TLS, certificate, and execution records</td></tr>
+      <tr><td><code>172.236.51.169</code></td><td>Gated lure</td><td>Observed <code>storageprofiler[.]com</code> origin</td><td>Page capture and certificate records</td></tr>
+      <tr><td><code>138.124.93.32</code></td><td>AMOS helper</td><td><code>/contact</code> exfiltration</td><td>Microsoft helper-campaign IOC list</td></tr>
+      <tr><td><code>168.100.9.122</code></td><td>AMOS helper</td><td><code>/contact</code> exfiltration</td><td>Microsoft helper-campaign IOC list</td></tr>
+      <tr><td><code>199.217.98.33</code></td><td>AMOS helper</td><td><code>/contact</code> exfiltration</td><td>Microsoft helper-campaign IOC list</td></tr>
+      <tr><td><code>38.244.158.103</code></td><td>AMOS helper</td><td><code>/contact</code> exfiltration</td><td>Microsoft helper-campaign IOC list</td></tr>
+      <tr><td><code>38.244.158.56</code></td><td>AMOS helper</td><td><code>/contact</code> exfiltration</td><td>Microsoft helper-campaign IOC list</td>
+    </tbody>
+  </table>
+
+  <h4>Core Domains</h4>
+  <table>
+    <thead>
+      <tr>
+        <th>Function</th>
+        <th>Indicators</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Copied-command lures</td><td><code>filequanticore[.]com</code>, <code>filesiriuscore[.]com</code>, <code>alfredaps[.]com</code>, <code>hbomaxx[.]us</code>, <code>hbomax-macos[.]com</code>, <code>bright-links[.]com</code>, <code>codex-notes[.]com</code>, <code>storageprofiler[.]com</code>, <code>cladesktop[.]gitlab[.]io</code>, <code>cli-desktop[.]com</code>, <code>cli-stack[.]com</code>, <code>homebrwmac-hub[.]com</code>, <code>clean-disk-guide[.]com</code></td></tr>
+      <tr><td>Click tracking</td><td><code>flutelikelurkerunsinewy[.]com</code>, <code>camaligsalvatrefoils[.]com</code></td></tr>
+      <tr><td>macOS loader delivery</td><td><code>press29[.]com</code>, <code>leaf68[.]com</code>, <code>basequill9[.]com</code>, <code>perchframe15[.]com</code>, <code>canvas-35[.]com</code>, <code>pine63[.]com</code>, <code>trekmesh15[.]com</code></td></tr>
+      <tr><td>September telemetry and delivery</td><td><code>weaveridge7[.]com</code>, <code>ember-bridge[.]com</code>, <code>rudder-moss[.]com</code>, <code>wuess[.]com</code></td></tr>
+      <tr><td>MacSync delivery and control</td><td><code>houstongaragedoorinstallers[.]com</code>, <code>pressureulcerlawyer[.]com</code>, <code>lalandscapelighting[.]com</code>, <code>aidevmaster[.]com</code>, <code>pinescope11[.]com</code>, <code>dogtrainersgeorgia[.]com</code>, <code>denverplumbingandwaterheater[.]com</code>, <code>restoremental[.]com</code>, <code>glowmedaesthetics[.]com</code>, <code>marbellaresales[.]com</code>, <code>gatemaden[.]space</code>, <code>beaocnagent[.]com</code>, <code>hbubagent[.]com</code></td></tr>
+      <tr><td>AMOS helper and tasking</td><td><code>arkypc[.]com</code>, <code>harbor-29[.]com</code>, <code>fern-plume[.]com</code>, <code>node-slate[.]com</code>, <code>grove-12[.]com</code>, <code>verse-18[.]com</code>, <code>lakhov[.]com</code>, <code>mpasvw[.]com</code>, <code>ouilov[.]com</code>, <code>aforvm[.]com</code></td></tr>
+      <tr><td>Fake wallet delivery</td><td><code>loop-lumen[.]com</code>, <code>umapla[.]com</code>, <code>glrack[.]com</code></td></tr>
+      <tr><td>Windows staging</td><td><code>desktop-version[.]com</code>, <code>oakenfjrod[.]ru</code></td></tr>
+      <tr><td>SIC Windows route</td><td><code>sic180[.]com</code>, <code>habar55[.]namebright[.]bike</code></td></tr>
+      <tr><td>Provisioning-linked lures</td><td><code>crisp-paths[.]com</code>, <code>cli-guides[.]com</code>, <code>macdeveloperhub[.]com</code>, <code>macfixguide[.]com</code>, <code>claud-tips[.]com</code>, <code>codex-paths[.]com</code>, <code>cmux-lab[.]com</code>, <code>rectangleap[.]com</code>, <code>muse-code-ide[.]com</code>, <code>hbomaxx[.]app</code>, <code>codex-craft[.]com</code>, <code>code-desktop[.]com</code>, <code>claude-tools[.]com</code>, <code>clean-disk-tools[.]com</code>, <code>opendisplay[.]us</code></td></tr>
+      <tr><td>Provisioning neighborhood</td><td><code>applediag[.]com</code>, <code>getnova[.]top</code>, <code>nova-desk[.]top</code>, <code>nova-fix[.]top</code>, <code>nova-hub[.]top</code>, <code>nova-labs[.]top</code>, <code>nova-tools[.]top</code>, <code>novastacktips[.]com</code>, <code>remotion-skills[.]com</code>, <code>macstoragetips[.]com</code></td></tr>
+      <tr><td>Teardown and delivery neighborhood</td><td><code>chatgpt-safepage[.]com</code>, <code>thepullmanfolkestone[.]com</code>, <code>gigappyworld[.]com</code>, <code>microsoftupdater[.]info</code>, <code>gogolfonline[.]com</code>, <code>heroestales[.]com</code>, <code>wantsellonline[.]com</code>, <code>papartybus[.]com</code>, <code>clveeragent[.]com</code>, <code>congiagent[.]com</code>, <code>sgaaagent[.]com</code>, <code>sprieagent[.]com</code>, <code>cosimcagent[.]com</code>, <code>cehamilton[.]com</code>, <code>broadwalkindia[.]com</code>, <code>cim-kolea[.]com</code>, <code>hindustanagency[.]com</code></td></tr>
+      <tr><td>Address reuse</td><td><code>euquiz[.]space</code></td></tr>
+      <tr><td>Contract C2</td><td><code>lb[.]propertyfind[.]cc</code></td></tr>
+    </tbody>
+  </table>
+
+  <h4>Smart contracts</h4>
+  <pre><code>AnimateClipper: 0x6936edc505501EBB2F202C985a021a06f1c10C9E
+ZigClipper:     0x7CC3cFC1Ac007B8c6566fD2C7419b15a75473468
+Controller:     0x3a35b409af86e79e8945d6a7ffb1dc59b8dbdf46
+getData():      0x3bc5de30
+balanceOf():    0x70a08231
+setData():      0x47064d6a</code></pre>
+
+  <h4>Key hashes</h4>
+  <pre><code>eec09815c3664aa6b3cd370a8b8f566be3b804949cfc514f145262136898b009  September macOS payload
+d4150c1c97f047c6edb14767bf1efa8f9e37d63b124f38f27da4ef52d570aac2  AccountsHelper service component
+f71d72711fe132f00d1a10d6f8c0f26c1544b41f57ca9262668dd2c771cc31f7  metadata mdworker component
+a90a93e9776852dac869d4097dba2a4741ef5d316a1ae8631329349287e6a411  metadata mdworker_shared component
+93d986f39599df747e4f65484a41d5e5ae7ece345924ea36e4f4ee623ce2f0ae  Arkypc loader
+e6e54a8e8f30cedd8492f515ab95e005478bafb41998c43341fcf3a494573d6c  Arkypc helper
+f8d09bb7ef38015342fb8ae11c489fc1a3f01e743123e4222e9291cb474fb75e  fake Ledger archive
+131a071301006dbed8dbf4d2e08b2914407b7693ab23566bdfee9f39f157aab4  fake Trezor archive
+ecbbf5c7f1fac026dbaa74e8dac630730b4a49fbbb9fd59c333c48c28768ebfb  fake Exodus archive
+5e8ad983129f6771d186f60379dca30d208374cac45bac75d5459aaf0fabc8ad  InstallFix MP3/HTA carrier
+480c65e5bb793da2d5ddfdcf00dd37bd4c7176ea0fb58d4e6bd5c891795dc2f5  InstallFix /claude carrier
+3276414afb3c7ce7aa19db5401051ce4ad6968a7cc6bf8384cd6470c92541a24  recovered InstallFix PowerShell
+ec9111b13bb21c1ce757db666b6df329724ec2ec493bcae1ba64b4ec2e93a331  recovered x86 shellcode
+d4eb6e4cec1e69f3bc94bbe2d743e982863fc8549e49f832846c218e1aba3fcb  Amatera PE
+6759c72365d0c690db613ff30635970668f5699b65c3842ecdc4f1b695ed13a7  SIC MP3/HTA payload
+279d04c0cfd700c8bcb9acbed528131d3ffef8e25d12713e8649772739aecb92  Talos clipper archive; extracted payload classified as AnimateClipper</code></pre>
+
+  <h4>Additional recovered hashes</h4>
+  <div>06a3d3bdeb33411fba53eed53cf528f3b33fdf5c2a74921d5d98002cb5e2ba1b  Houston MacSync shell stage
+d1690bec25ed5423e86a9ba1ce41ba8d0de91700e0b680291196dd9975a8a29c  Pressureulcerlawyer MacSync shell stage
+ede6ea506c6221f24618f8a7177f9c2f16b63968f0c34818c45d88f1d0dd03a7  Lalandscapelighting MacSync shell stage
+d95e123c2ed35a03b84558b8a3cd7b7e47a15914ed819ca2ce99afe32b5a0540  Aidevmaster MacSync shell stage
+18c8b79ce68060782e52445a9f38c57e4b6e3f09f625b0465e0a9576e51a7505  Pinescope11 MacSync shell stage
+249088420058e50b5e7d1e615a6b9c212e1c341b43fbd8b60cde30d5bd281938  Trekmesh15 AMOS helper shell stage
+9eb96fc1fda13b143a90896793754b6a61942dbf87846895bb9ea8c1e849cd96  Dogtrainers MacSync shell stage
+825f0358da26a5cd85076be4586c4125ea5958235f3d9669ea3bf60c0edfc5b2  Harbor AMOS helper shell stage
+ac90360ac4d8c2eb2585daa867d085d2fb12b859bed6c3a472a738cd08e55383  Denver MacSync shell stage
+fbc6e1867de39feb53f62f8fe805b9dee8ca66e751243731d1db3974eba07e97  Restoremental MacSync AppleScript
+0d58616c750fc8530a7e90eee18398ddedd08cc0f4908c863ab650673b9819dd  Glowmedaesthetics MacSync shell stage
+86d0c50cab4f394c58976c44d6d7b67a7dfbbb813fbcf622236e183d94fd944f  Glowmedaesthetics MacSync shell stage
+ecfaa20f25e11878686249c7094706bc3dcd2dc0ace0f2932a39d1bfdac85863  older MacSync Mach-O
+06c74829d8eee3c47e17d01c41361d314f12277d899cc9dfa789fe767c03693e  older MacSync Mach-O
+5ae085cb918abaeb83b4819106534247cfd30f30c77cbcc7806fbf99e12234fb  Harbor helper
+6705033c16d499d65b79f0f8f459a8ea214ae85aedffb3d25f68ba26e455f136  wuess configuration body
+48cc0941b4129bfaeb6948de49dc7c81456e92907b3ea6bdcef5ff186dddf200  fake Trezor Mach-O
+8d88b558dc9edbc4fdb66eb2451fd5f4df49266921346d2db1191cf23f0d13dc  fake Exodus Mach-O
+12f6fde9d8058292ad1fb869352eebd615aa59c526a481a39fb52aa59e368d0d  Oakenfjrod Polymarket response
+dbe8f391291a66a509d5a0144ece8e61789657f96bac14f786293bb4d2ca21ac  decoded PowerShell layer
+439f01ee546eabbdbcc02c0312cf3de28877ed8fcba80e46da88b76b02527a66  shellcode-loader PowerShell
+2f04ba77bb841111036b979fc0dab7fcbae99749718ae1dd6fd348d4495b5f74  Oakenfjrod cloude stage
+d5a60dedf71308f5971269b7a63903e4b68992c392a0368f1dd03cb7e4bcefbc  Oakenfjrod cloude stage
+ebb2a2f9f58d0908848399ffcb3a254e9171a8c14daeeae7fc042376372802f4  Oakenfjrod cloude stage
+97f9e987cbd9de6e853c1adcc7614a8d77d4216d63473e7a1f0f6356c5f0e771  Zig-contract-associated sample
+23bec473632af324b0a271f6b0575ea3d3174af7042ee5d582cb739714a35af8  AnimateClipper, Broadwalkindia
+31cf473bb93abef0760d4992d45bafcd936edb7c26193c175f8491f8ffaef0e0  AnimateClipper, Cehamilton
+407aaecabee599cb29dbb3cf177ed77b67f65d63f456c7abeda5834c0d36ed5f  AnimateClipper, Hindustanagency
+5ee86cbcd296e0998ca20ee65a7506fb3baecfb7ce98eede29bff1a6a6e0fc95  AnimateClipper, Hindustanagency
+bc9165c426258d33799107d41a1e692504d7e69e02762475ab3b8cbcd19d5d40  AnimateClipper, Cim-kolea
+d4cfab5e052df4c049f258e226d11825cb37b0359be454b83241edd59b295f08  AnimateClipper, Hindustanagency
+fdfd0b06cb31d68146dbb5ffb45b82ca1b59a7b4f62f917a990a9c3bd01654ab  AnimateClipper, Broadwalkindia
+5a9a3ce9ff74d7823737b184330134b25a4f36fc1d268789229f8de16832508c  Filequanticore and Filesirius lure
+1ba14ee44de95a3e6dcb9866cd00015dbf37f078a74362a827b21c8b2ec48a1a  copied-command data
+f122d596ac6f5bb26ec69ab5fa68506da71d0f72bba5533c913dedd0314855e7  Filequanticore page loader
+cf8d03a0de9e29e3f6a81606443cbf9df2167e95435f88ede747415d4b7e84ed  Filequanticore script
+52385473e1a64ae5b7a3b79f145304e6b2c5db53e8883e6beede41821c08673f  Bright Links lure
+6d9ced8d62655d1a0ddc0d6b5359a10e921b4b2b3b1000dcf96b240f2fa79662  Cli-desktop lure
+d72df956a51b1ec0af1e1d375a5704538d2e32688259c14aed39cf1e9d0d770a  Cli-stack lure
+9f26da2456f30b1e10c9aaee4fbf4cbab07912177366aca7fa1103be08a026ff  Codex Notes lure
+a69fb9b56a10c8616e76b20a6900842737e16077796aa195b86b71407b8e79b9  Diskclearing lure
+008e04a7807f9ed59d77942b1d268e4a93bb82316346f48e5f5b663233db3fff  Freshfolio lure
+02ac1914fcb4efae0699571751acd700ef0a1933312cd37e72bb7f37bacf4776  Homebrew lure
+91b192d28380c77bda19a142c8979d03b3409ca819c07e6dabae0c73a2ab2360  Storageprofiler gated lure
+8c469b571875c6ba0009237379ba0a23b716db6d97724a81a7032a2e4b3456b6  Cladesktop cross-platform lure
+7a4c15c5f056322ceb9a16fd74374ec0e85aacbaeeb6042ff34b9c415e900864  Cladesktop wrapper
+f771f4717ed04f723b30f9e0424cc2f630f1ffe47857502edd27c3c40c609320  Cladesktop Wasm
+013e587247324cfa3005443d2b8036f9a434cafafa1d8a56a6f5637b3dd9d3c1  Cladesktop fallback page</div>
+
+  <h4>Contract-resolved C2 history</h4>
+  <p>The following domains were decoded from successful <code>setData(string)</code> transactions against the Animate and Zig contracts. Repeated values are deduplicated.</p>
+  <div>br[.]hugo-lapp[.]co
+carlessclapped[.]com
+cf[.]hugo-mapp[.]co
+cw[.]hugo-lapp[.]lat
+dau[.]hugo-mapp[.]co
+dmt[.]unguidedfreewill[.]co
+doh[.]hugo-mapp[.]co
+ed[.]hugo-lapp[.]lat
+en[.]hugo-mapp[.]co
+esp[.]hugo-mapp[.]co
+fcp[.]unguidedfreewill[.]co
+fd-api-irc[.]velqo7[.]co
+fd-api-irf[.]velqo7[.]co
+fd-api-iris[.]velqo7[.]co
+fd-api-irs[.]velqo7[.]co
+fd-api-rop[.]velqo7[.]co
+fd-api-zog[.]velqo7[.]co
+fd[.]gstats-api-contact[.]cc
+fd[.]gstats-api-contd[.]cc
+fd[.]hugo-lapp[.]lat
+flame-guard[.]cc
+fr[.]hugo-mapp[.]co
+io[.]hugo-lapp[.]lat
+jup[.]unguidedfreewill[.]co
+kffd3[.]vexlatech[.]cc
+kffd3[.]vogueatelier[.]cc
+kr[.]hugo-lapp[.]co
+lb[.]propertyfind[.]cc
+mgo[.]gstats-api-contact[.]cc
+paf[.]hugo-mapp[.]co
+pf[.]hugo-mapp[.]co
+pkg[.]vogueatelier[.]cc
+pt[.]hugo-lapp[.]co
+sdx[.]unguidedfreewill[.]co
+smart[.]hugo-mapp[.]co
+sp1[.]gstats-api-coni[.]co
+sp13[.]gstats-api-coni[.]co
+sp13[.]gstats-api-cont[.]co
+st[.]hugo-lapp[.]lat
+static[.]quorashift[.]cc
+td[.]hugo-lapp[.]lat
+tnt[.]unguidedfreewill[.]co
+wdm[.]unguidedfreewill[.]co
+wdm[.]velqo7[.]co
+wdx[.]unguidedfreewill[.]co
+wdx[.]velqo7[.]co
+wix[.]velqo7[.]co
+xn--b1ahgbfifq[.]gstats-api-cont[.]co
+xn--b1aluem3j[.]gstats-api-contd[.]cc
+xn--i-ctbr1afp[.]gstats-api-contd[.]cc</div>
+
+  <h4>Animate and Zig replacement addresses</h4>
+  <div>0xA1E50DaF64fb2B342A64d848E396700962acC2d0
+1PbWWqgKDBDorh525uecKaGZD21FGSoCeR
+31kwGkJP9xM26cnQJLpe1CH6pjSt4DEDz2
+32Epo1K92Xzo6Hayq1Fmkj21x4fUk7JZT7
+bc1qcg5sx6a6evx5ls4gj6nh8d0jtamh89n2y473dr
+bc1pqn73hlel3mmnza0kfl2alwkkgkapeeknufgtysll8fs2z4umdf0qpvus9q
+ltc1qk437ykzdxms9k9wh5vhd7aalsv0tfx6r39rrtv
+LV9AYZKQEg891crnof7PFK6u77noVM4Y45
+MG1FerSxboiwjhvU2cv4n34pXz5FpC88p4
+TNf4nzc6x6fZrBMLMaZZGV1SbCjShDqbaQ
+r9yMnTm4NSzvG9rrwjM2ec8xZgh1cafXH8
+cosmos1k5xu6njlc90r92gdwvtfjh826jduw7ptmry0q8
+UQDvDUxFShoWWbHougyHjr0tFz3E38fX8e0bnTUpya-P0mXW
+DH9W9S6mSSBsGeiSstgsGdiREZupQbZf9C
+RRkUSs6V3Eu6gxjGDbGzcS99F5WyKtggsw
+XvUreW3ZjMcDuMTowd1BZsK9CYJdk7eKJw
+RMh4hfsi84LdbS4uS3jaSaNccc8kartkDJ
+XALFSI6ETIZJH2N5CFT2CFOKPFDVDTZUVR7Q3L26UG74SWYGMY6X7MA46Q
+XpY2GAXeKJwxSqF87BbPzD68Woy5trj8iKS1PPM
+EME9M9cSy9FvfHvcx2gMPkp1H5Dj4YaKufPRsAyon8Tf
+qphu2urfykunh5l42retl4aqw6xnfjkyjvcy6gjqrs</div>
+
+  <h4>Wuess replacement addresses</h4>
+  <div>addr1q96640zpnccyktlmjqnzqnypwugva9g9dcuk0f5jt9mjz3xh54zest5mg6mqh9dt5q4lgt9j3zwfz67s4mqqyj4x4xkq62nj0f
+stake1u8t623vc96d5ddstjk46q2l59jeg38y3d0g2asqzf2n2ntqjv72k8
+X-avax1h9qxee0820ezfkgeeuc02gkc0c77xrypx8z6g2
+bitcoincash:qqkmn6qq7k0wpa5x7qxze5c4lkcsjkrsvsy2ecll6y
+bnb1jvds8pg6zkxd2s7dl8klr0dye5avlfv8mm25jm
+bc1qkg288agwvjs9cnmhz2q2f4p0x6nttwwngue7v0
+1EZk7eLw52dErMygLvfKQJJ6KVWk8gPgvE
+3K4JfWQv1ye2DAmgfcnMUBJSLnux7Lpf2X
+bc1p6nwq0zs0dhcf5zgsfhjrr93enggkzmvqpwxld85egv7zamrcktqsdxmjvt
+cosmos13ppe5rlcmlsgp4mlzxuma4nypcgh22upkjgf0k
+DNZCS9qtuibaMtgVTf9Ttr7SuXaXRCMsDN
+13ky7J5igHNFeYogpkPh88CzwFNNh46DseTT64uqqvumgeJy
+0x1c19A9afa995B096Ea029723DF3C2AfA33c2957C
+ltc1qk8vtqkx8m8dds3t3kc7vttlgegecf4zc9mlt58
+LNt9qLwNeWNVuTshrRNMxsA2zGdDTjtzkT
+JA56jZx7GXNdr5T3UCBaU6kFw9qMNxg89gzDjHH1c7cG
+0x863f2b5cc85b6d02585a74c085ec028931f70753bf85e01fd03f029a36f0ce6d
+5EpfxxpepW6nD1oAs7LgyyNr5dNizkY5o9ixvmvVHqtFWF21
+TSucG5Xry7cL2bRYGc24ooPxd2VeSKvT16
+GAC5UAVLGJWXEOOULHLMXZR5SGLQLLDVBQLXHTA2D43UJ7RWTAIZUCWA
+rUuyWz7YTUks7qk3xJBziyss3NLpGo1Upp</div>
+
+</div>
+
+<h2>Proactive Defense with Hudson Rock&#8217;s Threat Feeds</h2>
+
+<figure>
+  <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/07/threatfeeds1.png" alt="Overview of Threat Feeds">
+  <figcaption>Overview of the new Threat Feeds monitoring options available inside Cavalier, including C2 Intelligence, ClickFix Monitor, and PhaaS Feed.</figcaption>
+</figure>
+
+<p>With PasteSwitch and related ClickFix lures becoming increasingly sophisticated, it is vital to understand the exact mechanisms threat actors are using to deceive employees. Hudson Rock&#8217;s new ClickFix module in Cavalier provides critical visibility into malicious websites that use fake verification pages, CAPTCHA prompts, and clipboard injection techniques to trick users into executing malicious commands.</p>
+
+<p>Inside Cavalier, security teams can seamlessly review detected ClickFix sites, clipboard injection and CAPTCHA indicators, injected command payloads, before and after interaction screenshots, and domain records.</p>
+
+<figure>
+  <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/07/clickfix_0_2.png" alt="Overview of recently flagged clickfix servers in Cavalier">
+  <figcaption>Detailed analysis showing a malicious clipboard payload alongside a before and after comparison of a fake CAPTCHA interaction.</figcaption>
+</figure>
+
+<p>Perhaps the most powerful capability of the ClickFix monitor is its integration with Infostealer credential telemetry linked to the hosting platform. By combining insights from our C2 monitoring, which now includes all data surfaced from this cross-platform PasteSwitch campaign, Cavalier pinpoints compromised employee or user credentials that enabled attackers to gain initial access to servers, explaining how legitimate domains become hosts for malware.</p>
+
+<p>Crucially, all of the C2 data surfaced in this research has been added to Hudson Rock&#8217;s C2 monitoring where we track C2 data from infostealers, clickfix, and PhaaS (phishing as a service).</p>
+
+<figure>
+  <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/09/c2added.png" alt="C2 data added to Hudson Rock">
+  <figcaption>PasteSwitch C2 infrastructure, including hbomaxx[.]us, actively tracked within Hudson Rock&#8217;s Cavalier platform.</figcaption>
+</figure>
+
+<div>
+  <h3>Protect Your Organization from Imminent Intrusions</h3>
+  <p>With our new Threat Feeds, cybersecurity teams can monitor live C2 infrastructure from infostealer campaigns, ClickFix networks, and PhaaS operations to proactively block malicious communications before they cause damage.</p>
+  <p>To learn more about how Hudson Rock protects companies from intrusions caused by info-stealer infections of employees, partners, and users, and how we enrich existing cybersecurity solutions with our cybercrime intelligence API, please schedule a call with us today.</p>
+  
+  <a href="https://www.hudsonrock.com/schedule-demo" target="_blank">Schedule a Demo</a>
+  
+  <div>
+    <p>We also provide access to various free cybercrime intelligence tools that you can find <a href="https://www.hudsonrock.com/free-tools" target="_blank">here</a>.</p>
+    <p>Thanks for reading, Rock Hudson Rock!</p>
+    <p>
+      Follow us on <a href="https://www.linkedin.com/company/hudson-rock" target="_blank">LinkedIn</a> | 
+      Follow us on <a href="https://www.twitter.com/RockHudsonRock" target="_blank">Twitter</a>
+    </p>
+  </div>
+</div>
+
+<div id="lightbox">
+  <img decoding="async" id="lightbox-img" src="" alt="Enlarged view">
+</div><p>The post <a href="https://www.infostealers.com/article/hbo-max-ads-on-a-compromised-reddit-account-exposed-a-massive-pasteswitch-clickfix-operation/">HBO Max ads on a compromised Reddit account exposed a massive PasteSwitch ClickFix operation</a> appeared first on <a href="https://www.infostealers.com">InfoStealers</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Inside a Syrian Interrogation Room: The Detainee Files an Infostealer Stole From a Military Police Unit</title>
+		<link>https://www.infostealers.com/article/inside-a-syrian-interrogation-room-the-detainee-files-an-infostealer-stole-from-a-military-police-unit/</link>
+		
+		<dc:creator><![CDATA[InfoStealers]]></dc:creator>
+		<pubDate>Tue, 25 Aug 2026 13:37:34 +0000</pubDate>
+				<guid isPermaLink="false">https://www.infostealers.com/?post_type=article&#038;p=6778</guid>
+
+					<description><![CDATA[<p>A single malware infection on one senior officer’s computer exposed the active caseload of a Syrian National Army military police unit</p>
+<p>The post <a href="https://www.infostealers.com/article/inside-a-syrian-interrogation-room-the-detainee-files-an-infostealer-stole-from-a-military-police-unit/">Inside a Syrian Interrogation Room: The Detainee Files an Infostealer Stole From a Military Police Unit</a> appeared first on <a href="https://www.infostealers.com">InfoStealers</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<div>
+
+<p>
+A single malware infection on one senior officer&#8217;s computer exposed the <strong>active caseload of a Syrian National Army
+military police unit</strong> &#8211; seven interrogation records, complete with detainee photographs, family maps, and
+fingerprinted confessions. Among them: an alleged <strong>espionage network</strong>, a <strong>smuggling ring</strong> run by serving soldiers</strong>, and
+one statement that exists in two different versions.
+</p>
+
+<figure>
+  <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/1.jpeg" alt="A recovered interrogation record displayed in Hudson Rock's Cavalier platform, showing Syrian Military Police letterhead, the unit crest, and a redacted detainee photograph.">
+  <figcaption>
+    <b>Figure 1:</b> One of the recovered files, taken from Hudson Rock&#8217;s Cavalier platform. The red-bordered form is
+    headed <span>ضبط تحقيق أولي</span> (&#8220;Preliminary Interrogation Record&#8221;) and carries the Military
+    Police crest, the unit&#8217;s letterhead, and the detainee&#8217;s own ID photograph. This document runs to six pages. The
+    detainee&#8217;s name and face have been redacted by Hudson Rock; they are not redacted in the original file.
+  </figcaption>
+</figure>
+
+<h2>Executive Summary</h2>
+
+<p>In May 2023, an infostealer infected a computer belonging to the <strong>Military Police Investigation Section in
+Suluk</strong>, northern Syria &#8211; a unit of the Turkish-backed Syrian National Army (SNA).</p>
+
+<p>The malware took saved passwords, cookies and a live Telegram session. Then its file-grabber module reached the
+Desktop and took the unit&#8217;s <strong>active detainee files</strong>: interrogation records holding each detainee&#8217;s full
+identity, their family, their photograph, and a first-person confession closed with a thumbprint. No encryption, no
+password &#8211; Word documents on a desktop. Five of the fourteen recovered files are Office lock files, meaning
+investigators were editing detainee records at the moment the malware ran.</p>
+
+<p>Seven of those files are interrogation records. This article works through <strong>all of them</strong>, ordered
+from the most serious allegation to the least.</p>
+
+<div>
+  <h4>Three findings stand out</h4>
+  <ul>
+    <li>An alleged <strong>espionage network</strong> feeding photographs and coordinates of National Army positions to
+    Kurdish intelligence &#8211; named by a detainee who then offered to help arrest the people he named.</li>
+    <li>A confessed <strong>human-smuggling ring run by serving soldiers</strong> from three SNA factions, moving groups
+    over the border wall with a wooden ladder for 150 dollars a group.</li>
+    <li>One detainee&#8217;s statement that exists in <strong>two different versions</strong> &#8211; with a prior drug conviction
+    removed from the second, and a denial of drug use added.</li>
+  </ul>
+</div>
+
+<div>
+  <span>On names</span>
+  <p>Every personal name is withheld &#8211; detainees, the civilians they accuse, the smugglers they name, and the officers
+  who signed. These people are in custody, under suspicion, or serving in an active war zone. Names appear as
+  <span>&#8220;******&#8221;</span> in Arabic quotes and as a bracketed label in English.</p>
+</div>
+
+<h2>The Machine &#038; Identity Confirmation</h2>
+
+<div>
+  <div><div>Stealer</div><div>RedLine</div></div>
+  <div><div>Log date</div><div>10 May 2023, 09:39</div></div>
+  <div><div>Windows username</div><div><span>الشرطةالعسكرية سلوك</span> <span>(&#8220;Military Police Suluk&#8221;)</span></div></div>
+  <div><div>IP address</div><div>212.175.**.*** <span>(Gaziantep, Türkiye)</span></div></div>
+  <div><div>System language</div><div>Arabic (Saudi Arabia)</div></div>
+</div>
+
+<figure>
+  <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/Screenshot-2026-08-24-at-18.12.34-scaled.png" alt="UserInformation.txt from the RedLine stealer log, opened in Cavalier, showing the Windows username الشرطة العسكرية سلوك (Military Police Suluk), Gaziantep location, and Arabic system language.">
+  <figcaption>
+    <b>Figure 2:</b> <code>UserInformation.txt</code> from the stealer log, taken from Hudson Rock&#8217;s Cavalier platform.
+    The Windows account is not named after a person &#8211; it is named after the unit.
+  </figcaption>
+</figure>
+
+<p>Most stealer logs list a first name as the Windows username. This one lists an institution. We did not have to work
+out who owned the machine; whoever set it up typed it in.</p>
+
+<p>The IP places the machine in Gaziantep, Türkiye &#8211; but no Turkish keyboard layout is installed, the system language is
+Arabic, the time zone is saved under its Arabic label (&#8220;Kuwait, Riyadh&#8221;), and the saved logins include a Syrian
+<code>.sy</code> domain. Gaziantep is where the Syrian Interim Government and the SNA keep their administrative offices.</p>
+
+<p>The log also contains a saved Facebook autofill entry whose Arabic name, once decoded from a codepage error, matches
+the name that signs the unit&#8217;s arrest reports as <span>رئيس قسم التحقيق</span> &#8211; Head of the Investigation
+Section. His personal Facebook, PayPal and bank logins sit in the same log as the interrogation files. This was one
+officer&#8217;s computer, used for work and for everything else.</p>
+
+<h2>The Interrogation Format</h2>
+
+<p>Seven documents share one template, which the unit calls <span>ضبط تحقيق</span> &#8211; &#8220;Interrogation
+Record.&#8221; Each opens on Syrian Interim Government and National Army letterhead, under the Military Police crest, then a
+fixed identity block. As Figure 1 shows, the detainee&#8217;s photograph is pasted in alongside:</p>
+
+<ul>
+  <li>Full name and <i>kunya</i></li>
+  <li>Father&#8217;s and mother&#8217;s names</li>
+  <li>Year and place of birth</li>
+  <li>Job and address</li>
+  <li>Marital status and children</li>
+  <li>ID number and phone</li>
+  <li>Nationality, ethnicity and tribe</li>
+  <li>Education</li>
+  <li>Date of arrest</li>
+</ul>
+
+<p>After the statement, every file ends with the same closing line:</p>
+
+<div>
+  <p>تليت عليه افادته فأيدها وبصمها</p>
+  <p>&#8220;His statement was read back to him; he affirmed it and fingerprinted it.&#8221;</p>
+</div>
+
+<p>And three signatures: <span>محقق / محقق / صاحب الإفادة</span> &#8211; Interrogator, Interrogator, and the
+person giving the statement. Two interrogators, one detainee, a thumbprint. No lawyer and no judge anywhere on the
+form.</p>
+
+<p>Two details recur. The ID field usually reads <span>لا يوجد</span> (&#8220;none&#8221;), and identity is taken
+<span>بمجرد اقوالي الشفهية</span>, &#8220;purely from my spoken statement.&#8221; And every file carries the printed
+assurance that the statement was given <span>بدون ضغط أو إكراه</span> &#8211; &#8220;without pressure or
+coercion.&#8221;</p>
+
+<h2>The Cases, Most Serious First</h2>
+
+<div>
+  <div><span>1</span><span>Alleged espionage against National Army positions</span><span><i></i></span></div>
+  <div><span>2</span><span>Smuggling ring run by serving soldiers</span><span><i></i></span></div>
+  <div><span>3</span><span>Armed soldier, shooting, and a redrafted statement</span><span><i></i></span></div>
+  <div><span>4</span><span>People and fuel smuggling, with a faction receipt</span><span><i></i></span></div>
+  <div><span>5</span><span>Twice conscripted by the adversary, twice deserted</span><span><i></i></span></div>
+  <div><span>6</span><span>Salaried civilian post with the adversary</span><span><i></i></span></div>
+  <div><span>7</span><span>No allegation at all</span><span><i></i></span></div>
+</div>
+
+<section>
+  <div>
+    <div>1</div>
+    <h2>Alleged espionage: coordinates on National Army positions</h2>
+  </div>
+  <p><strong>Longest file in the set (~17KB).</strong> Detainee handed over by the Ahrar al-Sharqiya
+  faction, arrested 29 April 2023.</p>
+
+  <p>The detainee is a laborer, born 1995, seventh-grade education, from a village south of Tell Abyad. He arrives with
+  no ID at all &#8211; his file records that his and his wife&#8217;s identity cards were being held by a Raqqa hospital against an
+  unpaid bill.</p>
+
+  <p>His own record is not clean. He served nine months in the <strong>Kurdish Self-Defense Forces</strong>, in broken
+  stretches because he kept deserting. He was a fugitive when he was caught: he had beaten his maternal uncle with a
+  stick in a dispute over an aid card, and a court in SDF-held Raqqa sentenced him in absentia to <strong>three years
+  for intentional harm</strong>. He fled toward Tell Abyad through a chain of smugglers on motorbikes and was arrested
+  the same day he crossed.</p>
+
+  <p>Most of the file is not about any of that. It is about other people.</p>
+
+  <p>He names a relative by marriage &#8211; a man he says <strong>pledged allegiance to ISIS</strong>, later ran a bakery, and now works with
+    <strong>Kurdish intelligence</strong> &#8211; and describes watching him take a video call from a contact saved in his phone with no name,
+  only a row of repeated letters (<span>ااااا</span>):</p>
+
+  <div>
+    <p>وكان يطلب منه صور ونقاط للجيش الوطني وأهالي تل أبيض المنتسبين للمراكز الأمنية والجيش الوطني وطلب منه صور بمحكمة تل أبيض</p>
+    <p>&#8220;[He] was asking him for photographs and positions of the National Army, and of Tell Abyad residents
+    affiliated with the security centres and the National Army, and asked him for photographs of the Tell Abyad
+    courthouse.&#8221;</p>
+  </div>
+
+  <p>He names a woman he says is paid for photographs and locations, specifying two transfers &#8211;
+  <strong>500,000 and 750,000 Syrian pounds</strong> &#8211; through a named money-transfer office in Raqqa. He names an
+  alleged Kurdish intelligence officer, and describes being driven to a roundabout in Ain Issa and held by the neck
+  while that man questioned him. He gives tribes, neighbourhoods, workplaces, and vehicles down to make and colour.</p>
+
+  <p>Then the interrogators put a direct question to him:</p>
+
+  <div>
+    <p>سؤال : من هم أشقاء وانسباء المدعو <span>******</span> ويتواصلون معه</p>
+    <p>&#8220;Question: Who are the brothers and in-laws of [name withheld] who are in contact with him?&#8221;</p>
+  </div>
+
+  <p>He answers with a list &#8211; one brother in contact and serving as a soldier, though he says he does not know in which
+  force; another with no contact; the rest family only. The exchange shows the purpose of the session: not to resolve
+  his own case, but to expand a target list.</p>
+
+  <p>He closes by volunteering:</p>
+
+  <div>
+    <p>واني مستعد للتعاون والمساعدة باي شكل ترونه مناسبا والتعاون معكم لإلقاء القبض على المتعاونين</p>
+    <p>&#8220;I am ready to cooperate and assist in any way you see fit, and to work with you to arrest the
+    collaborators.&#8221;</p>
+  </div>
+
+  <figure>
+    <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/Screenshot-2026-08-24-at-18.52.02.png" alt="Redacted English extract from a detainee statement naming civilians, vehicles, neighbourhoods and alleged payments to Kurdish intelligence, shown in Cavalier.">
+    <figcaption>
+      <b>Figure 3 (Translated from Arabic):</b> A detainee statement naming civilians, their vehicles, neighbourhoods and alleged payments &#8211;
+      stored unencrypted on an internet-connected computer. Taken from Hudson Rock&#8217;s Cavalier platform.
+    </figcaption>
+  </figure>
+
+  <p>Whether any of it is true cannot be assessed from the document, and that is not what makes it the most serious file
+  here. What makes it serious is that unproven accusations of spying, attached to real names and neighbourhoods, in a
+  region where that accusation gets people killed, were sitting in a Word file on a malware-infected computer. This log
+  has been circulating since 2023.</p>
+</section>
+
+<section>
+  <div>
+    <div>2</div>
+    <h2>A smuggling ring run by serving soldiers</h2>
+  </div>
+  <p><strong>Serving soldier, Jaysh al-Majd.</strong> Arrested at his own home, 30 April 2023.</p>
+
+  <p>The only file written as a formal question-and-answer session &#8211; and the only one where the unit clearly had
+  evidence before the detainee spoke.</p>
+
+  <p>He is a soldier, born 1994, ninth-grade education. He farmed with his family early in the war, lived in Türkiye
+  from 2015 working construction, and returned two months after the SNA took the area, joining Jaysh al-Majd immediately
+  because his brother commands a group in it. He was still serving when they came to his house.</p>
+
+  <h3>The unit already had the case</h3>
+
+  <div>
+    <p>من خلال البحث والتحري وافادت المهربين السابقين… ورد اسمك ولقبك في عدة إفادات وتقارير لهم تبين ضلوعك في عمليات تهريب البشر اشرح ذلك بالتفصيل</p>
+    <p>&#8220;Through investigation and inquiry, and from the statements of previously arrested smugglers… your
+    name and alias appeared in several of their statements and reports, showing your involvement in human smuggling.
+    Explain this in detail.&#8221;</p>
+  </div>
+
+  <p>This is one detainee&#8217;s file being used to build the next. Earlier smugglers named him; now he is in the chair, and
+  he will name more.</p>
+
+  <h3>The confession</h3>
+
+  <div>
+    <p>نعم عملت بالتهريب منذ سنتين او اكثر… وكان العسكريين الذين ذكرتهم يأمنون لنا الطريق… وانا بدوري نقوم بمساعدتهم عبر سلم خشبي بتجاوز الجدار وكنا ناخذ على كل دفعة ركاب 150 دولار تقريبا وكل دفعة حوالي 10 أشخاص أو أكثر إلى 15… أما فوق الجدار أو عن طريق عبارة تحت الجدار</p>
+    <p>&#8220;Yes, I have worked in smuggling for two years or more… <b>the soldiers I named secured the route</b>
+    for us… my own part was helping them over the wall with <b>a wooden ladder</b>. We took around <b>150 dollars per
+    group</b>, each group about 10 people, up to 15… either over the wall or through <b>a culvert underneath it</b>.&#8221;</p>
+  </div>
+
+  <p>The network he describes is almost entirely military: two partners in his own faction (one of them in custody
+  alongside him as he speaks), one in <strong>Suqour al-Sunna, 20th Division</strong>, and two men known to him only by
+  <i>kunya</i> who <strong>served with Jaysh al-Sharqiya</strong> and delivered the passengers. Soldiers secured the
+  route. On the Turkish side, three men in one village housed the groups and moved them on to Urfa once fees were
+  settled &#8211; one a Turkish national, two Syrians living there.</p>
+
+  <h3>The interrogators widen it</h3>
+
+  <div>
+    <p>سؤال : من هم الذين يعملون بالتهريب من منطقة <span>******</span> اذكر أسماؤهم</p>
+    <p>&#8220;Question: Who works in smuggling from your area? State their names.&#8221;</p>
+  </div>
+
+  <p>He gives three. Two are marked <span>عسكري جيش المجد</span> &#8211; soldiers in his own faction. The third
+  is a civilian.</p>
+
+  <figure>
+    <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/Screenshot-2026-08-24-at-19.30.27.png" alt="Redacted English extract from a smuggling confession naming SNA soldiers who moved groups over the border wall with a ladder, shown in Cavalier.">
+    <figcaption>
+      <b>Figure 4 (Translated from Arabic):</b> A serving SNA soldier describes moving groups over the border wall with a ladder, while other
+      soldiers secured the route. Taken from Hudson Rock&#8217;s Cavalier platform.
+    </figcaption>
+  </figure>
+
+  <p>Across the whole statement, only one person he names is a civilian. Read as a document produced by the SNA&#8217;s own
+  military police, this is an SNA unit recording on its own letterhead that soldiers from three of its factions were
+  running the border as a business &#8211; while, in the same folder, civilians sit in its cells for trying to use routes like
+  it.</p>
+</section>
+
+<section>
+  <div>
+    <div>3</div>
+    <h2>An armed soldier, a shooting, and a statement that exists twice</h2>
+  </div>
+  <p><strong>Serving soldier, 20th Division.</strong> Two versions of his file were recovered.</p>
+
+  <p>The detainee is a soldier born 1994 in a village near Deir ez-Zor, sixth-grade education. His file compresses ten
+  years of war into a few lines: Free Syrian Army from the start; fighting ISIS in Marqada and the Hasakah countryside
+  in 2014; withdrawal to Quneitra; then Jaysh Usud al-Sharqiya in the Qalamoun, where he was <strong>captured by Assad
+  government forces and held for a year</strong>, released in a prisoner exchange; then Liwa al-Qaqaa under the Shamiya
+  Front from 2016; then the 20th Division.</p>
+
+  <p>He was arrested after a checkpoint stop turned into a firefight. He was riding as a passenger; military police
+  stopped the car at the market gate and asked for IDs:</p>
+
+  <div>
+    <p>وطلبوا منه هويته العسكرية ورفض أن يعطي هويته ونزل من السيارة وحصل مشادة كلامية… وحصل إطلاق نار</p>
+    <p>&#8220;They asked him for his military ID, he refused to hand it over, got out of the car, and an argument
+    broke out… gunfire was exchanged.&#8221;</p>
+  </div>
+
+  <p>The driver had a Russian rifle, the front passenger a pistol. Both ran. He stayed, saying he had been trying to get
+  between the two sides and was unarmed, and he is the one in the file.</p>
+
+  <h3>And then the same statement appears again, changed</h3>
+
+  <p>Both versions cover the same career and the same incident. Four things differ:</p>
+
+  <div>
+  <table>
+    <thead>
+      <tr><th></th><th>Version A</th><th>Version B</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Arrest date</strong></td>
+        <td>28 February 2023</td>
+        <td>28 January 2023</td>
+      </tr>
+      <tr>
+        <td><strong>2018 conviction</strong></td>
+        <td>&#8220;In 2018 I was detained in Azaz military prison on a charge of <strong>narcotics use</strong> for one year&#8221;</td>
+        <td><span>−</span><em>Removed</em></td>
+      </tr>
+      <tr>
+        <td><strong>The 2021 killing</strong></td>
+        <td>&#8220;a manslaughter occurred during my pursuit of a stolen car&#8221;</td>
+        <td><span>+</span>&#8220;…during my pursuit of a stolen car <em>at the request of my command in al-Qaqaa</em>&#8220;</td>
+      </tr>
+      <tr>
+        <td><strong>Drug residue in the car</strong></td>
+        <td>Not mentioned</td>
+        <td><span>+</span>Q&amp;A added &#8211; he denies it, and states <em>&#8220;I do not use any type of narcotics&#8221;</em></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <figure>
+    <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/Screenshot-2026-08-25-at-11.22.51.png" alt="Redacted English extract from a detainee statement covering prior detention for drug use, an accidental killing during a vehicle chase, and a later arrest after a fight, shown in Cavalier.">
+    <figcaption>
+      <b>Figure 5 (Translated from Arabic):</b> One version of the soldier&#8217;s statement &#8211; prior detention for narcotics
+      use, a manslaughter during a vehicle chase, and the checkpoint stop that turned into a firefight. Taken from
+      Hudson Rock&#8217;s Cavalier platform.
+    </figcaption>
+  </figure>
+
+  <p>The changes run one way. The version that adds the foil wraps found in the dashboard &#8211; and his blanket denial that
+  he uses narcotics &#8211; is the version with the year in military prison for narcotics use taken out. The killing during
+  the vehicle chase, meanwhile, acquires a clause placing it under orders. The arrest date moves by a month, so at
+  least one of the two documents is wrong on a basic fact.</p>
+
+  <p>We cannot say who made the edits or why. What the two files show is that these statements are drafted, revised and
+  reshaped &#8211; while carrying, in both versions, the printed line that the account was given &#8220;without pressure or
+  coercion&#8221; and closing with the detainee&#8217;s thumbprint on it.</p>
+
+  <p>He ends both the same way: <span>واطلب الشفقة والرحمة</span> &#8211; <i>&#8220;and I ask for pity and
+  mercy.&#8221;</i></p>
+</section>
+
+<section>
+  <div>
+    <div>4</div>
+    <h2>Smuggling with a receipt</h2>
+  </div>
+  <p><strong>Water-tanker driver</strong>, born 2001, two years of schooling. Arrested 5 May 2023.</p>
+
+  <p>He hauls drinking water to his village. He also drives people toward the border in the same tanker, and moves
+  diesel bought from a supplier who brings it up from Raqqa. He does not appear to have been pressed hard; the
+  admissions come in sequence with the rest of his account:</p>
+
+  <div>
+    <p>وكنت أخذ 50 الف على الشخص</p>
+    <p>&#8220;I took 50,000 [Syrian pounds] per person.&#8221;</p>
+  </div>
+
+  <p>The detail that matters is what he does next. For both the passengers and the diesel, he takes a receipt from
+  <span>المكتب الاقتصادي لأحرار الشرقية</span> &#8211; the economic office of the Ahrar al-Sharqiya faction.
+  This is not smuggling hidden from the authorities; it is smuggling that pays a fee and is issued paperwork.</p>
+
+  <p>His file also carries the fullest example of a pattern that runs through the whole set. Before his story begins, it
+  enumerates his family &#8211; father, mother, <strong>nine siblings</strong>, seven uncles, his sisters&#8217; husbands &#8211; each with
+  an age, a town, a job, and an individual verdict appended:</p>
+
+  <div>
+    <p><span>******</span> : مقيم في الكنطري ٣٥ عام مزارع لم ينتسب أو ينضم لاي حزب ارهابي</p>
+    <p>&#8220;[uncle, name withheld]: lives in Kantari, 35, farmer, did not affiliate or join any terrorist
+    party.&#8221;</p>
+  </div>
+
+  <p>Two of the siblings cleared of terrorist affiliation are <strong>five and eight years old</strong>. Nobody assessed
+  a five-year-old &#8211; the line is there because the form asks for a line. The unit is not investigating a suspect so much
+  as filling in a map of his entire family. His file also notes his father&#8217;s earlier three-month detention on suspicion
+  of ISIS allegiance, ultimately released; suspicion in these documents runs up and down a family tree.</p>
+</section>
+
+<section>
+  <div>
+    <div>5</div>
+    <h2>Twice conscripted by the other side, twice deserted</h2>
+  </div>
+  <p><strong>Laborer</strong>, born 1986, three children. Arrested 11 April 2023.</p>
+
+  <p>His file is a decade of being pulled into other people&#8217;s armies. Conscripted by the Assad government, discharged
+  sick with hepatitis, re-arrested at a crossing to finish his service, then deserted. Five months with the Free Syrian
+  Army. Oil burners under ISIS. Then, in 2018, Kurdish forces stopped him on the road while he was hauling fuel:</p>
+
+  <div>
+    <p>وتم سوقي إجباريا إلى الخدمة في الدفاع الذاتي</p>
+    <p>&#8220;I was forcibly taken to serve in the Self-Defense Forces.&#8221;</p>
+  </div>
+
+  <p>Three months on a guard post beside government lines, <strong>armed with a Russian rifle</strong>, on a salary of
+  70,000 Syrian pounds &#8211; then he ran. Two years later they caught him again, fined him 300,000 pounds, and since he
+  could not pay, sent him back to the same post. Six more months, then he ran again. He puts his total service at eight
+  months across the two stints.</p>
+
+  <p>This is what makes his case more serious than the two below it: he carried a weapon for the adversary, however
+  unwillingly. His statement addresses that directly, and closes on the question that clearly matters most to the
+  interrogators:</p>
+
+  <div>
+    <p>كلا لست مكلفا باي مهمة بالمنطقة وليس لي اي علاقة بتنظيم قسد الإرهابي بعد هروبي منهم</p>
+    <p>&#8220;No, I am not assigned any mission in the area, and I have no connection to the terrorist Qasad
+    organisation after deserting them.&#8221;</p>
+  </div>
+
+  <p>He came to the border to reach his brother in Mardin, who works on a cattle farm, and brought his
+  <strong>nine-year-old son</strong> with him. The smuggler wanted 1,700 dollars for the two of them. They were caught by
+  border guards, he paid a 1,000-lira fine, and then the SNA arrested him.</p>
+</section>
+
+<section>
+  <div>
+    <div>6</div>
+    <h2>A salary from the Asayish, for playing in the band</h2>
+  </div>
+  <p><strong>Hairdresser</strong>, born 1999, divorced, two young daughters. Arrested 5 May 2023.</p>
+
+  <p>She trained a year in a salon, then worked from home. Her file records that in February 2023 she registered for a
+  <strong>civilian post in the Asayish&#8217;s music band</strong> in Qamishli, to draw a salary and help her family &#8211; learning
+  drums and guitar four hours a week under a named instructor, paid about 275,000 Syrian pounds a month for two of her
+  three months. She quit before leaving for the border.</p>
+
+  <p>That is the whole of the affiliation against her, and it is the reason her case sits this low. Her file, like the
+  others, enumerates her brothers with an affiliation verdict on each &#8211; including that two of them, aged 16 and 23, are
+  <strong>in custody alongside her</strong>.</p>
+
+  <p>The group she travelled with was her two brothers and a deaf relative who speaks only Kurdish, with his wife and
+  two daughters. The smugglers wanted <strong>3,500 dollars per person</strong>. They were caught by border guards, held
+  five days by criminal security in Tell Abyad, and released after paying 300 Turkish lira each.</p>
+
+  <p>Then they went back &#8211; because the deaf relative&#8217;s wife and children were still in the smuggler&#8217;s house. They were
+  arrested as soon as they crossed in. That second arrest is this file.</p>
+</section>
+
+<section>
+  <div>
+    <div>7</div>
+    <h2>No allegation at all</h2>
+  </div>
+  <p><strong>Farm laborer</strong>, born 1989, six years of schooling, three children. Arrested
+  24 February 2023.</p>
+
+  <p>He was discharged from Assad-government conscription in 2010, worked mud and farm labour, and stayed in his village
+  through the war. He paid smugglers to reach his brother in Diyarbakır, who has worked as a porter in a vegetable market
+  since 2012. He crossed with a group of about fifty people he did not know, and was picked up on the street before he
+  ever reached the wall.</p>
+
+  <p>His file contains no alleged affiliation, no confessed crime, and no denunciation. It contains the reason he was
+  held:</p>
+
+  <div>
+    <p>واشتبهوا بي بانضمامي أو انتسابي لقوات قسد الإرهابية كوني كردي</p>
+    <p>&#8220;They suspected me of joining or being affiliated with the terrorist Qasad forces <b>because I am
+    Kurdish</b>.&#8221;</p>
+  </div>
+
+  <p>The phrase <span>قوات قسد الإرهابية</span> (&#8220;the terrorist Qasad forces&#8221;) is the unit&#8217;s own
+  standard wording, not his. It appears in file after file, including in files where the detainee is denying any link to
+  them.</p>
+
+  <p>He ends: <i>&#8220;I regret this, and I ask for pity and mercy… and if released I will return to my home.&#8221;</i></p>
+</section>
+
+<h2>The Rest of the Folder</h2>
+
+<p><strong>A referral report.</strong> <code>ضبط صفخة اولى.docx</code> is a different form &#8211; a
+<span>محضر ضبط</span> with its own case number, <span>رقم الضبط: 47/2023</span>, dated
+30 April 2023. It refers a man from Deir ez-Zor to the <span>القاضي الفرد العسكري بتل ابيض</span>, the
+single military field judge in Tell Abyad, for carrying no identification and being suspected of smuggling. The same
+document records a seized truck released back to its driver under a signed release order, &#8220;and a settlement was reached
+on-&#8221; &#8211; the sentence stops mid-line, unfinished.</p>
+
+<p><strong>Two registers.</strong> <code>السيارات المحجوزة فرع سلوك.docx</code> (&#8220;Seized Vehicles, Suluk Branch&#8221;) and a
+stub headed <span>تقارير السجن اليومية</span> (&#8220;Daily Prison Reports&#8221;) are effectively blank in this
+snapshot, but both are standing logs. The same desktop that held the confessions held the impound register and the
+daily custody roll.</p>
+
+<p><strong>Five lock files.</strong> The <code>~$</code> files name documents that were open on the machine but whose
+contents were not captured &#8211; including at least two further personal case files and a document titled
+<span>ورقة افادة درايف</span> (&#8220;statement sheet &#8211; drive&#8221;), suggesting the caseload extended past what the
+malware took.</p>
+
+<h2>The Rest of the Log</h2>
+
+<p><strong>Phone forensics tools.</strong> The installed-software list is ordinary except for three entries:
+<code>Recover My Files</code>, <code>UltData for Android</code>, and <code>UltFone Android Data Recovery</code> &#8211; tools
+that pull contacts, messages, call logs and deleted files off Android handsets.</p>
+
+<p>Set against the many files where detainees arrive with no ID, this suggests how the unit actually reconstructed who
+someone was and who they knew. The record captured the confession; the recovery tool captured the phone.</p>
+
+<p><strong>A stolen Telegram session.</strong> The log contains a full Telegram desktop session including its key files,
+enough to open the officer&#8217;s Telegram as him, with no password or code, read unit traffic, and message his
+contacts.</p>
+
+<p><strong>How it likely happened.</strong> The same machine holds logins for Facebook, PayPal, TikTok, cloud storage, a
+Turkish bank, a Syrian charity, dozens of router panels, adult webcam sites, and a cracked-Adobe-template site. With UAC
+disabled and Defender alone, this looks like an ordinary pirated-software or drive-by infection. No spear-phishing, no
+state actor.</p>
+
+<h2>What this leak adds</h2>
+
+<p>In a broad sense, much of what these files describe is already on the record. UN bodies, human rights organizations,
+and investigative journalists have documented SNA faction smuggling, arbitrary arrests of Kurds, coerced confessions,
+and detention without due process.</p>
+
+<p>What is new here is not the allegation. It is the <strong>primary-source paperwork</strong>: the unit&#8217;s own
+interrogation records, unencrypted and never meant for outsiders, proving from the inside what was previously known
+mainly through victim testimony and external reporting.</p>
+
+<div>
+  <h4>What is fundamentally new</h4>
+  <ul>
+    <li><strong>Administrative proof of faction-run smuggling.</strong> Extortion and smuggling by armed factions were
+    widely alleged. Here, the same folder holds a detainee describing people and fuel moved for a fee, with receipts
+    issued by the <span>Economic Office of Ahrar al-Sharqiya</span>. That is institutional paperwork for
+    racketeering, not a rumour.</li>
+    <li><strong>Side-by-side evidence of confession rewriting.</strong> Coerced or manufactured statements are often
+    reported from outside. Here, two live revisions of the same official interrogation exist together: a prior narcotics
+    conviction is erased, a manslaughter during a chase is rewritten as under military orders, and a denial of drug use
+    is added before the thumbprint closes the file.</li>
+    <li><strong>An internal admission of ethnic profiling.</strong> Human rights reporting has long accused the SNA of
+    holding civilians for being Kurdish. In Case 7, the Military Police&#8217;s own file states the custody basis as suspicion
+    of joining &#8220;terrorist Qasad forces&#8221; <em>because he is Kurdish</em>, with no criminal charge or evidence recorded.</li>
+    <li><strong>Raw, unvetted espionage tip-offs on a criminal market.</strong> Named neighbours, phone contacts, vehicle
+    models, and wire-transfer amounts (gathered from a detainee offering to help arrest the people he named) sat in a
+    Word file on an internet-connected workstation, then dumped onto cybercrime markets. Unverified human intelligence,
+    with real names attached, circulating since 2023.</li>
+    <li><strong>The unit&#8217;s workflow, in its own forms.</strong> Two interrogators, no defence counsel, no judge on the
+    form. Standardized thumbprints. Consumer Android scrapers (<code>UltData</code>, <code>UltFone</code>) for building
+    contact networks. Family profiling down to five-year-old siblings marked clear of &#8220;terrorist&#8221; affiliation. The
+    bureaucratic machinery of a Turkish-backed military police section, captured mid-shift.</li>
+  </ul>
+</div>
+
+<h2>Conclusion</h2>
+
+<p>Infostealer logs are usually read for passwords. This one is worth reading for something else: <strong>it shows how
+an armed group processes people, in its own words, on its own letterhead.</strong></p>
+
+<p>Nothing here was written for outsiders. There is no press statement, no leaked policy paper, no defector&#8217;s account &#8211;
+just a form, and the form is more candid than any statement would be. Two interrogators and no lawyer. A thumbprint
+instead of a signature. Ethnicity as a field, and in one file as the stated reason for an arrest. Identity taken from
+nothing but the detainee&#8217;s own words. Families mapped down to five-year-olds. A printed promise of &#8220;no pressure or
+coercion&#8221; on statements that turn out to exist in more than one version.</p>
+
+<p>The seven cases also line up into something the unit did not intend to document. At the serious end sit two files
+about the people running the border and allegedly spying across it &#8211; one of them a serving soldier who names five more
+soldiers, the other a detainee who names civilians and offers to help arrest them. At the other end sits a farm
+labourer with no allegation against him at all, held because he is Kurdish. <strong>The unit&#8217;s most serious cases were
+its own men. Its least serious were the civilians in its cells.</strong></p>
+
+<p>And the exposure runs the same way. The unit had complete physical control over its detainees, their documents and
+their phones, and almost none over its own computer. The people most harmed by that are not the officers. They are the
+detainees, whose confessions, family trees and accusations against their neighbours were copied to a criminal
+marketplace and have circulated there since 2023 &#8211; without any of them knowing.</p>
+
+<p>In a breach like this, the people harmed by the leak and the people held by the unit are the same people, twice.</p>
+
+<div>
+  <h4>About Hudson Rock</h4>
+  <p>This investigation was built from an infostealer log recovered and analyzed in Hudson Rock&#8217;s Cavalier
+  platform. Hudson Rock maintains cybercrime intelligence on over <strong>30 million</strong> computers infected by
+  information-stealing malware &#8211; the same datasets used by governments, financial institutions, and research teams to
+  attribute compromises, map threat actors, and surface operational intelligence that never appears in public reporting.</p>
+  <p>Explore the platform at <a href="https://www.hudsonrock.com">hudsonrock.com</a>, or check any email, domain, or IP
+  against our data with free tools at
+  <a href="https://www.hudsonrock.com/free-tools">hudsonrock.com/free-tools</a>.</p>
+</div>
+
+</div><p>The post <a href="https://www.infostealers.com/article/inside-a-syrian-interrogation-room-the-detainee-files-an-infostealer-stole-from-a-military-police-unit/">Inside a Syrian Interrogation Room: The Detainee Files an Infostealer Stole From a Military Police Unit</a> appeared first on <a href="https://www.infostealers.com">InfoStealers</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Analyzing Stripe Vendors Breach: Confirmed Vendor Exposure and Claims of 20,000 Compromised APIs</title>
+		<link>https://www.infostealers.com/article/analyzing-stripe-breach-confirmed-vendor-exposure-and-claims-of-20000-compromised-apis/</link>
+		
+		<dc:creator><![CDATA[InfoStealers]]></dc:creator>
+		<pubDate>Wed, 19 Aug 2026 10:14:54 +0000</pubDate>
+				<category><![CDATA[Blog Post]]></category>
+		<category><![CDATA[Hudson Rock]]></category>
+		<guid isPermaLink="false">https://www.infostealers.com/?post_type=article&#038;p=6770</guid>
+
+					<description><![CDATA[<p>Stripe Data Breach: Analysis of Satanic&#8217;s Release Analyzing Stripe Vendors Breach: Confirmed Vendor Exposure and Claims of 20,000 Compromised APIs On August 18th, 2026, a data release occurred&#8230;</p>
+<p>The post <a href="https://www.infostealers.com/article/analyzing-stripe-breach-confirmed-vendor-exposure-and-claims-of-20000-compromised-apis/">Analyzing Stripe Vendors Breach: Confirmed Vendor Exposure and Claims of 20,000 Compromised APIs</a> appeared first on <a href="https://www.infostealers.com">InfoStealers</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<div>
+    <h1>Analyzing Stripe Vendors Breach: Confirmed Vendor Exposure and Claims of 20,000 Compromised APIs</h1>
+    
+    <p>On August 18th, 2026, a data release occurred on the illicit forum pwnforums. The threat actor known as <span>Satanic</span> published sensitive information extracted from hundreds of vendors utilizing the Stripe payment platform.</p>
+
+    <div>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/stripe1.png" alt="Initial forum post by Satanic detailing the 33GB Stripe breach">
+        <div>Figure 1: The initial forum post by Satanic announcing the breach, detailing the compromise of databases and 1,033 API keys, totaling 33GB, along with millions of email matches.</div>
+    </div>
+
+    <p>Satanic is a known entity within the cybercrime ecosystem, previously verified by Hudson Rock researchers for their involvement in large-scale breaches. We previously documented their activities in the <a href="https://www.hudsonrock.com/blog/largest-retail-breach-in-history-350-million-hot-topic-customers-personal-and-payment-data-exposed-as-a-result-of-infostealer-infection" target="_blank">Hot Topic breach</a>.</p>
+
+    <div>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/stripe2.png" alt="Pwnforums post listing by Satanic">
+        <div>Figure 2: The pwnforums activity of &#8216;Satanic&#8217;, showing a history of high-profile database leaks, including the recent Hot Topic breach and the newly announced Stripe compromise.</div>
+    </div>
+
+    <h2>The Initial Release: A Glimpse into the Compromise</h2>
+
+    <p>The initial dump released on August 18th contained detailed information pertaining to <span>669 specific vendors</span>, alongside 1,033 compromised API keys. The volume of the data is reported as 33GB.</p>
+
+    <p>Hudson Rock researchers spoke to the threat actors minutes after the release of the data. During this exchange, they claimed that the released data represents only a fraction of their total haul. According to the actor, they possess approximately <span>20,000 compromised Stripe APIs</span>, which they intend to release in subsequent batches.</p>
+
+    <div>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/stripe9.png" alt="Telegram message from Satanic claiming 20k APIs">
+        <div>Figure 3: Direct communication between Hudson Rock researchers and the threat actor, where they claim possession of roughly 20,000 Stripe API keys, threatening staggered releases.</div>
+    </div>
+
+    <p>Further corroborating their claim of a staggered release, while the forum post advertises a 33GB database, the archive provided in the actual download link is only 2.37GB. This significantly smaller file size supports the threat actor&#8217;s assertion that this initial drop is merely a taste of a much larger, ongoing compromise.</p>
+
+    <div>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/stripe_download.png" alt="Download link showing a 2.37GB file size">
+        <div>Figure 4: The download link provided by the threat actor reveals a file size of 2.37GB, corroborating their claim that the released data is just a small portion of the 33GB total they allegedly possess.</div>
+    </div>
+
+    <h2>Analysis of the Leaked Data</h2>
+
+    <p>Our preliminary analysis of the released files reveals a high level of access to vendor operations. The compromised data affects the core of the affected businesses&#8217; financial and operational integrity.</p>
+
+    <h3>1. Scope of Affected Domains</h3>
+    <p>The variety of businesses affected is vast, ranging from small consultancies to large e-commerce operations across multiple currencies and jurisdictions. The root directory of the leak shows the compromised domains.</p>
+
+    <div>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/stripe3.png" alt="List of folders showing various compromised domains and their customer counts">
+        <div>Figure 5: A snapshot of the root directory showing various compromised domains, highlighting the diverse range of victims across different countries and currencies, with some vendors holding thousands of customer records.</div>
+    </div>
+
+    <p>It is important to note that while the threat actor advertises 669 database folders, many vendors registered their Stripe accounts using personal emails. When accounts tagged as &#8220;gmail.com&#8221; (due to the account owner using Gmail) and other generic providers are deleted from the calculation, the total sum of uniquely identifiable business domains impacted is 323.</p>
+
+    <details>
+        <summary>Click to view the partial list of impacted organizations</summary>
+        <div>
+            <ul>
+                <li>121media.com</li>
+                <li>1684399.com</li>
+                <li>a2zprintinghub.com</li>
+                <li>accionlatina.com</li>
+                <li>adrenalineinteractive.ai</li>
+                <li>aegisai.com.br</li>
+                <li>agdir.no</li>
+                <li>agilecommercegroup.com</li>
+                <li>aiinmi.com</li>
+                <li>aimagicx.com</li>
+                <li>amili.asia</li>
+                <li>andersonconsulting.us</li>
+                <li>anikiej.com</li>
+                <li>apiumhub.com</li>
+                <li>arabellsoft.com</li>
+                <li>arviteni.co.uk</li>
+                <li>ascelligence.com</li>
+                <li>aspose.com</li>
+                <li>astonio.com</li>
+                <li>atatechnology.com</li>
+                <li>athloclub.com</li>
+                <li>atlanticarthouse.com</li>
+                <li>axava.ai</li>
+                <li>axiumassurance.fr</li>
+                <li>backyourselfbetting.co.uk</li>
+                <li>banatsync.com</li>
+                <li>barrek.eu</li>
+                <li>bawimy.pl</li>
+                <li>bellapizza.no</li>
+                <li>betapanda.co.uk</li>
+                <li>betterfinancial.xyz</li>
+                <li>bimcent.com</li>
+                <li>biztosrendszer.hu</li>
+                <li>blheritage.com</li>
+                <li>blueintelligence.tech</li>
+                <li>bonvoyagemedical.com</li>
+                <li>bootcampmedia.co.uk</li>
+                <li>byitl.com</li>
+                <li>c2crides.com</li>
+                <li>caliverse.app</li>
+                <li>capptn.com</li>
+                <li>carpass.ai</li>
+                <li>casadurvalpaiva.org.br</li>
+                <li>cbtseminary.org</li>
+                <li>cementocruazul.mx</li>
+                <li>chalet-balmotte810.com</li>
+                <li>cindilouintimates.com</li>
+                <li>clavisstudio.ca</li>
+                <li>cloudanddelivery.es</li>
+                <li>coraia.eu</li>
+                <li>creativecentral.in</li>
+                <li>credora.lt</li>
+                <li>cuecoins.com</li>
+                <li>curve-media.com</li>
+                <li>cxgs.ca</li>
+                <li>cyber-sorted.com</li>
+                <li>cyborama.com</li>
+                <li>cyclecore.ai</li>
+                <li>dabbas.co.uk</li>
+                <li>dadssupplements.com</li>
+                <li>darylwizinsky.com</li>
+                <li>dawnscientific.com</li>
+                <li>debitmydata.com</li>
+                <li>detecno.com</li>
+                <li>devisia.fr</li>
+                <li>dextrolab.com</li>
+                <li>dialedpr.com</li>
+                <li>dottie.be</li>
+                <li>dropright.com</li>
+                <li>d-s-i.net</li>
+                <li>dystrix.cz</li>
+                <li>eduseek.ai</li>
+                <li>ejm.services</li>
+                <li>emeros.ie</li>
+                <li>emovid.com</li>
+                <li>endorphinit.com</li>
+                <li>erwin-labs.com</li>
+                <li>essentiq.io</li>
+                <li>europarkingservices.com</li>
+                <li>evconduit.com</li>
+                <li>expaterra.com</li>
+                <li>extoria.co.jp</li>
+                <li>faithdrawn.com</li>
+                <li>famitsnt.com</li>
+                <li>fastbilling.net</li>
+                <li>firstofficer.io</li>
+                <li>fittogo.at</li>
+                <li>fivetoclose.cloud</li>
+                <li>flowautomations.nl</li>
+                <li>foodelivo.de</li>
+                <li>foxmail.com</li>
+                <li>freezeandfeast.com</li>
+                <li>fullop.com</li>
+                <li>gardlink.no</li>
+                <li>gentlebeast.com</li>
+                <li>getaftercare.com</li>
+                <li>gigatechspace.com</li>
+                <li>gmail.com</li>
+                <li>gmail.com_1</li>
+                <li>gmail.com_2</li>
+                <li>gmail.com_3</li>
+                <li>gmail.com_4</li>
+                <li>gmail.com_5</li>
+                <li>gmail.com_6</li>
+                <li>gmail.com_7</li>
+                <li>gmail.com_8</li>
+                <li>gmail.com_9</li>
+                <li>gmail.com_10</li>
+                <li>gmail.com_11</li>
+                <li>gmail.com_12</li>
+                <li>gmail.com_13</li>
+                <li>gmail.com_14</li>
+                <li>gmail.com_15</li>
+                <li>goautolane.com</li>
+                <li>goflojo.com</li>
+                <li>green-light.uk</li>
+                <li>growcloud.ag</li>
+                <li>grow-your-business.fr</li>
+                <li>heardsop.com</li>
+                <li>hedebyiversen.dk</li>
+                <li>hehocom.fr</li>
+                <li>heuvelrugmultimedia.nl</li>
+                <li>hexaok.com</li>
+                <li>heyemily.ai</li>
+                <li>hilgenberg.cc</li>
+                <li>hobbycandles.com</li>
+                <li>hofmann-ebs.de</li>
+                <li>hoilab.com</li>
+                <li>homeandhost.com.au</li>
+                <li>hoome.tech</li>
+                <li>horizon-connect.fr</li>
+                <li>hotmail.co.uk</li>
+                <li>hotmail.com</li>
+                <li>hustledigital.com.au</li>
+                <li>ibtdevelopment.com</li>
+                <li>icanrefer.com</li>
+                <li>icloud.com</li>
+                <li>ido-ido.com.au</li>
+                <li>ihatemedia.co</li>
+                <li>ilamed.org</li>
+                <li>infomagic.fr</li>
+                <li>inkpro.io</li>
+                <li>insurancehub.ae</li>
+                <li>insurei.ai</li>
+                <li>ironcrestsoftware.com</li>
+                <li>itdsol.com</li>
+                <li>itravco.com</li>
+                <li>jna.one</li>
+                <li>jobsafepro.com.au</li>
+                <li>jobsight.co</li>
+                <li>jobzod.com</li>
+                <li>joinruach.org</li>
+                <li>joyos.global</li>
+                <li>jplsuk.com</li>
+                <li>kaleidoscope.glass</li>
+                <li>kamini.io</li>
+                <li>kanagawa.io</li>
+                <li>kidkonvo.com</li>
+                <li>knjigomat.si</li>
+                <li>knotsync.com</li>
+                <li>knownlovedrespected.com</li>
+                <li>kuruvillaworldwide.ch</li>
+                <li>legml.ai</li>
+                <li>lemonyt.com</li>
+                <li>lfnation.com</li>
+                <li>lgvm.dev</li>
+                <li>live.ca</li>
+                <li>live.fr</li>
+                <li>llm-ventures.com</li>
+                <li>loc-em.com</li>
+                <li>lolify.co</li>
+                <li>lotueducation.com</li>
+                <li>lrnrx.co</li>
+                <li>majorgen.com</li>
+                <li>maslowtelecom.com.au</li>
+                <li>me.com</li>
+                <li>mergeedu.com</li>
+                <li>meshofmothers.ca</li>
+                <li>miamisound.bar</li>
+                <li>minderse.com</li>
+                <li>mrpaulxavier.com</li>
+                <li>mundounix.eu</li>
+                <li>mvmtcoaching.ch</li>
+                <li>mystiqueai.com</li>
+                <li>navlune.com</li>
+                <li>nebudocs.com</li>
+                <li>needlematch.com</li>
+                <li>neotechdevs.com</li>
+                <li>neural-voice.ai</li>
+                <li>ninebridgemedia.com</li>
+                <li>niroapps.com</li>
+                <li>o2.pl</li>
+                <li>ondework.com</li>
+                <li>openledger.com</li>
+                <li>optimyzation.digital</li>
+                <li>optiongrowth.com.br</li>
+                <li>optsets.com</li>
+                <li>orange.fr</li>
+                <li>organicgrowth.dk</li>
+                <li>organova.music</li>
+                <li>otulaa.com</li>
+                <li>outfox.now</li>
+                <li>outlook.be</li>
+                <li>outlook.com</li>
+                <li>paragonwallsystems.net</li>
+                <li>pauloamorim.dev</li>
+                <li>peteryng.com</li>
+                <li>pfb-serveisfuneraris.com</li>
+                <li>pgaproducts.com</li>
+                <li>phoenixbusinessbank.com</li>
+                <li>plantperfectllc.com</li>
+                <li>pm.me</li>
+                <li>polisphere.co.jp</li>
+                <li>powerhavenchurch.org</li>
+                <li>prestige212ventures.com</li>
+                <li>pro-collector.fr</li>
+                <li>professorme.com</li>
+                <li>progressivegroup.pl</li>
+                <li>proom.ai</li>
+                <li>propana.co</li>
+                <li>propertykrowd.com</li>
+                <li>prosights.co</li>
+                <li>proton.me</li>
+                <li>protonmail.com</li>
+                <li>prototypr.io</li>
+                <li>qed42.com</li>
+                <li>qq.com</li>
+                <li>quadcode.com</li>
+                <li>realtics.ca</li>
+                <li>redid.io</li>
+                <li>revento.co.in</li>
+                <li>reverie-ai.com</li>
+                <li>roadmap-it.tech</li>
+                <li>robutler.ai</li>
+                <li>rockethire.ca</li>
+                <li>roovet.com</li>
+                <li>rriale.com</li>
+                <li>rushgraphics.com</li>
+                <li>sabelcustomersuccess.com</li>
+                <li>saheraai.com</li>
+                <li>sapiaconsulting.be</li>
+                <li>saturdayspancakes.de</li>
+                <li>sbtech.fi</li>
+                <li>schooped.com</li>
+                <li>serapisnow.com</li>
+                <li>sereal.jp</li>
+                <li>sevendocks.com</li>
+                <li>sheetgenius.com</li>
+                <li>shepherd-asia.com</li>
+                <li>shopyourspace.com</li>
+                <li>sidebytech.net</li>
+                <li>siliconcell.uk</li>
+                <li>sintetico.ai</li>
+                <li>skyserve.io</li>
+                <li>sleak.ai</li>
+                <li>snipesearch.co.uk</li>
+                <li>southcoastapps.co.uk</li>
+                <li>spacepiratezero.com</li>
+                <li>spicyfy.io</li>
+                <li>stag-media.de</li>
+                <li>stephanschulz.com</li>
+                <li>streetspring.com</li>
+                <li>stryk.world</li>
+                <li>surveh.ca</li>
+                <li>swiftbot.com.br</li>
+                <li>syv.ai</li>
+                <li>talkcounsel.com</li>
+                <li>tampabroltylawncare.com</li>
+                <li>techandstream.com</li>
+                <li>technobridge.no</li>
+                <li>techonecto.com</li>
+                <li>teorivip.com</li>
+                <li>thealphadominion.com</li>
+                <li>theelixiragency.com</li>
+                <li>thinkscoopinc.com</li>
+                <li>tinycloudventures.com</li>
+                <li>tomwoods.com</li>
+                <li>tooldata.io</li>
+                <li>traceroot.ai</li>
+                <li>tradingplus.io</li>
+                <li>trainon.io</li>
+                <li>trisoline.com</li>
+                <li>ultradeep.tech</li>
+                <li>usaha.ai</li>
+                <li>usereach.ai</li>
+                <li>velocityvisions.co.uk</li>
+                <li>venture-ia.com</li>
+                <li>victorgutierrez.tech</li>
+                <li>vonholtenhomes.com</li>
+                <li>vw-coding.com</li>
+                <li>web.de</li>
+                <li>webetdesign.com</li>
+                <li>webexa.ch</li>
+                <li>webtrigomail.com</li>
+                <li>we-trav.com</li>
+                <li>whisdr.com</li>
+                <li>winquo.com</li>
+                <li>wisdmlabs.com</li>
+                <li>wispayr.online</li>
+                <li>wkbtechnologies.com</li>
+                <li>yahoo.com</li>
+                <li>yeele-event.com</li>
+                <li>yktis.com</li>
+                <li>yoanng.dev</li>
+                <li>yondive.com</li>
+                <li>yoursitesucks.ai</li>
+                <li>zec-it.at</li>
+                <li>zenesadigital.com</li>
+                <li>zkyc.tech</li>
+                <li>zulusgroup.com</li>
+            </ul>
+        </div>
+    </details>
+
+    <h3>2. Extensive Customer and Transaction Records</h3>
+    <p>Navigating into the specific vendor folders reveals a highly organized structure, containing detailed records of customers, balances, charges, and payouts.</p>
+
+    <div>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/stripe4_1.png" alt="Directory structure showing various Stripe data categories">
+        <div>Figure 6: A view into the directory structure of the leaked data for a specific vendor, revealing comprehensive folders for accounts, balances, charges, customers, invoices, and more.</div>
+    </div>
+
+    <div>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/stripe1_1.png" alt="JSON summary of a compromised account showing thousands of customers and millions in volume">
+        <div>Figure 7: A JSON snippet exposing the scale of a single compromised vendor account, detailing over 22,000 customers and more than $5 million in paid invoices.</div>
+    </div>
+
+    <h3>3. Sensitive Customer Information and Invoicing</h3>
+    <p>The breach exposes granular details of individual transactions, including customer names, email addresses, phone numbers, and the specific services they were billed for. The data corresponds to real Stripe invoices, adding immense validity to the claims. For example, some of the leaked CSV files contained the personal details, email addresses, home addresses, IP addresses and purchase history for users.</p>
+    
+    <p>Beyond standard PII, our analysis of the raw invoice datasets reveals extensive technical metadata. The leaked records contain the purchaser&#8217;s exact IP address at the time of transaction, internal transaction IDs, and identifiers for third-party platform integrations. This metadata provides attackers with a comprehensive digital footprint of the vendor&#8217;s customer base and internal tech stack.</p>
+
+    <div>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/stripe6_1.png" alt="Spreadsheet detailing customer emails, names, phones, and invoice URLs">
+        <div>Figure 8: A spreadsheet extracted from the leak, clearly displaying customer PII (emails, names, phone numbers) alongside descriptions of services rendered and direct links to hosted Stripe invoices.</div>
+    </div>
+
+    <p>Furthermore, accessing these rendered invoices exposes additional financial metadata, including the last four digits of the customer&#8217;s credit card, further compromising the users&#8217; financial privacy.</p>
+
+    <div>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/stripe7.png" alt="Example of a rendered Stripe invoice">
+        <div>Figure 9: An example of a legitimate-looking Stripe invoice accessed via the leaked URLs, confirming the validity of the exposed data and revealing partial payment details.</div>
+    </div>
+
+    <h3>4. Operational Compromise: API Keys and Business Logic</h3>
+    <p>A critical component of this leak is the exposure of live API keys and internal operational data like promotional codes.</p>
+
+    <p>The exposure of live API keys presents a severe risk. With these keys, threat actors can programmatically access the vendor&#8217;s Stripe account. Depending on the permissions associated with the key, this could allow attackers to view sensitive customer data, initiate unauthorized refunds, alter account settings, or potentially reroute payments, leading to direct financial loss and severe reputational damage. In the leaked data, some of the exposed keys belong to accounts explicitly configured with charge capabilities enabled, and are labeled as standard type API keys, indicating broad access to initiate financial transactions.</p>
+    
+    <div>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/stripe5.png" alt="JSON snippet showing an exposed sk_live API key with charge capabilities">
+        <div>Figure 10: A snippet from the leaked data exposing a vendor&#8217;s live API key (&#8220;sk_live_&#8230;&#8221;), confirming that the account has charge capabilities enabled, which grants severe financial control to the attacker.</div>
+    </div>
+
+    <p>The exposure of active promotional codes also introduces a direct avenue for financial exploitation. Vendors frequently generate high-value discount codes intended for narrow, restricted use (e.g., customer retention, employee perks, or VIP access). Often, vendors create codes with very large percentages off for specific purposes not meant to be used by a lot of people. With these codes now public in the database, malicious actors could mass-apply them, leading to severe inventory and revenue drain before the vendor even realizes the codes have been heavily abused.</p>
+
+    <div>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/stripe8.png" alt="Spreadsheet showing exposed Stripe promotional codes and discounts">
+        <div>Figure 11: A leaked spreadsheet detailing internal promotional codes, their discount amounts, and durations. If abused, these codes can cause massive revenue loss for the affected vendors.</div>
+    </div>
+
+    <h2>Investigating the Attack Vector</h2>
+
+    <p>While Satanic is a known entity verified by Hudson Rock researchers for their involvement in large-scale breaches utilizing infostealer credentials, our telemetry reveals an interesting anomaly regarding this specific leak. Initial investigations show no infostealer infections associated with the specific vendor domains observed in the data.</p>
+
+    <p>Furthermore, analysis of the raw metadata across multiple leaked accounts shows that the affected vendors utilize completely different tech stacks, plugins, and business models. This indicates that the threat actor is not targeting a single vulnerable WordPress plugin or specific software suite.</p>
+    
+    <p>Instead, this lack of localized infostealer activity, combined with the sheer volume of 20,000 allegedly compromised API keys across varied platforms, points toward a broader systemic attack vector. It is highly likely the threat actors are running automated bots to mass-scan websites for misconfigured, publicly exposed environment variables (.env files) or debug logs that leak plaintext &#8220;sk_live_&#8221; keys. Alternatively, this could indicate a compromise of a shared piece of infrastructure, such as a cloud hosting provider or deployment tool used by these vendors.</p>
+
+    <p>Hudson Rock is actively monitoring this situation. If Satanic&#8217;s claims regarding the 20,000 API keys are accurate, this event represents a major compromise of payment infrastructure data. We advise organizations utilizing Stripe to immediately review their API key security, audit their environment variables, and monitor for anomalous activity.</p>
+
+    <div>
+        <p>To learn more about how Hudson Rock protects companies from imminent intrusions caused by info-stealer infections of employees, partners, and users, as well as how we enrich existing cybersecurity solutions with our cybercrime intelligence API, please schedule a call with us, here:</p>
+        <p><a href="https://www.hudsonrock.com/schedule-demo" target="_blank">https://www.hudsonrock.com/schedule-demo</a></p>
+        <p>We also provide access to various free cybercrime intelligence tools that you can find here:</p>
+        <p><a href="https://www.hudsonrock.com/free-tools" target="_blank">www.hudsonrock.com/free-tools</a></p>
+        <p>Thanks for reading, Rock Hudson Rock!</p>
+        <p>Follow us on LinkedIn: <a href="https://www.linkedin.com/company/hudson-rock" target="_blank">https://www.linkedin.com/company/hudson-rock</a></p>
+        <p>Follow us on Twitter: <a href="https://twitter.com/RockHudsonRock" target="_blank">https://www.twitter.com/RockHudsonRock</a></p>
+    </div>
+
+</div>
+
+<div id="imageModal" onclick="this.style.display='none'">
+    <img id="expandedImg">
+</div><p>The post <a href="https://www.infostealers.com/article/analyzing-stripe-breach-confirmed-vendor-exposure-and-claims-of-20000-compromised-apis/">Analyzing Stripe Vendors Breach: Confirmed Vendor Exposure and Claims of 20,000 Compromised APIs</a> appeared first on <a href="https://www.infostealers.com">InfoStealers</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>From CI Pipeline to Ransomware &#038; Breaches: 6 High-Profile Breaches in the LiteLLM/Trivy Attack</title>
+		<link>https://www.infostealers.com/article/from-ci-pipeline-to-ransomware-breaches-6-high-profile-breaches-in-the-litellm-trivy-attack/</link>
+		
+		<dc:creator><![CDATA[InfoStealers]]></dc:creator>
+		<pubDate>Mon, 17 Aug 2026 09:40:24 +0000</pubDate>
+				<category><![CDATA[Blog Post]]></category>
+		<category><![CDATA[Hudson Rock]]></category>
+		<guid isPermaLink="false">https://www.infostealers.com/?post_type=article&#038;p=6754</guid>
+
+					<description><![CDATA[<p>From CI Pipeline to Ransomware &#038; Breaches: 6 High-Profile Breaches in the LiteLLM/Trivy Attack From CI Pipeline to Ransomware Leak Site: 6 High-Profile Breaches in the LiteLLM Attack&#8230;</p>
+<p>The post <a href="https://www.infostealers.com/article/from-ci-pipeline-to-ransomware-breaches-6-high-profile-breaches-in-the-litellm-trivy-attack/">From CI Pipeline to Ransomware &amp; Breaches: 6 High-Profile Breaches in the LiteLLM/Trivy Attack</a> appeared first on <a href="https://www.infostealers.com">InfoStealers</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<div>
+<div>
+
+    <h1>From CI Pipeline to Ransomware Leak Site: 6 High-Profile Breaches in the LiteLLM Attack</h1>
+    <p><strong>By the Hudson Rock Threat Intelligence Team</strong></p>
+
+    <p>Following our <a href="https://www.hudsonrock.com/blog/largest-ai-supply-chain-breach-of-2026-litellm-hack-impacts-thousands-of-global-enterprises-claim-your-ethical-disclosure" target="_blank">initial report detailing the largest AI supply chain breach of the year</a>, Hudson Rock’s threat intelligence team has continued to analyze the catastrophic fallout of the LiteLLM and Trivy supply chain campaign. As part of our global ethical disclosure efforts, we have reconstructed the attack paths likely used by threat actors to compromise enterprise environments worldwide.</p>
+
+    <div>
+        <strong>A Critical Note on Blame:</strong> It is highly important to emphasize that these breaches were <em>extremely difficult to avoid</em>. The affected organizations are not at fault. This sophisticated supply chain compromise exploited deep, trusted dependencies within standard DevOps pipelines, successfully bypassing traditional security perimeters. 
+        <br><br>
+        This blog serves as an urgent call to action. Our goal is not to point fingers, but to provide transparency and urge companies to <a href="#free-lookup-tool">claim their ethical disclosures</a> and lock down their environments <strong>before this exfiltrated data begins to circulate more heavily among opportunistic cybercriminals.</strong>
+    </div>
+
+    <p>The LiteLLM/Trivy data gives us rare and terrifying insight into how organizations suffered devastating ransomware attacks lately. By analyzing the compromised CI runner dumps, we can map exactly what the threat actors likely obtained before launching their extortion campaigns.</p>
+
+    <div>
+        <strong>Global Ethical Disclosures:</strong> Over the last few days, Hudson Rock has completed over 250 ethical disclosures to organizations worldwide, working tirelessly to alert enterprises to their exposed cloud infrastructure before threat actors could weaponize the data. Additionally, we have provisioned the intelligence data directly to our cybersecurity partners so they can immediately protect their own customers.
+    </div>
+
+    <div>
+        <div>
+            <h3><img src="https://s.w.org/images/core/emoji/17.0.2/72x72/1f4ca.png" alt="📊" /> The Blast Radius: By the Numbers</h3>
+            <p>We disclosed compromised CI/CD pipelines, live cloud keys, and API tokens to <strong>over 250 global enterprises</strong>, including <strong>30+ S&#038;P 500 and Global Fortune 500</strong> companies across every critical sector:</p>
+        </div>
+        <div>
+            <div>
+                <div>
+                    <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+                        <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+                        <line x1="6" y1="6" x2="6.01" y2="6"></line>
+                        <line x1="6" y1="18" x2="6.01" y2="18"></line>
+                    </svg>
+                </div>
+                <div>Technology &#038; Cloud</div>
+            </div>
+            <div>
+                <div>
+                    <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
+                        <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
+                        <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+                        <line x1="12" y1="20" x2="12.01" y2="20"></line>
+                    </svg>
+                </div>
+                <div>Telecommunications</div>
+            </div>
+            <div>
+                <div>
+                    <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"></path>
+                        <path d="M17 18h1"></path>
+                        <path d="M12 18h1"></path>
+                        <path d="M7 18h1"></path>
+                    </svg>
+                </div>
+                <div>Automotive &#038; Industrial</div>
+            </div>
+            <div>
+                <div>
+                    <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 3L2 10h20L12 3z"></path>
+                        <path d="M4 10v10h16V10M8 14v6m8-6v6"></path>
+                    </svg>
+                </div>
+                <div>Government &#038; Research</div>
+            </div>
+            <div>
+                <div>
+                    <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                </div>
+                <div>Retail &#038; Logistics</div>
+            </div>
+            <div>
+                <div>
+                    <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        <path d="M9 12h6"></path>
+                        <path d="M12 9v6"></path>
+                    </svg>
+                </div>
+                <div>Healthcare &#038; Life Sciences</div>
+            </div>
+            <div>
+                <div>
+                    <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                    </svg>
+                </div>
+                <div>Consulting &#038; Finance</div>
+            </div>
+        </div>
+    </div>
+
+    <p>Below, we deep dive into the high-profile organizations compromised in this campaign and detail the exact secrets, tokens, and configurations that likely fueled downstream extortion by groups like Vect ransomware (TeamPCP).</p>
+
+    <div>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/vect_ransomware_from_ransomware_live.png" alt="Vect Ransomware Leak Site showing S&#038;P Global and Guesty">
+        <div>Vect ransomware group leak site tracking the TeamPCP LiteLLM/Trivy campaign victims. These harvested credentials directly fueled downstream extortion. Both organizations are now actively listed on leak sites. (Image via <a href="https://www.ransomware.live" target="_blank">www.ransomware.live</a>)</div>
+    </div>
+
+    <hr>
+
+    <h2 id="guesty">1. Guesty</h2>
+    <p><strong>The Breach:</strong> The property management software company Guesty suffered a direct hit to their critical cloud infrastructure. As seen on the leak sites above, this data was quickly weaponized for extortion.</p>
+    
+    <p><strong>How Hackers Likely Got In:</strong> Based on our analysis of the compromised CI runner dumps and public reports, it is assessed that threat actors likely gained access to critical cloud infrastructure, specifically exposing dozens of AWS Access Keys and secrets directly from Guesty&#8217;s CI pipelines. The raw pipeline logs dumped the credentials in plain text, which likely granted the attackers administrative access to their cloud environments.</p>
+
+    <div>
+        <strong>Outcome of the Breach:</strong> According to the Vect ransomware group, the data stolen from Guesty includes internal projects, 4 million sent/received emails with attachments, their entire userbase, and highly sensitive Airbnb and Booking.com integration data. The total data size extorted is reported to be <strong>700GB</strong>.
+    </div>
+
+    <div>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/guesty.png" alt="Guesty CI Runner dump showing AWS and Kubernetes secrets">
+        <div>Compromised CI runner dumps for Guesty.com revealing exposed AWS and Kubernetes secrets.</div>
+    </div>
+
+    <hr>
+
+    <h2 id="spglobal">2. S&#038;P Global</h2>
+    <p><strong>The Breach:</strong> For S&#038;P Global, the blast radius of this supply chain attack is massive. Like Guesty, S&#038;P Global&#8217;s harvested credentials directly fueled downstream extortion and resulted in them being listed on the Vect ransomware group&#8217;s leak site.</p>
+    
+    <p><strong>How Hackers Likely Got In:</strong> Evidence suggests threat actors likely intercepted temporary AWS STS session tokens and long-lived AWS keys during a terraform-actions workflow. The sheer volume of exposed data is staggering: judging by the telemetry, attackers likely accessed thousands of secrets, GitHub tokens, JWTs, and RSA private keys, fundamentally compromising their internal repository and cloud security architecture.</p>
+
+    <div>
+        <strong>Outcome of the Breach:</strong> According to the Vect ransomware group leak site, the threat actors successfully exfiltrated <strong>250GB</strong> of highly confidential data, including internal projects, core architectural secrets, and active API keys.
+    </div>
+
+    <div>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/spglobal_cavalier_overivew.png" alt="S&#038;P Global Secrets Overview">
+        <div>Overview of the thousands of secrets extracted from S&#038;P Global&#8217;s infrastructure inside Hudson Rock&#8217;s Cavalier portal.</div>
+    </div>
+
+    <div>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/spglobal_litellm_cavalier.png" alt="S&#038;P Global CI Runner Dump">
+        <div>Deep dive into the S&#038;P Global runner environments, showing GitHub tokens and ECR repository URLs exposed.</div>
+    </div>
+
+    <hr>
+
+    <h2 id="cisco">3. Cisco</h2>
+    <p><strong>The Breach:</strong> Cisco&#8217;s source code was stolen in a breach linked directly to a compromised development environment running a poisoned Trivy container. The attackers likely infiltrated critical repositories, including <code>cisco-it-cloud-infrastructure</code>.</p>
+    
+    <div>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/cisco_litellm.png" alt="BleepingComputer article on Cisco breach">
+        <div>Public reporting via <a href="https://www.bleepingcomputer.com/news/security/cisco-source-code-stolen-in-trivy-linked-dev-environment-breach/" target="_blank">BleepingComputer</a> confirming the Cisco source code theft via the Trivy-linked breach.</div>
+    </div>
+
+    <p><strong>How Hackers Likely Got In:</strong> Judging by the environment dumps, it appears the attackers likely scraped GitHub Personal Access Tokens (PATs) and highly sensitive API keys from the runner&#8217;s environment variables. The exposure of an Artifactory token likely allowed access to internal packages, while a Conjur API key appears to have provided a foothold into Cisco&#8217;s broader secret management infrastructure.</p>
+
+    <div>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/cisco_github.png" alt="Cisco GitHub Actions config">
+        <div>Cisco GitHub Actions runner environment dump showing the compromised Trivy action path and internal repository links.</div>
+    </div>
+
+    <div>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/cisco_github_2.png" alt="Cisco Secrets Dump">
+        <div>Exfiltrated environment configuration from Cisco revealing highly sensitive Conjur, GitHub, and JIRA secrets.</div>
+    </div>
+
+    <hr>
+
+    <h2 id="european-commission">4. European Commission</h2>
+    <p><strong>The Breach:</strong> The European Commission suffered a severe cloud breach resulting from this campaign. The compromised runner was executing a Terraform deployment for AWS infrastructure.</p>
+
+    <div>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/cert_eu.png" alt="CERT-EU Press Release">
+        <div>Public statement via <a href="https://cert.europa.eu/blog/european-commission-cloud-breach-trivy-supply-chain" target="_blank">CERT-EU</a> regarding the cybersecurity incident affecting the europa.eu AWS infrastructure.</div>
+    </div>
+
+    <p><strong>How Hackers Likely Got In:</strong> Telemetry indicates attackers likely obtained AWS IAM credentials directly from the environment, granting administrative cloud access. Furthermore, a hardcoded SSH private key and GitLab CI tokens appear to have been exposed, which would likely allow the threat actors to pivot laterally across the European Commission&#8217;s GitLab infrastructure.</p>
+
+    <div>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/europa_eu_litellm_aws.png" alt="European Commission GitLab Runner variables">
+        <div>Raw exfiltrated log from the European Commission breach highlighting exposed AWS access keys and GitLab tokens.</div>
+    </div>
+
+    <hr>
+
+    <h2 id="mercor">5. Mercor</h2>
+    <p><strong>The Breach:</strong> Mercor, a $10 billion AI startup, faced a catastrophic security incident impacting their AI annotation and RL Studio platform resulting from the LiteLLM supply chain attack.</p>
+
+    <div>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/mercor_litellm.png" alt="Mercor Security Incident Update">
+        <div><a href="https://www.mercor.com/blog/update-on-mercor-security-incident/" target="_blank">Mercor&#8217;s public update</a> confirming they were affected by the LiteLLM supply chain attack.</div>
+    </div>
+
+    <p><strong>How Hackers Likely Got In:</strong> Based on the data, it appears attackers likely exfiltrated local configuration files and runner environment variables. This would provide direct administrative access to Mercor&#8217;s AI models via Anthropic API keys, project management via Linear, and data pipelines via Datadog and Dagster.</p>
+    
+    <div>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/mercor_secrets.png" alt="Mercor Compromised Secrets in Cavalier">
+        <div>Hudson Rock Cavalier view showing the exact compromised Mercor environment variables, including Anthropic, Linear, and Datadog API keys inside Cavalier (secrets blurred for safety).</div>
+    </div>
+
+    <div>
+        <strong>Outcome of the Breach:</strong> The fallout for Mercor has been monumental. According to available reports, attackers moved laterally through Mercor&#8217;s systems and extracted approximately <strong>4 Terabytes</strong> of data. This included 939 GB of proprietary source code, potential AI training methodologies, video interviews, and user database records containing the Social Security numbers and biometric data of over 40,000 contractors. Meta subsequently paused a major data contract, and multiple class-action lawsuits have been filed.
+    </div>
+
+    <div>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/mercor_china.png" alt="Lapsus$ Statement on Mercor Data">
+        <div>The Lapsus$ extortion group claiming to have permanently sold the entirety of Mercor&#8217;s biometric, PII, and AI training data to Chinese enterprises.</div>
+    </div>
+
+    <hr>
+
+    <h2 id="telnyx">6. Telnyx</h2>
+    <p><strong>The Breach:</strong> Telecom and communications platform Telnyx was breached through their internal infrastructure via malicious Python SDK packages tied to the broader campaign.</p>
+
+    <div>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/telnyx_litellm.png" alt="Telnyx Security Advisory">
+        <div><a href="https://telnyx.com/resources/telnyx-python-sdk-supply-chain-security-notice-march-2026" target="_blank">Telnyx advisory</a> detailing the malicious SDK versions linked to the Trivy/LiteLLM campaign.</div>
+    </div>
+
+    <p><strong>How Hackers Likely Got In:</strong> According to the data dumps, it is assessed that attackers likely recovered Docker configuration files containing base64-encoded basic authentication credentials and GitHub PATs. This would have allowed threat actors to pull and push directly to Telnyx&#8217;s internal production and development container registries.</p>
+
+    <div>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/telnyx_secrets.png" alt="Telnyx Secrets in Cavalier">
+        <div>Hudson Rock Cavalier view displaying the exfiltrated Docker configuration and GitHub tokens from Telnyx&#8217;s environment (secrets blurred for safety).</div>
+    </div>
+
+    <div>
+        <strong>Outcome of the Breach:</strong> On March 27, 2026, two unauthorized versions of the Telnyx Python SDK (4.87.1 and 4.87.2) were published to PyPI containing malicious credential-stealing code. Telnyx publicly confirmed the incident, clarifying that while the PyPI distribution channel was compromised, the Telnyx platform, APIs, customer data, and voice/messaging infrastructure itself were <strong>not</strong> compromised.
+    </div>
+
+    <hr>
+
+    <!-- CTA SECTION -->
+    <div id="free-lookup-tool">
+        <h2><img src="https://s.w.org/images/core/emoji/17.0.2/72x72/1f6a8.png" alt="🚨" /> Free Look-Up Tool for Affected Organizations</h2>
+        <p>Because of the critical nature of this massive campaign, <a href="https://www.hudsonrock.com" target="_blank">Hudson Rock</a> is committed to performing ethical disclosures for affected organizations.</p>
+        <p>We have launched a dedicated portal where companies can verify if their domains are part of this compromised dataset. Following confirmation of impact, organizations can reach out directly through the tool to receive a full ethical disclosure regarding their exposure.</p>
+        
+        <div>
+            <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/litellm_free_tool.png" alt="Hudson Rock LiteLLM Look-Up Tool Dashboard">
+        </div>
+
+        <p>At Hudson Rock, we’ve wrapped up our direct ethical disclosures for affected enterprises and have just provisioned the intelligence data directly to our cybersecurity partners so they can immediately protect their own customers.</p>
+        
+        <a href="https://www.hudsonrock.com/litellm" target="_blank">Search Your Domain Now</a>
+    </div>
+
+</div>
+</div>
+
+<!-- Lightbox Modal (Placed outside wrapper for global stacking context) -->
+<div id="image-modal">
+    <span>&times;</span>
+    <img id="modal-img" alt="Enlarged View">
+</div><p>The post <a href="https://www.infostealers.com/article/from-ci-pipeline-to-ransomware-breaches-6-high-profile-breaches-in-the-litellm-trivy-attack/">From CI Pipeline to Ransomware &amp; Breaches: 6 High-Profile Breaches in the LiteLLM/Trivy Attack</a> appeared first on <a href="https://www.infostealers.com">InfoStealers</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Massive Azure Exfiltration Campaign Exposes Millions of Enterprise Records via Compromised Credentials (Mcdonald&#8217;s, Vodafone, Kyndryl &#038; Others)</title>
+		<link>https://www.infostealers.com/article/massive-azure-exfiltration-campaign-exposes-millions-of-enterprise-records-via-compromised-credentials-mcdonalds-vodafone-kyndryl-others/</link>
+		
+		<dc:creator><![CDATA[InfoStealers]]></dc:creator>
+		<pubDate>Sun, 16 Aug 2026 08:15:43 +0000</pubDate>
+				<category><![CDATA[Blog Post]]></category>
+		<category><![CDATA[Hudson Rock]]></category>
+		<guid isPermaLink="false">https://www.infostealers.com/?post_type=article&#038;p=6735</guid>
+
+					<description><![CDATA[<p>Massive Azure Exfiltration Campaign Exposes Millions of Enterprise Records via Compromised Credentials Massive Azure Exfiltration Campaign Exposes Millions of Enterprise Records via Compromised Credentials A significant Azure exfiltration&#8230;</p>
+<p>The post <a href="https://www.infostealers.com/article/massive-azure-exfiltration-campaign-exposes-millions-of-enterprise-records-via-compromised-credentials-mcdonalds-vodafone-kyndryl-others/">Massive Azure Exfiltration Campaign Exposes Millions of Enterprise Records via Compromised Credentials (Mcdonald&#8217;s, Vodafone, Kyndryl &amp; Others)</a> appeared first on <a href="https://www.infostealers.com">InfoStealers</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<h1>Massive Azure Exfiltration Campaign Exposes Millions of Enterprise Records via Compromised Credentials</h1>
+
+    <p>A significant Azure exfiltration campaign is currently underway, driven by a threat actor actively selling massive enterprise employee databases. These extensive directories were reportedly downloaded directly from the organizations&#8217; Azure/Entra portals utilizing compromised credentials.</p>
+
+    <p>Over the past week, a threat actor operating under the moniker &#8220;TheHatman&#8221; has flooded cybercrime forums with massive internal employee directories belonging to several Fortune 500 companies. The actor claims these dumps were extracted directly from the organizations&#8217; Azure Tenants.</p>
+
+    <figure>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/jsdfjsdjfsjdfjsdjf.png" alt="List of forum posts by TheHatman">
+        <figcaption>A screenshot showing the extent of the threat actor&#8217;s posts on a dark web forum, listing multiple global enterprises.</figcaption>
+    </figure>
+
+    <h2>Affected Organizations &#038; Scope</h2>
+    
+    <p>The campaign impacts multiple global enterprises across IT services, hospitality, telecommunications, retail, and logistics. Our researchers went over the data and it seems highly legitimate based on the corporate email addresses found, combined with field names perfectly matching standard Azure directory exports.</p>
+
+    <p>Here are the affected organizations and the staggering amount of records offered by the threat actor:</p>
+    <ul>
+        <li><strong>McDonald’s Corporation:</strong> ~1,700,000+ records</li>
+        <li><strong>TCS (Tata Consultancy Services):</strong> ~800,000+ records</li>
+        <li><strong>Vodafone:</strong> ~425,000+ records</li>
+        <li><strong>HCL Technologies:</strong> ~250,000+ records</li>
+        <li><strong>InterContinental Hotels Group (IHG):</strong> ~185,000+ records</li>
+        <li><strong>Kyndryl:</strong> ~170,000+ records</li>
+        <li><strong>Gap Inc.:</strong> ~80,000+ records</li>
+        <li><strong>Hexaware Technologies:</strong> ~20,000+ records</li>
+        <li><strong>Wyndham Hotels:</strong> ~9,000+ records</li>
+    </ul>
+
+    <figure>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/mcdonalds2.png" alt="Threat actor advertising McDonald's data">
+        <figcaption>The threat actor advertising 1.7 million McDonald&#8217;s employee records.</figcaption>
+    </figure>
+
+    <figure>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/voda.png" alt="Threat actor advertising Vodafone data">
+        <figcaption>Forum post offering 425,000 internal employee records from Vodafone.</figcaption>
+    </figure>
+
+    <h2>Data Overview &#038; Analysis</h2>
+
+    <p>Across all the affected tenant dumps, the leaked fields consistently include foundational corporate directory attributes. By dissecting the provided samples, we can clearly see the structure of the exfiltrated data:</p>
+
+    <ul>
+        <li><strong>Core Identity &#038; Contact:</strong> Full Name, corporate email addresses (including active domains and tenant-specific <code>.onmicrosoft.com</code> structures), phone numbers, and physical addresses.</li>
+        <li><strong>Organizational Structure:</strong> Employee IDs, job titles, departments, notes, manager details, and direct reports.</li>
+        <li><strong>Access &#038; Group Mappings:</strong> User group memberships, service accounts, and highly privileged account records (such as Global Administrator listings).</li>
+    </ul>
+
+    <p>The exposure of service accounts and global admin names is particularly concerning, as this provides a direct roadmap for subsequent social engineering, spear-phishing, or targeted privilege escalation attacks against these organizations.</p>
+
+    <figure>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/mcdonadls.png" alt="Snippet of leaked McDonald's data">
+        <figcaption>A snippet of the leaked McDonald&#8217;s data, showing structured corporate directory attributes including DisplayName, UserPrincipalName, and EmployeeId.</figcaption>
+    </figure>
+
+    <figure>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/kyndril.png" alt="Sample of Kyndryl data leak">
+        <figcaption>Sample of the Kyndryl data leak, indicating detailed job roles, managers, and internal email structures.</figcaption>
+    </figure>
+
+    <h2>Inconclusive Attack Vector</h2>
+
+    <p>While the data is highly likely authentic, <strong>it is not conclusive how this campaign is being carried out.</strong> The threat actor specifically claims the data was downloaded &#8220;using compromised credentials.&#8221;</p>
+    
+    <p>However, the exact intrusion vector remains unknown. This mass exfiltration could be the result of active Infostealer infections compromising employee session tokens, highly successful phishing campaigns yielding administrative access, a lack of strict Multi-Factor Authentication (MFA) on specific tenant portals, or potentially an abuse of a third-party API/Integration that had excessive read privileges across multiple environments. The sheer scale and speed of these dumps suggest a systematic, automated approach once initial access is achieved.</p>
+
+    <h2>The Infostealer Connection</h2>
+
+    <p>While we don&#8217;t have definitive confirmation as to which specific credentials were used to hack these organizations, Hudson Rock researchers were able to find compromised Azure credentials originating from Infostealer infections linked to most of the affected companies.</p>
+    
+    <p>Judging by the massive size of the organizations impacted, it appears highly likely that this campaign originates from targeted exploitation of Infostealer infections rather than a systemic zero-day vulnerability in Azure. If this were a widespread vulnerability, we would likely see a much broader spectrum of organizations impacted, including smaller businesses, rather than just these massive Fortune 500-level enterprises.</p>
+
+    <figure>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/tcs_creds.png" alt="Hudson Rock platform showing compromised TCS credentials">
+        <figcaption>Hudson Rock&#8217;s cybercrime intelligence platform identifying compromised Azure Active Directory credentials belonging to an employee at TCS (Tata Consultancy Services), originating from a machine infected in India.</figcaption>
+    </figure>
+
+    <figure>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/gap_creds.png" alt="Hudson Rock platform showing compromised Gap Inc credentials">
+        <figcaption>Evidence of compromised Microsoft credentials associated with a Gap Inc. corporate account, identified via an Infostealer infection.</figcaption>
+    </figure>
+
+    <figure>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/hcl_creds.png" alt="Hudson Rock platform showing compromised HCL Technologies credentials">
+        <figcaption>A compromised machine profile revealing stolen Azure Active Directory credentials for an HCL Technologies employee, highlighting the risk of password reuse.</figcaption>
+    </figure>
+
+    <figure>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/kyndryl_creds.png" alt="Hudson Rock platform showing compromised Kyndryl credentials">
+        <figcaption>Hudson Rock platform detailing a highly compromised machine containing dozens of corporate credentials and hundreds of sensitive cookies, including direct access to a Kyndryl Azure Active Directory account.</figcaption>
+    </figure>
+
+    <h2>Real-World Risks and Weaponization of Directory Data</h2>
+
+    <p>The exposure of massive internal corporate directories poses a severe and immediate threat to the affected enterprises. Hackers routinely weaponize this structured data to execute highly convincing Business Email Compromise (BEC) and spear-phishing campaigns. By understanding an organization&#8217;s exact reporting structure, departments, and job titles, attackers can easily impersonate managers or IT personnel to manipulate employees into approving fraudulent wire transfers or handing over multi-factor authentication (MFA) tokens.</p>
+    
+    <p>Furthermore, the identification of service accounts and Global Administrators gives initial access brokers and ransomware operators a precise roadmap of high-value targets. To proactively defend against these intrusions, organizations must monitor for the initial infection vectors. By leveraging <a href="https://www.hudsonrock.com" target="_blank">Hudson Rock&#8217;s</a> cybercrime intelligence and our flagship platform, <a href="https://www.hudsonrock.com/cavalier" target="_blank">Cavalier</a>, security teams can detect compromised employee, user, and third-party credentials originating from Infostealers before threat actors can exploit them to access critical infrastructure like Azure.</p>
+
+    <div>
+        <p>To learn more about how Hudson Rock protects companies from imminent intrusions caused by info-stealer infections of employees, partners, and users, as well as how we enrich existing cybersecurity solutions with our cybercrime intelligence API, please schedule a call with us, here:<br>
+        <a href="https://www.hudsonrock.com/schedule-demo" target="_blank">https://www.hudsonrock.com/schedule-demo</a></p>
+        
+        <p>We also provide access to various free cybercrime intelligence tools that you can find here:<br>
+        <a href="https://www.hudsonrock.com/free-tools" target="_blank">www.hudsonrock.com/free-tools</a></p>
+        
+        <p>Thanks for reading, Rock Hudson Rock!</p>
+        
+        <p>Follow us on LinkedIn: <a href="https://www.linkedin.com/company/hudson-rock" target="_blank">https://www.linkedin.com/company/hudson-rock</a><br>
+        Follow us on Twitter: <a href="https://www.twitter.com/RockHudsonRock" target="_blank">https://www.twitter.com/RockHudsonRock</a></p>
+    </div><p>The post <a href="https://www.infostealers.com/article/massive-azure-exfiltration-campaign-exposes-millions-of-enterprise-records-via-compromised-credentials-mcdonalds-vodafone-kyndryl-others/">Massive Azure Exfiltration Campaign Exposes Millions of Enterprise Records via Compromised Credentials (Mcdonald&#8217;s, Vodafone, Kyndryl &amp; Others)</a> appeared first on <a href="https://www.infostealers.com">InfoStealers</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Largest AI Supply Chain Breach of 2026: LiteLLM Hack Impacts Thousands of Global Enterprises &#8211; Claim Your Ethical Disclosure</title>
+		<link>https://www.infostealers.com/article/largest-ai-supply-chain-breach-of-2026-litellm-hack-impacts-thousands-of-global-enterprises-claim-your-ethical-disclosure/</link>
+		
+		<dc:creator><![CDATA[InfoStealers]]></dc:creator>
+		<pubDate>Wed, 12 Aug 2026 11:18:56 +0000</pubDate>
+				<category><![CDATA[Blog Post]]></category>
+		<category><![CDATA[Hudson Rock]]></category>
+		<guid isPermaLink="false">https://www.infostealers.com/?post_type=article&#038;p=6722</guid>
+
+					<description><![CDATA[<p>Largest AI Supply Chain Breach of 2026: LiteLLM Hack Impacts Thousands of Global Enterprises &#8211; Claim Your Ethical Disclosure Largest AI Supply Chain Breach of 2026: LiteLLM Hack&#8230;</p>
+<p>The post <a href="https://www.infostealers.com/article/largest-ai-supply-chain-breach-of-2026-litellm-hack-impacts-thousands-of-global-enterprises-claim-your-ethical-disclosure/">Largest AI Supply Chain Breach of 2026: LiteLLM Hack Impacts Thousands of Global Enterprises &#8211; Claim Your Ethical Disclosure</a> appeared first on <a href="https://www.infostealers.com">InfoStealers</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<div id="hudson-rock-blog-wrapper">
+
+    <h1>Largest AI Supply Chain Breach of 2026: LiteLLM Hack Impacts Thousands of Global Enterprises &#8211; Claim Your Ethical Disclosure</h1>
+
+    <p>The cybersecurity landscape is currently reeling from one of the most sophisticated multi-ecosystem supply chain campaigns publicly documented to date. Orchestrated by a threat actor group known as &#8220;TeamPCP,&#8221; this cascading attack ultimately compromised LiteLLM &#8211; a widely adopted open-source AI proxy gateway &#8211; leading to the silent exfiltration of deep developmental secrets from thousands of continuous integration and continuous deployment (CI/CD) pipelines worldwide.</p>
+
+    <!-- SKIP LINK SECTION -->
+    <div>
+        <a href="#free-lookup-tool"><img src="https://s.w.org/images/core/emoji/17.0.2/72x72/1f6a8.png" alt="🚨" /> Skip directly to the free domain look-up tool to claim your ethical disclosure <img src="https://s.w.org/images/core/emoji/17.0.2/72x72/2b07.png" alt="⬇" /></a>
+    </div>
+
+    <h2>The Mechanics of the Attack: From Poisoned Scanner to AI Gateway</h2>
+
+    <p>Excellent forensic research published by <a href="https://snyk.io/blog/poisoned-security-scanner-backdooring-litellm/" target="_blank">Snyk</a>, <a href="https://www.trendmicro.com/en_us/research/26/c/inside-litellm-supply-chain-compromise.html" target="_blank">Trend Micro</a>, and <a href="https://cycode.com/blog/lite-llm-supply-chain-attack/" target="_blank">Cycode</a> has thoroughly detailed the mechanics of this breach. The attack did not begin with LiteLLM. Instead, TeamPCP first compromised the GitHub Actions pipeline for <strong>Trivy</strong>, a highly popular open-source vulnerability scanner.</p>
+
+    <p>Because the developers of LiteLLM utilized Trivy in their own CI/CD pipeline, the poisoned security scanner was granted legitimate read access to their runner environment. This allowed the attackers to silently exfiltrate LiteLLM’s PyPI publishing tokens. Armed with these credentials, TeamPCP published malicious versions of the package (1.82.7 and 1.82.8).</p>
+
+    <p>The payload delivery was exceptionally stealthy. By utilizing a <code>.pth</code> Python startup hook, the malicious code executed the moment the Python interpreter initialized &#8211; regardless of whether the LiteLLM library was explicitly imported. The three-stage payload immediately began harvesting environment variables, local configuration files (like <code>.kube/config</code> and <code>.aws/credentials</code>), attempted lateral movement across Kubernetes clusters, and installed a persistent systemd backdoor.</p>
+
+    <h2>The 153GB Raw Database Surfaces</h2>
+
+    <div>
+        <p><strong>While the security community has deeply analyzed the malware&#8217;s behavior, Hudson Rock has independently obtained the actual fallout: the raw exfiltrated data. This provides an unfiltered look into the massive scale of the compromise through the actual, raw files.</strong></p>
+    </div>
+
+    <p>Our researchers have obtained and analyzed a staggering <strong>153GB RAR archive</strong>. This massive corpus contains exactly <strong>433,909 files</strong>. Through our analysis, we have successfully attributed <strong>118,829 CI runner dumps</strong> to <strong>2,488 affected corporate domains</strong>. Whenever a developer machine, production server, or CI/CD pipeline executed the compromised LiteLLM package, the threat actors successfully harvested the live environment memory and configurations mid-execution.</p>
+
+    <div>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/gitlab_litellm_.png" alt="GitLab User Email Aggregation">
+        <span>Figure 2: An aggregation of several enterprise environment dumps revealing the <code>GITLAB_USER_EMAIL</code> variable, directly attributing the leaked pipelines to major global organizations like Orange, Boeing, and Roku.</span>
+    </div>
+
+    <div>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/aws_secrets_litellm.png" alt="Exposed AWS Secrets">
+        <span>Figure 3: Widespread exposure of cloud infrastructure keys, including <code>AWS_SECRET_ACCESS_KEY</code> and environment-specific secrets like <code>WORKLOADS_DEV_AWS_SECRET</code>, dumped in plain text.</span>
+    </div>
+
+    <div>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/secrets_litellm.png" alt="Various API Secrets and Tokens">
+        <span>Figure 4: A trove of internal corporate secrets, exposing sensitive tokens for platforms such as Salesforce (<code>SALESFORCE_CLIENT_SECRET</code>), Slack (<code>SLACK_SIGNING_SECRET</code>), and Microsoft Azure environments.</span>
+    </div>
+
+    <div>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/ai_api_keys_litellm.png" alt="Exposed AI API Keys">
+        <span>Figure 5: Exposed AI provider API keys captured mid-execution, giving attackers direct access to the victim&#8217;s LLM routing infrastructure and billing quotas.</span>
+    </div>
+
+    <h2>The Attribution Challenge &#038; The Unattributed Secrets Problem</h2>
+
+    <p>Identifying the victims within this 153GB database presents a unique threat intelligence challenge. Accurate attribution requires looking past the surface level to analyze the actual infrastructure boundaries.</p>
+
+    <p>For example, in one high-profile compromise within the dataset, the committer email associated with the pipeline run belonged to <code>@siriusxm.com</code>. However, when examining the broader context of the environment dump &#8211; specifically the self-hosted infrastructure endpoints like <code>CI_SERVER_FQDN=gitlab.adswizz.com</code> and <code>registry.adswizz.com</code> &#8211; it becomes clear that the breach occurred within the infrastructure of <strong>AdsWizz</strong> (a subsidiary of SiriusXM). Threat intelligence teams must rely on these hard infrastructure markers rather than simple committer emails to correctly identify the operational target and route alerts to the correct SOC teams.</p>
+
+    <div>
+        <p><strong>However, a vast number of files in this leak contain highly sensitive secrets but completely lack clear organizational attribution.</strong></p>
+    </div>
+
+    <p>Many CI/CD pipelines are configured generically. The dumped variables contain active database passwords, third-party API keys, and cloud credentials without any identifiable company email, custom domain string, or internal server name. This means countless organizations currently have active secrets sitting in this database, completely unaware of their exposure.</p>
+
+    <div>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/no_attribution_litellm.png" alt="Secrets with no organizational attribution">
+        <span>Figure 6: Highly sensitive database and infrastructure secrets dumped from runners lacking clear organizational attribution, leaving companies entirely blind to their exposure.</span>
+    </div>
+
+    <h2>Notable Impacted Organizations</h2>
+
+    <p>We acknowledge the excellent initial victim tracking published by <a href="https://www.cloudsek.com/blog/ai-supply-chain-breach-2500-companies-434000-cicd-pipelines" target="_blank">CloudSEK</a>. Our independent analysis of the raw, unredacted data confirms the staggering scale of this compromise, mapping 118,829 attributed pipeline runs to nearly 2,500 distinct organizations. Some of the most notable impacted entities include:</p>
+
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Organization</th>
+                    <th>Domain</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Amazon Web Services (AWS)</td>
+                    <td>amazon.com</td>
+                </tr>
+                <tr>
+                    <td>Samsung Electronics</td>
+                    <td>samsung.com</td>
+                </tr>
+                <tr>
+                    <td>Cisco Systems, Inc.</td>
+                    <td>cisco.com</td>
+                </tr>
+                <tr>
+                    <td>Salesforce, Inc.</td>
+                    <td>salesforce.com</td>
+                </tr>
+                <tr>
+                    <td>ServiceNow</td>
+                    <td>servicenow.com</td>
+                </tr>
+                <tr>
+                    <td>S&#038;P Global</td>
+                    <td>spglobal.com</td>
+                </tr>
+                <tr>
+                    <td>Siemens AG</td>
+                    <td>siemens.com</td>
+                </tr>
+                <tr>
+                    <td>John Deere</td>
+                    <td>deere.com</td>
+                </tr>
+                <tr>
+                    <td>Deloitte</td>
+                    <td>deloitte.com</td>
+                </tr>
+                <tr>
+                    <td>Epic Games</td>
+                    <td>epicgames.com</td>
+                </tr>
+                <tr>
+                    <td>Orange S.A.</td>
+                    <td>orange.com</td>
+                </tr>
+                <tr>
+                    <td>TomTom</td>
+                    <td>tomtom.com</td>
+                </tr>
+                <tr>
+                    <td>BT Group</td>
+                    <td>bt.com</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h2>Native Integration into Cavalier Threat Intelligence</h2>
+
+    <p>To provide actionable intelligence to our partners and affected entities, the complete 153GB dataset has been natively integrated into <a href="https://www.hudsonrock.com/cavalier" target="_blank">Cavalier</a>, Hudson Rock&#8217;s threat intelligence platform. Existing customers can immediately query their domains to view exposed runner dumps, automatically categorized secrets, and associated committer identities.</p>
+
+    <p>Furthermore, organizations that verify their impact through our look-up tool and complete the ethical disclosure process will receive access to view their specific leaked data directly within the platform to aid in their incident response efforts.</p>
+
+    <div>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/samsung_overview.png" alt="Hudson Rock Cavalier Domain Overview for Samsung">
+        <span>Figure 7: Cavalier&#8217;s domain overview dashboard highlighting the newly integrated &#8220;LiteLLM Compromised&#8221; intelligence flag, instantly alerting organizations to their exposure within the massive supply chain dataset alongside other known vulnerabilities.</span>
+    </div>
+
+    <div>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/samsung_example.png" alt="Hudson Rock Cavalier Dashboard showing Samsung LiteLLM leaks">
+        <span>Figure 8: Hudson Rock&#8217;s Cavalier platform showcasing the parsed LiteLLM dataset. In this example attributed to Samsung, the platform automatically categorizes 17 compromised pipeline dumps exposing hundreds of sensitive assets, including Bitbucket deployment tokens, Elastic API keys, internal JWTs, and NPM tokens.</span>
+    </div>
+
+    <h2>Immediate Remediation Guidance</h2>
+
+    <p>If your organization utilizes AI proxy infrastructure, third-party CI/CD vulnerability scanners, or downstream AI packages, you must immediately audit your environment for versions <code>1.82.7</code> and <code>1.82.8</code> of LiteLLM. Immediate actions should include:</p>
+
+    <ul>
+        <li><strong>Aggressive Credential Revocation:</strong> Assume any secret accessible to your LiteLLM environment is compromised. Invalidate and rotate all AWS/GCP/Azure IAM keys, Kubernetes service account tokens, and GitLab/GitHub PATs.</li>
+        <li><strong>Audit Logging &#038; Egress Filtering:</strong> Review AWS CloudTrail and Kubernetes API audits for anomalous activity dating back to March 24, 2026. Implement strict network egress filtering on runner environments.</li>
+        <li><strong>Inspect for Persistence:</strong> Check local development environments and containers for unauthorized `.pth` files in the <code>site-packages</code> directory, and look for suspicious systemd services (e.g., masquerading as &#8220;System Telemetry Service&#8221;).</li>
+    </ul>
+
+    <!-- CTA SECTION -->
+    <div id="free-lookup-tool">
+        <h2><img src="https://s.w.org/images/core/emoji/17.0.2/72x72/1f6a8.png" alt="🚨" /> Free Look-Up Tool for Affected Organizations</h2>
+        <p>Because of the critical nature of this massive campaign, <a href="https://www.hudsonrock.com" target="_blank">Hudson Rock</a> is committed to performing ethical disclosures for affected organizations.</p>
+        <p>We have launched a dedicated portal where companies can verify if their domains are part of this compromised dataset. Following confirmation of impact, organizations can reach out directly through the tool to receive a full ethical disclosure regarding their exposure.</p>
+        
+        <div>
+            <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/08/litellm_free_tool.png" alt="Hudson Rock LiteLLM Look-Up Tool Dashboard">
+        </div>
+
+        <p>At Hudson Rock, we’ve wrapped up our direct ethical disclosures for affected enterprises and have just provisioned the intelligence data directly to our cybersecurity partners so they can immediately protect their own customers.</p>
+        
+        <a href="https://www.hudsonrock.com/litellm" target="_blank">Search Your Domain Now</a>
+    </div>
+
+</div>
+
+<!-- Lightbox Modal -->
+<div id="image-modal">
+    <span>&times;</span>
+    <img id="modal-img">
+</div><p>The post <a href="https://www.infostealers.com/article/largest-ai-supply-chain-breach-of-2026-litellm-hack-impacts-thousands-of-global-enterprises-claim-your-ethical-disclosure/">Largest AI Supply Chain Breach of 2026: LiteLLM Hack Impacts Thousands of Global Enterprises &#8211; Claim Your Ethical Disclosure</a> appeared first on <a href="https://www.infostealers.com">InfoStealers</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Introducing Cavalier&#8217;s New Threat Feeds: Comprehensive Visibility into Attacker Infrastructure</title>
+		<link>https://www.infostealers.com/article/introducing-cavaliers-new-threat-feeds-comprehensive-visibility-into-attacker-infrastructure/</link>
+		
+		<dc:creator><![CDATA[InfoStealers]]></dc:creator>
+		<pubDate>Thu, 23 Jul 2026 09:40:33 +0000</pubDate>
+				<category><![CDATA[Blog Post]]></category>
+		<category><![CDATA[Hudson Rock]]></category>
+		<guid isPermaLink="false">https://www.infostealers.com/?post_type=article&#038;p=6667</guid>
+
+					<description><![CDATA[<p>Introducing Cavalier&#8217;s New Threat Feeds: Comprehensive Visibility into Attacker Infrastructure We are thrilled to introduce three new Threat Feed modules in Cavalier: C2 Data, ClickFix, and PhaaS (Phishing-as-a-service).&#8230;</p>
+<p>The post <a href="https://www.infostealers.com/article/introducing-cavaliers-new-threat-feeds-comprehensive-visibility-into-attacker-infrastructure/">Introducing Cavalier&#8217;s New Threat Feeds: Comprehensive Visibility into Attacker Infrastructure</a> appeared first on <a href="https://www.infostealers.com">InfoStealers</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<div>
+
+    <h1>Introducing Cavalier&#8217;s New Threat Feeds: Comprehensive Visibility into Attacker Infrastructure</h1>
+
+    <p>We are thrilled to introduce three new Threat Feed modules in Cavalier: <strong>C2 Data</strong>, <strong>ClickFix</strong>, and <strong>PhaaS (Phishing-as-a-service)</strong>. Together, they give security teams comprehensive visibility into active attacker infrastructure &#8211; from infostealer command-and-control (C2) servers to malicious ClickFix pages executing clipboard injection, to turnkey Phishing-as-a-service (PhaaS) kits targeting corporate credentials.</p>
+
+    <figure>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/07/threatfeeds1.png" alt="Overview of the Threat Feeds monitoring options">
+        <figcaption>Overview of the new Threat Feeds monitoring options available inside Cavalier, including C2 Intelligence, ClickFix Monitor, and PhaaS Feed.</figcaption>
+    </figure>
+
+    <!-- Navigation Menu -->
+    <div>
+        <h3>Jump to a Threat Feed Section:</h3>
+        <p>
+            <a href="#c2-monitoring"><img src="https://s.w.org/images/core/emoji/17.0.2/72x72/1f6e1.png" alt="🛡" /> Infostealers C2 Monitoring</a> | 
+            <a href="#clickfix-monitoring"><img src="https://s.w.org/images/core/emoji/17.0.2/72x72/1f5b1.png" alt="🖱" /> ClickFix Server Monitoring</a> | 
+            <a href="#phaas-monitoring"><img src="https://s.w.org/images/core/emoji/17.0.2/72x72/1f3a3.png" alt="🎣" /> Phishing-as-a-Service (PhaaS)</a>
+        </p>
+    </div>
+
+    <hr>
+
+    <!-- SECTION 1: C2 MONITORING -->
+    <h2 id="c2-monitoring">Deep Dive 1: Infostealers C2 Intelligence</h2>
+
+    <p>The new C2 Data module provides unprecedented access to observed command-and-control (C2) hosts associated directly with active infostealer campaigns. This empowers security teams to transition from reactive incident response to preemptive blocking.</p>
+    
+    <figure>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/07/c2_1.png" alt="Overview of the infostealers C2 monitoring">
+        <figcaption>A high-level overview of the Infostealers C2 monitoring dashboard, displaying active threat infrastructure.</figcaption>
+    </figure>
+
+    <p>Inside Cavalier, you can seamlessly review:</p>
+    <ul>
+        <li>Daily Infostealers C2 host feeds</li>
+        <li>Activity trends over time</li>
+        <li>Top countries where C2 hosts are observed</li>
+        <li>Malware family breakdowns</li>
+        <li>Detailed host information, including infrastructure type, ASN, AS organization, ports, tags, first seen, and last seen</li>
+    </ul>
+
+    <h3>Uncovering Initial Access with Correlated Intelligence</h3>
+
+    <p>One of the most powerful features of the C2 Intelligence Feed is the integration of <strong>Infostealer credential telemetry linked to the hosting platform</strong>. This shows compromised employee or user credentials that likely enabled the threat actors to gain initial access to the server in the first place.</p>
+
+    <figure>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/07/c2_2.png" alt="Specific infostealers C2 examples with correlated infection data">
+        <figcaption>Specific infostealer C2 examples (Redline, Vidar, Stealc, etc.) enriched with correlated infection data from Hudson Rock&#8217;s cybercrime intelligence database, revealing compromises associated with the server.</figcaption>
+    </figure>
+    
+    <p>For example, you can open a host such as <em>myrtler(.)biz</em> and immediately see that it&#8217;s associated with the Vidar malware family, along with its DNS activity, first-seen date, and critical infrastructure details as they are actively observed.</p>
+
+    <figure>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/07/c2_3.png" alt="Overview of various families sorted by 30 days volume">
+        <figcaption>An overview of various infostealer families, sorted by 30-day activity volume to help prioritize defense efforts.</figcaption>
+    </figure>
+
+    <h3>Seamless API Integration for C2 Defense</h3>
+
+    <p>To truly block active command-and-control channels at the firewall or proxy level &#8211; stopping infected endpoints from exfiltrating credentials, receiving instructions, or dropping secondary payloads &#8211; automation is key.</p>
+
+    <figure>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/07/c2_4.png" alt="API overview">
+        <figcaption>Overview of the C2 Host Feed REST API endpoint for seamless integration.</figcaption>
+    </figure>
+
+    <p>All C2 datasets are fully accessible via REST API endpoints for seamless integration into your existing security stack. Using the <a href="https://docs.hudsonrock.com/reference/getc2feed" target="_blank"><code>GET /json/v3/threat-feeds/c2</code></a> endpoint, teams can retrieve observed infostealer C2 hosts with granular filters for host, malware family, country, ASN, feed type, date, and pagination.</p>
+
+    <div><a href="#c2-monitoring">↑ Back to Top</a></div>
+    <hr>
+
+    <!-- SECTION 2: CLICKFIX MONITORING -->
+    <h2 id="clickfix-monitoring">Deep Dive 2: ClickFix Monitoring</h2>
+
+    <p>The new ClickFix module provides critical visibility into malicious websites that use fake verification pages, CAPTCHA prompts, and clipboard injection techniques to trick users into executing malicious commands.</p>
+    
+    <p>Inside Cavalier, you can seamlessly review:</p>
+    <ul>
+        <li>Detected ClickFix sites</li>
+        <li>Clipboard injection and CAPTCHA indicators</li>
+        <li>Injected command payloads</li>
+        <li>Before-and-after interaction screenshots</li>
+        <li>Domain records and associated URLs</li>
+        <li>Date filtering and export options</li>
+    </ul>
+
+    <figure>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/07/clickfix_0.png" alt="Overview of recently flagged clickfix servers">
+        <figcaption>A high-level overview of recently flagged ClickFix servers and domains identified within the Cavalier platform.</figcaption>
+    </figure>
+
+    <h3>Analyzing Payloads and Deceptive Lures</h3>
+
+    <p>With ClickFix lures becoming increasingly sophisticated, it is vital to understand the exact mechanisms threat actors are using to deceive employees. Cavalier allows you to investigate flagged sites, view the copied commands presented to victims, and examine visual evidence of the attack.</p>
+
+    <figure>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/07/clickfix_0_2.png" alt="Details of payload and before/after captcha interaction">
+        <figcaption>Detailed analysis showing a malicious clipboard payload alongside a before-and-after comparison of a fake CAPTCHA interaction hosted on solaric.com.ph.</figcaption>
+    </figure>
+
+    <h3>Uncovering Initial Access: The Infostealer Connection</h3>
+
+    <p>Perhaps the most powerful capability of the ClickFix monitor is its integration with <strong>Infostealer credential telemetry linked to the hosting platform</strong>. This pinpoints compromised employee or user credentials that enabled attackers to gain initial access to the server, explaining how a legitimate business domain became a host for malware.</p>
+
+    <figure>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/07/clickfix_0_1.png" alt="Hudson Rock infostealer credentials associated with solaric.com.ph">
+        <figcaption>Hudson Rock cybercrime intelligence revealing infostealer credentials associated with solaric.com.ph&#8217;s WordPress admin panel. This initial infection on a user&#8217;s computer directly led to the website being hacked and weaponized to deliver ClickFix.</figcaption>
+    </figure>
+    
+    <h4>Case Study: The Artlist Breach</h4>
+    
+    <p>We&#8217;ve previously documented <a href="https://www.infostealers.com/article/from-victim-to-vector-how-infostealers-turn-legitimate-businesses-into-malware-hosts/" target="_blank">how legitimate businesses turn into malware hosts</a>, and a recent high-profile example perfectly illustrates this pipeline.</p>
+    
+    <p>In our recent shared research on <a href="https://www.infostealers.com/article/how-an-infostealer-infection-led-to-a-sophisticated-clickfix-campaign-at-artlist/" target="_blank">how an infostealer infection led to a sophisticated ClickFix campaign at Artlist</a>, we traced the root cause of a compromised Artlist subdomain back to an infostealer infection from August 2023. A freelance developer unwittingly downloaded a pirated copy of Adobe Acrobat PRO DC, infecting their machine. This breach exposed highly privileged WordPress credentials belonging to a Senior Content Executive. Armed with valid, high-privilege access, threat actors were able to inject an advanced EtherHiding script into the blog, which dynamically routed visitors to a ClickFix payload.</p>
+
+    <figure>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/07/68318_2.jpg" alt="Artlist delivering captcha and associated credentials">
+        <figcaption>Visual evidence showing the compromised Artlist domain delivering a fake CAPTCHA payload, alongside the specific infostealer credentials that led to the initial breach.</figcaption>
+    </figure>
+
+    <p>With Cavalier&#8217;s new Threat Feeds, security teams can now instantly monitor these high-value, trusted domains that have been repurposed by threat actors. This capability pinpoints exactly where they are serving ClickFix prompts and simultaneously reveals the compromised credentials that facilitated the takeover.</p>
+
+    <figure>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/07/clickfix_artlist.png" alt="Artlist in the ClickFix threat feeds feature">
+        <figcaption>The compromised Artlist domain accurately flagged and detailed within Cavalier&#8217;s new ClickFix Threat Feeds feature.</figcaption>
+    </figure>
+
+    <h3>Seamless API Integration for Proactive Defense</h3>
+
+    <p>By feeding these surfaced ClickFix domains and indicators directly into your perimeter controls, firewalls, and DNS sinks, organizations can prevent social engineering attacks and block fake verification pages before employees can interact with or execute copied command payloads.</p>
+
+    <p>All datasets are fully accessible via REST API endpoints. Teams can utilize the <a href="https://docs.hudsonrock.com/reference/getclickfixfeed" target="_blank"><code>GET /json/v3/threat-feeds/clickfix</code></a> endpoint to retrieve detected sites, including domains, URLs, malicious indicators, clipboard activity, CAPTCHA detection, and screenshot evidence, or use the <a href="https://docs.hudsonrock.com/reference/getclickfixdomain" target="_blank"><code>GET /json/v3/threat-feeds/clickfix/{domain}</code></a> endpoint for specific record lookups.</p>
+
+    <div><a href="#c2-monitoring">↑ Back to Top</a></div>
+    <hr>
+
+    <!-- SECTION 3: PHAAS MONITORING -->
+    <h2 id="phaas-monitoring">Deep Dive 3: Phishing-as-a-Service (PhaaS) Intelligence</h2>
+
+    <p>As Phishing-as-a-Service (PhaaS) platforms become extremely prominent in high-profile corporate hacks, giving lower-tier actors turnkey access to advanced credential harvesting tools, preemptive visibility is more critical than ever. The new PhaaS Threat Feed is <strong>unique to Hudson Rock</strong>, providing an unparalleled view into active phishing host networks before they are deployed in targeted spear-phishing campaigns against your workforce.</p>
+
+    <figure>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/07/phaas_0.png" alt="Overview of the PhaaS feed in Cavalier">
+        <figcaption>A high-level overview of the Phishing-as-a-Service (PhaaS) intelligence feed within Cavalier, enabling security teams to monitor active phishing host networks and operational statuses.</figcaption>
+    </figure>
+
+    <p>Inside Cavalier, security teams can seamlessly review:</p>
+    <ul>
+        <li>Active phishing host networks and root domains</li>
+        <li>Specific kit tags and deployment platforms</li>
+        <li>Resolved IP nodes and server infrastructure</li>
+        <li>Infostealer credential telemetry linked to the hosting platform</li>
+    </ul>
+
+    <h3>Tracking the Most Dangerous Phishing Kits</h3>
+
+    <p>Cavalier groups PhaaS hosts by their specific operational kits, allowing defenders to understand the exact tactics they are facing. Our intelligence tracks massive networks running well-known platforms like <strong>Eviltokens</strong> and <strong>Kali365</strong>, as well as exclusive, recently uncovered campaigns like <strong>SessionSerpent</strong>—intelligence you will only find surfaced through Hudson Rock.</p>
+
+    <figure>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/07/phaas_1.png" alt="Examples of PhaaS infrastructure kits">
+        <figcaption>Detailed grouping of PhaaS hosts by kit, featuring prominent platforms like Kali365, Eviltokens, Generic PhaaS, and the recently uncovered SessionSerpent campaign, tracked exclusively by Hudson Rock.</figcaption>
+    </figure>
+
+    <h3>Uncovering Infrastructure and Initial Access</h3>
+
+    <p>The PhaaS feed allows you to go beyond the domain level and map out the entire operational footprint of an attacker. For example, you can surface surface infrastructure like <em>garage-door-repair(.)cyou</em> running Eviltokens, or pinpoint specific IP nodes like <em>43.172.6.35</em> tied to Kali365 operations.</p>
+
+    <figure>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/07/phaas_2.png" alt="Infrastructure servers and resolved IPs">
+        <figcaption>Deep dive into an active PhaaS campaign, showing the underlying infrastructure servers, ASNs, and resolved IPs utilized by the threat actors to host their credential harvesting kits.</figcaption>
+    </figure>
+
+    <p>Crucially, just like our ClickFix and C2 modules, the PhaaS feed integrates directly with our infostealer telemetry. This allows you to instantly see if a host domain (e.g., <em>webcindario(.)com</em>) has compromised employee credentials tied to it, revealing exactly how attackers gained initial control of the server to host their phishing infrastructure.</p>
+
+    <h3>Seamless API Integration for PhaaS Prevention</h3>
+
+    <p>By feeding these surfaced domains, IP networks, and hosting infrastructure directly into your perimeter controls, firewalls, and DNS sinks, organizations can preemptively block turnkey phishing networks before employees receive a single malicious email.</p>
+
+    <p>All datasets are fully accessible via REST API endpoints for automated ingestion into your SIEM or SOAR. Teams can utilize the <a href="https://docs.hudsonrock.com/reference/getphaasfeed" target="_blank"><code>GET /json/v3/threat-feeds/phaas</code></a> endpoint to retrieve active Phishing-as-a-Service indicators with flexible filtering, or use the <a href="https://docs.hudsonrock.com/reference/getphaashostnetwork" target="_blank"><code>GET /json/v3/threat-feeds/phaas/{host}</code></a> endpoint for specific host network lookups and operational status checks.</p>
+
+    <div><a href="#c2-monitoring">↑ Back to Top</a></div>
+
+    <!-- UNIFIED CALL TO ACTION -->
+    <div>
+        <h3>Protect Your Organization from Imminent Intrusions</h3>
+        <p>With our new Threat Feeds, cybersecurity teams can monitor live C2 infrastructure from infostealer campaigns, ClickFix networks, and PhaaS (Phishing-as-a-service) operations to proactively block malicious communications.</p>
+        
+        <p>To learn more about how Hudson Rock protects companies from intrusions caused by info-stealer infections of employees, partners, and users, and how we enrich existing cybersecurity solutions with our cybercrime intelligence API, please schedule a call with us, here:<br>
+        <a href="https://www.hudsonrock.com/schedule-demo">https://www.hudsonrock.com/schedule-demo</a></p>
+        
+        <p>We also provide access to various free cybercrime intelligence tools that you can find here:<br>
+        <a href="https://www.hudsonrock.com/free-tools">www.hudsonrock.com/free-tools</a></p>
+        
+        <p><strong>Thanks for reading, Rock Hudson Rock!</strong><br>
+        Follow us on LinkedIn: <a href="https://www.linkedin.com/company/hudson-rock">https://www.linkedin.com/company/hudson-rock</a><br>
+        Follow us on Twitter: <a href="https://www.twitter.com/RockHudsonRock">https://www.twitter.com/RockHudsonRock</a></p>
+    </div>
+
+    <!-- Image Modal Overlay -->
+    <div id="imageModal">
+        <span onclick="closeModal()">&times;</span>
+        <img id="modalImage">
+        <div id="modalCaption"></div>
+    </div>
+
+    
+</div>
+
+
+
+<p></p><p>The post <a href="https://www.infostealers.com/article/introducing-cavaliers-new-threat-feeds-comprehensive-visibility-into-attacker-infrastructure/">Introducing Cavalier&#8217;s New Threat Feeds: Comprehensive Visibility into Attacker Infrastructure</a> appeared first on <a href="https://www.infostealers.com">InfoStealers</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Introducing Cavalier&#8217;s New Threat Feeds: Deep Dive into Phishing-as-a-Service (PhaaS) Intelligence</title>
+		<link>https://www.infostealers.com/article/introducing-cavaliers-new-threat-feeds-deep-dive-into-phishing-as-a-service-phaas-intelligence/</link>
+		
+		<dc:creator><![CDATA[InfoStealers]]></dc:creator>
+		<pubDate>Tue, 21 Jul 2026 07:22:26 +0000</pubDate>
+				<category><![CDATA[Blog Post]]></category>
+		<category><![CDATA[Hudson Rock]]></category>
+		<guid isPermaLink="false">https://www.infostealers.com/?post_type=article&#038;p=6666</guid>
+
+					<description><![CDATA[<p>Introducing Cavalier&#8217;s New Threat Feeds: Deep Dive into Phishing-as-a-Service (PhaaS) Intelligence We are thrilled to introduce three new Threat Feed modules in Cavalier: C2 Data, ClickFix, and PhaaS&#8230;</p>
+<p>The post <a href="https://www.infostealers.com/article/introducing-cavaliers-new-threat-feeds-deep-dive-into-phishing-as-a-service-phaas-intelligence/">Introducing Cavalier&#8217;s New Threat Feeds: Deep Dive into Phishing-as-a-Service (PhaaS) Intelligence</a> appeared first on <a href="https://www.infostealers.com">InfoStealers</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<div>
+
+    <h1>Introducing Cavalier&#8217;s New Threat Feeds: Deep Dive into Phishing-as-a-Service (PhaaS) Intelligence</h1>
+
+    <p>We are thrilled to introduce three new Threat Feed modules in Cavalier: <strong><a href="https://www.infostealers.com/article/introducing-cavaliers-new-threat-feeds-deep-dive-into-infostealer-c2-intelligence/" target="_blank">C2 Data</a></strong>, <strong><a href="https://www.infostealers.com/article/introducing-cavaliers-new-threat-feeds-deep-dive-into-clickfix-monitoring/" target="_blank">ClickFix</a></strong>, and <strong>PhaaS (Phishing-as-a-service)</strong>. Together, they give security teams comprehensive visibility into active attacker infrastructure &#8211; from infostealer command-and-control (C2) servers to malicious ClickFix pages executing clipboard injection, to turnkey Phishing-as-a-service (PhaaS) kits targeting corporate credentials.</p>
+
+    <figure>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/07/threatfeeds1.png" alt="Overview of the Threat Feeds monitoring options">
+        <figcaption>Overview of the new Threat Feeds monitoring options available inside Cavalier, including the dedicated PhaaS Feed.</figcaption>
+    </figure>
+
+    <h2>What&#8217;s New: PhaaS Intelligence</h2>
+
+    <p>As Phishing-as-a-Service (PhaaS) platforms become extremely prominent in high-profile corporate hacks, giving lower-tier actors turnkey access to advanced credential harvesting tools, preemptive visibility is more critical than ever. The new PhaaS Threat Feed is <strong>unique to Hudson Rock</strong>, providing an unparalleled view into active phishing host networks before they are deployed in targeted spear-phishing campaigns against your workforce.</p>
+
+    <figure>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/07/phaas_0.png" alt="Overview of the PhaaS feed in Cavalier">
+        <figcaption>A high-level overview of the Phishing-as-a-Service (PhaaS) intelligence feed within Cavalier, enabling security teams to monitor active phishing host networks and operational statuses.</figcaption>
+    </figure>
+
+    <p>Inside Cavalier, security teams can seamlessly review:</p>
+    <ul>
+        <li>Active phishing host networks and root domains</li>
+        <li>Specific kit tags and deployment platforms</li>
+        <li>Resolved IP nodes and server infrastructure</li>
+        <li>Infostealer credential telemetry linked to the hosting platform</li>
+    </ul>
+
+    <h2>Tracking the Most Dangerous Phishing Kits</h2>
+
+    <p>Cavalier groups PhaaS hosts by their specific operational kits, allowing defenders to understand the exact tactics they are facing. Our intelligence tracks massive networks running well-known platforms like <strong>Eviltokens</strong> and <strong>Kali365</strong>, as well as exclusive, recently uncovered campaigns like <strong>SessionSerpent</strong>—intelligence you will only find surfaced through Hudson Rock.</p>
+
+    <figure>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/07/phaas_1.png" alt="Examples of PhaaS infrastructure kits">
+        <figcaption>Detailed grouping of PhaaS hosts by kit, featuring prominent platforms like Kali365, Eviltokens, Generic PhaaS, and the recently uncovered SessionSerpent campaign, tracked exclusively by Hudson Rock.</figcaption>
+    </figure>
+
+    <h2>Uncovering Infrastructure and Initial Access</h2>
+
+    <p>The PhaaS feed allows you to go beyond the domain level and map out the entire operational footprint of an attacker. For example, you can surface surface infrastructure like <em>garage-door-repair(.)cyou</em> running Eviltokens, or pinpoint specific IP nodes like <em>43.172.6.35</em> tied to Kali365 operations.</p>
+
+    <figure>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/07/phaas_2.png" alt="Infrastructure servers and resolved IPs">
+        <figcaption>Deep dive into an active PhaaS campaign, showing the underlying infrastructure servers, ASNs, and resolved IPs utilized by the threat actors to host their credential harvesting kits.</figcaption>
+    </figure>
+
+    <p>Crucially, just like our ClickFix and C2 modules, the PhaaS feed integrates directly with our infostealer telemetry. This allows you to instantly see if a host domain (e.g., <em>webcindario(.)com</em>) has compromised employee credentials tied to it, revealing exactly how attackers gained initial control of the server to host their phishing infrastructure.</p>
+
+    <h2>Seamless API Integration for Proactive Defense</h2>
+
+    <p>By feeding these surfaced domains, IP networks, and hosting infrastructure directly into your perimeter controls, firewalls, and DNS sinks, organizations can preemptively block turnkey phishing networks before employees receive a single malicious email.</p>
+
+    <p>All datasets are fully accessible via REST API endpoints for automated ingestion into your SIEM or SOAR. Teams can utilize the <a href="https://docs.hudsonrock.com/reference/getphaasfeed" target="_blank"><code>GET /json/v3/threat-feeds/phaas</code></a> endpoint to retrieve active Phishing-as-a-Service indicators with flexible filtering, or use the <a href="https://docs.hudsonrock.com/reference/getphaashostnetwork" target="_blank"><code>GET /json/v3/threat-feeds/phaas/{host}</code></a> endpoint for specific host network lookups and operational status checks.</p>
+
+    <!-- Call to Action Box -->
+    <div>
+        <h3>Protect Your Organization from Imminent Intrusions</h3>
+        <p>With our new Threat Feeds, cybersecurity teams can monitor live C2 infrastructure from infostealer campaigns, ClickFix networks, and PhaaS operations to proactively block malicious communications.</p>
+        
+        <p>To learn more about how Hudson Rock protects companies from intrusions caused by info-stealer infections of employees, partners, and users, and how we enrich existing cybersecurity solutions with our cybercrime intelligence API, please schedule a call with us, here:<br>
+        <a href="https://www.hudsonrock.com/schedule-demo">https://www.hudsonrock.com/schedule-demo</a></p>
+        
+        <p>We also provide access to various free cybercrime intelligence tools that you can find here:<br>
+        <a href="https://www.hudsonrock.com/free-tools">www.hudsonrock.com/free-tools</a></p>
+        
+        <p><strong>Thanks for reading, Rock Hudson Rock!</strong><br>
+        Follow us on LinkedIn: <a href="https://www.linkedin.com/company/hudson-rock">https://www.linkedin.com/company/hudson-rock</a><br>
+        Follow us on Twitter: <a href="https://www.twitter.com/RockHudsonRock">https://www.twitter.com/RockHudsonRock</a></p>
+    </div>
+
+</div><p>The post <a href="https://www.infostealers.com/article/introducing-cavaliers-new-threat-feeds-deep-dive-into-phishing-as-a-service-phaas-intelligence/">Introducing Cavalier&#8217;s New Threat Feeds: Deep Dive into Phishing-as-a-Service (PhaaS) Intelligence</a> appeared first on <a href="https://www.infostealers.com">InfoStealers</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Introducing Cavalier&#8217;s New Threat Feeds: Deep Dive into ClickFix Monitoring</title>
+		<link>https://www.infostealers.com/article/introducing-cavaliers-new-threat-feeds-deep-dive-into-clickfix-monitoring/</link>
+		
+		<dc:creator><![CDATA[InfoStealers]]></dc:creator>
+		<pubDate>Tue, 21 Jul 2026 07:11:45 +0000</pubDate>
+				<category><![CDATA[Blog Post]]></category>
+		<category><![CDATA[Hudson Rock]]></category>
+		<guid isPermaLink="false">https://www.infostealers.com/?post_type=article&#038;p=6661</guid>
+
+					<description><![CDATA[<p>Introducing Cavalier&#8217;s New Threat Feeds: Deep Dive into ClickFix Monitoring We are thrilled to introduce three new Threat Feed modules in Cavalier: C2 Data, ClickFix, and PhaaS (Phishing-as-a-service).&#8230;</p>
+<p>The post <a href="https://www.infostealers.com/article/introducing-cavaliers-new-threat-feeds-deep-dive-into-clickfix-monitoring/">Introducing Cavalier&#8217;s New Threat Feeds: Deep Dive into ClickFix Monitoring</a> appeared first on <a href="https://www.infostealers.com">InfoStealers</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<div>
+
+    <h1>Introducing Cavalier&#8217;s New Threat Feeds: Deep Dive into ClickFix Monitoring</h1>
+
+<p>We are thrilled to introduce three new Threat Feed modules in Cavalier: <strong><a href="/article/introducing-cavaliers-new-threat-feeds-deep-dive-into-infostealer-c2-intelligence/">C2 Data</a></strong>, <strong>ClickFix</strong>, and <strong><a href="https://www.infostealers.com/article/introducing-cavaliers-new-threat-feeds-deep-dive-into-phishing-as-a-service-phaas-intelligence/">PhaaS (Phishing-as-a-service)</a></strong>. Together, they give security teams comprehensive visibility into active attacker infrastructure &#8211; from infostealer command-and-control (C2) servers to malicious ClickFix pages executing clipboard injection, to turnkey Phishing-as-a-service (PhaaS) kits targeting corporate credentials.</p>
+
+    <figure>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/07/threatfeeds1.png" alt="Overview of the Threat Feeds monitoring options">
+        <figcaption>Overview of the new Threat Feeds monitoring options available inside Cavalier, including C2 Intelligence, ClickFix Monitor, and PhaaS Feed.</figcaption>
+    </figure>
+
+    <h2>What&#8217;s New: ClickFix Monitor</h2>
+
+    <p>The new ClickFix module provides critical visibility into malicious websites that use fake verification pages, CAPTCHA prompts, and clipboard injection techniques to trick users into executing malicious commands.</p>
+    
+    <p>Inside Cavalier, you can seamlessly review:</p>
+    <ul>
+        <li>Detected ClickFix sites</li>
+        <li>Clipboard injection and CAPTCHA indicators</li>
+        <li>Injected command payloads</li>
+        <li>Before-and-after interaction screenshots</li>
+        <li>Domain records and associated URLs</li>
+        <li>Date filtering and export options</li>
+    </ul>
+
+    <figure>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/07/clickfix_0.png" alt="Overview of recently flagged clickfix servers">
+        <figcaption>A high-level overview of recently flagged ClickFix servers and domains identified within the Cavalier platform.</figcaption>
+    </figure>
+
+    <h2>Analyzing Payloads and Deceptive Lures</h2>
+
+    <p>With ClickFix lures becoming increasingly sophisticated, it is vital to understand the exact mechanisms threat actors are using to deceive employees. Cavalier allows you to investigate flagged sites, view the copied commands presented to victims, and examine visual evidence of the attack.</p>
+
+    <figure>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/07/clickfix_0_2.png" alt="Details of payload and before/after captcha interaction">
+        <figcaption>Detailed analysis showing a malicious clipboard payload alongside a before-and-after comparison of a fake CAPTCHA interaction hosted on solaric.com.ph.</figcaption>
+    </figure>
+
+    <h2>Uncovering Initial Access: The Infostealer Connection</h2>
+
+    <p>Perhaps the most powerful capability of the ClickFix monitor is its integration with <strong>Infostealer credential telemetry linked to the hosting platform</strong>. This pinpoints compromised employee or user credentials that enabled attackers to gain initial access to the server, explaining how a legitimate business domain became a host for malware.</p>
+
+    <figure>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/07/clickfix_0_1.png" alt="Hudson Rock infostealer credentials associated with solaric.com.ph">
+        <figcaption>Hudson Rock cybercrime intelligence revealing infostealer credentials associated with solaric.com.ph&#8217;s WordPress admin panel. This initial infection on a user&#8217;s computer directly led to the website being hacked and weaponized to deliver ClickFix.</figcaption>
+    </figure>
+    
+    <h3>Case Study: The Artlist Breach</h3>
+    
+    <p>We&#8217;ve previously documented <a href="https://www.infostealers.com/article/from-victim-to-vector-how-infostealers-turn-legitimate-businesses-into-malware-hosts/" target="_blank">how legitimate businesses turn into malware hosts</a>, and a recent high-profile example perfectly illustrates this pipeline.</p>
+    
+    <p>In our recent shared research on <a href="https://www.infostealers.com/article/how-an-infostealer-infection-led-to-a-sophisticated-clickfix-campaign-at-artlist/" target="_blank">how an infostealer infection led to a sophisticated ClickFix campaign at Artlist</a>, we traced the root cause of a compromised Artlist subdomain back to an infostealer infection from August 2023. A freelance developer unwittingly downloaded a pirated copy of Adobe Acrobat PRO DC, infecting their machine. This breach exposed highly privileged WordPress credentials belonging to a Senior Content Executive. Armed with valid, high-privilege access, threat actors were able to inject an advanced EtherHiding script into the blog, which dynamically routed visitors to a ClickFix payload.</p>
+
+    <figure>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/07/68318_2.jpg" alt="Artlist delivering captcha and associated credentials">
+        <figcaption>Visual evidence showing the compromised Artlist domain delivering a fake CAPTCHA payload, alongside the specific infostealer credentials that led to the initial breach.</figcaption>
+    </figure>
+
+    <p>With Cavalier&#8217;s new Threat Feeds, security teams can now instantly monitor these high-value, trusted domains that have been repurposed by threat actors. This capability pinpoints exactly where they are serving ClickFix prompts and simultaneously reveals the compromised credentials that facilitated the takeover.</p>
+
+    <figure>
+        <img decoding="async" src="https://www.infostealers.com/wp-content/uploads/2026/07/clickfix_artlist.png" alt="Artlist in the ClickFix threat feeds feature">
+        <figcaption>The compromised Artlist domain accurately flagged and detailed within Cavalier&#8217;s new ClickFix Threat Feeds feature.</figcaption>
+    </figure>
+
+    <h2>Seamless API Integration for Proactive Defense</h2>
+
+    <p>By feeding these surfaced ClickFix domains and indicators directly into your perimeter controls, firewalls, and DNS sinks, organizations can prevent social engineering attacks and block fake verification pages before employees can interact with or execute copied command payloads.</p>
+
+    <p>All datasets are fully accessible via REST API endpoints. Teams can utilize the <a href="https://docs.hudsonrock.com/reference/getclickfixfeed" target="_blank"><code>GET /json/v3/threat-feeds/clickfix</code></a> endpoint to retrieve detected sites, including domains, URLs, malicious indicators, clipboard activity, CAPTCHA detection, and screenshot evidence, or use the <a href="https://docs.hudsonrock.com/reference/getclickfixdomain" target="_blank"><code>GET /json/v3/threat-feeds/clickfix/{domain}</code></a> endpoint for specific record lookups.</p>
+
+    <!-- Call to Action Box -->
+    <div>
+        <h3>Protect Your Organization from Imminent Intrusions</h3>
+        <p>With our new Threat Feeds, cybersecurity teams can monitor live C2 infrastructure from infostealer campaigns, ClickFix networks, and PhaaS operations to proactively block malicious communications.</p>
+        
+        <p>To learn more about how Hudson Rock protects companies from intrusions caused by info-stealer infections of employees, partners, and users, and how we enrich existing cybersecurity solutions with our cybercrime intelligence API, please schedule a call with us, here:<br>
+        <a href="https://www.hudsonrock.com/schedule-demo">https://www.hudsonrock.com/schedule-demo</a></p>
+        
+        <p>We also provide access to various free cybercrime intelligence tools that you can find here:<br>
+        <a href="https://www.hudsonrock.com/free-tools">www.hudsonrock.com/free-tools</a></p>
+        
+        <p><strong>Thanks for reading, Rock Hudson Rock!</strong><br>
+        Follow us on LinkedIn: <a href="https://www.linkedin.com/company/hudson-rock">https://www.linkedin.com/company/hudson-rock</a><br>
+        Follow us on Twitter: <a href="https://www.twitter.com/RockHudsonRock">https://www.twitter.com/RockHudsonRock</a></p>
+    </div>
+
+</div><p>The post <a href="https://www.infostealers.com/article/introducing-cavaliers-new-threat-feeds-deep-dive-into-clickfix-monitoring/">Introducing Cavalier&#8217;s New Threat Feeds: Deep Dive into ClickFix Monitoring</a> appeared first on <a href="https://www.infostealers.com">InfoStealers</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+	</channel>
+</rss>

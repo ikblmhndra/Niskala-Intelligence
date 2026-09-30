@@ -110,9 +110,7 @@ async def test_collect_campaigns_maps_fields_for_build_user_message(
 
     # `_build_user_message()` HARUS nampilin nama campaign + actor,
     # BUKAN "(unlabeled) — 0 articles" (bug lama).
-    msg = recap_service._build_user_message(
-        _TODAY.isoformat(), [], [], [], [], campaigns, []
-    )
+    msg = recap_service._build_user_message(_TODAY.isoformat(), [], [], [], [], campaigns, [])
     assert "(unlabeled) — 0 articles" not in msg
     assert "Apt41" in msg
 

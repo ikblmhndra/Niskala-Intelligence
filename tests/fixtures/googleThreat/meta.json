@@ -1,0 +1,15 @@
+{
+  "scraper": "googleThreat",
+  "legacy_script": "googleThreat",
+  "legacy_labels": [],
+  "source_urls": [
+    "https://blog.google/threat-analysis-group/rss/"
+  ],
+  "http_status": {
+    "https://blog.google/threat-analysis-group/rss/": 404
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

@@ -1,0 +1,79 @@
+{
+  "2026-09-17": [
+    {
+      "title": "Practical Examples of URL Hunting Queries - Part 1",
+      "url": "https://www.embeeresearch.io/practical-examples-of-url-hunting-queries-part-1/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Advanced Cyberchef Techniques - Defeating Nanocore Obfuscation With Math and Flow Control",
+      "url": "https://www.embeeresearch.io/advanced-cyberchef-techniques-defeating-nanocore-obfuscation-with-math-and-flow-control/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Decoding a Cobalt Strike Downloader Script With CyberChef",
+      "url": "https://www.embeeresearch.io/decoding-a-cobalt-strike-downloader-script-with-cyberchef/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Tracking APT SideWinder Domains By Combining Regex Patterns, Whois Records and Domain Registrars",
+      "url": "https://www.embeeresearch.io/advanced-guide-to-infrastructure-analysis-tracking-apt-sidewinder-domains/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "How To Track Malicious Infrastructure With DNS Records - Vultur Banking Trojan",
+      "url": "https://www.embeeresearch.io/infrastructure-tracking-locating-vultur-domains-with-passive-dns/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "How To Track Malware Infrastructure - Identifying MatanBuchus Domains Through Hardcoded Certificate Values",
+      "url": "https://www.embeeresearch.io/tls-certificates-for-threat-intel-dns/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Tracking Malware Infrastructure With Passive DNS and 302 Redirects",
+      "url": "https://www.embeeresearch.io/phishing-domain-analysis-with-passive-dns-latrodectus/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Tracking Gamaredon Infrastructure With Passive DNS Records and Subdomain Analysis",
+      "url": "https://www.embeeresearch.io/uncovering-apt-infrastructure-with-passive-dns-pivoting/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Introduction To Malware Infrastructure Analysis With Passive DNS",
+      "url": "https://www.embeeresearch.io/infrastructure-analysis-with-dns-pivoting/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Latrodectus Malware Analysis - Decoding Obfuscated Malware By Removing Junk Comments",
+      "url": "https://www.embeeresearch.io/latrodectus-script-deobfuscation/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Advanced CyberChef Techniques For Malware Analysis - Detailed Walkthrough and Examples",
+      "url": "https://www.embeeresearch.io/advanced-cyberchef-operations-netsupport/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Practical Queries for Identifying Malware Infrastructure With FOFA",
+      "url": "https://www.embeeresearch.io/threat-intel-queries-with-fofabot/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "How to Use Ghidra to Analyse Shellcode and Extract Cobalt Strike Command & Control Servers",
+      "url": "https://www.embeeresearch.io/ghidra-basics-shellcode-analysis/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "How To Use Ghidra For Malware Analysis - Identifying, Decoding and Fixing Encrypted Strings",
+      "url": "https://www.embeeresearch.io/ghidra-basics-identifying-and-decoding-encrypted-strings/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Identifying Qakbot Servers with Regex and TLS Certificates",
+      "url": "https://www.embeeresearch.io/advanced-threat-intel-queries-catching-83-qakbot-servers-with-regex-censys-and-tls-certificates/",
+      "posted_on": "2026-09-17"
+    }
+  ]
+}

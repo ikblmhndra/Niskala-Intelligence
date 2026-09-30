@@ -23,7 +23,9 @@ class Koisec(XPathScraper):
         legacy_label="NEW ARTICLE FROM KOI SECURITY",
         legacy_script="koisecThreat",
     )
-    url = 'https://www.koi.security/blog'
-    title_xpath = '/html/body/div/div[4]/main/section/div/div/div/div[3]/div/div[{i}]/div[1]/div[1]/h3'
-    link_xpath = '/html/body/div/div[4]/main/section/div/div/div/div[3]/div/div[{i}]/a'
+    url = "https://www.koi.security/blog"
+    title_xpath = (
+        "/html/body/div/div[4]/main/section/div/div/div/div[3]/div/div[{i}]/div[1]/div[1]/h3"
+    )
+    link_xpath = "/html/body/div/div[4]/main/section/div/div/div/div[3]/div/div[{i}]/a"
     base_url = "https://www.koi.ai/blog"

@@ -23,7 +23,11 @@ class Abnormalsecurity(XPathScraper):
         legacy_label="NEW ARTICLE FROM ABNORMAL SECURITY",
         legacy_script="abnormalsecurityThreat",
     )
-    url = 'https://abnormal.ai/blog/category/threat-intel'
-    title_xpath = '/html/body/div[2]/div[2]/div/main/div[3]/div/div/div[{i}]/div/div[2]/div[1]/div/div/a/span'
-    link_xpath = '/html/body/div[2]/div[2]/div/main/div[3]/div/div/div[{i}]/div/div[2]/div[1]/div/div/a'
+    url = "https://abnormal.ai/blog/category/threat-intel"
+    title_xpath = (
+        "/html/body/div[2]/div[2]/div/main/div[3]/div/div/div[{i}]/div/div[2]/div[1]/div/div/a/span"
+    )
+    link_xpath = (
+        "/html/body/div[2]/div[2]/div/main/div[3]/div/div/div[{i}]/div/div[2]/div[1]/div/div/a"
+    )
     base_url = "https://abnormal.ai"

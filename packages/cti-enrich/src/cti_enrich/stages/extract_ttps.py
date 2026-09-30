@@ -14,6 +14,7 @@ from cti_core.llm.client import get_llm_client, parse_json_response, store_param
 from openai import RateLimitError
 
 from cti_enrich.stages.classify import OpenAIQuotaExhausted
+from cti_enrich.stages.llm_messages import build_messages
 
 _TTP_SYSTEM_PROMPT = """Based on the provided article summary, identify the top 5 most relevant MITRE ATT&CK techniques. For each technique return:
     The technique name, the technique ID (e.g. "T1566.001"), and the specific string or sentence from the input that led to the identification (evidence). If the content is not related to a threat campaign, set "has_techniques" to false.
@@ -60,15 +61,14 @@ def extract_ttps(summary: str) -> TtpResult:
     tanggung jawab caller (`pipeline.py`), bukan di sini."""
     client, model_name = get_llm_client()
     last_error: json.JSONDecodeError | None = None
-    for _attempt in range(_MAX_ATTEMPTS):
+    for attempt in range(_MAX_ATTEMPTS):
         try:
             completion = client.chat.completions.create(
                 model=model_name,
                 response_format={"type": "json_object"},
-                messages=[
-                    {"role": "system", "content": _TTP_SYSTEM_PROMPT},
-                    {"role": "user", "content": summary},
-                ],
+                messages=build_messages(
+                    _TTP_SYSTEM_PROMPT, summary, attempt=attempt, tag="article_summary"
+                ),
                 max_tokens=_MAX_TOKENS,
                 n=1,
                 temperature=0,

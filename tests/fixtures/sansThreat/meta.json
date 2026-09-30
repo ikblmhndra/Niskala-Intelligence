@@ -1,0 +1,15 @@
+{
+  "scraper": "sansThreat",
+  "legacy_script": "sansThreat",
+  "legacy_labels": [],
+  "source_urls": [
+    "https://www.sans.org/white-papers/?focus-area=cloud-security,cyber-defense,cyber-security-it-essentials,cybersecurity-insights,devsecops,digital-forensics,incident-response-threat-hunting,purple-team,security-awareness"
+  ],
+  "http_status": {
+    "https://www.sans.org/white-papers/?focus-area=cloud-security,cyber-defense,cyber-security-it-essentials,cybersecurity-insights,devsecops,digital-forensics,incident-response-threat-hunting,purple-team,security-awareness": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

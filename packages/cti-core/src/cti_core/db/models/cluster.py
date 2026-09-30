@@ -42,6 +42,4 @@ class Cluster(TimestampMixin, Base):
     last_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     peak_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
 
-    daily_counts: Mapped[list[dict[str, Any]]] = mapped_column(
-        JSONB, nullable=False, default=list
-    )
+    daily_counts: Mapped[list[dict[str, Any]]] = mapped_column(JSONB, nullable=False, default=list)

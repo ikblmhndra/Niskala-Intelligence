@@ -1,0 +1,17 @@
+{
+  "scraper": "socradarThreat",
+  "legacy_script": "socradarThreat",
+  "legacy_labels": [
+    "NEW ARTICLE FROM SOCRADAR"
+  ],
+  "source_urls": [
+    "https://socradar.io/blog/"
+  ],
+  "http_status": {
+    "https://socradar.io/blog/": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

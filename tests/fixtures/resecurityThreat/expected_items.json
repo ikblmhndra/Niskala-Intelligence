@@ -1,0 +1,104 @@
+{
+  "2026-09-17": [
+    {
+      "title": "CISA KEV Alert: Cisco, Citrix, and Fortinet Vulnerabilities Under Active Exploitation",
+      "url": "https://www.resecurity.com/blog/article/cisa-kev-alert-cisco-citrix-and-fortinet-vulnerabilities-under-active-exploitation",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "CVE-2026-65400: macOS Screen Sharing Authentication Bypass Under Active Exploitation",
+      "url": "https://www.resecurity.com/blog/article/cve-2026-65400-macos-screen-sharing-authentication-bypass-under-active-exploitation",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Ray CVE-2025-62593: Critical Browser-Driven RCE via DNS Rebinding",
+      "url": "https://www.resecurity.com/blog/article/ray-cve-2025-62593-critical-browser-driven-rce-via-dns-rebinding",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The LiteLLM Supply-Chain Attack — TeamPCP “SANDCLOCK” CI/CD Credential-Harvesting Campaign via a Backdoored Trivy GitHub Action",
+      "url": "https://www.resecurity.com/blog/article/the-litellm-supply-chain-attack-teampcp-sandclock-cicd-credential-harvesting-campaign-via-a-backdoored-trivy-github-action",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Metabase Zero-Day Exploited in the Wild: Unauthenticated SQL Injection Leading to Full Admin Access",
+      "url": "https://www.resecurity.com/blog/article/metabase-zero-day-exploited-in-the-wild-unauthenticated-sql-injection-leading-to-full-admin-access",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "ExfilSquad Targets New Victims, Shares Data via Torrents",
+      "url": "https://www.resecurity.com/blog/article/exfilsquad-targets-new-victims-shares-data-via-torrents",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "CVE-2026-16812: Critical Command Injection in Arista VeloCloud Orchestrator",
+      "url": "https://www.resecurity.com/blog/article/cve-2026-16812-critical-command-injection-in-arista-velocloud-orchestrator",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Inside OWAReaper: How CVE-2026-42897 Enables Persistent Exchange Mailbox Compromise",
+      "url": "https://www.resecurity.com/blog/article/inside-owareaper-how-cve-2026-42897-enables-persistent-exchange-mailbox-compromise",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": " From WSProxy to Root: INC ransomware and SonicWall SMA Exploit Chain",
+      "url": "https://www.resecurity.com/blog/article/from-wsproxy-to-root-inc-ransomware-and-sonicwall-sma-exploit-chain",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "When AI Becomes the Attacker: Understanding Autonomous Offensive Security Agents",
+      "url": "https://www.resecurity.com/blog/article/when-ai-becomes-the-attacker-understanding-autonomous-offensive-security-agents",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Exploiting Langflow's validate_code() Endpoint for Remote Code Execution",
+      "url": "https://www.resecurity.com/blog/article/exploiting-langflows-validatecode-endpoint-for-remote-code-execution",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "From Web Request to Domain Compromise: Understanding the July 2026 SharePoint Attacks",
+      "url": "https://www.resecurity.com/blog/article/from-web-request-to-domain-compromise-understanding-the-july-2026-sharepoint-attacks",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Artificial Intelligence Safety Law: Landmark Industry Regulation Bill",
+      "url": "https://www.resecurity.com/blog/article/artificial-intelligence-safety-law-landmark-industry-regulation-bill",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "CVE-2026-48282: Adobe ColdFusion RDS Path Traversal Leading to RCE",
+      "url": "https://www.resecurity.com/blog/article/cve-2026-48282-adobe-coldfusion-rds-path-traversal-leading-to-rce",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Reconnaissance in the Age of AI: Exploring Modern ML Infrastructure",
+      "url": "https://www.resecurity.com/blog/article/reconnaissance-in-the-age-of-ai-exploring-modern-ml-infrastructure",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Cybercriminals Are Targeting EdTech: Data Breaches and Ransomware Attacks on the Rise",
+      "url": "https://www.resecurity.com/blog/article/cybercriminals-are-targeting-edtech-data-breaches-and-ransomware-attacks-on-the-rise",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "CVE-2026-20253: Splunk Enterprise Pre-Authentication Remote Code Execution",
+      "url": "https://www.resecurity.com/blog/article/cve-2026-20253-splunk-enterprise-pre-authentication-remote-code-execution",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The Anubis Ransomware Attack on the Adriatic Port Authority",
+      "url": "https://www.resecurity.com/blog/article/the-anubis-ransomware-attack-on-the-adriatic-port-authority",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Silent Ransom Group (SRG): Uncovering DNS Fast Flux Infrastructure",
+      "url": "https://www.resecurity.com/blog/article/silent-ransom-group-srg-uncovering-dns-fast-flux-infrastructure",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "CVE-2026-20182: Unauthenticated Cisco SD-WAN Control-Plane Compromise via vHub Authentication Bypass",
+      "url": "https://www.resecurity.com/blog/article/cve-2026-20182-unauthenticated-cisco-sd-wan-control-plane-compromise-via-vhub-authentication-bypass",
+      "posted_on": "2026-09-17"
+    }
+  ]
+}

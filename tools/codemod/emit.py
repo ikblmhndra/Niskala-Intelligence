@@ -17,7 +17,7 @@ _env = Environment(loader=FileSystemLoader(TEMPLATES_DIR), trim_blocks=True, lst
 
 
 def legacy_stem_to_id(stem: str) -> str:
-    """"bitdefenderThreat" -> "bitdefender", "asecAhnThreat" -> "asec_ahn".
+    """ "bitdefenderThreat" -> "bitdefender", "asecAhnThreat" -> "asec_ahn".
     Buang akhiran "Threat"/"threat", lalu camelCase -> snake_case."""
     base = re.sub(r"[Tt]hreat$", "", stem)
     # sisipin _ di batas huruf-kecil->huruf-besar, lalu lowercase semua
@@ -30,7 +30,7 @@ def id_to_class_name(scraper_id: str) -> str:
 
 
 def derive_source(legacy_label: str | None, scraper_id: str) -> str:
-    """"NEW ARTICLE FROM BITDEFENDER" -> "Bitdefender". Fallback ke id
+    """ "NEW ARTICLE FROM BITDEFENDER" -> "Bitdefender". Fallback ke id
     title-case kalau label gak ada atau gak punya "FROM"."""
     if legacy_label and "FROM" in legacy_label.upper():
         idx = legacy_label.upper().rindex("FROM")

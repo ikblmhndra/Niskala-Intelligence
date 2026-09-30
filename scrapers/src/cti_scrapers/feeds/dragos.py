@@ -23,6 +23,6 @@ class Dragos(XPathScraper):
         legacy_label="NEW ARTICLE FROM DRAGOS",
         legacy_script="dragosThreat",
     )
-    url = 'https://www.dragos.com/blog/?_block_blog_posts_topics=compliance%2Cransomware%2Cresearch%2Cthreats%2Cyear-in-review'
-    title_xpath = '/html/body/main/article/div/div/div[2]/div/div[5]/div/article[{i}]/h5/a/text()'
-    link_xpath = '/html/body/main/article/div/div/div[2]/div/div[5]/div/article[{i}]/h5/a/@href'
+    url = "https://www.dragos.com/blog/?_block_blog_posts_topics=compliance%2Cransomware%2Cresearch%2Cthreats%2Cyear-in-review"
+    title_xpath = "/html/body/main/article/div/div/div[2]/div/div[5]/div/article[{i}]/h5/a/text()"
+    link_xpath = "/html/body/main/article/div/div/div[2]/div/div[5]/div/article[{i}]/h5/a/@href"

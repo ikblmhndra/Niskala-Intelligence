@@ -136,9 +136,7 @@ def _find_already_covered(*dirs: Path) -> set[str]:
 
 def main() -> int:
     jobs = json.loads(RUNDECK_MAP.read_text())
-    active_stems = {
-        Path(j["script"]).stem for j in jobs if j["enabled"] and j.get("script")
-    }
+    active_stems = {Path(j["script"]).stem for j in jobs if j["enabled"] and j.get("script")}
     out_of_scope = active_stems & (NOT_A_SCRAPER_STEMS | EXTERNAL_REPO_STEMS | PERMANENTLY_BLOCKED)
     active_stems -= NOT_A_SCRAPER_STEMS
     active_stems -= EXTERNAL_REPO_STEMS
@@ -194,20 +192,27 @@ def main() -> int:
             generated.append({"legacy_script": stem, "family": c.family.value, "output": _rel(out)})
 
         else:
-            review.append({
-                "legacy_script": stem,
-                "family": c.family.value,
-                "reasons": ["bespoke/selenium -- porting manual, subclass BaseScraper langsung"],
-            })
+            review.append(
+                {
+                    "legacy_script": stem,
+                    "family": c.family.value,
+                    "reasons": [
+                        "bespoke/selenium -- porting manual, subclass BaseScraper langsung"
+                    ],
+                }
+            )
 
     for stem in unresolved:
-        review.append({
-            "legacy_script": stem,
-            "family": "unresolved",
-            "reasons": [
-                "stem gak ketemu file .py -- cek path/casing manual (lihat PROGRESS.md Fase 0.2)"
-            ],
-        })
+        review.append(
+            {
+                "legacy_script": stem,
+                "family": "unresolved",
+                "reasons": [
+                    "stem gak ketemu file .py -- cek path/casing manual "
+                    "(lihat PROGRESS.md Fase 0.2)"
+                ],
+            }
+        )
 
     report = {
         "total_active_jobs": len(active_stems),

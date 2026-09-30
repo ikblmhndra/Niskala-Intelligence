@@ -1,0 +1,15 @@
+{
+  "scraper": "proofpointThreat",
+  "legacy_script": "proofpointThreat",
+  "legacy_labels": [],
+  "source_urls": [
+    "https://www.proofpoint.com/us/blog/threat-insight"
+  ],
+  "http_status": {
+    "https://www.proofpoint.com/us/blog/threat-insight": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

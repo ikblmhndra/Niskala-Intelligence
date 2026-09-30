@@ -1,0 +1,15 @@
+{
+  "scraper": "trustwaveThreat",
+  "legacy_script": "trustwaveThreat",
+  "legacy_labels": [],
+  "source_urls": [
+    "https://www.levelblue.com/en-us/resources/blogs/spiderlabs-blog/rss.xml"
+  ],
+  "http_status": {
+    "https://www.levelblue.com/en-us/resources/blogs/spiderlabs-blog/rss.xml": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

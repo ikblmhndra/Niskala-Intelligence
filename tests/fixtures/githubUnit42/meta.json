@@ -1,0 +1,17 @@
+{
+  "scraper": "githubUnit42",
+  "legacy_script": "githubUnit42",
+  "legacy_labels": [],
+  "source_urls": [
+    "https://api.github.com/repos/PaloAltoNetworks/Unit42-timely-threat-intel/commits"
+  ],
+  "http_status": {
+    "https://api.github.com/repos/PaloAltoNetworks/Unit42-timely-threat-intel/commits": 401
+  },
+  "blocked_urls": [
+    "https://api.github.com/repos/PaloAltoNetworks/Unit42-timely-threat-intel/commits"
+  ],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "TypeError"
+}

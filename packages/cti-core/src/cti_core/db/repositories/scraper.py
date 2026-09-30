@@ -407,6 +407,7 @@ class AsyncScraperConfigRepo:
         rate_limit: str | _UnsetType | None = UNSET,
         max_items: int | _UnsetType | None = UNSET,
         paused_reason: str | _UnsetType | None = UNSET,
+        options: dict[str, str] | _UnsetType | None = UNSET,
         updated_by: str | None = None,
     ) -> ScraperConfig:
         """`UNSET` (sentinel, BUKAN `None`) buat field opsional yang
@@ -437,6 +438,8 @@ class AsyncScraperConfigRepo:
             row.max_items = max_items
         if not isinstance(paused_reason, _UnsetType):
             row.paused_reason = paused_reason
+        if not isinstance(options, _UnsetType):
+            row.options = options or None  # {} = tidak ada pilihan, sama dengan null
         if updated_by is not None:
             row.updated_by = updated_by
         row.updated_at = now

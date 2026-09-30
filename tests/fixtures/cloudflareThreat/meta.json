@@ -1,0 +1,19 @@
+{
+  "scraper": "cloudflareThreat",
+  "legacy_script": "cloudflareThreat",
+  "legacy_labels": [
+    "NEW ARTICLE FROM CLOUDFLARE"
+  ],
+  "source_urls": [
+    "https://www.cloudflare.com/resource-hub/?resourcetype=Report",
+    "https://blog.cloudflare.com/rss"
+  ],
+  "http_status": {
+    "https://www.cloudflare.com/resource-hub/?resourcetype=Report": 200,
+    "https://blog.cloudflare.com/rss": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

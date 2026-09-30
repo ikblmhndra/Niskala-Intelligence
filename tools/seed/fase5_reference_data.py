@@ -82,9 +82,7 @@ def seed_monitored_people(session: Session) -> tuple[int, int]:
 
 def seed_ioc_allowlist(session: Session) -> tuple[int, int]:
     docs = _decode(IOC_ALLOWLIST_BSON)
-    existing = set(
-        session.execute(select(IocAllowlistEntry.type, IocAllowlistEntry.value)).all()
-    )
+    existing = set(session.execute(select(IocAllowlistEntry.type, IocAllowlistEntry.value)).all())
     inserted = 0
     for doc in docs:
         type_ = (doc.get("type") or "").strip()

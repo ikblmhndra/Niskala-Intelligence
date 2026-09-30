@@ -1,0 +1,23 @@
+# Backup Postgres platform CTI (Fase 10.G). Pasang:
+#   sudo cp docker/ops/cti-pg-backup.{service,timer} /etc/systemd/system/
+#   sudo systemctl daemon-reload && sudo systemctl enable --now cti-pg-backup.timer
+# Cek:   systemctl list-timers cti-pg-backup.timer ; journalctl -u cti-pg-backup -n 30
+# Uji:   sudo systemctl start cti-pg-backup.service
+#
+# Sesuaikan WorkingDirectory (berisi docker-compose.yml + docker/stack.env) dan direktori backup.
+# Backup yang GAGAL memicu alarm Telegram (topik `debug`) lewat --on-failure-cmd -- backup yang
+# gagal diam-diam adalah kegagalan terburuk. Salin hasilnya KELUAR host (rsync/rclone) -- backup
+# di disk yang sama dengan datanya bukan backup.
+[Unit]
+Description=CTI platform - backup Postgres
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/cti-platform
+ExecStart=/usr/bin/python3 tools/ops/pg_backup.py \
+    --pg-exec "docker compose --env-file docker/stack.env --profile app exec -T postgres" \
+    backup --dir /var/backups/cti --keep-days 14 --keep-min 3 \
+    --on-failure-cmd 'python3 tools/ops/notify_telegram.py --env-file .env --topic debug --text "BACKUP POSTGRES CTI GAGAL: $BACKUP_ERROR"'
+Nice=10

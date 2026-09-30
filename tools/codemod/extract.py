@@ -214,8 +214,10 @@ def extract_rss(path: Path) -> RssExtraction:
             call = stmt.value
             # `str(item.find('x').text)...` dibungkus str()/.strip() -- gali sampai .find()
             probe = call
-            while isinstance(probe, ast.Call) and probe.args and not (
-                isinstance(probe.func, ast.Attribute) and probe.func.attr == "find"
+            while (
+                isinstance(probe, ast.Call)
+                and probe.args
+                and not (isinstance(probe.func, ast.Attribute) and probe.func.attr == "find")
             ):
                 probe = probe.args[0] if probe.args else None
                 if probe is None:

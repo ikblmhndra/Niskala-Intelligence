@@ -1,0 +1,17 @@
+{
+  "scraper": "embeeresearchThreat",
+  "legacy_script": "embeeresearchThreat",
+  "legacy_labels": [
+    "NEW ARTICLE FROM EMBE RESEARCH"
+  ],
+  "source_urls": [
+    "https://www.embeeresearch.io/rss/"
+  ],
+  "http_status": {
+    "https://www.embeeresearch.io/rss/": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

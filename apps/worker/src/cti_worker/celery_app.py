@@ -43,10 +43,23 @@ scraper (`items_found` bisa lama, network-bound) itu bikin satu worker
 lambat nge-block N-1 task lain nunggu giliran. 1 = ambil task berikutnya
 cuma setelah yang sekarang kelar."""
 
+from celery.signals import worker_process_init  # noqa: E402
+
+
+@worker_process_init.connect
+def _fresh_db_pool_per_child(**_kwargs: object) -> None:
+    """Tiap proses anak prefork mulai dgn pool DB KOSONG -- jangan warisi
+    koneksi induk (lihat `cti_core.db.engine.discard_inherited_connections`)."""
+    from cti_core.db.engine import discard_inherited_connections
+
+    discard_inherited_connections()
+
+
 from cti_worker.beat import build_beat_schedule  # noqa: E402
 from cti_worker.tasks import (  # noqa: E402,F401  -- registrasi task, harus setelah `app` ada
     enrich,
     periodic,
+    reports,
     scrape,
 )
 

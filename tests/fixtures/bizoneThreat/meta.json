@@ -1,0 +1,17 @@
+{
+  "scraper": "bizoneThreat",
+  "legacy_script": "bizoneThreat",
+  "legacy_labels": [
+    "NEW ARTICLE FROM BIZONE"
+  ],
+  "source_urls": [
+    "https://bi.zone/eng/expertise/blog/"
+  ],
+  "http_status": {
+    "https://bi.zone/eng/expertise/blog/": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

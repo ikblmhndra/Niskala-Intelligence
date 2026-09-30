@@ -23,7 +23,7 @@ class Cis(XPathScraper):
         legacy_label="NEW ARTICLE FROM CIS",
         legacy_script="cisThreat",
     )
-    url = 'https://cisecurity.org/advisory'
-    title_xpath = '/html/body/div[2]/div[2]/main/div[2]/div[2]/div[2]/div[1]/div/div[{i}]/div[2]/div[2]/a/text()'
-    link_xpath = '/html/body/div[2]/div[2]/main/div[2]/div[2]/div[2]/div[1]/div/div[{i}]/div[2]/div[2]/a/@href'
+    url = "https://cisecurity.org/advisory"
+    title_xpath = "/html/body/div[2]/div[2]/main/div[2]/div[2]/div[2]/div[1]/div/div[{i}]/div[2]/div[2]/a/text()"
+    link_xpath = "/html/body/div[2]/div[2]/main/div[2]/div[2]/div[2]/div[1]/div/div[{i}]/div[2]/div[2]/a/@href"
     base_url = "https://cisecurity.org"

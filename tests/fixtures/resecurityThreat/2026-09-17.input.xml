@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <atom:link href="https://www.resecurity.com/feed" rel="self" type="application/rss+xml"/>
+    <generator>RSS Generator 2.1.1</generator>
+    <docs>http://www.rssboard.org/rss-specification</docs>
+    <title>Resecurity</title>
+    <link>https://www.resecurity.com/feed</link>
+    <description>Blog</description>
+    <language>en</language>
+    <image>
+      <url>https://www.resecurity.com/themes/modern/images/logo-rss.png</url>
+      <title>Resecurity</title>
+      <link>https://www.resecurity.com/feed</link>
+      <width>140</width>
+      <height>37</height>
+      <description>Resecurity</description>
+    </image>
+    <item>
+      <title>CISA KEV Alert: Cisco, Citrix, and Fortinet Vulnerabilities Under Active Exploitation</title>
+      <description/>
+      <link>https://www.resecurity.com/blog/article/cisa-kev-alert-cisco-citrix-and-fortinet-vulnerabilities-under-active-exploitation</link>
+      <guid>https://www.resecurity.com/blog/article/cisa-kev-alert-cisco-citrix-and-fortinet-vulnerabilities-under-active-exploitation</guid>
+      <pubDate>Fri, 11 Sep 2026 00:00:00 -0500</pubDate>
+    </item>
+    <item>
+      <title>CVE-2026-65400: macOS Screen Sharing Authentication Bypass Under Active Exploitation</title>
+      <description/>
+      <link>https://www.resecurity.com/blog/article/cve-2026-65400-macos-screen-sharing-authentication-bypass-under-active-exploitation</link>
+      <guid>https://www.resecurity.com/blog/article/cve-2026-65400-macos-screen-sharing-authentication-bypass-under-active-exploitation</guid>
+      <pubDate>Tue, 25 Aug 2026 00:00:00 -0500</pubDate>
+    </item>
+    <item>
+      <title>Ray CVE-2025-62593: Critical Browser-Driven RCE via DNS Rebinding</title>
+      <description/>
+      <link>https://www.resecurity.com/blog/article/ray-cve-2025-62593-critical-browser-driven-rce-via-dns-rebinding</link>
+      <guid>https://www.resecurity.com/blog/article/ray-cve-2025-62593-critical-browser-driven-rce-via-dns-rebinding</guid>
+      <pubDate>Tue, 18 Aug 2026 00:00:00 -0500</pubDate>
+    </item>
+    <item>
+      <title>The LiteLLM Supply-Chain Attack — TeamPCP “SANDCLOCK” CI/CD Credential-Harvesting Campaign via a Backdoored Trivy GitHub Action</title>
+      <description/>
+      <link>https://www.resecurity.com/blog/article/the-litellm-supply-chain-attack-teampcp-sandclock-cicd-credential-harvesting-campaign-via-a-backdoored-trivy-github-action</link>
+      <guid>https://www.resecurity.com/blog/article/the-litellm-supply-chain-attack-teampcp-sandclock-cicd-credential-harvesting-campaign-via-a-backdoored-trivy-github-action</guid>
+      <pubDate>Fri, 14 Aug 2026 00:00:00 -0500</pubDate>
+    </item>
+    <item>
+      <title>Metabase Zero-Day Exploited in the Wild: Unauthenticated SQL Injection Leading to Full Admin Access</title>
+      <description/>
+      <link>https://www.resecurity.com/blog/article/metabase-zero-day-exploited-in-the-wild-unauthenticated-sql-injection-leading-to-full-admin-access</link>
+      <guid>https://www.resecurity.com/blog/article/metabase-zero-day-exploited-in-the-wild-unauthenticated-sql-injection-leading-to-full-admin-access</guid>
+      <pubDate>Mon, 10 Aug 2026 00:00:00 -0500</pubDate>
+    </item>
+    <item>
+      <title>ExfilSquad Targets New Victims, Shares Data via Torrents</title>
+      <description/>
+      <link>https://www.resecurity.com/blog/article/exfilsquad-targets-new-victims-shares-data-via-torrents</link>
+      <guid>https://www.resecurity.com/blog/article/exfilsquad-targets-new-victims-shares-data-via-torrents</guid>
+      <pubDate>Fri, 07 Aug 2026 00:00:00 -0500</pubDate>
+    </item>
+    <item>
+      <title>CVE-2026-16812: Critical Command Injection in Arista VeloCloud Orchestrator</title>
+      <description/>
+      <link>https://www.resecurity.com/blog/article/cve-2026-16812-critical-command-injection-in-arista-velocloud-orchestrator</link>
+      <guid>https://www.resecurity.com/blog/article/cve-2026-16812-critical-command-injection-in-arista-velocloud-orchestrator</guid>
+      <pubDate>Thu, 06 Aug 2026 00:00:00 -0500</pubDate>
+    </item>
+    <item>
+      <title>Inside OWAReaper: How CVE-2026-42897 Enables Persistent Exchange Mailbox Compromise</title>
+      <description/>
+      <link>https://www.resecurity.com/blog/article/inside-owareaper-how-cve-2026-42897-enables-persistent-exchange-mailbox-compromise</link>
+      <guid>https://www.resecurity.com/blog/article/inside-owareaper-how-cve-2026-42897-enables-persistent-exchange-mailbox-compromise</guid>
+      <pubDate>Sun, 02 Aug 2026 00:00:00 -0500</pubDate>
+    </item>
+    <item>
+      <title> From WSProxy to Root: INC ransomware and SonicWall SMA Exploit Chain</title>
+      <description/>
+      <link>https://www.resecurity.com/blog/article/from-wsproxy-to-root-inc-ransomware-and-sonicwall-sma-exploit-chain</link>
+      <guid>https://www.resecurity.com/blog/article/from-wsproxy-to-root-inc-ransomware-and-sonicwall-sma-exploit-chain</guid>
+      <pubDate>Sat, 01 Aug 2026 00:00:00 -0500</pubDate>
+    </item>
+    <item>
+      <title>When AI Becomes the Attacker: Understanding Autonomous Offensive Security Agents</title>
+      <description/>
+      <link>https://www.resecurity.com/blog/article/when-ai-becomes-the-attacker-understanding-autonomous-offensive-security-agents</link>
+      <guid>https://www.resecurity.com/blog/article/when-ai-becomes-the-attacker-understanding-autonomous-offensive-security-agents</guid>
+      <pubDate>Thu, 30 Jul 2026 00:00:00 -0500</pubDate>
+    </item>
+    <item>
+      <title>Exploiting Langflow's validate_code() Endpoint for Remote Code Execution</title>
+      <description/>
+      <link>https://www.resecurity.com/blog/article/exploiting-langflows-validatecode-endpoint-for-remote-code-execution</link>
+      <guid>https://www.resecurity.com/blog/article/exploiting-langflows-validatecode-endpoint-for-remote-code-execution</guid>
+      <pubDate>Wed, 29 Jul 2026 00:00:00 -0500</pubDate>
+    </item>
+    <item>
+      <title>From Web Request to Domain Compromise: Understanding the July 2026 SharePoint Attacks</title>
+      <description/>
+      <link>https://www.resecurity.com/blog/article/from-web-request-to-domain-compromise-understanding-the-july-2026-sharepoint-attacks</link>
+      <guid>https://www.resecurity.com/blog/article/from-web-request-to-domain-compromise-understanding-the-july-2026-sharepoint-attacks</guid>
+      <pubDate>Sat, 18 Jul 2026 00:00:00 -0500</pubDate>
+    </item>
+    <item>
+      <title>Artificial Intelligence Safety Law: Landmark Industry Regulation Bill</title>
+      <description/>
+      <link>https://www.resecurity.com/blog/article/artificial-intelligence-safety-law-landmark-industry-regulation-bill</link>
+      <guid>https://www.resecurity.com/blog/article/artificial-intelligence-safety-law-landmark-industry-regulation-bill</guid>
+      <pubDate>Tue, 07 Jul 2026 00:00:00 -0500</pubDate>
+    </item>
+    <item>
+      <title>CVE-2026-48282: Adobe ColdFusion RDS Path Traversal Leading to RCE</title>
+      <description/>
+      <link>https://www.resecurity.com/blog/article/cve-2026-48282-adobe-coldfusion-rds-path-traversal-leading-to-rce</link>
+      <guid>https://www.resecurity.com/blog/article/cve-2026-48282-adobe-coldfusion-rds-path-traversal-leading-to-rce</guid>
+      <pubDate>Mon, 06 Jul 2026 00:00:00 -0500</pubDate>
+    </item>
+    <item>
+      <title>Reconnaissance in the Age of AI: Exploring Modern ML Infrastructure</title>
+      <description/>
+      <link>https://www.resecurity.com/blog/article/reconnaissance-in-the-age-of-ai-exploring-modern-ml-infrastructure</link>
+      <guid>https://www.resecurity.com/blog/article/reconnaissance-in-the-age-of-ai-exploring-modern-ml-infrastructure</guid>
+      <pubDate>Mon, 29 Jun 2026 00:00:00 -0500</pubDate>
+    </item>
+    <item>
+      <title>Cybercriminals Are Targeting EdTech: Data Breaches and Ransomware Attacks on the Rise</title>
+      <description/>
+      <link>https://www.resecurity.com/blog/article/cybercriminals-are-targeting-edtech-data-breaches-and-ransomware-attacks-on-the-rise</link>
+      <guid>https://www.resecurity.com/blog/article/cybercriminals-are-targeting-edtech-data-breaches-and-ransomware-attacks-on-the-rise</guid>
+      <pubDate>Tue, 16 Jun 2026 00:00:00 -0500</pubDate>
+    </item>
+    <item>
+      <title>CVE-2026-20253: Splunk Enterprise Pre-Authentication Remote Code Execution</title>
+      <description/>
+      <link>https://www.resecurity.com/blog/article/cve-2026-20253-splunk-enterprise-pre-authentication-remote-code-execution</link>
+      <guid>https://www.resecurity.com/blog/article/cve-2026-20253-splunk-enterprise-pre-authentication-remote-code-execution</guid>
+      <pubDate>Tue, 16 Jun 2026 00:00:00 -0500</pubDate>
+    </item>
+    <item>
+      <title>The Anubis Ransomware Attack on the Adriatic Port Authority</title>
+      <description/>
+      <link>https://www.resecurity.com/blog/article/the-anubis-ransomware-attack-on-the-adriatic-port-authority</link>
+      <guid>https://www.resecurity.com/blog/article/the-anubis-ransomware-attack-on-the-adriatic-port-authority</guid>
+      <pubDate>Thu, 11 Jun 2026 00:00:00 -0500</pubDate>
+    </item>
+    <item>
+      <title>Silent Ransom Group (SRG): Uncovering DNS Fast Flux Infrastructure</title>
+      <description/>
+      <link>https://www.resecurity.com/blog/article/silent-ransom-group-srg-uncovering-dns-fast-flux-infrastructure</link>
+      <guid>https://www.resecurity.com/blog/article/silent-ransom-group-srg-uncovering-dns-fast-flux-infrastructure</guid>
+      <pubDate>Fri, 05 Jun 2026 00:00:00 -0500</pubDate>
+    </item>
+    <item>
+      <title>CVE-2026-20182: Unauthenticated Cisco SD-WAN Control-Plane Compromise via vHub Authentication Bypass</title>
+      <description/>
+      <link>https://www.resecurity.com/blog/article/cve-2026-20182-unauthenticated-cisco-sd-wan-control-plane-compromise-via-vhub-authentication-bypass</link>
+      <guid>https://www.resecurity.com/blog/article/cve-2026-20182-unauthenticated-cisco-sd-wan-control-plane-compromise-via-vhub-authentication-bypass</guid>
+      <pubDate>Mon, 18 May 2026 00:00:00 -0500</pubDate>
+    </item>
+  </channel>
+</rss>

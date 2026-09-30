@@ -20,5 +20,5 @@ class Sysdig(RSSScraper):
         legacy_label="NEW ARTICLE FROM SYSDIG",
         legacy_script="sysdigThreat",
     )
-    feeds = ('https://sysdig.com/blog/topic/threat-research/feed/',)
+    feeds = ("https://sysdig.com/blog/topic/threat-research/feed/",)
     date_path = None  # scraper lama pakai waktu-scrape, bukan tanggal artikel asli

@@ -1,0 +1,17 @@
+{
+  "scraper": "darkreadingThreat",
+  "legacy_script": "darkreadingThreat",
+  "legacy_labels": [
+    "NEW RECENT ARTICLE FROM DARK READING"
+  ],
+  "source_urls": [
+    "https://www.darkreading.com/rss.xml"
+  ],
+  "http_status": {
+    "https://www.darkreading.com/rss.xml": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

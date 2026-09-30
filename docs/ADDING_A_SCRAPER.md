@@ -136,6 +136,43 @@ Sink registry yang nentuin tujuannya dari tipe item. Gak ada
 `if scraper.is_special` di mana pun. Kalau butuh tujuan yang belum ada,
 daftarin `@sink_for(ItemKu)` di file yang sama — tetap satu file.
 
+### Pilihan yang bisa diubah admin tanpa deploy (`meta.options`)
+
+Kalau sebuah scraper punya DUA cara sah mengambil data dan admin perlu bisa pindah tanpa
+deploy (contoh nyata: sumber Twitter -- twitterapi.io vs API resmi X), deklarasikan
+`ScraperOption`. Pilihannya TERTUTUP (`choices`), jadi bisa divalidasi penuh di API:
+
+```python
+meta = ScraperMeta(
+    ...,
+    credential="twitter",  # = kredensial pilihan DEFAULT (menentukan queue)
+    options=(
+        ScraperOption(
+            key="provider",
+            label="Sumber data",
+            default="twitterapi_io",
+            choices=(
+                OptionChoice("twitterapi_io", "twitterapi.io", credential="twitter"),
+                OptionChoice("x_official", "X API resmi", credential="x"),
+            ),
+        ),
+    ),
+)
+
+
+def fetch(self, ctx):
+    provider = ctx.options["provider"]  # nilai efektif; kredensialnya sudah dipasang Runner
+```
+
+- Admin memilih di **/scrapers -> detail scraper** (disimpan di `scraper_config.options`);
+  `Runner` membacanya tiap run. Tanpa pilihan admin, scraper jalan dengan `default` kode.
+- `credential` per pilihan: header auth ikut pilihan. `fetch()` tetap tidak pernah memegang token.
+- Pilihan usang di DB (dihapus dari kode) DIABAIKAN -> default; API menolak (422) nilai yang
+  tidak dideklarasikan. Kontraknya dijaga `tests/contract/test_scraper_options.py`.
+- Coba sekali jalan tanpa mengubah konfigurasi: `cti-scraper dry-run <id> --option provider=x_official`.
+- Kalau salah satu pilihan MENAGIH per pemakaian, tulis peringatan biayanya di `description`
+  (tampil di dropdown) dan jangan jadikan default.
+
 ---
 
 ## Definisi selesai

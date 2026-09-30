@@ -1,0 +1,2356 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:media="http://search.yahoo.com/mrss/" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" >
+
+<channel>
+	<title>Cyble</title>
+	<atom:link href="https://cyble.com/feed/" rel="self" type="application/rss+xml" />
+	<link>https://cyble.com</link>
+	<description>Cyble: AI-based Cyber Threat Intelligence Platform.. Stay ahead of cyber threats with real-time insights &amp; monitoring with the best cybersecurity solutions!</description>
+	<lastBuildDate>Fri, 11 Sep 2026 04:56:58 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=7.1</generator>
+	<itunes:author>Cyble</itunes:author>
+	<itunes:owner>
+		<itunes:name>Cyble</itunes:name>
+		<itunes:email>contact@cyble.com</itunes:email>
+	</itunes:owner>
+	<itunes:subtitle>Cyble</itunes:subtitle>
+	<itunes:summary>Cyble: AI-based Cyber Threat Intelligence Platform.. Stay ahead of cyber threats with real-time insights &amp; monitoring with the best cybersecurity solutions!</itunes:summary>
+	<itunes:explicit>false</itunes:explicit>
+	<copyright>Cyble Inc. Al Rights Reserved</copyright>
+	<item>
+		<title>Cyble Introduces Major Upgrade to its Executive Monitoring Module</title>
+		<link>https://cyble.com/blog/cyble-major-upgrades-to-executive-monitoring-module/</link>
+		
+		<dc:creator><![CDATA[Mihir Bagwe]]></dc:creator>
+		<pubDate>Thu, 10 Sep 2026 12:26:03 +0000</pubDate>
+				<category><![CDATA[Cyber news]]></category>
+		<guid isPermaLink="false">https://cyble.com/?p=124425</guid>
+
+					<description><![CDATA[<p><img width="1200" height="600" src="https://cyble.com/wp-content/uploads/2026/09/blog-banner-executive-monitoring-updated.png" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="Executive Monitoring, Updates, Executive Monitoring Updates Introduced, Latest Executive Monitoring Solution" decoding="async" srcset="https://cyble.com/wp-content/uploads/2026/09/blog-banner-executive-monitoring-updated.png 1200w, https://cyble.com/wp-content/uploads/2026/09/blog-banner-executive-monitoring-updated-300x150.png 300w, https://cyble.com/wp-content/uploads/2026/09/blog-banner-executive-monitoring-updated-1024x512.png 1024w, https://cyble.com/wp-content/uploads/2026/09/blog-banner-executive-monitoring-updated-768x384.png 768w" sizes="(max-width: 1200px) 100vw, 1200px" title="Cyble Introduces Major Upgrade to its Executive Monitoring Module 2"></p>
+<p><!-- wp:paragraph --></p>
+<p>Cyble has rolled out a significant upgrade to Executive Monitoring inside Cyble Vision, bringing unified findings, AI-driven scoring, and expanded alerting together in a single protection suite.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Executive monitoring has historically meant stitching together several things at once. An impersonation tool here, a dark web exposure feed there, a reputation score from somewhere else, and alerts that show up in whatever channel each vendor happened to support. Security teams protecting their executives ended up doing the integration work themselves, correlating findings across tools, and re-explaining risk to the board every quarter using numbers that didn't quite agree with each other.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>That era is over.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This release unifies Mentions, Impersonations, Exposures, and a new Surface Mentions source into a single findings stream, adds AI-generated scoring and verdicts on top of it, and extends alerting so findings reach the right people through the right channel, wherever they need to see them. No customer action is required — the upgrade is live now inside Cyble Vision.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">What's Upgraded</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:heading {"level":4} --></p>
+<h4 class="wp-block-heading"><strong>Unified Findings, Now With Surface Mentions</strong></h4>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Security teams have long had to check multiple places to get a full picture of an executive's exposure. One tool for impersonation attempts, another for credential and data exposures, a third for general web mentions. Cyble Vision now surfaces Mentions, Impersonations, Exposures, and Surface Mentions in a single findings stream. Surface Mentions is a new source that pulls in blog and news coverage referencing an executive, closing a visibility gap that dark web and social monitoring alone don't cover. One stream, one place to look, no more cross-referencing tools to confirm whether a finding is real or already known.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"lightbox":{"enabled":true},"id":124442,"width":"807px","height":"auto","aspectRatio":"1.7871047275020786","sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large is-resized"><img src="https://cyble.com/wp-content/uploads/2026/09/Surface-Mentions_Executive-Monitoring-1-1024x573.webp" alt="" class="wp-image-124442" style="aspect-ratio:1.7871047275020786;width:807px;height:auto"/><figcaption class="wp-element-caption"><em>Fig.1: Unified findings feed showing Mentions, Impersonations, Exposures, and Surface Mentions in a single view</em></figcaption></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:heading {"level":4} --></p>
+<h4 class="wp-block-heading"><strong>Risk &amp; Reputation Scoring</strong></h4>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>A pile of raw alerts doesn't mean much to a board. Risk &amp; Reputation scoring gives every monitored executive a single score that reflects their overall exposure, giving leadership one number to track instead of a raw feed of findings to interpret themselves. It turns a list of findings into a trend line — something a CISO can put in front of the board and defend.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"lightbox":{"enabled":true},"id":124443,"width":"802px","height":"auto","sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large is-resized"><img src="https://cyble.com/wp-content/uploads/2026/09/Risk-Reputation-Scoring_Executive-Monitoring-1024x568.webp" alt="" class="wp-image-124443" style="width:802px;height:auto"/><figcaption class="wp-element-caption"><em>Fig.2: Executive risk and reputation score dashboard</em></figcaption></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:heading {"level":4} --></p>
+<h4 class="wp-block-heading"><strong>AI-Generated Verdicts and Recommendations</strong></h4>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Every finding in Cyble Vision now arrives with an AI-generated verdict and a recommended next step, so analysts aren't starting their triage from a blank page. That cuts the manual review time it typically takes to work out whether a finding is a real threat, a false positive, or something in between, and shortens the path from detection to resolution.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"lightbox":{"enabled":true},"id":124452,"width":"807px","height":"auto","aspectRatio":"6.649882654149776","sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large is-resized"><img src="https://cyble.com/wp-content/uploads/2026/09/Blaze-AI-Verdict-1024x154.webp" alt="" class="wp-image-124452" style="aspect-ratio:6.649882654149776;width:807px;height:auto"/></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"lightbox":{"enabled":true},"id":124451,"width":"807px","height":"auto","aspectRatio":"1.5778469638291948","sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large is-resized"><img src="https://cyble.com/wp-content/uploads/2026/09/Blaze-AI-Recommendation-1024x649.webp" alt="" class="wp-image-124451" style="aspect-ratio:1.5778469638291948;width:807px;height:auto"/><figcaption class="wp-element-caption"><em>Fig.3: Blaze AI-generated verdict and recommendation</em></figcaption></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:heading {"level":4} --></p>
+<h4 class="wp-block-heading"><strong>Richer Executive Onboarding</strong></h4>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>False positives on executive monitoring usually come from one place: same-name matches. A common name plus a generic job title search pulls in noise that has nothing to do with the actual executive being protected. Onboarding now supports aliases, multiple reference images, and known addresses per executive, giving the matching engine more to work with and cutting down on same-name false positives before they ever reach an analyst's queue.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"lightbox":{"enabled":true},"id":124450,"width":"861px","height":"auto","aspectRatio":"9.6615003099814","sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large is-resized"><img src="https://cyble.com/wp-content/uploads/2026/09/Executive-Onboarding-1024x106.webp" alt="" class="wp-image-124450" style="aspect-ratio:9.6615003099814;width:861px;height:auto"/><figcaption class="wp-element-caption"><em>Fig.4: Executive profile onboarding with aliases, images, and address fields</em></figcaption></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:heading {"level":4} --></p>
+<h4 class="wp-block-heading"><strong>Unified Alert Management</strong></h4>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Alert management now supports data residency, addressing a requirement that regularly shows up in RFPs for regulated and enterprise customers. Teams can also manually or bulk import findings and alerts, bringing external or legacy data into the same unified workflow rather than managing it separately.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading {"level":4} --></p>
+<h4 class="wp-block-heading"><strong>Multi-Channel Alert Delivery and Access API</strong></h4>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Findings don't help if they arrive somewhere no one's watching. Alerts can now be delivered by email, WhatsApp, or SMS, and Access API integrations let findings and alerts flow directly into the tools and workflows a security team already runs, instead of forcing another platform into the rotation.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading {"level":4} --></p>
+<h4 class="wp-block-heading"><strong>Branded Executive PDF Report</strong></h4>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Reporting on executive risk has typically meant assembling findings from multiple tools into a single deck by hand. Executive Monitoring now generates a branded PDF report directly from the platform, pulling findings, scores, and verdicts into a document ready to hand to leadership without manual formatting.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"lightbox":{"enabled":true},"id":124455,"width":"694px","height":"auto","sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large is-resized"><img src="https://cyble.com/wp-content/uploads/2026/09/Executive-Monitoring-Report-950x1024.webp" alt="" class="wp-image-124455" style="width:694px;height:auto"/><figcaption class="wp-element-caption"><em>Fig.5: Executive Risk PDF report sample</em></figcaption></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Where Are We Heading</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Executive monitoring is moving in the same direction as third-party risk and brand protection before it – away from a collection of narrow point tools and towards a single, intelligence-led workflow. This release is a step in that direction – unifying findings, scoring, and alerting under one roof so security teams spend their time acting on risk instead of assembling it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Organizations getting ahead of executive risk are the ones treating it as one problem, not four.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Learn more about <a href="https://cyble.com/solutions/executive-monitoring/">Cyble Vision Executive Monitoring</a> or <a href="https://cyble.com/request-demo/">request a demo</a> to see it in action.</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Frequently Asked Questions</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>1. What is Executive Monitoring in Cyble Vision?</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><a href="https://thecyberexpress.com/benefits-of-executive-monitoring-platforms/" target="_blank" rel="noreferrer noopener">Executive Monitoring</a> is a protection suite inside Cyble Vision that unifies impersonation detection, exposure monitoring, mentions, and now surface (blog and news) mentions into a single findings stream, scored per executive and paired with AI-generated verdicts and recommendations.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>2. Who is this for?</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>For security and CTI teams protecting executives:</strong> you now get unified findings, AI verdicts, and a defensible risk score in one place instead of correlating across separate tools.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>For GRC and compliance teams:</strong> data residency support and a branded PDF report make it easier to satisfy regulatory and audit requirements without extra manual work.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>For teams running multiple point solutions today:</strong> impersonation, exposure, and reputation monitoring now live in one platform, one report, and one renewal conversation.</li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>3. What was just launched?</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This release includes unified findings across Mentions, Impersonations, Exposures, and the new Surface Mentions source; Risk &amp; Reputation scoring per executive; AI-generated verdicts and recommendations on every finding; richer executive onboarding with aliases, images, and addresses; Unified Alert Management with data residency and bulk import; multi-channel alert delivery (email, WhatsApp, SMS) with Access API integrations; and a branded Executive PDF report.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>4. How is this different from the point solutions we use today?</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Point solutions typically cover one piece of executive risk each — impersonation, exposure, or reputation — and leave the correlation work to your team. Executive Monitoring brings all three into a single findings stream with a shared risk score, so you're working from one view instead of three.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>5. Do we need to do anything to get these updates?</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>No. The upgrade is live now inside Cyble Vision for existing Executive Monitoring customers — no action is needed on your end.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>6. Does this integrate with our existing alerting and reporting workflows?</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Yes. Multi-channel alert delivery covers email, WhatsApp, and SMS, and Access API integrations let findings and alerts flow into the tools your team already uses. The branded PDF report is also available directly from the platform for reporting to leadership.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>7. Why are false positives from same-name executives going down?</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Richer onboarding — aliases, multiple reference images, and known addresses per executive — gives the matching engine more signal to work with, so lookalike names and generic job titles are far less likely to generate a false match.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>8. Where can I learn more?</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>You can <a href="https://cyble.com/request-demo/">request a demo</a> to see the updated Executive Monitoring suite in Cyble Vision in action.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"fontSize":"small"} --></p>
+<p class="has-small-font-size"><em>Disclaimer: The images shared in this post are for representational purpose only and may vary from the actual module UI/UX.</em></p>
+<p><!-- /wp:paragraph --></p>
+<p>The post <a rel="nofollow" href="https://cyble.com/blog/cyble-major-upgrades-to-executive-monitoring-module/">Cyble Introduces Major Upgrade to its Executive Monitoring Module</a> appeared first on <a rel="nofollow" href="https://cyble.com">Cyble</a>.</p>
+]]></description>
+		
+		
+		
+			</item>
+		<item>
+		<title>From Infostealer Log to Marketplace Listing: A Technical Walkthrough of the Credential Theft Pipeline</title>
+		<link>https://cyble.com/blog/infostealer-malware-credential-theft-pipeline/</link>
+		
+		<dc:creator><![CDATA[Ashish Khaitan]]></dc:creator>
+		<pubDate>Thu, 10 Sep 2026 10:45:47 +0000</pubDate>
+				<category><![CDATA[Threat Intelligence]]></category>
+		<category><![CDATA[Infostealer]]></category>
+		<category><![CDATA[Malware]]></category>
+		<guid isPermaLink="false">https://cyble.com/?p=124449</guid>
+
+					<description><![CDATA[<p><img width="1200" height="600" src="https://cyble.com/wp-content/uploads/2026/09/infostealer-malware.webp" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="infostealer malware" decoding="async" srcset="https://cyble.com/wp-content/uploads/2026/09/infostealer-malware.webp 1200w, https://cyble.com/wp-content/uploads/2026/09/infostealer-malware-300x150.webp 300w, https://cyble.com/wp-content/uploads/2026/09/infostealer-malware-1024x512.webp 1024w, https://cyble.com/wp-content/uploads/2026/09/infostealer-malware-768x384.webp 768w" sizes="(max-width: 1200px) 100vw, 1200px" title="From Infostealer Log to Marketplace Listing: A Technical Walkthrough of the Credential Theft Pipeline 4"></p>
+<p><!-- wp:paragraph --></p>
+<p>Infostealer malware is behind a large share of today's credential compromise — and it usually doesn't start with a breach at all. When a security team hears "data breach," the instinct is to look for the moment a database was exfiltrated or a network was penetrated. But more often, the real starting point is a single endpoint infection, often on a personal device, that has nothing to do with the organization's perimeter.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>By the time stolen credentials show up in a breach notification or a dark web alert, they've already passed through several distinct, mechanical stages. Understanding that pipeline — rather than waiting for the final alert — is what separates reactive security teams from ones that catch exposure early.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><strong>How Infostealer Malware Powers the Credential Theft Pipeline?</strong></h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>What follows is a stage-by-stage breakdown of that journey — from the moment infostealer malware first executes on a device, through the log assembly and enrichment steps that add value along the way, to the final point where credentials are packaged and sold on the open market. Each section builds directly on the one before it, showing exactly how a single infection turns into an inventoried, priced, and marketable product.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading {"level":3} --></p>
+<h3 class="wp-block-heading"><strong>Execution and Harvesting</strong>&nbsp;</h3>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>The pipeline begins with infostealer malware — a lightweight piece of software designed to do one thing efficiently: grab whatever credentials, cookies, and session tokens are sitting in a browser or application on the infected machine. This is the core mechanism behind modern credential harvesting, and these tools typically arrive through cracked software installers, fake game cheats, malicious browser extensions, or phishing lures disguised as invoices or shipping notices.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once executed, the stealer doesn't loiter. It targets browser credential stores, autofill data, saved payment details, cryptocurrency wallet files, FTP client configurations, and any session cookies that could allow an attacker to bypass login screens entirely. Many stealers also grab system fingerprinting data — IP address, hardware ID, installed software — which becomes useful later for building convincing sessions or bypassing device-based fraud checks.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The output of this stage is a "log": a structured folder of text files, often just a few kilobytes, containing everything the malware could pull from that one machine. These stealer logs are the raw currency of the entire pipeline that follows.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading {"level":3} --></p>
+<h3 class="wp-block-heading"><strong>Aggregation and Log Assembly</strong>&nbsp;</h3>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>A single log is not particularly valuable on its own. Its worth comes from volume. Threat actors operating stealer campaigns typically run panels — command-and-control dashboards — that collect incoming logs from hundreds or thousands of infected machines simultaneously. These logs get bundled into larger archives, sometimes labeled by infection date, campaign, or targeted region.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is the point where individual credential theft becomes an inventory problem for the attacker. Logs get sorted, deduplicated, and screened for anything obviously valuable — corporate VPN logins, SaaS admin panels, banking portals — versus low-value consumer accounts.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading {"level":3} --></p>
+<h3 class="wp-block-heading"><strong>Parsing and Enrichment</strong>&nbsp;</h3>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Raw logs are messy, so a parsing step usually follows before anything is sold or shared. Automated tools and, in some cases, manual review are used to extract structured fields: username, password, URL, and associated cookies, organized into searchable formats. This is also where enrichment happens — cross-referencing a log against previously leaked datasets to add context like a person's employer, job title, or other accounts tied to the same email address.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Enrichment matters because it changes the value proposition. A raw password paired with a login URL is interesting. That same credential paired with confirmation that it belongs to an IT administrator at a mid-sized company is something else entirely — and priced accordingly. &nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>It's also at this stage that enriched credentials become prime material for credential stuffing campaigns, where attackers automate login attempts across dozens of unrelated services in the hope that a password was reused.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading {"level":3} --></p>
+<h3 class="wp-block-heading"><strong>Marketplace Listing</strong>&nbsp;</h3>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>The final stage is distribution. Parsed and enriched logs are listed for sale on dark web marketplaces and forums, sometimes as full archives ("bulk logs") and sometimes broken apart and sold as individual access credentials to specific platforms — a corporate email account, a cloud console login, a remote desktop session. Listings often include partial samples as proof of authenticity, along with metadata like infection date, geography, and browser type, to help buyers judge freshness and relevance.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is usually the first point where an outside observer — including a security team — has a realistic chance of spotting exposure, provided they're actually looking at this layer of the ecosystem rather than waiting for a breach disclosure further downstream.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><strong>Why the Earlier Stages Matter More Than the Alert?</strong>&nbsp;</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Most detection strategies are built around the last step: someone notices a listing or a breach compilation and issues an alert. But by then, the credential may have already changed hands, been tested against multiple services, or been bundled into a larger fraud operation. The earlier stages — infection, log assembly, and enrichment — are where exposure actually originates, and where it can be caught closer to the source.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For SOC teams and identity security leads, the practical takeaway is that credential exposure isn't a single event to monitor for — it's a pipeline to monitor across. Visibility into stealer logs, marketplace chatter, and enrichment activity gives a much earlier warning than waiting for a finished, packaged breach.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><strong>Your Credentials Are Probably Already for Sale. You Just Don't Know It Yet.</strong>&nbsp;</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Somewhere right now, an infostealer log sits in a marketplace listing with your company's name attached to it — and nobody on your team has seen it. That's not a scare tactic. It's the default state for most organizations, because credential exposure happens quietly, on devices you don't control, long before it ever becomes "your" incident.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The only real question is whether you find out from a threat feed, or from a breach headline.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>See what's already exposed — before someone else finds it first.</strong> <a href="https://cyble.com/external-threat-profile-report/" target="_blank" rel="noopener"><strong>Run a free check with Cyble</strong></a> <strong>and get a real answer, not a guess.</strong>&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p>The post <a rel="nofollow" href="https://cyble.com/blog/infostealer-malware-credential-theft-pipeline/">From Infostealer Log to Marketplace Listing: A Technical Walkthrough of the Credential Theft Pipeline</a> appeared first on <a rel="nofollow" href="https://cyble.com">Cyble</a>.</p>
+]]></description>
+		
+		
+		
+			</item>
+		<item>
+		<title>Qatar&#8217;s Digital Boom Has a Blind Spot: What the 2025-26 Threat Data Is Telling Us</title>
+		<link>https://cyble.com/blog/qatar-digital-boom-blindspot/</link>
+		
+		<dc:creator><![CDATA[Mihir Bagwe]]></dc:creator>
+		<pubDate>Mon, 07 Sep 2026 13:00:48 +0000</pubDate>
+				<category><![CDATA[Cyber news]]></category>
+		<guid isPermaLink="false">https://cyble.com/?p=124338</guid>
+
+					<description><![CDATA[<p><img width="1200" height="600" src="https://cyble.com/wp-content/uploads/2026/09/blog-banner-qatar-cysec-2026-cyble.png" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="Qatar, Cysec, Cysec 2026, Cyble" decoding="async" srcset="https://cyble.com/wp-content/uploads/2026/09/blog-banner-qatar-cysec-2026-cyble.png 1200w, https://cyble.com/wp-content/uploads/2026/09/blog-banner-qatar-cysec-2026-cyble-300x150.png 300w, https://cyble.com/wp-content/uploads/2026/09/blog-banner-qatar-cysec-2026-cyble-1024x512.png 1024w, https://cyble.com/wp-content/uploads/2026/09/blog-banner-qatar-cysec-2026-cyble-768x384.png 768w" sizes="(max-width: 1200px) 100vw, 1200px" title="Qatar&#039;s Digital Boom Has a Blind Spot: What the 2025-26 Threat Data Is Telling Us 6"></p>
+<p><!-- wp:paragraph --></p>
+<p>Qatar is racing toward a knowledge-based, fully digital economy. Smart infrastructure, cloud-first government services, a financial sector that's increasingly API-driven, and critical energy assets like QatarEnergy's LNG operations layering more connected OT/ICS systems every year. That pace of transformation makes Qatar an attractive target in the cyber realm, right now. Attackers don't need to compromise everything; they just need one high-value foothold, and Qatar's expanding digital footprint keeps handing them more doors to try.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This risk is showing up in the data as well.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">The Problem: A Small, Concentrated, High-Precision Threat</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Unlike sprawling, high-volume threat landscapes elsewhere, Qatar's risk profile in 2025-26 has been described as quietly high-stakes rather than loud. Attackers aren't spraying and praying — they're going after specific footholds, specific sectors, and specific vulnerabilities. That precision is arguably more dangerous than volume, because it means defenders are up against adversaries who've already done their homework on Qatari targets.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A few things stand out in the current picture:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Ransomware has consolidated around a group of dominant actors.</strong> According to <a href="https://cyble.com/resources/research-reports/qatar-threat-landscape-report-2025/" target="_blank" data-type="link" data-id="https://cyble.com/resources/research-reports/qatar-threat-landscape-report-2025/" rel="noreferrer noopener">Cyble's Qatar Threat Landscape Report 2025</a>, the Qilin ransomware group was responsible for essentially all observed ransomware activity in the country during the period, including a concentrated campaign in October. But in 2026, to date, The Gentleman, Everest, Crypto24 and Payload groups shared the space. When a few groups own the entire observed ransomware footprint in a country, it signals a level of operational focus that generic, one-size-fits-all defenses aren't built to catch.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Financial services and retail are the prime targets for access brokers.</strong> The same research found confirmed instances of compromised access being sold on underground markets tied to Qatar, with BFSI and retail organizations accounting for more than half of those listings. That's initial access brokers doing reconnaissance and sale work specifically for buyers who want a way into Qatar's financial ecosystem — a pipeline that often precedes ransomware or fraud operations.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Education has become a quiet leak point.</strong> Data breaches and leak incidents were recorded, most frequently hitting the education sector, largely opportunistic actors going after personally identifiable information. Universities and training institutions tend to sit outside the security investment priorities of banks or energy firms, which makes them a softer entry point into a country's wider digital ecosystem.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Zero-days and known exploited vulnerabilities in enterprise remote-access tools spiked.</strong> Products from Microsoft, Fortinet, Ivanti, and Citrix — the tools that underpin remote access and enterprise connectivity almost everywhere in Qatar's public and private sector — saw a surge in exploitation activity. These are exactly the platforms that link head offices, branch networks, and increasingly remote or hybrid teams together, so a single unpatched edge device can become a bridge straight into the core network.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Hacktivism is low-volume but not absent.</strong> Much of it is narrative-driven information operations tied to regional geopolitical tensions rather than destructive attacks — but it's a reminder that Qatar's high international visibility (as a diplomatic hub and an LNG exporter) keeps it on ideologically motivated actors' radar too.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Beyond the Numbers, What Matters</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Qatar isn't short on regulatory intent. Law No. 13 of 2016 on Personal Data Privacy Protection already requires organizations to run active breach management and compliance programs, and Qatar's National Cyber Security Agency has been steadily raising the bar — joining the global ISASecure certification program to strengthen industrial control system standards, and the country ratifying the UN Convention against Cybercrime to reinforce cross-border cooperation. The cybersecurity market itself is projected to keep growing at a solid clip through the end of the decade as organizations respond to this pressure.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But policy and market growth don't close the defense gap on their own. The data above describes a landscape where:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li>A handful of ransomware operators can inflict outsized damage because they're facing fragmented, generic defenses rather than region-specific threat intelligence.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Financially motivated actors are actively building and selling access into Qatar's banking and retail sectors before an attack ever becomes visible.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Edge infrastructure — the very tools organizations rely on for secure remote connectivity — is itself the weak link.</li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>The organizations best positioned to respond aren't the ones with the biggest security budgets; they're the ones with visibility into what's actually being sold, exploited, and targeted in their own region, before it turns into an incident report.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Meet Us at CYSEC, Qatar</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is exactly the conversation happening at <strong>CYSEC Qatar</strong>, the region's leading closed-door cybersecurity summit, bringing together CISOs, government cyber leaders, and IT/OT security heads to work through the threats defined above — cloud security, incident response, threat intelligence sharing, and AI-driven defense.<strong>Cyble's Mandar Patil, Feras Jbrah, Dhanish Khan, and Reshma Nair, will be on the ground at CYSEC Qatar’s – 22<sup>nd</sup> Global Edition on 8-9th September</strong>, ready to walk through the region-specific threat intelligence behind this piece and talk about what proactive, Qatar-focused defense looks like in practice.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":124339,"width":"782px","height":"auto","sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large is-resized"><img src="https://cyble.com/wp-content/uploads/2026/09/qatars-cyble-team-location-1-1024x576.png" alt="" class="wp-image-124339" style="width:782px;height:auto"/></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>If you're attending, stop by and meet the team — bring your hardest questions about your own exposure, and let's talk about closing the gap before the next Qilin-style campaign finds it first.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading {"level":5,"style":{"typography":{"textAlign":"center"}}} --></p>
+<h5 class="wp-block-heading has-text-align-center"><a href="https://crm.zoho.in/bookings/Scheduleameeting?rid=282c02ca2067a47788f29af39c9af84727a3d40124a2235ab16c7b3f3d26b7faa15dc4d13c78d92c21187900ab6681cfgid8116fa20ebd5f8da164f2a6c83a6aa92a026863ca61505c8194b1b7bf343c30f" target="_blank" rel="noopener"><strong>Book your slot with our expert now!</strong></a></h5>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><em>Media Disclaimer: This blog was compiled from publicly available government advisories and open-source security reporting. It is provided for reference purposes only; readers bear full responsibility for their reliance on it.</em></p>
+<p><!-- /wp:paragraph --></p>
+<p>The post <a rel="nofollow" href="https://cyble.com/blog/qatar-digital-boom-blindspot/">Qatar&#8217;s Digital Boom Has a Blind Spot: What the 2025-26 Threat Data Is Telling Us</a> appeared first on <a rel="nofollow" href="https://cyble.com">Cyble</a>.</p>
+]]></description>
+		
+		
+		
+			</item>
+		<item>
+		<title>AI-Driven Threat Intelligence for Gulf Enterprises: Why Detection Speed Is Now a Regulatory Requirement</title>
+		<link>https://cyble.com/blog/ai-powered-threat-intelligence-gcc/</link>
+		
+		<dc:creator><![CDATA[Ashish Khaitan]]></dc:creator>
+		<pubDate>Fri, 04 Sep 2026 13:23:58 +0000</pubDate>
+				<category><![CDATA[Cybersecurity]]></category>
+		<category><![CDATA[Threat Intelligence]]></category>
+		<guid isPermaLink="false">https://cyble.com/?p=124330</guid>
+
+					<description><![CDATA[<p><img width="1200" height="600" src="https://cyble.com/wp-content/uploads/2026/09/AI-powered-threat-intelligence.webp" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="AI-powered threat intelligence" decoding="async" srcset="https://cyble.com/wp-content/uploads/2026/09/AI-powered-threat-intelligence.webp 1200w, https://cyble.com/wp-content/uploads/2026/09/AI-powered-threat-intelligence-300x150.webp 300w, https://cyble.com/wp-content/uploads/2026/09/AI-powered-threat-intelligence-1024x512.webp 1024w, https://cyble.com/wp-content/uploads/2026/09/AI-powered-threat-intelligence-768x384.webp 768w" sizes="(max-width: 1200px) 100vw, 1200px" title="AI-Driven Threat Intelligence for Gulf Enterprises: Why Detection Speed Is Now a Regulatory Requirement 8"></p>
+<p><!-- wp:paragraph --></p>
+<p>Six hours. That's the incident notification window under the UAE's Information Assurance Standard v2. Once a breach is detected, the framework requires incident notifications within 6 hours of detection, alongside quarterly compliance updates and annual maturity assessments.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Saudi Arabia's regulators aren't far behind — SAMA's cybersecurity framework and the Kingdom's PDPL both converge on a 72-hour notification standard, and the NCA's Essential Cybersecurity Controls point organizations toward a similar 72-hour reporting expectation for serious cyber incidents.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Read that again. Regulators across the GCC aren't asking enterprises to <em>respond</em> fast anymore — they're mandating how fast enterprises must <em>know</em>. And that's the part most security programs still get wrong.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><strong>The Compliance Clock Starts at Detection, Not Response</strong>&nbsp;</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Every regulatory framework reshaping the region's cybersecurity posture — NCA ECC, NESA/UAE IAS v2.1, SAMA CSF — shares a structural assumption: the organization already knows it's been breached. The clock for reporting, escalation, and remediation only starts ticking once detection happens.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>That assumption breaks down inside most enterprise SOCs. Detection today typically means:&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li>Alerts triaged manually across siloed tools, hours or days after initial compromise </li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li>Threat intelligence that arrives as static reports, not real-time signal </li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li>Exposure discovered only after a regulator, a customer, or an attacker's leak site announces it </li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Under NESA's <a href="https://cyble.com/solutions/incident-management/" target="_blank" rel="noopener">incident management</a> requirements, tested response procedures and a maintained incident log matter — but the underlying detection of SLA still has to be met before any of that documentation is worth anything. A perfect incident response plan is irrelevant if the breach itself goes unnoticed for a week.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><strong>Why Reactive Detection Can't Survive These Timelines</strong>&nbsp;</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Reactive security was designed around a different clock — the attacker's dwell time, not the regulator's reporting window. Under IAS v2's enhanced SOC requirements, Tier 1 critical infrastructure entities now need 24/7 monitoring capability paired with defined detection and response SLAs, not just a monitoring function. That's a measurable performance bar, not a checkbox.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For a Gulf enterprise, missing that bar isn't just a security failure — it's a compliance failure with financial, contractual, and reputational consequences layered on top. And because a single incident can trigger overlapping obligations across multiple regulators at once, one detection gap can cascade into several separate compliance breaches simultaneously.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><em>See how fast you can detect a breach —</em> <a href="https://cyble.com/request-demo/" target="_blank" rel="noopener"><em>run a live check with Cyble Vision.</em></a>&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><strong>Where AI-powered Threat Intelligence Closes the Gap</strong>&nbsp;</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is the shift <a href="https://cyble.com/products/cyble-vision/" target="_blank" rel="noopener">Cyble Vision</a> is built for. Instead of waiting for a signature match or a manual review cycle, AI-powered <a href="https://cyble.com/knowledge-hub/what-is-cyber-threat-intelligence/" target="_blank" rel="noopener">threat intelligence</a> continuously correlates external signals — leaked credentials, <a href="https://cyble.com/solutions/dark-web-monitoring/" target="_blank" rel="noopener">dark web</a> chatter, exposed assets, attacker infrastructure — against your enterprise footprint in real time.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>That matters specifically because GCC frameworks measure speed <em>from the moment of detection</em>, not from the moment someone happens to notice. Closing that gap means:&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li>Continuous exposure monitoring instead of periodic scans, so assets breaching policy or appearing in threat actor chatter surface immediately </li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li>AI-correlated alerting that cuts through noise and prioritizes what actually threatens regulated systems </li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li>Audit-ready detection logs that document when a threat was identified — the evidence NESA and SAMA assessors specifically ask for </li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Don't wait for attackers — or a regulator — to find your blind spots first.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><strong>What "Regulatory-Ready" Detection Actually Looks Like?</strong>&nbsp;</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>For a CISO or compliance lead building toward NCA ECC, NESA, SAMA, or UAE IAS v2.1, the operational bar has moved from "can we respond" to "can we prove we detected in time." That means:&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true,"start":1} --></p>
+<ol start="1" class="wp-block-list"><!-- wp:list-item --></p>
+<li>Detection telemetry timestamped and retained for regulator review </li>
+<p><!-- /wp:list-item --></ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:list {"ordered":true,"start":2} --></p>
+<ol start="2" class="wp-block-list"><!-- wp:list-item --></p>
+<li>Threat intelligence mapped directly to the assets and systems in scope </li>
+<p><!-- /wp:list-item --></ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:list {"ordered":true,"start":3} --></p>
+<ol start="3" class="wp-block-list"><!-- wp:list-item --></p>
+<li>Alerting fast enough to fit inside a 6-to-72-hour reporting clock — not just a monthly threat report </li>
+<p><!-- /wp:list-item --></ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Cybersecurity compliance in the UAE and Saudi Arabia is no longer a documentation exercise. It's a speed test, and most enterprises are still building for the exam they used to take.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><strong>Find Your Blind Spots Before the Regulator Does</strong>&nbsp;</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>AI-powered threat intelligence isn't a nice-to-have layered on top of compliance anymore — for Gulf enterprises operating under NCA ECC, NESA, SAMA, and UAE IAS v2.1, it's becoming the mechanism that makes compliance achievable at all.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><a href="https://cyble.com/request-demo/" target="_blank" rel="noopener">See how fast you can detect a breach.</a> &nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p>The post <a rel="nofollow" href="https://cyble.com/blog/ai-powered-threat-intelligence-gcc/">AI-Driven Threat Intelligence for Gulf Enterprises: Why Detection Speed Is Now a Regulatory Requirement</a> appeared first on <a rel="nofollow" href="https://cyble.com">Cyble</a>.</p>
+]]></description>
+		
+		
+		
+			</item>
+		<item>
+		<title>Supply Chain Attacks in 2026: Why Threat Intelligence Is the Only Early Warning System That Works</title>
+		<link>https://cyble.com/blog/supply-chain-attacks-in-2026-vendor-risk/</link>
+		
+		<dc:creator><![CDATA[Ashish Khaitan]]></dc:creator>
+		<pubDate>Thu, 03 Sep 2026 08:21:54 +0000</pubDate>
+				<category><![CDATA[Threat Intelligence]]></category>
+		<category><![CDATA[Cyberattack]]></category>
+		<guid isPermaLink="false">https://cyble.com/?p=124252</guid>
+
+					<description><![CDATA[<p><img width="1200" height="600" src="https://cyble.com/wp-content/uploads/2026/09/Supply-Chain-Attacks-in-2026.webp" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="Supply Chain Attacks in 2026" decoding="async" srcset="https://cyble.com/wp-content/uploads/2026/09/Supply-Chain-Attacks-in-2026.webp 1200w, https://cyble.com/wp-content/uploads/2026/09/Supply-Chain-Attacks-in-2026-300x150.webp 300w, https://cyble.com/wp-content/uploads/2026/09/Supply-Chain-Attacks-in-2026-1024x512.webp 1024w, https://cyble.com/wp-content/uploads/2026/09/Supply-Chain-Attacks-in-2026-768x384.webp 768w" sizes="(max-width: 1200px) 100vw, 1200px" title="Supply Chain Attacks in 2026: Why Threat Intelligence Is the Only Early Warning System That Works 10"></p>
+<p><!-- wp:paragraph --></p>
+<p>Supply chain attacks in 2026 are no longer an edge-case risk buried in a vendor questionnaire — they are a primary breach vector that regulators, incident responders, and CISOs now treat as a first-order threat. Verizon's 2026 Data Breach Investigations Report found third-party involvement in 48% of breaches, up 60% year over year, following the 2025 edition, which already recorded a jump from 15% to 30%.&nbsp;&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Every vendor integration, every open-source dependency, and every managed file transfer tool expands the attack surface that an organization does not directly control. That is the core problem with supply chain security today: the weakest link is rarely the enterprise itself.&nbsp;&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>It is the supplier three tiers removed that nobody in procurement flagged as high-risk.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><strong>What Is a Supply Chain Attack, and Why Does It Bypass Standard Defenses?&nbsp;</strong>&nbsp;</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>A <a href="https://cyble.com/knowledge-hub/what-is-a-supply-chain-attack/" target="_blank" rel="noopener">supply chain attack</a> targets the vendors, software components, and build pipelines that an organization depends on, rather than attacking the organization directly.&nbsp;&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Software supply chain security failures happen when a trusted update, library, or third-party platform is compromised upstream, and that compromise rides in through a channel the target already trusts and has whitelisted.&nbsp;&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Traditional vulnerability scanning is built to find flaws in owned infrastructure — it was never designed to flag a poisoned dependency sitting inside a vendor's codebase.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><strong>Recent Supply Chain Attacks Prove the Blind Spot Is Structural, Not Occasional</strong>&nbsp;</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>The pattern keeps repeating at scale. The Cybersecurity and Infrastructure Security Agency and FBI documented in advisory <a href="https://www.cisa.gov/sites/default/files/2023-06/aa23-158a-stopransomware-cl0p-ransomware-gang-exploits-moveit-vulnerability_7.pdf" target="_blank" rel="noopener">AA23-158A</a> how the Cl0p ransomware group exploited a SQL injection flaw (CVE-2023-34362) in Progress Software's MOVEit Transfer platform, a widely used managed file transfer tool. Exploitation began on May 27, 2023. CISA added the vulnerability to its Known Exploited Vulnerabilities catalog on June 2, six days later, and Progress had published its own advisory on May 31.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>By January 2024, breaches or downstream exposures at more than 2,700 organizations had compromised the personal data of more than 93 million people, according to tracking by Emsisoft and KonBriefing Research. Censys counted more than 3,000 MOVEit environments exposed to the internet before the flaw was disclosed or patched.&nbsp;&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The same advisory covers an earlier Cl0p campaign against Fortra's GoAnywhere MFT, launched in late January 2023 against a separate zero-day, CVE-2023-0669. Cl0p claimed to have exfiltrated data affecting approximately 130 victims over the course of 10 days, a claim CISA and the FBI recorded in the advisory.&nbsp;&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The agencies did not identify lateral movement from GoAnywhere into victim networks, which suggests the breach stopped at the platform itself. That detail is the point, not a caveat: the attacker never needed to go any further because the platform already held the data.&nbsp;&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>These campaigns share a structure: one vendor, one flaw, hundreds of downstream victims who had no visibility into the vendor's exposure until the breach was already public.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><strong>Why Vendor Dependencies Create Blind Spots Scanning Alone Can't Close</strong>&nbsp;</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is the operational reality procurement and vendor risk teams face: an organization can harden its own perimeter completely and still inherit a breach through a supplier's unpatched system, a compromised update mechanism, or a fourth-party dependency nobody mapped.&nbsp;&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><a href="https://cyble.com/blog/ransomware-attacks-supply-chain-threat-landscape/" target="_blank" rel="noopener">Supply chain threats</a> don't trip an internal vulnerability scanner because the vulnerable asset was never inside the scan's scope to begin with.&nbsp;&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>By the time a breach notification arrives from a vendor, the exposure window has already closed — and the damage is already done.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><strong>Supply Chain Attack Prevention Now Requires Continuous, External Vendor Visibility</strong>&nbsp;</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Governments are formalizing the response. In September 2025, CISA and the NSA, together with 19 international partners, published joint guidance establishing a shared framework for <a href="https://www.cisa.gov/news-events/news/cisa-nsa-and-19-international-partners-release-shared-vision-software-bill-materials-cybersecurity" target="_blank" rel="noopener">Software Bills of Materials</a>, treating component-level transparency as a baseline security expectation rather than a nice-to-have.&nbsp;&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>CISA, the NSA, the FBI, and international partners followed on July 29, 2026, with 2026 Minimum Elements for a Software Bill of Materials, which updates and replaces the minimum elements NTIA published in 2021.&nbsp;&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The revision draws on more than 90 public comments and applies to all software, including open-source components, AI systems, and software delivered as a service&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>CISA has since followed with the 2026 Minimum Elements for SBOM guidance, updating the original 2021 federal standard.&nbsp;&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The regulatory direction is unambiguous: organizations are expected to know what's inside their vendors' software stacks —not just their own—before deployment, not after an incident.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><strong>Monitoring the Vendor, Not Just the Perimeter</strong>&nbsp;</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Closing this blind spot requires continuous monitoring of vendor infrastructure, exposed credentials, dark web chatter, and third-party breach signals — the exact layer traditional vulnerability management doesn't cover.&nbsp;&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Cyble's <a href="https://cyble.com/solutions/third-party-risk-management/" target="_blank" rel="noopener">Third-Party Risk Management platform</a> continuously tracks vendor risk posture, surfacing exposure signals tied to suppliers before they cascade into a confirmed compromise, giving CISOs, vendor risk managers, and procurement security teams the lead time that reactive scanning can't provide.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Find your blind spots before an attacker does.</strong> <a href="https://cyble.com/demo/" target="_blank" rel="noopener"><strong>Request a Cyble TPRM demo!</strong></a>&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><strong>Conclusion</strong>&nbsp;</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Supply chain attacks in 2026 succeed for the same reason every time: organizations extend trust to vendors faster than they extend visibility into them. CISA's own advisory record — from GoAnywhere to MOVEit — shows that a single upstream compromise can cascade into hundreds of victims before any of them see it coming. Patching internal systems faster won't fix that. Neither will another vendor questionnaire be filed away after onboarding.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>What changes the outcome is continuous visibility into the vendors, software components, and dependencies an organization has already accepted as trusted — tracked before a breach notification forces the issue. That's the gap threat intelligence is built to close, and it's the difference between reacting to a supplier's incident and seeing it coming.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Don't wait for a vendor to tell you they were breached.</strong> <a href="https://cyble.com/solutions/third-party-risk-management/" target="_blank" rel="noopener"><strong>See how Cyble Third-Party Risk Management maps your vendor exposure.</strong></a>&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading {"level":3} --></p>
+<h3 class="wp-block-heading"><strong>References</strong>&nbsp;</h3>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><a href="https://www.cisa.gov/sites/default/files/2023-06/aa23-158a-stopransomware-cl0p-ransomware-gang-exploits-moveit-vulnerability_7.pdf" target="_blank" rel="noopener">#StopRansomware: CL0P Ransomware Gang: Exploits CVE-2023-34362 MOVEit Vulnerability</a> </li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><a href="https://www.cisa.gov/news-events/news/cisa-nsa-and-19-international-partners-release-shared-vision-software-bill-materials-cybersecurity" target="_blank" rel="noopener">CISA, NSA, and 19 International Partners Release Shared Vision of Software Bill of Materials for Cybersecurity Guide</a> </li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong><em>Disclaimer: This blog is for general informational purposes only and does not constitute security, legal, or compliance advice. Statistics and incidents referenced are drawn from public advisories issued by CISA, FBI, and NSA, accurate as of their publication dates. Threat conditions and guidance change frequently — consult the original advisories and your own security team before making risk or compliance decisions.</em></strong></p>
+<p><!-- /wp:paragraph --></p>
+<p>The post <a rel="nofollow" href="https://cyble.com/blog/supply-chain-attacks-in-2026-vendor-risk/">Supply Chain Attacks in 2026: Why Threat Intelligence Is the Only Early Warning System That Works</a> appeared first on <a rel="nofollow" href="https://cyble.com">Cyble</a>.</p>
+]]></description>
+		
+		
+		
+			</item>
+		<item>
+		<title>From ‘High/Medium/Low’ to Dollars: Making Cyber Risk Legible to Your CFO </title>
+		<link>https://cyble.com/blog/financial-exposure-cyber-risk-quantification/</link>
+		
+		<dc:creator><![CDATA[Ashish Khaitan]]></dc:creator>
+		<pubDate>Tue, 25 Aug 2026 09:45:39 +0000</pubDate>
+				<category><![CDATA[Cybercrime]]></category>
+		<category><![CDATA[Cybersecurity]]></category>
+		<category><![CDATA[Ransomware]]></category>
+		<guid isPermaLink="false">https://cyble.com/?p=123848</guid>
+
+					<description><![CDATA[<p><img width="1200" height="600" src="https://cyble.com/wp-content/uploads/2026/08/Financial-Exposure-cyber-risk-quantification.webp" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="Financial Exposure, cyber risk quantification," decoding="async" srcset="https://cyble.com/wp-content/uploads/2026/08/Financial-Exposure-cyber-risk-quantification.webp 1200w, https://cyble.com/wp-content/uploads/2026/08/Financial-Exposure-cyber-risk-quantification-300x150.webp 300w, https://cyble.com/wp-content/uploads/2026/08/Financial-Exposure-cyber-risk-quantification-1024x512.webp 1024w, https://cyble.com/wp-content/uploads/2026/08/Financial-Exposure-cyber-risk-quantification-768x384.webp 768w" sizes="(max-width: 1200px) 100vw, 1200px" title="From ‘High/Medium/Low’ to Dollars: Making Cyber Risk Legible to Your CFO  12"></p>
+<p><!-- wp:paragraph --></p>
+<p>For years, cybersecurity teams have communicated risk through labels such as “High,” “Medium,” and “Low.” Those ratings can help security teams prioritize vulnerabilities, but they often leave CFOs with a more important question unanswered: What does the risk actually mean for the business financially?&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>That question has become harder to ignore as the threat landscape accelerates. <a href="https://cyble.com/knowledge-hub/cybles-2025-threat-predictions/" target="_blank" rel="noopener">Cyble’s 2025 threat predictions</a>, published as the year unfolded, provide a useful illustration. More than 80% of the threats Cyble forecast—including AI-driven ransomware and complex supply-chain attacks—materialized as anticipated.&nbsp;&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>It was observed that dark-web discussions about using large language models for phishing, automated social engineering, and ransomware negotiation as early as six months before AI-powered ransomware became a mainstream concern.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><strong>From Threat Signals to Financial Exposure</strong>&nbsp;</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Cyble’s 2025 research identified several trends that demonstrate why qualitative risk scores are no longer enough.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Ransomware incidents increased by 52% in 2025, according to Cyble's analysis. Cyble's full-year 2025 report recorded 6,604 ransomware attacks, compared with 4,346 in 2024. December 2025 alone recorded nearly 731 attacks, the second-highest monthly total of the year, surpassed only by February. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The <a href="https://thecyberexpress.com/fbi-and-cisa-warn-on-medusa-ransomware/" target="_blank" rel="noopener">FBI and CISA</a> also issued joint warnings regarding Medusa ransomware, including the use of AI to streamline intrusion, escalate privileges, and evade detection. The <a href="https://thecyberexpress.com/eu-socta-2025/" target="_blank" rel="noopener">EU SOCTA 2025</a> report similarly identified an increase in ransomware activity. Cyble also documented 57 new ransomware groups, 27 new extortion groups, and more than 350 new ransomware strains during 2025 alone. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>At the same time, ransomware affiliates proved remarkably adaptable. Cyble also documented 57 new ransomware groups, 27 new extortion groups, and more than 350 new ransomware strains during 2025 alone. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>International disruption operations targeted several ransomware ecosystems, but as RansomHub went offline in April 2025 and Black Basta became largely inactive following internal chat leaks and operational disputes, displaced affiliates migrated between operators and adopted distributed criminal models rather than withdrawing from the market. The United States remained the primary target, accounting for 55% of attacks in 2025. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Qilin and DragonForce absorbed the bulk of those displaced affiliates, reinforcing the resilience that has made ransomware a persistently growing threat. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Public-facing applications and zero-days remained another major entry point. The data supported its prediction that exposed applications would remain attractive targets. Incidents involving Multer for Node.js, Microsoft SharePoint, CVE-2025-20337, and CVE-2025-5777 reinforced that concern. <br /> <br />Identity and credential compromise became the dominant initial-access vector: Unit 42 attributed 65% of intrusions to compromised credentials, stolen infostealer logs, and abused VPN access. ClickFix social-engineering lures — which manipulate users into executing malicious commands — increased 517% year over year in the first half of 2025. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Cloud and hybrid environments also became increasingly important targets. Campaigns associated with Silk Typhoon, attacks against cloud-based identity systems, and growing software supply-chain activity demonstrated how attackers were expanding beyond traditional infrastructure.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Supply-chain ransomware followed the same trajectory. Cyble recorded a 93% increase in supply-chain attacks, from 154 incidents in 2024 to 297 in 2025. LockBit 5.0 emphasized third-party compromise, while activity associated with Qilin, SafePay (which claimed 58 victims in May 2025 alone), and DevMan demonstrated how IT providers and technology vendors can become pathways to multiple victims. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Critical infrastructure also faced heightened pressure amid geopolitical tensions. Hacktivist campaigns targeted energy, transportation, and government systems, while the UAE reported successfully blocking a major cyberattack against critical infrastructure, and China accused Taiwan of targeted cyber intrusions.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Meanwhile, underground ecosystems remained resilient. Forums including XSS, Exploit, and RAMP continued to support malware development, initial-access brokerage, affiliate recruitment, and the exchange of stolen data. The HelloKitty-to-HelloGookie transition provided another example of how underground communities support ransomware operations.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Cyble’s <a href="https://cyble.com/solutions/cyber-risk-quantification-services/" target="_blank" rel="noopener">Cyber Risk Quantification (CRQ)</a> addresses the gap between technical severity and business impact. The cloud-native SaaS platform combines real-time threat intelligence, asset visibility, and predictive analytics to quantify cyber risk in financial terms, calculate Return on Security Investment (RoSI), and align security decisions with enterprise value.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>See how Cyble CRQ turns cyber exposure into financial insight. <a href="https://cyble.com/request-demo/" target="_blank" rel="noopener"><strong>Discover your financial exposure now!</strong></a>&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><strong>What the CFO Needs to Know</strong>&nbsp;</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>A CFO does not necessarily need another dashboard showing hundreds of vulnerabilities. The finance function needs to understand questions such as:&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li>What could this threat cost? </li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li>Which business assets create the greatest financial exposure? </li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li>What is the likelihood of a loss event? </li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li>Which security control reduces the most risk? </li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li>How much would that control cost? </li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li>What is the expected return on the investment? </li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>That is where CRQ changes the conversation. Instead of reporting that a vulnerability is “critical,” security teams can model its potential effect on operations and financial performance. <br /> <br />Recent incidents illustrate the stakes: Marks &amp; Spencer estimated an impact of approximately £300 million on its 2025/26 annual profit from a single ransomware incident, and the Cyber Monitoring Centre assessed the combined losses for M&amp;S and Co-op at £270 million to £440 million, excluding any ransom payments. Meanwhile, only 28% of victims paid a ransom in 2025 — down from 62.8% in 2024 — yet the median payment increased 368%, reflecting a shift toward higher-value, targeted demands. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Cyble CRQ provides enterprise- and asset-level risk quantification, financial risk modeling, RoSI analysis, real-time dashboards, and operational metrics including MTTD, MTTN, MTTR, FPR, and IRR. Cyble's capabilities can help reduce breach containment time by up to 23%. The platform can also integrate with Cyble CSPM, Threat Intelligence, and Asset Management through APIs and real-time feeds.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Its AI-driven risk engine ingests security and business data, evaluates potential loss scenarios, models the effect of different controls, and continuously updates exposure as conditions change. The result is a risk picture that both the CISO and CFO can interpret.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><strong>The Executive Risk Equation</strong>&nbsp;</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Financial exposure is not limited to infrastructure. Executives themselves are increasingly valuable targets because compromising a trusted leader can provide access to sensitive information, systems, and relationships.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Spear-phishing, executive impersonation, credential theft, dark-web exposure, and social engineering can create direct financial, regulatory, and reputational consequences. A compromised CFO account, for example, could be abused to distribute fraudulent financial information, while a compromised CEO identity could be used to manipulate employees, customers, or business partners.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Cyble’s Executive Monitoring capability extends visibility into these risks by monitoring for impersonation, leaked information, dark web exposure, and emerging threats targeting organizational leadership.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This becomes particularly important when executives operate outside the traditional corporate perimeter through personal devices, external platforms, social media, travel environments, and other channels. A mature risk strategy, therefore, needs to connect technology risk, human risk, and business impact.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><strong>From Security Budget to Business Investment</strong>&nbsp;</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p><a href="https://cyble.com/products/cyble-saratoga/" target="_blank" rel="noopener">Cyble Saratoga</a> takes this approach further by combining cyber risk quantification with investment optimization, human and process risk analysis, scalable assessment models, and executive-ready dashboards. Built on Cyble’s AI-native foundation and evolving toward agentic intelligence, the platform is designed to continuously adapt to changing environments and threat conditions.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The objective is not simply to produce a better risk score. It helps organizations determine where to invest first and why.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For financial services organizations, that can mean quantifying ransomware, fraud, credential compromise, and operational disruption. For manufacturing and supply chains, it can mean assessing third-party exposure and potential downtime. In 2025, manufacturing accounted for 65% of all industrial ransomware activity, with 1,660 victims, making it the most heavily targeted sector of the year.  </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Healthcare organizations can evaluate risks to patient data and critical systems - 423 healthcare ransomware attacks were recorded in the first nine months of 2025, with average ransom demands of USD 514,000 to USD 532,000, while government and critical-infrastructure operators can translate complex cyber exposure into measurable financial and operational consequences. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><strong>Conclusion</strong>&nbsp;</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Cyber risk is no longer a static “High, Medium, or Low” assessment—it is a dynamic business exposure that can directly impact revenue, operations, reputation, and resilience. With more than 80% of Cyble’s 2025 threat predictions materializing, organizations need to move beyond severity scores and understand what cyber risk could actually cost. &nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Cyble CRQ helps security and finance leaders quantify cyber exposure in financial terms, prioritize the investments that matter most, and measure how effectively each security dollar reduces risk.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Stop telling the board your cyber risk is “High.” Tell them what it could cost.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Turn cyber risk into financial clarity with Cyble CRQ. Request a <a href="https://cyble.com/request-demo/" target="_blank" rel="noopener"><strong>personalized demo</strong></a> today.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading {"level":3} --></p>
+<h3 class="wp-block-heading"><strong>References:</strong>&nbsp;</h3>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><a href="https://cyble.com/knowledge-hub/cybles-2025-threat-predictions/" target="_blank" rel="noopener">Cyble’s 2025 Threat Predictions Proven True—Here’s What We Expect for 2026</a> </li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><a href="https://thecyberexpress.com/fbi-and-cisa-warn-on-medusa-ransomware/" target="_blank" rel="noopener">Medusa Ransomware Surge: 60 Victims in 3 Months—Are You Next?</a> </li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p>The post <a rel="nofollow" href="https://cyble.com/blog/financial-exposure-cyber-risk-quantification/">From ‘High/Medium/Low’ to Dollars: Making Cyber Risk Legible to Your CFO </a> appeared first on <a rel="nofollow" href="https://cyble.com">Cyble</a>.</p>
+]]></description>
+		
+		
+		
+			</item>
+		<item>
+		<title>Endpoint Blind Spots: The 5 Places Ransomware Hides Before It Detonates</title>
+		<link>https://cyble.com/blog/ransomware-attack-vectors-endpoint-blind-spots/</link>
+		
+		<dc:creator><![CDATA[Ashish Khaitan]]></dc:creator>
+		<pubDate>Fri, 21 Aug 2026 07:51:56 +0000</pubDate>
+				<category><![CDATA[Ransomware]]></category>
+		<category><![CDATA[Ransomware Insights]]></category>
+		<guid isPermaLink="false">https://cyble.com/?p=123677</guid>
+
+					<description><![CDATA[<p><img width="1200" height="600" src="https://cyble.com/wp-content/uploads/2026/08/ransomware-attack-vectors.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="ransomware attack vectors" decoding="async" srcset="https://cyble.com/wp-content/uploads/2026/08/ransomware-attack-vectors.jpg 1200w, https://cyble.com/wp-content/uploads/2026/08/ransomware-attack-vectors-300x150.jpg 300w, https://cyble.com/wp-content/uploads/2026/08/ransomware-attack-vectors-1024x512.jpg 1024w, https://cyble.com/wp-content/uploads/2026/08/ransomware-attack-vectors-768x384.jpg 768w" sizes="(max-width: 1200px) 100vw, 1200px" title="Endpoint Blind Spots: The 5 Places Ransomware Hides Before It Detonates 14"></p>
+<p><!-- wp:paragraph --></p>
+<p>Ransomware rarely appears out of nowhere. Before encryption, extortion, or data theft begins, attackers often spend time establishing access, stealing credentials, moving laterally, and identifying valuable systems. These activities occur during the ransomware pre-execution phase, when malicious activity may be difficult to distinguish from legitimate administration. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For security teams, understanding ransomware attack vectors, ransomware initial access methods, and how ransomware evades detection is critical. Endpoint security blind spots can give attackers the time they need to prepare an attack without triggering an obvious alarm. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here are five areas where ransomware activity can remain hidden before detonation.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><strong>1. Remote Access Tools: A Favorite Ransomware Attack Vector</strong>&nbsp;</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>VPNs, RDP, and remote management tools are essential for distributed organizations, but they are also among the most important ransomware attack vectors. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Qilin affiliates have abused tools including WinSCP, AnyDesk, and ScreenConnect to facilitate lateral movement. Attackers who obtain valid credentials can potentially use legitimate remote-access software without immediately deploying obvious malware. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is one reason why ransomware evasion cannot be reduced to antivirus evasion alone. Attackers can blend into normal administrative activity. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Organizations should enforce MFA on remote-access systems, monitor unusual login behavior, and restrict remote administration privileges. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><strong>2. Compromised Endpoints and Credential Stores</strong>&nbsp;</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>A compromised laptop or workstation may be only the beginning. Attackers can use credential-stealing tools to obtain additional passwords and authentication material, allowing them to move toward servers, backups, and privileged accounts. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>CRIL has tracked ransomware operators using credential-harvesting techniques associated with tools such as NirSoft and Mimikatz. BYOVD, or Bring Your Own Vulnerable Driver, is another technique security teams should monitor because vulnerable drivers can help attackers bypass security controls.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>These activities represent major endpoint security blind spots when organizations monitor servers but have limited visibility across employee workstations.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>EDR coverage across every endpoint can help identify unusual processes, credential access, and other indicators during the ransomware pre-execution phase. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><strong>3. Vendor Connections and Supply Chain Access</strong>&nbsp;</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Manufacturers rarely operate alone. Suppliers, contractors, logistics providers, and software vendors can all connect to corporate environments. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Attackers may compromise a smaller vendor with weaker defenses and use that trusted relationship to reach a larger target, a technique commonly known as island hopping.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A shared credential, remote connection, vulnerable integration, or compromised software update can become one of the most dangerous ransomware initial access methods. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Organizations therefore need visibility beyond their own infrastructure. Vendor access should be reviewed regularly, unnecessary connections should be removed, and third-party privileges should follow least-privilege principles. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><strong>4. Operational Technology and Industrial Systems</strong>&nbsp;</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Manufacturing environments face additional endpoint security blind spots because operational technology (OT) and industrial control systems (ICS) often have long lifecycles and cannot be patched as easily as conventional computers.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Many industrial systems were designed for reliability rather than modern cybersecurity requirements. Connecting previously isolated systems to corporate networks, cloud platforms and remote-management tools has expanded their attack surface.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A ransomware attack affecting production systems can disrupt manufacturing lines, robotics, quality controls and logistics. Attackers can also steal product designs, supplier contracts, pricing information, and other intellectual property before encryption. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Network segmentation, vulnerability monitoring, and strict access controls can reduce the risk while allowing production environments to remain operational. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><strong>5. Phishing and Business Email Accounts</strong>&nbsp;</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Phishing remains one of the most effective ransomware initial access methods, but modern campaigns are often highly targeted.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Attackers may research procurement, finance, and supplier relationships before sending messages that closely resemble legitimate business communications. Once credentials are stolen, attackers can monitor conversations before attempting fraud or using the account to gain further access. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This activity can remain hidden because the attacker may initially use legitimate credentials rather than obviously malicious software.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>MFA, payment verification, email monitoring, and employee awareness training can reduce exposure. Security teams should also investigate unusual authentication patterns and unexpected account behavior. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><strong>RaaS Makes Endpoint Blind Spots More Dangerous</strong>&nbsp;</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Ransomware-as-a-service has lowered the barrier for criminals seeking to conduct sophisticated attacks. Cyble&nbsp;identified 57 new ransomware groups and 27 new extortion groups in 2025, along with more than 350 new ransomware strains.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Between January and April 2025, global ransomware incidents increased by 86%, with Cl0P accounting for 28% of activity during that period, according to Cyble.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Double extortion has also become common. Attackers may steal data before encryption and threaten to leak it. Some groups have escalated to triple extortion by adding DDoS attacks or directly contacting victims' customers.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For organizations with limited security resources, this makes early detection particularly important.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><strong>Conclusion</strong>&nbsp;</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Effective ransomware defense starts before encryption begins. Organizations should patch exploited vulnerabilities, enforce MFA, segment networks, and maintain tested backups while continuously monitoring endpoint security blind spots. &nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Cyble Titan Endpoint Security combines behavioral detection, threat intelligence from <a href="https://cyble.com/products/cyble-vision/">Cyble Vision</a>, and <a href="https://cyble.com/platforms/blaze-ai/">Blaze-AI</a>-powered autonomous response to detect and contain threats before they escalate. See Cyble Titan in action and strengthen endpoint protection today—<a href="https://cyble.com/request-demo/" target="_blank" rel="noreferrer noopener"><strong>request a demo</strong></a>. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><strong>Frequently Asked Questions (FAQs) </strong>&nbsp;</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>1. What are endpoint security blind spots?</strong>&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Endpoint security blind spots are areas where security teams have limited visibility into devices, applications, accounts, or activities. These gaps can allow attackers to establish access and move through an environment before ransomware is detected.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>2. How does ransomware evade detection?</strong> <br /> <br />Ransomware can evade detection by using legitimate remote-access tools, stolen credentials, fileless techniques, and vulnerable drivers. Attackers may also remain inactive during the ransomware pre-execution phase to avoid triggering security alerts. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>3. What are common ransomware attack vectors?</strong>&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Common ransomware attack vectors include phishing emails, compromised credentials, vulnerable internet-facing systems, remote-access tools, third-party vendors, and exposed operational technology environments.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>4. How can organizations reduce ransomware risks on endpoints?</strong>&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Organizations can reduce risk by deploying EDR or advanced endpoint protection, enforcing MFA, applying least-privilege access, patching vulnerabilities, segmenting networks, and continuously monitoring endpoint activity. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>5. How can Cyble Titan help prevent ransomware attacks?</strong>&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><a href="https://titan.cyble.com/" target="_blank" rel="noreferrer noopener">Cyble Titan</a> combines behavioral detection, next-generation antivirus, endpoint telemetry, and Cyble Vision cyber threat intelligence. Its Blaze AI engine can analyze threats, prioritize alerts, and support automated containment and remediation to help security teams respond faster. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong><em>Media Disclaimer:</em></strong><em> This blog was compiled from publicly available advisories and open-source security reporting. It is provided for reference purposes only; readers bear full responsibility for their reliance on it.</em>&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p>The post <a rel="nofollow" href="https://cyble.com/blog/ransomware-attack-vectors-endpoint-blind-spots/">Endpoint Blind Spots: The 5 Places Ransomware Hides Before It Detonates</a> appeared first on <a rel="nofollow" href="https://cyble.com">Cyble</a>.</p>
+]]></description>
+		
+		
+		
+			</item>
+		<item>
+		<title>When the Attacker Wears Your Logo: Detecting and Taking Down Impersonation at AI Speed</title>
+		<link>https://cyble.com/blog/brand-impersonation-detection-takedown/</link>
+		
+		<dc:creator><![CDATA[Ashish Khaitan]]></dc:creator>
+		<pubDate>Wed, 19 Aug 2026 14:01:13 +0000</pubDate>
+				<category><![CDATA[Brand Monitoring]]></category>
+		<category><![CDATA[Cybersecurity]]></category>
+		<guid isPermaLink="false">https://cyble.com/?p=123650</guid>
+
+					<description><![CDATA[<p><img width="1200" height="600" src="https://cyble.com/wp-content/uploads/2026/08/Brand-impersonation-2-1.webp" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="Brand impersonation" decoding="async" srcset="https://cyble.com/wp-content/uploads/2026/08/Brand-impersonation-2-1.webp 1200w, https://cyble.com/wp-content/uploads/2026/08/Brand-impersonation-2-1-300x150.webp 300w, https://cyble.com/wp-content/uploads/2026/08/Brand-impersonation-2-1-1024x512.webp 1024w, https://cyble.com/wp-content/uploads/2026/08/Brand-impersonation-2-1-768x384.webp 768w" sizes="(max-width: 1200px) 100vw, 1200px" title="When the Attacker Wears Your Logo: Detecting and Taking Down Impersonation at AI Speed 16"></p>
+<p><!-- wp:paragraph --></p>
+<p>A company can have strong firewalls, modern endpoint protection, and carefully controlled access—and still find its brand being used as a weapon against customers, employees, and partners. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>That is the new reality of digital impersonation. Attackers can register lookalike domains, clone websites, create fake executive profiles, publish fraudulent job advertisements and imitate customer-support accounts without ever breaking into the legitimate organization.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The objective is pretty simple. Borrow the credibility that a trusted brand has already built and use it to make a scam look legitimate. For professional services, financial, legal, and consulting organizations, that risk can be particularly damaging because trust is central to the business model. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><strong>The Numbers Show Why Speed Matters</strong>&nbsp;</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>The scale of digital fraud makes slow brand-abuse response difficult to justify.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The<a href="https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf?origin-page=en-gb%2Fmagazine%2Fhigh-spend-deserves-a-high-security-spend-platform" target="_blank" rel="noreferrer noopener"> FBI's 2025 Internet Crime Report </a>recorded 1,008,597 complaints, marking the first time the Internet Crime Complaint Center (IC3) exceeded 1 million in a year. Reported losses reached $20.877 billion, up 26% from 2024. Phishing and spoofing were among the most frequently reported complaint types. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Business email compromise was even more costly, producing approximately $3.05 billion in reported losses from 24,768 complaints.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The <a href="https://www.ftc.gov/news-events/news/press-releases/2026/06/ftc-data-show-people-reported-losing-3-point-5-billion-imposter-scams-2025" target="_blank" rel="noreferrer noopener">Federal Trade Commission</a> provides another measure of the impersonation problem. Consumers reported $3.5 billion in losses to imposter scams during 2025, with nearly one in three fraud reports involving impersonation. People reported losing nearly $1 billion to business impersonators alone.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>These figures represent reported losses, not the full economic impact. Fraudulent domains and profiles can disappear quickly, victims may never report incidents, and reputational damage is difficult to quantify.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><strong>Professional Services Have More Than a Brand to Protect</strong>&nbsp;</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Consulting and professional services firms often handle sensitive client information, financial models, strategic plans, legal documents and confidential communications. That makes their identities valuable to criminals.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The legal sector provides a useful comparison. The American Bar Association's cybersecurity research has previously found that 29% of surveyed lawyers reported that their firms had experienced a security breach.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Impersonation adds another layer because the attacker may never enter the firm's network. A counterfeit website can steal credentials. A fake executive can request a payment. A fraudulent recruiter can collect applicant information. A fake support account can redirect customers to a malicious login page.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The brand becomes the attack surface.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><strong>Why Traditional Takedowns Become a Whack-a-Mole Exercise</strong>&nbsp;</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Conventional brand protection is often reactive. Someone discovers a suspicious domain, reports it to the registrar, contacts the hosting provider or social platform, and waits. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>That process can work—but it does not scale well against automated adversaries.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>By the time one fraudulent domain is removed, another may have appeared. A fake executive account can be recreated under a slightly different name. A phishing kit can be deployed against several brands simultaneously. Fraudsters can also move between websites, social networks, advertisements, application stores and messaging platforms.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Counting the number of takedowns therefore tells only part of the story. A more meaningful measurement is the time from discovery to verification and from verification to removal.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The shorter that window, the fewer opportunities an attacker has to reach victims.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><strong>What AI Changes</strong>&nbsp;</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Artificial intelligence has made impersonation faster, cheaper, and more convincing. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Attackers can generate polished phishing messages, translate campaigns for different markets, create synthetic personas, clone websites and produce increasingly convincing voice or video content. The FBI has also warned about scams involving AI-generated videos and spoofed websites used to create false legitimacy.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Europol's 2025 Internet Organised Crime Threat Assessment similarly described a cybercrime economy increasingly powered by stolen data, which can support fraud, ransomware, extortion and other criminal activity.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>That means defenders face an uncomfortable imbalance: criminals can create fraudulent content almost instantly, while organizations may still investigate abuse manually.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Brand security consequently must become faster without becoming careless.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><strong>The Most Common Brand-Abuse Tactics</strong>&nbsp;</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Security teams should watch for a broad range of impersonation signals, including:&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>Typosquatting:</strong> domains using misspellings or visually similar characters. </li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>Combosquatting:</strong> brand names combined with words such as “login,” “support” or “secure.” </li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>Fake social profiles:</strong> cloned executive, employee, or company accounts. </li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>Account takeovers:</strong> legitimate accounts hijacked and used to exploit an existing audience. </li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>Cloned websites:</strong> replicas designed to collect credentials or payment information. </li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>Fake mobile applications:</strong> counterfeit apps using familiar names, icons, or branding. </li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>Fraudulent marketplace listings:</strong> fake products or services presented as legitimate. </li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>Malicious QR codes:</strong> QR-based redirects leading victims to phishing infrastructure. </li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>AI-generated impersonation:</strong> synthetic voices, images, video, and written communications. </li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>Business email compromise:</strong> messages designed to trigger payments or sensitive disclosures. </li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>Fake customer-support accounts:</strong> fraudulent profiles responding to real customer complaints. </li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>Malicious search advertisements:</strong> paid placements directing users toward counterfeit sites. </li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>Fake recruitment campaigns:</strong> fraudulent jobs used to collect personal or financial information. </li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>Fake press releases:</strong> fabricated announcements intended to mislead customers, investors or the public. </li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>Dark-web brand abuse:</strong> stolen credentials, data, and brand-specific fraud resources circulating in criminal communities. </li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><strong>Conclusion</strong>&nbsp;</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Brand impersonation is no longer just a reputation issue—it can quickly become a pathway to phishing, fraud, credential theft, and customer harm. As AI enables attackers to create convincing fake websites, domains, social profiles, and campaigns at unprecedented speed, organizations need equally fast detection and response.  </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Cyble’s<a href="https://cyble.com/solutions/brand-intelligence/"> brand monitoring</a> and <a href="https://cyble.com/solutions/takedown-services/">takedown services</a> help organizations detect impersonation, validate malicious activity, and coordinate the removal of fraudulent assets before they can cause greater damage.  </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With continuous visibility and managed takedown support, Cyble helps security teams stay protected from brand threats and protect customer trust. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading {"level":5} --></p>
+<h5 class="wp-block-heading">See Cyble’s brand monitoring and takedown capabilities in action—<a href="https://cyble.com/request-demo/" target="_blank" rel="noreferrer noopener"><strong>request a demo today</strong></a>. </h5>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><strong>Frequently Asked Questions (FAQs) </strong>&nbsp;</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>1. What is brand impersonation in cybersecurity?</strong>&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Brand impersonation occurs when attackers imitate a legitimate company, executive, employee or digital channel to deceive customers, employees or business partners. Common examples include fake websites, lookalike domains, fraudulent social profiles, counterfeit applications and phishing emails.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>2. Why is AI making brand impersonation more dangerous?</strong>&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>AI allows attackers to create convincing emails, websites, social profiles, synthetic identities, voice messages and other fraudulent content much faster and at greater scale. This makes it harder for organizations to rely on manual monitoring and reactive investigations.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>3. What brand impersonation tactics should security teams monitor?</strong>&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Security teams should monitor for typosquatting and lookalike domains, fake executive profiles, cloned websites, counterfeit apps, fraudulent job postings, fake customer-support accounts, malicious advertisements, phishing campaigns, AI-generated impersonation, and brand abuse on underground platforms. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>4. Why is rapid takedown important for brand protection?</strong>&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A fraudulent website or social profile can cause harm within minutes by stealing credentials, collecting personal information, or redirecting payments. Faster verification and takedown reduce the amount of time attackers have to reach potential victims. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>5. Can smaller and mid-sized organizations also be targeted?</strong>&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Yes. Attackers are not limited to globally recognized brands. Smaller and mid-sized organizations can also be attractive targets because they may have fewer resources dedicated to continuous brand monitoring and digital risk management.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>6. How can Cyble help with brand impersonation?</strong>&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Cyble’s brand monitoring and digital risk protection capabilities help organizations identify suspicious domains, fake profiles, fraudulent websites and other forms of digital brand abuse across the online ecosystem. By bringing detection and threat intelligence together, Cyble can help security teams investigate impersonation faster and take action before fraudulent assets cause greater damage.&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading {"level":3} --></p>
+<h3 class="wp-block-heading"><strong>References</strong>&nbsp;</h3>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><a href="https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf?origin-page=en-gb%2Fmagazine%2Fhigh-spend-deserves-a-high-security-spend-platform">FBI 2025 Internet Crime Report </a></li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><a href="https://www.ftc.gov/news-events/news/press-releases/2026/06/ftc-data-show-people-reported-losing-3-point-5-billion-imposter-scams-2025" target="_blank" rel="noreferrer noopener">FTC Data Show People Reported Losing $3.5 Billion to Imposter Scams in 2025</a> </li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p><em>Media Disclaimer: This blog was compiled from publicly available government advisories and open-source security reporting. It is provided for reference purposes only; readers bear full responsibility for their reliance on it.</em>&nbsp;</p>
+<p><!-- /wp:paragraph --></p>
+<p>The post <a rel="nofollow" href="https://cyble.com/blog/brand-impersonation-detection-takedown/">When the Attacker Wears Your Logo: Detecting and Taking Down Impersonation at AI Speed</a> appeared first on <a rel="nofollow" href="https://cyble.com">Cyble</a>.</p>
+]]></description>
+		
+		
+		
+			</item>
+		<item>
+		<title>Brand Impersonation Takedown: From Whack-a-Mole to Managed Response</title>
+		<link>https://cyble.com/blog/brand-impersonation-takedown-managed-response/</link>
+		
+		<dc:creator><![CDATA[Mihir Bagwe]]></dc:creator>
+		<pubDate>Mon, 17 Aug 2026 14:32:41 +0000</pubDate>
+				<category><![CDATA[Brand Monitoring]]></category>
+		<category><![CDATA[Dark Web Monitoring]]></category>
+		<category><![CDATA[Executive Monitoring]]></category>
+		<category><![CDATA[Fraud]]></category>
+		<category><![CDATA[Phishing]]></category>
+		<category><![CDATA[Social Engineering]]></category>
+		<category><![CDATA[Brand Impersonation]]></category>
+		<category><![CDATA[Managed Takedown]]></category>
+		<category><![CDATA[Takedown Services]]></category>
+		<guid isPermaLink="false">https://cyble.com/?p=123560</guid>
+
+					<description><![CDATA[<p><img width="1200" height="600" src="https://cyble.com/wp-content/uploads/2026/08/blog-banner-managed-takedown.png" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="Brand Impersonation Takedown, Managed Takedown" decoding="async" srcset="https://cyble.com/wp-content/uploads/2026/08/blog-banner-managed-takedown.png 1200w, https://cyble.com/wp-content/uploads/2026/08/blog-banner-managed-takedown-300x150.png 300w, https://cyble.com/wp-content/uploads/2026/08/blog-banner-managed-takedown-1024x512.png 1024w, https://cyble.com/wp-content/uploads/2026/08/blog-banner-managed-takedown-768x384.png 768w" sizes="(max-width: 1200px) 100vw, 1200px" title="Brand Impersonation Takedown: From Whack-a-Mole to Managed Response 18"></p>
+<p><!-- wp:paragraph --></p>
+<p>Manual brand impersonation takedowns fail because attackers move faster than ticket-based abuse reports can resolve — phishing pages and fake executive profiles often do their damage within hours of going live, while manual removal can take days. A managed takedown program pairs continuous, verified monitoring with pre-authorized removal (in-certain cases), cutting the exposure window from days to hours. This matters most for consulting and professional services firms, where a spoofed domain or fake executive profile can compromise the client trust the business is built on.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">How UNC3753 targeted US professional services firms in 2026</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Between January and May of 2026, Google's Mandiant threat intelligence team tracked a financially motivated extortion campaign — attributed to a group known as UNC3753, or "Luna Moth," or "Silent Ransom Group" — working its way through dozens of professional, legal, and financial services organizations across the United States. The approach was almost old-fashioned. A benign-looking email about a data migration or an unpaid invoice, a follow-up phone call from someone posing as IT support, and a request to install "remote monitoring" software to fix the problem. No exploit. No malware dropped on day one. Just a firm's own trust in its brand and its people, turned against it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>It's a useful — if unsettling — reminder of why brand and executive impersonation isn't a side issue for professional services firms. It's often the <em>entry point</em>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">How much does phishing and impersonation actually cost US businesses</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>The scale of the problem, in dollar terms, is no longer subtle. The FBI's Internet Crime Complaint Center logged just over one million complaints in 2025 — the highest volume in the program's history — with phishing and spoofing making up roughly a fifth of all reports. Losses tied to phishing alone roughly tripled year-over-year, and business email compromise, which almost always starts with an attacker impersonating someone the victim trusts, accounted for over $3 billion in reported losses on its own. The mechanics of that damage matter too: the overwhelming majority of BEC losses move through wire transfer or ACH, rails that are fast, largely irreversible, and unforgiving of a slow response.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Put those two facts together and a pattern emerges. Impersonation attacks — of a brand, a partner, an executive, a vendor invoice — aren't rare or exotic. They're the default opening move. And once the fraudulent domain, profile, or listing is live, the clock the defender is racing isn't measured in days. It's measured in hours, sometimes less, before money moves or credentials are harvested.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Why are consulting and professional services firms specifically targeted?</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Professional services firms occupy a strange position in the threat landscape. They're rarely the most technically fortified target, but they're consistently one of the most <em>valuable</em> ones. A consulting firm doesn't just protect its own data — it holds engagement records, financial models, and confidential strategy documents belonging to dozens of clients across industries. About 29% of U.S. law firms reported having experienced a security breach at some point, according to the ABA's most recent Legal Technology Survey — up from 25% just two years earlier. The same dynamic applies to consultancies. The firm is a single point of entry into a much larger web of client relationships.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>That's precisely the exposure described in <a href="https://cyble.com/case-studies/us-consulting-firm-cyber-resilience-cyble/">Cyble's case study of a U.S. consulting organization</a> managing highly sensitive engagement data, confidential client information, and a large, distributed workforce operating across the country. As the case study describes it, the firm's brand, executives, and digital infrastructure were frequent targets specifically <em>because</em> of the trust clients placed in them as an advisor. Senior partners were likely of being impersonated through fake social profiles and spoofed domains. Fraudulent job postings and phishing campaigns leaned on the firm's own credibility to look legitimate. The attacker doesn't need to breach the firm's network if a client can be convinced, through a look-alike domain or a cloned executive profile, to simply hand over what the attacker wants.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>That's the mechanism UNC3753 exploited nationally in 2026, and it's the exact exposure this consulting firm was trying to close.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading {"level":5} --></p>
+<h5 class="wp-block-heading">Also read: <a href="https://cyble.com/blog/ransomware-threats-in-america-h1-2026/" target="_blank" rel="noreferrer noopener">Ransomware Threats in the Americas H1 2026: Dissecting the Regional Attack Patterns and Dominant Actors</a></h5>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">What is the "whack-a-mole" problem in brand protection?</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here's where most brand protection programs quietly fail, and it isn't a detection problem — it's a speed problem.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A typical manual takedown workflow looks something like this: someone on the security or marketing team spots a phishing page or a fake LinkedIn profile impersonating a partner. They file an abuse report with the registrar or the platform. They wait. Maybe they follow up. Eventually, the page comes down — but by then, a new one has often already gone live, sometimes registered by the same actor under a slightly different domain.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This was exactly the challenge the consulting firm faced before its engagement with Cyble. Identifying and removing phishing pages, fraudulent job postings, and impersonating domains was, in the case study's own words, reactive and resource-intensive, leaving the brand exposed for longer than the firm considered acceptable. It's a program that <em>looks</em> active — tickets filed, pages eventually removed — while the actual window of exposure, the hours where a client or job candidate could act on the fake page, stays wide open. Volume of takedowns filed is an easy number to report. Speed of resolution is the number that actually protects anyone.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">What does managed takedown response actually involve</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>The shift the case study describes isn't just "faster takedowns" — it's a change in the operating model, from reactive point-solution to continuous, managed coverage. Three pieces work together in the deployment:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>Brand and Executive Monitoring</strong> continuously scans for phishing domains, fraudulent job postings, and impersonation attempts using the firm's name, alongside dedicated monitoring of senior leadership profiles across social platforms — catching the fake partner LinkedIn account or spoofed domain before it's had time to circulate.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Verification before escalation</strong> means the security team isn't drowning in unconfirmed alerts. Threats are validated as genuine before they ever reach someone's desk, which is what separates consolidated intelligence from just another noisy dashboard.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Managed Takedown Services</strong> then handle the actual removal — confirmed phishing pages, impersonating domains, and fraudulent listings — without the internal team having to individually chase registrars and platforms one abuse ticket at a time.</li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>The outcome is a meaningfully shortened window between detection and removal — turning a slow, manual, ticket-by-ticket grind into something closer to continuous coverage. That's the real distinction between a takedown <em>service</em> and a takedown <em>program</em>: one reacts when someone happens to notice a fake page; the other is built to notice, verify, and resolve on a timeline that assumes attackers move fast, because they do.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Why client trust is the real asset at risk</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>For a consulting firm, the financial cost of an impersonation attack is rarely the headline risk. The deeper cost is what it does to the relationship a firm's entire business is built on. When a client, a job candidate, or a prospective hire can't tell the difference between a legitimate email from the firm and a spoofed one, the firm's advisory credibility — the thing it's actually selling — starts to erode. That's a slower, quieter kind of damage than a wire fraud loss, but for a professional services firm, it may be the more expensive one.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The lesson from both the national threat data and this specific engagement is the same – brand and executive impersonation isn't a marketing nuisance to be cleaned up occasionally. It's a live attack surface, moving at a speed that manual, ad hoc takedown processes were never built to match. Firms that treat it that way — with continuous monitoring, verified alerts, and managed resolution — are the ones that keep the exposure window measured in hours instead of days.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator {"className":"is-style-default"} --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity is-style-default"/>
+<!-- /wp:separator --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Frequently asked questions (FAQs)</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:heading {"level":6} --></p>
+<h6 class="wp-block-heading"><strong>What is a brand impersonation takedown service?</strong></h6>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>A brand impersonation takedown service identifies fraudulent domains, phishing pages, fake social media profiles, and impersonating job listings that misuse a company's name or logo, then works with registrars, hosting providers, and platforms to have that content removed.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading {"level":6} --></p>
+<h6 class="wp-block-heading"><strong>How long does it take to take down a phishing site?</strong></h6>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Timelines vary by registrar and hosting provider, but manual, ticket-based takedown requests commonly take days to resolve. Managed takedown programs that pre-verify threats and maintain direct relationships with providers can shorten that window to hours.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading {"level":6} --></p>
+<h6 class="wp-block-heading"><strong>Why do manual takedown processes fail against brand impersonation?</strong></h6>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Manual processes fail because they're reactive: a person has to notice the fake page, file a report, and wait for a third party to act, while attackers can register replacement domains faster than any single report gets resolved. The volume of tickets filed can look productive even while the actual exposure window stays open.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading {"level":6} --></p>
+<h6 class="wp-block-heading"><strong>What's the difference between takedown volume and takedown speed?</strong></h6>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Takedown volume measures how many fraudulent pages were reported or removed over time. Takedown speed measures how quickly a live threat is detected, verified, and taken down after it appears. Speed is the metric that actually limits damage, since most harm from a phishing page happens in its first hours online.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading {"level":6} --></p>
+<h6 class="wp-block-heading"><strong>How can consulting and professional services firms protect executives from impersonation?</strong></h6>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Dedicated <a href="https://thecyberexpress.com/benefits-of-executive-monitoring-platforms/" target="_blank" rel="noreferrer noopener">executive monitoring</a> tracks senior leaders' names and likenesses across social platforms and the web to catch fake profiles, spoofed communications, and impersonation attempts early, ideally paired with managed takedown so confirmed threats are removed without requiring the executive or internal team to handle it themselves.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Sources:</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><em>FBI Internet Crime Complaint Center, 2025 Internet Crime Report;</em><br /><em>Cyble, "How Cyble Delivered Unified Multi-Layered Threat Intelligence to a U.S. Consulting Organization";</em><br /><em>Google/Mandiant, "Ongoing Targeted Campaign Against US Law Firms" (2026);</em><br /><em>American Bar Association Legal Technology Survey.</em></p>
+<p><!-- /wp:paragraph --></p>
+<p>The post <a rel="nofollow" href="https://cyble.com/blog/brand-impersonation-takedown-managed-response/">Brand Impersonation Takedown: From Whack-a-Mole to Managed Response</a> appeared first on <a rel="nofollow" href="https://cyble.com">Cyble</a>.</p>
+]]></description>
+		
+		
+		
+			</item>
+		<item>
+		<title>Ransomware Threats in the Americas H1 2026: Dissecting the Regional Attack Patterns and Dominant Actors</title>
+		<link>https://cyble.com/blog/ransomware-threats-in-america-h1-2026/</link>
+		
+		<dc:creator><![CDATA[Mihir Bagwe]]></dc:creator>
+		<pubDate>Fri, 14 Aug 2026 14:22:51 +0000</pubDate>
+				<category><![CDATA[Ransomware Insights]]></category>
+		<category><![CDATA[Dark Web Monitoring]]></category>
+		<category><![CDATA[Ransomware]]></category>
+		<category><![CDATA[Threat Actor]]></category>
+		<category><![CDATA[North America]]></category>
+		<category><![CDATA[Ransomware gang]]></category>
+		<category><![CDATA[South America]]></category>
+		<category><![CDATA[Threat Actors]]></category>
+		<guid isPermaLink="false">https://cyble.com/?p=123521</guid>
+
+					<description><![CDATA[<p><img width="1200" height="600" src="https://cyble.com/wp-content/uploads/2026/08/Ransomware-Threats-in-Americas-2026-H1.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="Ransomware Threats, Americas, America," decoding="async" srcset="https://cyble.com/wp-content/uploads/2026/08/Ransomware-Threats-in-Americas-2026-H1.jpg 1200w, https://cyble.com/wp-content/uploads/2026/08/Ransomware-Threats-in-Americas-2026-H1-300x150.jpg 300w, https://cyble.com/wp-content/uploads/2026/08/Ransomware-Threats-in-Americas-2026-H1-1024x512.jpg 1024w, https://cyble.com/wp-content/uploads/2026/08/Ransomware-Threats-in-Americas-2026-H1-768x384.jpg 768w" sizes="(max-width: 1200px) 100vw, 1200px" title="Ransomware Threats in the Americas H1 2026: Dissecting the Regional Attack Patterns and Dominant Actors 20"></p>
+<p><!-- wp:paragraph --></p>
+<p>The Americas carried the heaviest ransomware burden of any region on the planet in the first half of 2026. According to Cyble Research and Intelligence Labs (CRIL), North and South America combined experienced <strong>2,188 documented ransomware attacks</strong> between January and June 2026.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>That single figure — 2,188 attacks — represents <strong>more than 57% of the 3,836 ransomware incidents CRIL tracked worldwide</strong>, making the Americas the undisputed center of gravity for global ransomware operations.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But the Americas is not a single threat theatre — it is two. North America alone absorbed <strong>1,981 attacks</strong>, driven by a mature, multi-group Ransomware-as-a-Service (RaaS) economy competing for market share. South America, by contrast, recorded <strong>207 attacks</strong> concentrated around a much smaller set of operators, with one group — The Gentlemen — claiming nearly a quarter of all regional incidents outright. Understanding the Americas means understanding both halves of that story: a saturated northern market and a consolidating southern one.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">North America vs. South America: Two Distinct Ransomware Landscapes</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Security leaders operating across the hemisphere cannot apply a single threat model to both sub-regions. The data shows meaningfully different attacker behavior, concentration, and monetization strategy north and south of the equator.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table {"align":"center","className":"is-style-stripes"} --></p>
+<figure class="wp-block-table aligncenter is-style-stripes">
+<table class="has-fixed-layout">
+<tbody>
+<tr>
+<td><strong>Metric</strong></td>
+<td class="has-text-align-center" data-align="center"><strong>North America</strong></td>
+<td class="has-text-align-center" data-align="center"><strong>South America</strong></td>
+</tr>
+<tr>
+<td><strong>Ransomware Attacks</strong></td>
+<td class="has-text-align-center" data-align="center">1,981</td>
+<td class="has-text-align-center" data-align="center">207</td>
+</tr>
+<tr>
+<td><strong>Dominant Ransomware Actor</strong></td>
+<td class="has-text-align-center" data-align="center">Qilin (370 attacks)</td>
+<td class="has-text-align-center" data-align="center">The Gentlemen (46 attacks)</td>
+</tr>
+<tr>
+<td><strong>Top Targeted Sector</strong></td>
+<td class="has-text-align-center" data-align="center">Construction</td>
+<td class="has-text-align-center" data-align="center">IT &amp; ITES</td>
+</tr>
+<tr>
+<td><strong>Top Targeted Nation</strong></td>
+<td class="has-text-align-center" data-align="center">United States (1,721)</td>
+<td class="has-text-align-center" data-align="center">Brazil (71)</td>
+</tr>
+<tr>
+<td><strong>Distinct Ransomware Groups Active</strong></td>
+<td class="has-text-align-center" data-align="center">50+</td>
+<td class="has-text-align-center" data-align="center">30+</td>
+</tr>
+<tr>
+<td><strong>% of Attacks from Top 3 Groups</strong></td>
+<td class="has-text-align-center" data-align="center">~40% (Qilin, Akira, INC Ransom)</td>
+<td class="has-text-align-center" data-align="center">~57.5% (The Gentlemen, Qilin, LockBit)</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Why the split matters:</strong> North America's threat landscape is a genuine marketplace — dozens of RaaS operators compete for affiliate loyalty, and no single group commands more than a fifth of total volume. South America's landscape is more consolidated, with three groups controlling well over half of all attacks.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For defenders, that means North American organizations need broad-spectrum threat intelligence covering a long tail of active groups, while South American organizations can build highly specific defenses against a short list of named adversaries.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">The Five Dominant Ransomware Groups Targeting Americas</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Across both sub-regions combined, five ransomware operators account for the overwhelming share of documented activity: <strong>Qilin, Akira, INC Ransom, Dragonforce, and The Gentlemen</strong>. Together, these five groups are linked to roughly <strong>1,148 of the Americas' 2,188 attacks — approximately 52.5% of all regional ransomware activity.</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"lightbox":{"enabled":true},"id":123555,"width":"578px","height":"auto","aspectRatio":"1.8319013821441912","sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large is-resized"><img src="https://cyble.com/wp-content/uploads/2026/08/top_ransomware_groups_Americas_2026H1-1024x559.png" alt="ransomware threats, ransomware threats in Americas, ransomware threats in Americas 2026, Qilin" class="wp-image-123555" style="aspect-ratio:1.8319013821441912;width:578px;height:auto"/><figcaption class="wp-element-caption">Fig. Top five ransomware groups in Americas for H1 2026 (Source: CRIL)</figcaption></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:heading {"level":3} --></p>
+<h3 class="wp-block-heading"><strong>1. Qilin: </strong>The Biggest Ransomware Threat in the Americas</h3>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Attack Volume:</strong> 410 documented incidents across the Americas (370 in North America, 40 in South America) — 18.7% of the regional total.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Qilin is the single most prolific ransomware actor operating in the hemisphere, and its dominance is not evenly spread — it is concentrated hardest in the United States.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Geographic Concentration:</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>United States:</strong> 323 attacks (the single largest country-level concentration of any group, anywhere)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Canada:</strong> 33 attacks</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Argentina:</strong> 13 attacks</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Broader South America:</strong> 40 attacks</li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Worldwide Sectoral Targeting:</strong> Qilin's targeting logic is deliberate rather than opportunistic:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>Construction:</strong> 108 incidents (primary focus)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Professional Services:</strong> 90 incidents (legal, accounting, consulting firms)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Manufacturing:</strong> 67 incidents</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Healthcare:</strong> 53 incidents</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>IT &amp; ITES:</strong> 43 incidents</li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Operational Characteristics:</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Qilin's affiliate model is built for scale. Initial access brokers handle reconnaissance and compromise, mid-tier operators manage lateral movement, and dedicated crews execute encryption and exfiltration. This compartmentalization lets Qilin run dozens of concurrent operations across the United States without any single point of failure. The group's near-total dominance of the American ransomware market (323 of 1,721 US attacks) suggests either an unusually large affiliate roster or a payout structure attractive enough to pull operators away from competing platforms.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Why Qilin Dominates:</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>Affiliate Loyalty:</strong> Competitive payout splits keep operators recruiting and retaining talent</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Rapid Exploit Weaponization:</strong> Fast turnaround from vulnerability disclosure to active exploitation</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Sector Fluency:</strong> Deep understanding of which industries face the highest downtime cost</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Established Data Brokerage Ties:</strong> Exfiltrated data reliably reaches monetization channels</li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Americas Security Implications:</strong> Any organization in construction, professional services, manufacturing, or healthcare operating in the US or Canada should treat Qilin as a primary named threat, not a generic ransomware risk.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading {"level":3} --></p>
+<h3 class="wp-block-heading"><strong>2. Akira:</strong> North America's Persistent Operator</h3>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Attack Volume:</strong> 268 documented incidents, almost entirely concentrated in North America — 12.2% of the regional total</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><a href="https://thecyberexpress.com/akira-ransomware-group-cisa-warning/">Akira</a> is the second most active group in the Americas, and unlike Qilin, its footprint is almost exclusively North American. CRIL's data shows Akira's South American presence is negligible to date.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Geographic Concentration:</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>United States:</strong> 247 attacks (92% of Akira's total Americas volume)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Canada:</strong> Remaining North American activity</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>South America:</strong> Minimal to no confirmed activity</li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Worldwide Sectoral Targeting:</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>Construction:</strong> 57 incidents</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Manufacturing:</strong> 54 incidents</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Professional Services:</strong> 47 incidents</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Consumer Goods:</strong> 19 incidents</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>IT &amp; ITES:</strong> 16 incidents</li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Operational Characteristics:</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Akira has built a reliable playbook around compromising small-to-medium-sized businesses through unpatched public-facing network devices, then pivoting into construction and manufacturing environments where downtime tolerance is lowest. The group's consistency — rather than explosive growth — is its defining trait; it has neither the explosive scale of Qilin nor the geographic diversification of The Gentlemen, but it reliably executes against the same target profile month after month.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Americas Security Implications:</strong> North American SMBs in construction, manufacturing, and professional services should assume Akira is actively scanning for exposed remote access infrastructure. Its South American absence should not be mistaken for permanence — RaaS groups expand geographically once North American markets saturate.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading {"level":3} --></p>
+<h3 class="wp-block-heading"><strong>3. INC Ransom:</strong> The Law-Firm Specialist</h3>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Attack Volume:</strong> 171 documented incidents (164 in North America, 7 in South America) — 7.8% of the regional total</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>INC Ransom distinguishes itself through sector specialization rather than volume. The group shows a clear, repeated preference for Professional Services organizations — particularly law firms — leveraging the sensitive, high-stakes nature of legal client data.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Geographic Concentration:</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>United States:</strong> 154 attacks</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Canada:</strong> 6 attacks</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Brazil:</strong> 4 attacks</li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Worldwide Sectoral Targeting:</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>Professional Services:</strong> 58 incidents (primary focus, with a documented preference for law firms)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Construction:</strong> 27 incidents</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Manufacturing:</strong> 26 incidents</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Healthcare:</strong> 21 incidents</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Organisation/Non-profit:</strong> 12 incidents</li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Operational Characteristics:</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>INC Ransom's rapid operational pace and consistent targeting of law firms, healthcare providers, and transportation/energy operators reflects a strategy built entirely around double-extortion leverage. The sensitivity of the data matters more than the size of the victim. A regional law firm holding privileged client communications is, to INC Ransom, a more valuable target than a much larger manufacturer with less sensitive data.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Americas Security Implications:</strong> Law firms, accounting practices, and consulting shops across the US, Canada, and Brazil should assume INC Ransom is actively targeting client confidentiality as leverage — not just encrypting file servers for disruption.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading {"level":3} --></p>
+<h3 class="wp-block-heading"><strong>4. Dragonforce:</strong> The Cross-Border Supply-Chain Operator</h3>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Attack Volume:</strong> 153 documented incidents (148 in North America, 5 in South America) — 7.0% of the regional total</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Dragonforce maintains an aggressive operational tempo focused heavily on the United States, with a strategy that suggests supply-chain-aware targeting rather than random opportunism.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Geographic Concentration:</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>United States:</strong> 135 attacks</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Canada:</strong> 11 attacks</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>South America:</strong> 5 attacks</li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Worldwide Sectoral Targeting:</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>Construction:</strong> 48 incidents</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Manufacturing:</strong> 31 incidents</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Professional Services:</strong> 28 incidents</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>IT &amp; ITES:</strong> 18 incidents</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>BFSI:</strong> 17 incidents</li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Operational Characteristics:</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Dragonforce's manufacturing and construction focus mirrors Qilin's and Akira's playbooks, but its concentration in the US combined with limited-but-present South American activity hints at interest in transnational manufacturing supply chains. North American organizations with manufacturing partners or subsidiaries in Latin America should treat this as a lateral-access risk, not just a direct-targeting one.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Americas Security Implications:</strong> Manufacturers and construction firms with cross-border operations — a common structure across USMCA supply chains — should extend Dragonforce-specific monitoring to subsidiaries and vendors, not just headquarters networks.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading {"level":3} --></p>
+<h3 class="wp-block-heading"><strong>5. The Gentlemen:</strong> South America's Dominant Threat</h3>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Attack Volume:</strong> 146 documented incidents (100 in North America, 46 in South America) — 6.7% of the regional total, but the <strong>single most active ransomware group in South America specifically.</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>While The Gentlemen rank fifth across the combined Americas, they are the #1 threat actor in South America on their own — responsible for roughly 22% of every ransomware attack recorded in that sub-region.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Geographic Concentration:</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>United States:</strong> 77 attacks</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>North America:</strong> 100 attacks</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Brazil:</strong> 15 attacks</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>South America:</strong> 46 attacks (largest single-group share in the sub-region)</li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Worldwide Sectoral Targeting:</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>Manufacturing:</strong> 56 incidents</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Construction:</strong> 45 incidents</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Healthcare:</strong> 37 incidents</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>IT &amp; ITES:</strong> 36 incidents</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Consumer Goods:</strong> 34 incidents</li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Operational Characteristics:</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The Gentlemen are a relatively new operator that has achieved outsized scale in a short window, and their South American concentration is the most important regional signal in this dataset. Unlike Qilin or Akira — which built North American dominance first and are only beginning to diversify — The Gentlemen appear to have prioritized South America as a primary theatre from early in their operational life, an unusual strategic choice that may reflect lower defensive maturity, less aggressive law enforcement cooperation, or simply less competitive pressure from other RaaS operators in the sub-region.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Americas Security Implications:</strong> South American organizations — especially in healthcare, manufacturing, and IT services — should treat The Gentlemen as their single highest-priority named adversary. North American organizations should not discount them either; 100 US-focused attacks is a substantial footprint for a group still building its brand.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":123081,"width":"595px","height":"auto","aspectRatio":"1.7902599342694951","sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large is-resized"><img src="https://cyble.com/wp-content/uploads/2026/08/Global-Threat-Landscape-H1-2026_LI-Banner-1024x572.jpg" alt="" class="wp-image-123081" style="aspect-ratio:1.7902599342694951;width:595px;height:auto"/></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:heading {"level":3} --></p>
+<h3 class="wp-block-heading"><strong>Other Notable Threats: </strong>Play, LockBit, and CL0P</h3>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Three additional groups warrant inclusion in any Americas threat model:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>Play (144 attacks, North America only):</strong> Continues its "Big Game Hunting" approach layered with high-volume SMB attacks via unpatched public-facing network devices, concentrated almost entirely on US and Canadian construction, professional services, and manufacturing targets.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>LockBit (80 attacks combined — 47 in North America, 33 in South America):</strong> Despite sustained international law enforcement pressure and repeated takedown attempts, LockBit remains operationally resilient across both sub-regions, notably compromising Chile's Clínica Dávila in South America.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>CL0P (93 attacks combined — 91 in North America, 2 in South America):</strong> Operated differently from its peers, executing a large-scale campaign concentrated in January and February 2026 that exploited a single zero-day vulnerability across hundreds of organizations at once — reminiscent of the group's historical MOVEit campaign.</li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:heading {"level":5} --></p>
+<h5 class="wp-block-heading"><strong>Also read: <a href="https://cyble.com/blog/most-active-threat-actors-h1-2026/">The Most Active Threat Actors of H1 2026</a></strong></h5>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">The Five Most Targeted Nations in the Americas</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:image {"lightbox":{"enabled":true},"id":123556,"width":"576px","height":"auto","sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large is-resized"><img src="https://cyble.com/wp-content/uploads/2026/08/most_targeted_nations_Americas_2026H1-1024x583.png" alt="ransomware threats, ransomware threats in Americas, ransomware threats in Americas 2026, Qilin" class="wp-image-123556" style="width:576px;height:auto"/><figcaption class="wp-element-caption">Fig. Most targeted countries in Americas for H1 2026 (Source: Cyble)</figcaption></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:heading {"level":3} --></p>
+<h3 class="wp-block-heading"><strong>United States:</strong> The Global Ransomware Epicenter</h3>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Attack Volume:</strong> 1,721 ransomware attacks — 78.7% of all Americas ransomware activity, and roughly 45% of every ransomware attack recorded worldwide.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>No other country on Earth comes close to the volume of ransomware activity absorbed by the United States in H1 2026. The country functions as the default target for nearly every major RaaS operator active today.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Threat Actor Concentration:</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>Qilin:</strong> 323 attacks</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Akira:</strong> 247 attacks</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>INC Ransom:</strong> 154 attacks</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Dragonforce:</strong> 135 attacks</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Play:</strong> 134 attacks</li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Sectoral Breakdown:</strong> Manufacturing, Professional Services, Construction, and Healthcare bear the brunt, consistent with the broader North American pattern of operationally sensitive, low-downtime-tolerance industries.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading {"level":4} --></p>
+<h4 class="wp-block-heading">Why the United States Faces Maximum Pressure</h4>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>The scale of the US economy, its dense concentration of mid-market manufacturers, law firms, and healthcare providers, and its comparatively high ransom-payment history combine to make it the most economically rational target for every major ransomware operator. US organizations also frequently anchor cross-border supply chains stretching into Canada, Mexico, and South America — meaning a US compromise can cascade into lateral access against hemispheric partners.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Defensive Priority:</strong> US organizations across construction, manufacturing, professional services, and healthcare should assume Qilin, Akira, INC Ransom, Dragonforce, Play, and The Gentlemen are all actively scanning for exploitable entry points into their networks simultaneously — not sequentially.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading {"level":3} --></p>
+<h3 class="wp-block-heading"><strong>Canada:</strong> The Cross-Border Extension</h3>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Attack Volume:</strong> 179 ransomware attacks — 8.2% of the regional total.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Canada's threat profile closely tracks the United States, reflecting deep economic integration and shared supply chains rather than a distinct targeting logic of its own.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Sectoral Breakdown:</strong> Manufacturing, professional services, and construction dominate, mirroring the US pattern almost directly.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading {"level":4} --></p>
+<h4 class="wp-block-heading">Why Canada Faces Sustained Pressure</h4>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Canadian organizations are frequently subsidiaries, suppliers, or joint-venture partners of US enterprises, which means the same RaaS groups saturating the US market extend naturally northward. Cross-border manufacturing in particular creates lateral access opportunities that Dragonforce and Akira appear well-positioned to exploit.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Defensive Priority:</strong> Canadian organizations should not assume distance from US headquarters provides insulation — the same threat actors, exploiting the same vulnerability classes, are already active on both sides of the border.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading {"level":3} --></p>
+<h3 class="wp-block-heading"><strong>Brazil:</strong> The Financial Malware and Ransomware Convergence Point</h3>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Attack Volume:</strong> 71 ransomware attacks — 3.2% of the regional total, but the largest single concentration in South America.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Brazil represents South America's most complex threat environment, combining traditional ransomware pressure with a maturing, sophisticated financial malware ecosystem.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Threat Actor Concentration:</strong> The Gentlemen (15 attacks), LockBit, and a fragmented tail of smaller operators.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Sectoral Breakdown:</strong> Government &amp; Law Enforcement, BFSI, and Healthcare are the most consistently targeted sectors.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading {"level":4} --></p>
+<h4 class="wp-block-heading">Why Brazil Faces a Dual Threat</h4>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Beyond ransomware, Brazil emerged in H1 2026 as a focal point for new Android banking trojan families — TCLBANKER and BTMOB RAT — which use self-propagation, evasion techniques, and Malware-as-a-Service (MaaS) distribution models to target banking and cryptocurrency users directly. Brazil also suffered an alleged 250-million-record breach of Serasa, one of the country's largest credit bureaus, alongside an access sale allegedly targeting the Central Bank of Brazil — a listing that, if genuine, represents one of the most significant initial-access offerings tracked anywhere in the report.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Defensive Priority:</strong> Brazilian financial institutions should treat mobile banking malware and ransomware as converging risks rather than separate problems — the same underground economy is monetizing both. Government and BFSI entities should assume access-broker listings referencing critical national infrastructure require immediate incident-response-level validation, not routine monitoring.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading {"level":3} --></p>
+<h3 class="wp-block-heading"><strong>Mexico: </strong>The Emerging Nearshoring Risk</h3>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Attack Volume:</strong> 39 ransomware attacks — 1.8% of the regional total.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Mexico's attack volume is meaningfully lower than the US, Canada, or Brazil, but its position within North American manufacturing supply chains — accelerated by ongoing nearshoring trends — makes it a nation to watch closely rather than dismiss.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading {"level":4} --></p>
+<h4 class="wp-block-heading">Why Mexico Warrants Increased Attention</h4>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>As global manufacturers continue relocating production closer to the US market, Mexican facilities increasingly sit inside the same supply chains that Dragonforce, Akira, and Qilin already target aggressively north of the border. Lower current attack volume may reflect earlier-stage targeting rather than lower risk — a pattern security teams should not mistake for durable safety.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Defensive Priority:</strong> Manufacturers with Mexican operations should extend the same OT/IT segmentation and vulnerability management discipline applied to US and Canadian facilities to their Mexican sites, rather than treating them as lower priority.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading {"level":3} --></p>
+<h3 class="wp-block-heading"><strong>Colombia: </strong>Where Hacktivism Meets Cybercrime</h3>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Attack Volume:</strong> 33 ransomware attacks — 1.5% of the regional total.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Colombia's ransomware volume is modest, but the country stands out for the density of ideologically motivated activity layered on top of financially driven attacks.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading {"level":4} --></p>
+<h4 class="wp-block-heading">Why Colombia Faces a Blended Threat</h4>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Groups such as <strong>Anonymous Colombia (#OpColombia)</strong> ran active campaigns throughout H1 2026 blending website defacement, DDoS attacks, and data leak activity — consistent with the broader South American pattern in which hacktivist-branded channels frequently overlap with financially motivated cybercrime infrastructure.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Defensive Priority:</strong> Colombian government and law enforcement entities — the most frequently targeted sector across South America overall — should treat hacktivist claims as credible threat intelligence signals rather than dismissing them as purely ideological noise.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Where Americas Organizations Face Maximum Risk: A Sectoral Analysis</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:heading {"level":3} --></p>
+<h3 class="wp-block-heading"><strong>Professional Services:</strong> One of the Top Targets</h3>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Attack Volume:</strong> The second most heavily impacted sector in North America.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Professional services firms — law, accounting, and consulting practices — are one of the top jobs on North America's ransomware target list, driven overwhelmingly by INC Ransom and AiLock's aggressive targeting of client-confidential data.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading {"level":4} --></p>
+<h4 class="wp-block-heading">Why Professional Services Are Targeted</h4>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:list {"ordered":true,"start":1} --></p>
+<ol start="1" class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>Privileged Data Concentration:</strong> Legal privilege and client confidentiality create existential regulatory and reputational exposure that threat actors exploit for maximum ransom leverage.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Regulatory Pressure:</strong> Breach notification requirements incentivize rapid ransom payment to avoid compounding disclosure penalties.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Trust-Based Business Model:</strong> A single confirmed breach can permanently damage client relationships built entirely on confidentiality.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Documented Actor Preference:</strong> INC Ransom has shown a specific, repeated preference for law firms — this is not incidental targeting.</li>
+<p><!-- /wp:list-item --></ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Notable Incident Pattern:</strong> AiLock's activity stood out for a coordinated wave of victim disclosures on a single day — March 3, 2026 — a pattern consistent with mass-exploitation of a shared vulnerability rather than individually researched targeting.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Defensive Recommendations:</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li>Segregate client data on separate network segments with distinct, audited access controls</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Deploy data loss prevention (DLP) with aggressive egress monitoring for client-data exfiltration</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Maintain comprehensive access logs for all sensitive client-data touchpoints</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Evaluate ransomware-specific cyber insurance addressing confidentiality exposure</li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:heading {"level":3} --></p>
+<h3 class="wp-block-heading"><strong>Construction and Manufacturing:</strong> The Downtime Economy</h3>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Attack Volume:</strong> Construction and Manufacturing rank first and third in North America; combined, they represent the largest share of Qilin, Akira, Dragonforce, and The Gentlemen's worldwide targeting.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Constructions and manufacturing share a common vulnerability across the Americas: both operate on tight, contractually enforced timelines where downtime translates directly into cascading financial penalties.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading {"level":4} --></p>
+<h4 class="wp-block-heading">Why Construction and Manufacturing Are Targeted</h4>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:list {"ordered":true,"start":1} --></p>
+<ol start="1" class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>Time-Sensitive Financial Exposure:</strong> Missed construction deadlines trigger contractual penalties; halted production lines trigger lost revenue and breached delivery commitments.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>OT/IT Convergence:</strong> Modern factories and job sites increasingly integrate operational technology with corporate IT, creating exploitation bridges unavailable in pure-IT industries.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Supply-Chain Complexity:</strong> Both industries depend on dense webs of subcontractors and suppliers — compromising one upstream partner can provide lateral access into prime contractors.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Cross-Border Exposure:</strong> US-Canada-Mexico manufacturing integration (and increasingly, US-Brazil trade relationships) means a single compromise can propagate across national borders.</li>
+<p><!-- /wp:list-item --></ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Defensive Recommendations:</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li>Implement airgapped network segmentation between OT and corporate IT environments</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Prioritize vulnerability patching for network appliances and identity systems over blanket patch cycles</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Maintain fully offline, immutable backups of critical project and production data</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Extend third-party risk assessments to subcontractors, suppliers, and cross-border subsidiaries</li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:heading {"level":3} --></p>
+<h3 class="wp-block-heading"><strong>Healthcare:</strong> South America's Critical Infrastructure Threat</h3>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Attack Volume:</strong> One of the top four most heavily impacted sectors in South America.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Healthcare organizations across the Americas — but particularly in South America — face a threat dynamic distinct from financial pressure alone: ransomware attacks against hospitals directly endanger patient safety.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading {"level":4} --></p>
+<h4 class="wp-block-heading">Why Healthcare Is Targeted</h4>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:list {"ordered":true,"start":1} --></p>
+<ol start="1" class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>Patient Safety Leverage:</strong> Downtime in diagnostic systems, pharmaceutical dispensing, and patient records directly threatens continuity of care, creating existential pressure to pay quickly.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Documented Regional Incidents:</strong> The Gentlemen's claimed attack on Primero Medicina Privada and LockBit's compromise of Chile's Clínica Dávila both illustrate ransomware groups' willingness to target hospital networks directly.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Data Value:</strong> Patient medical records and clinical data command premium prices on dark web marketplaces.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>System Complexity:</strong> Healthcare IT environments blend legacy diagnostic equipment, electronic health records, and connected medical devices — each with distinct security postures.</li>
+<p><!-- /wp:list-item --></ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Defensive Recommendations:</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li>Implement complete network isolation between clinical systems and corporate IT</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Deploy redundant diagnostic and pharmaceutical systems capable of manual fallback operation</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Encrypt all patient medical records end-to-end</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Build healthcare-specific incident response plans addressing patient notification and continuity of care</li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:heading {"level":3} --></p>
+<h3 class="wp-block-heading"><strong>Agriculture &amp; Livestock:</strong> The Americas' Emerging Supply-Chain Target</h3>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Attack Volume:</strong> 33% of all North American initial access listings — the second-most targeted sector in the region's access brokerage <a>market</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A distinctive Americas finding: initial access brokers targeting the region show unusually strong interest in Agriculture &amp; Livestock, second only to Technology.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading {"level":4} --></p>
+<h4 class="wp-block-heading">Why Agriculture &amp; Livestock Is an Emerging Target</h4>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>North America's food supply chain increasingly depends on connected logistics, cold-chain monitoring, and precision agriculture technology — creating an attack surface that did not meaningfully exist a decade ago. Access brokers appear to be positioning themselves ahead of ransomware operators, selling footholds into agricultural operations before ransomware crews weaponize them. This mirrors a pattern seen elsewhere globally but is particularly pronounced in North America's access brokerage data.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Defensive Recommendations:</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li>Treat agricultural technology platforms (precision ag, cold-chain IoT) with the same security rigor as manufacturing OT</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Monitor initial access broker markets specifically for agriculture and food-sector listings</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Build incident response plans accounting for food-supply-chain continuity, not just data confidentiality<a id="_msocom_1"></a></li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><strong>Geopolitical and Ideological Dimensions:</strong> Hacktivism Across the Hemisphere</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:heading {"level":3} --></p>
+<h3 class="wp-block-heading">SOLDADOS DIGITALES – UNIÓN AMERICANA: A Hemispheric Hacktivist Collective</h3>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Unlike most hacktivist channels tracked in this report, <strong>SOLDADOS DIGITALES – UNIÓN AMERICANA</strong> operates across both North and South America, making it one of the few genuinely hemispheric threat actors identified in H1 2026 — a significant finding given how regionally siloed most hacktivist activity tends to be.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Combined Hacktivism Metrics (North + South America):</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>~140 confirmed data leak and dump posts</strong> across both sub-regions</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>At least 932 unique domains impacted</strong> (360 in North America, 572 in South America)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Primary targets:</strong> Government &amp; LEA, Technology, BFSI, Telecommunication, Education</li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Notable Collectives by Sub-Region:</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>North America:</strong> SOLDADOS DIGITALES – UNIÓN AMERICANA, Anonymous #FreeTurtleIsland, KERALA HACKERS, LYSTIC TEAM #ID</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>South America:</strong> SOLDADOS DIGITALES – UNIÓN AMERICANA, Anonymous Colombia (#OpColombia) Y.A.N, BLAZER TEAM ATTACK</li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>The Convergence Problem:</strong> As with hacktivist activity documented elsewhere in CRIL's global dataset, several Americas-based channels marketed as ideological collectives function as hybrid operations — logging DDoS attacks and defacement claims alongside stolen-data brokerage and DDoS-for-hire services. Security teams should treat these channels as credible threat intelligence sources rather than dismissing their claims as purely political theater.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Regional Threat Actor Summary: Who Targets Your Americas Organization</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>If You're in Professional Services:</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>Primary Threat:</strong> INC Ransom, Qilin</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Secondary Threat:</strong> AiLock, The Gentlemen</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Vulnerability:</strong> Client data exfiltration, regulatory breach-notification pressure</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Defensive Focus:</strong> DLP, client data segregation, ransomware-specific cyber insurance, cyber threat intelligence</li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>If You're in Manufacturing or Construction:</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>Primary Threat:</strong> Qilin, Akira, Dragonforce</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Secondary Threat:</strong> The Gentlemen, Play</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Vulnerability:</strong> OT/IT convergence, cross-border supply-chain exposure, contractual downtime penalties</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Defensive Focus:</strong> OT segmentation, immutable backups, cross-border third-party risk management</li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>If You're in Healthcare:</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>Primary Threat:</strong> The Gentlemen (South America), Qilin (North America)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Secondary Threat:</strong> LockBit</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Vulnerability:</strong> Patient-safety leverage, legacy medical device integration</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Defensive Focus:</strong> Clinical system isolation, redundant critical systems, patient-notification-ready incident response</li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>If You're in BFSI:</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>Primary Threat:</strong> Data exfiltration actors, mobile banking malware (Brazil)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Secondary Threat:</strong> Qilin, The Gentlemen</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Vulnerability:</strong> Financial data value, mobile malware convergence, regulatory exposure</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Defensive Focus:</strong> DLP with aggressive egress controls, mobile threat monitoring, data encryption</li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>If You're in Agriculture &amp; Livestock:</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>Primary Threat:</strong> Initial access brokers</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Secondary Threat:</strong> Downstream ransomware operators exploiting sold access</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Vulnerability:</strong> Precision agriculture and cold-chain IoT exposure</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Defensive Focus:</strong> OT-equivalent segmentation for agricultural technology, access-broker monitoring</li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>If You're in Government &amp; Law Enforcement (South America specifically):</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>Primary Threat:</strong> RALord/Nova, CoinbaseCartel, hacktivist-branded channels</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Secondary Threat:</strong> LockBit, The Gentlemen</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Vulnerability:</strong> Public-sector data value, hybrid ideological/financial targeting</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Defensive Focus:</strong> Treat hacktivist claims as credible intelligence, harden citizen-data repositories</li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Strategic Defense Recommendations for Americas Organizations</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Based on CRIL's H1 2026 regional data, Americas security leaders should prioritize defensive investment in the following sequence.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Phase 1: Critical Infrastructure Protection (30 days)</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>Inventory Network Appliances:</strong> Document every internet-facing firewall, VPN, and security gateway</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Patch Critical CVEs:</strong> Prioritize Ivanti, Fortinet, Cisco, SolarWinds, and Palo Alto Networks appliances — the vendors repeatedly appearing in both the CISA KEV catalog and active exploitation campaigns</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Harden Remote Access:</strong> Enforce phishing-resistant MFA on all administrative and remote access paths</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Deploy Behavioral Monitoring:</strong> Watch for anomalous activity on network appliances specifically</li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Phase 2: Data Protection (60 days)</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>Data Inventory:</strong> Catalog sensitive holdings — client data, financial records, patient records, intellectual property</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>DLP Implementation:</strong> Deploy data loss prevention with aggressive egress monitoring</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Encryption Standards:</strong> Enforce encryption in transit and at rest across all sensitive data stores</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Access Auditing:</strong> Maintain comprehensive logs for every access event touching sensitive data</li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Phase 3: Operational Resilience (90 days)</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>Immutable Backups:</strong> Establish offline, immutable backup infrastructure isolated from production networks</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Sector-Specific Incident Response:</strong> Build playbooks addressing construction project continuity, manufacturing downtime, and healthcare patient-safety scenarios specifically</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Cross-Border Continuity Planning:</strong> For organizations with US-Canada-Mexico or US-Brazil operations, extend continuity plans across all connected facilities</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Recovery Testing:</strong> Conduct quarterly backup restoration drills to verify actual recovery capability</li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Phase 4: Threat Hunting and Detection (Ongoing)</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>Named-Actor Threat Intelligence:</strong> Subscribe to intelligence feeds tracking Qilin, Akira, INC Ransom, Dragonforce, and The Gentlemen specifically</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Access-Broker Monitoring:</strong> Track listings for organizational exposure</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Supply-Chain Monitoring:</strong> Continuously assess vendor and subsidiary security posture across borders</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Mobile Malware Awareness (Brazil-specific):</strong> Financial institutions should monitor for TCLBANKER- and BTMOB RAT-style Android banking trojan activity targeting customers</li>
+<p><!-- /wp:list-item --></ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><strong>Conclusion:</strong> The Americas Ransomware Reality</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>The Americas is not just the largest ransomware theatre in the world by volume — it is two distinct threat environments operating under a single regional label. North America hosts a saturated, competitive RaaS marketplace where no single group dominates outright. South America is consolidating around a smaller set of operators, led decisively by The Gentlemen.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Key Takeaways:</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true,"start":1} --></p>
+<ol start="1" class="wp-block-list"><!-- wp:list-item --></p>
+<li><strong>The Americas carries the global center of gravity:</strong> 2,188 of the world's 3,836 documented ransomware attacks (57%) struck North or South America in H1 2026.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Five groups anchor the threat:</strong> Qilin (410), Akira (268), INC Ransom (171), Dragonforce (153), and The Gentlemen (146) collectively account for over half of all Americas ransomware activity — but their dominance splits sharply by sub-region.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>North America and South America require different playbooks:</strong> North America's threat model demands broad coverage against a long tail of competing operators; South America's demands deep, specific defense against The Gentlemen, Qilin, and LockBit.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>The United States remains the world's single largest target:</strong> 1,721 attacks — nearly 45% of global ransomware volume — makes the US the default target for virtually every major RaaS operator active today.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Brazil's threat is compounding, not singular:</strong> ransomware, mass data breach, and mobile banking malware are converging in the same underground economy targeting the same financial institutions.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Sector risk follows economic logic, not chance:</strong> Professional Services, Manufacturing, Construction, Healthcare, and — distinctively for the Americas — Agriculture &amp; Livestock face targeting because threat actors have identified specific, exploitable economic pressure points in each.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><strong>Access brokers are a leading indicator:</strong> a small number of sellers control the region's initial access market and routinely precede ransomware deployment by weeks.</li>
+<p><!-- /wp:list-item --></ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>For security leaders across North and South America, the strategic imperative is the same even where the tactical details diverge: know which named actors are active in your specific country and sector, prioritize risk-based patching over blanket cycles, treat data exfiltration as inevitable rather than optional, and build recovery infrastructure that assumes an attack will happen — not one that hopes it won't. The data confirms the Americas will remain the world's most heavily targeted ransomware region through the remainder of 2026. The only open question is how prepared each organization chooses to be.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><strong>Frequently Asked Questions</strong> (FAQs)</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>How many ransomware attacks hit the Americas in H1 2026?</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>2,188 documented ransomware attacks were observed across North and South America in H1 2026, according to Cyble Research and Intelligence Labs (CRIL) findings.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Which ransomware group is most active in the Americas in H1 2026?</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Qilin is the most active group across the combined Americas, with 410 documented attacks (370 in North America, 40 in South America). Within South America specifically, however, The Gentlemen — not Qilin — is the dominant actor.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>How many ransomware attacks hit North America in H1 2026?</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>CRIL recorded 1,981 ransomware attacks in North America during H1 2026, representing roughly 52% of all ransomware activity tracked worldwide.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>How many ransomware attacks targeted the US in H1 2026? Is it the highest?</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Yes. CRIL observed 1,721 ransomware attacks targeted at the US — which is 78.7% of the American continent (North and South, both), and nearly 45% of every ransomware attack recorded worldwide.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Which sector was the most targeted in South America?</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>IT &amp; ITES remained the most targeted sector in South America for H1 2026.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Ransomware actors targeted which country the most in South America?</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Brazil. With 71 attacks, it was the prime target of ransomware actors in H1 2026.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Is Brazil a significant ransomware target?</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Yes. Brazil recorded 71 ransomware attacks — the highest total in South America — and additionally faced an alleged 250 million record breach at credit bureau Serasa, an access sale allegedly targeting the Central Bank of Brazil, and new Android banking trojan families (TCLBANKER, BTMOB RAT) targeting financial and cryptocurrency users.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>What is the most targeted industry in the Americas?</strong> </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Construction tops North America's target list, while IT &amp; ITES, Healthcare, and Professional Services top South America's. Across the whole Americas, Construction and Manufacturing remain consistently high-risk due to their low tolerance for operational downtime.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><a id="_msocom_1"></a></p>
+<p><!-- /wp:paragraph --></p>
+<p>The post <a rel="nofollow" href="https://cyble.com/blog/ransomware-threats-in-america-h1-2026/">Ransomware Threats in the Americas H1 2026: Dissecting the Regional Attack Patterns and Dominant Actors</a> appeared first on <a rel="nofollow" href="https://cyble.com">Cyble</a>.</p>
+]]></description>
+		
+		
+		
+			</item>
+	</channel>
+</rss>
+
+<!-- plugin=object-cache-pro client=phpredis metric#hits=2868 metric#misses=14 metric#hit-ratio=99.5 metric#bytes=3702769 metric#prefetches=115 metric#store-reads=56 metric#store-writes=2 metric#store-hits=202 metric#store-misses=7 metric#sql-queries=11 metric#ms-total=732.54 metric#ms-cache=135.36 metric#ms-cache-avg=2.3747 metric#ms-cache-ratio=18.5 -->

@@ -23,6 +23,6 @@ class Volexity(XPathScraper):
         legacy_label="NEW ARTICLE FROM VOLEXITY",
         legacy_script="volexityThreat",
     )
-    url = 'https://www.volexity.com/blog/'
-    title_xpath = '/html/body/main/section[2]/div/div[2]/div[1]/article[{i}]/div/div[1]/a[1]/text()'
-    link_xpath = '/html/body/main/section[2]/div/div[2]/div[1]/article[{i}]/div/div[1]/a[1]/@href'
+    url = "https://www.volexity.com/blog/"
+    title_xpath = "/html/body/main/section[2]/div/div[2]/div[1]/article[{i}]/div/div[1]/a[1]/text()"
+    link_xpath = "/html/body/main/section[2]/div/div[2]/div[1]/article[{i}]/div/div[1]/a[1]/@href"

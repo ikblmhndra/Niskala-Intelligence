@@ -23,6 +23,6 @@ class Esentire(XPathScraper):
         legacy_label="NEW ARTICLE FROM ESENTIRE",
         legacy_script="esentireThreat",
     )
-    url = 'https://www.esentire.com/resources/blog?blogType%5B%5D=Threat%20Intelligence'
-    title_xpath = '/html/body/section[2]/div[2]/div/a[{i}]/div/h3'
-    link_xpath = '/html/body/section[2]/div[2]/div/a[{i}]'
+    url = "https://www.esentire.com/resources/blog?blogType%5B%5D=Threat%20Intelligence"
+    title_xpath = "/html/body/section[2]/div[2]/div/a[{i}]/div/h3"
+    link_xpath = "/html/body/section[2]/div[2]/div/a[{i}]"

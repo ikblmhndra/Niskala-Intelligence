@@ -42,12 +42,49 @@ def _fetch_rendered_html(url: str) -> str:
             )
             page = browser.new_page()
             page.set_extra_http_headers({"User-Agent": _PLAYWRIGHT_USER_AGENT})
-            page.goto(url, timeout=_PLAYWRIGHT_TIMEOUT_MS)
-            content = page.content()
+            response = page.goto(url, timeout=_PLAYWRIGHT_TIMEOUT_MS)
+            # `goto` GAK raise di 403/429/5xx -- ngembaliin response error, dan
+            # `page.content()` isinya halaman blokir WAF. Tanpa cek ini halaman
+            # itu dianggap isi artikel (kejadian nyata: Arctic Wolf/Wordfence).
+            blocked = response is not None and response.status >= 400
+            content = "" if blocked else page.content()
             browser.close()
         return content
     except Exception:
         return ""
+
+
+# Halaman "kamu diblokir" dari WAF/anti-bot -- teksnya PENDEK dan mengandung
+# frasa khas. Dianggap BUKAN isi artikel: lebih baik title-only daripada
+# ngasih boilerplate Wordfence/Cloudflare ke summarize/TTP/IOC/scoring
+# (e2e staging Fase 10: LLM njawab "saya gak lihat ringkasan artikelnya",
+# JSON gagal, artikel hilang -- dan itu KASUS BERUNTUNG; boilerplate bisa saja
+# dihalusinasi jadi TTP).
+_BLOCK_MAX_CHARS = 1500
+_BLOCK_MARKERS = (
+    "blocked by wordfence",
+    "wordfence",
+    "403 forbidden",
+    "access denied",
+    "just a moment",
+    "attention required",
+    "checking your browser",
+    "enable javascript and cookies",
+    "you have been blocked",
+    "request blocked",
+    "verify you are human",
+    "unusual traffic",
+)
+
+
+def looks_blocked(text: str) -> bool:
+    """Teks pendek yang isinya halaman blokir/challenge, bukan artikel.
+    Batas panjang jaga false-positive: artikel BENERAN yang menyebut
+    "access denied" panjangnya jauh di atas ambang ini."""
+    if not text or len(text) > _BLOCK_MAX_CHARS:
+        return False
+    lowered = text.lower()
+    return any(marker in lowered for marker in _BLOCK_MARKERS)
 
 
 def fetch_text(url: str) -> str:
@@ -57,12 +94,13 @@ def fetch_text(url: str) -> str:
     downloaded = trafilatura.fetch_url(url, config=_trafilatura_config())
     if downloaded:
         text = trafilatura.extract(downloaded) or ""
-        if text:
+        if text and not looks_blocked(text):
             return text
 
     html = _fetch_rendered_html(url)
     if html:
-        return trafilatura.extract(html) or ""
+        text = trafilatura.extract(html) or ""
+        return "" if looks_blocked(text) else text
     return ""
 
 

@@ -119,6 +119,21 @@ Artinya waktu ditulis ulang jadi `XPathScraper(render=True)`, itu **pekerjaan
 baru, bukan migrasi** — gak ada baseline buat dibandingin, jadi gak bisa
 di-golden-test. Perlakukan sebagai fitur baru dengan penerimaan manual.
 
+**Hasil akhir 7 dari 8 (Fase 10.1c, 2026-09-18 & 2026-09-30)** -- `waiver` buat
+gate 10.D, per scraper:
+
+| Scraper lama | Hasil | Ket |
+|---|---|---|
+| `mandiantThreat.py` | **Diselamatkan** | Situs pindah ke Google Cloud Blog, ternyata nyediain RSS resmi -- `RSSScraper` biasa (`mandiant.py`), BUKAN `render=True` sama sekali. Live, `enabled=True`. |
+| `0xToxinThreat.py` | **Diselamatkan** | Homepage nyediain Atom feed resmi -- `RSSScraper` (`toxinlabs.py`). Ketemu bug baru: feed nge-paste konten IOC yang bawa byte kontrol ilegal XML, diperbaiki DI FRAMEWORK (`RSSScraper._parse_feed`, lihat `families/rss.py`). Live, `enabled=True` -- tapi blog-nya sendiri mati total sejak Agustus 2023, jadi realistis gak akan pernah trigger alert baru. |
+| `forcepointThreat.py` | **Diselamatkan** | `XPathScraper(runtime="browser")` (`forcepoint.py`), struktur kartu situsnya udah beda dari script lama (union XPath, bukan index tetap). Live, `enabled=True`. |
+| `trellixThreat.py` | **DIBUANG (keputusan user 2026-09-30)** | Selector-nya benar (`indexed=True`, sama kayak script lama, diverifikasi manual + unit test), TAPI fetch produksi diblokir CDN Trellix (`net::ERR_HTTP2_PROTOCOL_ERROR`, konsisten di 2 network, BUKAN dicoba dilewatin -- di luar scope evasion bot-detection). File `trellix.py` udah dihapus dari tree. |
+| `vxMalwareDefenseThreat.py` | **Gak diport, waiver** | Sumbernya (`vx-underground.org`) sekarang mewajibkan captcha Cloudflare Turnstile buat SELURUH domain (bahkan lewat browser interaktif asli). Dicek 2 alternatif dari channel resmi vx-underground (GitHub `VXUG-Papers` -- kategori beda; Telegram publik -- gak terstruktur), gak ketemu pengganti yang layak. |
+| `emailnewsThreat.py` | **Di luar scope framework, DIPARKIR** | Bukan web scraper -- polling inbox Gmail via IMAP. Framework `RSSScraper`/`XPathScraper` gak nyediain family buat ini. Ketemu app-password Gmail hardcoded (`docs/SECRETS_ROTATION.md` item #14, didelegasikan rotasinya, migrasi script-nya sendiri diparkir atas permintaan user). |
+| (bukan bagian dari 8 Selenium, tapi ditemukan & diproses bareng) `cyborgHuntingIdea.py` | **Di luar scope, DIPARKIR** | Bukan scraper alert -- tool riset one-off login ke produk berbayar Cyborg Security Hunter, dump JSON lokal, gak ada `push_job`/`send_alert`/`nlp_scan`. Ketemu credential login hardcoded (item #15, sama perlakuan seperti di atas). |
+
+Detail lengkap tiap item: `docs/PROGRESS.md` 10.1c.
+
 ### `supportFile/nlp_worker.service` — `CONFIRMED`
 `ExecStart` nunjuk ke `supportFile/nlp_worker.py`, padahal file-nya di root
 repo. Dengan `Restart=always`, unit ini **crash-loop selamanya**.
@@ -276,8 +291,26 @@ Satu udah kebukti **sah**: `crowdstrikeThreat` nyaring kategori
 lolos filter. Bukan bug. `threatActorTrendGraylog` juga kemungkinan sah (baca
 `supportFile/ThreatActorName.txt` yang bisa aja lagi kosong).
 
-Sisanya belum dicek: `anyrunTrendThreat`, `doyensecThreat`, `googleThreat`,
-`huntressThreat`, `abnormalsecurityThreat`, `aquasecThreat`,
-`nquiringMindsThreat`, `dragosThreat`, `blackberryThreat`, `huntioThreat`,
-`sysdigThreat`, `trustwaveThreat`, `splunkThreat`, `koisecThreat`,
-`proofpointThreat`, `sansThreat`.
+**Update 2026-09-30 (census staging, WARP dimatikan):** 6 dari 16 ini sekarang udah dicek --
+dihapus dari daftar "belum dicek" di bawah, hasilnya:
+
+- `doyensecThreat` -- **Diperbaiki** (bug migrasi Fase 4: feed Atom, tapi codemod nge-generate
+  default `RSSScraper` yang RSS-shaped). Lihat `scrapers/src/cti_scrapers/feeds/doyensec.py` +
+  `tests/unit/test_census_selector_fixes.py`.
+- `trustwaveThreat` -- **Diperbaiki** (rebrand jadi LevelBlue, URL feed lama 301 ke stub yang
+  sengaja dikosongkan). Lihat `.../feeds/trustwave.py` + test yang sama.
+- `huntressThreat` -- **Diselamatkan** (lihat bagian atas dokumen ini, sudah lama, list ini
+  ketinggalan sinkron) -- `.../feeds/huntress.py`.
+- `anyrunTrendThreat` -- **Sengaja gak diport** (lihat bagian atas dokumen ini, sudah lama, list
+  ini ketinggalan sinkron) -- incomplete dari awal, butuh keputusan produk.
+- `googleThreat`, `nquiringMindsThreat`, `sysdigThreat` -- **Ditriase, BUKAN gampang, belum
+  diperbaiki**: blog TAG Google dibubarkan/ganti scope, `nquiringMindsThreat` situsnya pindah CMS
+  tanpa jejak URL lama, `sysdigThreat` 404 di redirect target. Butuh investigasi manual lebih
+  dalam atau keputusan waiver dari user -- JANGAN re-investigasi dari nol, triase-nya udah ada di
+  `docs/PROGRESS.md` (bagian census 10.D).
+
+Sisanya BENERAN belum dicek: `abnormalsecurityThreat`, `aquasecThreat`,
+`dragosThreat`, `blackberryThreat`, `huntioThreat`, `splunkThreat`,
+`koisecThreat`, `proofpointThreat`, `sansThreat` -- 9 dari 18 XPath yang gagal
+di census staging 2026-09-30, belum disurvei satu-satu sama sekali (parkir
+atas permintaan user, lihat `docs/PROGRESS.md`).

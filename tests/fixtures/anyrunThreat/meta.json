@@ -1,0 +1,17 @@
+{
+  "scraper": "anyrunThreat",
+  "legacy_script": "anyrunThreat",
+  "legacy_labels": [
+    "NEW MALWARE ANALYSIS ARTICLE FROM ANYRUN"
+  ],
+  "source_urls": [
+    "https://any.run/cybersecurity-blog/feed/"
+  ],
+  "http_status": {
+    "https://any.run/cybersecurity-blog/feed/": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

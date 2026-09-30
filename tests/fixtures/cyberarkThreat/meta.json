@@ -1,0 +1,17 @@
+{
+  "scraper": "cyberarkThreat",
+  "legacy_script": "cyberarkThreat",
+  "legacy_labels": [],
+  "source_urls": [
+    "https://www.cyberark.com/resources/threat-research",
+    "https://www.paloaltonetworks.com/idira"
+  ],
+  "http_status": {
+    "https://www.cyberark.com/resources/threat-research": 301,
+    "https://www.paloaltonetworks.com/idira": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "NameError"
+}

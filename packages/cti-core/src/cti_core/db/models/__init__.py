@@ -41,6 +41,7 @@ from cti_core.db.models.package import MonitoredPackage, PackageDepGraph, Packag
 from cti_core.db.models.pir import PIRNote, PIRRequirement
 from cti_core.db.models.ransomware import RansomwareVictim
 from cti_core.db.models.recap import DailyRecap
+from cti_core.db.models.report_state import CveMention, JobState
 from cti_core.db.models.rfi import RFIRequest
 from cti_core.db.models.scraper import ScraperConfig, ScraperItem, ScraperRun, ScraperSeen
 from cti_core.db.models.source_reliability import SourceReliabilityEntry
@@ -69,6 +70,7 @@ __all__ = [
     "Cluster",
     "CveAffected",
     "CveFalsePositive",
+    "CveMention",
     "CveNewsletterMention",
     "CvePoc",
     "CveReference",
@@ -82,6 +84,7 @@ __all__ = [
     "IOCTag",
     "IOCThreatActor",
     "IocAllowlistEntry",
+    "JobState",
     "MalwareTrend",
     "MindmapDoc",
     "MonitoredAccount",

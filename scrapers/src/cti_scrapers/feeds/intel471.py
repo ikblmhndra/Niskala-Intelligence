@@ -23,7 +23,7 @@ class Intel471(XPathScraper):
         legacy_label="NEW ARTICLE/PAPER FROM INTEL471",
         legacy_script="intel471Threat",
     )
-    url = 'https://intel471.com/resources/whitepapers'
-    title_xpath = '/html/body/main/div[2]/div/div[2]/a[{i}]/article/div[2]/div[2]/h3'
-    link_xpath = '/html/body/main/div[2]/div/div[2]/a[{i}]'
+    url = "https://intel471.com/resources/whitepapers"
+    title_xpath = "/html/body/main/div[2]/div/div[2]/a[{i}]/article/div[2]/div[2]/h3"
+    link_xpath = "/html/body/main/div[2]/div/div[2]/a[{i}]"
     base_url = "https://www.intel471.com"

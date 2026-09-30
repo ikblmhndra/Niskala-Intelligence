@@ -7,6 +7,12 @@ dependencies = [
     "cti-core",
     "cti-alerts",
     "cti-scraper",
+    # Control plane (`routers/scraper.py`: list/detail/trigger/dry-run/health)
+    # nge-`discover()` registry -- tanpa paket 84 plugin ini registry KOSONG
+    # (`discover()` diam-diam balik `{}` kalau `cti_scrapers` gak ke-import),
+    # dan halaman /scrapers di produksi cuma nampilin nol scraper. Ketauan pas
+    # smoke test image Fase 10.B; di dev gak kelihatan karena semua ter-install.
+    "cti-scrapers",
     "fastapi>=0.115",
     "uvicorn[standard]>=0.30",
     "python-jose[cryptography]>=3.3",

@@ -1,0 +1,59 @@
+# Build context SEMUA image = root repo (dockerfile: docker/*.Dockerfile).
+# Prinsip: yang gak dibutuhin runtime jangan masuk context -- dan yang
+# BERISI SECRET jangan pernah masuk layer image manapun (checklist cutover:
+# "gak ada secret di layer image").
+
+# --- Secret & data produksi (JANGAN masuk layer apa pun) ---
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+secrets/
+# kredensial prod + dump Mongo (~110MB) + static legacy -- Fase 0, cuma arsip lokal
+legacy/
+tools/salvage/
+tests/fixtures/
+tests/fixture_report*.json
+# sertifikat TLS self-signed nginx (dibuat container saat runtime): ada KUNCI PRIVATnya
+docker/nginx/tls/
+
+# --- VCS / tooling ---
+.git
+.github
+.gitignore
+.gitleaks.toml
+.vscode
+.DS_Store
+graphify-out/
+.claude/
+
+# --- Python artefak ---
+.venv/
+.venv-legacy/
+**/__pycache__/
+**/*.py[cod]
+**/*.egg-info/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+celerybeat-schedule*
+
+# --- Web ---
+**/node_modules/
+apps/web/.next/
+apps/web/out/
+**/*.tsbuildinfo
+
+# --- Yang gak dipakai runtime ---
+tests/
+docs/
+tools/codemod/
+*.log
+
+# variabel level compose (bisa berisi POSTGRES_PASSWORD)
+docker/stack.env

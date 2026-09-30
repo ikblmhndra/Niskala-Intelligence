@@ -36,6 +36,8 @@ _NORMALIZE = path_type(
         r"(.*\.)?last_date$": (str,),
         r"(.*\.)?date$": (str,),
         r"(.*\.)?generated_at$": (str,),
+        r"(.*\.)?first_seen$": (str,),
+        r"(.*\.)?last_seen$": (str,),
         # list of raw article-id ints (`member_article_ids: [8, 7]`) --
         # path per elemen berakhir di angka index, bukan "id" literal,
         # jadi butuh pattern sendiri (beda dari field skalar `id`).

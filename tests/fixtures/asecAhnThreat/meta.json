@@ -1,0 +1,17 @@
+{
+  "scraper": "asecAhnThreat",
+  "legacy_script": "asecAhnThreat",
+  "legacy_labels": [
+    "NEW ARTICLE FROM ASEC AHN LAB"
+  ],
+  "source_urls": [
+    "https://asec.ahnlab.com/en/feed/"
+  ],
+  "http_status": {
+    "https://asec.ahnlab.com/en/feed/": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

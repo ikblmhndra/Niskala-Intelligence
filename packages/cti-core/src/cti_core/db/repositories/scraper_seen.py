@@ -96,6 +96,19 @@ class ScraperSeenRepo:
             self.session.delete(row)
             self.session.flush()
 
+    def has_any(self, scraper_id: str) -> bool:
+        """Scraper ini punya SATU PUN baris dedup (state apa pun)? Dasar
+        definisi "cold start" (Fase 10, `Runner._cold_start_cap`): scraper
+        tanpa baris sama sekali = belum pernah nyimpen apa-apa, entah karena
+        emang baru, atau karena `reset_scraper()`/purge TTL ngosongin semuanya.
+        Sengaja BUKAN "belum pernah ada `ScraperRun`" -- scraper yang di-
+        warm-start (seed `scraper_seen` dari dump lama) gak boleh kena cap,
+        atau item baru sejak dump ikut kebuang."""
+        row = self.session.execute(
+            select(ScraperSeen.dedup_key).where(ScraperSeen.scraper_id == scraper_id).limit(1)
+        ).first()
+        return row is not None
+
     def reset_scraper(self, scraper_id: str) -> int:
         """Control plane 'lupain semuanya' (Fase 9) -- dipanggil analis
         setelah benerin parser yang sempat ngeluarin sampah. Return jumlah

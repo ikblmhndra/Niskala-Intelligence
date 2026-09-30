@@ -35,7 +35,18 @@ tools/salvage/fixture_context.json
 .DS_Store
 # cache/build output graphify (AST cache 26M+, regenerable via `graphify update .`)
 graphify-out/
+.vscode/
 
 # CATATAN: legacy/static/ SENGAJA tidak di-ignore.
 # Direktori itu ke-gitignore di repo lama dan cuma ada di satu host produksi;
 # nge-commit dia adalah tujuan utama Fase 0.1. Lihat docs/phases/PHASE_0_SALVAGE.md
+
+# schedule file Celery beat (PersistentScheduler) kalau dijalanin lokal
+celerybeat-schedule*
+
+# variabel level compose (lihat docker/stack.env.example)
+docker/stack.env
+
+# sertifikat TLS nginx (dibuat container / dipasang operator): ada KUNCI PRIVATnya -- jangan di-commit
+docker/nginx/tls/*
+!docker/nginx/tls/.gitkeep

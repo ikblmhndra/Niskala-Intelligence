@@ -5,6 +5,13 @@ on:
     branches: [main]
   pull_request:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -43,6 +50,115 @@ jobs:
         if: always()
         with: { files: coverage.xml }
         continue-on-error: true   # jangan gagalin CI kalau upload doang yang gagal
+
+  web:
+    # Fase 10.D. `next build` sekaligus jadi type-check penuh (tipe route
+    # `LayoutProps`/`PageProps` baru ada setelah `next typegen`), jadi `tsc`
+    # dijalankan SESUDAH typegen -- tanpa itu `tsc` standalone merah palsu.
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4   # versi dari `packageManager` di package.json
+        with: { package_json_file: apps/web/package.json }
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22   # sama dengan NODE_IMAGE di docker/web.Dockerfile
+          cache: pnpm
+          cache-dependency-path: apps/web/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm exec next typegen
+      - run: pnpm exec tsc --noEmit
+      - run: pnpm build
+
+  api-contract:
+    # Kontrak API <-> web: `docs/openapi.json` dan `schema.d.ts` di-commit, jadi
+    # endpoint yang berubah tanpa ngulang `export_openapi` + `gen:api` = merah
+    # di sini, bukan rusak diam-diam di browser.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+        with: { enable-cache: true }
+      - uses: pnpm/action-setup@v4
+        with: { package_json_file: apps/web/package.json }
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: apps/web/pnpm-lock.yaml
+      - run: uv python install
+      - run: uv sync --extra dev --locked
+      - run: pnpm install --frozen-lockfile
+        working-directory: apps/web
+      - run: uv run python tools/export_openapi.py
+      - run: pnpm run gen:api
+        working-directory: apps/web
+      - name: Skema + tipe TypeScript harus sama dengan yang di-commit
+        run: git diff --exit-code -- docs/openapi.json apps/web/src/lib/api/schema.d.ts
+
+  compose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Sintaks docker-compose.yml (profil default + app)
+        run: |
+          docker compose --env-file docker/stack.env.example config -q
+          docker compose --env-file docker/stack.env.example --profile app config -q
+
+  docker:
+    # Fase 10.D. Bangun image yang SAMA dengan produksi lalu smoke-import di
+    # dalamnya -- kelas bug yang ketemu di Fase 10.B (image API tanpa
+    # cti-scrapers, spaCy ke-import di worker tanpa NLP) cuma kelihatan begitu
+    # image benar-benar dijalankan, bukan dari `docker build` yang sukses.
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: api
+            file: docker/api.Dockerfile
+            target: ""
+            entrypoint: python
+            smoke: "import cti_api, cti_core, cti_scraper, cti_scrapers"
+          - name: worker
+            file: docker/worker.Dockerfile
+            target: worker
+            entrypoint: python
+            smoke: "from cti_scraper import registry; n = len(registry.discover()); assert n >= 80, n"
+          - name: worker-nlp
+            file: docker/worker.Dockerfile
+            target: worker-nlp
+            entrypoint: python
+            smoke: "import nltk, cti_enrich.stages.score as s; nltk.data.find('tokenizers/punkt_tab'); s._get_nlp()"
+          - name: web
+            file: docker/web.Dockerfile
+            target: ""
+            entrypoint: node
+            smoke: "require('fs').accessSync(process.cwd() + '/server.js')"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ${{ matrix.file }}
+          target: ${{ matrix.target }}
+          load: true
+          push: false
+          tags: cti-${{ matrix.name }}:ci
+          cache-from: type=gha,scope=${{ matrix.name }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.name }}
+      - name: Smoke di dalam image
+        run: |
+          flag=-c
+          if [ "${{ matrix.entrypoint }}" = node ]; then flag=-e; fi
+          docker run --rm --entrypoint ${{ matrix.entrypoint }} cti-${{ matrix.name }}:ci "$flag" "${{ matrix.smoke }}"
+      - name: Image bukan root
+        run: test "$(docker run --rm --entrypoint id cti-${{ matrix.name }}:ci -u)" != 0
 
   secrets:
     runs-on: ubuntu-latest

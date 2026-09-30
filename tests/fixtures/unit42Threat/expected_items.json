@@ -1,0 +1,79 @@
+{
+  "2026-09-17": [
+    {
+      "title": "Atomic macOS (AMOS) Stealer Activity",
+      "url": "https://unit42.paloaltonetworks.com/atomic-macos-amos-stealer-activity/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Unmasking Cloud Identities: From Behavioral Clustering to Automated Detection",
+      "url": "https://unit42.paloaltonetworks.com/behavioral-clustering-map-to-cloud-identities/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The Machine With Many Faces: Post-Exploitation Identity Misuse in SPIFFE/SPIRE",
+      "url": "https://unit42.paloaltonetworks.com/kubernetes-spiffe-spire-identity-spoofing/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Untracked Nightmares: The Threats Hiding Behind Commodity Infrastructure",
+      "url": "https://unit42.paloaltonetworks.com/ppi-network-malware-campaign-analysis/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Attackers Expose Ongoing AI Tool Use Targeting Organizations in Latin America",
+      "url": "https://unit42.paloaltonetworks.com/ai-tool-use-targeting-latam-orgs/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "An AI-Assisted Cyber Attack: Inside a Unit 42 Investigation",
+      "url": "https://unit42.paloaltonetworks.com/ai-assisted-cyber-attack-inside-a-unit-42-investigation/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Spring Ring: An Inside Look at Voice Phishing Campaigns in Microsoft Teams",
+      "url": "https://unit42.paloaltonetworks.com/spring-ring-voice-phishing-campaigns/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Perturbation Probing: A New Diagnostic for the Fragility of LLM Safety",
+      "url": "https://unit42.paloaltonetworks.com/perturbation-probing-llm-safety/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The State of AI-Enabled Malware August 2026: From Brand Abuse to Agentic Execution",
+      "url": "https://unit42.paloaltonetworks.com/ai-enabled-malware-analysis/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Connecting the Dots: Securing the Overlooked Corners of the Software Development Lifecycle (SDLC) Supply Chain",
+      "url": "https://unit42.paloaltonetworks.com/sdlc-supply-chain/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Identity Abuse Through Trusted Communication Channels",
+      "url": "https://unit42.paloaltonetworks.com/communication-channel-identity-risks/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Threat Brief: Mitigating Large-Scale Credential Attacks (Updated August 18)",
+      "url": "https://unit42.paloaltonetworks.com/large-scale-credential-attacks/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Kimwolf v7: An Evolution of the Kimwolf Botnet",
+      "url": "https://unit42.paloaltonetworks.com/kimwolf-v7-botnet-malware/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The Permanent Threat: Analyzing Aeternum’s Blockchain-Based C2 Operations and Communications",
+      "url": "https://unit42.paloaltonetworks.com/aeternum-blockchain-c2-analysis/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Inside the Modern SOC: The Identity Front Door",
+      "url": "https://unit42.paloaltonetworks.com/soc-identity-front-door/",
+      "posted_on": "2026-09-17"
+    }
+  ]
+}

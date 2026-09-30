@@ -1,0 +1,17 @@
+{
+  "scraper": "starlabsThreat",
+  "legacy_script": "starlabsThreat",
+  "legacy_labels": [
+    "NEW ARTICLE FROM STARLABS"
+  ],
+  "source_urls": [
+    "https://starlabs.sg/blog/index.xml"
+  ],
+  "http_status": {
+    "https://starlabs.sg/blog/index.xml": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

@@ -20,5 +20,5 @@ class Dfir(RSSScraper):
         legacy_label="NEW ARTICLE FROM DFIR REPORT",
         legacy_script="dfirThreat",
     )
-    feeds = ('https://thedfirreport.com/feed/',)
+    feeds = ("https://thedfirreport.com/feed/",)
     date_path = None  # scraper lama pakai waktu-scrape, bukan tanggal artikel asli

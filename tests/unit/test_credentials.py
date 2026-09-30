@@ -38,6 +38,29 @@ def test_twitter_header(monkeypatch: pytest.MonkeyPatch) -> None:
     assert resolve_credential_headers("twitter", settings=s) == {"X-API-Key": "tw-test-key"}
 
 
+def test_x_official_header_is_a_bearer_token(monkeypatch: pytest.MonkeyPatch) -> None:
+    """API resmi X: `Authorization: Bearer` -- BEDA dari twitterapi.io (`X-API-Key`), dan
+    dari secret yang berbeda (`X__BEARER_TOKEN`, bukan `TWITTER__API_KEY`)."""
+    s = _settings(monkeypatch, **{"X__BEARER_TOKEN": "x-test-bearer"})
+    assert resolve_credential_headers("x", settings=s) == {"Authorization": "Bearer x-test-bearer"}
+
+
+def test_x_and_twitterapi_secrets_do_not_shadow_each_other(monkeypatch: pytest.MonkeyPatch) -> None:
+    s = _settings(monkeypatch, **{"TWITTER__API_KEY": "tw-only"})
+    with pytest.raises(ConfigError, match="kosong"):
+        resolve_credential_headers("x", settings=s)  # kunci twitterapi.io BUKAN bearer X
+
+
+def test_a_mistyped_x_env_name_fails_container_start_not_silently(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """`X__BEARER__TOKEN` (dua underscore) = nesting `x.bearer.token` -> ditolak `extra=forbid`.
+    Kejadian nyata di staging (nama var diketik begitu); harus gagal KERAS, bukan diam-diam
+    tidak terbaca lalu run gagal 'credential kosong' di tengah malam."""
+    with pytest.raises(ValueError, match="bearer"):
+        _settings(monkeypatch, **{"X__BEARER__TOKEN": "x"})
+
+
 def test_unknown_credential_name_fails_loud(monkeypatch: pytest.MonkeyPatch) -> None:
     s = _settings(monkeypatch)
     with pytest.raises(ConfigError, match="gak dikenal"):

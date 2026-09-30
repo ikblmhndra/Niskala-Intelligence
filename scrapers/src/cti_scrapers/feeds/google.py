@@ -20,7 +20,10 @@ class Google(RSSScraper):
         legacy_label="NEW ARTICLE FROM GOOGLE THREAT GROUP",
         legacy_script="googleThreat",
     )
-    feeds = ('https://blog.google/threat-analysis-group/rss/',)
+    feeds = ("https://blog.google/threat-analysis-group/rss/",)
     date_path = None  # scraper lama pakai waktu-scrape, bukan tanggal artikel asli
-    xml_fixups = (('&ndash;', ''), ('&', '&amp;'),)
+    xml_fixups = (
+        ("&ndash;", ""),
+        ("&", "&amp;"),
+    )
     html_unescape = True  # feed lama pakai html.unescape() sebelum parse XML

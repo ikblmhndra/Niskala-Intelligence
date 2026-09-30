@@ -23,6 +23,6 @@ class Groupib(XPathScraper):
         legacy_label="NEW ARTICLE FROM GROUP IB",
         legacy_script="groupibThreat",
     )
-    url = 'https://www.group-ib.com/blog/'
-    title_xpath = '/html/body/div[4]/div/div/div[2]/div/a[{i}]/div[2]/div[2]'
-    link_xpath = '/html/body/div[4]/div/div/div[2]/div/a[{i}]'
+    url = "https://www.group-ib.com/blog/"
+    title_xpath = "/html/body/div[4]/div/div/div[2]/div/a[{i}]/div[2]/div[2]"
+    link_xpath = "/html/body/div[4]/div/div/div[2]/div/a[{i}]"

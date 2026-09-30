@@ -23,6 +23,6 @@ class Checkpoint(XPathScraper):
         legacy_label="NEW ARTICLE FROM CHECKPOINT RESEARCH",
         legacy_script="checkpointThreat",
     )
-    url = 'https://research.checkpoint.com/latest-publications/'
-    title_xpath = '/html/body/section/div/div[2]/div[1]/div[1]/div[{i}]/div/div[2]/h3/a/text()'
-    link_xpath = '/html/body/section/div/div[2]/div[1]/div[1]/div[{i}]/div/div[2]/h3/a/@href'
+    url = "https://research.checkpoint.com/latest-publications/"
+    title_xpath = "/html/body/section/div/div[2]/div[1]/div[1]/div[{i}]/div/div[2]/h3/a/text()"
+    link_xpath = "/html/body/section/div/div[2]/div[1]/div[1]/div[{i}]/div/div[2]/h3/a/@href"

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import { clientIpHeaders } from "@/lib/auth/client-ip";
 import { getSessionToken } from "@/lib/auth/session";
 
 const API_BASE_URL = process.env.API_BASE_URL ?? "http://localhost:8000";
@@ -30,6 +31,8 @@ async function proxy(request: NextRequest, path: string[]): Promise<NextResponse
   if (token) headers.set("authorization", `Bearer ${token}`);
   const clientId = request.headers.get("x-client-id");
   if (clientId) headers.set("x-client-id", clientId);
+  // IP klien asli (lihat client-ip.ts) -- tanpa ini API cuma lihat IP `web`.
+  for (const [name, value] of Object.entries(clientIpHeaders(request))) headers.set(name, value);
 
   const init: RequestInit = { method: request.method, headers };
   if (request.method !== "GET" && request.method !== "HEAD") {

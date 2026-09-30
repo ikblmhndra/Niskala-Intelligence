@@ -1,0 +1,1494 @@
+{
+  "2026-09-17": [
+    {
+      "title": "The extension you never installed: KREMLIN forges Chrome's own integrity checks to steal banking sessions",
+      "url": "https://www.elastic.co/security-labs/threat-command/malicious-browser-extension-kremlin-banking-malware",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Linux Detection Engineering - Local Privilege Escalation",
+      "url": "https://www.elastic.co/security-labs/threat-command/linux-privilege-escalation-detection-framework",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Why 2026 is the Year to Upgrade to an Agentic AI SOC",
+      "url": "https://www.elastic.co/security-labs/blog/why-2026-is-the-year-to-upgrade-to-an-agentic-ai-soc",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Data access: the hidden cost of security vendor lock-in",
+      "url": "https://www.elastic.co/security-labs/blog/siem-data-export-comparison",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "How to correlate Kubernetes audit logs with container runtime data",
+      "url": "https://www.elastic.co/security-labs/threat-command/kubernetes-audit-logs-container-escape",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "REVSTEALER ramps up: analysis of up-and-coming infostealer",
+      "url": "https://www.elastic.co/security-labs/threat-command/revstealer-credential-harvesting-infostealer",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Linux Detection Engineering - Fileless Execution",
+      "url": "https://www.elastic.co/security-labs/threat-command/memfd-create-linux-fileless-execution",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "From 88 lines to 1: Detecting DLL hijacking with Elastic Defend",
+      "url": "https://www.elastic.co/security-labs/threat-command/dll-search-order-hijacking-elastic-defend",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Inside Elastic's agentic SOC: How we took AI alert triage from 60% to 92% accuracy",
+      "url": "https://www.elastic.co/security-labs/blog/alert-triage-agentic-soc-self-correcting-agents",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "How a team of entity maintainers monitors, connects and scores entities in Elastic Security",
+      "url": "https://www.elastic.co/security-labs/blog/entity-resolution-identity-scoring-elastic-security",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "13 million tool calls: auditing every AI coding agent action with Elastic Agent",
+      "url": "https://www.elastic.co/security-labs/blog/ai-coding-agent-audit-cursor-hooks",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The security signal log tailing can't see: tracking npm cooldown removals with Elastic Agent",
+      "url": "https://www.elastic.co/security-labs/blog/npm-cooldown-removal-detection-elastic-agent",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Living off the coding agent: Two tales of tunnels and LaunchAgents",
+      "url": "https://www.elastic.co/security-labs/threat-command/coding-agent-launchagent-tunnel-detection",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Shai-Hulud strikes again: CHAINDROP worm hits 400+ npm packages",
+      "url": "https://www.elastic.co/security-labs/threat-command/shai-hulud-chaindrop-npm-supply-chain",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Benchmarking the Agentic SOC: How we evaluate LLMs for security workflows",
+      "url": "https://www.elastic.co/security-labs/threat-command/llm-benchmarking-agentic-soc",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Agents vs. agents: how we triage HackerOne reports for $2 each, 85% as well as a human",
+      "url": "https://www.elastic.co/security-labs/blog/ai-vulnerability-triage-bug-bounty-hackerone",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "SOC case management and detection rule history in Elastic Security",
+      "url": "https://www.elastic.co/security-labs/blog/soc-case-management-detection-rule-history",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Elastic goes all-in on Hacker Summer Camp at Black Hat and DEF CON in Las Vegas",
+      "url": "https://www.elastic.co/security-labs/blog/elastic-security-black-hat-defcon-2026",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Alert Zero: AI-driven alert triage and attack investigation for the agentic SOC",
+      "url": "https://www.elastic.co/security-labs/blog/agentic-soc-alert-triage-alertzero",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "What's new in Elastic Defend: 800+ vulnerable driver rules, automated troubleshooting, and ARM support",
+      "url": "https://www.elastic.co/security-labs/blog/vulnerable-driver-detection-elastic-defend-byovd",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Exploring the Hugging Face Breach: mapping AI agent tactics to Elastic Defend",
+      "url": "https://www.elastic.co/security-labs/threat-command/ai-agent-attack-detection-hugging-face-breach",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Stop rewriting detection rules by hand: automatic Sentinel-to-Elastic migration is here",
+      "url": "https://www.elastic.co/security-labs/blog/sentinel-detection-rules-migration",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Inside Elastic InfoSec's agentic SOC: How we cut AI agent LLM calls by 60%",
+      "url": "https://www.elastic.co/security-labs/blog/ai-agent-optimization-production-scale",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Inside Elastic InfoSec's agentic SOC: When to inline your agent's skills for a 5× cost reduction",
+      "url": "https://www.elastic.co/security-labs/blog/agentic-soc-token-budget-architecture",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "How Elasticsearch ES|QL COMPLETION turns noisy curl and wget rules into high-fidelity cloud security alerts",
+      "url": "https://www.elastic.co/security-labs/blog/esql-completion-curl-wget-detection-triage",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "wp2shell hits WordPress: detecting pre-auth RCE from plugin drop to command execution",
+      "url": "https://www.elastic.co/security-labs/blog/wp2shell-wordpress-rce-detection-elastic-defend",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "New North Korean campaign uses fake coding interviews to steal developer credentials",
+      "url": "https://www.elastic.co/security-labs/threat-command/contagious-interview-malware-svg-steganography",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "TELEPUZ: a modular MaaS malware spreading via CLICKFIX-VIDAR chains",
+      "url": "https://www.elastic.co/security-labs/threat-command/telepuz-maas-malware-clickfix",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "ClickFix to Cash-Out: Anatomy of a Mexican Banking-Fraud Toolkit",
+      "url": "https://www.elastic.co/security-labs/threat-command/mexican-banking-fraud-scmbanker-ref6045",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Inside Elastic InfoSec's agentic SOC: cutting alert triage from 30 minutes to under 3",
+      "url": "https://www.elastic.co/security-labs/blog/alert-triage-agentic-soc-elastic-workflows",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "From vulnerability report to CVE draft in minutes: how Elastic automated security advisories with AI",
+      "url": "https://www.elastic.co/security-labs/blog/security-advisory-automation-rag-elastic-agent-builder",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Azure AD Graph Activity Logs: Ingestion and threat detection to close the visibility gap",
+      "url": "https://www.elastic.co/security-labs/blog/aad-graph-activity-logs-threat-detection",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Lost in relocation: analysis of a new loader distributing CASTLESTEALER",
+      "url": "https://www.elastic.co/security-labs/threat-command/oxloader-malware-loader-infostealer",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "From API key to live threat detections in minutes: how Elastic Security ingests Google Threat Intelligence",
+      "url": "https://www.elastic.co/security-labs/blog/elastic-security-google-threat-intelligence",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Detecting Tycoon 2FA AiTM attacks across Entra ID and Google Workspace",
+      "url": "https://www.elastic.co/security-labs/threat-command/tycoon-2fa-aitm-detection-engineering",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "PHANTOMPULSE: anatomy of a hijackable blockchain-C2 RAT",
+      "url": "https://www.elastic.co/security-labs/threat-command/blockchain-c2-phantompulse-rat-sinkhole",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Elastic Security MCP App: Interactive security operations inside your AI Tools",
+      "url": "https://www.elastic.co/security-labs/blog/elastic-security-mcp-app",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Copy Fail and DirtyFrag: Linux Page Cache Bugs in the Wild",
+      "url": "https://www.elastic.co/security-labs/threat-command/copy-fail-dirtyfrag-linux-page-bugs-in-the-wild",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Detecting Web Server Probing & Fuzzing in Traefik with Automated Cloudflare Response",
+      "url": "https://www.elastic.co/security-labs/blog/detecting-web-server-probing-and-fuzzing",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "TCLBANKER: Brazilian Banking Trojan Spreading via WhatsApp and Outlook",
+      "url": "https://www.elastic.co/security-labs/threat-command/tclbanker-brazilian-banking-trojan",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Your UEBA is lying to you: Why entity record quality decides everything",
+      "url": "https://www.elastic.co/security-labs/blog/ueba-entity-record-quality-analytics",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "AI-generated hunting leads: The hunt starts before you ask the question",
+      "url": "https://www.elastic.co/security-labs/blog/proactive-threat-hunting-ai-generated-leads",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Know who to watch before the incident finds you",
+      "url": "https://www.elastic.co/security-labs/blog/entity-analytics-watchlists",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Elastic Workflows GA: automation where your security data already lives",
+      "url": "https://www.elastic.co/security-labs/blog/elastic-workflows-ga-9-4",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "One agent, the right skills: Elastic Security 9.4 brings domain expertise on demand to every SOC workflow",
+      "url": "https://www.elastic.co/security-labs/blog/skills-elastic-security-9-4",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Elastic Conversational Entity Analytics: threat hunting in a single conversation",
+      "url": "https://www.elastic.co/security-labs/blog/entity-analytics-agent-builder",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "From plain English to production rule: AI-native Elasticsearch ES|QL detection in Elastic Security",
+      "url": "https://www.elastic.co/security-labs/blog/ai-esql-detection-rule-creation",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "DFIR: From alert to root cause using Osquery without leaving Elastic Security",
+      "url": "https://www.elastic.co/security-labs/blog/dfir-osquery-elastic-security",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "CI/CD pipeline abuse: the problem no one is watching",
+      "url": "https://www.elastic.co/security-labs/threat-command/detecting-cicd-pipeline-abuse-with-llm-augmented-analysis",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Monitoring Claude Code/Cowork at scale with OTel in Elastic",
+      "url": "https://www.elastic.co/security-labs/blog/claude-code-cowork-monitoring-otel-elastic",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The Cost of Understanding: LLM-Driven Reverse Engineering vs Iterative LLM Obfuscation",
+      "url": "https://www.elastic.co/security-labs/threat-command/llm-reversing-vs-llm-obfuscation",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Phantom in the vault: Obsidian abused to deliver PhantomPulse RAT",
+      "url": "https://www.elastic.co/security-labs/threat-command/phantom-in-the-vault",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Elastic on Defence Cyber Marvel 2026: A Technical overview from the Exercise Floor",
+      "url": "https://www.elastic.co/security-labs/blog/elastic-defence-cyber-marvel",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Elastic Security Integrations Roundup: Q1 2026",
+      "url": "https://www.elastic.co/security-labs/blog/elastic-security-integrations-roundup-q1-2026",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Prioritizing Alerts Triage with Higher-Order Detection Rules",
+      "url": "https://www.elastic.co/security-labs/blog/higher-order-detection-rules",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Hooked on Linux: Rootkit Detection Engineering",
+      "url": "https://www.elastic.co/security-labs/threat-command/linux-rootkits-2-caught-in-the-act",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "How we caught the Axios supply chain attack",
+      "url": "https://www.elastic.co/security-labs/threat-command/how-we-caught-the-axios-supply-chain-attack",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Elastic releases detections for the Axios supply chain compromise",
+      "url": "https://www.elastic.co/security-labs/blog/axios-supply-chain-compromise-detections",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Inside the Axios supply chain compromise - one RAT to rule them all",
+      "url": "https://www.elastic.co/security-labs/threat-command/axios-one-rat-to-rule-them-all",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Fake Installers to Monero: A Multi-Tool Mining Operation",
+      "url": "https://www.elastic.co/security-labs/threat-command/fake-installers-to-monero",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Elastic Security Labs uncovers BRUSHWORM and BRUSHLOGGER",
+      "url": "https://www.elastic.co/security-labs/threat-command/brushworm-targets-financial-services",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Illuminating VoidLink: Technical analysis of the VoidLink rootkit framework",
+      "url": "https://www.elastic.co/security-labs/threat-command/illuminating-voidlink",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Supercharge Your SOC",
+      "url": "https://www.elastic.co/security-labs/blog/supercharge-your-soc",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Streamlining the Security Analyst Experience",
+      "url": "https://www.elastic.co/security-labs/blog/streamlining-the-security-analyst-experience",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Security Automation with Elastic Workflows: From Alert to Response",
+      "url": "https://www.elastic.co/security-labs/blog/security-automation-with-elastic-workflows",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Investigating from the Endpoint Across Your Environment with Elastic Security XDR",
+      "url": "https://www.elastic.co/security-labs/blog/investigating-from-the-endpoint-across-your-environment",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Linux & Cloud Detection Engineering - TeamPCP Container Attack Scenario",
+      "url": "https://www.elastic.co/security-labs/blog/teampcp-container-attack-scenario",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Linux & Cloud Detection Engineering - Getting Started with Defend for Containers (D4C)",
+      "url": "https://www.elastic.co/security-labs/blog/getting-started-with-defend-for-containers",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "From Invitation to Infection: How SILENTCONNECT Delivers ScreenConnect",
+      "url": "https://www.elastic.co/security-labs/threat-command/silentconnect-delivers-screenconnect",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Get started with Elastic Security from your AI agent",
+      "url": "https://www.elastic.co/security-labs/blog/agent-skills-elastic-security",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Managing Elastic Security Detection Rules with Terraform",
+      "url": "https://www.elastic.co/security-labs/blog/managing-rules-with-terraform",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Patch diff to SYSTEM",
+      "url": "https://www.elastic.co/security-labs/blog/patch-diff-to-system",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Hooked on Linux: Rootkit Taxonomy, Hooking Techniques and Tradecraft",
+      "url": "https://www.elastic.co/security-labs/threat-command/linux-rootkits-1-hooked-on-linux",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Manage your Elastic security stack as code with the Elastic Stack Terraform provider",
+      "url": "https://www.elastic.co/security-labs/blog/manage-elastic-with-terraform",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Make The Most of Network Firewall Logs with Elastic Security",
+      "url": "https://www.elastic.co/security-labs/blog/make-the-most-of-network-firewall-logs-with-elastic",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Beyond Behaviors: AI-Augmented Detection Engineering with ES|QL COMPLETION",
+      "url": "https://www.elastic.co/security-labs/threat-command/beyond-behaviors-ai-augmented-detection-engineering-with-esql-completion",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "MIMICRAT: ClickFix Campaign Delivers Custom RAT via Compromised Legitimate Websites",
+      "url": "https://www.elastic.co/security-labs/threat-command/mimicrat-custom-rat-mimics-c2-frameworks",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The Immutable Illusion: Pwning Your Kernel with Cloud Files",
+      "url": "https://www.elastic.co/security-labs/threat-command/immutable-illusion",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Speeding APT Attack Confirmation with Attack Discovery, Workflows, and Agent Builder",
+      "url": "https://www.elastic.co/security-labs/blog/speeding-apt-attack-discovery-confirmation-with-attack-discovery-workflows-and-agent-builder",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "BADIIS to the Bone: New Insights to a Global SEO Poisoning Campaign",
+      "url": "https://www.elastic.co/security-labs/threat-command/badiis-to-the-bone-new-insights-to-global-seo-poisoning-campaign",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "SolarWinds Web Help Desk Exploitation - February 2026",
+      "url": "https://www.elastic.co/security-labs/blog/solarwinds-whd-exploitation",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "DYNOWIPER: Destructive Malware Targeting Poland's Energy Sector",
+      "url": "https://www.elastic.co/security-labs/blog/dynowiper",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Automating GOAD and Live Malware Labs",
+      "url": "https://www.elastic.co/security-labs/blog/automating-goad-and-live-malware-labs",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The Engineer's Guide to Elastic Detections as Code",
+      "url": "https://www.elastic.co/security-labs/blog/detection-as-code-timeline-and-new-features",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "From Alert Fatigue to Agentic Response: How Workflows and Agent Builder Close the Loop",
+      "url": "https://www.elastic.co/security-labs/blog/from-alert-fatigue-to-agentic-response",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "From Qradar to Elastic: Automate your Detection Rule Migration",
+      "url": "https://www.elastic.co/security-labs/blog/from-qradar-to-elastic",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "How Elastic Infosec Optimizes Defend for Cost and Performance",
+      "url": "https://www.elastic.co/security-labs/blog/how-elastic-infosec-optimizes-defend",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "From Hypothesis to Action: Proactive Threat Hunting with Elastic Security",
+      "url": "https://www.elastic.co/security-labs/blog/proactive-threat-hunting-with-elastic-security",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "NANOREMOTE, cousin of FINALDRAFT",
+      "url": "https://www.elastic.co/security-labs/threat-command/nanoremote",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Automating detection tuning requests with Kibana cases",
+      "url": "https://www.elastic.co/security-labs/blog/automating-detection-tuning-requests-with-kibana-cases",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "RONINGLOADER: DragonBreath’s New Path to PPL Abuse",
+      "url": "https://www.elastic.co/security-labs/threat-command/roningloader",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "TOR Exit Node Monitoring Overview",
+      "url": "https://www.elastic.co/security-labs/blog/tor-exit-node-monitoring",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Time-to-Patch Metrics: A Survival Analysis Approach Using Qualys and Elastic",
+      "url": "https://www.elastic.co/security-labs/blog/time-to-patch-metrics",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "TOLLBOOTH: What's yours, IIS mine",
+      "url": "https://www.elastic.co/security-labs/threat-command/tollbooth",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "NightMARE on 0xelm Street, a guided tour",
+      "url": "https://www.elastic.co/security-labs/threat-command/nightmare-on-0xelm-street",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "What the 2025 Elastic Global Threat Report reveals about the evolving threat landscape",
+      "url": "https://www.elastic.co/security-labs/reports/elastic-publishes-2025-global-threat-report",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "WARMCOOKIE One Year Later: New Features and Fresh Insights",
+      "url": "https://www.elastic.co/security-labs/threat-command/revisiting-warmcookie",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "FlipSwitch: a Novel Syscall Hooking Technique",
+      "url": "https://www.elastic.co/security-labs/threat-command/flipswitch-linux-rootkit",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Elastic excels in AV-Comparatives EPR Test 2025: A closer look",
+      "url": "https://www.elastic.co/security-labs/reports/elastic-av-comparatives-epr-test-2025",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "MCP Tools: Attack Vectors and Defense Recommendations for Autonomous Agents",
+      "url": "https://www.elastic.co/security-labs/threat-command/mcp-tools-attack-defense-recommendations",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Investigating a Mysteriously Malformed Authenticode Signature",
+      "url": "https://www.elastic.co/security-labs/threat-command/malformed-authenticode-signature",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Agentic Frameworks Summary",
+      "url": "https://www.elastic.co/security-labs/blog/agentic-ai-summary",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "MaaS Appeal: An Infostealer Rises From The Ashes",
+      "url": "https://www.elastic.co/security-labs/threat-command/maas-appeal-an-infostealer-rises-from-the-ashes",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Taking SHELLTER: a commercial evasion framework abused in-the-wild",
+      "url": "https://www.elastic.co/security-labs/threat-command/taking-shellter",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "How AI and contextual search enhance defence cybersecurity",
+      "url": "https://www.elastic.co/security-labs/blog/ai-contextual-search-defense-cybersecurity",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Microsoft Entra ID OAuth Phishing and Detections",
+      "url": "https://www.elastic.co/security-labs/blog/entra-id-oauth-phishing-detection",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "A Wretch Client: From ClickFix deception to information stealer deployment",
+      "url": "https://www.elastic.co/security-labs/threat-command/a-wretch-client",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Call Stacks: No More Free Passes For Malware",
+      "url": "https://www.elastic.co/security-labs/threat-command/call-stacks-no-more-free-passes-for-malware",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Elastic Security scores 100% in AV-Comparatives Business Security Test",
+      "url": "https://www.elastic.co/security-labs/reports/elastic-security-av-comparatives-business-security-test-2025",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Chasing Eddies: New Rust-based InfoStealer used in CAPTCHA campaigns",
+      "url": "https://www.elastic.co/security-labs/threat-command/eddiestealer",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "De-obfuscating ALCATRAZ",
+      "url": "https://www.elastic.co/security-labs/threat-command/deobfuscating-alcatraz",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Misbehaving Modalities: Detecting Tools, Not Techniques",
+      "url": "https://www.elastic.co/security-labs/threat-command/misbehaving-modalities",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Elastic and Keep join forces to help users manage alerts and automate workflows",
+      "url": "https://www.elastic.co/security-labs/blog/elastic-and-keep-join-forces",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Elastic changes the SIEM game with AI-driven security analytics",
+      "url": "https://www.elastic.co/security-labs/blog/ai-driven-security-analytics",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Bit ByBit - emulation of the DPRK's largest cryptocurrency heist",
+      "url": "https://www.elastic.co/security-labs/threat-command/bit-bybit",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "How to achieve full-spectrum financial risk detection with AI and unified data",
+      "url": "https://www.elastic.co/security-labs/blog/financial-risk-detection-ai",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Now available: the 2025 State of Detection Engineering at Elastic",
+      "url": "https://www.elastic.co/security-labs/reports/state-of-detection-engineering-at-elastic-2025",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Outlaw Linux Malware: Persistent, Unsophisticated, and Surprisingly Effective",
+      "url": "https://www.elastic.co/security-labs/threat-command/outlaw-linux-malware",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The Shelby Strategy",
+      "url": "https://www.elastic.co/security-labs/threat-command/the-shelby-strategy",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Shedding light on the ABYSSWORKER driver",
+      "url": "https://www.elastic.co/security-labs/threat-command/abyssworker",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "AWS SNS Abuse: Data Exfiltration and Phishing",
+      "url": "https://www.elastic.co/security-labs/threat-command/aws-sns-abuse",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Detecting Hotkey-Based Keyloggers Using an Undocumented Kernel Data Structure",
+      "url": "https://www.elastic.co/security-labs/threat-command/detecting-hotkey-based-keyloggers",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Linux Detection Engineering - The Grand Finale on Linux Persistence",
+      "url": "https://www.elastic.co/security-labs/threat-command/the-grand-finale-on-linux-persistence",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Emulating AWS S3 SSE-C Ransom for Threat Detection",
+      "url": "https://www.elastic.co/security-labs/threat-command/emulating-aws-s3-sse-c",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "You've Got Malware: FINALDRAFT Hides in Your Drafts",
+      "url": "https://www.elastic.co/security-labs/threat-command/finaldraft",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "From South America to Southeast Asia: The Fragile Web of REF7707",
+      "url": "https://www.elastic.co/security-labs/threat-command/fragile-web-ref7707",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Linux Detection Engineering - Approaching the Summit on Persistence Mechanisms",
+      "url": "https://www.elastic.co/security-labs/threat-command/approaching-the-summit-on-persistence",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Announcing the Elastic Bounty Program for Behavior Rule Protections",
+      "url": "https://www.elastic.co/security-labs/threat-command/behavior-rule-bug-bounty",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Linux Detection Engineering - A Continuation on Persistence Mechanisms",
+      "url": "https://www.elastic.co/security-labs/threat-command/continuation-on-persistence-mechanisms",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "WinVisor – A hypervisor-based emulator for Windows x64 user-mode executables",
+      "url": "https://www.elastic.co/security-labs/blog/winvisor-hypervisor-based-emulator",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Detonating Beacons to Illuminate Detection Gaps",
+      "url": "https://www.elastic.co/security-labs/threat-command/detonating-beacons-to-illuminate-detection-gaps",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Under the SADBRIDGE with GOSAR: QUASAR Gets a Golang Rewrite",
+      "url": "https://www.elastic.co/security-labs/threat-command/under-the-sadbridge-with-gosar",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Declawing PUMAKIT",
+      "url": "https://www.elastic.co/security-labs/threat-command/declawing-pumakit",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Exploring AWS STS AssumeRoot",
+      "url": "https://www.elastic.co/security-labs/blog/exploring-aws-sts-assumeroot",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Streamlining Security: Integrating Amazon Bedrock with Elastic",
+      "url": "https://www.elastic.co/security-labs/blog/streamlining-security-integrating-amazon-bedrock",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Katz and Mouse Game:  MaaS Infostealers Adapt to Patched Chrome Defenses",
+      "url": "https://www.elastic.co/security-labs/threat-command/katz-and-mouse-game",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Tricks and Treats: GHOSTPULSE’s new pixel-level deception",
+      "url": "https://www.elastic.co/security-labs/threat-command/tricks-and-treats",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Elevate Your Threat Hunting with Elastic",
+      "url": "https://www.elastic.co/security-labs/blog/elevate-your-threat-hunting",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Elastic publishes 2024 Global Threat Report",
+      "url": "https://www.elastic.co/security-labs/reports/elastic-publishes-2024-gtr",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Cups Overflow: When your printer spills more than Ink",
+      "url": "https://www.elastic.co/security-labs/threat-command/cups-overflow",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Betting on Bots: Investigating Linux malware, crypto mining, and gambling API abuse",
+      "url": "https://www.elastic.co/security-labs/threat-command/betting-on-bots",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Storm on the Horizon: Inside the AJCloud IoT Ecosystem",
+      "url": "https://www.elastic.co/security-labs/blog/storm-on-the-horizon",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Code of Conduct: DPRK’s Python-fueled intrusions into secured networks",
+      "url": "https://www.elastic.co/security-labs/threat-command/dprk-code-of-conduct",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Kernel ETW is the best ETW",
+      "url": "https://www.elastic.co/security-labs/blog/kernel-etw-best-etw",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Elastic releases the Detection Engineering Behavior Maturity Model",
+      "url": "https://www.elastic.co/security-labs/threat-command/elastic-releases-debmm",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Linux Detection Engineering - A Sequel on Persistence Mechanisms",
+      "url": "https://www.elastic.co/security-labs/threat-command/sequel-on-persistence-mechanisms",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Linux Detection Engineering - A primer on persistence mechanisms",
+      "url": "https://www.elastic.co/security-labs/threat-command/primer-on-persistence-mechanisms",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Beyond the wail: deconstructing the BANSHEE infostealer",
+      "url": "https://www.elastic.co/security-labs/threat-command/beyond-the-wail",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Now in beta: New Detection as Code capabilities",
+      "url": "https://www.elastic.co/security-labs/blog/dac-beta-release",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Dismantling Smart App Control",
+      "url": "https://www.elastic.co/security-labs/threat-command/dismantling-smart-app-control",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "BITS and Bytes: Analyzing BITSLOTH, a newly identified backdoor",
+      "url": "https://www.elastic.co/security-labs/threat-command/bits-and-bytes-analyzing-bitsloth",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Introducing a New Vulnerability Class: False File Immutability",
+      "url": "https://www.elastic.co/security-labs/threat-command/false-file-immutability",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "GrimResource - Microsoft Management Console for initial access and evasion",
+      "url": "https://www.elastic.co/security-labs/threat-command/grimresource",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Dipping into Danger: The WARMCOOKIE backdoor",
+      "url": "https://www.elastic.co/security-labs/threat-command/dipping-into-danger",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Protecting your devices from information theft",
+      "url": "https://www.elastic.co/security-labs/blog/protecting-your-devices-from-information-theft-keylogger-protection",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Globally distributed stealers",
+      "url": "https://www.elastic.co/security-labs/threat-command/globally-distributed-stealers",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Invisible miners: unveiling GHOSTENGINE’s crypto mining operations",
+      "url": "https://www.elastic.co/security-labs/threat-command/invisible-miners-unveiling-ghostengine",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Spring Cleaning with LATRODECTUS: A Potential Replacement for ICEDID",
+      "url": "https://www.elastic.co/security-labs/threat-command/spring-cleaning-with-latrodectus",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Dissecting REMCOS RAT: An in-depth analysis of a widespread 2024 malware, Part Four",
+      "url": "https://www.elastic.co/security-labs/threat-command/dissecting-remcos-rat-part-four",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Elastic Advances LLM Security with Standardized Fields and Integrations",
+      "url": "https://www.elastic.co/security-labs/threat-command/elastic-advances-llm-security",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Dissecting REMCOS RAT: An in-depth analysis of a widespread 2024 malware, Part Three",
+      "url": "https://www.elastic.co/security-labs/threat-command/dissecting-remcos-rat-part-three",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Dissecting REMCOS RAT: An in-depth analysis of a widespread 2024 malware, Part Two",
+      "url": "https://www.elastic.co/security-labs/threat-command/dissecting-remcos-rat-part-two",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Embedding Security in LLM Workflows: Elastic's Proactive Approach",
+      "url": "https://www.elastic.co/security-labs/threat-command/embedding-security-in-llm-workflows",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Dissecting REMCOS RAT: An in-depth analysis of a widespread 2024 malware, Part One",
+      "url": "https://www.elastic.co/security-labs/threat-command/dissecting-remcos-rat-part-one",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Linux detection engineering with Auditd",
+      "url": "https://www.elastic.co/security-labs/blog/linux-detection-engineering-with-auditd",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "500ms to midnight: XZ A.K.A. liblzma backdoor",
+      "url": "https://www.elastic.co/security-labs/threat-command/500ms-to-midnight",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "In-the-Wild Windows LPE 0-days: Insights & Detection Strategies",
+      "url": "https://www.elastic.co/security-labs/threat-command/itw-windows-lpe-0days-insights-and-detection-strategies",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Unlocking Power Safely: Privilege Escalation via Linux Process Capabilities",
+      "url": "https://www.elastic.co/security-labs/threat-command/unlocking-power-safely-privilege-escalation-via-linux-process-capabilities",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Unveiling malware behavior trends",
+      "url": "https://www.elastic.co/security-labs/blog/unveiling-malware-behavior-trends",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Sinking macOS Pirate Ships with Elastic Behavior Detections",
+      "url": "https://www.elastic.co/security-labs/threat-command/sinking-macos-pirate-ships",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "PIKABOT, I choose you!",
+      "url": "https://www.elastic.co/security-labs/threat-command/pikabot-i-choose-you",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Monitoring Okta threats with Elastic Security",
+      "url": "https://www.elastic.co/security-labs/blog/monitoring-okta-threats-with-elastic-security",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Ransomware in the honeypot: how we capture keys with sticky canary files",
+      "url": "https://www.elastic.co/security-labs/threat-command/ransomware-in-the-honeypot-how-we-capture-keys",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Introduction to Hex-Rays decompilation internals",
+      "url": "https://www.elastic.co/security-labs/threat-command/introduction-to-hexrays-decompilation-internals",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "STIXy Situations: ECSaping your threat data",
+      "url": "https://www.elastic.co/security-labs/blog/stixy-situations-ecsaping-your-threat-data",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Unmasking a Financial Services Intrusion: REF0657",
+      "url": "https://www.elastic.co/security-labs/threat-command/unmasking-financial-services-intrusion-ref0657",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Starter guide to understanding Okta",
+      "url": "https://www.elastic.co/security-labs/blog/starter-guide-to-understanding-okta",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Doubling Down: Detecting In-Memory Threats with Kernel ETW Call Stacks",
+      "url": "https://www.elastic.co/security-labs/threat-command/doubling-down-etw-callstacks",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Google Cloud for Cyber Data Analytics",
+      "url": "https://www.elastic.co/security-labs/blog/google-cloud-for-cyber-data-analytics",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Getting gooey with GULOADER: deobfuscating the downloader",
+      "url": "https://www.elastic.co/security-labs/threat-command/getting-gooey-with-guloader-downloader",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Signaling from within: how eBPF interacts with signals",
+      "url": "https://www.elastic.co/security-labs/threat-command/signaling-from-within-how-ebpf-interacts-with-signals",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Streamlining ES|QL Query and Rule Validation: Integrating with GitHub CI",
+      "url": "https://www.elastic.co/security-labs/blog/streamlining-esql-query-and-rule-validation",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Elastic catches DPRK passing out KANDYKORN",
+      "url": "https://www.elastic.co/security-labs/threat-command/elastic-catches-dprk-passing-out-kandykorn",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "GHOSTPULSE haunts victims using defense evasion bag o' tricks",
+      "url": "https://www.elastic.co/security-labs/threat-command/ghostpulse-haunts-victims-using-defense-evasion-bag-o-tricks",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Fall 2023 Global Threat Report Outro",
+      "url": "https://www.elastic.co/security-labs/reports/fall-2023-global-threat-report-outro",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Disclosing the BLOODALCHEMY backdoor",
+      "url": "https://www.elastic.co/security-labs/threat-command/disclosing-the-bloodalchemy-backdoor",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Dancing the night away with named pipes - PIPEDANCE client release",
+      "url": "https://www.elastic.co/security-labs/threat-command/dancing-the-night-away-with-named-pipes",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Introducing the REF5961 intrusion set",
+      "url": "https://www.elastic.co/security-labs/threat-command/introducing-the-ref5961-intrusion-set",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Accelerating Elastic detection tradecraft with LLMs",
+      "url": "https://www.elastic.co/security-labs/threat-command/accelerating-elastic-detection-tradecraft-with-llms",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Using LLMs and ESRE to find similar user sessions",
+      "url": "https://www.elastic.co/security-labs/blog/using-llms-and-esre-to-find-similar-user-sessions",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Inside Microsoft's plan to kill PPLFault",
+      "url": "https://www.elastic.co/security-labs/threat-command/inside-microsofts-plan-to-kill-pplfault",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Peeling back the curtain with call stacks",
+      "url": "https://www.elastic.co/security-labs/threat-command/peeling-back-the-curtain-with-call-stacks",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Using LLMs to summarize user sessions",
+      "url": "https://www.elastic.co/security-labs/blog/using-llms-to-summarize-user-sessions",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Forget vulnerable drivers - Admin is all you need",
+      "url": "https://www.elastic.co/security-labs/blog/forget-vulnerable-drivers-admin-is-all-you-need",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Revisiting BLISTER: New development of the BLISTER loader",
+      "url": "https://www.elastic.co/security-labs/threat-command/revisiting-blister-new-developments-of-the-blister-loader",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "An Elastic approach to large-scale dynamic malware analysis",
+      "url": "https://www.elastic.co/security-labs/threat-command/an-elastic-approach-to-large-scale-dynamic-malware-analysis",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The DPRK strikes using a new variant of RUSTBUCKET",
+      "url": "https://www.elastic.co/security-labs/threat-command/DPRK-strikes-using-a-new-variant-of-rustbucket",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "NAPLISTENER: more bad dreams from developers of SIESTAGRAPH",
+      "url": "https://www.elastic.co/security-labs/threat-command/naplistener-more-bad-dreams-from-the-developers-of-siestagraph",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Initial research exposing JOKERSPY",
+      "url": "https://www.elastic.co/security-labs/threat-command/inital-research-of-jokerspy",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Into The Weeds: How We Run Detonate",
+      "url": "https://www.elastic.co/security-labs/threat-command/into-the-weeds-how-we-run-detonate",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Elastic charms SPECTRALVIPER",
+      "url": "https://www.elastic.co/security-labs/threat-command/elastic-charms-spectralviper",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Upping the Ante: Detecting In-Memory Threats with Kernel Call Stacks",
+      "url": "https://www.elastic.co/security-labs/threat-command/upping-the-ante-detecting-in-memory-threats-with-kernel-call-stacks",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Elastic Security Labs steps through the r77 rootkit",
+      "url": "https://www.elastic.co/security-labs/threat-command/elastic-security-labs-steps-through-the-r77-rootkit",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Detect domain generation algorithm (DGA) activity with new Kibana integration",
+      "url": "https://www.elastic.co/security-labs/blog/detect-domain-generation-algorithm-activity-with-new-kibana-integration",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Elastic Security Labs discovers the LOBSHOT malware",
+      "url": "https://www.elastic.co/security-labs/threat-command/elastic-security-labs-discovers-lobshot-malware",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Exploring Windows UAC Bypasses: Techniques and Detection Strategies",
+      "url": "https://www.elastic.co/security-labs/threat-command/exploring-windows-uac-bypasses-techniques-and-detection-strategies",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Now available: The LLM safety assessment",
+      "url": "https://www.elastic.co/security-labs/reports/elastic-security-labs-releases-llm-safety-report",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Elastic users protected from SUDDENICON’s supply chain attack",
+      "url": "https://www.elastic.co/security-labs/threat-command/elastic-users-protected-from-suddenicon-supply-chain-attack",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Unpacking ICEDID",
+      "url": "https://www.elastic.co/security-labs/blog/unpacking-icedid",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Click, Click… Boom! Automating Protections Testing with Detonate",
+      "url": "https://www.elastic.co/security-labs/blog/click-click-boom-automating-protections-testing-with-detonate",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Elastic publishes 2023 Global Threat Report Spring Edition",
+      "url": "https://www.elastic.co/security-labs/reports/elastic-publishes-2023-global-threat-report-spring-edition",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Exploring the Future of Security with ChatGPT",
+      "url": "https://www.elastic.co/security-labs/blog/exploring-applications-of-chatgpt-to-improve-detection-response-and-understanding",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Elastic Global Threat Report Multipart Series Overview",
+      "url": "https://www.elastic.co/security-labs/blog/gtr-multipart-series-overview",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "BLISTER Loader",
+      "url": "https://www.elastic.co/security-labs/threat-command/blister-loader",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Attack chain leads to XWORM and AGENTTESLA",
+      "url": "https://www.elastic.co/security-labs/threat-command/attack-chain-leads-to-xworm-and-agenttesla",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Effective Parenting - detecting LRPC-based parent PID spoofing",
+      "url": "https://www.elastic.co/security-labs/threat-command/effective-parenting-detecting-lrpc-based-parent-pid-spoofing",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "REF2924: how to maintain persistence as an (advanced?) threat",
+      "url": "https://www.elastic.co/security-labs/threat-command/ref2924-howto-maintain-persistence-as-an-advanced-threat",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Not sleeping anymore: SOMNIRECORD's wake-up call",
+      "url": "https://www.elastic.co/security-labs/threat-command/not-sleeping-anymore-somnirecords-wakeup-call",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Thawing the permafrost of ICEDID Summary",
+      "url": "https://www.elastic.co/security-labs/threat-command/thawing-the-permafrost-of-icedid-summary",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "PHOREAL Malware Targets the Southeast Asian Financial Sector",
+      "url": "https://www.elastic.co/security-labs/threat-command/phoreal-malware-targets-the-southeast-asian-financial-sector",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Hunting for Suspicious Windows Libraries for Execution and Defense Evasion",
+      "url": "https://www.elastic.co/security-labs/blog/Hunting-for-Suspicious-Windows-Libraries-for-Execution-and-Evasion",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The Elastic Container Project for Security Research",
+      "url": "https://www.elastic.co/security-labs/blog/the-elastic-container-project",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Stopping Vulnerable Driver Attacks",
+      "url": "https://www.elastic.co/security-labs/blog/stopping-vulnerable-driver-attacks",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Identifying beaconing malware using Elastic",
+      "url": "https://www.elastic.co/security-labs/blog/identifying-beaconing-malware-using-elastic",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Hunting for Lateral Movement using Event Query Language",
+      "url": "https://www.elastic.co/security-labs/blog/hunting-for-lateral-movement-using-event-query-language",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Detecting Living-off-the-land attacks with new Elastic Integration",
+      "url": "https://www.elastic.co/security-labs/blog/detecting-living-off-the-land-attacks-with-new-elastic-integration",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Detect Credential Access with Elastic Security",
+      "url": "https://www.elastic.co/security-labs/blog/detect-credential-access",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Ingesting threat data with the Threat Intel Filebeat module",
+      "url": "https://www.elastic.co/security-labs/blog/ingesting-threat-data-with-the-threat-intel-filebeat-module",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Automating the Security Protections rapid response to malware",
+      "url": "https://www.elastic.co/security-labs/blog/automating-security-protections-rapid-response-to-malware",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Twice around the dance floor - Elastic discovers the PIPEDANCE backdoor",
+      "url": "https://www.elastic.co/security-labs/threat-command/twice-around-the-dance-floor-with-pipedance",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Sandboxing Antimalware Products for Fun and Profit",
+      "url": "https://www.elastic.co/security-labs/threat-command/sandboxing-antimalware-products",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "QBOT Malware Analysis",
+      "url": "https://www.elastic.co/security-labs/threat-command/qbot-malware-analysis",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "CUBA Ransomware Malware Analysis",
+      "url": "https://www.elastic.co/security-labs/threat-command/cuba-ransomware-malware-analysis",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Update to the REF2924 intrusion set and related campaigns",
+      "url": "https://www.elastic.co/security-labs/threat-command/update-to-the-REF2924-intrusion-set-and-related-campaigns",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "NETWIRE Dynamic Configuration Extraction",
+      "url": "https://www.elastic.co/security-labs/blog/netwire-dynamic-configuration-extraction",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "NETWIRE Configuration Extractor",
+      "url": "https://www.elastic.co/security-labs/blog/netwire-configuration-extractor",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Finding Truth in the Shadows",
+      "url": "https://www.elastic.co/security-labs/threat-command/finding-truth-in-the-shadows",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Vulnerability summary: Follina, CVE-2022-30190",
+      "url": "https://www.elastic.co/security-labs/blog/vulnerability-summary-follina",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "FLARE-ON 9 Solutions:",
+      "url": "https://www.elastic.co/security-labs/threat-command/flare-on-9-solutions-burning-down-the-house",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Google Workspace Attack Surface",
+      "url": "https://www.elastic.co/security-labs/threat-command/google-workspace-attack-surface-part-one",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Google Workspace Attack Surface",
+      "url": "https://www.elastic.co/security-labs/threat-command/google-workspace-attack-surface-part-two",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "SiestaGraph: New implant uncovered in ASEAN member foreign ministry",
+      "url": "https://www.elastic.co/security-labs/threat-command/siestagraph-new-implant-uncovered-in-asean-member-foreign-ministry",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Elastic’s 2022 Global Threat Report: A roadmap for navigating today’s growing threatscape",
+      "url": "https://www.elastic.co/security-labs/blog/elastics-2022-global-threat-report-a-roadmap-for-navigating-todays-growing-threatscape",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Get-InjectedThreadEx – Detecting Thread Creation Trampolines",
+      "url": "https://www.elastic.co/security-labs/threat-command/get-injectedthreadex-detection-thread-creation-trampolines",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "QBOT Configuration Extractor",
+      "url": "https://www.elastic.co/security-labs/blog/qbot-configuration-extractor",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "ICEDID Configuration Extractor",
+      "url": "https://www.elastic.co/security-labs/blog/icedid-configuration-extractor",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "BPFDoor Configuration Extractor",
+      "url": "https://www.elastic.co/security-labs/blog/bpfdoor-configuration-extractor",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "PARALLAX Payload Extractor",
+      "url": "https://www.elastic.co/security-labs/blog/parallax-payload-extractor",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "BPFDoor Scanner",
+      "url": "https://www.elastic.co/security-labs/blog/bpfdoor-scanner",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Cobalt Strike Beacon Extractor",
+      "url": "https://www.elastic.co/security-labs/blog/cobalt-strike-beacon-extractor",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "EMOTET Configuration Extractor",
+      "url": "https://www.elastic.co/security-labs/blog/emotet-configuration-extractor",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "BLISTER Configuration Extractor",
+      "url": "https://www.elastic.co/security-labs/blog/blister-configuration-extractor",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Operation Bleeding Bear",
+      "url": "https://www.elastic.co/security-labs/threat-command/operation-bleeding-bear",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Exploring the REF2731 Intrusion Set",
+      "url": "https://www.elastic.co/security-labs/threat-command/exploring-the-ref2731-intrusion-set",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "EMOTET Dynamic Configuration Extraction",
+      "url": "https://www.elastic.co/security-labs/blog/emotet-dynamic-configuration-extraction",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Security operations: Cloud monitoring and detection with Elastic Security",
+      "url": "https://www.elastic.co/security-labs/blog/cloud-monitoring-and-detection-with-elastic-security",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Analysis of Log4Shell vulnerability & CVE-2021-45046",
+      "url": "https://www.elastic.co/security-labs/blog/analysis-of-log4shell-cve-2021-45046",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Forecast and Recommendations: 2022 Elastic Global Threat Report",
+      "url": "https://www.elastic.co/security-labs/blog/forecast-and-recommendations-2022-elastic-global-threat-report",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Deep dive into the TTD ecosystem",
+      "url": "https://www.elastic.co/security-labs/threat-command/deep-dive-into-the-ttd-ecosystem",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "KNOTWEED Assessment Summary",
+      "url": "https://www.elastic.co/security-labs/threat-command/knotweed-assessment-summary",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Behind the scenes: The making of a Global Threat Report",
+      "url": "https://www.elastic.co/security-labs/reports/behind-the-scenes-global-threat-report",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "2022 Elastic Global Threat Report: Helping security leaders navigate today’s threat landscape",
+      "url": "https://www.elastic.co/security-labs/reports/2022-elastic-global-threat-report-helping-security-leaders-navigate-todays-threat-landscape",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "2022 Elastic Global Threat Report Announcement",
+      "url": "https://www.elastic.co/security-labs/reports/2022-elastic-global-threat-report-announcement",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Sneak Peek: Elastic’s 2022 Global Threat Report",
+      "url": "https://www.elastic.co/security-labs/reports/sneak-peek-elastic-2022-global-threat-report",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Detection rules for SIGRed vulnerability",
+      "url": "https://www.elastic.co/security-labs/blog/detection-rules-for-sigred-vulnerability",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Detecting Exploitation of CVE-2021-44228 (Log4j2) with Elastic Security",
+      "url": "https://www.elastic.co/security-labs/blog/detecting-log4j2-with-elastic-security",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Elastic's response to the Spring4Shell vulnerability (CVE-2022-22965)",
+      "url": "https://www.elastic.co/security-labs/blog/elastic-response-to-the-the-spring4shell-vulnerability-cve-2022-22965",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Doing time with the YIPPHB dropper",
+      "url": "https://www.elastic.co/security-labs/threat-command/doing-time-with-the-yipphb-dropper",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "ICEDIDs network infrastructure is alive and well",
+      "url": "https://www.elastic.co/security-labs/threat-command/icedids-network-infrastructure-is-alive-and-well",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Handy Elastic Tools for the Enthusiastic Detection Engineer",
+      "url": "https://www.elastic.co/security-labs/blog/handy-elastic-tools-for-the-enthusiastic-detection-engineer",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Detecting and responding to Dirty Pipe with Elastic",
+      "url": "https://www.elastic.co/security-labs/blog/detecting-and-responding-to-dirty-pipe-with-elastic",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Extracting Cobalt Strike Beacon Configurations",
+      "url": "https://www.elastic.co/security-labs/blog/extracting-cobalt-strike-beacon-configurations",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "BUGHATCH Malware Analysis",
+      "url": "https://www.elastic.co/security-labs/threat-command/bughatch-malware-analysis",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Elastic protects against data wiper malware targeting Ukraine: HERMETICWIPER",
+      "url": "https://www.elastic.co/security-labs/threat-command/elastic-protects-against-data-wiper-malware-targeting-ukraine-hermeticwiper",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "CUBA Ransomware Campaign Analysis",
+      "url": "https://www.elastic.co/security-labs/threat-command/cuba-ransomware-campaign-analysis",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "LUNA Ransomware Attack Pattern Analysis",
+      "url": "https://www.elastic.co/security-labs/threat-command/luna-ransomware-attack-pattern",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Getting the Most Out of Transformers in Elastic",
+      "url": "https://www.elastic.co/security-labs/blog/getting-the-most-out-of-transforms-in-elastic",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Exploring the QBOT Attack Pattern",
+      "url": "https://www.elastic.co/security-labs/threat-command/exploring-the-qbot-attack-pattern",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Elastic Security uncovers BLISTER malware campaign",
+      "url": "https://www.elastic.co/security-labs/threat-command/elastic-security-uncovers-blister-malware-campaign",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "A peek behind the BPFDoor",
+      "url": "https://www.elastic.co/security-labs/threat-command/a-peek-behind-the-bpfdoor",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "A close look at the advanced techniques used in a Malaysian-focused APT campaign",
+      "url": "https://www.elastic.co/security-labs/threat-command/advanced-techniques-used-in-malaysian-focused-apt-campaign",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Adversary tradecraft 101: Hunting for persistence using Elastic Security (Part 2)",
+      "url": "https://www.elastic.co/security-labs/blog/hunting-for-persistence-using-elastic-security-part-2",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Hunting In Memory",
+      "url": "https://www.elastic.co/security-labs/blog/hunting-memory",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Hunting For In-Memory .NET Attacks",
+      "url": "https://www.elastic.co/security-labs/blog/hunting-memory-net-attacks",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Playing defense against Gamaredon Group",
+      "url": "https://www.elastic.co/security-labs/threat-command/playing-defense-against-gamaredon-group",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Going Coast to Coast - Climbing the Pyramid with the Deimos Implant",
+      "url": "https://www.elastic.co/security-labs/threat-command/going-coast-to-coast-climbing-the-pyramid-with-the-deimos-implant",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "FORMBOOK Adopts CAB-less Approach",
+      "url": "https://www.elastic.co/security-labs/threat-command/formbook-adopts-cab-less-approach",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Detection and response for the actively exploited ProxyShell vulnerabilities",
+      "url": "https://www.elastic.co/security-labs/blog/detection-and-response-for-the-actively-exploited-proxyshell-vulnerabilities",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Testing your Okta visibility and detection with Dorothy and Elastic Security",
+      "url": "https://www.elastic.co/security-labs/threat-command/testing-okta-visibility-and-detection-dorothy",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Collecting and operationalizing threat data from the Mozi botnet",
+      "url": "https://www.elastic.co/security-labs/threat-command/collecting-and-operationalizing-threat-data-from-the-mozi-botnet",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Ransomware, interrupted: Sodinokibi and the supply chain",
+      "url": "https://www.elastic.co/security-labs/threat-command/ransomware-interrupted-sodinokibi-and-the-supply-chain",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Okta and LAPSUS$: What you need to know",
+      "url": "https://www.elastic.co/security-labs/threat-command/okta-and-lapsus-what-you-need-to-know",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Nimbuspwn: Leveraging vulnerabilities to exploit Linux via Privilege Escalation",
+      "url": "https://www.elastic.co/security-labs/threat-command/nimbuspwn-leveraging-vulnerabilities-to-exploit-linux-via-privilege-escalation",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Adversary tradecraft 101: Hunting for persistence using Elastic Security (Part 1)",
+      "url": "https://www.elastic.co/security-labs/blog/hunting-for-persistence-using-elastic-security-part-1",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Collecting Cobalt Strike Beacons with the Elastic Stack",
+      "url": "https://www.elastic.co/security-labs/blog/collecting-cobalt-strike-beacons-with-the-elastic-stack",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Practical security engineering: Stateful detection",
+      "url": "https://www.elastic.co/security-labs/threat-command/practical-security-engineering-stateful-detection",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Embracing offensive tooling: Building detections against Koadic using EQL",
+      "url": "https://www.elastic.co/security-labs/threat-command/embracing-offensive-tooling-building-detections-against-koadic-using-eql",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Elastic Security opens public detection rules repo",
+      "url": "https://www.elastic.co/security-labs/blog/elastic-security-opens-public-detection-rules-repo",
+      "posted_on": "2026-09-17"
+    }
+  ]
+}

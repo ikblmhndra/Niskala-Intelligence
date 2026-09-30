@@ -20,5 +20,5 @@ class Resecurity(RSSScraper):
         legacy_label="NEW ARTICLE FROM RE SECURITY",
         legacy_script="resecurityThreat",
     )
-    feeds = ('https://www.resecurity.com/feed',)
+    feeds = ("https://www.resecurity.com/feed",)
     date_path = None  # scraper lama pakai waktu-scrape, bukan tanggal artikel asli

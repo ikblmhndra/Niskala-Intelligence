@@ -25,6 +25,14 @@ class RateLimited(ScraperError):
         self.retry_after = retry_after
 
 
+class BackpressureError(ScraperError):
+    """Antrian `enrich` udah lewat `Settings.scraper.enrich_queue_max_depth`
+    -- sink SENGAJA nolak dispatch. Bukan kegagalan item: lease dedup dilepas
+    (item BUKAN ditandai seen), jadi run berikutnya nyoba lagi begitu antrian
+    surut. Dilempar sink, ditangkap `Runner` yang langsung berhenti (sisa item
+    run ini kena juga) dan nyatet `status="backpressure"`."""
+
+
 class ParseError(ScraperError):
     """Dokumen kebaca tapi strukturnya gak sesuai -- selector nggak match,
     field yang diharap gak ada. Ini artinya SITUS BERUBAH, bukan blip

@@ -1,0 +1,17 @@
+{
+  "scraper": "deepdarkCTI",
+  "legacy_script": "deepdarkCTI",
+  "legacy_labels": [],
+  "source_urls": [
+    "https://api.github.com/repos/fastfire/deepdarkCTI/commits"
+  ],
+  "http_status": {
+    "https://api.github.com/repos/fastfire/deepdarkCTI/commits": 401
+  },
+  "blocked_urls": [
+    "https://api.github.com/repos/fastfire/deepdarkCTI/commits"
+  ],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}

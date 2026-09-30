@@ -1,0 +1,310 @@
+[
+  {
+    "scraper": "crowdstrikeThreat",
+    "status": "ok",
+    "items": 0,
+    "http": 1,
+    "blocked": [],
+    "error": null
+  },
+  {
+    "scraper": "deepdarkCTI",
+    "status": "ok",
+    "items": 0,
+    "http": 1,
+    "blocked": [
+      "https://api.github.com/repos/fastfire/deepdarkCTI/commits"
+    ],
+    "error": null
+  },
+  {
+    "scraper": "blackorbirdGithub",
+    "status": "KeyError",
+    "items": 0,
+    "http": 1,
+    "blocked": [
+      "https://api.github.com/repos/blackorbird/APT_REPORT/commits"
+    ],
+    "error": "KeyError: 0"
+  },
+  {
+    "scraper": "cisThreat",
+    "status": "TimeoutError",
+    "items": 0,
+    "http": 0,
+    "blocked": [],
+    "error": "TimeoutError: Page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://cisecurity.org/advisory\", waiting until \"load\"\n"
+  },
+  {
+    "scraper": "cymruThreat",
+    "status": "TimeoutError",
+    "items": 0,
+    "http": 0,
+    "blocked": [],
+    "error": "TimeoutError: Page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://www.team-cymru.com/categories/threat-research\", waiting until \"load\"\n"
+  },
+  {
+    "scraper": "anyrunTrendThreat",
+    "status": "TimeoutError",
+    "items": 0,
+    "http": 0,
+    "blocked": [],
+    "error": "TimeoutError: Page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://any.run/malware-trends/\", waiting until \"load\"\n"
+  },
+  {
+    "scraper": "githubAptTTPSimulation",
+    "status": "ok",
+    "items": 0,
+    "http": 1,
+    "blocked": [
+      "https://api.github.com/repos/S3N4T0R-0X0/APT-Attack-Simulation/commits"
+    ],
+    "error": null
+  },
+  {
+    "scraper": "doyensecThreat",
+    "status": "ok",
+    "items": 0,
+    "http": 1,
+    "blocked": [],
+    "error": null
+  },
+  {
+    "scraper": "githubUnit42",
+    "status": "TypeError",
+    "items": 0,
+    "http": 1,
+    "blocked": [
+      "https://api.github.com/repos/PaloAltoNetworks/Unit42-timely-threat-intel/commits"
+    ],
+    "error": "TypeError: string indices must be integers, not 'str'"
+  },
+  {
+    "scraper": "githubTTPs",
+    "status": "ok",
+    "items": 0,
+    "http": 1,
+    "blocked": [
+      "https://api.github.com/repos/crocodyli/ThreatActors-TTPs/commits?per_page=5"
+    ],
+    "error": null
+  },
+  {
+    "scraper": "googleThreat",
+    "status": "ok",
+    "items": 0,
+    "http": 1,
+    "blocked": [],
+    "error": null
+  },
+  {
+    "scraper": "githubSophoslab",
+    "status": "ConnectionError",
+    "items": 0,
+    "http": 0,
+    "blocked": [],
+    "error": "ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+  },
+  {
+    "scraper": "huntressThreat",
+    "status": "ok",
+    "items": 0,
+    "http": 1,
+    "blocked": [],
+    "error": null
+  },
+  {
+    "scraper": "githubPOCMonitor",
+    "status": "ConnectionError",
+    "items": 0,
+    "http": 0,
+    "blocked": [],
+    "error": "ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+  },
+  {
+    "scraper": "groupibThreat",
+    "status": "TimeoutError",
+    "items": 0,
+    "http": 0,
+    "blocked": [],
+    "error": "TimeoutError: Page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://www.group-ib.com/blog/\", waiting until \"load\"\n"
+  },
+  {
+    "scraper": "k7securityThreat",
+    "status": "TimeoutError",
+    "items": 0,
+    "http": 0,
+    "blocked": [],
+    "error": "TimeoutError: Page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://www.k7computing.com/in/blog\", waiting until \"load\"\n"
+  },
+  {
+    "scraper": "landthThreat",
+    "status": "IndexError",
+    "items": 0,
+    "http": 2,
+    "blocked": [],
+    "error": "IndexError: list index out of range"
+  },
+  {
+    "scraper": "mitreGithub",
+    "status": "KeyError",
+    "items": 0,
+    "http": 1,
+    "blocked": [
+      "https://api.github.com/repos/mitre-attack/attack-stix-data/commits"
+    ],
+    "error": "KeyError: slice(0, 4, None)"
+  },
+  {
+    "scraper": "monitorX",
+    "status": "TypeError",
+    "items": 0,
+    "http": 0,
+    "blocked": [],
+    "error": "TypeError: string indices must be integers, not 'str'"
+  },
+  {
+    "scraper": "newCveThreat",
+    "status": "TypeError",
+    "items": 0,
+    "http": 0,
+    "blocked": [],
+    "error": "TypeError: 'NoneType' object is not iterable"
+  },
+  {
+    "scraper": "nquiringMindsThreat",
+    "status": "ok",
+    "items": 0,
+    "http": 1,
+    "blocked": [],
+    "error": null
+  },
+  {
+    "scraper": "prodraftThreat",
+    "status": "TargetClosedError",
+    "items": 0,
+    "http": 1,
+    "blocked": [],
+    "error": "TargetClosedError: Locator.text_content: Target page, context or browser has been closed\nCall log:\n  - waiting for locator(\"xpath=/html/body/main/div[2]/section[2]/div[2]/div[1]/div[1]/h4\").first\n"
+  },
+  {
+    "scraper": "dragosThreat",
+    "status": "ok",
+    "items": 0,
+    "http": 1,
+    "blocked": [],
+    "error": null
+  },
+  {
+    "scraper": "abnormalsecurityThreat",
+    "status": "ok",
+    "items": 0,
+    "http": 1,
+    "blocked": [],
+    "error": null
+  },
+  {
+    "scraper": "blackberryThreat",
+    "status": "ok",
+    "items": 0,
+    "http": 1,
+    "blocked": [],
+    "error": null
+  },
+  {
+    "scraper": "sysdigThreat",
+    "status": "ok",
+    "items": 0,
+    "http": 1,
+    "blocked": [],
+    "error": null
+  },
+  {
+    "scraper": "techstackGO",
+    "status": "ValueError",
+    "items": 0,
+    "http": 3,
+    "blocked": [],
+    "error": "ValueError: time data '2026-09-10T03:50:40.571293679Z' does not match format '%Y-%m-%dT%H:%M:%SZ'"
+  },
+  {
+    "scraper": "techstackNPM",
+    "status": "ValueError",
+    "items": 0,
+    "http": 3,
+    "blocked": [],
+    "error": "ValueError: time data '2026-09-10T03:49:04.067984836Z' does not match format '%Y-%m-%dT%H:%M:%SZ'"
+  },
+  {
+    "scraper": "aquasecThreat",
+    "status": "ok",
+    "items": 0,
+    "http": 1,
+    "blocked": [],
+    "error": null
+  },
+  {
+    "scraper": "trustwaveThreat",
+    "status": "ok",
+    "items": 0,
+    "http": 1,
+    "blocked": [],
+    "error": null
+  },
+  {
+    "scraper": "techstackPYPI",
+    "status": "ValueError",
+    "items": 0,
+    "http": 4,
+    "blocked": [],
+    "error": "ValueError: time data '2026-09-10T03:50:25.139398550Z' does not match format '%Y-%m-%dT%H:%M:%SZ'"
+  },
+  {
+    "scraper": "huntioThreat",
+    "status": "ok",
+    "items": 0,
+    "http": 1,
+    "blocked": [],
+    "error": null
+  },
+  {
+    "scraper": "koisecThreat",
+    "status": "ok",
+    "items": 0,
+    "http": 1,
+    "blocked": [],
+    "error": null
+  },
+  {
+    "scraper": "splunkThreat",
+    "status": "ok",
+    "items": 0,
+    "http": 1,
+    "blocked": [],
+    "error": null
+  },
+  {
+    "scraper": "proofpointThreat",
+    "status": "ok",
+    "items": 0,
+    "http": 1,
+    "blocked": [],
+    "error": null
+  },
+  {
+    "scraper": "sansThreat",
+    "status": "ok",
+    "items": 0,
+    "http": 1,
+    "blocked": [],
+    "error": null
+  },
+  {
+    "scraper": "intel471Threat",
+    "status": "timeout",
+    "items": 0,
+    "http": 0,
+    "blocked": [],
+    "error": "timeout"
+  }
+]

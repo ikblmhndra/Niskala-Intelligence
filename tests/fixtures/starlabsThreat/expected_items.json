@@ -1,0 +1,399 @@
+{
+  "2026-09-17": [
+    {
+      "title": "When AI Makes 0-Days Feel Like N-Days",
+      "url": "https://starlabs.sg/blog/2026/07-when-ai-makes-0-days-feel-like-n-days/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Old Bug, Harder Rules : Exploiting CVE-2023-36802 Without the Usual Shortcuts",
+      "url": "https://starlabs.sg/blog/2026/06-old-bug-harder-rules-exploiting-cve-2023-36802-without-the-usual-shortcuts/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Old Wine in a New Bottle: A Decade-Old lxd-Group Root, Re-Armed",
+      "url": "https://starlabs.sg/blog/2026/06-old-wine-in-a-new-bottle-a-decade-old-lxd-group-root-re-armed/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Race Against The Patch: The Evolution of Four Exploit Chains in LiteLLM",
+      "url": "https://starlabs.sg/blog/2026/05-race-against-the-patch-the-evolution-of-four-exploit-chains-in-litellm/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Three Bugs Walk Into a PDF: Prototype Pollution, Served Cold",
+      "url": "https://starlabs.sg/blog/2026/04-three-bugs-walk-into-a-pdf-prototype-pollution-served-cold/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "CHECK Removed, Context Confused, Checkmate Achieved",
+      "url": "https://starlabs.sg/blog/2026/04-check-removed-context-confused-checkmate-achieved/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Pickling the Mailbox: A Deep Dive into CVE-2025-20393",
+      "url": "https://starlabs.sg/blog/2026/02-pickling-the-mailbox-a-deep-dive-into-cve-2025-20393/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "8th Anniversary: Embrace the new but don't forget the old",
+      "url": "https://starlabs.sg/blog/2026/01-8th-anniversary-embrace-the-new-but-dont-forget-the-old/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "2025: WE BROKE THINGS, WE BUILT THINGS, WE BROKE EVEN MORE THINGS",
+      "url": "https://starlabs.sg/blog/2025/12-2025-we-broke-things-we-built-things-we-broke-even-more-things/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "HEX ADVENT 2025: Crack the Advent, Conquer the Threat 🐛",
+      "url": "https://starlabs.sg/blog/2025/11-hex-advent-2025-crack-the-advent-conquer-the-threat/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "HEX ADVENT 2025: Rules & Information",
+      "url": "https://starlabs.sg/blog/2025/11-hex-advent-2025-rules-information/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Breaking Into a Brother (MFC-J1010DW): Three Security Flaws in a Seemingly Innocent Printer",
+      "url": "https://starlabs.sg/blog/2025/11-breaking-into-a-brother-mfc-j1010dw-three-security-flaws-in-a-seemingly-innocent-printer/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Summer Pwnables: lz1 Solution",
+      "url": "https://starlabs.sg/blog/2025/09-summer-pwnables-lz1-solution/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Summer Pwnables: Temporal Paradox Engine Solution",
+      "url": "https://starlabs.sg/blog/2025/09-summer-pwnables-temporal-paradox-engine-solution/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Lost in Translation: Apache Vulnerabilities That Don't Count (Literally)",
+      "url": "https://starlabs.sg/blog/2025/09-lost-in-translation-apache-vulnerabilities-that-dont-count-literally/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Fuzzing a Printer: Pre-auth RCE in a Network IoT Device",
+      "url": "https://starlabs.sg/blog/2025/09-fuzzing-a-printer-pre-auth-rce-in-a-network-iot-device/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "[Updates] Summer Pwnables 🔥",
+      "url": "https://starlabs.sg/blog/2025/08-updates-summer-pwnables/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Summer Pwnables: When the Heat Rises, So Do the C-Shells 🔥",
+      "url": "https://starlabs.sg/blog/2025/08-summer-pwnables-when-the-heat-rises-so-do-the-c-shells/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "My `Blind Date` with CVE-2025-29824",
+      "url": "https://starlabs.sg/blog/2025/07-my-blind-date-with-cve-2025-29824/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Fooling the Sandbox: A Chrome-atic Escape",
+      "url": "https://starlabs.sg/blog/2025/07-fooling-the-sandbox-a-chrome-atic-escape/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Solo: A Pixel 6 Pro Story (When one bug is all you need)",
+      "url": "https://starlabs.sg/blog/2025/06-solo-a-pixel-6-pro-story-when-one-bug-is-all-you-need/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Gone in 5 Seconds: How WARN_ON Stole 10 Minutes",
+      "url": "https://starlabs.sg/blog/2025/05-gone-in-5-seconds-how-warn_on-stole-10-minutes/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Badge & Lanyard Challenges @ OBO 2025",
+      "url": "https://starlabs.sg/blog/2025/05-badge-lanyard-challenges-@-obo-2025/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Lessons From Pwn2Own Berlin 2025: Building a Hypervisor Escape",
+      "url": "https://starlabs.sg/blog/2025/05-lessons-from-pwn2own-berlin-2025-building-a-hypervisor-escape/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Breaking Out of Restricted Mode: XSS to RCE in Visual Studio Code",
+      "url": "https://starlabs.sg/blog/2025/05-breaking-out-of-restricted-mode-xss-to-rce-in-visual-studio-code/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "CimFS: Crashing in memory, Finding SYSTEM (Kernel Edition)",
+      "url": "https://starlabs.sg/blog/2025/03-cimfs-crashing-in-memory-finding-system-kernel-edition/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "STAR Labs Windows Exploitation Challenge 2025 Writeup",
+      "url": "https://starlabs.sg/blog/2025/03-star-labs-windows-exploitation-challenge-2025-writeup/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Mali-cious Intent: Exploiting GPU Vulnerabilities (CVE-2022-22706 / CVE-2021-39793)",
+      "url": "https://starlabs.sg/blog/2025/02-mali-cious-intent-exploiting-gpu-vulnerabilities-cve-2022-22706-/-cve-2021-39793/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "CVE-2024-26230: Windows Telephony Service - It's Got Some Call-ing Issues (Elevation of Privilege)",
+      "url": "https://starlabs.sg/blog/2025/01-cve-2024-26230-windows-telephony-service-its-got-some-call-ing-issues-elevation-of-privilege/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Celebrating 7 Years of STAR Labs SG",
+      "url": "https://starlabs.sg/blog/2025/01-celebrating-7-years-of-star-labs-sg/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "STAR Labs 2025 New Year Exploitation Challenge",
+      "url": "https://starlabs.sg/blog/2025/01-star-labs-2025-new-year-exploitation-challenge/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "All I Want for Christmas is a CVE-2024-30085 Exploit",
+      "url": "https://starlabs.sg/blog/2024/12-all-i-want-for-christmas-is-a-cve-2024-30085-exploit/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Behind the Scenes: Understanding CVE-2022-24547",
+      "url": "https://starlabs.sg/blog/2024/12-behind-the-scenes-understanding-cve-2022-24547/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "#BadgeLife @ Off-By-One Conference 2024",
+      "url": "https://starlabs.sg/blog/2024/07-%23badgelife-@-off-by-one-conference-2024/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Send()-ing Myself Belated Christmas Gifts - GitHub.com's Environment Variables & GHES Shell",
+      "url": "https://starlabs.sg/blog/2024/05-send-ing-myself-belated-christmas-gifts-github.coms-environment-variables-ghes-shell/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Send()-ing Myself Belated Christmas Gifts: GitHub.com's Environment Variables & GHES Shell",
+      "url": "https://starlabs.sg/blog/2024/04-send-ing-myself-belated-christmas-gifts-github.coms-environment-variables-ghes-shell/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Route to Safety: Navigating Router Pitfalls",
+      "url": "https://starlabs.sg/blog/2024/03-route-to-safety-navigating-router-pitfalls/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Exploitation of a kernel pool overflow from a restrictive chunk size (CVE-2021-31969)",
+      "url": "https://starlabs.sg/blog/2023/11-exploitation-of-a-kernel-pool-overflow-from-a-restrictive-chunk-size-cve-2021-31969/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Analysis of NodeBB Account Takeover Vulnerability (CVE-2022-46164)",
+      "url": "https://starlabs.sg/blog/2023/09-analysis-of-nodebb-account-takeover-vulnerability-cve-2022-46164/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "[P2O Vancouver 2023] SharePoint Pre-Auth RCE chain (CVE-2023–29357 & CVE-2023–24955)",
+      "url": "https://starlabs.sg/blog/2023/09-p2o-vancouver-2023-sharepoint-pre-auth-rce-chain-cve-202329357-cve-202324955/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "nftables Adventures: Bug Hunting and N-day Exploitation (CVE-2023-31248)",
+      "url": "https://starlabs.sg/blog/2023/09-nftables-adventures-bug-hunting-and-n-day-exploitation-cve-2023-31248/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Under The Hood - Disassembling of IKEA-Sonos Symfonisk Speaker Lamp",
+      "url": "https://starlabs.sg/blog/2023/08-under-the-hood-disassembling-of-ikea-sonos-symfonisk-speaker-lamp/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "A new method for container escape using file-based DirtyCred",
+      "url": "https://starlabs.sg/blog/2023/07-a-new-method-for-container-escape-using-file-based-dirtycred/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "prctl anon_vma_name: An Amusing Linux Kernel Heap Spray",
+      "url": "https://starlabs.sg/blog/2023/07-prctl-anon_vma_name-an-amusing-linux-kernel-heap-spray/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Breaking the Code - Exploiting and Examining CVE-2023-1829 in cls_tcindex Classifier Vulnerability",
+      "url": "https://starlabs.sg/blog/2023/06-breaking-the-code-exploiting-and-examining-cve-2023-1829-in-cls_tcindex-classifier-vulnerability/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The Old, The New and The Bypass - One-click/Open-redirect to own Samsung S22 at Pwn2Own 2022",
+      "url": "https://starlabs.sg/blog/2023/06-the-old-the-new-and-the-bypass-one-click/open-redirect-to-own-samsung-s22-at-pwn2own-2022/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Microsoft Exchange Powershell Remoting Deserialization leading to RCE (CVE-2023-21707)",
+      "url": "https://starlabs.sg/blog/2023/04-microsoft-exchange-powershell-remoting-deserialization-leading-to-rce-cve-2023-21707/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "CS-Cart PDF Plugin Unauthenticated Command Injection",
+      "url": "https://starlabs.sg/blog/2023/03-cs-cart-pdf-plugin-unauthenticated-command-injection/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Microsoft Azure Account Takeover via DOM-based XSS in Cosmos DB Explorer",
+      "url": "https://starlabs.sg/blog/2023/02-microsoft-azure-account-takeover-via-dom-based-xss-in-cosmos-db-explorer/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "STAR LABS SG PTE. LTD. has been authorized by the CVE Program as a CVE Numbering Authority (CNA)",
+      "url": "https://starlabs.sg/blog/2023/02-star-labs-sg-pte.-ltd.-has-been-authorized-by-the-cve-program-as-a-cve-numbering-authority-cna/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Gotta KEP-tcha 'Em All - Bypassing Anti-Debugging methods in KEPServerEX",
+      "url": "https://starlabs.sg/blog/2023/02-gotta-kep-tcha-em-all-bypassing-anti-debugging-methods-in-kepserverex/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Dissecting the Vulnerabilities - A Comprehensive Teardown of acmailer's N-Days",
+      "url": "https://starlabs.sg/blog/2023/02-dissecting-the-vulnerabilities-a-comprehensive-teardown-of-acmailers-n-days/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Deconstructing and Exploiting CVE-2020-6418",
+      "url": "https://starlabs.sg/blog/2022/12-deconstructing-and-exploiting-cve-2020-6418/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The Last Breath of Our Netgear RAX30 Bugs - A Tragic Tale before Pwn2Own Toronto 2022",
+      "url": "https://starlabs.sg/blog/2022/12-the-last-breath-of-our-netgear-rax30-bugs-a-tragic-tale-before-pwn2own-toronto-2022/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "TheHole New World - how a small leak will sink a great browser (CVE-2021-38003)",
+      "url": "https://starlabs.sg/blog/2022/12-thehole-new-world-how-a-small-leak-will-sink-a-great-browser-cve-2021-38003/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Multiple Vulnerabilities in Proxmox VE & Proxmox Mail Gateway",
+      "url": "https://starlabs.sg/blog/2022/12-multiple-vulnerabilities-in-proxmox-ve-proxmox-mail-gateway/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Microsoft SharePoint Server Post-Authentication Server-Side Request Forgery vulnerability",
+      "url": "https://starlabs.sg/blog/2022/10-microsoft-sharepoint-server-post-authentication-server-side-request-forgery-vulnerability/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Apple CoreText - An Unexpected Journey to Learn about Failure",
+      "url": "https://starlabs.sg/blog/2022/09-apple-coretext-an-unexpected-journey-to-learn-about-failure/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Step-by-Step Walkthrough of CVE-2022-32792 - WebKit B3ReduceStrength Out-of-Bounds Write",
+      "url": "https://starlabs.sg/blog/2022/09-step-by-step-walkthrough-of-cve-2022-32792-webkit-b3reducestrength-out-of-bounds-write/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Exploiting WebKit JSPropertyNameEnumerator Out-of-Bounds Read (CVE-2021-1789)",
+      "url": "https://starlabs.sg/blog/2022/08-exploiting-webkit-jspropertynameenumerator-out-of-bounds-read-cve-2021-1789/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Gitlab Project Import RCE Analysis (CVE-2022-2185)",
+      "url": "https://starlabs.sg/blog/2022/07-gitlab-project-import-rce-analysis-cve-2022-2185/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "io_uring - new code, new bugs, and a new exploit technique",
+      "url": "https://starlabs.sg/blog/2022/06-io_uring-new-code-new-bugs-and-a-new-exploit-technique/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Trying To Exploit A Windows Kernel Arbitrary Read Vulnerability",
+      "url": "https://starlabs.sg/blog/2022/06-trying-to-exploit-a-windows-kernel-arbitrary-read-vulnerability/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "New Wine in Old Bottle - Microsoft Sharepoint Post-Auth Deserialization RCE (CVE-2022-29108)",
+      "url": "https://starlabs.sg/blog/2022/05-new-wine-in-old-bottle-microsoft-sharepoint-post-auth-deserialization-rce-cve-2022-29108/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "The Cat Escaped from the Chrome Sandbox",
+      "url": "https://starlabs.sg/blog/2022/01-the-cat-escaped-from-the-chrome-sandbox/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Diving into Open-source LMS Codebases",
+      "url": "https://starlabs.sg/blog/2021/11-diving-into-open-source-lms-codebases/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Analysis of CVE-2021-1758 (CoreText Out-Of-Bounds Read)",
+      "url": "https://starlabs.sg/blog/2021/09-analysis-of-cve-2021-1758-coretext-out-of-bounds-read/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Identifying Bugs in Router Firmware at Scale with Taint Analysis",
+      "url": "https://starlabs.sg/blog/2021/08-identifying-bugs-in-router-firmware-at-scale-with-taint-analysis/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Simple Vulnerability Regression Monitoring with V8Harvest",
+      "url": "https://starlabs.sg/blog/2021/06-simple-vulnerability-regression-monitoring-with-v8harvest/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "You Talking To Me?",
+      "url": "https://starlabs.sg/blog/2021/04-you-talking-to-me/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Chrome 1-Day Hunting - Uncovering and Exploiting CVE-2020-15999",
+      "url": "https://starlabs.sg/blog/2021/01-chrome-1-day-hunting-uncovering-and-exploiting-cve-2020-15999/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Instrumenting Adobe Reader with Frida",
+      "url": "https://starlabs.sg/blog/2020/11-instrumenting-adobe-reader-with-frida/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Analysis & Exploitation of a Recent TP-Link Archer A7 Vulnerability",
+      "url": "https://starlabs.sg/blog/2020/10-analysis-exploitation-of-a-recent-tp-link-archer-a7-vulnerability/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Pwn2Own 2020: Oracle VirtualBox Escape",
+      "url": "https://starlabs.sg/blog/2020/09-pwn2own-2020-oracle-virtualbox-escape/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "This Font is not Your Type",
+      "url": "https://starlabs.sg/blog/2020/09-this-font-is-not-your-type/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "ASUSWRT URL Processing Stack Buffer Overflow",
+      "url": "https://starlabs.sg/blog/2020/08-asuswrt-url-processing-stack-buffer-overflow/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Oracle VirtualBox VHWA Use-After-Free Privilege Escalation Vulnerability",
+      "url": "https://starlabs.sg/blog/2020/06-oracle-virtualbox-vhwa-use-after-free-privilege-escalation-vulnerability/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "TianFu Cup 2019: Adobe Reader Exploitation",
+      "url": "https://starlabs.sg/blog/2020/04-tianfu-cup-2019-adobe-reader-exploitation/",
+      "posted_on": "2026-09-17"
+    },
+    {
+      "title": "Adventures in Hypervisor: Oracle VirtualBox Research",
+      "url": "https://starlabs.sg/blog/2020/04-adventures-in-hypervisor-oracle-virtualbox-research/",
+      "posted_on": "2026-09-17"
+    }
+  ]
+}

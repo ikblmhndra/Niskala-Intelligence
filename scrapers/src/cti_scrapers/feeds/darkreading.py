@@ -20,7 +20,10 @@ class Darkreading(RSSScraper):
         legacy_label="NEW RECENT ARTICLE FROM DARK READING",
         legacy_script="darkreadingThreat",
     )
-    feeds = ('https://www.darkreading.com/rss.xml',)
+    feeds = ("https://www.darkreading.com/rss.xml",)
     date_path = None  # scraper lama pakai waktu-scrape, bukan tanggal artikel asli
-    xml_fixups = (('&ndash;', ''), ('&', '&amp;'),)
+    xml_fixups = (
+        ("&ndash;", ""),
+        ("&", "&amp;"),
+    )
     html_unescape = True  # feed lama pakai html.unescape() sebelum parse XML

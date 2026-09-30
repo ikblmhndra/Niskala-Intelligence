@@ -81,3 +81,39 @@ def send_file(
         )
     thread_id = settings.thread_ids[topic] or None
     asyncio.run(_send_document(settings, path, caption, thread_id))
+
+
+TEXT_LIMIT = 4096
+CAPTION_LIMIT = 1024
+
+
+def send_document(
+    topic: str,
+    filename: str,
+    content: str | bytes,
+    caption: str = "",
+    *,
+    settings: TelegramSettings | None = None,
+) -> None:
+    """Kirim `content` sebagai dokumen `filename` -- tanpa file sementara di CWD
+    (skrip lama menulis `supportFile/...` lalu memindah/menghapusnya; run yang
+    mati di tengah meninggalkan sisa yang tercampur ke run berikutnya).
+
+    Caption dokumen dibatasi 1024 karakter oleh Telegram: caption yang lebih
+    panjang dikirim sebagai PESAN terpisah dan dokumennya tanpa caption, alih-alih
+    ditolak API. Nama file dipotong ke basename (bukan path)."""
+    import tempfile
+    from pathlib import Path
+
+    name = Path(filename or "document.txt").name
+    with tempfile.TemporaryDirectory() as tmp:
+        path = Path(tmp) / name
+        if isinstance(content, bytes):
+            path.write_bytes(content)
+        else:
+            path.write_text(content, encoding="utf-8")
+        if len(caption) <= CAPTION_LIMIT:
+            send_file(topic, str(path), caption, settings=settings)
+        else:
+            send_alert(topic, caption, settings=settings)
+            send_file(topic, str(path), "", settings=settings)

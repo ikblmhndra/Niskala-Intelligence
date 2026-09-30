@@ -18,19 +18,23 @@ Dua short-circuit dipertahankan APA ADANYA dari kode lama:
    `extract_iocs` TETAP jalan (udah kepanggil sebelum percabangan ini di
    kode lama, line 314 vs 343).
 
-Belum termasuk di sini (dicatat, bukan lupa): `update_cve_mention` (tracking
-mention CVE per bulan, `nlp.py:721-726`) -- itu makan buat fitur laporan
-mingguan CVE (`cveEmailAutomation`) yang udah di-scope keluar Fase 5 (lihat
-docstring `cveValidator` di plan investigasi), gak ada tabel Postgres buat
-ini belum. `_trackingNews`/`_counterNews` (file `.txt` counter lokal) juga
-gak diport -- itu artefak operasional proses tunggal, `scraper_runs`
-(Fase 2) udah gantiin fungsinya secara lebih baik lintas-proses."""
+`update_cve_mention` (tracking mention CVE, `nlp.py:721-726`) DIPORT di Fase
+10.E (`_track_cve_mentions`, tabel `cve_mentions`) buat laporan Top CVE mingguan.
+`_trackingNews`/`_counterNews` (file `.txt` counter lokal) juga gak diport --
+itu artefak operasional proses tunggal; angkanya sekarang dihitung dari DB oleh
+laporan harian (`report.daily_counters`, Fase 10.E), dan `scraper_runs` (Fase 2)
+udah gantiin fungsinya secara lebih baik lintas-proses."""
 
 from __future__ import annotations
 
 import datetime
+import json
 from dataclasses import dataclass
 
+import structlog
+from cti_core.db.models.article import Article
+from cti_core.db.models.report_state import SCOPE_NEWS
+from cti_core.db.repositories.report_state import CveMentionRepo
 from sqlalchemy.orm import Session
 
 from cti_enrich import routing
@@ -41,7 +45,52 @@ from cti_enrich.stages.classify import ClassifyResult, classify, resolve_industr
 from cti_enrich.stages.extract_ttps import TtpResult, extract_ttps
 from cti_enrich.stages.fetch_text import fetch_text
 from cti_enrich.stages.persist import persist, persist_rejected
+from cti_enrich.stages.score import ScoreResult
 from cti_enrich.stages.summarize import summarize
+
+log = structlog.get_logger()
+
+
+def _extract_ttps_or_empty(url: str, summary: str) -> TtpResult:
+    """TTP itu pengayaan OPSIONAL -- klasifikasi (stage 1) UDAH nentuin artikel
+    ini relevan. Kalau LLM gak ngasih JSON setelah semua percobaan
+    (`extract_ttps` udah retry 3x sendiri), artikel TETAP disimpan tanpa TTP
+    + dicatat di log, BUKAN dibuang. Dulu exception-nya nembus ke Celery:
+    seluruh task gagal, artikel yang sudah lolos klasifikasi hilang tanpa
+    jejak selain log (e2e staging Fase 10). Cuma `JSONDecodeError`: masalah
+    LLM/kuota/jaringan tetap naik ke retry Celery seperti biasa."""
+    if not summary:
+        return TtpResult(has_techniques=False)
+    try:
+        return extract_ttps(summary[:2000])
+    except json.JSONDecodeError as e:
+        log.warning("ttp_extraction_failed_article_kept", url=url, error=str(e))
+        return TtpResult(has_techniques=False)
+
+
+def _track_cve_mentions(session: Session, article: Article, score_result: ScoreResult) -> None:
+    """Naikkan penghitung mention CVE (`update_cve_mention`, `nlp.py:721-726`) --
+    bahan laporan Top CVE mingguan. Aturan yang sengaja dijaga:
+
+      - HANYA untuk artikel BARU (`seen_count == 1`). Kalau alert gagal dan task
+        di-retry, pipeline jalan ulang atas artikel yang sama; tanpa cek ini tiap
+        retry menggandakan hitungannya.
+      - Sesudah `commit()` artikel dan di SAVEPOINT sendiri, dan kegagalannya cuma
+        di-log: statistik gak boleh membatalkan artikel atau menahan alert.
+      - Cabang `security_tech_best_practice` gak sampai sini (return lebih awal),
+        sama dengan kode lama yang `return` sebelum Phase 7.
+    """
+    cves = [*score_result.cve_list_title, *score_result.cve_list_body]
+    if not cves or article.seen_count != 1:
+        return
+    try:
+        with session.begin_nested():
+            CveMentionRepo(session).bump(
+                SCOPE_NEWS, cves, on=datetime.datetime.now(datetime.UTC).date()
+            )
+        session.commit()
+    except Exception as e:
+        log.warning("cve_mention_tracking_failed", article_id=article.id, error=str(e))
 
 
 @dataclass
@@ -114,6 +163,7 @@ def run_pipeline(
             ioc_data=ioc_data,
             c2_indicator=c2_indicator,
         )
+        session.commit()  # lihat catatan di situs kedua: alert gagal != artikel batal
         route_alerts(result)
         return PipelineOutcome(
             accepted=True,
@@ -122,9 +172,7 @@ def run_pipeline(
             classify_result=classify_result,
         )
 
-    ttp_result: TtpResult = (
-        extract_ttps(summary[:2000]) if summary else TtpResult(has_techniques=False)
-    )
+    ttp_result = _extract_ttps_or_empty(url, summary)
     ttp_string = ""
     if ttp_result.has_techniques:
         ttp_string = ", ".join(
@@ -171,6 +219,12 @@ def run_pipeline(
         ioc_data=ioc_data,
         c2_indicator=c2_indicator,
     )
+    # COMMIT dulu sebelum alert: `persist` + `route_alerts` satu sesi/transaksi,
+    # dan `sync_session()` ROLLBACK kalau ada exception. Tanpa commit ini, alert
+    # Telegram yang gagal (bot mati, chat salah, jaringan) ikut MEMBATALKAN artikel
+    # yang sudah ke-persist -- artikel hilang cuma karena notifikasinya gagal.
+    session.commit()
+    _track_cve_mentions(session, article, score_result)
     route_alerts(result)
 
     return PipelineOutcome(

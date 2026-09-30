@@ -63,9 +63,7 @@ async def test_list_filtered_by_country(async_db_session: AsyncSession) -> None:
 
 async def test_list_filtered_by_industry(async_db_session: AsyncSession) -> None:
     await _seed_victims(async_db_session)
-    _, total = await AsyncRansomwareVictimRepo(async_db_session).list_filtered(
-        industry="finance"
-    )
+    _, total = await AsyncRansomwareVictimRepo(async_db_session).list_filtered(industry="finance")
     assert total == 1
 
 

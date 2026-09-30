@@ -1,0 +1,17 @@
+{
+  "scraper": "elasticLabThreat",
+  "legacy_script": "elasticLabThreat",
+  "legacy_labels": [
+    "NEW ARTICLE FROM ELASTIC LABS"
+  ],
+  "source_urls": [
+    "https://www.elastic.co/security-labs/rss/feed.xml"
+  ],
+  "http_status": {
+    "https://www.elastic.co/security-labs/rss/feed.xml": 200
+  },
+  "blocked_urls": [],
+  "used_db_context": true,
+  "last_recorded": "2026-09-17",
+  "last_status": "ok"
+}
