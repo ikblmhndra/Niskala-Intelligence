@@ -484,8 +484,15 @@ class AsyncTAProfileRepo:
         return states
 
 
+def _today() -> datetime.date:
+    """Titik tunggal "hari ini" buat jendela bulan timeline -- dipisah
+    supaya test snapshot bisa nge-freeze tanggal (monkeypatch) tanpa
+    nambah dependency freezegun/time-machine."""
+    return datetime.date.today()
+
+
 def _build_month_list(months: int) -> list[str]:
-    today = datetime.date.today()
+    today = _today()
     result = []
     for i in range(months - 1, -1, -1):
         year = today.year
