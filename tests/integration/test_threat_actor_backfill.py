@@ -77,8 +77,12 @@ async def test_backfill_fixes_options_pir_coverage_and_risk_matrix(
     # --- kondisi staging (bug) ---
     assert (await article_repo.get_filter_options())["threat_actors"] == []
     assert (await pir_repo.compute_coverage(article_repo, criteria, None, None))[0] == 0
+    # Risk Matrix udah baca negara role apa pun (fix filter negara), jadi sel US
+    # udah ada sebelum backfill -- yang kosong cuma top actor-nya.
     risk_matrix._CACHE.clear()
-    assert (await risk_matrix.get_risk_matrix(session))["matrix"] == []
+    before = (await risk_matrix.get_risk_matrix(session))["matrix"]
+    assert [(c["industry"], c["country"]) for c in before] == [(_INDUSTRY, "US")]
+    assert not before[0]["top_actors"]
 
     stats = await _backfill(session)
 
