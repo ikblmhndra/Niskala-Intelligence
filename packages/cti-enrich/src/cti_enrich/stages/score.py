@@ -30,13 +30,25 @@ adanya -- lihat penjelasan tiap satu):
   (`monitored_people`) baca dari tabel BARU yang kosong sampai di-seed --
   lihat docstring `db/models/threat_reference.py`. `mentioned_group`/
   `mentioned_apac_people` bakal selalu `[]` sampai data itu ada, ini
-  cold-start, BUKAN pipeline yang salah.
+  cold-start, BUKAN pipeline yang salah -- TAPI tabelnya gak pernah ikut
+  langkah seed cutover (QA staging 2026-10-01: 0 dari 325 artikel punya
+  threat actor). Sekarang di-seed `tools/seed/fase10_reference_data.py`.
+- Nama grup/tokoh di-`re.escape` sebelum jadi regex -- PARITAS kode lama
+  (`nlp.py:374` nge-escape semua karakter non-alfanumerik/spasi), yang
+  sempat ketinggalan pas porting. Tanpa escape, nama malpedia kayak
+  `temp.periscope` (titik = wildcard) atau `noname057(16)` (jadi capture
+  group, gak pernah match teks aslinya) salah match, dan nama dengan kurung
+  gak seimbang (bisa ditambah lewat UI `ta_groups`) bikin `re.error` --
+  SETIAP artikel gagal di-enrich. Pola dikompilasi SEKALI per panggilan
+  (`compile_name_patterns`): ~4000 nama x (judul + body + tiap entitas NER)
+  jauh melebihi cache `re` (512 pola) kalau dikompilasi ulang terus.
 """
 
 from __future__ import annotations
 
 import re
 from collections import OrderedDict
+from collections.abc import Iterable
 from dataclasses import dataclass, field
 from functools import lru_cache
 from typing import Any
@@ -314,6 +326,31 @@ def _country_list() -> list[str]:
     return sorted(names)
 
 
+NamePatterns = list[tuple[str, re.Pattern[str]]]
+
+
+def compile_name_patterns(names: Iterable[str]) -> NamePatterns:
+    """`(nama, pola)` buat daftar referensi (grup TA / tokoh) -- nama di-escape
+    (lihat docstring modul). Nama kosong atau diawali `[` dilewati, persis
+    filter kode lama.
+
+    Batas kata pakai `(?<!\\w)`/`(?!\\w)`, bukan `\\b`: untuk nama yang awal/
+    akhirnya huruf/angka keduanya IDENTIK, tapi `\\b` sesudah karakter non-kata
+    (`noname057(16)`, `lapsus$`) cuma match kalau DIIKUTI huruf -- nama kayak
+    gitu gak pernah ketemu di kode lama."""
+    return [
+        (name, re.compile(rf"(?<!\w){re.escape(name.lower())}(?!\w)"))
+        for name in names
+        if name and not name.startswith("[")
+    ]
+
+
+def match_names(patterns: NamePatterns, text: str) -> list[str]:
+    """Nama yang disebut di `text` (case-insensitive), urut sesuai daftar."""
+    lowered = text.lower()
+    return [name for name, pattern in patterns if pattern.search(lowered)]
+
+
 def _hit(keywords: list[str], text: str) -> bool:
     lowered = text.lower()
     return any(re.search(rf"\b{kw.lower()}\b", lowered) for kw in keywords)
@@ -413,12 +450,12 @@ def score_with_lists(
     mentioned_countries: list[str] = []
     mentioned_apac_people: list[str] = []
 
+    group_patterns = compile_name_patterns(group_list)
+    people_patterns = compile_name_patterns(apac_people_list)
+
     # --- Title ---
-    for group in group_list:
-        if group.startswith("[") or not group:
-            continue
-        if re.search(rf"\b{group.lower()}\b", title.lower()):
-            mentioned_group.append(group.replace("\\-", "-"))
+    for group in match_names(group_patterns, title):
+        mentioned_group.append(group.replace("\\-", "-"))
 
     for country in country_list:
         if re.search(rf"\b{country.lower()}\b", title.lower()):
@@ -426,9 +463,7 @@ def score_with_lists(
     for flag, country in _FLAGS_LIST:
         if flag in title.lower():
             mentioned_countries.append(country)
-    for person in apac_people_list:
-        if re.search(rf"\b{person.lower()}\b", title.lower()):
-            mentioned_apac_people.append(person)
+    mentioned_apac_people.extend(match_names(people_patterns, title))
 
     result.cve_list_title = re.findall(_RE_CVE_MENTION, title.lower())
 
@@ -456,11 +491,8 @@ def score_with_lists(
 
     # --- Body (regex + NER) ---
     if body:
-        for group in group_list:
-            if group.startswith("[") or not group:
-                continue
-            if re.search(rf"\b{group.lower()}\b", body.lower()):
-                mentioned_group.append(group.replace("\\-", "-"))
+        for group in match_names(group_patterns, body):
+            mentioned_group.append(group.replace("\\-", "-"))
 
         for country in country_list:
             if re.search(rf"\b{country.lower()}\b", body.lower()):
@@ -468,9 +500,7 @@ def score_with_lists(
         for flag, country in _FLAGS_LIST:
             if flag in body.lower():
                 mentioned_countries.append(country)
-        for person in apac_people_list:
-            if re.search(rf"\b{person.lower()}\b", body.lower()):
-                mentioned_apac_people.append(person)
+        mentioned_apac_people.extend(match_names(people_patterns, body))
 
         result.cve_list_body = re.findall(_RE_CVE_MENTION, body.lower())
 
@@ -489,11 +519,7 @@ def score_with_lists(
         doc = _get_nlp()(body[:1_000_000])
         for ent in doc.ents:
             if ent.label_ in ("ORG", "PERSON", "GPE"):
-                for group in group_list:
-                    if group.startswith("[") or not group:
-                        continue
-                    if re.search(rf"\b{group.lower()}\b", str(ent).lower()):
-                        mentioned_group.append(group)
+                mentioned_group.extend(match_names(group_patterns, str(ent)))
             if ent.label_ in ("NORP", "GPE"):
                 for country in country_list:
                     if re.search(rf"\b{country.lower()}\b", str(ent).lower()):
@@ -501,9 +527,7 @@ def score_with_lists(
                 for flag, country in _FLAGS_LIST:
                     if flag in str(ent).lower():
                         mentioned_countries.append(country)
-                for person in apac_people_list:
-                    if re.search(rf"\b{person.lower()}\b", str(ent).lower()):
-                        mentioned_apac_people.append(person)
+                mentioned_apac_people.extend(match_names(people_patterns, str(ent)))
 
     result.mentioned_group = list(OrderedDict.fromkeys(mentioned_group))
     result.mentioned_countries = list(OrderedDict.fromkeys(mentioned_countries))

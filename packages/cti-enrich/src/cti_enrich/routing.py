@@ -121,10 +121,17 @@ class RoutingResult:
     dari kondisi yang sama yang `route()` pakai buat milih cabang."""
 
 
-def _group_string(mentioned_group: list[str]) -> str:
+def threat_actor_names(mentioned_group: list[str]) -> list[str]:
+    """Bentuk nama TA yang DISIMPAN (`ArticleThreatActor.threat_actor`) dari
+    hasil `score` -- `capitalize()` persis kode lama, mis. `shinyhunters` ->
+    `Shinyhunters`. Dipakai `route()` dan `cti_enrich.backfill` biar dua
+    jalur tulis gak bisa beda format."""
     seen = list(OrderedDict.fromkeys(mentioned_group))
-    parts = [g.capitalize().replace("\\-", "-") for g in seen]
-    return " || ".join(parts)
+    return list(OrderedDict.fromkeys(g.capitalize().replace("\\-", "-") for g in seen))
+
+
+def _group_string(mentioned_group: list[str]) -> str:
+    return " || ".join(threat_actor_names(mentioned_group))
 
 
 def _apac_string(countries: list[str], people: list[str]) -> str:
