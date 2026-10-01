@@ -195,6 +195,12 @@ class _FakeRedis:
 
     def __init__(self) -> None:
         self._counts: dict[str, int] = {}
+        self.values: dict[str, str] = {}
+        """`get` -- heartbeat beat (`GET /api/scraper`); test isi langsung lewat
+        `fake_redis.values[...]`."""
+
+    async def get(self, key: str) -> str | None:
+        return self.values.get(key)
 
     async def incr(self, key: str) -> int:
         self._counts[key] = self._counts.get(key, 0) + 1
@@ -205,7 +211,16 @@ class _FakeRedis:
 
 
 @pytest.fixture
-async def api_client(api_session: AsyncSession) -> AsyncIterator[httpx.AsyncClient]:
+def fake_redis() -> _FakeRedis:
+    """Instance yang SAMA dengan yang di-inject `api_client` lewat `get_redis` --
+    test yang butuh isi key (mis. heartbeat beat) nulis ke `fake_redis.values`."""
+    return _FakeRedis()
+
+
+@pytest.fixture
+async def api_client(
+    api_session: AsyncSession, fake_redis: _FakeRedis
+) -> AsyncIterator[httpx.AsyncClient]:
     """HTTP client ASGI langsung ke `create_app()` -- request beneran
     lewat routing/dependency-injection/response_model serialization
     FastAPI (bukan manggil fungsi service langsung kayak test lain), tapi
@@ -231,7 +246,7 @@ async def api_client(api_session: AsyncSession) -> AsyncIterator[httpx.AsyncClie
         yield api_session
 
     app.dependency_overrides[get_db] = _override_get_db
-    app.dependency_overrides[get_redis] = lambda: _FakeRedis()
+    app.dependency_overrides[get_redis] = lambda: fake_redis
     transport = httpx.ASGITransport(app=app)
     async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
         yield client

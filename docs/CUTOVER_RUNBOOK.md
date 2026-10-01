@@ -173,7 +173,7 @@ lagi Rundeck; sesudahnya platform baru sudah menulis data yang tidak ikut kembal
 | 3 | **Stop** (bukan disable/mask) unit lama | `sudo systemctl stop cti-web nlp_worker iocSyncer` (yang aktif di snapshot). `mongod` **tetap nyala** (dump + rollback butuh). | <1 mnt |
 | 4 | Dump Mongo terakhir (10.4) | `mongodump` ke direktori di luar host; catat nama/waktunya. Ini sekaligus sumber warm start. | ~menit |
 | 5 | Nyalakan fondasi | `docker compose ... up -d postgres redis` lalu `up -d migrate api web` (tanpa worker/beat!). `curl -f localhost:$API_PORT/healthz` | ~1 mnt |
-| 6 | Seed data referensi | `tools/seed/fase10_reference_data.py --dry-run` lalu tanpa `--dry-run` (idempoten; cara menjalankan: 3.2). Script mencetak **daftar user lama**: buat ulang lewat UI dengan password baru (hash lama sengaja tidak dibawa). | ~menit |
+| 6 | Seed data referensi | `tools/seed/fase10_reference_data.py --dry-run` lalu tanpa `--dry-run` (idempoten; cara menjalankan: 3.2). Script mencetak **daftar user lama**: buat ulang lewat UI dengan password baru (hash lama sengaja tidak dibawa). Sejak QA 2026-10-01 ikut mengisi `threat_actor_groups` (~4000), `monitored_people`, `ioc_allowlist_entries` -- tanpa `threat_actor_groups` TIDAK ADA artikel yang dapat threat actor (dropdown TA kosong, PIR berbasis TA 0 match). Cek: baris `threat_actor_groups` di output > 0. | ~menit |
 | 7 | Warm start dedup | `tools/seed/fase10_warm_start.py --dry-run` lalu sungguhan (cara menjalankan: 3.2), dengan `--dump-dir <dump langkah 4>` dan `--legacy-dir <salinan segar /opt/ScraperNews/offset + /opt/techstackLibrary/offset>`. Tanpa ini tiap scraper mulai dingin (hanya cap 5 item, alert tetap terkirim). | ~menit |
 | 8 | Migrasi CVE tracker (Fase 10.F, opsional tapi disarankan) | `tools/seed/fase10_cve_migrate.py --dry-run` lalu sungguhan (cara menjalankan: 3.2), dengan `--dump-dir <dump langkah 4>`. Isi `cve_tracker`/`cve_false_positives`/`cve_tickets` dari riwayat Mongo lama, supaya tab CVE TIDAK kosong di hari pertama (`new_cve` sendiri cuma menjangkau 8 hari ke belakang). Idempoten, aman diulang; CVE yang sudah ada (mis. `new_cve` sudah sempat jalan) tidak ditimpa. | ~menit |
 | 9 | **Prime** watcher yang riwayatnya tak bisa dibawa | `docker compose ... exec -T worker cti-scraper run <id> --prime` untuk `github_ttps sophoslabs_github mitre_github` dan `techstack_npm techstack_pypi techstack_go` (yang tidak punya file offset). Prime = fetch sungguhan, tandai SEMUA seen, **tanpa** kirim apa pun. | ~menit |
@@ -229,6 +229,21 @@ docker run --rm --network <project>_default --env-file .env \
 # migrasi CVE tracker: fase10_cve_migrate.py --dump-dir /dump (gak butuh --legacy-dir)
 ```
 
+### 3.2a Backfill enrichment artikel yang sudah masuk (sekali, setelah seed)
+
+Untuk DB yang sudah menerima artikel SEBELUM `threat_actor_groups` di-seed / sebelum fix role negara
+`mentioned` (staging 2026-10): threat actor dicocokkan ulang ke **judul** artikel lama (ringkasan tidak
+tersimpan, jadi artikel lama hanya dapat TA yang disebut di judul) dan negara `victim`/`actor` diberi baris
+`mentioned` (Risk Matrix, filter negara). Tanpa LLM, tanpa alert; hanya menambah baris, idempoten.
+
+```bash
+docker compose ... exec -T worker python -m cti_enrich.backfill --dry-run   # angka + contoh, di-rollback
+docker compose ... exec -T worker python -m cti_enrich.backfill
+```
+
+Menolak jalan (exit 1, tidak menulis apa pun) kalau `threat_actor_groups` masih kosong. Risk Matrix di-cache
+15 menit per proses API -- hasil baru muncul setelah itu (atau restart `api`).
+
 ### 3.3 Yang tidak boleh dilakukan saat cutover
 
 - Jangan `systemctl disable`/`mask`/hapus unit lama, jangan hapus job Rundeck, jangan hapus Mongo --
@@ -257,6 +272,17 @@ Perilaku yang **normal tapi mengejutkan**:
 - Scraper yang **run terakhirnya lama** tampil `dead` sampai slot cron berikutnya menembak, walau
   infrastrukturnya sehat (terlihat di staging tepat setelah beat dinyalakan).
 - Scraper Twitter di twitterapi.io free tier kena `429` lalu retry 6 detik (run 30-35 dtk, bukan gagal).
+- **Beat yang di-`stop` manual TIDAK nyala sendiri** (`restart: unless-stopped`), dan deploy parsial
+  (`up -d worker web`) juga gak nyalain dia. Insiden staging 2026-09-26 15:42 -> 09-30 17:17 UTC: beat
+  di-stop habis rehearsal, jadwal mati ~97 jam tanpa ada yang sadar (digest health ikut mati karena
+  dijadwalkan beat). Sekarang: banner merah di `/scrapers` + alert Telegram (thread `scraper_health`)
+  dari **watchdog di container worker** kalau heartbeat beat basi > `WORKER__BEAT_HEARTBEAT_STALE_S`
+  (300 dtk), diulang tiap `WORKER__BEAT_STALE_ALERT_REPEAT_MIN` (60), plus pesan "PULIH". Kalau beat
+  SENGAJA dimatikan (warm start, langkah 5-8), alert itu memang akan datang -- abaikan sampai beat dinyalakan.
+- Beat yang nyala lagi sesudah mati lama **tidak** menembak semua jadwal sekaligus: slot yang terlewat
+  lebih dari `WORKER__BEAT_CATCHUP_GRACE_S` (600 dtk) dilompati ke slot berikutnya (log
+  `beat_stale_catchup_skipped` berisi daftar entrinya). Restart singkat tetap di-catch-up.
+- Run hasil retry (fetch_error/rate_limited) tercatat `trigger=beat_retry`/`manual_retry`, jeda 60/120/240 dtk.
 
 ---
 

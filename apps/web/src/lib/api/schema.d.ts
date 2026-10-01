@@ -3131,7 +3131,7 @@ export interface components {
         /** ClientUpdate */
         ClientUpdate: {
             /** Countries */
-            countries?: string[];
+            countries?: string[] | null;
             /** Name */
             name: string;
         };
@@ -4218,6 +4218,22 @@ export interface components {
             syntax: string;
         };
         /**
+         * SchedulerStatusOut
+         * @description Heartbeat Celery beat (`cti_core.beat_heartbeat`) -- QA BUG-D2/D8.
+         */
+        SchedulerStatusOut: {
+            /** Age S */
+            age_s: number | null;
+            /** Last Tick At */
+            last_tick_at: string | null;
+            /** Stale After S */
+            stale_after_s: number;
+            /** Started At */
+            started_at: string | null;
+            /** State */
+            state: string;
+        };
+        /**
          * ScraperConfigOut
          * @description `None` di tiap field override = "gak ada override, pakai default
          *     kode" -- `enabled` kekecualian (selalu bool efektif, gabungan
@@ -4344,6 +4360,7 @@ export interface components {
             generated_at: string;
             /** Problems */
             problems: components["schemas"]["ScraperHealthEntryOut"][];
+            scheduler: components["schemas"]["SchedulerStatusOut"];
         };
         /** ScraperItemListResponse */
         ScraperItemListResponse: {
@@ -4395,6 +4412,8 @@ export interface components {
             last_status: string | null;
             /** Last Trigger */
             last_trigger: string | null;
+            /** Next Run At */
+            next_run_at?: string | null;
             /** Queue */
             queue: string;
             /** Runtime */
@@ -4408,6 +4427,7 @@ export interface components {
         };
         /** ScraperListResponse */
         ScraperListResponse: {
+            scheduler: components["schemas"]["SchedulerStatusOut"];
             /** Scrapers */
             scrapers: components["schemas"]["ScraperListItem"][];
             /** Total */
@@ -11505,8 +11525,12 @@ export interface operations {
                 search?: string | null;
                 author?: string | null;
                 lang?: string | null;
+                /** @description `YYYY-MM-DD` = mulai tengah malam hari itu di zona `tz`; datetime ISO 8601 = instan persis. */
                 posted_on_start?: string | null;
+                /** @description `YYYY-MM-DD` = INKLUSIF sampai akhir hari itu di zona `tz`; datetime ISO 8601 = batas atas inklusif (instan persis). */
                 posted_on_end?: string | null;
+                /** @description Zona IANA (mis. `Asia/Jakarta`) buat batas hari `YYYY-MM-DD`. Default UTC. */
+                tz?: string | null;
                 apac_only?: boolean;
                 ot_only?: boolean;
                 confirmed_only?: boolean;
@@ -11545,8 +11569,12 @@ export interface operations {
                 search?: string | null;
                 author?: string | null;
                 lang?: string | null;
+                /** @description `YYYY-MM-DD` = mulai tengah malam hari itu di zona `tz`; datetime ISO 8601 = instan persis. */
                 posted_on_start?: string | null;
+                /** @description `YYYY-MM-DD` = INKLUSIF sampai akhir hari itu di zona `tz`; datetime ISO 8601 = batas atas inklusif (instan persis). */
                 posted_on_end?: string | null;
+                /** @description Zona IANA (mis. `Asia/Jakarta`) buat batas hari `YYYY-MM-DD`. Default UTC. */
+                tz?: string | null;
                 apac_only?: boolean;
                 ot_only?: boolean;
                 confirmed_only?: boolean;

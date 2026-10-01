@@ -7,11 +7,11 @@ pipeline enrichment) patuh".
 CATATAN: dua tabel ini kosong sampai di-seed. Data kuratif ASLI (nama grup
 threat actor, nama tokoh APAC yang dipantau) ada di dump Mongo arsip
 (`legacy/dump/threatintel/groups.bson`, `legacy/dump/news_db/apac-people.bson`)
--- migrasi isinya BELUM dikerjain di sini (butuh tooling baca BSON yang
-belum ke-setup), lihat docs/PROGRESS.md item terkait Fase 5. Tanpa data ini
-ke-seed, `mentioned_group`/`mentioned_apac_people` bakal selalu kosong --
-bukan bug pipeline, tapi cold-start yang sama kayak `techstack` sebelum
-Fase 10 seed (lihat plan §"Konsekuensi Postgres + DB kosong").
+-- di-seed `tools/seed/fase10_reference_data.py` (langkah 6 runbook
+cutover; dulu cuma `fase5_reference_data.py` yang gak pernah masuk runbook,
+jadi staging kosong -- QA 2026-10-01: 0 dari 325 artikel punya TA). Tanpa
+data ini, `mentioned_group`/`mentioned_apac_people` bakal selalu kosong.
+Artikel yang masuk sebelum seed: `python -m cti_enrich.backfill`.
 
 `country_list` lama (Mongo `apac-country`+`global-country`, ~150 nama
 kuratif) SENGAJA gak ikut di-port jadi tabel baru -- diganti

@@ -27,6 +27,9 @@ const PRIORITY_CLASS: Record<string, string> = {
 export function PirList() {
   const queryClient = useQueryClient();
   const [formOpen, setFormOpen] = useState(false);
+  // Naik tiap "+ New" -- form add remount fresh, gak bawa isian
+  // submit/cancel sebelumnya (pola sama `addKey` di `sr-table.tsx`).
+  const [addKey, setAddKey] = useState(0);
   const [editTarget, setEditTarget] = useState<PIROut | null>(null);
   const [viewTarget, setViewTarget] = useState<PIROut | null>(null);
   const [removeTarget, setRemoveTarget] = useState<PIROut | null>(null);
@@ -85,7 +88,13 @@ export function PirList() {
     <div>
       <div className="mb-4 flex items-center justify-between border-b border-border pb-3">
         <p className="font-mono text-[10px] text-muted-foreground">{pirs.length} PIR{pirs.length !== 1 ? "s" : ""} defined</p>
-        <Button size="sm" onClick={() => setFormOpen(true)}>
+        <Button
+          size="sm"
+          onClick={() => {
+            setAddKey((k) => k + 1);
+            setFormOpen(true);
+          }}
+        >
           + New PIR
         </Button>
       </div>
@@ -173,7 +182,7 @@ export function PirList() {
         })}
       </div>
 
-      <PirFormDialog key="add" open={formOpen} onClose={() => setFormOpen(false)} onSaved={invalidate} />
+      <PirFormDialog key={`add-${addKey}`} open={formOpen} onClose={() => setFormOpen(false)} onSaved={invalidate} />
       <PirFormDialog key={editTarget?.id ?? "edit-none"} pir={editTarget} open={editTarget !== null} onClose={() => setEditTarget(null)} onSaved={invalidate} />
       <PirArticlesDialog pir={viewTarget} onClose={() => setViewTarget(null)} />
       <ConfirmDialog

@@ -28,6 +28,7 @@ from cti_core.db.models.article import (
     ArticleThreatActor,
     ArticleTTP,
 )
+from cti_core.db.repositories.ttp_catalog import canonical_ttp_name
 
 
 class AsyncMitreHeatmapRepo:
@@ -59,11 +60,13 @@ class AsyncMitreHeatmapRepo:
         )
         row_names = [r[0] for r in top_rows_result.all()]
 
+        # GROUP BY ID SAJA, nama kanonik dari katalog ATT&CK (QA BUG-C01: dulu
+        # group by (id, nama) -> satu ID dgn 3 nama LLM = 3 kolom angka sama).
         top_ttps_result = await self.session.execute(
-            select(ArticleTTP.ttp_id, ArticleTTP.ttp_name, count_articles)
+            select(ArticleTTP.ttp_id, canonical_ttp_name(), count_articles)
             .join(Article, ArticleTTP.article_id == Article.id)
             .where(Article.posted_on >= cutoff)
-            .group_by(ArticleTTP.ttp_id, ArticleTTP.ttp_name)
+            .group_by(ArticleTTP.ttp_id)
             .order_by(count_articles.desc())
             .limit(top_ttps)
         )

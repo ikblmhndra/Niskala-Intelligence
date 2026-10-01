@@ -58,7 +58,7 @@ async def _fetch_dashboard_stats(
     # kali sesi ini (`exec_dashboard.py`, dst).
     total = await repo.count_articles(**filters)
     total_sources = await repo.distinct_source_count(**filters)
-    total_countries = await repo.unique_mentioned_country_count(**filters)
+    total_countries = await repo.unique_country_count(**filters)
     total_threat_actors = await repo.unique_threat_actor_count(**filters)
     top_countries = await repo.top_countries(limit=10, **filters)
     top_sources = await repo.top_sources(limit=10, **filters)

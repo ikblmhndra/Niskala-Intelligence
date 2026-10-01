@@ -122,8 +122,18 @@ export function UsersSection() {
         <AddUserForm />
       </CardContent>
 
-      <ResetPasswordDialog target={resetTarget} onOpenChange={(open) => !open && setResetTarget(null)} />
-      <ChangeRoleDialog target={roleTarget} onOpenChange={(open) => !open && setRoleTarget(null)} />
+      {/* `key` per target: remount tiap buka/tutup, jadi role/password yang
+          diketik buat user A (lalu Cancel) gak kebawa ke user B. */}
+      <ResetPasswordDialog
+        key={resetTarget?.username ?? "none"}
+        target={resetTarget}
+        onOpenChange={(open) => !open && setResetTarget(null)}
+      />
+      <ChangeRoleDialog
+        key={roleTarget?.username ?? "none"}
+        target={roleTarget}
+        onOpenChange={(open) => !open && setRoleTarget(null)}
+      />
       <EditClientsDialog target={clientsTarget} onOpenChange={(open) => !open && setClientsTarget(null)} />
     </Card>
   );
@@ -368,6 +378,10 @@ function ChangeRoleDialog({
   );
 }
 
+/** Dibuka programatik (`target` di-set dari dropdown ⋮), jadi
+ * `onOpenChange(true)` gak pernah kepanggil -- init `selected` di situ
+ * bikin checkbox kebuka kosong (QA BUG-02). Body cuma mount pas `target`
+ * ada + `key` per user: state lazy-init dari `target.client_ids`. */
 function EditClientsDialog({
   target,
   onOpenChange,
@@ -375,16 +389,31 @@ function EditClientsDialog({
   target: AdminUser | null;
   onOpenChange: (open: boolean) => void;
 }) {
+  return (
+    <Dialog open={target !== null} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-sm">
+        <DialogHeader>
+          <DialogTitle className="font-heading">Edit Clients</DialogTitle>
+        </DialogHeader>
+        {target && <EditClientsForm key={target.username} target={target} onClose={() => onOpenChange(false)} />}
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function EditClientsForm({ target, onClose }: { target: AdminUser; onClose: () => void }) {
   const queryClient = useQueryClient();
   const clients = useClients();
-  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [selected, setSelected] = useState<Set<string>>(
+    () => new Set(target.client_ids.length ? target.client_ids : ["default"]),
+  );
   const [error, setError] = useState<string | null>(null);
 
   const mutation = useMutation({
     mutationFn: async () => {
       const ids = Array.from(selected);
       const { response } = await api.PUT("/api/auth/users/{username}/clients", {
-        params: { path: { username: target!.username } },
+        params: { path: { username: target.username } },
         body: { client_ids: ids },
       });
       if (!response.ok) {
@@ -394,18 +423,10 @@ function EditClientsDialog({
     },
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: USERS_KEY });
-      onOpenChange(false);
+      onClose();
     },
     onError: (e: Error) => setError(e.message),
   });
-
-  function handleOpenChange(open: boolean) {
-    if (open && target) {
-      setSelected(new Set(target.client_ids.length ? target.client_ids : ["default"]));
-      setError(null);
-    }
-    onOpenChange(open);
-  }
 
   function toggle(id: string) {
     const next = new Set(selected);
@@ -420,34 +441,29 @@ function EditClientsDialog({
   }
 
   return (
-    <Dialog open={target !== null} onOpenChange={handleOpenChange}>
-      <DialogContent className="sm:max-w-sm">
-        <DialogHeader>
-          <DialogTitle className="font-heading">Edit Clients</DialogTitle>
-        </DialogHeader>
-        <p className="font-mono text-xs text-muted-foreground">
-          User: <span className="text-foreground">{target?.username}</span>
-        </p>
-        {clients.isPending && <p className="text-xs text-muted-foreground">Loading…</p>}
-        <div className="flex max-h-52 flex-col gap-1 overflow-y-auto">
-          {clients.data?.map((c) => (
-            <label key={c.client_id} className="flex cursor-pointer items-center gap-2 py-0.5 text-xs">
-              <Checkbox checked={selected.has(c.client_id)} onCheckedChange={() => toggle(c.client_id)} />
-              <span className="text-foreground">{c.name}</span>
-              <span className="font-mono text-[9px] text-muted-foreground">{c.client_id}</span>
-            </label>
-          ))}
-        </div>
-        {error && <p className="text-xs text-destructive">{error}</p>}
-        <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
-          </Button>
-          <Button onClick={handleSave} disabled={mutation.isPending}>
-            Save
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+    <>
+      <p className="font-mono text-xs text-muted-foreground">
+        User: <span className="text-foreground">{target.username}</span>
+      </p>
+      {clients.isPending && <p className="text-xs text-muted-foreground">Loading…</p>}
+      <div className="flex max-h-52 flex-col gap-1 overflow-y-auto">
+        {clients.data?.map((c) => (
+          <label key={c.client_id} className="flex cursor-pointer items-center gap-2 py-0.5 text-xs">
+            <Checkbox checked={selected.has(c.client_id)} onCheckedChange={() => toggle(c.client_id)} />
+            <span className="text-foreground">{c.name}</span>
+            <span className="font-mono text-[9px] text-muted-foreground">{c.client_id}</span>
+          </label>
+        ))}
+      </div>
+      {error && <p className="text-xs text-destructive">{error}</p>}
+      <DialogFooter>
+        <Button variant="outline" onClick={onClose}>
+          Cancel
+        </Button>
+        <Button onClick={handleSave} disabled={mutation.isPending}>
+          Save
+        </Button>
+      </DialogFooter>
+    </>
   );
 }

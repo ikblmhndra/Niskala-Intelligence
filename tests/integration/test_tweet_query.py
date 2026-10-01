@@ -97,6 +97,60 @@ class TestAsyncTweetRepo:
         )
         assert total == 1
 
+    async def test_list_filtered_by_author_strips_leading_at(
+        self, async_db_session: AsyncSession
+    ) -> None:
+        """QA BUG-B6: placeholder UI "@handle…" -> user ngetik "@threatfeed",
+        `author_username` disimpan tanpa `@` -> dulu 0 hasil."""
+        await _seed(async_db_session)
+        repo = AsyncTweetRepo(async_db_session)
+        _, total = await repo.list_filtered(author="@threatfeed")
+        assert total == 2
+        _, total = await repo.list_filtered(author=" @threatfeed ")
+        assert total == 2
+        stats = await repo.get_stats(author="@threatfeed")
+        assert stats["total"] == 2
+
+    async def test_list_filtered_posted_before_is_exclusive(
+        self, async_db_session: AsyncSession
+    ) -> None:
+        await _seed(async_db_session)
+        repo = AsyncTweetRepo(async_db_session)
+        # 1002 diposting PERSIS 2026-09-12 00:00 UTC -- `posted_before` itu `<`.
+        _, total = await repo.list_filtered(
+            posted_on_start=datetime.datetime(2026, 9, 10, tzinfo=datetime.UTC),
+            posted_before=datetime.datetime(2026, 9, 12, tzinfo=datetime.UTC),
+        )
+        assert total == 1
+        stats = await repo.get_stats(
+            posted_before=datetime.datetime(2026, 9, 12, 0, 0, 1, tzinfo=datetime.UTC)
+        )
+        assert stats["total"] == 2
+
+    async def test_list_filtered_pagination_stable_when_posted_on_ties(
+        self, async_db_session: AsyncSession
+    ) -> None:
+        ts = datetime.datetime(2026, 9, 30, 13, 20, tzinfo=datetime.UTC)
+        async_db_session.add_all(
+            Tweet(
+                tweet_id=f"9{i:03d}",
+                url=f"https://x.com/t/status/9{i:03d}",
+                text="same second",
+                author_username="burst",
+                posted_on=ts,
+                scan_results={},
+            )
+            for i in range(45)
+        )
+        await async_db_session.flush()
+        repo = AsyncTweetRepo(async_db_session)
+        seen: list[int] = []
+        for page in range(1, 8):
+            tweets, _ = await repo.list_filtered(page=page, page_size=7)
+            seen.extend(t.id for t in tweets)
+        assert len(seen) == 45
+        assert seen == sorted(seen, reverse=True)
+
     async def test_get_stats_top_authors(self, async_db_session: AsyncSession) -> None:
         await _seed(async_db_session)
         stats = await AsyncTweetRepo(async_db_session).get_stats()

@@ -1,12 +1,10 @@
 "use client";
 
-import { useState } from "react";
-
 import type { components } from "@/lib/api/schema";
 import type { NewsroomFilters } from "@/lib/newsroom/filters";
 import { ArticleCollection } from "@/components/newsroom/article-card";
 import { PanelEmpty, PanelError, PanelLoading, PanelShell } from "@/components/newsroom/panel-shell";
-import { SimplePager } from "@/components/pager";
+import { SimplePager, usePageResetOn } from "@/components/pager";
 import { useArticlesQuery } from "@/components/newsroom/use-articles";
 
 type Article = components["schemas"]["ArticleOut"];
@@ -33,7 +31,7 @@ export function NewsTypePanel({
   filters: NewsroomFilters;
   onSelect: (a: Article) => void;
 }) {
-  const [page, setPage] = useState(1);
+  const [page, setPage] = usePageResetOn(filters);
 
   const query = useArticlesQuery(
     ["news-type", newsType],

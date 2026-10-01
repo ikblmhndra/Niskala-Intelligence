@@ -52,14 +52,15 @@ async def test_get_dashboard_stats_aggregates_all_dimensions(
     result = await svc.get_dashboard_stats(async_db_session)
     assert result["total_articles"] == 2
     assert result["total_sources"] == 2
-    assert result["total_countries"] == 1  # "ID" doang yg role="mentioned"
+    # Role apa pun (QA BUG-B1): ID (mentioned) + US (victim).
+    assert result["total_countries"] == 2
     assert result["total_threat_actors"] == 1
 
     top_industries = {i["name"]: i["count"] for i in result["top_industries"]}
     assert top_industries["Manufacturing"] == 2
 
     top_countries = {c["name"]: c["count"] for c in result["top_countries"]}
-    assert top_countries == {"ID": 2}
+    assert top_countries == {"ID": 2, "US": 1}
 
     by_type = {t["name"]: t["count"] for t in result["by_news_type"]}
     assert by_type["apac"] == 1

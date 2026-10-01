@@ -27,7 +27,7 @@ from collections import Counter
 from typing import Any
 
 from cti_core.db.models.article import Article
-from cti_core.db.repositories.article import AsyncArticleRepo
+from cti_core.db.repositories.article import AsyncArticleRepo, all_country_codes
 from cti_core.db.repositories.ioc import AsyncIOCRepo
 from cti_core.db.repositories.pir import AsyncPIRRepo
 from cti_core.db.repositories.source_reliability import AsyncSourceReliabilityRepo
@@ -121,9 +121,9 @@ def _article_to_dict(articles: list[Article], ratings: dict[str, Any]) -> list[d
                 "source_reliability": rating.reliability_grade if rating else "",
                 "threat_actors": [t.threat_actor for t in a.threat_actors if t.threat_actor],
                 "impacted_industries": [i.industry for i in a.industries if i.industry],
-                "countries": [
-                    c.country_code for c in a.countries if c.role == "mentioned" and c.country_code
-                ],
+                # Role apa pun -- konsisten sama PIR matching (`dominant_countries`
+                # dibandingin ke `criteria.countries` PIR, yang match role apa pun).
+                "countries": all_country_codes(a),
                 "ttps": [{"id": t.ttp_id, "name": t.ttp_name} for t in a.ttps],
             }
         )

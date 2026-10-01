@@ -1,13 +1,11 @@
 "use client";
 
-import { useState } from "react";
-
 import type { components } from "@/lib/api/schema";
 import type { NewsroomFilters } from "@/lib/newsroom/filters";
 import { useAuth } from "@/components/providers/auth-provider";
 import { ArticleCollection } from "@/components/newsroom/article-card";
 import { PanelEmpty, PanelError, PanelLoading, PanelShell } from "@/components/newsroom/panel-shell";
-import { SimplePager } from "@/components/pager";
+import { SimplePager, usePageResetOn } from "@/components/pager";
 import { useArticlesQuery } from "@/components/newsroom/use-articles";
 
 type Article = components["schemas"]["ArticleOut"];
@@ -33,7 +31,7 @@ export function LocalPanel({
 }) {
   const { user } = useAuth();
   const countries = user?.client_countries ?? [];
-  const [page, setPage] = useState(1);
+  const [page, setPage] = usePageResetOn(filters);
 
   const query = useArticlesQuery(
     ["local", countries],

@@ -26,7 +26,7 @@ alert SELALU di LUAR `asyncio.run()` task ini: fase "kumpulin match" (di
 dalam asyncio.run) dan fase "kirim Telegram" (di luar, sync biasa) SENGAJA
 dipisah dua langkah, lihat `_check_pir_alerts`.
 
-Gak ada `autoretry_for` di task-task ini (beda dari `scrape.run`) --
+Gak ada retry otomatis di task-task ini (beda dari `scrape.run`) --
 sama filosofi kayak versi lama: gagal sekali, tick berikutnya (jadwal
 cron tetap) coba lagi sendiri, gak perlu retry-backoff eksplisit buat
 loop periodic. CVE enrichment tetap PER-LOOKUP try/except (port apa

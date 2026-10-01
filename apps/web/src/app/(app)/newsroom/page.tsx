@@ -89,7 +89,9 @@ export default function NewsroomPage() {
           <FilterBar
             draft={draft}
             onDraftChange={setDraft}
-            onApply={() => setFilters(draft)}
+            // Objek BARU tiap Apply (walau nilainya sama) -- panel reset ke
+            // page 1 berdasarkan identitas `filters` (`usePageResetOn`).
+            onApply={() => setFilters({ ...draft })}
             onReset={() => setFilters(defaultNewsroomFilters())}
           />
 

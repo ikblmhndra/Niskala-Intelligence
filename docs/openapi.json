@@ -323,11 +323,18 @@
       "ClientUpdate": {
         "properties": {
           "countries": {
-            "items": {
-              "type": "string"
-            },
-            "title": "Countries",
-            "type": "array"
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Countries"
           },
           "name": {
             "maxLength": 128,
@@ -2838,6 +2845,61 @@
         "title": "SaveSyntaxRequest",
         "type": "object"
       },
+      "SchedulerStatusOut": {
+        "description": "Heartbeat Celery beat (`cti_core.beat_heartbeat`) -- QA BUG-D2/D8.",
+        "properties": {
+          "age_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Age S"
+          },
+          "last_tick_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Tick At"
+          },
+          "stale_after_s": {
+            "title": "Stale After S",
+            "type": "integer"
+          },
+          "started_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Started At"
+          },
+          "state": {
+            "title": "State",
+            "type": "string"
+          }
+        },
+        "required": [
+          "state",
+          "last_tick_at",
+          "started_at",
+          "age_s",
+          "stale_after_s"
+        ],
+        "title": "SchedulerStatusOut",
+        "type": "object"
+      },
       "ScraperConfigOut": {
         "description": "`None` di tiap field override = \"gak ada override, pakai default\nkode\" -- `enabled` kekecualian (selalu bool efektif, gabungan\n`ScraperConfig.enabled` kalau ada baris override, else `ScraperMeta.\nenabled` kode).",
         "properties": {
@@ -3232,11 +3294,15 @@
             },
             "title": "Problems",
             "type": "array"
+          },
+          "scheduler": {
+            "$ref": "#/components/schemas/SchedulerStatusOut"
           }
         },
         "required": [
           "generated_at",
           "counts",
+          "scheduler",
           "problems"
         ],
         "title": "ScraperHealthSummary",
@@ -3414,6 +3480,17 @@
             ],
             "title": "Last Trigger"
           },
+          "next_run_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Run At"
+          },
           "queue": {
             "title": "Queue",
             "type": "string"
@@ -3460,6 +3537,9 @@
       },
       "ScraperListResponse": {
         "properties": {
+          "scheduler": {
+            "$ref": "#/components/schemas/SchedulerStatusOut"
+          },
           "scrapers": {
             "items": {
               "$ref": "#/components/schemas/ScraperListItem"
@@ -3474,7 +3554,8 @@
         },
         "required": [
           "scrapers",
-          "total"
+          "total",
+          "scheduler"
         ],
         "title": "ScraperListResponse",
         "type": "object"
@@ -18110,37 +18191,57 @@
             }
           },
           {
+            "description": "`YYYY-MM-DD` = mulai tengah malam hari itu di zona `tz`; datetime ISO 8601 = instan persis.",
             "in": "query",
             "name": "posted_on_start",
             "required": false,
             "schema": {
               "anyOf": [
                 {
-                  "format": "date-time",
                   "type": "string"
                 },
                 {
                   "type": "null"
                 }
               ],
+              "description": "`YYYY-MM-DD` = mulai tengah malam hari itu di zona `tz`; datetime ISO 8601 = instan persis.",
               "title": "Posted On Start"
             }
           },
           {
+            "description": "`YYYY-MM-DD` = INKLUSIF sampai akhir hari itu di zona `tz`; datetime ISO 8601 = batas atas inklusif (instan persis).",
             "in": "query",
             "name": "posted_on_end",
             "required": false,
             "schema": {
               "anyOf": [
                 {
-                  "format": "date-time",
                   "type": "string"
                 },
                 {
                   "type": "null"
                 }
               ],
+              "description": "`YYYY-MM-DD` = INKLUSIF sampai akhir hari itu di zona `tz`; datetime ISO 8601 = batas atas inklusif (instan persis).",
               "title": "Posted On End"
+            }
+          },
+          {
+            "description": "Zona IANA (mis. `Asia/Jakarta`) buat batas hari `YYYY-MM-DD`. Default UTC.",
+            "in": "query",
+            "name": "tz",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Zona IANA (mis. `Asia/Jakarta`) buat batas hari `YYYY-MM-DD`. Default UTC.",
+              "title": "Tz"
             }
           },
           {
@@ -18271,37 +18372,57 @@
             }
           },
           {
+            "description": "`YYYY-MM-DD` = mulai tengah malam hari itu di zona `tz`; datetime ISO 8601 = instan persis.",
             "in": "query",
             "name": "posted_on_start",
             "required": false,
             "schema": {
               "anyOf": [
                 {
-                  "format": "date-time",
                   "type": "string"
                 },
                 {
                   "type": "null"
                 }
               ],
+              "description": "`YYYY-MM-DD` = mulai tengah malam hari itu di zona `tz`; datetime ISO 8601 = instan persis.",
               "title": "Posted On Start"
             }
           },
           {
+            "description": "`YYYY-MM-DD` = INKLUSIF sampai akhir hari itu di zona `tz`; datetime ISO 8601 = batas atas inklusif (instan persis).",
             "in": "query",
             "name": "posted_on_end",
             "required": false,
             "schema": {
               "anyOf": [
                 {
-                  "format": "date-time",
                   "type": "string"
                 },
                 {
                   "type": "null"
                 }
               ],
+              "description": "`YYYY-MM-DD` = INKLUSIF sampai akhir hari itu di zona `tz`; datetime ISO 8601 = batas atas inklusif (instan persis).",
               "title": "Posted On End"
+            }
+          },
+          {
+            "description": "Zona IANA (mis. `Asia/Jakarta`) buat batas hari `YYYY-MM-DD`. Default UTC.",
+            "in": "query",
+            "name": "tz",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Zona IANA (mis. `Asia/Jakarta`) buat batas hari `YYYY-MM-DD`. Default UTC.",
+              "title": "Tz"
             }
           },
           {

@@ -20,7 +20,7 @@ from typing import Any
 
 from cti_core.db.models.article import Article
 from cti_core.db.models.pir import PIRNote, PIRRequirement
-from cti_core.db.repositories.article import AsyncArticleRepo
+from cti_core.db.repositories.article import AsyncArticleRepo, all_country_codes
 from cti_core.db.repositories.auth import AsyncAuditLogRepo
 from cti_core.db.repositories.pir import AsyncPIRRepo
 from fastapi import APIRouter, Depends, Header, HTTPException, Query, Request
@@ -74,7 +74,9 @@ def _article_out(article: Article, has_note: bool) -> PIRArticleOut:
         news_type=article.news_type,
         threat_actors=[t.threat_actor for t in article.threat_actors],
         impacted_industries=[i.industry for i in article.industries],
-        mentioned_countries=[c.country_code for c in article.countries if c.role == "mentioned"],
+        # Role apa pun -- PIR match negara lewat filter `countries` (role apa
+        # pun), jadi negara yang bikin artikel ke-match harus ikut tampil.
+        mentioned_countries=all_country_codes(article),
         has_note=has_note,
     )
 
@@ -89,7 +91,7 @@ def _article_export_dict(article: Article, note: PIRNote | None) -> dict[str, An
         "news_type": article.news_type,
         "threat_actors": [t.threat_actor for t in article.threat_actors],
         "impacted_industries": [i.industry for i in article.industries],
-        "mentioned_countries": [c.country_code for c in article.countries if c.role == "mentioned"],
+        "mentioned_countries": all_country_codes(article),
         "analyst_note": (
             {"note": note.note, "analyst": note.analyst, "updated_at": note.updated_at.isoformat()}
             if note
