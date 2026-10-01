@@ -14,9 +14,11 @@ import pathlib
 
 import pytest
 from cti_core.db.models.auth import Client, ClientCountry, Role
+from cti_core.db.models.ioc_reference import IocAllowlistEntry
 from cti_core.db.models.pir import PIRNote, PIRRequirement
 from cti_core.db.models.ta import TAProfile, TAWatchlistEntry, TAWhitelistEntry
 from cti_core.db.models.techstack import TechStackEntry
+from cti_core.db.models.threat_reference import MonitoredPerson, ThreatActorGroup
 from cti_core.db.models.tweet import MonitoredAccount
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
@@ -134,6 +136,17 @@ def dump_data() -> dict[str, list[dict]]:
                 "updated_at": "2026-04-28T00:39:53.581246",
             },
         ],
+        "threatintel/groups": [
+            {"name": "shinyhunters", "added_date": "2024-03-25", "source": "malpedia"},
+            {"name": "apt36", "added_date": "2024-03-25", "source": "malpedia"},
+            {"name": "APT36", "source": "manual"},  # beda kapital -> dianggap sama
+            {"name": "  "},
+        ],
+        "threatintel/apac-people": [{"name": "Australian"}, {"name": "Indonesian"}],
+        "news_db/ioc_allowlist": [
+            {"type": "ip", "value": "127.0.0.1", "added_by": "admin"},
+            {"type": "url_domain", "value": "wiz.io", "added_by": "admin"},
+        ],
         "news_db/users": [
             {
                 "username": "dyah",
@@ -172,7 +185,23 @@ def test_seed_maps_every_table(db_session: Session) -> None:
         "source_reliability_entries": (1, 0),
         "pir_requirements": (2, 0),
         "pir_notes": (1, 0),
+        "threat_actor_groups": (2, 1),
+        "monitored_people": (2, 0),
+        "ioc_allowlist_entries": (2, 0),
     }
+
+    groups = {g.name: g for g in db_session.scalars(select(ThreatActorGroup))}
+    assert set(groups) == {"shinyhunters", "apt36"}
+    assert groups["shinyhunters"].source == "malpedia"
+    # added_date lama -> created_at: recap harian gak boleh nganggap ini "TA baru hari ini"
+    assert groups["shinyhunters"].created_at == datetime.datetime(2024, 3, 25, tzinfo=datetime.UTC)
+    assert count(db_session, MonitoredPerson) == 2
+    assert (
+        db_session.scalars(
+            select(IocAllowlistEntry.added_by).where(IocAllowlistEntry.value == "wiz.io")
+        ).one()
+        == "admin"
+    )
 
     countries = {
         cid: sorted(
@@ -384,6 +413,9 @@ def test_real_dump_seeds_the_documented_counts(db_session: Session) -> None:
         "source_reliability_entries": 2,
         "pir_requirements": 3,
         "pir_notes": 3,
+        "threat_actor_groups": 3991,
+        "monitored_people": 30,
+        "ioc_allowlist_entries": 9,
     }
     assert results["roles"].notes == []  # izin peran di kode == produksi lama
     assert count(db_session, ClientCountry) == 3  # default:ID + privy:AU,ID

@@ -1,112 +1,75 @@
 """Seed 3 tabel referensi Fase 5 dari dump Mongo arsip (`legacy/dump/`) --
-`threat_actor_groups`, `monitored_people`, `ioc_allowlist_entries`. Ketiganya
-kosong sejak tabelnya dibikin (lihat `db/models/threat_reference.py`/
-`ioc_reference.py`) karena data kuratif aslinya cuma ada di Mongo, bukan
-sesuatu yang bisa disintesis.
+`threat_actor_groups`, `monitored_people`, `ioc_allowlist_entries`.
 
-BUKAN bagian dari `tools/seed` versi Fase 10 (`techstack`/`monitored_accounts`/
-`users`/`roles`/`clients`, lihat plan §"Verifikasi end-to-end") -- itu scope
-lebih luas, dikerjain nanti pas cutover beneran. Script ini spesifik nutup
-gap Fase 5 (`mentioned_group`/`mentioned_apac_people` di `score.py` selalu
-kosong tanpa ini) dan `ioc_allowlist` (dipakai `extract_iocs` stage).
+**Sudah digabung ke `fase10_reference_data.py`** (langkah 6 runbook cutover).
+Script ini dipertahankan cuma sebagai jalan pintas yang ngisi TIGA tabel itu
+saja, dan sekarang memakai fungsi seed yang SAMA -- dulu implementasinya
+terpisah, ngebuang kolom `source`/`added_date` grup TA, path dump-nya
+di-hardcode, dan gak pernah masuk runbook. Akibatnya staging yang dibangun
+dari nol gak punya `threat_actor_groups` sama sekali dan `stages/score.py`
+gak pernah nemu threat actor (QA 2026-10-01: 0 dari 325 artikel).
 
 Sumber:
-  - `legacy/dump/threatintel/groups.bson`       -> ThreatActorGroup (3991 baris, malpedia)
-  - `legacy/dump/threatintel/apac-people.bson`   -> MonitoredPerson (30 baris --
-                                                     demonym/nasionalitas, BUKAN nama orang,
-                                                     walau nama koleksinya "apac-people")
-  - `legacy/dump/news_db/ioc_allowlist.bson`     -> IocAllowlistEntry (9 baris)
+  - `threatintel/groups.bson`       -> ThreatActorGroup (3991 baris)
+  - `threatintel/apac-people.bson`  -> MonitoredPerson (30 baris -- demonym/
+                                       nasionalitas, BUKAN nama orang)
+  - `news_db/ioc_allowlist.bson`    -> IocAllowlistEntry (9 baris)
 
-Idempoten -- boleh dijalankan berkali-kali, upsert by unique constraint
-(`name`/`type+value`), gak bakal dobel kalau di-run ulang.
+Idempoten. Jalankan (butuh `pymongo` buat baca BSON):
 
-Jalanin (BUTUH `pymongo` buat baca BSON -- SENGAJA gak masuk dependency
-package manapun, ini script sekali pakai/migrasi, bukan kode aplikasi):
-
-    uv run --with pymongo python tools/seed/fase5_reference_data.py
+    uv run --with pymongo python tools/seed/fase5_reference_data.py [--dump-dir DIR] [--dry-run]
 """
 
 from __future__ import annotations
 
+import argparse
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "packages/cti-core/src"))
-
-import bson
 from cti_core.db.engine import sync_session
-from cti_core.db.models.ioc_reference import IocAllowlistEntry
-from cti_core.db.models.threat_reference import MonitoredPerson, ThreatActorGroup
-from sqlalchemy import select
-from sqlalchemy.orm import Session
 
-DUMP_ROOT = Path(__file__).resolve().parents[2] / "legacy" / "dump"
-GROUPS_BSON = DUMP_ROOT / "threatintel" / "groups.bson"
-APAC_PEOPLE_BSON = DUMP_ROOT / "threatintel" / "apac-people.bson"
-IOC_ALLOWLIST_BSON = DUMP_ROOT / "news_db" / "ioc_allowlist.bson"
-
-
-def _decode(path: Path) -> list[dict]:
-    return bson.decode_all(path.read_bytes())
+if __package__ in (None, ""):  # dijalankan sebagai skrip: `python tools/seed/...`
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from tools.seed._dump import DEFAULT_DUMP_DIR, DirDump, DumpError
+from tools.seed.fase10_reference_data import (
+    seed_ioc_allowlist,
+    seed_monitored_people,
+    seed_threat_actor_groups,
+)
 
 
-def seed_threat_actor_groups(session: Session) -> tuple[int, int]:
-    docs = _decode(GROUPS_BSON)
-    existing = set(session.execute(select(ThreatActorGroup.name)).scalars().all())
-    inserted = 0
-    for doc in docs:
-        name = (doc.get("name") or "").strip()
-        if not name or name in existing:
-            continue
-        session.add(ThreatActorGroup(name=name))
-        existing.add(name)
-        inserted += 1
-    session.flush()
-    return inserted, len(docs)
+def main(argv: list[str] | None = None) -> int:
+    ap = argparse.ArgumentParser(description=(__doc__ or "").split("\n\n")[0])
+    ap.add_argument("--dump-dir", type=Path, default=DEFAULT_DUMP_DIR)
+    ap.add_argument("--dry-run", action="store_true", help="jalankan semua lalu rollback")
+    args = ap.parse_args(argv)
 
+    dump = DirDump(args.dump_dir)
+    try:
+        with sync_session() as session:
+            results = {
+                "threat_actor_groups": seed_threat_actor_groups(
+                    session, dump.docs("threatintel/groups")
+                ),
+                "monitored_people": seed_monitored_people(
+                    session, dump.docs("threatintel/apac-people")
+                ),
+                "ioc_allowlist_entries": seed_ioc_allowlist(
+                    session, dump.docs("news_db/ioc_allowlist")
+                ),
+            }
+            if args.dry_run:
+                session.rollback()
+    except DumpError as e:
+        print(f"GAGAL, tidak ada yang ditulis: {e}", file=sys.stderr)
+        return 1
 
-def seed_monitored_people(session: Session) -> tuple[int, int]:
-    docs = _decode(APAC_PEOPLE_BSON)
-    existing = set(session.execute(select(MonitoredPerson.name)).scalars().all())
-    inserted = 0
-    for doc in docs:
-        name = (doc.get("name") or "").strip()
-        if not name or name in existing:
-            continue
-        session.add(MonitoredPerson(name=name))
-        existing.add(name)
-        inserted += 1
-    session.flush()
-    return inserted, len(docs)
-
-
-def seed_ioc_allowlist(session: Session) -> tuple[int, int]:
-    docs = _decode(IOC_ALLOWLIST_BSON)
-    existing = set(session.execute(select(IocAllowlistEntry.type, IocAllowlistEntry.value)).all())
-    inserted = 0
-    for doc in docs:
-        type_ = (doc.get("type") or "").strip()
-        value = (doc.get("value") or "").strip()
-        if not type_ or not value or (type_, value) in existing:
-            continue
-        session.add(IocAllowlistEntry(type=type_, value=value))
-        existing.add((type_, value))
-        inserted += 1
-    session.flush()
-    return inserted, len(docs)
-
-
-def main() -> None:
-    with sync_session() as session:
-        g_new, g_total = seed_threat_actor_groups(session)
-        p_new, p_total = seed_monitored_people(session)
-        a_new, a_total = seed_ioc_allowlist(session)
-        session.commit()
-
-    print(f"threat_actor_groups : {g_new} baru / {g_total} di dump")
-    print(f"monitored_people    : {p_new} baru / {p_total} di dump")
-    print(f"ioc_allowlist       : {a_new} baru / {a_total} di dump")
+    mode = "DRY-RUN (di-rollback)" if args.dry_run else "DITULIS"
+    print(f"== seed referensi threat/IOC -- {mode} -- dump: {args.dump_dir}")
+    for name, tally in results.items():
+        print(f"{name:22}: {tally.inserted} baru / {tally.existing} sudah ada")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

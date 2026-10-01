@@ -15,6 +15,17 @@ platform baru dipakai -- tanpa `techstack` pipeline CVE mati total, tanpa
     threatintel.source_scores    -> source_reliability_entries
     news_db.pir_requirements     -> pir_requirements
     news_db.pir_notes            -> pir_notes            (pir_id ObjectId -> id baru)
+    threatintel.groups           -> threat_actor_groups  (kamus regex TA, ~4000 nama)
+    threatintel.apac-people      -> monitored_people
+    news_db.ioc_allowlist        -> ioc_allowlist_entries
+
+Tiga tabel terakhir dulu cuma ada di `fase5_reference_data.py` (dijalankan
+sekali di DB dev, Fase 5) dan gak pernah masuk runbook cutover -- staging
+yang dibangun dari nol jadinya gak punya `threat_actor_groups` sama sekali,
+`stages/score.py` gak bisa nemu threat actor apa pun (QA 2026-10-01: 0 dari
+325 artikel, dropdown TA kosong, PIR berbasis TA selalu 0 match). Sekarang
+ikut di sini; artikel yang telanjur masuk dibetulkan
+`python -m cti_enrich.backfill`.
 
 TIDAK dimigrasi: `users`. Hash bcrypt lama sengaja gak dibawa -- user dibikin
 ulang lewat UI dengan password baru (keputusan Fase 10). Script ini cuma
@@ -42,10 +53,12 @@ from typing import Any
 
 from cti_core.db.engine import sync_session
 from cti_core.db.models.auth import Client, ClientCountry, Role
+from cti_core.db.models.ioc_reference import IocAllowlistEntry
 from cti_core.db.models.pir import _EMPTY_CRITERIA, PIRNote, PIRRequirement
 from cti_core.db.models.source_reliability import SourceReliabilityEntry
 from cti_core.db.models.ta import TAProfile, TAWatchlistEntry, TAWhitelistEntry
 from cti_core.db.models.techstack import TechStackEntry
+from cti_core.db.models.threat_reference import MonitoredPerson, ThreatActorGroup
 from cti_core.db.models.tweet import MonitoredAccount
 from cti_enrich.countries import country_code
 from sqlalchemy import func, select
@@ -354,6 +367,72 @@ def seed_source_scores(session: Session, docs: list[dict[str, Any]]) -> Tally:
     return tally
 
 
+def seed_threat_actor_groups(session: Session, docs: list[dict[str, Any]]) -> Tally:
+    """Identitas: `name` case-insensitive (`AsyncTARepo.get_by_name_ci`; unique
+    constraint DB cuma di `name` mentah). Nama disimpan apa adanya (dump sudah
+    lowercase). `added_date` lama jadi `created_at` -- WAJIB: recap harian
+    (`list_added_on`) baca `created_at::date` sebagai "TA baru hari ini";
+    tanpa ini ~4000 grup muncul sebagai TA baru di hari seed."""
+    tally = Tally()
+    have = {n.lower() for n in session.execute(select(ThreatActorGroup.name)).scalars()}
+    for doc in docs:
+        name = (doc.get("name") or "").strip()
+        if not name:
+            continue
+        if name.lower() in have:
+            tally.existing += 1
+            continue
+        row = ThreatActorGroup(name=name, source=(doc.get("source") or "manual")[:50])
+        if added := _dt(doc.get("added_date")):
+            row.created_at = added
+        session.add(row)
+        have.add(name.lower())
+        tally.inserted += 1
+    session.flush()
+    return tally
+
+
+def seed_monitored_people(session: Session, docs: list[dict[str, Any]]) -> Tally:
+    """Identitas: `name`. Isinya demonym (`Australian`, ...), bukan nama orang --
+    lihat `fase5_reference_data.py`."""
+    tally = Tally()
+    have = set(session.execute(select(MonitoredPerson.name)).scalars())
+    for doc in docs:
+        name = (doc.get("name") or "").strip()
+        if not name:
+            continue
+        if name in have:
+            tally.existing += 1
+            continue
+        session.add(MonitoredPerson(name=name))
+        have.add(name)
+        tally.inserted += 1
+    session.flush()
+    return tally
+
+
+def seed_ioc_allowlist(session: Session, docs: list[dict[str, Any]]) -> Tally:
+    """Identitas: (`type`, `value`)."""
+    tally = Tally()
+    have = set(session.execute(select(IocAllowlistEntry.type, IocAllowlistEntry.value)).tuples())
+    for doc in docs:
+        type_ = (doc.get("type") or "").strip()
+        value = (doc.get("value") or "").strip()
+        if not type_ or not value:
+            continue
+        if (type_, value) in have:
+            tally.existing += 1
+            continue
+        row = IocAllowlistEntry(type=type_, value=value, added_by=doc.get("added_by") or "system")
+        if added := _dt(doc.get("added_at")):
+            row.created_at = added
+        session.add(row)
+        have.add((type_, value))
+        tally.inserted += 1
+    session.flush()
+    return tally
+
+
 def _criteria(raw: dict[str, Any] | None, *, where: str) -> dict[str, list[str]]:
     """Kriteria PIR: semua kunci yang model minta selalu ada; `countries`
     disimpan sebagai KODE (artikel baru nyimpan negara sebagai ISO alpha-2)."""
@@ -454,6 +533,15 @@ def seed_all(session: Session, dump: Dump) -> dict[str, Tally]:
     results["pir_requirements"], results["pir_notes"] = seed_pir(
         session, dump.docs("news_db/pir_requirements"), dump.docs("news_db/pir_notes")
     )
+    results["threat_actor_groups"] = seed_threat_actor_groups(
+        session, dump.docs("threatintel/groups")
+    )
+    results["monitored_people"] = seed_monitored_people(
+        session, dump.docs("threatintel/apac-people")
+    )
+    results["ioc_allowlist_entries"] = seed_ioc_allowlist(
+        session, dump.docs("news_db/ioc_allowlist")
+    )
     return results
 
 
@@ -482,6 +570,9 @@ def row_counts(session: Session) -> dict[str, int]:
         "source_reliability_entries": SourceReliabilityEntry,
         "pir_requirements": PIRRequirement,
         "pir_notes": PIRNote,
+        "threat_actor_groups": ThreatActorGroup,
+        "monitored_people": MonitoredPerson,
+        "ioc_allowlist_entries": IocAllowlistEntry,
     }
     return {
         name: session.scalar(select(func.count()).select_from(m)) or 0 for name, m in models.items()

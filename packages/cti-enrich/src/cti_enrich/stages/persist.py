@@ -14,8 +14,18 @@ konsisten kode lama -- gak pernah regex fallback). `victim` = GPT
 (`classify_result.victim_countries`) kalau ada, else fallback ke negara
 hasil regex/NER (`score_result.mentioned_countries`, cabang Regional/TA
 Group -- port `nlp.py:612/657`; cabang Global gak punya fallback ini,
-`victim_countries` GPT langsung dipakai apa adanya). `mentioned` = sisa
-`score_result.mentioned_countries` yang belum kepakai victim/actor."""
+`victim_countries` GPT langsung dipakai apa adanya). `mentioned` = GABUNGAN
+negara regex/NER + victim + actor -- persis `mentioned_countries` lama
+(`nlp.py:351/551/611/656/702`: `regex_countries + gpt_victim_countries +
+gpt_actor_countries`). Jadi satu negara bisa punya DUA baris (mis. `victim`
+DAN `mentioned`) -- unique constraint-nya per (artikel, negara, role).
+
+Dulu `mentioned` cuma SISA negara regex yang belum kepakai victim/actor --
+padahal SEMUA pembacanya (filter `countries`, dropdown negara, Risk Matrix,
+top-country dashboard, kampanye, STIX, newsletter) menganggap role ini =
+field `mentioned_countries` lama. Akibatnya role ini nyaris selalu kosong:
+Risk Matrix staging 0 sel (QA BUG-D4), dropdown negara cuma 4 kode. Artikel
+lama dibetulkan `python -m cti_enrich.backfill`."""
 
 from __future__ import annotations
 
@@ -59,12 +69,8 @@ def _country_roles(
         [] if is_global_branch or score_result is None else score_result.mentioned_countries
     )
     actors = classify_result.actor_countries
-    assigned = set(victims) | set(actors)
-    mentioned = (
-        []
-        if score_result is None
-        else [c for c in score_result.mentioned_countries if c not in assigned]
-    )
+    regex_countries = [] if score_result is None else score_result.mentioned_countries
+    mentioned = list(dict.fromkeys([*regex_countries, *victims, *actors]))
 
     pairs: list[tuple[str, str]] = []
     for name in victims:
