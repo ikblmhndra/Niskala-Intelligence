@@ -20,6 +20,7 @@ from sqlalchemy import Select, func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Session, aliased
 
+from cti_core.attack_ttp import NormalizedTTP
 from cti_core.db.models.article import (
     Article,
     ArticleCountry,
@@ -137,14 +138,24 @@ def _apply_machine_fields(article: Article, machine_fields: dict[str, Any]) -> N
         setattr(article, k, v)
 
 
-def _first_ttp_names(ttps: Sequence[tuple[str, str]]) -> dict[str, str]:
-    first_name_per_id: dict[str, str] = {}
-    for tid, tname in ttps:
-        first_name_per_id.setdefault(tid, tname)
-    return first_name_per_id
+TTPInput = tuple[str, str] | NormalizedTTP
+"""`(ttp_id, ttp_name)` polos (test/fixture, tanpa teks asli LLM) atau
+`NormalizedTTP` (enrichment/remap -- bawa `extracted_id`/`extracted_name`)."""
 
 
-def _dedup_ttps(ttps: Sequence[tuple[str, str]]) -> list[ArticleTTP]:
+def _first_ttps(ttps: Sequence[TTPInput]) -> dict[str, NormalizedTTP]:
+    first_per_id: dict[str, NormalizedTTP] = {}
+    for t in ttps:
+        n = t if isinstance(t, NormalizedTTP) else NormalizedTTP(t[0], t[1])
+        first_per_id.setdefault(n.ttp_id, n)
+    return first_per_id
+
+
+def _first_ttp_names(ttps: Sequence[TTPInput]) -> dict[str, str]:
+    return {tid: n.ttp_name for tid, n in _first_ttps(ttps).items()}
+
+
+def _dedup_ttps(ttps: Sequence[TTPInput]) -> list[ArticleTTP]:
     """DEDUP PER `ttp_id` (kunci `uq_article_ttp` = (article_id, ttp_id)),
     BUKAN per tuple `(id, nama)`. LLM kadang ngembaliin ID yang SAMA dua kali
     dgn nama beda ("T1176" -> "Browser Extensions" & "Software Extensions");
@@ -177,7 +188,7 @@ def _apply_enrichment(
     countries: Sequence[tuple[str, str]],
     industries: Sequence[str],
     threat_actors: Sequence[str],
-    ttps: Sequence[tuple[str, str]],
+    ttps: Sequence[TTPInput],
 ) -> None:
     """Pasang hasil enrichment ke child rows -- idempoten (lihat `_reconcile`).
     Dipakai versi sync DAN async, biar logikanya gak bisa drift."""
@@ -199,15 +210,23 @@ def _apply_enrichment(
         lambda c: c.threat_actor,
         lambda k: ArticleThreatActor(threat_actor=k),
     )
-    names = _first_ttp_names(ttps)
+    apply_ttps(article, ttps)
+
+
+def apply_ttps(article: Article, ttps: Sequence[TTPInput]) -> None:
+    """Pasang child `article_ttps` -- reuse baris ber-`ttp_id` sama (lihat
+    `_reconcile`). Dipakai `_apply_enrichment` dan remap TTP
+    (`cti_core.db.repositories.ttp_catalog.remap_article_ttps`)."""
     kept = {t.ttp_id: t for t in article.ttps}
     rows: list[ArticleTTP] = []
-    for tid, name in names.items():
+    for tid, n in _first_ttps(ttps).items():
         row = kept.get(tid)
         if row is None:
-            row = ArticleTTP(ttp_id=tid, ttp_name=name)
+            row = ArticleTTP(ttp_id=tid, ttp_name=n.ttp_name)
         else:
-            row.ttp_name = name
+            row.ttp_name = n.ttp_name
+        row.extracted_id = n.extracted_id
+        row.extracted_name = n.extracted_name
         rows.append(row)
     article.ttps = rows
 
@@ -271,13 +290,15 @@ class ArticleRepo:
         countries: Sequence[tuple[str, str]] = (),
         industries: Sequence[str] = (),
         threat_actors: Sequence[str] = (),
-        ttps: Sequence[tuple[str, str]] = (),
+        ttps: Sequence[TTPInput] = (),
     ) -> Article:
         """Ganti SEMUA child row (countries/industries/threat_actors/ttps)
         dari SATU hasil enrichment -- Fase 5 (`cti_enrich.pipeline`), satu-
         satunya caller. `countries`: `(country_code ISO alpha-2, role)`,
         `role` salah satu `victim|actor|mentioned` (lihat `ArticleCountry`).
-        `ttps`: `(ttp_id, ttp_name)`.
+        `ttps`: `(ttp_id, ttp_name)` atau `NormalizedTTP` (normalisasi ke
+        katalog ATT&CK itu tugas CALLER -- `cti_enrich.pipeline`, lihat
+        `cti_core.attack_ttp`; repo nyimpen apa adanya).
 
         Assign ulang list relationship (bukan merge/diff) -- `cascade="all,
         delete-orphan"` (Fase 2) yang hapus baris lama, sama filosofi
@@ -345,7 +366,7 @@ class AsyncArticleRepo:
         countries: Sequence[tuple[str, str]] = (),
         industries: Sequence[str] = (),
         threat_actors: Sequence[str] = (),
-        ttps: Sequence[tuple[str, str]] = (),
+        ttps: Sequence[TTPInput] = (),
     ) -> Article:
         """Logic sama persis `ArticleRepo.set_enrichment` -- dipakai test
         integrasi Fase 7 (setup fixture artikel via jalur async), bukan

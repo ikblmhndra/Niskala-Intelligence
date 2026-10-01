@@ -29,6 +29,7 @@ from sqlalchemy import delete
 
 from cti_enrich.countries import country_code
 from cti_enrich.stages.classify import resolve_industries
+from cti_enrich.stages.extract_ttps import as_normalized
 
 if TYPE_CHECKING:
     from cti_core.db.models.article import Article, RejectedArticle
@@ -127,9 +128,7 @@ def persist(
         ),
         industries=industries,
         threat_actors=routing_result.threat_actors,
-        ttps=[(t.technique_id, t.technique_name) for t in ttp_result.techniques]
-        if ttp_result
-        else [],
+        ttps=[as_normalized(t) for t in ttp_result.techniques] if ttp_result else [],
     )
 
     ioc_repo = IOCRepo(session)

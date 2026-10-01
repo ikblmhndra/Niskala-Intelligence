@@ -18,6 +18,7 @@ from cti_core.db.models.attack import (
     AttackSyncLog,
     AttackTactic,
     AttackTechnique,
+    AttackTechniqueAlias,
 )
 from cti_core.db.models.auth import AuditLogEntry, Client, ClientCountry, Role, User, UserClient
 from cti_core.db.models.cluster import Cluster
@@ -64,6 +65,7 @@ __all__ = [
     "AttackSyncLog",
     "AttackTactic",
     "AttackTechnique",
+    "AttackTechniqueAlias",
     "AuditLogEntry",
     "Client",
     "ClientCountry",

@@ -35,6 +35,7 @@ import structlog
 from cti_core.db.models.article import Article
 from cti_core.db.models.report_state import SCOPE_NEWS
 from cti_core.db.repositories.report_state import CveMentionRepo
+from cti_core.db.repositories.ttp_catalog import load_catalog
 from sqlalchemy.orm import Session
 
 from cti_enrich import routing
@@ -42,7 +43,7 @@ from cti_enrich.stages import extract_iocs as extract_iocs_stage
 from cti_enrich.stages import score as score_stage
 from cti_enrich.stages.alert import build_message_base, route_alerts
 from cti_enrich.stages.classify import ClassifyResult, classify, resolve_industries
-from cti_enrich.stages.extract_ttps import TtpResult, extract_ttps
+from cti_enrich.stages.extract_ttps import TtpResult, extract_ttps, normalize_ttp_result
 from cti_enrich.stages.fetch_text import fetch_text
 from cti_enrich.stages.persist import persist, persist_rejected
 from cti_enrich.stages.score import ScoreResult
@@ -173,6 +174,10 @@ def run_pipeline(
         )
 
     ttp_result = _extract_ttps_or_empty(url, summary)
+    if ttp_result.techniques:
+        # Normalisasi ke katalog ATT&CK SEBELUM dipakai alert/persist -- LLM
+        # sering salah pasang ID/nama (QA BUG-C01), lihat `cti_core.attack_ttp`.
+        ttp_result = normalize_ttp_result(ttp_result, load_catalog(session))
     ttp_string = ""
     if ttp_result.has_techniques:
         ttp_string = ", ".join(
