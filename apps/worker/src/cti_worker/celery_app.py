@@ -43,7 +43,24 @@ scraper (`items_found` bisa lama, network-bound) itu bikin satu worker
 lambat nge-block N-1 task lain nunggu giliran. 1 = ambil task berikutnya
 cuma setelah yang sekarang kelar."""
 
-from celery.signals import worker_process_init  # noqa: E402
+app.conf.beat_scheduler = "cti_worker.scheduler:CtiScheduler"
+"""QA BUG-D2/D7/D8 -- `PersistentScheduler` + heartbeat Redis + tanpa catch-up
+basi pas start. Lihat docstring `cti_worker.scheduler`."""
+app.conf.beat_max_interval = 60
+"""Default Celery 300 dtk: kalau gak ada entri due, loop beat bisa tidur 5
+menit -- heartbeat (ditulis per tick) jadi kasar. 60 = heartbeat paling basi
+~1 menit pas beat sehat; ambang `beat_heartbeat_stale_s` (300) = 5 tick
+kelewat. Biayanya cuma satu iterasi heap per menit."""
+
+from celery.signals import worker_process_init, worker_ready  # noqa: E402
+
+
+@worker_ready.connect
+def _start_beat_watchdog(**_kwargs: object) -> None:
+    """Proses INDUK worker (bukan child prefork) -- lihat `cti_worker.beat_watchdog`."""
+    from cti_worker import beat_watchdog
+
+    beat_watchdog.start()
 
 
 @worker_process_init.connect

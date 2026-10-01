@@ -203,6 +203,24 @@ class WorkerSettings(_StrictModel):
     ambil alih paling lama segini detik. Jangan terlalu kecil (GC pause /
     Redis lambat bikin lock lepas terus leader ke-kill), jangan terlalu
     gede (failover lama)."""
+    beat_heartbeat_stale_s: int = 300
+    """QA BUG-D2/D8 -- heartbeat beat (`cti_core.beat_heartbeat`) dianggap
+    BASI kalau tick terakhir lebih tua dari ini. Beat nge-tick minimal tiap
+    `beat_max_interval` (60 dtk, `celery_app.py`), jadi 300 = lima tick
+    kelewat berturut-turut, bukan satu tick yang telat."""
+    beat_watchdog_interval_s: int = 60
+    """Tiap berapa detik watchdog di proses WORKER (bukan beat -- itu
+    intinya) ngecek heartbeat. Lihat `cti_worker.beat_watchdog`."""
+    beat_stale_alert_repeat_min: int = 60
+    """Alert Telegram "scheduler mati" diulang paling sering segini menit
+    selama beat masih basi (dedupe lintas container worker lewat Redis)."""
+    beat_catchup_grace_s: int = 600
+    """QA BUG-D7 -- pas beat start, jadwal yang slot terakhirnya terlewat
+    LEBIH LAMA dari ini TIDAK di-catch-up (dilompatin ke slot berikutnya).
+    Tanpa ini `PersistentScheduler` nembak SEMUA entri yang `last_run_at`-nya
+    basi sekaligus -- di staging 09-30: 94 scraper + laporan MINGGUAN
+    (`report-weekly-*`) jalan hari Rabu. Restart singkat (deploy) tetap
+    di-catch-up selama slot yang kelewat masih dalam jendela ini."""
 
 
 class Settings(BaseSettings):

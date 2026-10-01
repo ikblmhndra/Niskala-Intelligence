@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 import { HealthSummaryBar } from "@/components/scrapers/health-summary-bar";
+import { SchedulerStatus } from "@/components/scrapers/scheduler-status";
 import { ScrapersTable } from "@/components/scrapers/scrapers-table";
 import { ScraperDetailDialog } from "@/components/scrapers/scraper-detail-dialog";
 
@@ -20,6 +21,7 @@ export function ScrapersView() {
 
   return (
     <div className="pb-10">
+      <SchedulerStatus />
       <HealthSummaryBar onSelectProblem={(id, status) => setSelected({ id, status })} />
       <ScrapersTable onOpenDetail={(id, status) => setSelected({ id, status })} />
       <ScraperDetailDialog

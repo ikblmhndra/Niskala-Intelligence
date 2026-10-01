@@ -74,6 +74,9 @@ class RunResult:
     items_failed: int = 0
     errors: list[dict[str, str]] = field(default_factory=list)
     duration_ms: int = 0
+    retry_after: float | None = None
+    """Detik minimal sebelum layak dicoba ulang (dari `RateLimited.retry_after`),
+    `None` = gak ada petunjuk. Dibaca task `scrape.run` buat jeda retry."""
 
 
 def _apply_config_overrides(meta: ScraperMeta, config: ScraperConfig) -> ScraperMeta:
@@ -315,6 +318,7 @@ class Runner:
             log.warning("backpressure", error=str(e))
         except RateLimited as e:
             result.status = "rate_limited"
+            result.retry_after = e.retry_after
             result.errors.append({"stage": "fetch", "type": "RateLimited", "message": str(e)})
             log.warning("rate_limited", error=str(e))
         except TransientFetchError as e:

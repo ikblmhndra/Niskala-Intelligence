@@ -64,6 +64,20 @@ def expected_interval(cron: str, *, now: datetime.datetime | None = None) -> dat
     return max(gap, _MIN_INTERVAL)
 
 
+def next_run(cron: str, *, now: datetime.datetime | None = None) -> datetime.datetime | None:
+    """Slot jadwal berikutnya SESUDAH `now` (UTC) -- kolom "Next Run" di `/scrapers`
+    (QA BUG-D8). `None` kalau cron gak bisa di-parse (jangan bikin satu cron aneh
+    nge-500-in seluruh list). Ini jadwal yang SEHARUSNYA; beneran nembak atau
+    nggak tergantung beat hidup -- makanya UI menampilkannya bareng status
+    heartbeat (`cti_core.beat_heartbeat`)."""
+    now = now or datetime.datetime.now(datetime.UTC)
+    try:
+        nxt: datetime.datetime = croniter(cron, now).get_next(datetime.datetime)
+    except (ValueError, KeyError):
+        return None
+    return nxt
+
+
 def compute_health(
     meta: ScraperMeta,
     config: ScraperConfig | None,

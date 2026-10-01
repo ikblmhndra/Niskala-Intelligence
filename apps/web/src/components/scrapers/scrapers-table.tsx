@@ -42,6 +42,19 @@ function relativeTime(iso: string | null): string {
   return `${Math.round(hr / 24)}d ago`;
 }
 
+/** "in 12m" / "in 3h" / "in 4d" -- slot cron berikutnya (`next_run_at`, QA BUG-D8). */
+function untilTime(iso: string | null | undefined): string {
+  if (!iso) return "—";
+  const diffMs = new Date(iso).getTime() - Date.now();
+  if (diffMs <= 0) return "due";
+  const min = Math.round(diffMs / 60_000);
+  if (min < 1) return "<1m";
+  if (min < 60) return `in ${min}m`;
+  const hr = Math.round(min / 60);
+  if (hr < 24) return `in ${hr}h`;
+  return `in ${Math.round(hr / 24)}d`;
+}
+
 /** Tabel 84 scraper -- list (`GET /api/scraper`) DIGABUNG status
  * kesehatan (`GET /api/scraper/health`, cache SAMA kayak `HealthSummaryBar`
  * -- TanStack Query dedupe by queryKey, bukan fetch dobel) client-side:
@@ -69,6 +82,8 @@ export function ScrapersTable({
       if (error) throw error;
       return data;
     },
+    // `next_run_at` + status scheduler ikut basi kalau gak di-refresh.
+    refetchInterval: 60_000,
   });
 
   const health = useQuery({
@@ -131,6 +146,7 @@ export function ScrapersTable({
   });
 
   const items = list.data?.scrapers ?? [];
+  const schedulerOk = list.data?.scheduler.state === "ok";
   const filtered = items.filter((s) => {
     if (runtimeFilter !== "__all__" && s.runtime !== runtimeFilter) return false;
     const status = statusFor(s.id, s.enabled);
@@ -201,6 +217,7 @@ export function ScrapersTable({
               <TableHead>Status</TableHead>
               <TableHead>Schedule</TableHead>
               <TableHead>Last Run</TableHead>
+              <TableHead>Next Run</TableHead>
               <TableHead />
             </TableRow>
           </TableHeader>
@@ -222,6 +239,18 @@ export function ScrapersTable({
                   <TableCell className="font-mono text-[10px] text-muted-foreground">
                     {s.last_status ? <RunStatusText status={s.last_status} /> : "—"}{" "}
                     {relativeTime(s.last_started_at)}
+                  </TableCell>
+                  <TableCell
+                    className={`font-mono text-[10px] ${schedulerOk ? "text-muted-foreground" : "text-destructive line-through"}`}
+                    title={
+                      s.next_run_at
+                        ? `${s.next_run_at.replace("T", " ").split("+")[0]} UTC${schedulerOk ? "" : " — scheduler down, will NOT fire"}`
+                        : s.enabled
+                          ? "invalid cron"
+                          : "disabled"
+                    }
+                  >
+                    {untilTime(s.next_run_at)}
                   </TableCell>
                   <TableCell onClick={(e) => e.stopPropagation()}>
                     <DropdownMenu>

@@ -10,10 +10,21 @@ Retry di LEVEL TASK (whole run), bukan per-request -- `ScraperHttpClient`
 (`runner.py`) sengaja NANGKEP `TransientFetchError`/`RateLimited` jadi
 `RunResult.status`, bukan biarin exception nembus (baca docstring
 `Runner._run_body`: "runner ini SENGAJA gak retry sendiri; caller yang
-urus"). Task ini itu "caller"-nya: cek `result.status`, raise
-`_RetryableRunError` biar `autoretry_for` Celery yang eksekusi backoff --
-`ParseError` (situs berubah) TIDAK PERNAH masuk sini, `status="parse_error"`
-dibiarin apa adanya (retry gak bakal ngubah hasil situs yang emang berubah).
+urus"). Task ini itu "caller"-nya: cek `result.status`, lalu `self.retry()`
+dengan jeda dari `retry_countdown()` -- `ParseError` (situs berubah) TIDAK
+PERNAH masuk sini, `status="parse_error"` dibiarin apa adanya (retry gak
+bakal ngubah hasil situs yang emang berubah).
+
+QA BUG-D6 (staging 2026-10-01): dulu `autoretry_for` + `retry_backoff=True`
+-> jeda 1/2/4/8 dtk (faktor 1, full jitter), jadi `monitor_x` nyoba 4x dalam
+~10 dtk tiap slot, semuanya mentok budget rate-limit domain yang SAMA (jendela
+60 dtk), dan tiap percobaan tercatat sebagai run `trigger=beat` terpisah --
+riwayat 132 run vs 33 slot cron. Sekarang: jeda minimal `_RETRY_BASE_S`
+dobel tiap percobaan (dan gak kurang dari `RunResult.retry_after`), dan run
+hasil retry dicatat `trigger="<asal>_retry"` (`beat_retry`/`manual_retry`)
+biar riwayat bisa bedain slot jadwal vs percobaan ulang. Retry tetap numpang
+`expires` tick aslinya (Celery bawa `expires` lintas retry) -- percobaan
+yang lewat satu interval jadwal dibuang, gak numpuk ke slot berikutnya.
 
 Task `scraper.purge_expired_items`/`scraper.purge_expired_seen` (Fase 9,
 `maintenance` queue) numpang file ini juga -- sama domain (scraper), sync
@@ -31,21 +42,33 @@ from cti_worker.celery_app import app
 log = structlog.get_logger()
 
 
+_RETRYABLE_STATUSES = frozenset({"fetch_error", "rate_limited"})
+_RETRY_BASE_S = 60
+_RETRY_MAX_S = 600
+_RETRY_SUFFIX = "_retry"
+
+
 class _RetryableRunError(Exception):
-    """Sinyal internal ke `autoretry_for` -- bukan exception yang
-    Runner/scraper lempar, murni buat nge-trigger retry Celery dari
-    `RunResult.status` yang udah dikembaliin bersih."""
+    """Exception yang dibawa `self.retry(exc=...)` -- bukan exception yang
+    Runner/scraper lempar, murni penanda run yang gagal transien. Kalau
+    `max_retries` habis, ini yang jadi kegagalan akhir task."""
 
 
-@app.task(
-    bind=True,
-    name="scrape.run",
-    autoretry_for=(_RetryableRunError,),
-    retry_backoff=True,
-    retry_backoff_max=600,
-    retry_jitter=True,
-    max_retries=3,
-)
+def retry_countdown(attempt: int, retry_after: float | None = None) -> int:
+    """Jeda sebelum percobaan ke-`attempt + 1`: 60, 120, 240, ... (maks 600)
+    detik, dan gak pernah lebih pendek dari `retry_after` (mis. sisa jendela
+    rate-limit). Deterministik -- `spread()` udah nyebar jadwal antar scraper."""
+    backoff = min(_RETRY_MAX_S, _RETRY_BASE_S * 2**attempt)
+    return int(max(backoff, retry_after or 0))
+
+
+def retry_trigger(trigger: str) -> str:
+    """`beat` -> `beat_retry`, `manual` -> `manual_retry`; idempoten.
+    Muat di `ScraperRun.trigger` (String(20))."""
+    return trigger if trigger.endswith(_RETRY_SUFFIX) else f"{trigger}{_RETRY_SUFFIX}"
+
+
+@app.task(bind=True, name="scrape.run", max_retries=3)
 def run_scraper(self: Any, scraper_id: str, trigger: str = "beat") -> dict[str, object]:
     from cti_core.config import get_settings
     from cti_core.db.engine import sync_session
@@ -71,14 +94,22 @@ def run_scraper(self: Any, scraper_id: str, trigger: str = "beat") -> dict[str, 
             trigger=trigger
         )
 
-    if result.status in ("fetch_error", "rate_limited"):
+    if result.status in _RETRYABLE_STATUSES:
+        attempt = self.request.retries or 0
+        countdown = retry_countdown(attempt, result.retry_after)
         log.warning(
             "scrape_task_retrying",
             scraper_id=scraper_id,
             status=result.status,
-            attempt=self.request.retries,
+            attempt=attempt,
+            countdown_s=countdown,
         )
-        raise _RetryableRunError(f"{scraper_id}: {result.status}")
+        raise self.retry(
+            args=(scraper_id,),
+            kwargs={"trigger": retry_trigger(trigger)},
+            countdown=countdown,
+            exc=_RetryableRunError(f"{scraper_id}: {result.status}"),
+        )
 
     return {
         "scraper_id": scraper_id,
