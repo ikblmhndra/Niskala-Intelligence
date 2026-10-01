@@ -133,6 +133,16 @@ export function ClientsSection() {
   );
 }
 
+function sameCountries(a: string[], b: string[]): boolean {
+  const setB = new Set(b);
+  return a.length === setB.size && a.every((c) => setB.has(c));
+}
+
+/** Dialog-nya dibuka programatik (`open={editTarget !== null}`), jadi
+ * `onOpenChange(true)` gak pernah kepanggil -- init state di situ bikin
+ * form kebuka kosong (QA BUG-01). Body cuma mount pas `open` + `key` per
+ * client: state lazy-init dari `client` tiap kali dibuka, reset pas
+ * ditutup -- pola "mount-gates-freshness" sama kayak `MindmapEditorDialog`. */
 function ClientFormDialog({
   mode,
   open,
@@ -144,21 +154,39 @@ function ClientFormDialog({
   onOpenChange: (open: boolean) => void;
   client?: Client | null;
 }) {
-  const queryClient = useQueryClient();
-  const [clientId, setClientId] = useState("");
-  const [name, setName] = useState("");
-  const [countries, setCountries] = useState<string[]>([]);
-  const [error, setError] = useState<string | null>(null);
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-h-[80vh] overflow-y-auto sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle className="font-heading">{mode === "add" ? "Add Client" : `Edit ${client?.client_id ?? ""}`}</DialogTitle>
+        </DialogHeader>
+        {open && (mode === "add" || client) && (
+          <ClientForm
+            key={client?.client_id ?? "add"}
+            mode={mode}
+            client={client ?? null}
+            onClose={() => onOpenChange(false)}
+          />
+        )}
+      </DialogContent>
+    </Dialog>
+  );
+}
 
-  function handleOpenChange(next: boolean) {
-    if (next) {
-      setClientId(mode === "edit" ? (client?.client_id ?? "") : "");
-      setName(mode === "edit" ? (client?.name ?? "") : "");
-      setCountries(mode === "edit" ? (client?.countries ?? []) : []);
-      setError(null);
-    }
-    onOpenChange(next);
-  }
+function ClientForm({
+  mode,
+  client,
+  onClose,
+}: {
+  mode: "add" | "edit";
+  client: Client | null;
+  onClose: () => void;
+}) {
+  const queryClient = useQueryClient();
+  const [clientId, setClientId] = useState(client?.client_id ?? "");
+  const [name, setName] = useState(client?.name ?? "");
+  const [countries, setCountries] = useState<string[]>(client?.countries ?? []);
+  const [error, setError] = useState<string | null>(null);
 
   const mutation = useMutation({
     mutationFn: async () => {
@@ -171,9 +199,12 @@ function ClientFormDialog({
           throw new Error(body?.detail || `HTTP ${response.status}`);
         }
       } else {
+        // `countries` cuma dikirim kalau beneran berubah -- backend
+        // nganggep omit = gak diubah, jadi form yang somehow kebuka tanpa
+        // prefill gak bisa ngehapus country tenant diam-diam.
         const { response } = await api.PUT("/api/clients/{client_id}", {
           params: { path: { client_id: client!.client_id } },
-          body: { name, countries },
+          body: { name, ...(sameCountries(countries, client!.countries) ? {} : { countries }) },
         });
         if (!response.ok) {
           const body = await response.json().catch(() => null);
@@ -183,7 +214,7 @@ function ClientFormDialog({
     },
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: CLIENTS_KEY });
-      onOpenChange(false);
+      onClose();
     },
     onError: (e: Error) => setError(e.message),
   });
@@ -200,44 +231,39 @@ function ClientFormDialog({
   }
 
   return (
-    <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="max-h-[80vh] overflow-y-auto sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle className="font-heading">{mode === "add" ? "Add Client" : `Edit ${client?.client_id}`}</DialogTitle>
-        </DialogHeader>
-        <div className="space-y-3">
-          {mode === "add" && (
-            <div className="space-y-1.5">
-              <Label className="font-mono text-[9px] text-muted-foreground uppercase">
-                Client ID <span className="normal-case opacity-70">(lowercase, a-z 0-9 _-)</span>
-              </Label>
-              <Input
-                value={clientId}
-                onChange={(e) => setClientId(e.target.value)}
-                placeholder="e.g. acme_corp"
-                className="font-mono text-xs"
-              />
-            </div>
-          )}
+    <>
+      <div className="space-y-3">
+        {mode === "add" && (
           <div className="space-y-1.5">
-            <Label className="font-mono text-[9px] text-muted-foreground uppercase">Display Name</Label>
-            <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Acme Corp" className="text-xs" />
+            <Label className="font-mono text-[9px] text-muted-foreground uppercase">
+              Client ID <span className="normal-case opacity-70">(lowercase, a-z 0-9 _-)</span>
+            </Label>
+            <Input
+              value={clientId}
+              onChange={(e) => setClientId(e.target.value)}
+              placeholder="e.g. acme_corp"
+              className="font-mono text-xs"
+            />
           </div>
-          <div className="space-y-1.5">
-            <Label className="font-mono text-[9px] text-muted-foreground uppercase">Countries</Label>
-            <CountryMultiSelect value={countries} onChange={setCountries} />
-          </div>
-          {error && <p className="text-xs text-destructive">{error}</p>}
+        )}
+        <div className="space-y-1.5">
+          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Display Name</Label>
+          <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Acme Corp" className="text-xs" />
         </div>
-        <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
-          </Button>
-          <Button onClick={handleSave} disabled={mutation.isPending}>
-            Save
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+        <div className="space-y-1.5">
+          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Countries</Label>
+          <CountryMultiSelect value={countries} onChange={setCountries} />
+        </div>
+        {error && <p className="text-xs text-destructive">{error}</p>}
+      </div>
+      <DialogFooter>
+        <Button variant="outline" onClick={onClose}>
+          Cancel
+        </Button>
+        <Button onClick={handleSave} disabled={mutation.isPending}>
+          Save
+        </Button>
+      </DialogFooter>
+    </>
   );
 }

@@ -234,11 +234,18 @@ class AsyncClientRepo:
         await self.session.refresh(client, attribute_names=["countries"])
         return client
 
-    async def update(self, client_id: str, *, name: str, countries: list[str]) -> Client | None:
+    async def update(
+        self, client_id: str, *, name: str, countries: list[str] | None = None
+    ) -> Client | None:
+        """`countries=None` = country gak disentuh (semantik PATCH); `[]`
+        eksplisit = sengaja dikosongin."""
         client = await self.get(client_id)
         if client is None:
             return None
         client.name = name
+        if countries is None:
+            await self.session.flush()
+            return client
         for existing in list(client.countries):
             await self.session.delete(existing)
         await self.session.flush()

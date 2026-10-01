@@ -3131,7 +3131,7 @@ export interface components {
         /** ClientUpdate */
         ClientUpdate: {
             /** Countries */
-            countries?: string[];
+            countries?: string[] | null;
             /** Name */
             name: string;
         };

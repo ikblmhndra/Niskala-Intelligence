@@ -69,3 +69,36 @@ async def test_remove_client(
     resp = await api_client.delete("/api/clients/acme", headers=auth_header(role="superadmin"))
     assert resp.status_code == 200
     assert resp.json() == snapshot
+
+
+async def test_edit_client_omitted_countries_unchanged(
+    api_client: AsyncClient,
+    api_session: AsyncSession,
+    auth_header: Callable[..., dict[str, str]],
+) -> None:
+    """QA BUG-01 -- `countries` di-omit (atau `null`) = gak diubah, bukan
+    diam-diam dikosongin."""
+    await AsyncClientRepo(api_session).create(
+        client_id="acme", name="Acme Corp", countries=["US", "CA"]
+    )
+    headers = auth_header(role="superadmin")
+    for body in ({"name": "Acme Corporation"}, {"name": "Acme Corp II", "countries": None}):
+        resp = await api_client.put("/api/clients/acme", headers=headers, json=body)
+        assert resp.status_code == 200
+        assert resp.json()["name"] == body["name"]
+        assert sorted(resp.json()["countries"]) == ["CA", "US"]
+
+
+async def test_edit_client_explicit_empty_countries_clears(
+    api_client: AsyncClient,
+    api_session: AsyncSession,
+    auth_header: Callable[..., dict[str, str]],
+) -> None:
+    await AsyncClientRepo(api_session).create(client_id="acme", name="Acme Corp", countries=["US"])
+    resp = await api_client.put(
+        "/api/clients/acme",
+        headers=auth_header(role="superadmin"),
+        json={"name": "Acme Corp", "countries": []},
+    )
+    assert resp.status_code == 200
+    assert resp.json()["countries"] == []
