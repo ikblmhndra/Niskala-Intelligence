@@ -18191,37 +18191,57 @@
             }
           },
           {
+            "description": "`YYYY-MM-DD` = mulai tengah malam hari itu di zona `tz`; datetime ISO 8601 = instan persis.",
             "in": "query",
             "name": "posted_on_start",
             "required": false,
             "schema": {
               "anyOf": [
                 {
-                  "format": "date-time",
                   "type": "string"
                 },
                 {
                   "type": "null"
                 }
               ],
+              "description": "`YYYY-MM-DD` = mulai tengah malam hari itu di zona `tz`; datetime ISO 8601 = instan persis.",
               "title": "Posted On Start"
             }
           },
           {
+            "description": "`YYYY-MM-DD` = INKLUSIF sampai akhir hari itu di zona `tz`; datetime ISO 8601 = batas atas inklusif (instan persis).",
             "in": "query",
             "name": "posted_on_end",
             "required": false,
             "schema": {
               "anyOf": [
                 {
-                  "format": "date-time",
                   "type": "string"
                 },
                 {
                   "type": "null"
                 }
               ],
+              "description": "`YYYY-MM-DD` = INKLUSIF sampai akhir hari itu di zona `tz`; datetime ISO 8601 = batas atas inklusif (instan persis).",
               "title": "Posted On End"
+            }
+          },
+          {
+            "description": "Zona IANA (mis. `Asia/Jakarta`) buat batas hari `YYYY-MM-DD`. Default UTC.",
+            "in": "query",
+            "name": "tz",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Zona IANA (mis. `Asia/Jakarta`) buat batas hari `YYYY-MM-DD`. Default UTC.",
+              "title": "Tz"
             }
           },
           {
@@ -18352,37 +18372,57 @@
             }
           },
           {
+            "description": "`YYYY-MM-DD` = mulai tengah malam hari itu di zona `tz`; datetime ISO 8601 = instan persis.",
             "in": "query",
             "name": "posted_on_start",
             "required": false,
             "schema": {
               "anyOf": [
                 {
-                  "format": "date-time",
                   "type": "string"
                 },
                 {
                   "type": "null"
                 }
               ],
+              "description": "`YYYY-MM-DD` = mulai tengah malam hari itu di zona `tz`; datetime ISO 8601 = instan persis.",
               "title": "Posted On Start"
             }
           },
           {
+            "description": "`YYYY-MM-DD` = INKLUSIF sampai akhir hari itu di zona `tz`; datetime ISO 8601 = batas atas inklusif (instan persis).",
             "in": "query",
             "name": "posted_on_end",
             "required": false,
             "schema": {
               "anyOf": [
                 {
-                  "format": "date-time",
                   "type": "string"
                 },
                 {
                   "type": "null"
                 }
               ],
+              "description": "`YYYY-MM-DD` = INKLUSIF sampai akhir hari itu di zona `tz`; datetime ISO 8601 = batas atas inklusif (instan persis).",
               "title": "Posted On End"
+            }
+          },
+          {
+            "description": "Zona IANA (mis. `Asia/Jakarta`) buat batas hari `YYYY-MM-DD`. Default UTC.",
+            "in": "query",
+            "name": "tz",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Zona IANA (mis. `Asia/Jakarta`) buat batas hari `YYYY-MM-DD`. Default UTC.",
+              "title": "Tz"
             }
           },
           {

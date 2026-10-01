@@ -29,7 +29,7 @@ from datetime import UTC, datetime
 from typing import Any
 
 from cti_core.db.models.pir import PIRRequirement
-from cti_core.db.repositories.article import AsyncArticleRepo
+from cti_core.db.repositories.article import AsyncArticleRepo, all_country_codes
 from cti_core.db.repositories.ioc import AsyncIOCRepo
 from cti_core.db.repositories.pir import AsyncPIRRepo
 from cti_core.db.repositories.ta import AsyncTAProfileRepo
@@ -573,7 +573,9 @@ async def build_article_stix_bundle(
     industries = [i.industry for i in article.industries]
     if industries:
         report_obj["x_impacted_industries"] = industries
-    mentioned_countries = [c.country_code for c in article.countries if c.role == "mentioned"]
+    # Padanan `mentioned_countries` Mongo lama = role apa pun (lihat
+    # `all_country_codes`), sama kayak `stix_service.py` lama.
+    mentioned_countries = all_country_codes(article)
     if mentioned_countries:
         report_obj["x_mentioned_countries"] = mentioned_countries
     if article.confidence_score is not None:

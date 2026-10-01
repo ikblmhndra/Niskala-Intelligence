@@ -71,6 +71,7 @@ def _apply_tweet_filters(
     lang: str | None,
     posted_on_start: datetime.datetime | None = None,
     posted_on_end: datetime.datetime | None = None,
+    posted_before: datetime.datetime | None = None,
     apac_only: bool,
     ot_only: bool,
     confirmed_only: bool,
@@ -80,9 +81,20 @@ def _apply_tweet_filters(
     (Fase 5). `.as_boolean()` operator JSONB Postgres, ekuivalen
     `query["apac_indicator"] = True` Mongo lama. Dipakai `list_filtered`
     DAN `get_stats` -- dua-duanya kena filter yang sama persis (port
-    perilaku lama)."""
+    perilaku lama).
+
+    `posted_on_end` = batas atas INKLUSIF (`<=`, instan persis);
+    `posted_before` = batas atas EKSKLUSIF (`<`) -- dipakai buat "sampai
+    akhir hari X" (= `<` tengah malam hari X+1), lihat `routers/tweets.py`.
+    Dulu cuma ada `posted_on_end` dan tanggal "To" dari UI ke-parse jadi
+    00:00 hari itu, jadi seluruh hari terakhir kebuang (QA BUG-B5).
+
+    `author`: `@` di depan dibuang (QA BUG-B6) -- placeholder UI "@handle…"
+    dan `author_username` disimpan TANPA `@` (lihat
+    `AsyncMonitoredAccountRepo.create`), jadi "@rst_cloud" dulu 0 hasil."""
     if search:
         stmt = stmt.where(Tweet.text.ilike(f"%{search}%"))
+    author = author.strip().lstrip("@").strip() if author else None
     if author:
         stmt = stmt.where(Tweet.author_username.ilike(f"%{author}%"))
     if lang:
@@ -91,6 +103,8 @@ def _apply_tweet_filters(
         stmt = stmt.where(Tweet.posted_on >= posted_on_start)
     if posted_on_end is not None:
         stmt = stmt.where(Tweet.posted_on <= posted_on_end)
+    if posted_before is not None:
+        stmt = stmt.where(Tweet.posted_on < posted_before)
     if apac_only:
         stmt = stmt.where(Tweet.scan_results["apac_indicator"].as_boolean())
     if ot_only:
@@ -114,6 +128,7 @@ class AsyncTweetRepo:
         lang: str | None = None,
         posted_on_start: datetime.datetime | None = None,
         posted_on_end: datetime.datetime | None = None,
+        posted_before: datetime.datetime | None = None,
         apac_only: bool = False,
         ot_only: bool = False,
         confirmed_only: bool = False,
@@ -125,6 +140,7 @@ class AsyncTweetRepo:
             lang=lang,
             posted_on_start=posted_on_start,
             posted_on_end=posted_on_end,
+            posted_before=posted_before,
             apac_only=apac_only,
             ot_only=ot_only,
             confirmed_only=confirmed_only,
@@ -133,7 +149,9 @@ class AsyncTweetRepo:
             await self.session.execute(select(func.count()).select_from(stmt.subquery()))
         ).scalar_one()
         list_stmt = (
-            stmt.order_by(Tweet.posted_on.desc().nulls_last())
+            # `id` tiebreaker: tanpa ini urutan tweet ber-`posted_on` sama gak
+            # deterministik antar-page (pola sama QA BUG-B4 ransomware).
+            stmt.order_by(Tweet.posted_on.desc().nulls_last(), Tweet.id.desc())
             .offset((page - 1) * page_size)
             .limit(page_size)
         )
@@ -148,6 +166,7 @@ class AsyncTweetRepo:
         lang: str | None = None,
         posted_on_start: datetime.datetime | None = None,
         posted_on_end: datetime.datetime | None = None,
+        posted_before: datetime.datetime | None = None,
         apac_only: bool = False,
         ot_only: bool = False,
         confirmed_only: bool = False,
@@ -159,6 +178,7 @@ class AsyncTweetRepo:
             lang=lang,
             posted_on_start=posted_on_start,
             posted_on_end=posted_on_end,
+            posted_before=posted_before,
             apac_only=apac_only,
             ot_only=ot_only,
             confirmed_only=confirmed_only,

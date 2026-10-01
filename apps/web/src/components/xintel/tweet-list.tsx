@@ -38,6 +38,29 @@ const EMPTY_FILTERS: Filters = {
   confirmedOnly: false,
 };
 
+/** Zona IANA browser user (mis. "Asia/Jakarta") -- backend pakai ini buat
+ * batas hari `posted_on_start`/`posted_on_end` (`YYYY-MM-DD`), jadi
+ * From/To = hari LOKAL user penuh (To inklusif), konsisten sama waktu tweet
+ * yang dirender lokal di `tweet-card.tsx`. Dulu To dibaca 00:00 UTC,
+ * same-day range selalu 0 hasil (QA BUG-B5). */
+function userTimeZone(): string | undefined {
+  try {
+    return Intl.DateTimeFormat().resolvedOptions().timeZone || undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+/** Param tanggal bareng list & stats -- `tz` cuma dikirim kalau ada tanggal. */
+function dateParams(filters: Filters) {
+  const hasDate = Boolean(filters.dateStart || filters.dateEnd);
+  return {
+    posted_on_start: filters.dateStart || undefined,
+    posted_on_end: filters.dateEnd || undefined,
+    tz: hasDate ? userTimeZone() : undefined,
+  };
+}
+
 function useTweets(filters: Filters, page: number) {
   return useQuery({
     queryKey: ["xintel", "tweets", filters, page],
@@ -49,8 +72,7 @@ function useTweets(filters: Filters, page: number) {
             page_size: PAGE_SIZE,
             search: filters.search || undefined,
             author: filters.author || undefined,
-            posted_on_start: filters.dateStart || undefined,
-            posted_on_end: filters.dateEnd || undefined,
+            ...dateParams(filters),
             apac_only: filters.apacOnly,
             ot_only: filters.otOnly,
             confirmed_only: filters.confirmedOnly,
@@ -72,8 +94,7 @@ function useTweetStats(filters: Filters) {
           query: {
             search: filters.search || undefined,
             author: filters.author || undefined,
-            posted_on_start: filters.dateStart || undefined,
-            posted_on_end: filters.dateEnd || undefined,
+            ...dateParams(filters),
             apac_only: filters.apacOnly,
             ot_only: filters.otOnly,
             confirmed_only: filters.confirmedOnly,

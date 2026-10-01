@@ -118,7 +118,7 @@ async def _collect_tweets(session: AsyncSession, day: datetime.date) -> list[Any
     start = datetime.datetime.combine(day, datetime.time.min, tzinfo=datetime.UTC)
     end = start + datetime.timedelta(days=1)
     tweets, _total = await AsyncTweetRepo(session).list_filtered(
-        posted_on_start=start, posted_on_end=end, page_size=150
+        posted_on_start=start, posted_before=end, page_size=150
     )
     tweets.sort(key=lambda t: t.incident_confidence or 0, reverse=True)
     return tweets

@@ -61,6 +61,20 @@ def _apply_article_filters(
     return stmt
 
 
+def _country_role(stmt: Select[tuple[Any, ...]], role: str | None) -> Select[tuple[Any, ...]]:
+    """`role=None` = negara role APA PUN -- padanan `mentioned_countries`
+    Mongo lama, yang isinya GABUNGAN regex + victim + actor (lihat
+    `cti_core.db.repositories.article._apply_list_filters`). Role
+    "mentioned" di skema baru cuma SISA yang gak kepakai victim/actor, jadi
+    agregasi "negara yang disebut" yang filter `role == "mentioned"` (bug
+    lama, QA BUG-B1) kehilangan mayoritas data. Satu artikel bisa punya
+    negara yang SAMA di dua role (victim + actor), makanya hitungan per
+    negara pakai `count(DISTINCT article.id)`, bukan `count(*)`."""
+    if role is not None:
+        stmt = stmt.where(ArticleCountry.role == role)
+    return stmt
+
+
 class AsyncDashboardRepo:
     def __init__(self, session: AsyncSession) -> None:
         self.session = session
@@ -83,14 +97,16 @@ class AsyncDashboardRepo:
         return [(industry, mo, cnt) for industry, mo, cnt in rows]
 
     async def monthly_country_counts(
-        self, *, role: str = "mentioned", **filters: Any
+        self, *, role: str | None = None, **filters: Any
     ) -> list[tuple[str, str, int]]:
         month = func.to_char(cast(Article.posted_on, Date), "YYYY-MM")
         stmt = _apply_article_filters(
-            select(ArticleCountry.country_code, month, func.count())
-            .select_from(Article)
-            .join(ArticleCountry)
-            .where(ArticleCountry.role == role),
+            _country_role(
+                select(ArticleCountry.country_code, month, func.count(func.distinct(Article.id)))
+                .select_from(Article)
+                .join(ArticleCountry),
+                role,
+            ),
             **filters,
         ).group_by(ArticleCountry.country_code, month)
         rows = (await self.session.execute(stmt)).all()
@@ -167,29 +183,32 @@ class AsyncDashboardRepo:
         )
         return int((await self.session.execute(stmt)).scalar_one())
 
-    async def unique_mentioned_country_count(self, **filters: Any) -> int:
+    async def unique_country_count(self, **filters: Any) -> int:
+        """Negara role apa pun (lihat `_country_role`)."""
         stmt = _apply_article_filters(
             select(func.count(func.distinct(ArticleCountry.country_code)))
             .select_from(Article)
-            .join(ArticleCountry)
-            .where(ArticleCountry.role == "mentioned"),
+            .join(ArticleCountry),
             **filters,
         )
         return int((await self.session.execute(stmt)).scalar_one())
 
     async def top_countries(
-        self, *, limit: int = 10, role: str = "mentioned", **filters: Any
+        self, *, limit: int = 10, role: str | None = None, **filters: Any
     ) -> list[tuple[str, int]]:
+        n_articles = func.count(func.distinct(Article.id))
         stmt = (
             _apply_article_filters(
-                select(ArticleCountry.country_code, func.count())
-                .select_from(Article)
-                .join(ArticleCountry)
-                .where(ArticleCountry.role == role),
+                _country_role(
+                    select(ArticleCountry.country_code, n_articles)
+                    .select_from(Article)
+                    .join(ArticleCountry),
+                    role,
+                ),
                 **filters,
             )
             .group_by(ArticleCountry.country_code)
-            .order_by(func.count().desc())
+            .order_by(n_articles.desc(), ArticleCountry.country_code)
             .limit(limit)
         )
         rows = (await self.session.execute(stmt)).all()
@@ -392,13 +411,16 @@ class AsyncDashboardRepo:
         dari `exec_dashboard_v2` (`industry_spikes`, ikut filter
         `incident_only`/`confirmed_only` dashboard) -- `/api/spikes`
         polos manggil tanpa ini, sama kayak lama."""
-        model, col, where_role = {
-            "threat_actor": (ArticleThreatActor, ArticleThreatActor.threat_actor, None),
-            "country": (ArticleCountry, ArticleCountry.country_code, "mentioned"),
-            "industry": (ArticleIndustry, ArticleIndustry.industry, None),
+        # Negara: role apa pun (lihat `_country_role`) -- `count(DISTINCT
+        # article.id)` biar negara yang sama di dua role gak kehitung dobel.
+        # Buat TA/industri efeknya nol (unik per artikel di level constraint).
+        model, col = {
+            "threat_actor": (ArticleThreatActor, ArticleThreatActor.threat_actor),
+            "country": (ArticleCountry, ArticleCountry.country_code),
+            "industry": (ArticleIndustry, ArticleIndustry.industry),
         }[dimension]
         stmt = _apply_article_filters(
-            select(Article.posted_on, col, func.count())
+            select(Article.posted_on, col, func.count(func.distinct(Article.id)))
             .select_from(Article)
             .join(model)
             .where(col.is_not(None), col != ""),
@@ -407,8 +429,6 @@ class AsyncDashboardRepo:
             exclude_news_types=exclude_news_types,
             confirmed_only=confirmed_only,
         )
-        if where_role:
-            stmt = stmt.where(ArticleCountry.role == where_role)
         stmt = stmt.group_by(Article.posted_on, col)
         rows = (await self.session.execute(stmt)).all()
         return [(d, entity, cnt) for d, entity, cnt in rows]
@@ -448,19 +468,18 @@ class AsyncDashboardRepo:
         ids = [a.id for a in articles]
         posted_map = {a.id: a.posted_on for a in articles}
 
-        async def _grouped(model: Any, col: Any, role: str | None = None) -> dict[int, list[str]]:
+        async def _grouped(model: Any, col: Any) -> dict[int, list[str]]:
             stmt = select(model.article_id, col).where(model.article_id.in_(ids))
-            if role:
-                stmt = stmt.where(model.role == role)
             rows = (await self.session.execute(stmt)).all()
             out: dict[int, list[str]] = {}
             for aid, val in rows:
-                if val:
+                if val and val not in out.get(aid, ()):
                     out.setdefault(aid, []).append(val)
             return out
 
         industries = await _grouped(ArticleIndustry, ArticleIndustry.industry)
-        countries = await _grouped(ArticleCountry, ArticleCountry.country_code, role="mentioned")
+        # Role apa pun (lihat `_country_role`); dedup di `_grouped`.
+        countries = await _grouped(ArticleCountry, ArticleCountry.country_code)
         actors = await _grouped(ArticleThreatActor, ArticleThreatActor.threat_actor)
         ttps = await _grouped(ArticleTTP, ArticleTTP.ttp_id)
 

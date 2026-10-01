@@ -1,4 +1,25 @@
+import { useState } from "react";
+
 import { Button } from "@/components/ui/button";
+
+/**
+ * State halaman yang BALIK ke 1 tiap `resetOn` ganti identitas (`!==`) --
+ * dipakai panel yang filter-nya dipegang parent (Newsroom). Dulu tiap panel
+ * `useState(1)` polos: user di page 2 terus Apply/Reset filter, request
+ * tetap `page=2` -> "2 items" tapi isinya kosong dan pager ilang (QA
+ * BUG-B3). Pola "adjust state during render" React (bukan `useEffect`),
+ * jadi gak ada satu render + request basi di page lama.
+ */
+export function usePageResetOn(resetOn: unknown): [number, (page: number) => void] {
+  const [page, setPage] = useState(1);
+  const [seen, setSeen] = useState(resetOn);
+  if (seen !== resetOn) {
+    setSeen(resetOn);
+    setPage(1);
+    return [1, setPage];
+  }
+  return [page, setPage];
+}
 
 interface SimplePagerProps {
   page: number;
