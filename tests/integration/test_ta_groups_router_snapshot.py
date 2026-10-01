@@ -8,11 +8,13 @@ dipatch di sini fungsi INTERNAL modul servicenya, bukan client-nya)."""
 
 from __future__ import annotations
 
+import datetime
 from collections.abc import Callable
 from unittest.mock import MagicMock, patch
 
 import pytest
 from cti_api.services import ta_profile as ta_profile_service
+from cti_core.db.repositories import ta as ta_repo
 from cti_core.db.repositories.ta import AsyncTARepo
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -125,7 +127,11 @@ async def test_get_actor_timeline(
     api_session: AsyncSession,
     auth_header: Callable[..., dict[str, str]],
     snapshot: SnapshotAssertion,
+    monkeypatch: pytest.MonkeyPatch,
 ) -> None:
+    # Jendela `months` 24 bulan dihitung dari "hari ini" -- dibekukan biar
+    # snapshot gak basi tiap ganti bulan.
+    monkeypatch.setattr(ta_repo, "_today", lambda: datetime.date(2026, 9, 15))
     resp = await api_client.get("/api/ta/APT41/timeline", headers=auth_header())
     assert resp.status_code == 200
     assert resp.json() == snapshot
