@@ -5389,6 +5389,87 @@ Yang cuma bisa dikerjain user (butuh akses prod): rotasi secret di
 sistem asal (BotFather/Graylog/Mongo/Devo/Rundeck), `mongodump` final,
 matiin Rundeck + systemd lama, provisioning VM, narik `techstackLibrary`.
 
+### 10.H QA UI staging + fix (2026-10-01) `[~]` kode ke-merge, BELUM ke-deploy
+
+Dikerjakan di DUA sesi terpisah setelah commit Fase 10 (`a92e7ea`), keduanya sudah di `origin/main`.
+Checkout lokal utama masih di `a92e7ea` -- `git pull` dulu sebelum lanjut apa pun.
+
+**Sumber temuan:** QA manual lewat browser ke staging, 4 laporan (A Core+Admin 52 TC, B News+X Intel
+54 TC, C CVE+Intel 71 TC, D Scrapers+Analisis 38 TC = 215 TC, ~75 entri bug; beberapa kembar antar
+laporan, mis. TTP muncul di A/B/C dan threat actor di B/D). Laporan HTML + screenshot ada di
+`qa-report/` pada worktree `halo-bro-02ad66` dan **TIDAK ke-commit** -- salin dulu kalau masih dibutuhkan,
+sebelum worktree itu diarsipkan/dihapus.
+
+| PR / commit | Area | Bug QA |
+|---|---|---|
+| PR #1 `0e5f4c0` | Scheduler: heartbeat `CtiScheduler`->Redis (`cti:beat:heartbeat`), watchdog di proses worker (alert Telegram thread `scraper_health` + "PULIH"), `next_run_at` per scraper + banner di `/scrapers`, catch-up basi dilompati (>600 dtk), retry 60/120/240 dtk | D2, D6, D7, D8 |
+| PR #1 `8f4a411` | Seed `threat_actor_groups` pindah ke `fase10_reference_data.py`; `mentioned` berisi semua negara; nama grup di-escape (`re.error` utk `noname057(16)`); `python -m cti_enrich.backfill` | B2, D1, D4 |
+| PR #1 `fa0767b` | Dialog edit admin selalu terisi; `ClientUpdate.countries` opsional (gak dikirim = gak berubah) | A BUG-01/02 |
+| PR #1 `db662c9` | Filter negara cocok ke role apa pun; reset page; tiebreaker `id` paging; X Intel tanggal "To" inklusif + strip `@` | B1, B3-B6, C02 |
+| PR #1 `c62d229` | TTP dinormalisasi ke katalog ATT&CK; migrasi `c3a7e9d1f2b4` (`article_ttps.extracted_id/name`, tabel `attack_technique_aliases`) | C01, A BUG-04, B8, C17, C18 |
+| PR #2 `333dce9` | `test_get_actor_timeline`: `_today()` di `ta.py` di-monkeypatch, gak ikut tanggal lagi | -- |
+
+**Selaras dengan Fase 10 (dicek 2026-10-01, bukan asumsi):** `CtiScheduler` dipasang lewat
+`app.conf.beat_scheduler`, jadi `beat_main.py` (lock singleton 10.1d) otomatis memakainya; migrasi
+`c3a7e9d1f2b4` bersambung di atas head Fase 10 (`down_revision = a10e5c0de002`), tetap satu head;
+watchdog dedupe lewat `SET NX` di Redis (3 container worker gak kirim alert 3x). QA BUG-22 (IP audit
+log = gateway docker) itu efek SSH tunnel, bukan regresi -- bukti 10.G2 dari laptop langsung tetap berlaku.
+
+**KOREKSI klaim Fase 10 sebelumnya:**
+1. `threat_actor_groups` "kelar Fase 5" -- cuma di kode, lihat koreksi di 10.1.
+2. "Health sweep terbukti deteksi scraper mati" (checklist cutover) benar hanya buat SCRAPER mati.
+   Beat mati ~97,6 jam (26 Sep 15:42 -> 30 Sep 17:17 UTC, di-stop manual habis rehearsal 10.G,
+   `restart: unless-stopped` gak menyalakannya lagi) gak ketahuan sama sekali karena digest health
+   DIJADWALKAN beat itu sendiri. Watchdog PR #1 menutup lubang ini -- tapi belum ke-deploy.
+3. Keluhan "scraper stg gak jalan otomatis" valid buat periode itu. Dicek langsung 2026-10-01 ~07:40
+   UTC: container `beat` Up 14 jam, 1837 run dalam 24 jam terakhir SEMUANYA `trigger=beat` (terakhir
+   07:38 UTC), nol `manual`.
+4. CI-sim "4 gagal pra-ada" (snapshot ikut tanggal) sudah gak relevan: yang terakhir
+   (`test_get_actor_timeline`) dibekukan PR #2. Angka: merge PR #1 = 1939 lulus / 3 skip / 1 gagal
+   (yang gagal itu tadi); PR #2 di basis `a92e7ea` = 1891 lulus / 3 skip. **Suite penuh di `main`
+   gabungan (#1 + #2) BELUM dijalankan ulang.**
+
+**Status deploy staging (dicek read-only 2026-10-01):** revisi DB masih `a10e5c0de002` -- migrasi
+`c3a7e9d1f2b4` belum jalan, jadi semua fix di atas BELUM aktif di staging (termasuk watchdog: kalau
+beat mati lagi sekarang, tetap diam-diam). `~/cti-platform-stg` itu file-sync, BUKAN git checkout
+(langkah "tarik main" di runbook gak berlaku di sana), image ditag `:stg`. Belum ada backup Postgres
+(`/var/backups/cti` gak ada). Draf `qa-report/stg_postdeploy.sh` (sync -> preflight -> backup -> build
+-> up -> seed -> backfill -> remap-ttp -> finish, tiap tahap dry-run tanpa `--apply`) **belum pernah
+dijalankan dan belum ke-commit**; nama project/dir/env di dalamnya asumsi, bukan dibaca dari
+`stg_build.sh`.
+
+**Urutan post-deploy (belum dijalankan):** backup Postgres -> kirim kode + build `:stg` (catat tag
+lama buat rollback, jangan `CTI_TAG=<lama> up -d` mentah, lihat runbook 7.1) -> `up -d` (migrate) ->
+`fase10_reference_data.py --dry-run` lalu sungguhan (harap ~3991 `threat_actor_groups` baru) ->
+`python -m cti_enrich.backfill --dry-run` lalu sungguhan -> sync ulang ATT&CK dari UI -> 
+`tools/ops/remap_article_ttps.py --dry-run` lalu sungguhan -> restart `api` (cache Risk Matrix 15 menit).
+`remap_article_ttps` cuma perlu buat DB yang SUDAH punya artikel lama (staging); DB hasil cutover
+bersih seharusnya gak butuh karena `persist` sudah menormalisasi artikel baru -- ini kesimpulan dari
+diff, belum dibuktikan.
+
+**Runbook:** `docs/CUTOVER_RUNBOOK.md` sudah di-update di PR #1 (langkah 6 sekarang ngisi
+`threat_actor_groups`, bagian 3.2a backfill, catatan hypercare soal beat yang gak nyala sendiri +
+catch-up). Dokumen ini (`PROGRESS.md`) sebelumnya TIDAK ikut di-update -- ini catatannya.
+
+**Belum ditangani / terbuka:**
+- `monitor_x`: twitterapi.io balikin HTTP 402 "Credits is not enough" -> top up kredit; 402 juga
+  belum diklasifikasi terpisah dari `rate_limited` (cek 2026-10-01: `_twitterapi.py` gak punya
+  penanganan 402; yang ada cuma di `_x_official.py`).
+- Newsletter tersimpan dobel (A BUG-06): tombol sudah di-disable saat pending di frontend, dugaan gap
+  idempotency di backend `/api/newsletter/draft-email`.
+- Early Warning default 30 hari gak nangkep spike besar (D5); sisa bug Medium/Low di laporan QA
+  (mis. B12 HTML entity di judul, B14 judul berupa nama file dari watcher GitHub + `posted_on` kosong,
+  C22 data uji `testactor`/`testing` di whitelist TA).
+- **Keputusan reviewer MITRE belum dikonfirmasi user:** entri TTP bernama taktik dibuang (T1547
+  "Persistence" hilang); kalau ID dan nama bentrok, NAMA yang dipakai (T1518.001 "System Service
+  Discovery" jadi T1007).
+- Rotasi password `stg-admin` (dan sisa kredensial dev dari Fase 9) -- wajib sebelum host ini dianggap
+  prod.
+
+**Konteks rencana (keputusan user 2026-09-30):** host staging ini kandidat PRODUKSI (dipakai internal
+kantor, TLS self-signed cukup), dan legacy TIDAK langsung dimatikan -- dibandingkan dulu. Ceklis
+bandingnya: `docs/PARALLEL_RUN_COMPARISON.md`. Banding baru bermakna SETELAH post-deploy di atas jalan.
+
 **Langkah operasional cutover (10.1-10.7 di bawah tetap berlaku):**
 
 - [ ] **10.1** Seed data referensi: `techstack`, `monitored_accounts`,
@@ -5396,6 +5477,12 @@ matiin Rundeck + systemd lama, provisioning VM, narik `techstackLibrary`.
       `ioc_allowlist`/`threat_actor_groups`/`monitored_people` **UDAH
       KELAR duluan Fase 5** (2026-09-18, `tools/seed/fase5_reference_data.py`)
       -- lihat catatan lengkap di Fase 5.
+      **KOREKSI 2026-10-01 (QA, lihat 10.H):** "kelar" itu cuma benar di KODE.
+      `fase5_reference_data.py` gak pernah dijalankan di staging, dan runbook cutover
+      cuma nyuruh jalanin `fase10_reference_data.py` (yang waktu itu gak ngisi tabel-tabel
+      ini) -- hasilnya `threat_actor_groups` kosong di staging: dropdown TA kosong,
+      PIR berbasis TA 0 artikel, Risk Matrix 0 sel. Sejak PR #1 seed-nya ikut di
+      `fase10_reference_data.py` (~3991 grup + `monitored_people` + `ioc_allowlist_entries`).
 - [x] **10.1b** **Dipindah dari 4.12** (2026-09-18, biar Fase 4 gak keblok
       kerjaan yang sifatnya emang cutover, bukan migrasi): job nonaktif
       diarsipkan, digarap di sini bareng seed data lain -- bukan lagi
@@ -5592,9 +5679,12 @@ matiin Rundeck + systemd lama, provisioning VM, narik `techstackLibrary`.
       produksi lama yang jadi target asli dokumen -- membuktikan mekanismenya benar, bukan
       pengganti drill produksi.
 - [ ] Stack lama bisa dinyalakan lagi <5 menit (sudah dilatih) -- 10.G: prosedur + alat (`rundeck_schedule.py`, runbook 7.3) SIAP, latihan di produksi BELUM (butuh Rundeck/host lama)
-- [x] Health sweep terbukti bisa deteksi scraper mati (tes di staging) -- 10.G: beat asli + thread `scraper_health`; `worker-browser` dimatikan -> `dead` di digest, pulih -> `ok`
+- [x] Health sweep terbukti bisa deteksi scraper mati (tes di staging) -- 10.G: beat asli + thread `scraper_health`; `worker-browser` dimatikan -> `dead` di digest, pulih -> `ok`. **Catatan 2026-10-01 (10.H):** terbukti buat SCRAPER mati, BUKAN beat mati (97 jam gak ketahuan); watchdog beat ada di PR #1 tapi belum ke-deploy
 - [x] Beat terverifikasi singleton (10.1d) -- 10.A: test Redis asli + 2 proses live
-- [ ] Data referensi ter-seed
+- [ ] Data referensi ter-seed -- staging: `threat_actor_groups` masih KOSONG sampai post-deploy 10.H jalan
+- [ ] Fix QA (10.H) ke-deploy ke staging + post-deploy dijalankan & diverifikasi (revisi DB `c3a7e9d1f2b4`, `threat_actor_groups` ~3991, backfill, remap TTP, watchdog beat aktif)
+- [ ] Data uji & kredensial uji di host kandidat prod dibersihkan (TA whitelist `testactor`/`testing`, password `stg-admin` + sisa kredensial dev Fase 9)
+- [ ] Banding paralel legacy vs platform baru lolos kriteria `docs/PARALLEL_RUN_COMPARISON.md` §7 (minimal 1 minggu, hijau 3 hari berturut-turut) -- baru boleh mulai setelah item deploy di atas beres
 
 ---
 
