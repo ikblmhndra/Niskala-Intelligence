@@ -11505,8 +11505,12 @@ export interface operations {
                 search?: string | null;
                 author?: string | null;
                 lang?: string | null;
+                /** @description `YYYY-MM-DD` = mulai tengah malam hari itu di zona `tz`; datetime ISO 8601 = instan persis. */
                 posted_on_start?: string | null;
+                /** @description `YYYY-MM-DD` = INKLUSIF sampai akhir hari itu di zona `tz`; datetime ISO 8601 = batas atas inklusif (instan persis). */
                 posted_on_end?: string | null;
+                /** @description Zona IANA (mis. `Asia/Jakarta`) buat batas hari `YYYY-MM-DD`. Default UTC. */
+                tz?: string | null;
                 apac_only?: boolean;
                 ot_only?: boolean;
                 confirmed_only?: boolean;
@@ -11545,8 +11549,12 @@ export interface operations {
                 search?: string | null;
                 author?: string | null;
                 lang?: string | null;
+                /** @description `YYYY-MM-DD` = mulai tengah malam hari itu di zona `tz`; datetime ISO 8601 = instan persis. */
                 posted_on_start?: string | null;
+                /** @description `YYYY-MM-DD` = INKLUSIF sampai akhir hari itu di zona `tz`; datetime ISO 8601 = batas atas inklusif (instan persis). */
                 posted_on_end?: string | null;
+                /** @description Zona IANA (mis. `Asia/Jakarta`) buat batas hari `YYYY-MM-DD`. Default UTC. */
+                tz?: string | null;
                 apac_only?: boolean;
                 ot_only?: boolean;
                 confirmed_only?: boolean;

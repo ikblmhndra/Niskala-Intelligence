@@ -90,6 +90,50 @@ async def test_monthly_industry_and_country_counts(async_db_session: AsyncSessio
     )
     assert [r[0] for r in victim_rows] == ["VN"]
 
+    # Default (role=None) = role apa pun (QA BUG-B1), bukan cuma "mentioned".
+    all_rows = await repo.monthly_country_counts(
+        posted_on_start=_TODAY, posted_on_end=None, exclude_news_types=None, confirmed_only=False
+    )
+    assert sorted(r[0] for r in all_rows) == ["US", "VN"]
+
+
+async def test_country_aggregates_count_any_role_once_per_article(
+    async_db_session: AsyncSession,
+) -> None:
+    """QA BUG-B1: "Countries Mentioned"/exec trend/spike dulu cuma hitung role
+    "mentioned". Sekarang role apa pun -- dan negara yang sama di DUA role
+    dalam satu artikel (RU victim + actor) tetap dihitung SATU artikel."""
+    await _ensure_clients(async_db_session)
+    await _seed_articles(async_db_session)
+    repo = AsyncArticleRepo(async_db_session)
+    a3 = await repo.upsert(
+        url="https://example.com/a3",
+        title="RU group hits RU bank",
+        source="Wired",
+        posted_on=_TODAY,
+        news_type="Incident",
+    )
+    await repo.set_enrichment(a3, countries=[("RU", "victim"), ("RU", "actor"), ("VN", "victim")])
+    dash = AsyncDashboardRepo(async_db_session)
+    f = {"posted_on_start": _TODAY, "posted_on_end": None}
+
+    top = dict(await dash.top_countries(limit=10, **f))
+    assert top == {"US": 1, "VN": 2, "RU": 1}
+    assert await dash.unique_country_count(**f) == 3
+
+    monthly = {c: n for c, _, n in await dash.monthly_country_counts(**f)}
+    assert monthly == {"US": 1, "VN": 2, "RU": 1}
+
+    daily = {
+        e: n
+        for _, e, n in await dash.daily_entity_counts(dimension="country", posted_on_start=_TODAY)
+    }
+    assert daily == {"US": 1, "VN": 2, "RU": 1}
+
+    rows = await dash.risk_matrix_rows(posted_on_start=_TODAY)
+    a3_row = next(r for r in rows if "RU" in r["countries"])
+    assert sorted(a3_row["countries"]) == ["RU", "VN"]
+
 
 async def test_top_threat_actors_and_unique_count(async_db_session: AsyncSession) -> None:
     await _ensure_clients(async_db_session)
@@ -147,7 +191,7 @@ async def test_risk_matrix_rows(async_db_session: AsyncSession) -> None:
     assert len(rows) == 2
     a1_row = next(r for r in rows if "T1059" in r["ttps"])
     assert a1_row["industries"] == ["Manufacturing"]
-    assert a1_row["countries"] == ["US"]
+    assert sorted(a1_row["countries"]) == ["US", "VN"]
     assert a1_row["threat_actors"] == ["Apt41"]
 
 

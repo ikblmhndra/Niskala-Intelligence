@@ -54,8 +54,13 @@ def _apply_list_filters(
     get_articles()` (Mongo query dict) ke SQL. Tiga field negara Mongo lama
     (`mentioned_countries`/`victim_countries`/`actor_countries`, tiga ARRAY
     terpisah) sekarang SATU tabel `article_countries` + kolom `role` (Fase 2)
-    -- `countries` (param umum) = role "mentioned", cocok 1:1 sama field
-    lama yang namanya sama."""
+    -- `countries` (param umum) = role APA PUN. Di Mongo lama
+    `mentioned_countries` itu GABUNGAN regex/NER + victim GPT + actor GPT
+    (`nlp.py`: `regex_countries + gpt_victim_countries + gpt_actor_countries`),
+    sedangkan role "mentioned" di skema baru cuma SISA yang gak kepakai
+    victim/actor (`cti_enrich.stages.persist._country_roles`). Filter
+    `role == "mentioned"` (bug lama, QA BUG-B1) bikin artikel yang negaranya
+    victim -- mayoritas data -- gak pernah ketemu."""
     if posted_on_start is not None:
         stmt = stmt.where(Article.posted_on >= posted_on_start)
     if posted_on_end is not None:
@@ -70,9 +75,9 @@ def _apply_list_filters(
     if industries:
         stmt = stmt.join(Article.industries).where(ArticleIndustry.industry.in_(industries))
     if countries:
-        mentioned = _country_alias()
-        stmt = stmt.join(mentioned, Article.id == mentioned.article_id).where(
-            mentioned.role == "mentioned", mentioned.country_code.in_(countries)
+        any_role = _country_alias()
+        stmt = stmt.join(any_role, Article.id == any_role.article_id).where(
+            any_role.country_code.in_(countries)
         )
     if victim_countries:
         victim = _country_alias()
@@ -119,6 +124,15 @@ def _country_alias() -> Any:
     (mentioned + victim + actor) dalam SATU query; tanpa alias, tiga JOIN
     ke tabel yang sama bakal nabrak nama."""
     return aliased(ArticleCountry)
+
+
+def all_country_codes(article: Article) -> list[str]:
+    """Kode negara artikel di role APA PUN, dedup, urutan dipertahankan --
+    padanan field `mentioned_countries` Mongo lama (gabungan regex + victim +
+    actor, lihat `_apply_list_filters`). Dipakai output yang dulu baca
+    `mentioned_countries` mentah (PIR, STIX, clustering campaign); output yang
+    memang mecah per role (`ArticleOut`, newsletter) tetap baca per role."""
+    return list(dict.fromkeys(c.country_code for c in article.countries if c.country_code))
 
 
 def _merge_overrides(article: Article) -> dict[str, Any]:
@@ -471,11 +485,10 @@ class AsyncArticleRepo:
         industries_q = (
             select(ArticleIndustry.industry).distinct().order_by(ArticleIndustry.industry)
         )
+        # Role apa pun -- sama semantik sama filter `countries` (lihat
+        # `_apply_list_filters`), biar opsi dropdown = negara yang bisa ketemu.
         countries_q = (
-            select(ArticleCountry.country_code)
-            .where(ArticleCountry.role == "mentioned")
-            .distinct()
-            .order_by(ArticleCountry.country_code)
+            select(ArticleCountry.country_code).distinct().order_by(ArticleCountry.country_code)
         )
         sources_q = (
             select(Article.source).where(Article.source != "").distinct().order_by(Article.source)

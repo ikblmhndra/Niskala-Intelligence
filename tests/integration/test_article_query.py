@@ -117,11 +117,32 @@ async def test_list_filtered_by_country_mentioned_role(async_db_session: AsyncSe
     repo = AsyncArticleRepo(async_db_session)
     ids = await _seed(repo)
 
-    # a1/a4 punya country row juga, tapi role victim/actor -- BUKAN mentioned,
-    # jadi filter "country" (role=mentioned) cuma harus nangkep a3.
     articles, total = await repo.list_filtered(countries=["US"])
     assert total == 1
     assert articles[0].id == ids["a3"]
+
+
+async def test_list_filtered_by_country_matches_any_role(async_db_session: AsyncSession) -> None:
+    """QA BUG-B1: filter `country` (dan panel "ID News" yang numpang filter
+    ini) dulu cuma nyocokin role "mentioned" -- padahal `mentioned_countries`
+    Mongo lama = gabungan regex + victim + actor, dan mayoritas data negara
+    sekarang ada di role victim. PH cuma victim (a1/a4), CN cuma actor."""
+    repo = AsyncArticleRepo(async_db_session)
+    ids = await _seed(repo)
+
+    articles, total = await repo.list_filtered(countries=["PH"])
+    assert total == 2
+    assert {a.id for a in articles} == {ids["a1"], ids["a4"]}
+
+    articles, total = await repo.list_filtered(countries=["CN"])
+    assert total == 2
+    assert {a.id for a in articles} == {ids["a1"], ids["a4"]}
+
+    # Multi-negara lintas role: a1 cocok di DUA baris (PH victim + CN actor)
+    # tapi tetap muncul sekali, total gak dobel.
+    articles, total = await repo.list_filtered(countries=["PH", "CN", "US"])
+    assert total == 3
+    assert sorted(a.id for a in articles) == sorted([ids["a1"], ids["a3"], ids["a4"]])
 
 
 async def test_list_filtered_by_victim_country(async_db_session: AsyncSession) -> None:
@@ -271,16 +292,16 @@ async def test_get_filter_options_returns_distinct_sorted_values(
     assert options["date_range"]["max"] == "2026-09-17"
 
 
-async def test_get_filter_options_countries_only_role_mentioned(
+async def test_get_filter_options_countries_include_every_role(
     async_db_session: AsyncSession,
 ) -> None:
     repo = AsyncArticleRepo(async_db_session)
     await _seed(repo)
 
     options = await repo.get_filter_options()
-    # PH/CN cuma muncul sebagai victim/actor di korpus ini, BUKAN mentioned
-    # -- gak boleh nongol di dropdown filter "country" (role=mentioned).
-    assert options["countries"] == ["US"]
+    # QA BUG-B1: PH (victim) & CN (actor) WAJIB ada -- opsi dropdown harus
+    # sama semantik sama filter `country` (role apa pun), sorted & unik.
+    assert options["countries"] == ["CN", "PH", "US"]
 
 
 async def test_get_by_id_returns_none_for_missing(async_db_session: AsyncSession) -> None:

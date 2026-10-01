@@ -75,6 +75,36 @@ async def test_list_filtered_by_date_range(async_db_session: AsyncSession) -> No
     assert total == 1
 
 
+async def test_list_filtered_pagination_stable_when_published_ties(
+    async_db_session: AsyncSession,
+) -> None:
+    """QA BUG-B4: banyak korban ber-`published` SAMA; tanpa tiebreaker `id`
+    urutan baris seri bebas berubah antar-query (top-N heapsort Postgres
+    beda per OFFSET/LIMIT) -> korban dobel di page 1 & 2, sebagian lain gak
+    pernah tampil. Halaman-halaman harus = semua id, urut `id desc`."""
+    day = datetime.date(2026, 9, 30)
+    async_db_session.add_all(
+        RansomwareVictim(
+            offset_key=f"grp:victim-{i}:US:{day}",
+            group_name="grp",
+            victim=f"victim-{i}",
+            country_code="US",
+            published=day,
+        )
+        for i in range(60)
+    )
+    await async_db_session.flush()
+    repo = AsyncRansomwareVictimRepo(async_db_session)
+
+    seen: list[int] = []
+    for page in range(1, 10):
+        victims, total = await repo.list_filtered(page=page, page_size=7)
+        seen.extend(v.id for v in victims)
+    assert total == 60
+    assert len(seen) == 60
+    assert seen == sorted(seen, reverse=True)
+
+
 async def test_get_filter_options(async_db_session: AsyncSession) -> None:
     await _seed_victims(async_db_session)
     options = await AsyncRansomwareVictimRepo(async_db_session).get_filter_options()

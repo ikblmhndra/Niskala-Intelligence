@@ -66,7 +66,7 @@ class AsyncRansomwareVictimRepo:
         result = await self.session.execute(
             select(RansomwareVictim)
             .where(func.lower(RansomwareVictim.group_name) == group_name.lower())
-            .order_by(RansomwareVictim.published.desc().nulls_last())
+            .order_by(RansomwareVictim.published.desc().nulls_last(), RansomwareVictim.id.desc())
             .limit(limit)
         )
         return list(result.scalars().all())
@@ -103,8 +103,14 @@ class AsyncRansomwareVictimRepo:
         total = (
             await self.session.execute(select(func.count()).select_from(stmt.subquery()))
         ).scalar_one()
+        # `id` tiebreaker WAJIB: banyak korban ber-`published` sama (presisi
+        # hari), tanpa tiebreaker Postgres bebas ngurutin baris seri beda
+        # tiap query -> korban yang sama muncul di page 1 DAN 2, sebagian
+        # lain gak pernah tampil (QA BUG-B4: 410 baris, cuma 376 id unik).
         list_stmt = (
-            stmt.order_by(RansomwareVictim.published.desc().nulls_last())
+            stmt.order_by(
+                RansomwareVictim.published.desc().nulls_last(), RansomwareVictim.id.desc()
+            )
             .offset((page - 1) * page_size)
             .limit(page_size)
         )
