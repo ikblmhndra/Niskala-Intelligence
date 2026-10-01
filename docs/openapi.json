@@ -323,11 +323,18 @@
       "ClientUpdate": {
         "properties": {
           "countries": {
-            "items": {
-              "type": "string"
-            },
-            "title": "Countries",
-            "type": "array"
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Countries"
           },
           "name": {
             "maxLength": 128,

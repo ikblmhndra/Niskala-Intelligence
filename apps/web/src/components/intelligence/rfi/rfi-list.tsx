@@ -34,6 +34,9 @@ export function RfiList() {
   const queryClient = useQueryClient();
   const [filter, setFilter] = useState("");
   const [formOpen, setFormOpen] = useState(false);
+  // Naik tiap "+ New" -- form add remount fresh, gak bawa isian
+  // submit/cancel sebelumnya (pola sama `addKey` di `sr-table.tsx`).
+  const [addKey, setAddKey] = useState(0);
   const [editTarget, setEditTarget] = useState<RFIOut | null>(null);
   const [removeTarget, setRemoveTarget] = useState<RFIOut | null>(null);
 
@@ -78,7 +81,13 @@ export function RfiList() {
             </Button>
           ))}
         </div>
-        <Button size="sm" onClick={() => setFormOpen(true)}>
+        <Button
+          size="sm"
+          onClick={() => {
+            setAddKey((k) => k + 1);
+            setFormOpen(true);
+          }}
+        >
           + New RFI
         </Button>
       </div>
@@ -126,7 +135,7 @@ export function RfiList() {
         ))}
       </div>
 
-      <RfiFormDialog key="add" open={formOpen} onClose={() => setFormOpen(false)} onSaved={invalidate} />
+      <RfiFormDialog key={`add-${addKey}`} open={formOpen} onClose={() => setFormOpen(false)} onSaved={invalidate} />
       <RfiFormDialog
         key={editTarget?.id ?? "edit-none"}
         rfi={editTarget}

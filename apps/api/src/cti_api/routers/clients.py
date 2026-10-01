@@ -21,7 +21,10 @@ class ClientCreate(BaseModel):
 
 class ClientUpdate(BaseModel):
     name: str = Field(..., min_length=1, max_length=128)
-    countries: list[str] = Field(default_factory=list)
+    # Semantik PATCH buat `countries`: omit/`null` = gak diubah. Dulu
+    # default-nya `[]`, jadi payload tanpa `countries` diam-diam ngehapus
+    # semua country tenant (QA BUG-01). Ngosongin harus `[]` eksplisit.
+    countries: list[str] | None = None
 
 
 def _serialize(client: Client) -> dict[str, object]:
@@ -80,7 +83,7 @@ async def edit_client(
         username=sa["username"],
         action="update_client",
         target_id=client_id,
-        detail={"name": body.name, "countries": body.countries},
+        detail={"name": body.name, "countries": [c.country_code for c in updated.countries]},
         ip_address=request_ip(request),
     )
     await session.commit()
