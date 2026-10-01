@@ -188,6 +188,14 @@ class ArticleTTP(Base):
     ttp_id: Mapped[str] = mapped_column(String(20), nullable=False, index=True)
     """Mis. "T1566.001"."""
     ttp_name: Mapped[str] = mapped_column(String(300), nullable=False)
+    """Nama KANONIK ATT&CK buat `ttp_id` (hasil `cti_core.attack_ttp.
+    normalize_ttps`), bukan teks bebas LLM -- itu di `extracted_name`."""
+    extracted_id: Mapped[str | None] = mapped_column(String(50))
+    extracted_name: Mapped[str | None] = mapped_column(String(300))
+    """Pasangan `(technique_id, technique_name)` ASLI dari LLM sebelum
+    dinormalisasi (QA BUG-C01: LLM sering salah pasang ID/nama). Disimpan
+    buat audit + bahan remap ulang (`tools/ops/remap_article_ttps.py`).
+    NULL = baris lama sebelum kolom ini ada / ditulis tanpa normalisasi."""
 
     article: Mapped[Article] = relationship(back_populates="ttps")
 

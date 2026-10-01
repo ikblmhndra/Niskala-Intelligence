@@ -63,6 +63,28 @@ class AttackTechnique(TimestampMixin, Base):
     domains: Mapped[list[str]] = mapped_column(ARRAY(String(20)), nullable=False, default=list)
 
 
+class AttackTechniqueAlias(TimestampMixin, Base):
+    """Technique REVOKED dari bundel STIX (`revoked: true`, mis. T1086
+    "PowerShell" -> T1059.001, T1193 "Spearphishing Attachment" ->
+    T1566.001). `attack_techniques` SENGAJA gak nyimpen objek revoked (UI
+    ATT&CK DB cuma nampilin yang aktif), tapi nama/ID lamanya masih sering
+    dipakai LLM -- tabel ini yang dipakai `cti_core.attack_ttp` buat
+    memetakan nama/ID lama ke technique penggantinya (QA BUG-C01).
+
+    `revoked_by_stix_id` dari relationship `revoked-by` di bundel yang
+    sama; dipetakan ke `attack_id` pengganti saat katalog dibangun (join ke
+    `attack_techniques.stix_id`), bukan FK -- sama alasan `parent_id`."""
+
+    __tablename__ = "attack_technique_aliases"
+
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
+    stix_id: Mapped[str] = mapped_column(String(100), nullable=False, unique=True, index=True)
+    attack_id: Mapped[str] = mapped_column(String(20), nullable=False, index=True)
+    name: Mapped[str] = mapped_column(Text, nullable=False, default="")
+    revoked_by_stix_id: Mapped[str | None] = mapped_column(String(100))
+    domains: Mapped[list[str]] = mapped_column(ARRAY(String(20)), nullable=False, default=list)
+
+
 class AttackTactic(TimestampMixin, Base):
     __tablename__ = "attack_tactics"
 

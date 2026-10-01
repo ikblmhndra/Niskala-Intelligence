@@ -10,6 +10,7 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass, field
 
+from cti_core.attack_ttp import NormalizedTTP, TechniqueCatalog, normalize_ttps
 from cti_core.llm.client import get_llm_client, parse_json_response, store_param
 from openai import RateLimitError
 
@@ -34,6 +35,10 @@ class Technique:
     technique_id: str
     technique_name: str
     evidence: str = ""
+    extracted_id: str | None = None
+    extracted_name: str | None = None
+    """Pasangan asli LLM -- diisi `normalize_ttp_result()`; `technique_id`/
+    `technique_name` setelah itu = ID + nama kanonik ATT&CK."""
 
 
 @dataclass
@@ -103,3 +108,33 @@ def extract_ttps(summary: str) -> TtpResult:
         for t in data.get("techniques", [])
     ]
     return TtpResult(has_techniques=bool(data.get("has_techniques")), techniques=techniques)
+
+
+def normalize_ttp_result(result: TtpResult, catalog: TechniqueCatalog) -> TtpResult:
+    """Pasangan ID/nama LLM -> ID + nama kanonik katalog ATT&CK (QA BUG-C01/
+    BUG-04/BUG-B8 -- aturannya di `cti_core.attack_ttp`). Technique yang
+    dibuang (nama tactic, ID+nama gak dikenal) hilang dari hasil; duplikat
+    per ID akhir digabung. Teks asli LLM ikut dibawa (`extracted_*`)."""
+    if not result.techniques:
+        return result
+    evidence = {(t.technique_id, t.technique_name): t.evidence for t in result.techniques}
+    normalized = normalize_ttps(
+        [(t.technique_id, t.technique_name) for t in result.techniques], catalog
+    )
+    techniques = [
+        Technique(
+            technique_id=n.ttp_id,
+            technique_name=n.ttp_name,
+            evidence=evidence.get((n.extracted_id or "", n.extracted_name or ""), ""),
+            extracted_id=n.extracted_id,
+            extracted_name=n.extracted_name,
+        )
+        for n in normalized
+    ]
+    return TtpResult(
+        has_techniques=result.has_techniques and bool(techniques), techniques=techniques
+    )
+
+
+def as_normalized(t: Technique) -> NormalizedTTP:
+    return NormalizedTTP(t.technique_id, t.technique_name, t.extracted_id, t.extracted_name)

@@ -37,6 +37,7 @@ from cti_core.db.models.article import (
 )
 from cti_core.db.models.cve import CveTracker
 from cti_core.db.models.ioc import IOC
+from cti_core.db.repositories.ttp_catalog import canonical_ttp_name
 
 
 def _apply_article_filters(
@@ -239,12 +240,13 @@ class AsyncDashboardRepo:
     async def ttp_counts(self, *, limit: int = 15, **filters: Any) -> list[tuple[str, str, int]]:
         stmt = (
             _apply_article_filters(
-                select(ArticleTTP.ttp_id, ArticleTTP.ttp_name, func.count())
+                select(ArticleTTP.ttp_id, canonical_ttp_name(), func.count())
                 .select_from(Article)
                 .join(ArticleTTP),
                 **filters,
             )
-            .group_by(ArticleTTP.ttp_id, ArticleTTP.ttp_name)
+            # per ID saja -- lihat `canonical_ttp_name` (QA BUG-04)
+            .group_by(ArticleTTP.ttp_id)
             .order_by(func.count().desc())
             .limit(limit)
         )

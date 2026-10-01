@@ -44,6 +44,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from cti_core.db.models.article import ArticleTTP
 from cti_core.db.models.pir import PIRNote, PIRRequirement
 from cti_core.db.repositories.article import AsyncArticleRepo
+from cti_core.db.repositories.ttp_catalog import canonical_ttp_name
 
 _CRITERIA_KEYS = ("threat_actors", "industries", "countries", "news_types", "keywords", "ttps")
 
@@ -269,8 +270,8 @@ class AsyncPIRRepo:
     async def get_options(self, article_repo: AsyncArticleRepo) -> dict[str, Any]:
         base = await article_repo.get_filter_options()
         ttp_result = await self.session.execute(
-            select(ArticleTTP.ttp_id, ArticleTTP.ttp_name)
-            .distinct()
+            select(ArticleTTP.ttp_id, canonical_ttp_name())
+            .group_by(ArticleTTP.ttp_id)
             .order_by(ArticleTTP.ttp_id)
             .limit(500)
         )

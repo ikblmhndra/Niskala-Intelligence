@@ -21,10 +21,11 @@ from datetime import UTC, datetime
 from typing import Any, cast
 
 import httpx
-from sqlalchemy import delete, func, select, text
+from sqlalchemy import delete, func, or_, select, text
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from cti_core.attack_ttp import clean_attack_text
 from cti_core.db.models.attack import (
     AttackGroup,
     AttackMitigation,
@@ -33,6 +34,7 @@ from cti_core.db.models.attack import (
     AttackSyncLog,
     AttackTactic,
     AttackTechnique,
+    AttackTechniqueAlias,
 )
 
 DOMAINS: dict[str, dict[str, str]] = {
@@ -73,6 +75,16 @@ def _extract_id(obj: dict[str, Any]) -> str:
 
 def _extract_url(obj: dict[str, Any]) -> str:
     return cast(str, _mitre_ref(obj).get("url", ""))
+
+
+def _technique_search(search: str) -> Any:
+    """Cari by nama ATAU ID ("T1059" / "t1059.001" / "1059") -- QA BUG-C17:
+    analis biasanya nyari pakai ID, dulu cuma nama yang di-ILIKE."""
+    term = search.strip()
+    return or_(
+        AttackTechnique.name.ilike(f"%{term}%"),
+        AttackTechnique.attack_id.ilike(f"%{term}%"),
+    )
 
 
 class AsyncAttackSyncRepo:
@@ -198,6 +210,7 @@ class AsyncAttackSyncRepo:
                 if version and mitre_modified:
                     break
 
+        await self._sync_technique_aliases(by_type, stix_domain)
         counts = {
             "technique_count": await self._sync_techniques(by_type, stix_domain),
             "tactic_count": await self._sync_tactics(by_type, stix_domain),
@@ -286,6 +299,38 @@ class AsyncAttackSyncRepo:
                 "detection",
                 "domains",
             ],
+        )
+        return len(rows)
+
+    async def _sync_technique_aliases(
+        self, by_type: dict[str, list[dict[str, Any]]], stix_domain: str
+    ) -> int:
+        """Technique REVOKED (`_sync_techniques` ngelewatin ini) -> tabel
+        alias, plus `revoked-by` dari relationship bundel yang sama. Dipakai
+        normalisasi TTP artikel (`cti_core.attack_ttp`), bukan UI ATT&CK DB."""
+        revoked_by = {
+            obj.get("source_ref", ""): obj.get("target_ref", "")
+            for obj in by_type.get("relationship", [])
+            if obj.get("relationship_type") == "revoked-by"
+        }
+        rows = []
+        for obj in by_type.get("attack-pattern", []):
+            if not obj.get("revoked"):
+                continue
+            attack_id = _extract_id(obj)
+            if not attack_id:
+                continue
+            rows.append(
+                {
+                    "stix_id": obj["id"],
+                    "attack_id": attack_id,
+                    "name": obj.get("name", ""),
+                    "revoked_by_stix_id": revoked_by.get(obj["id"]) or None,
+                    "domains": [stix_domain],
+                }
+            )
+        await self._bulk_upsert(
+            AttackTechniqueAlias, rows, ["attack_id", "name", "revoked_by_stix_id", "domains"]
         )
         return len(rows)
 
@@ -508,7 +553,7 @@ class AsyncAttackQueryRepo:
         if is_subtechnique is not None:
             stmt = stmt.where(AttackTechnique.is_subtechnique == is_subtechnique)
         if search:
-            stmt = stmt.where(AttackTechnique.name.ilike(f"%{search}%"))
+            stmt = stmt.where(_technique_search(search))
 
         total = (
             await self.session.execute(select(func.count()).select_from(stmt.subquery()))
@@ -537,6 +582,8 @@ class AsyncAttackQueryRepo:
             return None
         stix_id = tech.stix_id
         doc = self._row_dict(tech, exclude=("stix_id",))
+        doc["description"] = clean_attack_text(tech.description)
+        doc["detection"] = clean_attack_text(tech.detection)
 
         mit_rels = (
             (
@@ -565,7 +612,7 @@ class AsyncAttackQueryRepo:
                 {
                     "mitigation_id": m.mitigation_id,
                     "name": m.name,
-                    "description": m.description[:300],
+                    "description": clean_attack_text(m.description)[:300],
                 }
                 for m in mits
             ]
@@ -719,6 +766,7 @@ class AsyncAttackQueryRepo:
             return None
         stix_id = grp.stix_id
         doc = self._row_dict(grp, exclude=("stix_id",))
+        doc["description"] = clean_attack_text(grp.description)
 
         rels = (
             await self.session.execute(
@@ -749,7 +797,7 @@ class AsyncAttackQueryRepo:
                     "attack_id": t.attack_id,
                     "name": t.name,
                     "tactics": t.tactics,
-                    "context": rel_descs.get(t.stix_id, "")[:200],
+                    "context": clean_attack_text(rel_descs.get(t.stix_id, ""))[:200],
                 }
                 for t in techs
             ]
@@ -828,6 +876,7 @@ class AsyncAttackQueryRepo:
             return None
         stix_id = sw.stix_id
         doc = self._row_dict(sw, exclude=("stix_id",))
+        doc["description"] = clean_attack_text(sw.description)
 
         grp_rels = (
             (
@@ -919,7 +968,13 @@ class AsyncAttackQueryRepo:
             .scalars()
             .all()
         )
-        return [self._row_dict(r, exclude=("stix_id",)) for r in rows], total
+        return [
+            {
+                **self._row_dict(r, exclude=("stix_id",)),
+                "description": clean_attack_text(r.description),
+            }
+            for r in rows
+        ], total
 
     async def get_navigator_layer(
         self,
@@ -938,7 +993,7 @@ class AsyncAttackQueryRepo:
         if is_subtechnique is not None:
             stmt = stmt.where(AttackTechnique.is_subtechnique == is_subtechnique)
         if search:
-            stmt = stmt.where(AttackTechnique.name.ilike(f"%{search}%"))
+            stmt = stmt.where(_technique_search(search))
 
         if group_id:
             grp = (
