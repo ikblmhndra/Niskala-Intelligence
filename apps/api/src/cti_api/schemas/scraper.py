@@ -50,11 +50,27 @@ class ScraperListItem(BaseModel):
     last_finished_at: str | None
     last_items_found: int | None
     last_items_new: int | None
+    next_run_at: str | None = None
+    """Slot cron berikutnya (ISO UTC) dari `schedule` efektif; `None` kalau
+    scraper disabled atau cron gak valid. Jadwal SEHARUSNYA -- cek
+    `ScraperListResponse.scheduler` buat tau beat beneran hidup atau nggak."""
+
+
+class SchedulerStatusOut(BaseModel):
+    """Heartbeat Celery beat (`cti_core.beat_heartbeat`) -- QA BUG-D2/D8."""
+
+    state: str
+    """ok | stale | unknown (heartbeat gak pernah ketulis)."""
+    last_tick_at: str | None
+    started_at: str | None
+    age_s: float | None
+    stale_after_s: int
 
 
 class ScraperListResponse(BaseModel):
     scrapers: list[ScraperListItem]
     total: int
+    scheduler: SchedulerStatusOut
 
 
 class ScraperOptionChoiceOut(BaseModel):
@@ -190,6 +206,7 @@ class ScraperHealthSummary(BaseModel):
     counts: dict[str, int]
     """Key = `HealthStatus`, cuma status yang beneran muncul (gak semua
     6 selalu ada)."""
+    scheduler: SchedulerStatusOut
     problems: list[ScraperHealthEntryOut]
     """Subset non-`ok` (dan non-`disabled` -- itu bukan masalah, operator
     yang minta) -- ini yang dashboard/digest peduliin, bukan 84 baris

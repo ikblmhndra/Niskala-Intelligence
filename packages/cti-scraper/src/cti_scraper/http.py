@@ -14,7 +14,7 @@ from typing import Any
 import httpx
 
 from cti_scraper.errors import RateLimited, TransientFetchError
-from cti_scraper.ratelimit import TokenBucket
+from cti_scraper.ratelimit import TokenBucket, parse_rate
 
 DEFAULT_USER_AGENT = (
     "Mozilla/5.0 (compatible; cti-platform/0.1; +https://github.com/anthropics/cti-platform) httpx"
@@ -73,7 +73,14 @@ class ScraperHttpClient:
             return
         domain = httpx.URL(url).host
         if not self._bucket.acquire(domain, self._rate_limit):
-            raise RateLimited(f"rate limit domain '{domain}' abis ({self._rate_limit})")
+            # `retry_after` = panjang jendela fixed-window (batas atas waktu sampai
+            # budget reset) -- dipakai task `scrape.run` buat jeda retry yang
+            # masuk akal, bukan 1-2 dtk yang pasti kena limit yang sama (QA BUG-D6).
+            _, window_s = parse_rate(self._rate_limit)
+            raise RateLimited(
+                f"rate limit domain '{domain}' abis ({self._rate_limit})",
+                retry_after=float(window_s),
+            )
 
     @staticmethod
     def _raise_for_transient_status(resp: httpx.Response) -> None:

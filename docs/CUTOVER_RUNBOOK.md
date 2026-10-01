@@ -257,6 +257,17 @@ Perilaku yang **normal tapi mengejutkan**:
 - Scraper yang **run terakhirnya lama** tampil `dead` sampai slot cron berikutnya menembak, walau
   infrastrukturnya sehat (terlihat di staging tepat setelah beat dinyalakan).
 - Scraper Twitter di twitterapi.io free tier kena `429` lalu retry 6 detik (run 30-35 dtk, bukan gagal).
+- **Beat yang di-`stop` manual TIDAK nyala sendiri** (`restart: unless-stopped`), dan deploy parsial
+  (`up -d worker web`) juga gak nyalain dia. Insiden staging 2026-09-26 15:42 -> 09-30 17:17 UTC: beat
+  di-stop habis rehearsal, jadwal mati ~97 jam tanpa ada yang sadar (digest health ikut mati karena
+  dijadwalkan beat). Sekarang: banner merah di `/scrapers` + alert Telegram (thread `scraper_health`)
+  dari **watchdog di container worker** kalau heartbeat beat basi > `WORKER__BEAT_HEARTBEAT_STALE_S`
+  (300 dtk), diulang tiap `WORKER__BEAT_STALE_ALERT_REPEAT_MIN` (60), plus pesan "PULIH". Kalau beat
+  SENGAJA dimatikan (warm start, langkah 5-8), alert itu memang akan datang -- abaikan sampai beat dinyalakan.
+- Beat yang nyala lagi sesudah mati lama **tidak** menembak semua jadwal sekaligus: slot yang terlewat
+  lebih dari `WORKER__BEAT_CATCHUP_GRACE_S` (600 dtk) dilompati ke slot berikutnya (log
+  `beat_stale_catchup_skipped` berisi daftar entrinya). Restart singkat tetap di-catch-up.
+- Run hasil retry (fetch_error/rate_limited) tercatat `trigger=beat_retry`/`manual_retry`, jeda 60/120/240 dtk.
 
 ---
 
