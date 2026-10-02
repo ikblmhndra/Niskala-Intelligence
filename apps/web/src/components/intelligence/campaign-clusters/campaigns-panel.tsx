@@ -248,7 +248,7 @@ function CampaignRow({
         </td>
         <td className="px-2 py-1.5">
           <button type="button" onClick={onHuntPack} className="rounded-full border border-primary/30 bg-primary/8 px-2 py-1 font-mono text-xs text-primary">
-            ⬇ Hunt Pack
+            Hunt Pack
           </button>
         </td>
       </tr>

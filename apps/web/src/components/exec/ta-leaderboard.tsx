@@ -23,7 +23,7 @@ export function TaLeaderboard({ d }: { d: ExecDashboardV2 }) {
   const maxTa = d.ta_leaderboard[0]?.count || 1;
 
   return (
-    <div className="space-y-1.5">
+    <div className="space-y-1.5 rounded-2xl border border-border bg-surface p-5 shadow-sm">
       {d.ta_leaderboard.map((ta) => {
         const isNew = !prevSet.has(ta.name.toLowerCase());
         const conf = taConf[ta.name] ?? taConf[ta.name.toLowerCase()] ?? null;

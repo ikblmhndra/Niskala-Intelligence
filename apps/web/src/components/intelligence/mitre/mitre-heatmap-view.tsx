@@ -1,5 +1,6 @@
 "use client";
 
+import { DownloadIcon } from "lucide-react";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
@@ -98,7 +99,7 @@ export function MitreHeatmapView() {
         </div>
         <div className="ml-auto flex gap-2">
           <Button size="sm" variant="outline" disabled={exporting} onClick={() => void downloadLayer()}>
-            ⬇ Download Layer
+            <DownloadIcon /> Download Layer
           </Button>
           <Button size="sm" variant="outline" onClick={openNavigator}>
             ⧉ Open in Navigator

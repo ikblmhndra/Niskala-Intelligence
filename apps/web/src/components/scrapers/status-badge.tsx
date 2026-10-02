@@ -1,5 +1,5 @@
 const STATUS_STYLE: Record<string, string> = {
-  ok: "bg-primary/12 border-primary/40 text-primary",
+  ok: "bg-success/12 border-success/40 text-success",
   disabled: "bg-muted-foreground/12 border-muted-foreground/35 text-muted-foreground",
   stale: "bg-severity-medium/12 border-severity-medium/40 text-severity-medium",
   dead: "bg-destructive/18 border-destructive/50 text-destructive",
@@ -19,7 +19,7 @@ export function StatusBadge({ status }: { status: string }) {
 }
 
 const RUN_STATUS_STYLE: Record<string, string> = {
-  ok: "text-primary",
+  ok: "text-success",
   empty: "text-muted-foreground",
   partial: "text-warning",
   fetch_error: "text-destructive",

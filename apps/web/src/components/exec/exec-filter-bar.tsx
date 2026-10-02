@@ -1,5 +1,6 @@
 "use client";
 
+import { DownloadIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -121,7 +122,7 @@ export function ExecFilterBar({
           </Button>
         )}
         <Button size="sm" variant="outline" disabled={exportDisabled} onClick={onExportCsv}>
-          ⬇ Export CSV
+          <DownloadIcon /> Export CSV
         </Button>
         <Button size="sm" disabled={briefPending} onClick={onGenerateBrief}>
           {briefPending ? "⟳ Generating…" : "✦ Generate Brief"}

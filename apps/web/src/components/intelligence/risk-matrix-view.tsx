@@ -11,9 +11,9 @@ import type { RiskMatrixResponse } from "@/lib/api/loose-types";
 
 function riskTierClass(score: number): { bg: string; text: string } {
   if (score <= 25) return { bg: "bg-success/20", text: "text-success" };
-  if (score <= 50) return { bg: "bg-primary/20", text: "text-primary" };
+  if (score <= 50) return { bg: "bg-info/20", text: "text-info" };
   if (score <= 75) return { bg: "bg-warning/25", text: "text-warning" };
-  return { bg: "bg-destructive/25", text: "text-destructive" };
+  return { bg: "bg-severity-critical/25", text: "text-severity-critical" };
 }
 
 /** Port `risk_matrix.js` (90 baris) -- matriks Industry × Country, skor
@@ -98,8 +98,8 @@ export function RiskMatrixView() {
               No cells meet the minimum risk score filter.
             </p>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="border-collapse text-xs">
+            <div className="overflow-x-auto rounded-2xl border border-border bg-surface p-4 shadow-sm">
+              <table className="w-full border-collapse text-sm">
                 <thead>
                   <tr>
                     <th className="border border-border bg-surface px-2 py-1.5 text-muted-foreground">
