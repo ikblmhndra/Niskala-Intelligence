@@ -56,7 +56,7 @@ export function DisableScraperDialog({
           Scraper: <span className="text-foreground">{scraperId}</span>
         </p>
         <div className="space-y-1.5">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Reason (optional)</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Reason (optional)</Label>
           <Textarea
             value={reason}
             onChange={(e) => setReason(e.target.value)}

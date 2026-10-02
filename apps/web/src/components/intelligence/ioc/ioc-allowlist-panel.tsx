@@ -69,7 +69,7 @@ export function IocAllowlistPanel() {
       <h3 className="mb-3 font-mono text-xs tracking-[0.08em] text-muted-foreground uppercase">IOC Allowlist</h3>
       <div className="mb-3 flex flex-wrap items-end gap-2">
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Type</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Type</Label>
           <Select items={TYPE_LABEL} value={type} onValueChange={(v) => v && setType(v)}>
             <SelectTrigger size="sm" className="w-36 font-mono text-xs">
               <SelectValue />
@@ -84,7 +84,7 @@ export function IocAllowlistPanel() {
           </Select>
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Value</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Value</Label>
           <Input
             placeholder="e.g. example.com"
             value={value}

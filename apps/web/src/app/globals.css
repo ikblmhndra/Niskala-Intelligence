@@ -73,6 +73,8 @@
   --color-chart-6: var(--chart-6);
   --color-chart-7: var(--chart-7);
   --color-chart-8: var(--chart-8);
+  --color-chart-9: var(--chart-9);
+  --color-chart-10: var(--chart-10);
 }
 
 :root {
@@ -112,6 +114,8 @@
   --chart-6: #5b6b1f;
   --chart-7: #a0306f;
   --chart-8: #4a5568;
+  --chart-9: #0f766e;
+  --chart-10: #9a6b00;
   --sidebar: var(--surface);
   --sidebar-foreground: var(--foreground);
   --sidebar-primary: var(--primary);
@@ -160,6 +164,8 @@
   --chart-6: #f5cf5a;
   --chart-7: #e08fb5;
   --chart-8: #b7a3c9;
+  --chart-9: #5eead4;
+  --chart-10: #fde68a;
   --sidebar: var(--surface);
   --sidebar-foreground: var(--foreground);
   --sidebar-primary: var(--primary);

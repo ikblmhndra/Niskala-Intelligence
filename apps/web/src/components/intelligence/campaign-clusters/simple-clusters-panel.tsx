@@ -89,11 +89,11 @@ export function SimpleClustersPanel() {
     <div>
       <div className="mb-3 flex flex-wrap items-end gap-2 border-b border-border pb-3">
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Days</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Days</Label>
           <Input type="number" min={7} max={90} value={days} onChange={(e) => setDays(Number(e.target.value) || 30)} className="w-20 font-mono text-xs" />
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Threshold</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Threshold</Label>
           <Input
             type="number"
             min={0.2}

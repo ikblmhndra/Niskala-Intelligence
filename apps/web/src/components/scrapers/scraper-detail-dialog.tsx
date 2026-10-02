@@ -279,7 +279,7 @@ function ScraperDetailForm({
         </div>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <div className="space-y-1">
-            <Label className="font-mono text-xs text-muted-foreground uppercase">
+            <Label className="text-sm font-medium text-muted-foreground">
               Schedule (cron) — default {detail.default_schedule}
             </Label>
             <Input
@@ -291,7 +291,7 @@ function ScraperDetailForm({
             />
           </div>
           <div className="space-y-1">
-            <Label className="font-mono text-xs text-muted-foreground uppercase">
+            <Label className="text-sm font-medium text-muted-foreground">
               Rate limit — default {detail.default_rate_limit}
             </Label>
             <Input
@@ -303,7 +303,7 @@ function ScraperDetailForm({
             />
           </div>
           <div className="space-y-1">
-            <Label className="font-mono text-xs text-muted-foreground uppercase">
+            <Label className="text-sm font-medium text-muted-foreground">
               Max items — default {detail.default_max_items}
             </Label>
             <Input
@@ -325,7 +325,7 @@ function ScraperDetailForm({
             />
           ))}
           <div className="space-y-1 sm:col-span-2">
-            <Label className="font-mono text-xs text-muted-foreground uppercase">Paused reason</Label>
+            <Label className="text-sm font-medium text-muted-foreground">Paused reason</Label>
             <Textarea
               value={pausedReason}
               onChange={(e) => setPausedReason(e.target.value)}
@@ -398,7 +398,7 @@ function OptionField({
   const unsaved = value !== option.value;
   return (
     <div className="space-y-1 sm:col-span-2">
-      <Label className="font-mono text-xs text-muted-foreground uppercase">
+      <Label className="text-sm font-medium text-muted-foreground">
         {option.label} — default {labels[option.default] ?? option.default}
       </Label>
       <Select items={labels} value={value} onValueChange={(v) => onChange(v ?? option.default)} disabled={disabled}>

@@ -63,7 +63,7 @@ export function TaWhitelistPanel() {
     <div>
       <div className="mb-3 flex flex-wrap items-end gap-2 border-b border-border pb-3">
         <div className="flex flex-col gap-1">
-          <label className="font-mono text-xs text-muted-foreground uppercase">Search</label>
+          <label className="text-sm font-medium text-muted-foreground">Search</label>
           <Input
             placeholder="Actor name…"
             value={search}

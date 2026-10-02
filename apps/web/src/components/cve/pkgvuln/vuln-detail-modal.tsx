@@ -85,7 +85,7 @@ export function VulnDetailModal({ vuln, onClose }: VulnDetailModalProps) {
 function Row({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <div className="font-mono text-xs text-muted-foreground uppercase">{label}</div>
+      <div className="text-sm font-medium text-muted-foreground">{label}</div>
       <div className="mt-0.5 leading-relaxed">{children}</div>
     </div>
   );

@@ -75,7 +75,7 @@ export function PasswordPolicySection() {
       <CardContent className="space-y-3.5">
         <div className="flex flex-wrap gap-3.5">
           <div className="space-y-1.5">
-            <Label className="font-mono text-xs text-muted-foreground uppercase">Min Length</Label>
+            <Label className="text-sm font-medium text-muted-foreground">Min Length</Label>
             <Input
               type="number"
               min={4}

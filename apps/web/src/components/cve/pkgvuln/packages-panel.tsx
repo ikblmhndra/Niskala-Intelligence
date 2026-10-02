@@ -134,15 +134,15 @@ export function PackagesPanel({ active }: { active: boolean }) {
     <div>
       <div className="mb-3 flex flex-wrap items-end gap-2 border-b border-border pb-3">
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Name</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Name</Label>
           <Input placeholder="e.g. lodash" value={name} onChange={(e) => setName(e.target.value)} className="w-40 font-mono text-xs" />
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Version</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Version</Label>
           <Input placeholder="optional" value={version} onChange={(e) => setVersion(e.target.value)} className="w-28 font-mono text-xs" />
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Ecosystem</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Ecosystem</Label>
           <Select value={ecosystem} onValueChange={(v) => v && setEcosystem(v)}>
             <SelectTrigger size="sm" className="w-32 font-mono text-xs">
               <SelectValue />

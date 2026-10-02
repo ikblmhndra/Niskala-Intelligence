@@ -156,7 +156,7 @@ export function PirList() {
               </div>
               <div className="w-24 shrink-0 text-center">
                 <div className="font-mono text-lg font-bold text-foreground">{p.coverage_count.toLocaleString()}</div>
-                <div className="font-mono text-xs text-muted-foreground uppercase">articles</div>
+                <div className="text-sm font-medium text-muted-foreground">articles</div>
                 <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-muted">
                   <div className="h-full rounded-full bg-primary" style={{ width: `${pct}%` }} />
                 </div>

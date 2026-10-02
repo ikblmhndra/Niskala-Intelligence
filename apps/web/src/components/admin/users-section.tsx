@@ -194,11 +194,11 @@ function AddUserForm() {
       <div className="mb-3 font-mono text-xs tracking-wide text-muted-foreground uppercase">Add User</div>
       <div className="space-y-2.5">
         <div className="space-y-1.5">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Username</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Username</Label>
           <Input value={username} onChange={(e) => setUsername(e.target.value)} className="font-mono text-xs" />
         </div>
         <div className="space-y-1.5">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">
+          <Label className="text-sm font-medium text-muted-foreground">
             Password <span className="normal-case opacity-70">({policyHint(policy)})</span>
           </Label>
           <Input
@@ -209,7 +209,7 @@ function AddUserForm() {
           />
         </div>
         <div className="space-y-1.5">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Role</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Role</Label>
           <Select value={role} onValueChange={(v) => v && setRole(v)}>
             <SelectTrigger className="w-full font-mono text-xs">
               <SelectValue />
@@ -224,7 +224,7 @@ function AddUserForm() {
           </Select>
         </div>
         <div className="space-y-1.5">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">
+          <Label className="text-sm font-medium text-muted-foreground">
             Client(s) <span className="normal-case opacity-70">comma-separated</span>
           </Label>
           <Input value={clientIds} onChange={(e) => setClientIds(e.target.value)} className="font-mono text-xs" />
@@ -288,7 +288,7 @@ function ResetPasswordDialog({
           User: <span className="text-foreground">{target?.username}</span>
         </p>
         <div className="space-y-1.5">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">
+          <Label className="text-sm font-medium text-muted-foreground">
             New Password <span className="normal-case opacity-70">({policyHint(policy)})</span>
           </Label>
           <Input type="password" value={pw} onChange={(e) => setPw(e.target.value)} className="font-mono text-xs" />

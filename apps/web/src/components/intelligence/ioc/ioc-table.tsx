@@ -120,7 +120,7 @@ export function IocTable({ onSelect }: { onSelect: (target: IocTarget) => void }
 
       <div className="mb-3 flex flex-wrap items-end gap-2 border-b border-border pb-3">
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Search</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Search</Label>
           <Input
             placeholder="IOC value…"
             value={search}
@@ -132,7 +132,7 @@ export function IocTable({ onSelect }: { onSelect: (target: IocTarget) => void }
           />
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Type</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Type</Label>
           <Select
             items={{ [ALL]: "All Types", ...Object.fromEntries(IOC_TYPES.map((t) => [t, iocTypeStyle(t).label])) }}
             value={type || ALL}
@@ -157,7 +157,7 @@ export function IocTable({ onSelect }: { onSelect: (target: IocTarget) => void }
           </Select>
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Actionability</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Actionability</Label>
           <Select
             items={{ [ALL]: "All", ...Object.fromEntries(ACTIONABILITY_OPTIONS.map((a) => [a, a.replace("_", " ")])) }}
             value={actionability || ALL}
@@ -182,7 +182,7 @@ export function IocTable({ onSelect }: { onSelect: (target: IocTarget) => void }
           </Select>
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Sort</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Sort</Label>
           <Select
             items={{ last_seen: "Last Seen", confidence: "Confidence" }}
             value={sortBy || "last_seen"}
@@ -205,7 +205,7 @@ export function IocTable({ onSelect }: { onSelect: (target: IocTarget) => void }
           </Select>
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Page Size</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Page Size</Label>
           <Select
             items={Object.fromEntries(PAGE_SIZE_OPTIONS.map((n) => [String(n), String(n)]))}
             value={String(pageSize)}

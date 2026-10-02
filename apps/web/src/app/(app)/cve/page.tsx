@@ -39,10 +39,10 @@ export default function CveTrackerPage() {
             key={v.id}
             onClick={() => setView(v.id)}
             className={cn(
-              "rounded-md border px-3.5 py-1.5 font-mono text-xs tracking-wide transition-colors",
+              "rounded-full border px-4 py-2 text-sm font-medium transition-colors duration-200",
               view === v.id
-                ? "border-primary/40 bg-primary/10 text-primary"
-                : "border-border text-muted-foreground hover:bg-accent",
+                ? "border-primary/30 bg-primary/10 text-primary"
+                : "border-border bg-surface text-muted-foreground hover:bg-muted hover:text-foreground",
             )}
           >
             {v.label}
@@ -58,10 +58,10 @@ export default function CveTrackerPage() {
                 key={s.id}
                 onClick={() => setSubview(s.id)}
                 className={cn(
-                  "rounded-md border px-3 py-1 font-mono text-[13px] tracking-wide transition-colors",
+                  "rounded-full border px-4 py-2 text-sm font-medium transition-colors duration-200",
                   subview === s.id
-                    ? "border-primary/40 bg-primary/10 text-primary"
-                    : "border-border text-muted-foreground hover:bg-accent",
+                    ? "border-primary/30 bg-primary/10 text-primary"
+                    : "border-border bg-surface text-muted-foreground hover:bg-muted hover:text-foreground",
                 )}
               >
                 {s.label}

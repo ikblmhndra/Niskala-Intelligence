@@ -235,7 +235,7 @@ function ClientForm({
       <div className="space-y-3">
         {mode === "add" && (
           <div className="space-y-1.5">
-            <Label className="font-mono text-xs text-muted-foreground uppercase">
+            <Label className="text-sm font-medium text-muted-foreground">
               Client ID <span className="normal-case opacity-70">(lowercase, a-z 0-9 _-)</span>
             </Label>
             <Input
@@ -247,11 +247,11 @@ function ClientForm({
           </div>
         )}
         <div className="space-y-1.5">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Display Name</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Display Name</Label>
           <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Acme Corp" className="text-xs" />
         </div>
         <div className="space-y-1.5">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Countries</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Countries</Label>
           <CountryMultiSelect value={countries} onChange={setCountries} />
         </div>
         {error && <p className="text-xs text-destructive">{error}</p>}

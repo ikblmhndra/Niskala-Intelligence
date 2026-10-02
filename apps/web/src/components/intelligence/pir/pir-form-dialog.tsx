@@ -124,16 +124,16 @@ export function PirFormDialog({ pir, open, onClose, onSaved }: PirFormDialogProp
         </DialogHeader>
         <div className="space-y-3">
           <div className="flex flex-col gap-1">
-            <Label className="font-mono text-xs text-muted-foreground uppercase">Title</Label>
+            <Label className="text-sm font-medium text-muted-foreground">Title</Label>
             <Input value={title} onChange={(e) => setTitle(e.target.value)} className="text-xs" />
           </div>
           <div className="flex flex-col gap-1">
-            <Label className="font-mono text-xs text-muted-foreground uppercase">Description</Label>
+            <Label className="text-sm font-medium text-muted-foreground">Description</Label>
             <Textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={2} className="text-xs" />
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div className="flex flex-col gap-1">
-              <Label className="font-mono text-xs text-muted-foreground uppercase">Priority</Label>
+              <Label className="text-sm font-medium text-muted-foreground">Priority</Label>
               <Select value={priority} onValueChange={(v) => v && setPriority(v)}>
                 <SelectTrigger size="sm" className="w-full font-mono text-xs">
                   <SelectValue />
@@ -148,14 +148,14 @@ export function PirFormDialog({ pir, open, onClose, onSaved }: PirFormDialogProp
               </Select>
             </div>
             <div className="flex flex-col gap-1">
-              <Label className="font-mono text-xs text-muted-foreground uppercase">Owner</Label>
+              <Label className="text-sm font-medium text-muted-foreground">Owner</Label>
               <Input value={owner} onChange={(e) => setOwner(e.target.value)} className="text-xs" />
             </div>
           </div>
 
           {isEdit && (
             <div className="flex flex-col gap-1">
-              <Label className="font-mono text-xs text-muted-foreground uppercase">Status</Label>
+              <Label className="text-sm font-medium text-muted-foreground">Status</Label>
               <Select value={status} onValueChange={(v) => v && setStatus(v)}>
                 <SelectTrigger size="sm" className="w-full font-mono text-xs">
                   <SelectValue />
@@ -173,11 +173,11 @@ export function PirFormDialog({ pir, open, onClose, onSaved }: PirFormDialogProp
 
           <div className="grid grid-cols-2 gap-3">
             <div className="flex flex-col gap-1">
-              <Label className="font-mono text-xs text-muted-foreground uppercase">Start Date</Label>
+              <Label className="text-sm font-medium text-muted-foreground">Start Date</Label>
               <Input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} className="text-xs" />
             </div>
             <div className="flex flex-col gap-1">
-              <Label className="font-mono text-xs text-muted-foreground uppercase">End Date</Label>
+              <Label className="text-sm font-medium text-muted-foreground">End Date</Label>
               <Input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} className="text-xs" />
             </div>
           </div>
@@ -196,7 +196,7 @@ export function PirFormDialog({ pir, open, onClose, onSaved }: PirFormDialogProp
                 onChange={setTtps}
               />
               <div className="flex flex-col gap-1">
-                <Label className="font-mono text-xs text-muted-foreground uppercase">Keywords (comma-separated)</Label>
+                <Label className="text-sm font-medium text-muted-foreground">Keywords (comma-separated)</Label>
                 <Input value={keywords} onChange={(e) => setKeywords(e.target.value)} className="text-xs" />
               </div>
             </div>

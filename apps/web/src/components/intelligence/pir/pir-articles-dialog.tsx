@@ -204,11 +204,11 @@ function NoteForm({
     <div className="space-y-3">
       {updatedAt && <p className="font-mono text-xs text-muted-foreground">Last saved: {updatedAt.slice(0, 16).replace("T", " ")}</p>}
       <div className="flex flex-col gap-1">
-        <Label className="font-mono text-xs text-muted-foreground uppercase">Analyst</Label>
+        <Label className="text-sm font-medium text-muted-foreground">Analyst</Label>
         <Input value={analyst} onChange={(e) => setAnalyst(e.target.value)} className="text-xs" />
       </div>
       <div className="flex flex-col gap-1">
-        <Label className="font-mono text-xs text-muted-foreground uppercase">Note</Label>
+        <Label className="text-sm font-medium text-muted-foreground">Note</Label>
         <Textarea value={note} onChange={(e) => setNote(e.target.value)} rows={4} className="text-xs" />
       </div>
       <div className="flex justify-end gap-2">

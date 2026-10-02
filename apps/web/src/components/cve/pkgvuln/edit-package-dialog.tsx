@@ -62,11 +62,11 @@ export function EditPackageDialog({ pkg, onClose, onSaved }: EditPackageDialogPr
           </DialogHeader>
           <div className="space-y-3">
             <div className="flex flex-col gap-1">
-              <Label className="font-mono text-xs text-muted-foreground uppercase">Version</Label>
+              <Label className="text-sm font-medium text-muted-foreground">Version</Label>
               <Input value={version} onChange={(e) => setVersion(e.target.value)} placeholder="leave empty for any" className="text-xs" />
             </div>
             <div className="flex flex-col gap-1">
-              <Label className="font-mono text-xs text-muted-foreground uppercase">Ecosystem</Label>
+              <Label className="text-sm font-medium text-muted-foreground">Ecosystem</Label>
               <Select value={ecosystem} onValueChange={(v) => v && setEcosystem(v)}>
                 <SelectTrigger size="sm" className="w-full text-xs">
                   <SelectValue />

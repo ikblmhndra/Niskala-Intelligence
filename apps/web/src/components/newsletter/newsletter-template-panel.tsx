@@ -39,7 +39,7 @@ export function NewsletterTemplatePanel({ value, onChange }: Props) {
       {open && (
         <div className="mt-3 space-y-3">
           <div>
-            <Label className="mb-1 block font-mono text-xs text-muted-foreground uppercase">Custom CSS — whole email</Label>
+            <Label className="mb-1 block text-sm font-medium text-muted-foreground">Custom CSS — whole email</Label>
             <Textarea
               value={value.customCss}
               onChange={(e) => set("customCss", e.target.value)}
@@ -48,7 +48,7 @@ export function NewsletterTemplatePanel({ value, onChange }: Props) {
             />
           </div>
           <div>
-            <Label className="mb-1 block font-mono text-xs text-muted-foreground uppercase">
+            <Label className="mb-1 block text-sm font-medium text-muted-foreground">
               Custom Intro — injected at top of email body (HTML allowed)
             </Label>
             <Textarea
@@ -59,7 +59,7 @@ export function NewsletterTemplatePanel({ value, onChange }: Props) {
             />
           </div>
           <div>
-            <Label className="mb-1 block font-mono text-xs text-muted-foreground uppercase">
+            <Label className="mb-1 block text-sm font-medium text-muted-foreground">
               Custom Footer — replaces default footer (HTML allowed)
             </Label>
             <Textarea

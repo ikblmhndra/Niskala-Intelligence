@@ -67,7 +67,7 @@ export function MitreHeatmapView() {
     <div>
       <div className="mb-4 flex flex-wrap items-end gap-3 border-b border-border pb-3">
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">View</Label>
+          <Label className="text-sm font-medium text-muted-foreground">View</Label>
           <Select value={view} onValueChange={(v) => v && setView(v as "ta" | "industry")}>
             <SelectTrigger size="sm" className="w-36 font-mono text-xs">
               <SelectValue />
@@ -82,7 +82,7 @@ export function MitreHeatmapView() {
           </Select>
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Period</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Period</Label>
           <Select value={String(days)} onValueChange={(v) => v && setDays(Number(v))}>
             <SelectTrigger size="sm" className="w-28 font-mono text-xs">
               <SelectValue />

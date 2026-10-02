@@ -103,11 +103,11 @@ export function CampaignsPanel() {
     <div>
       <div className="mb-3 flex flex-wrap items-end gap-2 border-b border-border pb-3">
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Days</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Days</Label>
           <Input type="number" min={1} max={90} value={days} onChange={(e) => setDays(Number(e.target.value) || 7)} className="w-20 font-mono text-xs" />
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Min Size</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Min Size</Label>
           <Input type="number" min={2} max={50} value={minSize} onChange={(e) => setMinSize(Number(e.target.value) || 3)} className="w-20 font-mono text-xs" />
         </div>
         <span className="ml-auto font-mono text-[13px] text-muted-foreground">

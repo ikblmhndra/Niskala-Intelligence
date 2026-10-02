@@ -34,7 +34,7 @@ export interface ChartTheme {
   critical: string;
   warning: string;
   success: string;
-  /** 8 warna siklik (doughnut/multi-series). */
+  /** 10 warna siklik (doughnut/multi-series). */
   series: string[];
   grades: Record<string, string>;
 }
@@ -59,7 +59,7 @@ export function useChartTheme(): ChartTheme {
       critical: v("--severity-critical"),
       warning: v("--warning"),
       success: v("--success"),
-      series: [1, 2, 3, 4, 5, 6, 7, 8].map((i) => v(`--chart-${i}`)),
+      series: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => v(`--chart-${i}`)),
       grades: {
         A: v("--success"),
         B: v("--info"),

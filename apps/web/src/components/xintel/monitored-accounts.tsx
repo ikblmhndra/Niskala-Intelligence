@@ -88,7 +88,7 @@ export function MonitoredAccounts() {
     <div>
       <div className="mb-4 flex flex-wrap items-end gap-2 border-b border-border pb-3">
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Handle</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Handle</Label>
           <Input
             placeholder="@username"
             value={username}
@@ -97,7 +97,7 @@ export function MonitoredAccounts() {
           />
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Display name</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Display name</Label>
           <Input
             placeholder="optional"
             value={displayName}
@@ -106,7 +106,7 @@ export function MonitoredAccounts() {
           />
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Notes</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Notes</Label>
           <Input
             placeholder="optional"
             value={notes}

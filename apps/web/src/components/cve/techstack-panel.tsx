@@ -122,7 +122,7 @@ export function TechStackPanel() {
     <div>
       <div className="mb-3 flex flex-wrap items-end gap-2 border-b border-border pb-3">
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Search</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Search</Label>
           <Input
             placeholder="Tech name…"
             value={search}
@@ -134,11 +134,11 @@ export function TechStackPanel() {
           />
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Name</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Name</Label>
           <Input placeholder="e.g. WordPress" value={name} onChange={(e) => setName(e.target.value)} className="w-44 font-mono text-xs" />
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Exposure</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Exposure</Label>
           <select value={exposure} onChange={(e) => setExposure(e.target.value)} className={selectClass()}>
             {EXPOSURES.map((v) => (
               <option key={v} value={v}>
@@ -148,7 +148,7 @@ export function TechStackPanel() {
           </select>
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Hosting</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Hosting</Label>
           <select value={hosting} onChange={(e) => setHosting(e.target.value)} className={selectClass()}>
             {HOSTINGS.map((v) => (
               <option key={v} value={v}>

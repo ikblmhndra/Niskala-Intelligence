@@ -90,7 +90,7 @@ export function DepsModal({ pkgId, onClose, onResolved }: DepsModalProps) {
             {tab === "deps" ? (
               <div className="space-y-3">
                 <div>
-                  <div className="mb-1 font-mono text-xs text-muted-foreground uppercase">Direct ({direct.length})</div>
+                  <div className="mb-1 text-sm font-medium text-muted-foreground">Direct ({direct.length})</div>
                   <div className="flex flex-wrap gap-1.5">
                     {direct.map((dep, i) => (
                       <Badge key={i} variant="outline" className="font-mono text-xs">
@@ -100,7 +100,7 @@ export function DepsModal({ pkgId, onClose, onResolved }: DepsModalProps) {
                   </div>
                 </div>
                 <div>
-                  <div className="mb-1 font-mono text-xs text-muted-foreground uppercase">
+                  <div className="mb-1 text-sm font-medium text-muted-foreground">
                     Indirect ({indirect.length})
                   </div>
                   <div className="flex max-h-48 flex-wrap gap-1.5 overflow-y-auto">

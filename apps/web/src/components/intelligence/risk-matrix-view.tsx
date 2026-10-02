@@ -48,7 +48,7 @@ export function RiskMatrixView() {
     <div>
       <div className="mb-4 flex flex-wrap items-end gap-3 border-b border-border pb-3">
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Period (days)</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Period (days)</Label>
           <Input
             type="number"
             min={7}
@@ -59,7 +59,7 @@ export function RiskMatrixView() {
           />
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Compare period (days)</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Compare period (days)</Label>
           <Input
             type="number"
             min={7}
@@ -70,7 +70,7 @@ export function RiskMatrixView() {
           />
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Min risk score</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Min risk score</Label>
           <Input
             type="number"
             min={0}

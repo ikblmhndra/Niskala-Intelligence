@@ -61,10 +61,10 @@ export default function NewsroomPage() {
         <button
           onClick={() => setView("cyber")}
           className={cn(
-            "rounded-md border px-3.5 py-1.5 font-mono text-xs tracking-wide transition-colors",
+            "rounded-full border px-4 py-2 text-sm font-medium transition-colors duration-200",
             view === "cyber"
-              ? "border-primary/40 bg-primary/10 text-primary"
-              : "border-border text-muted-foreground hover:bg-accent",
+              ? "border-primary/30 bg-primary/10 text-primary"
+              : "border-border bg-surface text-muted-foreground hover:bg-muted hover:text-foreground",
           )}
         >
           Cyber News
@@ -73,10 +73,10 @@ export default function NewsroomPage() {
           <button
             onClick={() => setView("filtered")}
             className={cn(
-              "rounded-md border px-3.5 py-1.5 font-mono text-xs tracking-wide transition-colors",
+              "rounded-full border px-4 py-2 text-sm font-medium transition-colors duration-200",
               view === "filtered"
                 ? "border-destructive/40 bg-destructive/10 text-destructive"
-                : "border-border text-muted-foreground hover:bg-accent",
+                : "border-border bg-surface text-muted-foreground hover:bg-muted hover:text-foreground",
             )}
           >
             Not Related Cyber

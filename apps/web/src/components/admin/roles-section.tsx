@@ -179,17 +179,17 @@ function AddRoleDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (o
         </DialogHeader>
         <div className="space-y-3">
           <div className="space-y-1.5">
-            <Label className="font-mono text-xs text-muted-foreground uppercase">
+            <Label className="text-sm font-medium text-muted-foreground">
               Role ID (lowercase, a-z 0-9 _-)
             </Label>
             <Input value={name} onChange={(e) => setName(e.target.value)} className="font-mono text-xs" />
           </div>
           <div className="space-y-1.5">
-            <Label className="font-mono text-xs text-muted-foreground uppercase">Display Name</Label>
+            <Label className="text-sm font-medium text-muted-foreground">Display Name</Label>
             <Input value={displayName} onChange={(e) => setDisplayName(e.target.value)} className="text-xs" />
           </div>
           <div className="space-y-1.5">
-            <Label className="font-mono text-xs text-muted-foreground uppercase">Permissions</Label>
+            <Label className="text-sm font-medium text-muted-foreground">Permissions</Label>
             {permissions.isPending && <Skeleton className="h-24 w-full" />}
             <div className="flex max-h-52 flex-col gap-1.5 overflow-y-auto rounded-md border border-border p-2">
               {permissions.data?.map((p) => (

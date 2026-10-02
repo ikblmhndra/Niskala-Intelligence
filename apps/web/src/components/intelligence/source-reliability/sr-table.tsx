@@ -109,7 +109,7 @@ export function SrTable() {
     <div>
       <div className="mb-4 flex flex-wrap items-end gap-2 border-b border-border pb-3">
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Search</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Search</Label>
           <Input
             placeholder="Source name…"
             value={search}
@@ -121,7 +121,7 @@ export function SrTable() {
           />
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Grade</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Grade</Label>
           <Select
             items={{ [ALL]: "All Grades", ...Object.fromEntries(GRADES.map((g) => [g, g])) }}
             value={grade || ALL}

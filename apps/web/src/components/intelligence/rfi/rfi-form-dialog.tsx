@@ -90,20 +90,20 @@ export function RfiFormDialog({ rfi, open, onClose, onSaved }: RfiFormDialogProp
         </DialogHeader>
         <div className="space-y-3">
           <div className="flex flex-col gap-1">
-            <Label className="font-mono text-xs text-muted-foreground uppercase">Requester</Label>
+            <Label className="text-sm font-medium text-muted-foreground">Requester</Label>
             <Input value={requester} onChange={(e) => setRequester(e.target.value)} className="text-xs" />
           </div>
           <div className="flex flex-col gap-1">
-            <Label className="font-mono text-xs text-muted-foreground uppercase">Question</Label>
+            <Label className="text-sm font-medium text-muted-foreground">Question</Label>
             <Textarea value={question} onChange={(e) => setQuestion(e.target.value)} rows={2} className="text-xs" />
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div className="flex flex-col gap-1">
-              <Label className="font-mono text-xs text-muted-foreground uppercase">Due Date</Label>
+              <Label className="text-sm font-medium text-muted-foreground">Due Date</Label>
               <Input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} className="text-xs" />
             </div>
             <div className="flex flex-col gap-1">
-              <Label className="font-mono text-xs text-muted-foreground uppercase">Status</Label>
+              <Label className="text-sm font-medium text-muted-foreground">Status</Label>
               <select value={status} onChange={(e) => setStatus(e.target.value)} className={nativeSelectClass()}>
                 {STATUSES.map((s) => (
                   <option key={s} value={s}>
@@ -114,7 +114,7 @@ export function RfiFormDialog({ rfi, open, onClose, onSaved }: RfiFormDialogProp
             </div>
           </div>
           <div className="flex flex-col gap-1">
-            <Label className="font-mono text-xs text-muted-foreground uppercase">Linked PIR</Label>
+            <Label className="text-sm font-medium text-muted-foreground">Linked PIR</Label>
             <select value={linkedPir} onChange={(e) => setLinkedPir(e.target.value)} className={nativeSelectClass()}>
               <option value="">— None —</option>
               {(pirsQuery.data ?? []).map((p) => (
@@ -125,7 +125,7 @@ export function RfiFormDialog({ rfi, open, onClose, onSaved }: RfiFormDialogProp
             </select>
           </div>
           <div className="flex flex-col gap-1">
-            <Label className="font-mono text-xs text-muted-foreground uppercase">Response</Label>
+            <Label className="text-sm font-medium text-muted-foreground">Response</Label>
             <Textarea value={response} onChange={(e) => setResponse(e.target.value)} rows={3} className="text-xs" />
           </div>
         </div>

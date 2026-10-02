@@ -98,7 +98,7 @@ export function VulnsPanel({ active }: { active: boolean }) {
     <div>
       <div className="mb-3 flex flex-wrap items-end gap-2 border-b border-border pb-3">
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Search</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Search</Label>
           <Input
             placeholder="Advisory, CVE, summary…"
             value={search}
@@ -110,7 +110,7 @@ export function VulnsPanel({ active }: { active: boolean }) {
           />
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Severity</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Severity</Label>
           <Select
             items={{ [ALL]: "All Severities", ...Object.fromEntries(SEVERITIES.map((s) => [s, s])) }}
             value={severity || ALL}
@@ -135,7 +135,7 @@ export function VulnsPanel({ active }: { active: boolean }) {
           </Select>
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Package</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Package</Label>
           <Select
             items={{ [ALL]: "All Packages", ...Object.fromEntries((packagesQuery.data ?? []).map((p) => [p, p])) }}
             value={packageName || ALL}

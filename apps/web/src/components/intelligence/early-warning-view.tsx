@@ -53,7 +53,7 @@ export function EarlyWarningView() {
     <div>
       <div className="mb-4 flex flex-wrap items-end gap-3 border-b border-border pb-3">
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Lookback days</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Lookback days</Label>
           <Input
             type="number"
             min={14}
@@ -64,7 +64,7 @@ export function EarlyWarningView() {
           />
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Z-score threshold</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Z-score threshold</Label>
           <Input
             type="number"
             min={1.5}

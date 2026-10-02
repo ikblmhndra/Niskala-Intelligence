@@ -43,7 +43,7 @@ export function MitigationsPanel() {
     <div>
       <div className="mb-3 flex flex-wrap items-end gap-2">
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Search</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Search</Label>
           <Input
             placeholder="Mitigation name…"
             value={search}
@@ -55,7 +55,7 @@ export function MitigationsPanel() {
           />
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Domain</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Domain</Label>
           <Select
             items={{ [ALL]: "All Domains", ...Object.fromEntries(DOMAINS.map((d) => [d, DOMAIN_LABELS[d]])) }}
             value={domain || ALL}

@@ -162,7 +162,7 @@ export function ScrapersTable({
     <div>
       <div className="mb-3 flex flex-wrap items-end gap-2">
         <div className="flex flex-col gap-1">
-          <span className="font-mono text-xs text-muted-foreground uppercase">Search</span>
+          <span className="text-sm font-medium text-muted-foreground">Search</span>
           <Input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -171,7 +171,7 @@ export function ScrapersTable({
           />
         </div>
         <div className="flex flex-col gap-1">
-          <span className="font-mono text-xs text-muted-foreground uppercase">Runtime</span>
+          <span className="text-sm font-medium text-muted-foreground">Runtime</span>
           <Select items={RUNTIME_ITEMS} value={runtimeFilter} onValueChange={(v) => v && setRuntimeFilter(v)}>
             <SelectTrigger size="sm" className="w-36 font-mono text-xs">
               <SelectValue />
@@ -186,7 +186,7 @@ export function ScrapersTable({
           </Select>
         </div>
         <div className="flex flex-col gap-1">
-          <span className="font-mono text-xs text-muted-foreground uppercase">Status</span>
+          <span className="text-sm font-medium text-muted-foreground">Status</span>
           <Select items={STATUS_ITEMS} value={statusFilter} onValueChange={(v) => v && setStatusFilter(v)}>
             <SelectTrigger size="sm" className="w-40 font-mono text-xs">
               <SelectValue />

@@ -116,7 +116,7 @@ export function TaWatchlistPanel() {
     <div>
       <div className="mb-3 flex flex-wrap items-end gap-2 border-b border-border pb-3">
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Search</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Search</Label>
           <Input
             placeholder="Actor name…"
             value={search}
@@ -128,7 +128,7 @@ export function TaWatchlistPanel() {
           />
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Sort</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Sort</Label>
           <div className="flex gap-1">
             <Select items={{ name: "Name", added_date: "Added Date" }} value={sortBy} onValueChange={(v) => v && setSortBy(v as "name" | "added_date")}>
               <SelectTrigger size="sm" className="w-32 font-mono text-xs">
@@ -149,7 +149,7 @@ export function TaWatchlistPanel() {
           </div>
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-xs text-muted-foreground uppercase">Page Size</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Page Size</Label>
           <Select
             items={Object.fromEntries(PAGE_SIZE_OPTIONS.map((n) => [String(n), String(n)]))}
             value={String(pageSize)}

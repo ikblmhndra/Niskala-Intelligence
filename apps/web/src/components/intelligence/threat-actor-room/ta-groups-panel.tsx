@@ -128,7 +128,7 @@ export function TaGroupsPanel() {
     <div>
       <div className="mb-3 flex flex-wrap items-end gap-2 border-b border-border pb-3">
         <div className="flex flex-col gap-1">
-          <label className="font-mono text-xs text-muted-foreground uppercase">Search</label>
+          <label className="text-sm font-medium text-muted-foreground">Search</label>
           <Input
             placeholder="Actor name…"
             value={search}
@@ -140,7 +140,7 @@ export function TaGroupsPanel() {
           />
         </div>
         <div className="flex flex-col gap-1">
-          <label className="font-mono text-xs text-muted-foreground uppercase">Add Group</label>
+          <label className="text-sm font-medium text-muted-foreground">Add Group</label>
           <div className="flex gap-1.5">
             <Input
               placeholder="New threat actor name…"
@@ -198,7 +198,7 @@ export function TaGroupsPanel() {
                         onClick={() => void toggleWatch(g.name, isWatched)}
                         className={cn(
                           "mr-1.5 rounded-full border px-1.5 py-0.5 font-mono text-xs",
-                          isWatched ? "border-primary/40 bg-primary/10 text-primary" : "border-border text-muted-foreground",
+                          isWatched ? "border-primary/30 bg-primary/10 text-primary" : "border-border text-muted-foreground",
                         )}
                       >
                         {isWatched ? "◎ UNWATCH" : "⊕ WATCH"}

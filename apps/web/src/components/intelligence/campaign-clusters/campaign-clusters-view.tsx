@@ -31,8 +31,8 @@ export function CampaignClustersView() {
             type="button"
             onClick={() => setTab(t.value)}
             className={cn(
-              "rounded-md border px-3 py-1.5 font-mono text-xs tracking-wide transition-colors",
-              tab === t.value ? "border-primary/40 bg-primary/10 text-primary" : "border-border text-muted-foreground hover:bg-accent",
+              "rounded-full border px-4 py-2 text-sm font-medium transition-colors duration-200",
+              tab === t.value ? "border-primary/30 bg-primary/10 text-primary" : "border-border bg-surface text-muted-foreground hover:bg-muted hover:text-foreground",
             )}
           >
             {t.label}
