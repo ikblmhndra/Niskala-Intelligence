@@ -142,7 +142,7 @@ export function TweetList() {
   return (
     <div>
       <div className="mb-3 flex flex-wrap items-center gap-2 border-b border-border pb-2.5">
-        <span className="font-mono text-[10px] tracking-[0.1em] text-muted-foreground uppercase">
+        <span className="font-mono text-xs tracking-[0.1em] text-muted-foreground uppercase">
           Filter
         </span>
         <Input

@@ -75,7 +75,7 @@ export function PasswordPolicySection() {
       <CardContent className="space-y-3.5">
         <div className="flex flex-wrap gap-3.5">
           <div className="space-y-1.5">
-            <Label className="font-mono text-[9px] text-muted-foreground uppercase">Min Length</Label>
+            <Label className="font-mono text-xs text-muted-foreground uppercase">Min Length</Label>
             <Input
               type="number"
               min={4}
@@ -126,7 +126,7 @@ export function PasswordPolicySection() {
           <Button size="sm" onClick={() => saveMutation.mutate()} disabled={saveMutation.isPending}>
             Save Policy
           </Button>
-          {status && <span className="font-mono text-[10px] text-muted-foreground">{status}</span>}
+          {status && <span className="font-mono text-xs text-muted-foreground">{status}</span>}
         </div>
       </CardContent>
     </Card>

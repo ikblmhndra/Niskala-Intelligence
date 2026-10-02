@@ -18,7 +18,7 @@ const DORMANCY_STYLE: Record<string, { icon: string; color: string }> = {
 };
 
 function Tag({ children }: { children: React.ReactNode }) {
-  return <span className="mr-1.5 mb-1 inline-block rounded-sm border border-border bg-surface2 px-1.5 py-0.5 font-mono text-[10px] text-foreground">{children}</span>;
+  return <span className="mr-1.5 mb-1 inline-block rounded-full border border-border bg-surface2 px-1.5 py-0.5 font-mono text-xs text-foreground">{children}</span>;
 }
 
 function Val({ v }: { v: string | null | undefined }) {
@@ -28,7 +28,7 @@ function Val({ v }: { v: string | null | undefined }) {
 function Kv({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <div className="mb-0.5 font-mono text-[9px] tracking-[0.05em] text-muted-foreground uppercase">{label}</div>
+      <div className="mb-0.5 font-mono text-xs tracking-[0.05em] text-muted-foreground uppercase">{label}</div>
       <div className="text-xs">{children}</div>
     </div>
   );
@@ -48,7 +48,7 @@ function TagList({ items }: { items: string[] | undefined }) {
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="border-b border-border pb-4 last:border-none">
-      <div className="mb-2 font-mono text-[10px] tracking-[0.08em] text-primary uppercase">{title}</div>
+      <div className="mb-2 font-mono text-xs tracking-[0.08em] text-primary uppercase">{title}</div>
       {children}
     </div>
   );
@@ -112,7 +112,7 @@ export function TaProfileDialog({ actorName, onClose }: { actorName: string | nu
         <DialogHeader>
           <div className="flex flex-wrap items-center gap-2">
             <DialogTitle className="font-mono text-sm">{actorName}</DialogTitle>
-            <Button size="sm" variant="outline" className="ml-auto h-6 px-2 text-[10px]" disabled={regenerating} onClick={() => void regenerate()}>
+            <Button size="sm" variant="outline" className="ml-auto h-6 px-2 text-xs" disabled={regenerating} onClick={() => void regenerate()}>
               {regenerating ? "⏳ Regenerating…" : "⟳ Regenerate"}
             </Button>
           </div>
@@ -139,7 +139,7 @@ export function TaProfileDialog({ actorName, onClose }: { actorName: string | nu
                   <div className="relative h-40">
                     <TAActivityTimelineChart labels={tl.months} articleCounts={tl.article_counts} tweetCounts={tl.tweet_counts} ransomCounts={tl.ransom_counts} />
                   </div>
-                  <div className="mt-2 font-mono text-[9px] leading-loose text-muted-foreground">
+                  <div className="mt-2 font-mono text-xs leading-loose text-muted-foreground">
                     {tl.state_transitions.length === 0 ? (
                       <span>No state transitions in 24-month window</span>
                     ) : (
@@ -183,7 +183,7 @@ function MalwareTable({ items }: { items: TaKnownMalware[] | undefined }) {
   return (
     <table className="w-full border-collapse text-xs">
       <thead>
-        <tr className="border-b border-border text-left text-[9px] text-muted-foreground uppercase">
+        <tr className="border-b border-border text-left text-xs text-muted-foreground uppercase">
           <th className="py-1 pr-2">Name</th>
           <th className="py-1 pr-2">Type</th>
           <th className="py-1">Notes</th>
@@ -209,7 +209,7 @@ function VulnsTable({ items }: { items: TaExploitedVuln[] | undefined }) {
   return (
     <table className="w-full border-collapse text-xs">
       <thead>
-        <tr className="border-b border-border text-left text-[9px] text-muted-foreground uppercase">
+        <tr className="border-b border-border text-left text-xs text-muted-foreground uppercase">
           <th className="py-1 pr-2">CVE</th>
           <th className="py-1 pr-2">Product</th>
           <th className="py-1">Notes</th>
@@ -345,15 +345,15 @@ function ProfileBody({ profile: p }: { profile: TaProfile }) {
           </Kv>
         </div>
         <div className="mb-3">
-          <div className="mb-1 font-mono text-[9px] tracking-[0.05em] text-muted-foreground uppercase">Malware</div>
+          <div className="mb-1 font-mono text-xs tracking-[0.05em] text-muted-foreground uppercase">Malware</div>
           <MalwareTable items={cap.known_malware} />
         </div>
         <div className="mb-3">
-          <div className="mb-1 font-mono text-[9px] tracking-[0.05em] text-muted-foreground uppercase">Exploited Vulnerabilities</div>
+          <div className="mb-1 font-mono text-xs tracking-[0.05em] text-muted-foreground uppercase">Exploited Vulnerabilities</div>
           <VulnsTable items={cap.exploited_vulnerabilities} />
         </div>
         <div>
-          <div className="mb-1 font-mono text-[9px] tracking-[0.05em] text-muted-foreground uppercase">Attack Techniques (MITRE)</div>
+          <div className="mb-1 font-mono text-xs tracking-[0.05em] text-muted-foreground uppercase">Attack Techniques (MITRE)</div>
           {ttpPhases.length === 0 ? (
             <span className="text-xs text-muted-foreground">None documented</span>
           ) : (
@@ -392,7 +392,7 @@ function ProfileBody({ profile: p }: { profile: TaProfile }) {
           </div>
         )}
         <div>
-          <div className="mb-1 font-mono text-[9px] tracking-[0.05em] text-muted-foreground uppercase">IOCs</div>
+          <div className="mb-1 font-mono text-xs tracking-[0.05em] text-muted-foreground uppercase">IOCs</div>
           {!hasIocs ? (
             <span className="text-xs text-muted-foreground">None documented</span>
           ) : (
@@ -428,7 +428,7 @@ function ProfileBody({ profile: p }: { profile: TaProfile }) {
         ) : (
           <table className="w-full border-collapse text-xs">
             <thead>
-              <tr className="border-b border-border text-left text-[9px] text-muted-foreground uppercase">
+              <tr className="border-b border-border text-left text-xs text-muted-foreground uppercase">
                 <th className="py-1 pr-2">Campaign</th>
                 <th className="py-1 pr-2">Date Range</th>
                 <th className="py-1 pr-2">Sectors</th>
@@ -439,11 +439,11 @@ function ProfileBody({ profile: p }: { profile: TaProfile }) {
               {camps.map((c, i) => (
                 <tr key={i} className="border-b border-border last:border-none">
                   <td className="py-1 pr-2 font-semibold text-foreground">{c.campaign_name || "—"}</td>
-                  <td className="py-1 pr-2 font-mono text-[10px] whitespace-nowrap">{c.date_range || "—"}</td>
+                  <td className="py-1 pr-2 font-mono text-xs whitespace-nowrap">{c.date_range || "—"}</td>
                   <td className="py-1 pr-2">
                     <TagList items={c.targeted_sectors} />
                   </td>
-                  <td className="py-1 text-[10px] text-muted-foreground">{c.source_reference || "—"}</td>
+                  <td className="py-1 text-xs text-muted-foreground">{c.source_reference || "—"}</td>
                 </tr>
               ))}
             </tbody>
@@ -453,13 +453,13 @@ function ProfileBody({ profile: p }: { profile: TaProfile }) {
 
       <Section title="Detection & Defense">
         <div className="mb-3">
-          <div className="mb-1 font-mono text-[9px] tracking-[0.05em] text-muted-foreground uppercase">Detection Opportunities</div>
+          <div className="mb-1 font-mono text-xs tracking-[0.05em] text-muted-foreground uppercase">Detection Opportunities</div>
           {(det.detection_opportunities?.length ?? 0) === 0 ? (
             <span className="text-xs text-muted-foreground">None documented</span>
           ) : (
             <table className="w-full border-collapse text-xs">
               <thead>
-                <tr className="border-b border-border text-left text-[9px] text-muted-foreground uppercase">
+                <tr className="border-b border-border text-left text-xs text-muted-foreground uppercase">
                   <th className="py-1 pr-2">Layer</th>
                   <th className="py-1 pr-2">Description</th>
                   <th className="py-1">MITRE Ref</th>
@@ -472,7 +472,7 @@ function ProfileBody({ profile: p }: { profile: TaProfile }) {
                       <Tag>{o.layer || "—"}</Tag>
                     </td>
                     <td className="py-1 pr-2">{o.description || "—"}</td>
-                    <td className="py-1 font-mono text-[10px] text-warning">{o.mitre_technique_ref || "—"}</td>
+                    <td className="py-1 font-mono text-xs text-warning">{o.mitre_technique_ref || "—"}</td>
                   </tr>
                 ))}
               </tbody>
@@ -480,13 +480,13 @@ function ProfileBody({ profile: p }: { profile: TaProfile }) {
           )}
         </div>
         <div>
-          <div className="mb-1 font-mono text-[9px] tracking-[0.05em] text-muted-foreground uppercase">Recommended Mitigations</div>
+          <div className="mb-1 font-mono text-xs tracking-[0.05em] text-muted-foreground uppercase">Recommended Mitigations</div>
           {(det.recommended_mitigations?.length ?? 0) === 0 ? (
             <span className="text-xs text-muted-foreground">None documented</span>
           ) : (
             <table className="w-full border-collapse text-xs">
               <thead>
-                <tr className="border-b border-border text-left text-[9px] text-muted-foreground uppercase">
+                <tr className="border-b border-border text-left text-xs text-muted-foreground uppercase">
                   <th className="py-1 pr-2">Mitigation</th>
                   <th className="py-1 pr-2">ID</th>
                   <th className="py-1">Priority</th>
@@ -496,10 +496,10 @@ function ProfileBody({ profile: p }: { profile: TaProfile }) {
                 {det.recommended_mitigations!.map((m, i) => (
                   <tr key={i} className="border-b border-border last:border-none">
                     <td className="py-1 pr-2">{m.mitigation || "—"}</td>
-                    <td className="py-1 pr-2 font-mono text-[10px] text-primary">{m.mitre_mitigation_id || "—"}</td>
+                    <td className="py-1 pr-2 font-mono text-xs text-primary">{m.mitre_mitigation_id || "—"}</td>
                     <td
                       className={
-                        "py-1 text-[10px] " +
+                        "py-1 text-xs " +
                         (m.priority === "immediate" ? "text-destructive" : m.priority === "short-term" ? "text-warning" : "text-muted-foreground")
                       }
                     >
@@ -532,7 +532,7 @@ function ProfileBody({ profile: p }: { profile: TaProfile }) {
         {(rel.recommended_actions?.length ?? 0) > 0 && (
           <table className="w-full border-collapse text-xs">
             <thead>
-              <tr className="border-b border-border text-left text-[9px] text-muted-foreground uppercase">
+              <tr className="border-b border-border text-left text-xs text-muted-foreground uppercase">
                 <th className="py-1 pr-2">Timeframe</th>
                 <th className="py-1">Action</th>
               </tr>
@@ -540,7 +540,7 @@ function ProfileBody({ profile: p }: { profile: TaProfile }) {
             <tbody>
               {rel.recommended_actions!.map((a, i) => (
                 <tr key={i} className="border-b border-border last:border-none">
-                  <td className="py-1 pr-2 font-mono text-[10px] whitespace-nowrap text-warning">{a.timeframe || "—"}</td>
+                  <td className="py-1 pr-2 font-mono text-xs whitespace-nowrap text-warning">{a.timeframe || "—"}</td>
                   <td className="py-1">{a.action || "—"}</td>
                 </tr>
               ))}
@@ -563,7 +563,7 @@ function ProfileBody({ profile: p }: { profile: TaProfile }) {
         <Section title="References">
           <table className="w-full border-collapse text-xs">
             <thead>
-              <tr className="border-b border-border text-left text-[9px] text-muted-foreground uppercase">
+              <tr className="border-b border-border text-left text-xs text-muted-foreground uppercase">
                 <th className="py-1 pr-2">Title</th>
                 <th className="py-1 pr-2">Source</th>
                 <th className="py-1">Date</th>
@@ -582,7 +582,7 @@ function ProfileBody({ profile: p }: { profile: TaProfile }) {
                     )}
                   </td>
                   <td className="py-1 pr-2 text-muted-foreground">{r.source || "—"}</td>
-                  <td className="py-1 font-mono text-[10px] whitespace-nowrap">{r.date || "—"}</td>
+                  <td className="py-1 font-mono text-xs whitespace-nowrap">{r.date || "—"}</td>
                 </tr>
               ))}
             </tbody>

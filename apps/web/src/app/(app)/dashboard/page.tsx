@@ -92,7 +92,7 @@ export default function DashboardPage() {
               <HorizontalBarChart
                 labels={dashboard.data.top_countries.map((x) => toTitleCase(x.name))}
                 data={dashboard.data.top_countries.map((x) => x.count)}
-                tone="primary"
+                tone="info"
               />
             </ChartCard>
             <ChartCard title="Articles by News Type" height={300}>

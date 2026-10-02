@@ -50,10 +50,10 @@ export function CountryMultiSelect({ value, onChange }: CountryMultiSelectProps)
         {filtered.map((c) => (
           <label
             key={c.code}
-            className="flex cursor-pointer items-center gap-2 rounded-sm px-1 py-0.5 text-xs hover:bg-accent"
+            className="flex cursor-pointer items-center gap-2 rounded-full px-1 py-0.5 text-xs hover:bg-accent"
           >
             <Checkbox checked={selected.has(c.code)} onCheckedChange={() => toggle(c.code)} />
-            {c.name} <span className="font-mono text-[9px] text-muted-foreground">{c.code}</span>
+            {c.name} <span className="font-mono text-xs text-muted-foreground">{c.code}</span>
           </label>
         ))}
       </div>

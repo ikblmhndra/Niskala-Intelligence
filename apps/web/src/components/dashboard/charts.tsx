@@ -15,7 +15,7 @@ import {
 } from "chart.js";
 import { Bar, Doughnut, Line } from "react-chartjs-2";
 
-import { useChartTheme, withAlpha } from "@/lib/chart-theme";
+import { cssVar, useChartTheme, withAlpha } from "@/lib/chart-theme";
 
 ChartJS.register(
   CategoryScale,
@@ -32,13 +32,16 @@ ChartJS.register(
 /** Warna dibaca dari token tema via `useChartTheme` (Chart.js render ke
  * `<canvas>`, tidak bisa resolve `var(--x)`), jadi chart ikut light/dark.
  * Port dari `legacy/static/js/newsroom/dashboard.js`. */
-ChartJS.defaults.font.family = "'IBM Plex Mono', monospace";
-ChartJS.defaults.font.size = 10;
+if (typeof document !== "undefined") {
+  const brand = cssVar("--font-google-sans-flex");
+  ChartJS.defaults.font.family = brand ? `${brand}, system-ui, sans-serif` : "system-ui, sans-serif";
+}
+ChartJS.defaults.font.size = 12;
 
 interface HorizontalBarChartProps {
   labels: string[];
   data: number[];
-  tone?: "primary" | "critical" | "warning" | "success";
+  tone?: "primary" | "info" | "critical" | "warning" | "success";
 }
 
 export function HorizontalBarChart({ labels, data, tone = "primary" }: HorizontalBarChartProps) {
@@ -51,7 +54,7 @@ export function HorizontalBarChart({ labels, data, tone = "primary" }: Horizonta
         datasets: [
           {
             data,
-            backgroundColor: withAlpha(color, 0.4),
+            backgroundColor: withAlpha(color, 0.75),
             borderColor: color,
             borderWidth: 1,
             borderRadius: 2,
@@ -72,7 +75,7 @@ export function HorizontalBarChart({ labels, data, tone = "primary" }: Horizonta
         },
         scales: {
           x: { grid: { color: t.border }, ticks: { color: t.textDim } },
-          y: { grid: { display: false }, ticks: { color: t.textBright, font: { size: 10 } } },
+          y: { grid: { display: false }, ticks: { color: t.textBright, font: { size: 12 } } },
         },
       }}
     />
@@ -104,7 +107,7 @@ export function DoughnutChart({ labels, data }: DoughnutChartProps) {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: { position: "right", labels: { color: t.textBright, padding: 12, font: { size: 10 } } },
+          legend: { position: "right", labels: { color: t.textBright, padding: 12, font: { size: 12 } } },
           tooltip: {
             callbacks: {
               label: (ctx: TooltipItem<"doughnut">) => ` ${ctx.label}: ${ctx.parsed} articles`,
@@ -151,7 +154,7 @@ export function MultiLineChart({ labels, series }: MultiLineChartProps) {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: { position: "bottom", labels: { color: t.textDim, boxWidth: 10, font: { size: 9 } } },
+          legend: { position: "bottom", labels: { color: t.textDim, boxWidth: 10, font: { size: 12 } } },
           tooltip: { mode: "index", intersect: false },
         },
         scales: {
@@ -189,7 +192,7 @@ export function StackedBarChart({ labels, series }: StackedBarChartProps) {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: { position: "bottom", labels: { color: t.textDim, boxWidth: 10, font: { size: 9 } } },
+          legend: { position: "bottom", labels: { color: t.textDim, boxWidth: 10, font: { size: 12 } } },
         },
         scales: {
           x: { stacked: true, grid: { display: false }, ticks: { color: t.textDim, maxTicksLimit: 12 } },
@@ -226,11 +229,11 @@ export function TAActivityTimelineChart({ labels, articleCounts, tweetCounts, ra
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: { position: "bottom", labels: { color: t.textDim, boxWidth: 10, font: { size: 9 } } },
+          legend: { position: "bottom", labels: { color: t.textDim, boxWidth: 10, font: { size: 12 } } },
         },
         scales: {
-          x: { grid: { color: t.border }, ticks: { color: t.textDim, maxTicksLimit: 12, font: { size: 8 } } },
-          y: { grid: { color: t.border }, ticks: { color: t.textDim, font: { size: 9 } }, beginAtZero: true, stacked: true },
+          x: { grid: { color: t.border }, ticks: { color: t.textDim, maxTicksLimit: 12, font: { size: 12 } } },
+          y: { grid: { color: t.border }, ticks: { color: t.textDim, font: { size: 12 } }, beginAtZero: true, stacked: true },
         },
       }}
     />
@@ -264,7 +267,7 @@ export function GradedDoughnutChart({ counts }: GradedDoughnutChartProps) {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: { position: "right", labels: { color: t.textBright, padding: 12, font: { size: 10 } } },
+          legend: { position: "right", labels: { color: t.textBright, padding: 12, font: { size: 12 } } },
         },
         cutout: "55%",
       }}

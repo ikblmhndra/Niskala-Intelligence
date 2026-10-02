@@ -80,7 +80,7 @@ export function RolesSection() {
                   <TableCell className="font-mono text-xs text-primary">
                     {r.name}
                     {r.is_system && (
-                      <Badge variant="outline" className="ml-1.5 border-ring/30 bg-ring/10 text-[8px] text-ring">
+                      <Badge variant="outline" className="ml-1.5 border-ring/30 bg-ring/10 text-xs text-ring">
                         system
                       </Badge>
                     )}
@@ -90,12 +90,12 @@ export function RolesSection() {
                     <div className="flex flex-wrap gap-1">
                       {r.permissions.length ? (
                         r.permissions.map((p) => (
-                          <Badge key={p} variant="outline" className="font-mono text-[8px] text-muted-foreground">
+                          <Badge key={p} variant="outline" className="font-mono text-xs text-muted-foreground">
                             {p}
                           </Badge>
                         ))
                       ) : (
-                        <span className="text-[10px] text-muted-foreground">no permissions</span>
+                        <span className="text-xs text-muted-foreground">no permissions</span>
                       )}
                     </div>
                   </TableCell>
@@ -179,17 +179,17 @@ function AddRoleDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (o
         </DialogHeader>
         <div className="space-y-3">
           <div className="space-y-1.5">
-            <Label className="font-mono text-[9px] text-muted-foreground uppercase">
+            <Label className="font-mono text-xs text-muted-foreground uppercase">
               Role ID (lowercase, a-z 0-9 _-)
             </Label>
             <Input value={name} onChange={(e) => setName(e.target.value)} className="font-mono text-xs" />
           </div>
           <div className="space-y-1.5">
-            <Label className="font-mono text-[9px] text-muted-foreground uppercase">Display Name</Label>
+            <Label className="font-mono text-xs text-muted-foreground uppercase">Display Name</Label>
             <Input value={displayName} onChange={(e) => setDisplayName(e.target.value)} className="text-xs" />
           </div>
           <div className="space-y-1.5">
-            <Label className="font-mono text-[9px] text-muted-foreground uppercase">Permissions</Label>
+            <Label className="font-mono text-xs text-muted-foreground uppercase">Permissions</Label>
             {permissions.isPending && <Skeleton className="h-24 w-full" />}
             <div className="flex max-h-52 flex-col gap-1.5 overflow-y-auto rounded-md border border-border p-2">
               {permissions.data?.map((p) => (
@@ -202,7 +202,7 @@ function AddRoleDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (o
                   <span>
                     <span className="font-mono text-foreground">{p.key}</span>
                     <br />
-                    <span className="text-[10px] text-muted-foreground">{p.description}</span>
+                    <span className="text-xs text-muted-foreground">{p.description}</span>
                   </span>
                 </label>
               ))}

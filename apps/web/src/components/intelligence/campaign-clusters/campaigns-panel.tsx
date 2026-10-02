@@ -103,14 +103,14 @@ export function CampaignsPanel() {
     <div>
       <div className="mb-3 flex flex-wrap items-end gap-2 border-b border-border pb-3">
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Days</Label>
+          <Label className="font-mono text-xs text-muted-foreground uppercase">Days</Label>
           <Input type="number" min={1} max={90} value={days} onChange={(e) => setDays(Number(e.target.value) || 7)} className="w-20 font-mono text-xs" />
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Min Size</Label>
+          <Label className="font-mono text-xs text-muted-foreground uppercase">Min Size</Label>
           <Input type="number" min={2} max={50} value={minSize} onChange={(e) => setMinSize(Number(e.target.value) || 3)} className="w-20 font-mono text-xs" />
         </div>
-        <span className="ml-auto font-mono text-[11px] text-muted-foreground">
+        <span className="ml-auto font-mono text-[13px] text-muted-foreground">
           {campaigns.length} campaign cluster{campaigns.length !== 1 ? "s" : ""} found
         </span>
       </div>
@@ -123,7 +123,7 @@ export function CampaignsPanel() {
 
       {campaigns.length > 0 && (
         <>
-          <div className="mb-2 flex flex-wrap items-center gap-1.5 border-b border-border pb-2 font-mono text-[10px] text-muted-foreground">
+          <div className="mb-2 flex flex-wrap items-center gap-1.5 border-b border-border pb-2 font-mono text-xs text-muted-foreground">
             Sort:
             {SORT_OPTIONS.map((o) => (
               <button
@@ -137,7 +137,7 @@ export function CampaignsPanel() {
             ))}
           </div>
 
-          <table className="w-full border-collapse text-[11px]">
+          <table className="w-full border-collapse text-[13px]">
             <thead>
               <tr className="border-b border-border text-left text-muted-foreground">
                 <th className="px-2 py-1.5">Summary Title</th>
@@ -219,18 +219,18 @@ function CampaignRow({
           <span className="text-foreground">{c.summary_title || c.cluster_id}</span>
           {trendQuery.data && <TrendArrow direction={trendQuery.data.trend_direction} growthRate={trendQuery.data.growth_rate} />}
           <SeverityBadge label={c.severity_label} score={c.severity_score} />
-          {c.matched_pirs.length > 0 && <span className="ml-1 rounded-sm border border-destructive/30 bg-destructive/10 px-1.5 py-0.5 font-mono text-[9px] text-destructive">PIR</span>}
+          {c.matched_pirs.length > 0 && <span className="ml-1 rounded-full border border-destructive/30 bg-destructive/10 px-1.5 py-0.5 font-mono text-xs text-destructive">PIR</span>}
         </td>
         <td className="px-2 py-1.5 text-center whitespace-nowrap text-foreground">
           {c.size}
           <VelocityBadge label={c.velocity_label} articlesPerDay={c.velocity_articles_per_day} />
-          {c.new_iocs_24h > 0 && <span className="ml-1 rounded-sm border border-success/35 bg-success/12 px-1.5 py-0.5 font-mono text-[9px] text-success">NEW: {c.new_iocs_24h} IOCs</span>}
+          {c.new_iocs_24h > 0 && <span className="ml-1 rounded-full border border-success/35 bg-success/12 px-1.5 py-0.5 font-mono text-xs text-success">NEW: {c.new_iocs_24h} IOCs</span>}
         </td>
         <td className="px-2 py-1.5">
           <SeverityBadge label={c.severity_label} score={c.severity_score} />
         </td>
-        <td className="px-2 py-1.5 font-mono text-[10px] text-muted-foreground">{c.first_seen}</td>
-        <td className="px-2 py-1.5 font-mono text-[10px] text-muted-foreground">{c.last_seen}</td>
+        <td className="px-2 py-1.5 font-mono text-xs text-muted-foreground">{c.first_seen}</td>
+        <td className="px-2 py-1.5 font-mono text-xs text-muted-foreground">{c.last_seen}</td>
         <td className="max-w-[160px] px-2 py-1.5">
           <ChipList items={c.dominant_tas} color="var(--severity-high)" />
         </td>
@@ -243,11 +243,11 @@ function CampaignRow({
         <td className="max-w-[200px] px-2 py-1.5">
           <div className="flex flex-wrap items-center gap-1">
             <ChipList items={c.attack_techniques.slice(0, 5)} color="var(--tag-violet)" />
-            {c.kill_chain.completeness_label && <span className="font-mono text-[9px] text-muted-foreground">{c.kill_chain.completeness_score}%</span>}
+            {c.kill_chain.completeness_label && <span className="font-mono text-xs text-muted-foreground">{c.kill_chain.completeness_score}%</span>}
           </div>
         </td>
         <td className="px-2 py-1.5">
-          <button type="button" onClick={onHuntPack} className="rounded-sm border border-primary/30 bg-primary/8 px-2 py-1 font-mono text-[10px] text-primary">
+          <button type="button" onClick={onHuntPack} className="rounded-full border border-primary/30 bg-primary/8 px-2 py-1 font-mono text-xs text-primary">
             ⬇ Hunt Pack
           </button>
         </td>
@@ -264,11 +264,11 @@ function CampaignRow({
 }
 
 function ChipList({ items, color }: { items: string[]; color: string }) {
-  if (items.length === 0) return <span className="font-mono text-[10px] text-muted-foreground">—</span>;
+  if (items.length === 0) return <span className="font-mono text-xs text-muted-foreground">—</span>;
   return (
     <div className="flex flex-wrap gap-1">
       {items.map((v) => (
-        <span key={v} className="rounded-sm border px-1.5 py-0.5 font-mono text-[9px]" style={{ background: tint(color, 9), borderColor: tint(color, 27), color }}>
+        <span key={v} className="rounded-full border px-1.5 py-0.5 font-mono text-xs" style={{ background: tint(color, 9), borderColor: tint(color, 27), color }}>
           {v}
         </span>
       ))}

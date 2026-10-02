@@ -162,7 +162,7 @@ export function ScrapersTable({
     <div>
       <div className="mb-3 flex flex-wrap items-end gap-2">
         <div className="flex flex-col gap-1">
-          <span className="font-mono text-[9px] text-muted-foreground uppercase">Search</span>
+          <span className="font-mono text-xs text-muted-foreground uppercase">Search</span>
           <Input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -171,7 +171,7 @@ export function ScrapersTable({
           />
         </div>
         <div className="flex flex-col gap-1">
-          <span className="font-mono text-[9px] text-muted-foreground uppercase">Runtime</span>
+          <span className="font-mono text-xs text-muted-foreground uppercase">Runtime</span>
           <Select items={RUNTIME_ITEMS} value={runtimeFilter} onValueChange={(v) => v && setRuntimeFilter(v)}>
             <SelectTrigger size="sm" className="w-36 font-mono text-xs">
               <SelectValue />
@@ -186,7 +186,7 @@ export function ScrapersTable({
           </Select>
         </div>
         <div className="flex flex-col gap-1">
-          <span className="font-mono text-[9px] text-muted-foreground uppercase">Status</span>
+          <span className="font-mono text-xs text-muted-foreground uppercase">Status</span>
           <Select items={STATUS_ITEMS} value={statusFilter} onValueChange={(v) => v && setStatusFilter(v)}>
             <SelectTrigger size="sm" className="w-40 font-mono text-xs">
               <SelectValue />
@@ -200,7 +200,7 @@ export function ScrapersTable({
             </SelectContent>
           </Select>
         </div>
-        <span className="ml-auto font-mono text-[10px] text-muted-foreground">
+        <span className="ml-auto font-mono text-xs text-muted-foreground">
           {filtered.length} / {items.length} scraper
         </span>
       </div>
@@ -228,20 +228,20 @@ export function ScrapersTable({
                 <TableRow key={s.id} className="cursor-pointer" onClick={() => onOpenDetail(s.id, status)}>
                   <TableCell className="font-mono text-xs text-foreground">{s.id}</TableCell>
                   <TableCell className="text-xs text-foreground">{s.source}</TableCell>
-                  <TableCell className="font-mono text-[10px] text-muted-foreground">
+                  <TableCell className="font-mono text-xs text-muted-foreground">
                     {s.runtime}
                     {s.has_override && <span className="ml-1 text-primary" title="config override active">●</span>}
                   </TableCell>
                   <TableCell>
                     <StatusBadge status={status} />
                   </TableCell>
-                  <TableCell className="font-mono text-[10px] text-muted-foreground">{s.schedule}</TableCell>
-                  <TableCell className="font-mono text-[10px] text-muted-foreground">
+                  <TableCell className="font-mono text-xs text-muted-foreground">{s.schedule}</TableCell>
+                  <TableCell className="font-mono text-xs text-muted-foreground">
                     {s.last_status ? <RunStatusText status={s.last_status} /> : "—"}{" "}
                     {relativeTime(s.last_started_at)}
                   </TableCell>
                   <TableCell
-                    className={`font-mono text-[10px] ${schedulerOk ? "text-muted-foreground" : "text-destructive line-through"}`}
+                    className={`font-mono text-xs ${schedulerOk ? "text-muted-foreground" : "text-destructive line-through"}`}
                     title={
                       s.next_run_at
                         ? `${s.next_run_at.replace("T", " ").split("+")[0]} UTC${schedulerOk ? "" : " — scheduler down, will NOT fire"}`

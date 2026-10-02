@@ -26,7 +26,7 @@ export function TweetCard({ tweet: t, onClick }: { tweet: Tweet; onClick: () => 
   return (
     <div
       onClick={onClick}
-      className="flex cursor-pointer gap-2.5 rounded-md border border-border bg-surface p-3 transition-colors hover:border-ring/50"
+      className="flex cursor-pointer gap-2.5 rounded-2xl border border-border bg-surface shadow-sm p-3 transition-colors hover:border-ring/50"
     >
       <Avatar className="size-9 shrink-0">
         <AvatarImage src={t.author_avatar || undefined} alt={t.author_username} />
@@ -59,7 +59,7 @@ export function TweetCard({ tweet: t, onClick }: { tweet: Tweet; onClick: () => 
         <div className="flex flex-wrap items-center gap-1.5">
           <TweetBadges tweet={t} limit={2} />
           {industries.length > 0 && (
-            <span className="ml-auto text-[9px] text-muted-foreground">{industries.join(" · ")}</span>
+            <span className="ml-auto text-xs text-muted-foreground">{industries.join(" · ")}</span>
           )}
           <a
             href={t.url}
@@ -68,7 +68,7 @@ export function TweetCard({ tweet: t, onClick }: { tweet: Tweet; onClick: () => 
             onClick={(e) => e.stopPropagation()}
             className={
               (industries.length > 0 ? "" : "ml-auto ") +
-              "rounded border border-primary/30 px-2 py-0.5 font-mono text-[10px] text-primary no-underline"
+              "rounded border border-primary/30 px-2 py-0.5 font-mono text-xs text-primary no-underline"
             }
           >
             ↗ Open

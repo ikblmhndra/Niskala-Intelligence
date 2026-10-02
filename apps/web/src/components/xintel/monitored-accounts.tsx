@@ -88,7 +88,7 @@ export function MonitoredAccounts() {
     <div>
       <div className="mb-4 flex flex-wrap items-end gap-2 border-b border-border pb-3">
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Handle</Label>
+          <Label className="font-mono text-xs text-muted-foreground uppercase">Handle</Label>
           <Input
             placeholder="@username"
             value={username}
@@ -97,7 +97,7 @@ export function MonitoredAccounts() {
           />
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Display name</Label>
+          <Label className="font-mono text-xs text-muted-foreground uppercase">Display name</Label>
           <Input
             placeholder="optional"
             value={displayName}
@@ -106,7 +106,7 @@ export function MonitoredAccounts() {
           />
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Notes</Label>
+          <Label className="font-mono text-xs text-muted-foreground uppercase">Notes</Label>
           <Input
             placeholder="optional"
             value={notes}
@@ -155,7 +155,7 @@ export function MonitoredAccounts() {
                   <TableCell className="font-mono text-xs text-primary">@{a.username}</TableCell>
                   <TableCell className="text-xs">{a.display_name || "—"}</TableCell>
                   <TableCell className="text-xs text-muted-foreground">{a.notes || "—"}</TableCell>
-                  <TableCell className="font-mono text-[11px] text-muted-foreground">
+                  <TableCell className="font-mono text-[13px] text-muted-foreground">
                     {a.added_at ? a.added_at.slice(0, 10) : "—"}
                   </TableCell>
                   <TableCell>
@@ -178,7 +178,7 @@ export function MonitoredAccounts() {
               ))}
             </TableBody>
           </Table>
-          <p className="mt-2.5 font-mono text-[10px] text-muted-foreground">
+          <p className="mt-2.5 font-mono text-xs text-muted-foreground">
             {accounts.data.length} account{accounts.data.length !== 1 ? "s" : ""} monitored
           </p>
         </>

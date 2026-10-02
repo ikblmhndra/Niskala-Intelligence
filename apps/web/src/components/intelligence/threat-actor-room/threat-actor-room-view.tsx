@@ -68,8 +68,8 @@ export function ThreatActorRoomView() {
 
 function StatCard({ label, value }: { label: string; value: number }) {
   return (
-    <div className="rounded-md border border-border bg-surface2 px-3 py-2">
-      <div className="font-mono text-[9px] tracking-[0.06em] text-muted-foreground uppercase">{label}</div>
+    <div className="rounded-2xl border border-border bg-surface shadow-sm2 px-3 py-2">
+      <div className="font-mono text-xs tracking-[0.06em] text-muted-foreground uppercase">{label}</div>
       <div className="text-lg font-bold text-foreground">{value}</div>
     </div>
   );

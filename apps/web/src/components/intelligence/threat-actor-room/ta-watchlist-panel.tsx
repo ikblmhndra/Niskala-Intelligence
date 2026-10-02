@@ -116,7 +116,7 @@ export function TaWatchlistPanel() {
     <div>
       <div className="mb-3 flex flex-wrap items-end gap-2 border-b border-border pb-3">
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Search</Label>
+          <Label className="font-mono text-xs text-muted-foreground uppercase">Search</Label>
           <Input
             placeholder="Actor name…"
             value={search}
@@ -128,7 +128,7 @@ export function TaWatchlistPanel() {
           />
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Sort</Label>
+          <Label className="font-mono text-xs text-muted-foreground uppercase">Sort</Label>
           <div className="flex gap-1">
             <Select items={{ name: "Name", added_date: "Added Date" }} value={sortBy} onValueChange={(v) => v && setSortBy(v as "name" | "added_date")}>
               <SelectTrigger size="sm" className="w-32 font-mono text-xs">
@@ -149,7 +149,7 @@ export function TaWatchlistPanel() {
           </div>
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Page Size</Label>
+          <Label className="font-mono text-xs text-muted-foreground uppercase">Page Size</Label>
           <Select
             items={Object.fromEntries(PAGE_SIZE_OPTIONS.map((n) => [String(n), String(n)]))}
             value={String(pageSize)}
@@ -173,7 +173,7 @@ export function TaWatchlistPanel() {
         <Button size="sm" variant="outline" className="ml-auto" onClick={openNavigator}>
           ⧉ Open in Navigator
         </Button>
-        <span className="font-mono text-[11px] text-muted-foreground">{total} watched</span>
+        <span className="font-mono text-[13px] text-muted-foreground">{total} watched</span>
       </div>
 
       {query.isPending && <p className="py-8 text-center text-xs text-muted-foreground">Loading…</p>}
@@ -246,29 +246,29 @@ function WatchlistCard({
   onUnwatch: () => void;
 }) {
   return (
-    <div className="rounded-md border border-border bg-surface2 p-3">
+    <div className="rounded-2xl border border-border bg-surface shadow-sm2 p-3">
       <div className="mb-1.5 flex flex-wrap items-center gap-2">
         <span className="text-sm font-semibold text-foreground">{item.name}</span>
-        <span className={`rounded-sm border border-border bg-surface px-1.5 py-0.5 font-mono text-[9px] ${dormancyColor}`}>
+        <span className={`rounded-full border border-border bg-surface px-1.5 py-0.5 font-mono text-xs ${dormancyColor}`}>
           {dormancyIcon} {item.dormancy_state}
         </span>
       </div>
-      <div className="mb-2 flex items-center gap-2 font-mono text-[10px] text-muted-foreground">
+      <div className="mb-2 flex items-center gap-2 font-mono text-xs text-muted-foreground">
         <span>Added: {item.added_date || "—"}</span>
-        <span className={`rounded-sm border px-1.5 py-0.5 ${hasProfile ? "border-success/40 bg-success/10 text-success" : "border-border text-muted-foreground"}`}>
+        <span className={`rounded-full border px-1.5 py-0.5 ${hasProfile ? "border-success/40 bg-success/10 text-success" : "border-border text-muted-foreground"}`}>
           {hasProfile ? "✓ PROFILE" : "NO PROFILE"}
         </span>
       </div>
       <div className="mb-2 flex flex-wrap gap-1.5">
-        <Button size="sm" variant="outline" className="h-6 px-2 text-[10px]" disabled={generating} onClick={onGenerate}>
+        <Button size="sm" variant="outline" className="h-6 px-2 text-xs" disabled={generating} onClick={onGenerate}>
           {generating ? "⏳ Generating…" : "⚡ AI Generate"}
         </Button>
         {hasProfile && (
-          <Button size="sm" variant="outline" className="h-6 px-2 text-[10px]" onClick={onViewProfile}>
+          <Button size="sm" variant="outline" className="h-6 px-2 text-xs" onClick={onViewProfile}>
             👁 View Profile
           </Button>
         )}
-        <Button size="sm" variant="outline" className="ml-auto h-6 px-2 text-[10px] text-destructive" onClick={onUnwatch}>
+        <Button size="sm" variant="outline" className="ml-auto h-6 px-2 text-xs text-destructive" onClick={onUnwatch}>
           ✕
         </Button>
       </div>
@@ -276,7 +276,7 @@ function WatchlistCard({
         type="button"
         disabled={articleTotal === 0}
         onClick={onOpenArticles}
-        className="mb-2 w-full rounded-sm border border-border bg-surface px-2 py-1 font-mono text-[10px] text-foreground disabled:opacity-40"
+        className="mb-2 w-full rounded-full border border-border bg-surface px-2 py-1 font-mono text-xs text-foreground disabled:opacity-40"
       >
         {articleTotal > 0 ? `📰 ${articleTotal} Article${articleTotal !== 1 ? "s" : ""}` : "📰 No Articles"}
       </button>

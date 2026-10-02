@@ -27,14 +27,14 @@ export function PanelShell({
   minHeight,
 }: PanelShellProps) {
   return (
-    <div className={cn("flex flex-col rounded-md border border-border bg-surface", minHeight && "min-h-[280px]")}>
-      <div className="flex items-center justify-between border-b border-border px-3 py-2">
-        <div className="flex items-center gap-2 text-sm font-medium">
+    <div className={cn("flex flex-col overflow-hidden rounded-2xl border border-border bg-surface shadow-sm", minHeight && "min-h-[280px]")}>
+      <div className="flex items-center justify-between border-b border-border px-4 py-3">
+        <div className="flex items-center gap-2 text-base font-semibold">
           <span className={cn("size-2 rounded-full", dotClassName)} />
           {title}
         </div>
         <div className="flex items-center gap-2">
-          <span className="font-mono text-[10px] text-muted-foreground">
+          <span className="rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
             {count === undefined ? "— items" : `${count} items`}
           </span>
           {onRefresh && (
@@ -50,7 +50,7 @@ export function PanelShell({
           )}
         </div>
       </div>
-      <div className="flex-1 p-2">{children}</div>
+      <div className="flex-1 p-3">{children}</div>
       {footer && <div className="border-t border-border p-2">{footer}</div>}
     </div>
   );

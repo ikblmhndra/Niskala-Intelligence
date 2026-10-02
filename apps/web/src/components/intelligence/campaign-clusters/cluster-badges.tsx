@@ -8,7 +8,7 @@ const SEVERITY_STYLE: Record<string, string> = {
 export function SeverityBadge({ label, score }: { label: string; score: number | null }) {
   const cls = SEVERITY_STYLE[label] ?? SEVERITY_STYLE.low;
   return (
-    <span className={`ml-1 inline-block rounded-sm border px-1.5 py-0.5 font-mono text-[9px] font-bold ${cls}`}>
+    <span className={`ml-1 inline-block rounded-full border px-1.5 py-0.5 font-mono text-xs font-bold ${cls}`}>
       {label.toUpperCase()} {score ?? ""}
     </span>
   );
@@ -19,7 +19,7 @@ export function VelocityBadge({ label, articlesPerDay }: { label: string; articl
     return (
       <span className="ml-1 inline-flex items-center gap-1">
         <span className="inline-block size-[7px] animate-pulse rounded-full bg-destructive" />
-        <span className="font-mono text-[9px] font-bold tracking-wide text-destructive">SURGING</span>
+        <span className="font-mono text-xs font-bold tracking-wide text-destructive">SURGING</span>
       </span>
     );
   }
@@ -27,7 +27,7 @@ export function VelocityBadge({ label, articlesPerDay }: { label: string; articl
     return (
       <span className="ml-1 inline-flex items-center gap-1">
         <span className="inline-block size-[7px] rounded-full bg-warning" />
-        <span className="font-mono text-[9px] font-bold tracking-wide text-warning">ACTIVE</span>
+        <span className="font-mono text-xs font-bold tracking-wide text-warning">ACTIVE</span>
       </span>
     );
   }
@@ -64,7 +64,7 @@ const KC_STYLE: Record<string, string> = {
 
 export function KillChainBadge({ label, score }: { label: string; score: number }) {
   const cls = KC_STYLE[label] ?? KC_STYLE.limited;
-  return <span className={`ml-1 inline-block rounded-sm border px-1.5 py-0.5 font-mono text-[9px] font-bold ${cls}`}>{score}%</span>;
+  return <span className={`ml-1 inline-block rounded-full border px-1.5 py-0.5 font-mono text-xs font-bold ${cls}`}>{score}%</span>;
 }
 
 const LINK_TYPE_STYLE: Record<string, string> = {
@@ -82,7 +82,7 @@ const LINK_TYPE_LABEL: Record<string, string> = {
 
 export function LinkTypeBadge({ type }: { type: string }) {
   const cls = LINK_TYPE_STYLE[type] ?? LINK_TYPE_STYLE.related;
-  return <span className={`inline-block flex-shrink-0 rounded-sm border px-1.5 py-0.5 font-mono text-[9px] ${cls}`}>{LINK_TYPE_LABEL[type] ?? type}</span>;
+  return <span className={`inline-block flex-shrink-0 rounded-full border px-1.5 py-0.5 font-mono text-xs ${cls}`}>{LINK_TYPE_LABEL[type] ?? type}</span>;
 }
 
 const CVE_PRIO_STYLE: Record<string, string> = {
@@ -98,7 +98,7 @@ export function CvePriorityChip({ cve, onClick }: { cve: { cve_id: string; cvss_
       type="button"
       onClick={onClick}
       title={`${cve.priority_label ?? ""}${cve.patch_urgency ? ` — patch: ${cve.patch_urgency}` : ""}`}
-      className={`inline-flex items-center gap-0.5 rounded-sm border px-1.5 py-0.5 font-mono text-[9px] text-foreground ${cls}`}
+      className={`inline-flex items-center gap-0.5 rounded-full border px-1.5 py-0.5 font-mono text-xs text-foreground ${cls}`}
     >
       {cve.in_tech_stack && <span title="In your tech stack" className="text-severity-medium">★</span>}
       {cve.cve_id}

@@ -37,13 +37,13 @@ export function NewsletterQueuePanel({ queue, paywallHints, onAssign, onRemove, 
   return (
     <div className="flex h-full flex-col">
       <div className="mb-3 flex items-center justify-between border-b border-border pb-3">
-        <div className="font-mono text-[11px] tracking-[0.1em] text-muted-foreground uppercase">Queued Articles</div>
+        <div className="font-mono text-[13px] tracking-[0.1em] text-muted-foreground uppercase">Queued Articles</div>
         {queue.length > 0 && (
           <div className="flex items-center gap-2">
-            <span className="font-mono text-[10px] text-primary">
+            <span className="font-mono text-xs text-primary">
               {queue.length} article{queue.length === 1 ? "" : "s"}
             </span>
-            <Button variant="ghost" size="sm" className="h-6 px-2 text-[10px]" onClick={onClearAll}>
+            <Button variant="ghost" size="sm" className="h-6 px-2 text-xs" onClick={onClearAll}>
               Clear All
             </Button>
           </div>
@@ -61,33 +61,33 @@ export function NewsletterQueuePanel({ queue, paywallHints, onAssign, onRemove, 
           const countries = [...(a.victim_countries ?? []), ...(a.mentioned_countries ?? [])].slice(0, 3);
           const actors = (a.threat_actors ?? []).slice(0, 2);
           return (
-            <div key={a._id} className="rounded-md border border-border bg-surface p-2.5">
+            <div key={a._id} className="rounded-2xl border border-border bg-surface shadow-sm p-2.5">
               <div className="flex items-start gap-2">
                 <div className="min-w-0 flex-1">
                   <div className="text-xs font-semibold text-foreground">{a.title}</div>
-                  <div className="mt-0.5 font-mono text-[10px] text-muted-foreground">
+                  <div className="mt-0.5 font-mono text-xs text-muted-foreground">
                     {a.source} · {a.posted_on}
                   </div>
                   <div className="mt-1.5 flex flex-wrap gap-1">
                     {a.news_type && (
-                      <Badge variant="outline" className="text-[9px]">
+                      <Badge variant="outline" className="text-xs">
                         {a.news_type}
                       </Badge>
                     )}
                     {countries.map((c) => (
-                      <Badge key={c} variant="outline" className="text-[9px]">
+                      <Badge key={c} variant="outline" className="text-xs">
                         {c}
                       </Badge>
                     ))}
                     {actors.map((t) => (
-                      <Badge key={t} variant="destructive" className="text-[9px]">
+                      <Badge key={t} variant="destructive" className="text-xs">
                         {t}
                       </Badge>
                     ))}
                     {isPaywall && (
                       <Badge
                         variant="outline"
-                        className="border-warning/40 bg-warning/10 text-[9px] text-warning"
+                        className="border-warning/40 bg-warning/10 text-xs text-warning"
                         title="Paywall detected — summary will use metadata"
                       >
                         ⚠ Paywall
@@ -114,7 +114,7 @@ export function NewsletterQueuePanel({ queue, paywallHints, onAssign, onRemove, 
                     type="button"
                     onClick={() => onRemove(a._id)}
                     title="Remove from queue"
-                    className="font-mono text-[9px] text-muted-foreground transition-colors hover:text-destructive"
+                    className="font-mono text-xs text-muted-foreground transition-colors hover:text-destructive"
                   >
                     ✕
                   </button>

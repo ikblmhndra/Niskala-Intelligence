@@ -41,35 +41,44 @@ export function AppHeader() {
   const { user } = useAuth();
 
   return (
-    <header className="border-b border-border bg-surface">
-      <div className="flex items-center justify-between px-4 py-2">
-        <span className="font-heading text-sm tracking-wide font-semibold text-primary">{PLATFORM_NAME}</span>
-        <div className="flex items-center gap-2">
+    <header className="sticky top-0 z-30 border-b border-border bg-surface/90 backdrop-blur supports-[backdrop-filter]:bg-surface/80">
+      <div className="mx-auto flex w-full max-w-[1680px] flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3 sm:px-6">
+        <Link href="/dashboard" className="flex items-center gap-2.5 rounded-full outline-none focus-visible:ring-3 focus-visible:ring-ring/50">
+          <span
+            aria-hidden
+            className="grid size-9 place-items-center rounded-full bg-primary font-heading text-base font-bold text-primary-foreground"
+          >
+            N
+          </span>
+          <span className="font-heading text-lg font-bold tracking-tight text-foreground">{PLATFORM_NAME}</span>
+        </Link>
+        <nav aria-label="Main" className="order-3 flex w-full gap-1 overflow-x-auto pb-1 lg:order-none lg:w-auto lg:flex-1 lg:justify-center lg:pb-0">
+          {NAV_ITEMS.map((item) => {
+            const active = pathname.startsWith(item.href);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                aria-current={active ? "page" : undefined}
+                className={cn(
+                  "shrink-0 rounded-full px-4 py-2 text-sm font-medium outline-none transition-colors duration-200 focus-visible:ring-3 focus-visible:ring-ring/50",
+                  active
+                    ? "bg-primary text-primary-foreground shadow-sm"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                )}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
+        </nav>
+        <div className="ml-auto flex items-center gap-2 lg:ml-0">
           <ChangelogDialog />
           <ThemeToggle />
           {user && <ClientSwitcher user={user} />}
           <UserMenu />
         </div>
       </div>
-      <nav className="flex gap-1 overflow-x-auto px-4 pb-2">
-        {NAV_ITEMS.map((item) => {
-          const active = pathname.startsWith(item.href);
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "shrink-0 rounded-md px-3 py-1.5 text-xs font-medium transition-colors",
-                active
-                  ? "bg-primary text-primary-foreground"
-                  : "text-muted-foreground hover:bg-accent hover:text-foreground",
-              )}
-            >
-              {item.label}
-            </Link>
-          );
-        })}
-      </nav>
     </header>
   );
 }

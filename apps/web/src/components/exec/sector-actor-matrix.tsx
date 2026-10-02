@@ -13,7 +13,7 @@ export function SectorActorMatrix({ d }: { d: ExecDashboardV2 }) {
 
   return (
     <div className="overflow-x-auto">
-      <table className="w-full border-collapse text-[9px]">
+      <table className="w-full border-collapse text-xs">
         <thead>
           <tr>
             <th />

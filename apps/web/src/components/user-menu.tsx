@@ -29,7 +29,7 @@ export function UserMenu() {
           render={<Button variant="ghost" size="sm" className="gap-2 font-mono text-xs" />}
         >
           <Avatar className="size-5">
-            <AvatarFallback className="text-[10px]">
+            <AvatarFallback className="text-xs">
               {user.username.slice(0, 2).toUpperCase()}
             </AvatarFallback>
           </Avatar>

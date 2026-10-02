@@ -12,7 +12,7 @@ const STATUS_STYLE: Record<string, string> = {
 export function StatusBadge({ status }: { status: string }) {
   const cls = STATUS_STYLE[status] ?? STATUS_STYLE.stale;
   return (
-    <span className={`inline-block rounded-sm border px-1.5 py-0.5 font-mono text-[9px] font-bold uppercase ${cls}`}>
+    <span className={`inline-block rounded-full border px-1.5 py-0.5 font-mono text-xs font-bold uppercase ${cls}`}>
       {status.replace("_", " ")}
     </span>
   );
@@ -35,5 +35,5 @@ const RUN_STATUS_STYLE: Record<string, string> = {
  * `StatusBadge`, dipakai inline di tabel runs (lebih banyak baris, pill
  * penuh kebesaran). */
 export function RunStatusText({ status }: { status: string }) {
-  return <span className={`font-mono text-[10px] ${RUN_STATUS_STYLE[status] ?? ""}`}>{status}</span>;
+  return <span className={`font-mono text-xs ${RUN_STATUS_STYLE[status] ?? ""}`}>{status}</span>;
 }

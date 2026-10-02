@@ -52,7 +52,7 @@ export function ExecFilterBar({
   return (
     <div className="mb-4 flex flex-wrap items-end gap-2 border-b border-border pb-3">
       <div className="flex flex-col gap-1">
-        <Label className="font-mono text-[9px] text-muted-foreground uppercase">Period</Label>
+        <Label className="font-mono text-xs text-muted-foreground uppercase">Period</Label>
         <Select
           items={selectItems(EXEC_DAY_OPTIONS)}
           value={String(filters.days)}
@@ -81,7 +81,7 @@ export function ExecFilterBar({
 
       {isAdmin && (
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Role preview</Label>
+          <Label className="font-mono text-xs text-muted-foreground uppercase">Role preview</Label>
           <Select
             items={{ [ROLE_ALL]: "— none —", ...selectItems(EXEC_ROLE_PREVIEW_OPTIONS) }}
             value={filters.rolePreview || ROLE_ALL}
@@ -105,7 +105,7 @@ export function ExecFilterBar({
       )}
 
       {viewRole && (
-        <Badge variant="outline" className="mb-1.5 font-mono text-[10px]">
+        <Badge variant="outline" className="mb-1.5 font-mono text-xs">
           View: {viewRole.toUpperCase()}
         </Badge>
       )}

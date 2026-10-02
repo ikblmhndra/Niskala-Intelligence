@@ -46,7 +46,7 @@ export function SoftwarePanel({ onSelect }: { onSelect: (target: DetailTarget) =
     <div>
       <div className="mb-3 flex flex-wrap items-end gap-2">
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Search</Label>
+          <Label className="font-mono text-xs text-muted-foreground uppercase">Search</Label>
           <Input
             placeholder="Software name…"
             value={search}
@@ -58,7 +58,7 @@ export function SoftwarePanel({ onSelect }: { onSelect: (target: DetailTarget) =
           />
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Domain</Label>
+          <Label className="font-mono text-xs text-muted-foreground uppercase">Domain</Label>
           <Select
             items={{ [ALL]: "All Domains", ...Object.fromEntries(DOMAINS.map((d) => [d, DOMAIN_LABELS[d]])) }}
             value={domain || ALL}
@@ -83,7 +83,7 @@ export function SoftwarePanel({ onSelect }: { onSelect: (target: DetailTarget) =
           </Select>
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Type</Label>
+          <Label className="font-mono text-xs text-muted-foreground uppercase">Type</Label>
           <Select
             items={{ [ALL]: "All Types", ...Object.fromEntries(TYPES.map((t) => [t, t])) }}
             value={swType || ALL}
@@ -133,14 +133,14 @@ export function SoftwarePanel({ onSelect }: { onSelect: (target: DetailTarget) =
               )}
               {query.data.software.map((s) => (
                 <TableRow key={s.software_id} className="cursor-pointer" onClick={() => onSelect({ kind: "software", id: s.software_id })}>
-                  <TableCell className="font-mono text-[11px] text-primary whitespace-nowrap">{s.software_id}</TableCell>
+                  <TableCell className="font-mono text-[13px] text-primary whitespace-nowrap">{s.software_id}</TableCell>
                   <TableCell className="text-xs">{s.name}</TableCell>
                   <TableCell>
-                    <Badge variant="outline" className={cn("text-[9px]", s.software_type === "malware" ? "text-destructive border-destructive/40" : "text-primary border-primary/40")}>
+                    <Badge variant="outline" className={cn("text-xs", s.software_type === "malware" ? "text-destructive border-destructive/40" : "text-primary border-primary/40")}>
                       {s.software_type}
                     </Badge>
                   </TableCell>
-                  <TableCell className="font-mono text-[10px] text-muted-foreground">{s.platforms.slice(0, 3).join(", ")}</TableCell>
+                  <TableCell className="font-mono text-xs text-muted-foreground">{s.platforms.slice(0, 3).join(", ")}</TableCell>
                   <TableCell>
                     <DomainBadges domains={s.domains} />
                   </TableCell>

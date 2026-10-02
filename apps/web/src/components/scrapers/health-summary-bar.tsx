@@ -27,7 +27,7 @@ export function HealthSummaryBar({
   });
 
   if (query.isPending) {
-    return <div className="mb-4 h-16 animate-pulse rounded-md border border-border bg-surface" />;
+    return <div className="mb-4 h-16 animate-pulse rounded-2xl border border-border bg-surface shadow-sm" />;
   }
   if (query.isError || !query.data) {
     return (
@@ -41,19 +41,19 @@ export function HealthSummaryBar({
   const total = Object.values(counts).reduce((a, b) => a + b, 0);
 
   return (
-    <div className="mb-4 rounded-md border border-border bg-surface p-4">
+    <div className="mb-4 rounded-2xl border border-border bg-surface shadow-sm p-4">
       <div className="mb-3 flex items-center justify-between">
-        <div className="font-mono text-[10px] tracking-[0.1em] text-muted-foreground uppercase">
+        <div className="font-mono text-xs tracking-[0.1em] text-muted-foreground uppercase">
           Fleet Health — {total} scraper
         </div>
-        <div className="font-mono text-[9px] text-muted-foreground">
+        <div className="font-mono text-xs text-muted-foreground">
           as of {generated_at.replace("T", " ").split(".")[0]} UTC
         </div>
       </div>
 
       <div className="flex flex-wrap gap-2">
         {STATUS_ORDER.filter((s) => counts[s]).map((s) => (
-          <div key={s} className="flex items-center gap-1.5 rounded-sm border border-border bg-surface2 px-2 py-1">
+          <div key={s} className="flex items-center gap-1.5 rounded-full border border-border bg-surface2 px-2 py-1">
             <StatusBadge status={s} />
             <span className="font-mono text-xs text-foreground">{counts[s]}</span>
           </div>
@@ -62,7 +62,7 @@ export function HealthSummaryBar({
 
       {problems.length > 0 && (
         <div className="mt-3 border-t border-border pt-3">
-          <div className="mb-1.5 font-mono text-[9px] tracking-wide text-muted-foreground uppercase">
+          <div className="mb-1.5 font-mono text-xs tracking-wide text-muted-foreground uppercase">
             Needs attention ({problems.length})
           </div>
           <div className="flex flex-wrap gap-1.5">
@@ -71,11 +71,11 @@ export function HealthSummaryBar({
                 key={p.id}
                 type="button"
                 onClick={() => onSelectProblem(p.id, p.status)}
-                className="flex items-center gap-1.5 rounded-sm border border-border bg-surface2 px-2 py-1 text-left transition-colors hover:border-primary/40"
+                className="flex items-center gap-1.5 rounded-full border border-border bg-surface2 px-2 py-1 text-left transition-colors hover:border-primary/40"
                 title={p.last_status ? `last run: ${p.last_status}` : "never run"}
               >
                 <StatusBadge status={p.status} />
-                <span className="font-mono text-[10px] text-foreground">{p.id}</span>
+                <span className="font-mono text-xs text-foreground">{p.id}</span>
               </button>
             ))}
           </div>

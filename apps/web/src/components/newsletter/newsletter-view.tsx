@@ -236,7 +236,7 @@ export function NewsletterView() {
 
       <div className="rounded-lg border border-border bg-surface p-4">
         <div className="mb-3 flex items-center justify-between border-b border-border pb-3">
-          <div className="font-mono text-[11px] tracking-[0.1em] text-muted-foreground uppercase">Newsletter Composer</div>
+          <div className="font-mono text-[13px] tracking-[0.1em] text-muted-foreground uppercase">Newsletter Composer</div>
           <div className="flex gap-2">
             <Button variant="outline" size="sm" onClick={handlePreview}>
               Preview

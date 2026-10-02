@@ -104,7 +104,7 @@ export function IocTable({ onSelect }: { onSelect: (target: IocTarget) => void }
                   setType(active ? "" : t.type);
                   setPage(1);
                 }}
-                className="rounded-sm border px-2 py-1 font-mono text-[10px] transition-colors"
+                className="rounded-full border px-2 py-1 font-mono text-xs transition-colors"
                 style={{
                   background: active ? s.color : s.bg,
                   borderColor: s.border,
@@ -120,7 +120,7 @@ export function IocTable({ onSelect }: { onSelect: (target: IocTarget) => void }
 
       <div className="mb-3 flex flex-wrap items-end gap-2 border-b border-border pb-3">
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Search</Label>
+          <Label className="font-mono text-xs text-muted-foreground uppercase">Search</Label>
           <Input
             placeholder="IOC value…"
             value={search}
@@ -132,7 +132,7 @@ export function IocTable({ onSelect }: { onSelect: (target: IocTarget) => void }
           />
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Type</Label>
+          <Label className="font-mono text-xs text-muted-foreground uppercase">Type</Label>
           <Select
             items={{ [ALL]: "All Types", ...Object.fromEntries(IOC_TYPES.map((t) => [t, iocTypeStyle(t).label])) }}
             value={type || ALL}
@@ -157,7 +157,7 @@ export function IocTable({ onSelect }: { onSelect: (target: IocTarget) => void }
           </Select>
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Actionability</Label>
+          <Label className="font-mono text-xs text-muted-foreground uppercase">Actionability</Label>
           <Select
             items={{ [ALL]: "All", ...Object.fromEntries(ACTIONABILITY_OPTIONS.map((a) => [a, a.replace("_", " ")])) }}
             value={actionability || ALL}
@@ -182,7 +182,7 @@ export function IocTable({ onSelect }: { onSelect: (target: IocTarget) => void }
           </Select>
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Sort</Label>
+          <Label className="font-mono text-xs text-muted-foreground uppercase">Sort</Label>
           <Select
             items={{ last_seen: "Last Seen", confidence: "Confidence" }}
             value={sortBy || "last_seen"}
@@ -205,7 +205,7 @@ export function IocTable({ onSelect }: { onSelect: (target: IocTarget) => void }
           </Select>
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Page Size</Label>
+          <Label className="font-mono text-xs text-muted-foreground uppercase">Page Size</Label>
           <Select
             items={Object.fromEntries(PAGE_SIZE_OPTIONS.map((n) => [String(n), String(n)]))}
             value={String(pageSize)}
@@ -226,7 +226,7 @@ export function IocTable({ onSelect }: { onSelect: (target: IocTarget) => void }
             </SelectContent>
           </Select>
         </div>
-        <span className="ml-auto font-mono text-[11px] text-muted-foreground">{total} IOCs</span>
+        <span className="ml-auto font-mono text-[13px] text-muted-foreground">{total} IOCs</span>
       </div>
 
       {listQuery.isPending && <p className="py-8 text-center text-xs text-muted-foreground">Loading…</p>}
@@ -260,7 +260,7 @@ export function IocTable({ onSelect }: { onSelect: (target: IocTarget) => void }
                   <TableCell>
                     <IocTypeBadge type={ioc.type} />
                   </TableCell>
-                  <TableCell className="max-w-[320px] truncate font-mono text-[11px] text-foreground" title={ioc.value}>
+                  <TableCell className="max-w-[320px] truncate font-mono text-[13px] text-foreground" title={ioc.value}>
                     {ioc.value}
                   </TableCell>
                   <TableCell className="text-center">
@@ -269,16 +269,16 @@ export function IocTable({ onSelect }: { onSelect: (target: IocTarget) => void }
                   <TableCell className="text-center">
                     <IocActionabilityChip label={ioc.actionability_label} />
                   </TableCell>
-                  <TableCell className="text-center font-mono text-[11px] text-muted-foreground">{ioc.seen_count || 1}</TableCell>
-                  <TableCell className="font-mono text-[10px] text-muted-foreground">{ioc.first_seen || "—"}</TableCell>
-                  <TableCell className="font-mono text-[10px] text-muted-foreground">{ioc.last_seen || "—"}</TableCell>
+                  <TableCell className="text-center font-mono text-[13px] text-muted-foreground">{ioc.seen_count || 1}</TableCell>
+                  <TableCell className="font-mono text-xs text-muted-foreground">{ioc.first_seen || "—"}</TableCell>
+                  <TableCell className="font-mono text-xs text-muted-foreground">{ioc.last_seen || "—"}</TableCell>
                   <TableCell className="text-center whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
                     <button
                       type="button"
                       disabled={feedbackPending === ioc.id}
                       onClick={() => void submitFeedback(ioc.id, "tp")}
                       title="True Positive"
-                      className={cn("rounded-sm border border-success/35 bg-success/10 px-1.5 py-0.5 text-[11px] text-success", feedbackPending === ioc.id && "opacity-50")}
+                      className={cn("rounded-full border border-success/35 bg-success/10 px-1.5 py-0.5 text-[13px] text-success", feedbackPending === ioc.id && "opacity-50")}
                     >
                       👍
                     </button>
@@ -287,7 +287,7 @@ export function IocTable({ onSelect }: { onSelect: (target: IocTarget) => void }
                       disabled={feedbackPending === ioc.id}
                       onClick={() => void submitFeedback(ioc.id, "fp")}
                       title="False Positive"
-                      className={cn("ml-1 rounded-sm border border-destructive/35 bg-destructive/10 px-1.5 py-0.5 text-[11px] text-destructive", feedbackPending === ioc.id && "opacity-50")}
+                      className={cn("ml-1 rounded-full border border-destructive/35 bg-destructive/10 px-1.5 py-0.5 text-[13px] text-destructive", feedbackPending === ioc.id && "opacity-50")}
                     >
                       👎
                     </button>

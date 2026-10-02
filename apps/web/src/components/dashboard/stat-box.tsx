@@ -12,12 +12,10 @@ interface StatBoxProps {
 /** Port `.dash-stat-box` dari `newsroom.html`/`custom.css` lama. */
 export function StatBox({ label, value, sub, className }: StatBoxProps) {
   return (
-    <div className={cn("rounded-md border border-border bg-surface px-4 py-3", className)}>
-      <div className="font-mono text-[10px] tracking-wide text-muted-foreground uppercase">
-        {label}
-      </div>
-      <div className="font-heading text-2xl text-foreground">{value ?? "—"}</div>
-      <div className="mt-0.5 text-xs text-muted-foreground">{sub}</div>
+    <div className={cn("rounded-2xl border border-border bg-surface px-5 py-4 shadow-sm", className)}>
+      <div className="text-sm font-medium text-muted-foreground">{label}</div>
+      <div className="mt-1 font-heading text-4xl font-bold tracking-tight text-foreground tabular-nums">{value ?? "—"}</div>
+      <div className="mt-1 text-sm text-muted-foreground">{sub}</div>
     </div>
   );
 }
@@ -33,7 +31,7 @@ export function DashboardSectionLabel({
   return (
     <div
       className={cn(
-        "mt-6 mb-2 border-b border-border pb-1 font-mono text-[10px] tracking-[0.12em] text-muted-foreground uppercase",
+        "mt-8 mb-3 font-heading text-lg font-semibold text-foreground",
         className,
       )}
     >
@@ -53,8 +51,8 @@ export function ChartCard({
   children: ReactNode;
 }) {
   return (
-    <div className="rounded-md border border-border bg-surface p-3">
-      <div className="mb-2 font-mono text-xs text-muted-foreground">{title}</div>
+    <div className="rounded-2xl border border-border bg-surface p-5 shadow-sm">
+      <div className="mb-3 text-base font-semibold text-foreground">{title}</div>
       <div style={{ height }}>{children}</div>
     </div>
   );

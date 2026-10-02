@@ -50,27 +50,27 @@ export function MindmapWidget({ featureType, docId, title }: MindmapWidgetProps)
   return (
     <div className="mb-2.5">
       <div className="mb-1.5 flex items-center gap-2">
-        <span className="font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">Mind Map</span>
+        <span className="font-mono text-xs tracking-[0.06em] text-muted-foreground uppercase">Mind Map</span>
         <button
           type="button"
           onClick={() => setExpanded((v) => !v)}
-          className="rounded-sm border border-primary/30 bg-primary/8 px-2 py-0.5 font-mono text-[8px] text-primary"
+          className="rounded-full border border-primary/30 bg-primary/8 px-2 py-0.5 font-mono text-xs text-primary"
         >
           {expanded ? "⬡ Hide Map" : "⬡ Mind Map"}
         </button>
         <button
           type="button"
           onClick={() => setEditorOpen(true)}
-          className="rounded-sm border border-border px-2 py-0.5 font-mono text-[8px] text-muted-foreground"
+          className="rounded-full border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground"
         >
           ✎ Edit Mindmap
         </button>
       </div>
 
       {expanded && (
-        <div className="max-h-[400px] overflow-auto rounded-md border border-border bg-surface2 p-3">
-          {query.isPending && <div className="font-mono text-[10px] text-muted-foreground">Loading…</div>}
-          {query.isError && <div className="font-mono text-[10px] text-destructive">Failed to load mind map.</div>}
+        <div className="max-h-[400px] overflow-auto rounded-2xl border border-border bg-surface shadow-sm2 p-3">
+          {query.isPending && <div className="font-mono text-xs text-muted-foreground">Loading…</div>}
+          {query.isError && <div className="font-mono text-xs text-destructive">Failed to load mind map.</div>}
           <div ref={diagramRef} />
         </div>
       )}

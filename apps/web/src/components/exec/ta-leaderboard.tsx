@@ -36,11 +36,11 @@ export function TaLeaderboard({ d }: { d: ExecDashboardV2 }) {
             title={`${toTitleCase(ta.name)} — Click to view in News Room\nSignal Quality: ${conf !== null ? conf + "% of mentions are incident-type articles" : "unknown"}`}
             onClick={() => router.push("/newsroom")}
           >
-            <span className="flex min-w-0 flex-1 items-center gap-1 truncate font-mono text-[10px] text-foreground">
+            <span className="flex min-w-0 flex-1 items-center gap-1 truncate font-mono text-xs text-foreground">
               {toTitleCase(ta.name)}
               <span
                 className={cn(
-                  "shrink-0 rounded px-1 py-0.5 text-[8px]",
+                  "shrink-0 rounded px-1 py-0.5 text-xs",
                   isNew ? "bg-success/20 text-success" : "bg-muted text-muted-foreground",
                 )}
               >
@@ -50,9 +50,9 @@ export function TaLeaderboard({ d }: { d: ExecDashboardV2 }) {
             <div className="mx-2 h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
               <div className="h-full rounded-full bg-primary/60" style={{ width: `${pct}%` }} />
             </div>
-            <span className="font-mono text-[10px] text-muted-foreground">{ta.count}</span>
+            <span className="font-mono text-xs text-muted-foreground">{ta.count}</span>
             <span
-              className={cn("ml-auto shrink-0 rounded px-1 py-0.5 font-mono text-[8px]", confColor, confColor.replace("text-", "bg-") + "/15")}
+              className={cn("ml-auto shrink-0 rounded px-1 py-0.5 font-mono text-xs", confColor, confColor.replace("text-", "bg-") + "/15")}
               title="Signal quality: % of articles classified as incident type"
             >
               {conf === null ? "?" : `${conf}%`}

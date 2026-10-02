@@ -128,7 +128,7 @@ export function TaGroupsPanel() {
     <div>
       <div className="mb-3 flex flex-wrap items-end gap-2 border-b border-border pb-3">
         <div className="flex flex-col gap-1">
-          <label className="font-mono text-[9px] text-muted-foreground uppercase">Search</label>
+          <label className="font-mono text-xs text-muted-foreground uppercase">Search</label>
           <Input
             placeholder="Actor name…"
             value={search}
@@ -140,7 +140,7 @@ export function TaGroupsPanel() {
           />
         </div>
         <div className="flex flex-col gap-1">
-          <label className="font-mono text-[9px] text-muted-foreground uppercase">Add Group</label>
+          <label className="font-mono text-xs text-muted-foreground uppercase">Add Group</label>
           <div className="flex gap-1.5">
             <Input
               placeholder="New threat actor name…"
@@ -154,7 +154,7 @@ export function TaGroupsPanel() {
             </Button>
           </div>
         </div>
-        <span className="ml-auto font-mono text-[11px] text-muted-foreground">
+        <span className="ml-auto font-mono text-[13px] text-muted-foreground">
           {total} group{total !== 1 ? "s" : ""} tracked
         </span>
       </div>
@@ -186,18 +186,18 @@ export function TaGroupsPanel() {
                 const isWatched = watchedSet?.has(g.name.toLowerCase()) ?? false;
                 return (
                   <TableRow key={g.id}>
-                    <TableCell className="font-mono text-[10px] text-muted-foreground">{(page - 1) * PAGE_SIZE + i + 1}</TableCell>
+                    <TableCell className="font-mono text-xs text-muted-foreground">{(page - 1) * PAGE_SIZE + i + 1}</TableCell>
                     <TableCell className="text-xs text-foreground">{g.name}</TableCell>
-                    <TableCell className="font-mono text-[10px] text-muted-foreground">{g.added_date}</TableCell>
+                    <TableCell className="font-mono text-xs text-muted-foreground">{g.added_date}</TableCell>
                     <TableCell>
-                      <span className="rounded-sm border border-border bg-surface2 px-1.5 py-0.5 font-mono text-[9px] text-muted-foreground">{g.source}</span>
+                      <span className="rounded-full border border-border bg-surface2 px-1.5 py-0.5 font-mono text-xs text-muted-foreground">{g.source}</span>
                     </TableCell>
                     <TableCell className="text-right whitespace-nowrap">
                       <button
                         type="button"
                         onClick={() => void toggleWatch(g.name, isWatched)}
                         className={cn(
-                          "mr-1.5 rounded-sm border px-1.5 py-0.5 font-mono text-[9px]",
+                          "mr-1.5 rounded-full border px-1.5 py-0.5 font-mono text-xs",
                           isWatched ? "border-primary/40 bg-primary/10 text-primary" : "border-border text-muted-foreground",
                         )}
                       >
@@ -206,7 +206,7 @@ export function TaGroupsPanel() {
                       <button
                         type="button"
                         onClick={() => setRemoveTarget(g)}
-                        className="rounded-sm border border-destructive/35 bg-destructive/10 px-1.5 py-0.5 font-mono text-[9px] text-destructive"
+                        className="rounded-full border border-destructive/35 bg-destructive/10 px-1.5 py-0.5 font-mono text-xs text-destructive"
                       >
                         ✕ REMOVE
                       </button>

@@ -233,7 +233,7 @@ function ScraperDetailForm({
 
   return (
     <div className="space-y-5">
-      <div className="grid grid-cols-2 gap-x-6 gap-y-1 font-mono text-[10px] text-muted-foreground sm:grid-cols-3">
+      <div className="grid grid-cols-2 gap-x-6 gap-y-1 font-mono text-xs text-muted-foreground sm:grid-cols-3">
         <div>Source: <span className="text-foreground">{detail.source}</span></div>
         <div>Runtime: <span className="text-foreground">{detail.runtime}</span></div>
         <div>Queue: <span className="text-foreground">{detail.queue}</span></div>
@@ -263,23 +263,23 @@ function ScraperDetailForm({
         <Button size="sm" variant="outline" disabled={!isAdmin} onClick={() => setConfirmResetDedup(true)}>
           Reset Dedup
         </Button>
-        {dryRunResult && <span className="self-center font-mono text-[10px] text-muted-foreground">{dryRunResult}</span>}
+        {dryRunResult && <span className="self-center font-mono text-xs text-muted-foreground">{dryRunResult}</span>}
       </div>
 
       <div>
         <div className="mb-2 flex items-center justify-between">
-          <span className="font-mono text-[10px] tracking-wide text-muted-foreground uppercase">
+          <span className="font-mono text-xs tracking-wide text-muted-foreground uppercase">
             Config override
           </span>
           {isAdmin && detail.config.updated_by && (
-            <span className="font-mono text-[9px] text-muted-foreground">
+            <span className="font-mono text-xs text-muted-foreground">
               by {detail.config.updated_by} · {detail.config.updated_at?.replace("T", " ").split(".")[0]}
             </span>
           )}
         </div>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <div className="space-y-1">
-            <Label className="font-mono text-[9px] text-muted-foreground uppercase">
+            <Label className="font-mono text-xs text-muted-foreground uppercase">
               Schedule (cron) — default {detail.default_schedule}
             </Label>
             <Input
@@ -291,7 +291,7 @@ function ScraperDetailForm({
             />
           </div>
           <div className="space-y-1">
-            <Label className="font-mono text-[9px] text-muted-foreground uppercase">
+            <Label className="font-mono text-xs text-muted-foreground uppercase">
               Rate limit — default {detail.default_rate_limit}
             </Label>
             <Input
@@ -303,7 +303,7 @@ function ScraperDetailForm({
             />
           </div>
           <div className="space-y-1">
-            <Label className="font-mono text-[9px] text-muted-foreground uppercase">
+            <Label className="font-mono text-xs text-muted-foreground uppercase">
               Max items — default {detail.default_max_items}
             </Label>
             <Input
@@ -325,7 +325,7 @@ function ScraperDetailForm({
             />
           ))}
           <div className="space-y-1 sm:col-span-2">
-            <Label className="font-mono text-[9px] text-muted-foreground uppercase">Paused reason</Label>
+            <Label className="font-mono text-xs text-muted-foreground uppercase">Paused reason</Label>
             <Textarea
               value={pausedReason}
               onChange={(e) => setPausedReason(e.target.value)}
@@ -347,12 +347,12 @@ function ScraperDetailForm({
       </div>
 
       <div>
-        <div className="mb-2 font-mono text-[10px] tracking-wide text-muted-foreground uppercase">Recent Runs</div>
+        <div className="mb-2 font-mono text-xs tracking-wide text-muted-foreground uppercase">Recent Runs</div>
         <ScraperRunsPanel scraperId={scraperId} />
       </div>
 
       <div>
-        <div className="mb-2 font-mono text-[10px] tracking-wide text-muted-foreground uppercase">Recent Items</div>
+        <div className="mb-2 font-mono text-xs tracking-wide text-muted-foreground uppercase">Recent Items</div>
         <ScraperItemsPanel scraperId={scraperId} />
       </div>
 
@@ -398,7 +398,7 @@ function OptionField({
   const unsaved = value !== option.value;
   return (
     <div className="space-y-1 sm:col-span-2">
-      <Label className="font-mono text-[9px] text-muted-foreground uppercase">
+      <Label className="font-mono text-xs text-muted-foreground uppercase">
         {option.label} — default {labels[option.default] ?? option.default}
       </Label>
       <Select items={labels} value={value} onValueChange={(v) => onChange(v ?? option.default)} disabled={disabled}>
@@ -413,9 +413,9 @@ function OptionField({
           ))}
         </SelectContent>
       </Select>
-      <p className="text-[10px] leading-snug text-muted-foreground">{option.description}</p>
+      <p className="text-xs leading-snug text-muted-foreground">{option.description}</p>
       {unsaved && (
-        <p className="font-mono text-[10px] text-amber-500">
+        <p className="font-mono text-xs text-amber-500">
           Belum disimpan — klik Save Config; berlaku di run berikutnya.
         </p>
       )}

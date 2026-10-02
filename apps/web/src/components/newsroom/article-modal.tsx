@@ -47,7 +47,7 @@ const IOC_FIELD_LABEL: Record<string, string> = {
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div>
-      <div className="mb-1.5 font-mono text-[10px] tracking-[0.1em] text-muted-foreground uppercase">{title}</div>
+      <div className="mb-1.5 font-mono text-xs tracking-[0.1em] text-muted-foreground uppercase">{title}</div>
       {children}
     </div>
   );
@@ -60,7 +60,7 @@ function Tags({ items }: { items: { label: string; suffix?: string; variant?: "o
       {items.map((it, i) => (
         <Badge key={`${it.label}-${i}`} variant={it.variant ?? "outline"} className="text-xs">
           {it.label}
-          {it.suffix && <span className="ml-1 text-[9px] opacity-70">{it.suffix}</span>}
+          {it.suffix && <span className="ml-1 text-xs opacity-70">{it.suffix}</span>}
         </Badge>
       ))}
     </div>
@@ -204,14 +204,14 @@ export function ArticleModal({ article: a, onOpenChange }: { article: Article | 
               <div className="flex flex-col gap-1.5">
                 {iocEntries.map(([field, vals]) => (
                   <div key={field} className="flex items-start gap-2">
-                    <Badge variant="outline" className="border-warning/30 bg-warning/10 font-mono text-[9px] text-warning">
+                    <Badge variant="outline" className="border-warning/30 bg-warning/10 font-mono text-xs text-warning">
                       {IOC_FIELD_LABEL[field] ?? field.toUpperCase()}
                     </Badge>
                     <div className="flex flex-wrap gap-1">
                       {vals.map((v) => (
                         <span
                           key={v}
-                          className="rounded border border-border bg-muted/40 px-1.5 py-0.5 font-mono text-[10px] text-foreground"
+                          className="rounded border border-border bg-muted/40 px-1.5 py-0.5 font-mono text-xs text-foreground"
                         >
                           {v}
                         </span>

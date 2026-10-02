@@ -50,18 +50,18 @@ export function ScraperRunsPanel({ scraperId }: { scraperId: string }) {
           <TableBody>
             {query.data.runs.map((r) => (
               <TableRow key={r.run_id}>
-                <TableCell className="font-mono text-[10px] text-muted-foreground">
+                <TableCell className="font-mono text-xs text-muted-foreground">
                   {r.started_at.replace("T", " ").split(".")[0]}
                 </TableCell>
-                <TableCell className="font-mono text-[10px] text-muted-foreground">{r.trigger}</TableCell>
+                <TableCell className="font-mono text-xs text-muted-foreground">{r.trigger}</TableCell>
                 <TableCell>
                   <RunStatusText status={r.status} />
                 </TableCell>
-                <TableCell className="font-mono text-[10px] text-foreground">{r.items_found}</TableCell>
-                <TableCell className="font-mono text-[10px] text-foreground">{r.items_new}</TableCell>
-                <TableCell className="font-mono text-[10px] text-muted-foreground">{r.items_dropped}</TableCell>
-                <TableCell className="font-mono text-[10px] text-destructive">{r.items_failed || ""}</TableCell>
-                <TableCell className="font-mono text-[10px] text-muted-foreground">
+                <TableCell className="font-mono text-xs text-foreground">{r.items_found}</TableCell>
+                <TableCell className="font-mono text-xs text-foreground">{r.items_new}</TableCell>
+                <TableCell className="font-mono text-xs text-muted-foreground">{r.items_dropped}</TableCell>
+                <TableCell className="font-mono text-xs text-destructive">{r.items_failed || ""}</TableCell>
+                <TableCell className="font-mono text-xs text-muted-foreground">
                   {r.duration_ms != null ? `${r.duration_ms}ms` : "—"}
                 </TableCell>
               </TableRow>

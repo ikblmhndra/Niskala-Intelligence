@@ -32,7 +32,7 @@ export function NewsletterComposerSections({ state, onRemove, onNoteChange }: Pr
           <div key={def.key}>
             <div
               className={cn(
-                "mb-2 flex items-center justify-between border-b border-border pb-1.5 font-mono text-[10px] tracking-[0.1em] uppercase",
+                "mb-2 flex items-center justify-between border-b border-border pb-1.5 font-mono text-xs tracking-[0.1em] uppercase",
                 def.colorClass,
               )}
             >
@@ -52,16 +52,16 @@ export function NewsletterComposerSections({ state, onRemove, onNoteChange }: Pr
                       key={i}
                       className="flex min-h-9 items-center justify-center rounded-md border border-dashed border-border bg-surface px-3 py-2"
                     >
-                      <span className="font-mono text-[10px] text-muted-foreground">— empty —</span>
+                      <span className="font-mono text-xs text-muted-foreground">— empty —</span>
                     </div>
                   );
                 }
                 return (
-                  <div key={art.id} className="rounded-md border border-border bg-surface2 p-2.5">
+                  <div key={art.id} className="rounded-2xl border border-border bg-surface shadow-sm2 p-2.5">
                     <div className="flex items-start justify-between gap-2">
                       <div className="min-w-0">
                         <div className="text-xs font-semibold text-foreground">{art.title}</div>
-                        <div className="mt-0.5 font-mono text-[9px] text-muted-foreground">
+                        <div className="mt-0.5 font-mono text-xs text-muted-foreground">
                           {art.source} · {art.posted_on}
                         </div>
                       </div>
@@ -78,7 +78,7 @@ export function NewsletterComposerSections({ state, onRemove, onNoteChange }: Pr
                       placeholder="Analyst notes (optional)…"
                       value={state.notes[String(art.id)] ?? ""}
                       onChange={(e) => onNoteChange(art.id, e.target.value)}
-                      className="mt-2 h-14 resize-y bg-black/20 font-mono text-[10px]"
+                      className="mt-2 h-14 resize-y bg-black/20 font-mono text-xs"
                     />
                   </div>
                 );

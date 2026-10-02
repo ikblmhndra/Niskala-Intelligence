@@ -42,7 +42,7 @@ export function FilterBar({ draft, onDraftChange, onApply, onReset }: FilterBarP
 
   return (
     <div className="mb-4 flex flex-wrap items-center gap-2 border-b border-border pb-3">
-      <span className="font-mono text-[10px] tracking-[0.1em] text-muted-foreground uppercase">Filter</span>
+      <span className="font-mono text-xs tracking-[0.1em] text-muted-foreground uppercase">Filter</span>
       <Input
         placeholder="Search titles…"
         value={draft.search}

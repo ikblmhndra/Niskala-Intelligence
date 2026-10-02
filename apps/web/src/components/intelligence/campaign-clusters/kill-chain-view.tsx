@@ -13,12 +13,12 @@ export function KillChainView({ killChain: kc }: { killChain: KillChain }) {
 
   return (
     <div className="mb-2.5">
-      <div className="mb-1.5 flex flex-wrap items-center gap-2 font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
+      <div className="mb-1.5 flex flex-wrap items-center gap-2 font-mono text-xs tracking-[0.06em] text-muted-foreground uppercase">
         Kill Chain Coverage
-        <span className="rounded-sm border px-1.5 py-0.5 text-[9px] font-bold normal-case" style={{ background: tint(labelColor, 13), borderColor: tint(labelColor, 33), color: labelColor }}>
+        <span className="rounded-full border px-1.5 py-0.5 text-xs font-bold normal-case" style={{ background: tint(labelColor, 13), borderColor: tint(labelColor, 33), color: labelColor }}>
           {kc.completeness_score}% — {kc.completeness_label.replace(/_/g, " ")}
         </span>
-        <span className="text-[9px] normal-case" style={{ color: riskColor }}>
+        <span className="text-xs normal-case" style={{ color: riskColor }}>
           Risk: {kc.operational_risk}
         </span>
       </div>
@@ -27,7 +27,7 @@ export function KillChainView({ killChain: kc }: { killChain: KillChain }) {
           <div
             key={p.phase}
             title={`${p.phase.replace(/_/g, " ")}${p.techniques.length ? "\n" + p.techniques.join("\n") : ""}`}
-            className="h-3 flex-1 rounded-sm border"
+            className="h-3 flex-1 rounded-full border"
             style={{ background: p.covered ? labelColor : tint("var(--muted-foreground)", 20), borderColor: p.covered ? labelColor : tint("var(--muted-foreground)", 30), opacity: p.covered ? 0.85 : 0.3 }}
           />
         ))}
@@ -40,13 +40,13 @@ export function KillChainView({ killChain: kc }: { killChain: KillChain }) {
         ))}
       </div>
       {covered.length > 0 && (
-        <div className="rounded-md border border-border bg-surface2 p-2">
+        <div className="rounded-2xl border border-border bg-surface shadow-sm2 p-2">
           {covered.map((p) => (
             <div key={p.phase} className="flex items-start gap-1.5 py-0.5">
-              <span className="w-[100px] flex-shrink-0 pt-px font-mono text-[9px] text-muted-foreground">{p.phase.replace(/_/g, " ")}</span>
+              <span className="w-[100px] flex-shrink-0 pt-px font-mono text-xs text-muted-foreground">{p.phase.replace(/_/g, " ")}</span>
               <div className="flex flex-wrap gap-1">
                 {p.techniques.map((t, i) => (
-                  <span key={i} className="rounded-sm border border-tag-violet/30 bg-tag-violet/15 px-1 py-0.5 font-mono text-[8px] text-tag-violet">
+                  <span key={i} className="rounded-full border border-tag-violet/30 bg-tag-violet/15 px-1 py-0.5 font-mono text-xs text-tag-violet">
                     {t}
                   </span>
                 ))}

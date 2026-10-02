@@ -12,11 +12,11 @@ import type { components } from "@/lib/api/schema";
 type PIROut = components["schemas"]["PIROut"];
 
 function Chips({ items }: { items: string[] | undefined }) {
-  if (!items || items.length === 0) return <span className="font-mono text-[10px] text-muted-foreground">—</span>;
+  if (!items || items.length === 0) return <span className="font-mono text-xs text-muted-foreground">—</span>;
   return (
     <div className="flex flex-wrap gap-1.5">
       {items.map((v, i) => (
-        <span key={i} className="rounded-sm border border-primary/25 bg-primary/8 px-1.5 py-0.5 font-mono text-[10px] text-primary">
+        <span key={i} className="rounded-full border border-primary/25 bg-primary/8 px-1.5 py-0.5 font-mono text-xs text-primary">
           {v}
         </span>
       ))}
@@ -40,45 +40,45 @@ export function ClusterPirDialog({ pir, onClose }: { pir: MatchedPir | null; onC
             <>
               <DialogHeader>
                 <div className="flex items-center gap-2">
-                  <Badge variant="destructive" className="text-[9px]">
+                  <Badge variant="destructive" className="text-xs">
                     PIR
                   </Badge>
-                  <span className={`font-mono text-[10px] font-bold ${PRIORITY_COLOR[pir.priority] ?? "text-muted-foreground"}`}>{pir.priority}</span>
-                  <span className="font-mono text-[10px] text-muted-foreground">{pir.status}</span>
+                  <span className={`font-mono text-xs font-bold ${PRIORITY_COLOR[pir.priority] ?? "text-muted-foreground"}`}>{pir.priority}</span>
+                  <span className="font-mono text-xs text-muted-foreground">{pir.status}</span>
                 </div>
                 <DialogTitle className="text-base">{pir.title}</DialogTitle>
               </DialogHeader>
 
-              {pir.description && <p className="rounded-md border border-border bg-surface2 p-2.5 text-xs leading-relaxed text-foreground">{pir.description}</p>}
+              {pir.description && <p className="rounded-2xl border border-border bg-surface shadow-sm2 p-2.5 text-xs leading-relaxed text-foreground">{pir.description}</p>}
 
               <div className="grid gap-2.5">
                 {(pir.criteria.threat_actors?.length ?? 0) > 0 && (
                   <div>
-                    <div className="mb-1 font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">Threat Actors</div>
+                    <div className="mb-1 font-mono text-xs tracking-[0.06em] text-muted-foreground uppercase">Threat Actors</div>
                     <Chips items={pir.criteria.threat_actors} />
                   </div>
                 )}
                 {(pir.criteria.industries?.length ?? 0) > 0 && (
                   <div>
-                    <div className="mb-1 font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">Industries</div>
+                    <div className="mb-1 font-mono text-xs tracking-[0.06em] text-muted-foreground uppercase">Industries</div>
                     <Chips items={pir.criteria.industries} />
                   </div>
                 )}
                 {(pir.criteria.countries?.length ?? 0) > 0 && (
                   <div>
-                    <div className="mb-1 font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">Countries</div>
+                    <div className="mb-1 font-mono text-xs tracking-[0.06em] text-muted-foreground uppercase">Countries</div>
                     <Chips items={pir.criteria.countries} />
                   </div>
                 )}
                 {(pir.criteria.keywords?.length ?? 0) > 0 && (
                   <div>
-                    <div className="mb-1 font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">Keywords</div>
+                    <div className="mb-1 font-mono text-xs tracking-[0.06em] text-muted-foreground uppercase">Keywords</div>
                     <Chips items={pir.criteria.keywords} />
                   </div>
                 )}
                 {(pir.criteria.ttps?.length ?? 0) > 0 && (
                   <div>
-                    <div className="mb-1 font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">TTPs</div>
+                    <div className="mb-1 font-mono text-xs tracking-[0.06em] text-muted-foreground uppercase">TTPs</div>
                     <Chips items={pir.criteria.ttps} />
                   </div>
                 )}

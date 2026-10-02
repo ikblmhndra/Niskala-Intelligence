@@ -58,7 +58,7 @@ export default function CveTrackerPage() {
                 key={s.id}
                 onClick={() => setSubview(s.id)}
                 className={cn(
-                  "rounded-md border px-3 py-1 font-mono text-[11px] tracking-wide transition-colors",
+                  "rounded-md border px-3 py-1 font-mono text-[13px] tracking-wide transition-colors",
                   subview === s.id
                     ? "border-primary/40 bg-primary/10 text-primary"
                     : "border-border text-muted-foreground hover:bg-accent",

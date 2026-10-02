@@ -14,7 +14,8 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-google-sans-flex);
-  --font-mono: var(--font-ibm-plex-mono);
+  --font-mono: var(--font-google-sans-flex);
+  --font-code: var(--font-ibm-plex-mono);
   --font-heading: var(--font-google-sans-flex);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -75,25 +76,25 @@
 }
 
 :root {
-  --background: #f2e8dd; /* Clear Beige */
-  --foreground: #430a23; /* Heartful Burgundy */
+  --background: #faf6f1; /* Clear Beige, dilapangkan supaya tidak datar */
+  --foreground: #2b0d19; /* Burgundy gelap */
   --surface: #ffffff; /* card/popover */
-  --panel: #e8dacb; /* elevasi lebih tinggi / nested panel */
+  --panel: #f2e8dd; /* Clear Beige: panel/hover/nested */
   --card: var(--surface);
   --card-foreground: var(--foreground);
   --popover: var(--surface);
   --popover-foreground: var(--foreground);
   --primary: #d0002f; /* Privy Red, digelapkan sedikit dari #e60034 supaya teks merah di atas beige lulus AA */
   --primary-foreground: #ffffff;
-  --secondary: #e8dacb;
+  --secondary: #f2e8dd;
   --secondary-foreground: var(--foreground);
   --muted: var(--panel);
   --muted-foreground: #6b4452;
   --accent: var(--panel);
   --accent-foreground: var(--foreground);
   --destructive: #b42318; /* oranye-merah, beda hue dari --primary */
-  --border: #c9b5a3;
-  --input: #c9b5a3;
+  --border: #e4d6c8;
+  --input: #e4d6c8;
   --ring: #d0002f;
   --success: #17703f;
   --warning: #9a4a00;
@@ -123,25 +124,25 @@
 }
 
 .dark {
-  --background: #2a0616;
-  --foreground: #f2e8dd;
-  --surface: #430a23; /* Heartful Burgundy */
-  --panel: #561633;
+  --background: #150a10; /* hampir hitam, bernuansa burgundy: surface terbaca terpisah */
+  --foreground: #f6ede4;
+  --surface: #221019;
+  --panel: #331a27;
   --card: var(--surface);
   --card-foreground: var(--foreground);
   --popover: var(--surface);
   --popover-foreground: var(--foreground);
   --primary: #ff4d6d;
-  --primary-foreground: #2a0616;
-  --secondary: #561633;
+  --primary-foreground: #150a10;
+  --secondary: #331a27;
   --secondary-foreground: var(--foreground);
   --muted: var(--panel);
-  --muted-foreground: #cfb3bf;
+  --muted-foreground: #bfa7b3;
   --accent: var(--panel);
   --accent-foreground: var(--foreground);
   --destructive: #ff7a6e;
-  --border: #7a3550;
-  --input: #7a3550;
+  --border: #47293a;
+  --input: #47293a;
   --ring: #ff4d6d;
   --success: #76ce93;
   --warning: #ffa164;
@@ -178,6 +179,17 @@
   }
   html {
     @apply font-sans;
+    font-feature-settings: "tnum" 1;
+  }
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  [role="tab"],
+  summary,
+  select {
+    cursor: pointer;
+  }
+  h1, h2, h3 {
+    letter-spacing: -0.01em;
   }
 }
 

@@ -69,7 +69,7 @@ export function ChangePasswordDialog({
           <DialogTitle className="font-heading">Change Password</DialogTitle>
         </DialogHeader>
         <div className="space-y-1.5">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">
+          <Label className="font-mono text-xs text-muted-foreground uppercase">
             New Password <span className="normal-case opacity-70">({policyHint(policy)})</span>
           </Label>
           <Input type="password" value={pw} onChange={(e) => setPw(e.target.value)} className="font-mono text-xs" />

@@ -13,7 +13,7 @@ import { cvssColorClass } from "@/lib/exec/format";
 import type { ExecDashboardV2, IocFeedbackResponse } from "@/lib/api/loose-types";
 
 function EmptyNote() {
-  return <p className="py-3 font-mono text-[10px] text-muted-foreground">No data yet — feature pending.</p>;
+  return <p className="py-3 font-mono text-xs text-muted-foreground">No data yet — feature pending.</p>;
 }
 
 /** Port Cluster List role-gated (`exec.js:494-509`). Klik summary title
@@ -37,10 +37,10 @@ export function ClusterList({ d }: { d: ExecDashboardV2 }) {
           <TableRow key={c.cluster_id}>
             <TableCell className="text-xs text-primary">{c.summary_title || "—"}</TableCell>
             <TableCell className="font-mono text-xs">{c.size || "—"}</TableCell>
-            <TableCell className="font-mono text-[10px] text-muted-foreground">
+            <TableCell className="font-mono text-xs text-muted-foreground">
               {c.threat_actors.slice(0, 3).join(", ") || "—"}
             </TableCell>
-            <TableCell className="font-mono text-[10px]">{c.last_seen || "—"}</TableCell>
+            <TableCell className="font-mono text-xs">{c.last_seen || "—"}</TableCell>
           </TableRow>
         ))}
       </TableBody>
@@ -102,15 +102,15 @@ export function FpQueue({ d }: { d: ExecDashboardV2 }) {
           return (
             <TableRow key={ioc.id}>
               <TableCell className="font-mono text-xs text-primary">{ioc.value || "—"}</TableCell>
-              <TableCell className="font-mono text-[10px] text-muted-foreground">{ioc.type || "—"}</TableCell>
-              <TableCell className="font-mono text-[9px] text-muted-foreground">{ioc.last_seen || "—"}</TableCell>
+              <TableCell className="font-mono text-xs text-muted-foreground">{ioc.type || "—"}</TableCell>
+              <TableCell className="font-mono text-xs text-muted-foreground">{ioc.last_seen || "—"}</TableCell>
               <TableCell className={cn("font-mono text-xs", confColor)}>{conf}%</TableCell>
               <TableCell>
                 <div className="flex gap-1">
                   <Button
                     size="sm"
                     variant="outline"
-                    className="h-6 px-1.5 text-[10px]"
+                    className="h-6 px-1.5 text-xs"
                     disabled={voting === ioc.id}
                     title="Mark as true positive"
                     onClick={() => void vote(ioc.id, "tp")}
@@ -120,7 +120,7 @@ export function FpQueue({ d }: { d: ExecDashboardV2 }) {
                   <Button
                     size="sm"
                     variant="outline"
-                    className="h-6 px-1.5 text-[10px]"
+                    className="h-6 px-1.5 text-xs"
                     disabled={voting === ioc.id}
                     title="Mark as false positive"
                     onClick={() => void vote(ioc.id, "fp")}
@@ -167,7 +167,7 @@ export function CriticalCveFeed({ d }: { d: ExecDashboardV2 }) {
             <TableCell className={cn("font-mono text-xs", cvssColorClass(c.cve_score))}>
               {c.cve_score != null ? c.cve_score.toFixed(1) : "—"}
             </TableCell>
-            <TableCell>{c.cisa_kev ? <span className="font-mono text-[9px] text-destructive">KEV</span> : "—"}</TableCell>
+            <TableCell>{c.cisa_kev ? <span className="font-mono text-xs text-destructive">KEV</span> : "—"}</TableCell>
           </TableRow>
         ))}
       </TableBody>

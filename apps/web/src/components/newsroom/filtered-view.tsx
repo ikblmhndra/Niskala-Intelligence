@@ -76,7 +76,7 @@ export function FilteredView() {
         {query.data && query.data.items.length > 0 && (
           <div className="flex flex-col gap-1.5">
             {query.data.items.map((a) => (
-              <div key={a.id} className="flex items-start gap-2.5 rounded-md border border-border bg-surface p-2.5">
+              <div key={a.id} className="flex items-start gap-2.5 rounded-2xl border border-border bg-surface shadow-sm p-2.5">
                 <div className="min-w-0 flex-1">
                   <a
                     href={a.url}
@@ -86,7 +86,7 @@ export function FilteredView() {
                   >
                     {a.title}
                   </a>
-                  <div className="mt-1 flex gap-2 font-mono text-[10px] text-muted-foreground">
+                  <div className="mt-1 flex gap-2 font-mono text-xs text-muted-foreground">
                     <span>{(a.rejected_at ?? "").slice(0, 10)}</span>
                     <span>{a.source}</span>
                     {a.posted_on && <span>posted {a.posted_on}</span>}

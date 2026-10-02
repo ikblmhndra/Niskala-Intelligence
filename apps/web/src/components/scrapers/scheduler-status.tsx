@@ -36,7 +36,7 @@ export function SchedulerStatus() {
 
   if (scheduler.state === "ok") {
     return (
-      <div className="mb-2 flex items-center gap-1.5 font-mono text-[10px] text-muted-foreground">
+      <div className="mb-2 flex items-center gap-1.5 font-mono text-xs text-muted-foreground">
         <span className="inline-block size-1.5 rounded-full bg-emerald-500" />
         Scheduler alive — last tick {formatAge(scheduler.age_s)}
         {scheduler.started_at && <> · up since {scheduler.started_at.replace("T", " ").split(".")[0]} UTC</>}

@@ -63,7 +63,7 @@ export function TaWhitelistPanel() {
     <div>
       <div className="mb-3 flex flex-wrap items-end gap-2 border-b border-border pb-3">
         <div className="flex flex-col gap-1">
-          <label className="font-mono text-[9px] text-muted-foreground uppercase">Search</label>
+          <label className="font-mono text-xs text-muted-foreground uppercase">Search</label>
           <Input
             placeholder="Actor name…"
             value={search}
@@ -74,7 +74,7 @@ export function TaWhitelistPanel() {
             className="w-48 font-mono text-xs"
           />
         </div>
-        <span className="ml-auto font-mono text-[11px] text-muted-foreground">
+        <span className="ml-auto font-mono text-[13px] text-muted-foreground">
           {total} group{total !== 1 ? "s" : ""} whitelisted
         </span>
       </div>
@@ -108,14 +108,14 @@ export function TaWhitelistPanel() {
               )}
               {query.data.items.map((item, i) => (
                 <TableRow key={item.id}>
-                  <TableCell className="font-mono text-[10px] text-muted-foreground">{(page - 1) * PAGE_SIZE + i + 1}</TableCell>
+                  <TableCell className="font-mono text-xs text-muted-foreground">{(page - 1) * PAGE_SIZE + i + 1}</TableCell>
                   <TableCell className="text-xs text-foreground">{item.name}</TableCell>
-                  <TableCell className="font-mono text-[10px] text-muted-foreground">{item.added_date || "—"}</TableCell>
+                  <TableCell className="font-mono text-xs text-muted-foreground">{item.added_date || "—"}</TableCell>
                   <TableCell className="text-right">
                     <button
                       type="button"
                       onClick={() => setRestoreTarget(item.name)}
-                      className="rounded-sm border border-success/35 bg-success/10 px-1.5 py-0.5 font-mono text-[9px] text-success"
+                      className="rounded-full border border-success/35 bg-success/10 px-1.5 py-0.5 font-mono text-xs text-success"
                     >
                       ↩ RESTORE
                     </button>

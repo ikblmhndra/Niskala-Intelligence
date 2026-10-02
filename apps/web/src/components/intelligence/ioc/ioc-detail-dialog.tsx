@@ -145,7 +145,7 @@ export function IocDetailDialog({ target, onClose, onDeleted }: IocDetailDialogP
                 <Button
                   size="sm"
                   variant="outline"
-                  className="ml-auto h-6 border-destructive/40 px-2 text-[10px] text-destructive"
+                  className="ml-auto h-6 border-destructive/40 px-2 text-xs text-destructive"
                   onClick={() => setConfirmDelete(true)}
                 >
                   🗑 Delete IOC
@@ -153,30 +153,30 @@ export function IocDetailDialog({ target, onClose, onDeleted }: IocDetailDialogP
               </div>
 
               {ioc.recommended_action && (
-                <div className="mb-3.5 rounded-md border border-border bg-surface2 px-2.5 py-1.5 text-[10px] text-foreground">
+                <div className="mb-3.5 rounded-2xl border border-border bg-surface shadow-sm2 px-2.5 py-1.5 text-xs text-foreground">
                   ⚡ {ioc.recommended_action}
                 </div>
               )}
 
               <div className="mb-5 grid grid-cols-3 gap-3">
-                <div className="rounded-md border border-border bg-surface2 p-2.5">
-                  <div className="mb-1 text-[9px] tracking-[0.06em] text-muted-foreground uppercase">Seen Count</div>
+                <div className="rounded-2xl border border-border bg-surface shadow-sm2 p-2.5">
+                  <div className="mb-1 text-xs tracking-[0.06em] text-muted-foreground uppercase">Seen Count</div>
                   <div className="text-lg font-bold text-foreground">{ioc.seen_count || 1}</div>
                 </div>
-                <div className="rounded-md border border-border bg-surface2 p-2.5">
-                  <div className="mb-1 text-[9px] tracking-[0.06em] text-muted-foreground uppercase">First Seen</div>
-                  <div className="text-[11px] text-foreground">{ioc.first_seen || "—"}</div>
+                <div className="rounded-2xl border border-border bg-surface shadow-sm2 p-2.5">
+                  <div className="mb-1 text-xs tracking-[0.06em] text-muted-foreground uppercase">First Seen</div>
+                  <div className="text-[13px] text-foreground">{ioc.first_seen || "—"}</div>
                 </div>
-                <div className="rounded-md border border-border bg-surface2 p-2.5">
-                  <div className="mb-1 text-[9px] tracking-[0.06em] text-muted-foreground uppercase">Last Seen</div>
-                  <div className="text-[11px] text-foreground">{ioc.last_seen || "—"}</div>
+                <div className="rounded-2xl border border-border bg-surface shadow-sm2 p-2.5">
+                  <div className="mb-1 text-xs tracking-[0.06em] text-muted-foreground uppercase">Last Seen</div>
+                  <div className="text-[13px] text-foreground">{ioc.last_seen || "—"}</div>
                 </div>
               </div>
 
               {ioc.tags.length > 0 && (
                 <div className="mb-4 flex flex-wrap gap-1.5">
                   {ioc.tags.map((t) => (
-                    <span key={t} className="rounded-sm border border-primary/30 bg-primary/10 px-1.5 py-0.5 text-[9px] text-primary">
+                    <span key={t} className="rounded-full border border-primary/30 bg-primary/10 px-1.5 py-0.5 text-xs text-primary">
                       {t}
                     </span>
                   ))}
@@ -185,9 +185,9 @@ export function IocDetailDialog({ target, onClose, onDeleted }: IocDetailDialogP
 
               {providers.length > 0 && (
                 <div className="mb-4">
-                  <div className="mb-2 flex items-center gap-2 text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
+                  <div className="mb-2 flex items-center gap-2 text-xs tracking-[0.06em] text-muted-foreground uppercase">
                     TIP Enrichment
-                    {ioc.enrichment?.updated_at && <span className="text-[9px] normal-case">updated {ioc.enrichment.updated_at}</span>}
+                    {ioc.enrichment?.updated_at && <span className="text-xs normal-case">updated {ioc.enrichment.updated_at}</span>}
                   </div>
                   {providers.map((p) => {
                     const families = (p.malware_families ?? []).filter(Boolean).slice(0, 6);
@@ -195,34 +195,34 @@ export function IocDetailDialog({ target, onClose, onDeleted }: IocDetailDialogP
                     const raw = p.raw ?? {};
                     const rawKeys = Object.keys(raw).filter((k) => raw[k] !== null && raw[k] !== "");
                     return (
-                      <div key={p.key} className="mb-2.5 rounded-md border border-border bg-surface2 p-3">
+                      <div key={p.key} className="mb-2.5 rounded-2xl border border-border bg-surface shadow-sm2 p-3">
                         <div className="mb-2.5 flex items-center justify-between">
-                          <span className="text-[9px] tracking-[0.06em] text-muted-foreground uppercase">{p.name || p.key}</span>
-                          <span className={`rounded-sm border border-border bg-surface px-1.5 py-0.5 text-[9px] uppercase ${verdictColor(p.verdict)}`}>
+                          <span className="text-xs tracking-[0.06em] text-muted-foreground uppercase">{p.name || p.key}</span>
+                          <span className={`rounded-full border border-border bg-surface px-1.5 py-0.5 text-xs uppercase ${verdictColor(p.verdict)}`}>
                             {p.verdict || "unknown"}
                           </span>
                         </div>
                         <div className="mb-2.5 flex flex-wrap gap-4">
                           <div>
-                            <div className="mb-0.5 text-[9px] text-muted-foreground">SCORE</div>
+                            <div className="mb-0.5 text-xs text-muted-foreground">SCORE</div>
                             <div className={`text-base font-bold ${scoreColor(p.score ?? 0)}`}>
                               {p.score ?? "—"}
-                              <span className="text-[9px] text-muted-foreground">/100</span>
+                              <span className="text-xs text-muted-foreground">/100</span>
                             </div>
                           </div>
                           {rawKeys.map((k) => (
                             <div key={k}>
-                              <div className="mb-0.5 text-[9px] text-muted-foreground">{k.replace(/_/g, " ").toUpperCase()}</div>
-                              <div className="text-[11px] text-foreground">{String(raw[k])}</div>
+                              <div className="mb-0.5 text-xs text-muted-foreground">{k.replace(/_/g, " ").toUpperCase()}</div>
+                              <div className="text-[13px] text-foreground">{String(raw[k])}</div>
                             </div>
                           ))}
                         </div>
                         {families.length > 0 && (
                           <div className="mb-1.5">
-                            <div className="mb-1 text-[9px] text-muted-foreground">MALWARE FAMILIES</div>
+                            <div className="mb-1 text-xs text-muted-foreground">MALWARE FAMILIES</div>
                             <div className="flex flex-wrap gap-1">
                               {families.map((f) => (
-                                <span key={f} className="rounded-sm border border-destructive/30 bg-destructive/10 px-1.5 py-0.5 text-[9px] text-destructive">
+                                <span key={f} className="rounded-full border border-destructive/30 bg-destructive/10 px-1.5 py-0.5 text-xs text-destructive">
                                   {f}
                                 </span>
                               ))}
@@ -231,10 +231,10 @@ export function IocDetailDialog({ target, onClose, onDeleted }: IocDetailDialogP
                         )}
                         {tags.length > 0 && (
                           <div>
-                            <div className="mb-1 text-[9px] text-muted-foreground">TAGS</div>
+                            <div className="mb-1 text-xs text-muted-foreground">TAGS</div>
                             <div className="flex flex-wrap gap-1">
                               {tags.map((t) => (
-                                <span key={t} className="rounded-sm border border-border bg-surface px-1.5 py-0.5 text-[9px] text-muted-foreground">
+                                <span key={t} className="rounded-full border border-border bg-surface px-1.5 py-0.5 text-xs text-muted-foreground">
                                   {t}
                                 </span>
                               ))}
@@ -249,21 +249,21 @@ export function IocDetailDialog({ target, onClose, onDeleted }: IocDetailDialogP
 
               <IocTaLinksSection links={taQuery.data?.threat_actors ?? []} taInput={taInput} setTaInput={setTaInput} onAdd={() => void addTa()} onRemove={(actor) => void removeTa(actor)} />
 
-              <div className="mb-2 text-[10px] tracking-[0.06em] text-muted-foreground uppercase">Linked Articles ({ioc.sources.length})</div>
+              <div className="mb-2 text-xs tracking-[0.06em] text-muted-foreground uppercase">Linked Articles ({ioc.sources.length})</div>
               <div className="overflow-hidden rounded-md border border-border">
                 {ioc.sources.length === 0 ? (
-                  <div className="p-3 text-[11px] text-muted-foreground">No source articles recorded.</div>
+                  <div className="p-3 text-[13px] text-muted-foreground">No source articles recorded.</div>
                 ) : (
                   ioc.sources.map((s, i) => (
                     <div key={i} className="flex flex-col gap-1 border-b border-border p-2.5 last:border-b-0">
                       <div className="flex items-center gap-2">
-                        <span className="rounded-sm border border-border bg-surface px-1.5 py-0.5 text-[9px] text-muted-foreground">{s.source_name || "—"}</span>
-                        <span className="ml-auto text-[10px] text-muted-foreground">{s.first_seen}</span>
+                        <span className="rounded-full border border-border bg-surface px-1.5 py-0.5 text-xs text-muted-foreground">{s.source_name || "—"}</span>
+                        <span className="ml-auto text-xs text-muted-foreground">{s.first_seen}</span>
                       </div>
-                      <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-[10px] break-all text-primary">
+                      <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-xs break-all text-primary">
                         {s.url}
                       </a>
-                      {s.context && <div className="mt-0.5 text-[10px] text-muted-foreground italic">{s.context}</div>}
+                      {s.context && <div className="mt-0.5 text-xs text-muted-foreground italic">{s.context}</div>}
                     </div>
                   ))
                 )}
@@ -301,10 +301,10 @@ function IocTaLinksSection({
 }) {
   return (
     <div className="mb-4">
-      <div className="mb-2 text-[10px] tracking-[0.06em] text-muted-foreground uppercase">Linked Threat Actors ({links.length})</div>
+      <div className="mb-2 text-xs tracking-[0.06em] text-muted-foreground uppercase">Linked Threat Actors ({links.length})</div>
       <div className="overflow-hidden rounded-md border border-border">
         {links.length === 0 ? (
-          <div className="p-3 text-[11px] text-muted-foreground">No threat actors linked.</div>
+          <div className="p-3 text-[13px] text-muted-foreground">No threat actors linked.</div>
         ) : (
           links.map((ta) => {
             const isManual = ta.source === "manual" || ta.source === "both";
@@ -313,28 +313,28 @@ function IocTaLinksSection({
                 <div className="flex flex-wrap items-center">
                   <span className="text-[12px] text-foreground">{ta.name}</span>
                   {ta.is_watched && (
-                    <span className="ml-1.5 rounded-sm border border-warning/40 bg-warning/10 px-1.5 py-0.5 text-[8px] text-warning">WATCHED</span>
+                    <span className="ml-1.5 rounded-full border border-warning/40 bg-warning/10 px-1.5 py-0.5 text-xs text-warning">WATCHED</span>
                   )}
                   {ta.attack_group_id && (
-                    <span className="ml-1.5 rounded-sm border border-tag-violet/35 bg-tag-violet/15 px-1.5 py-0.5 text-[8px] text-tag-violet">{ta.attack_group_id}</span>
+                    <span className="ml-1.5 rounded-full border border-tag-violet/35 bg-tag-violet/15 px-1.5 py-0.5 text-xs text-tag-violet">{ta.attack_group_id}</span>
                   )}
                   {ta.source === "manual" && (
-                    <span className="ml-1.5 rounded-sm border border-primary/30 bg-primary/10 px-1.5 py-0.5 text-[8px] text-primary">MANUAL</span>
+                    <span className="ml-1.5 rounded-full border border-primary/30 bg-primary/10 px-1.5 py-0.5 text-xs text-primary">MANUAL</span>
                   )}
                   {ta.source === "both" && (
-                    <span className="ml-1.5 rounded-sm border border-primary/30 bg-primary/10 px-1.5 py-0.5 text-[8px] text-primary">MANUAL+ART</span>
+                    <span className="ml-1.5 rounded-full border border-primary/30 bg-primary/10 px-1.5 py-0.5 text-xs text-primary">MANUAL+ART</span>
                   )}
                   {isManual && (
-                    <button type="button" onClick={() => onRemove(ta.name)} className="ml-2 text-[11px] text-muted-foreground hover:text-destructive">
+                    <button type="button" onClick={() => onRemove(ta.name)} className="ml-2 text-[13px] text-muted-foreground hover:text-destructive">
                       ✕
                     </button>
                   )}
-                  <span className="ml-auto text-[9px] text-muted-foreground">
+                  <span className="ml-auto text-xs text-muted-foreground">
                     {ta.article_count > 0 ? `${ta.article_count} article${ta.article_count !== 1 ? "s" : ""}` : "manual only"}
                   </span>
                 </div>
                 {(ta.attack_group_aliases ?? []).length > 0 && (
-                  <div className="text-[9px] text-muted-foreground">aka: {(ta.attack_group_aliases ?? []).slice(0, 4).join(", ")}</div>
+                  <div className="text-xs text-muted-foreground">aka: {(ta.attack_group_aliases ?? []).slice(0, 4).join(", ")}</div>
                 )}
               </div>
             );

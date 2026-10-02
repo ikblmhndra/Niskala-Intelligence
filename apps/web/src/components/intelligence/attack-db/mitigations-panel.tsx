@@ -43,7 +43,7 @@ export function MitigationsPanel() {
     <div>
       <div className="mb-3 flex flex-wrap items-end gap-2">
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Search</Label>
+          <Label className="font-mono text-xs text-muted-foreground uppercase">Search</Label>
           <Input
             placeholder="Mitigation name…"
             value={search}
@@ -55,7 +55,7 @@ export function MitigationsPanel() {
           />
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Domain</Label>
+          <Label className="font-mono text-xs text-muted-foreground uppercase">Domain</Label>
           <Select
             items={{ [ALL]: "All Domains", ...Object.fromEntries(DOMAINS.map((d) => [d, DOMAIN_LABELS[d]])) }}
             value={domain || ALL}
@@ -103,7 +103,7 @@ export function MitigationsPanel() {
               )}
               {query.data.mitigations.map((m) => (
                 <TableRow key={m.mitigation_id}>
-                  <TableCell className="font-mono text-[11px] text-primary whitespace-nowrap">{m.mitigation_id}</TableCell>
+                  <TableCell className="font-mono text-[13px] text-primary whitespace-nowrap">{m.mitigation_id}</TableCell>
                   <TableCell className="text-xs" title={m.description}>
                     {m.name}
                   </TableCell>

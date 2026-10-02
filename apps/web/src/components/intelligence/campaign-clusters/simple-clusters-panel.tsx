@@ -89,11 +89,11 @@ export function SimpleClustersPanel() {
     <div>
       <div className="mb-3 flex flex-wrap items-end gap-2 border-b border-border pb-3">
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Days</Label>
+          <Label className="font-mono text-xs text-muted-foreground uppercase">Days</Label>
           <Input type="number" min={7} max={90} value={days} onChange={(e) => setDays(Number(e.target.value) || 30)} className="w-20 font-mono text-xs" />
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Threshold</Label>
+          <Label className="font-mono text-xs text-muted-foreground uppercase">Threshold</Label>
           <Input
             type="number"
             min={0.2}
@@ -115,7 +115,7 @@ export function SimpleClustersPanel() {
         <Button size="sm" onClick={generate} disabled={query.isFetching}>
           {query.isFetching ? "Clustering…" : "⟳ Generate"}
         </Button>
-        {query.data && <span className="ml-auto font-mono text-[11px] text-muted-foreground">{clusters.length} news cluster(s) found</span>}
+        {query.data && <span className="ml-auto font-mono text-[13px] text-muted-foreground">{clusters.length} news cluster(s) found</span>}
       </div>
 
       {!hasGenerated && <p className="py-10 text-center text-xs text-muted-foreground">Set parameters and click Generate to cluster recent articles.</p>}
@@ -128,7 +128,7 @@ export function SimpleClustersPanel() {
           const isOpen = expanded[c.cluster_id];
           const spike = matchesSpike(c.cluster_name, c.articles);
           return (
-            <div key={c.cluster_id} className="rounded-md border border-border bg-surface2">
+            <div key={c.cluster_id} className="rounded-2xl border border-border bg-surface shadow-sm2">
               <button
                 type="button"
                 onClick={() => setExpanded((e) => ({ ...e, [c.cluster_id]: !e[c.cluster_id] }))}
@@ -138,36 +138,36 @@ export function SimpleClustersPanel() {
                 <span className="text-sm font-semibold text-foreground">{c.cluster_name}</span>
                 <ClusterSparkline articles={c.articles} />
                 {c.first_date !== c.last_date && (
-                  <span className="font-mono text-[10px] text-muted-foreground">
+                  <span className="font-mono text-xs text-muted-foreground">
                     {c.first_date} → {c.last_date}
                   </span>
                 )}
                 <span className="flex flex-wrap gap-1">
                   {c.sources.map((s) => (
-                    <span key={s} className="rounded-sm border border-border bg-surface px-1.5 py-0.5 font-mono text-[9px] text-muted-foreground">
+                    <span key={s} className="rounded-full border border-border bg-surface px-1.5 py-0.5 font-mono text-xs text-muted-foreground">
                       {s}
                     </span>
                   ))}
                 </span>
                 <span
                   className={cn(
-                    "rounded-sm border px-1.5 py-0.5 font-mono text-[9px] uppercase",
+                    "rounded-full border px-1.5 py-0.5 font-mono text-xs uppercase",
                     c.confidence === "high" ? "border-success/40 bg-success/10 text-success" : c.confidence === "medium" ? "border-warning/40 bg-warning/10 text-warning" : "border-border text-muted-foreground",
                   )}
                 >
                   {c.source_count} source{c.source_count !== 1 ? "s" : ""}
                 </span>
-                <span className="rounded-sm border border-border bg-surface px-1.5 py-0.5 font-mono text-[9px] text-muted-foreground">{c.article_count} articles</span>
-                {spike && <span className="rounded-sm border border-destructive/40 bg-destructive/10 px-1.5 py-0.5 font-mono text-[9px] text-destructive">⚡ Active Spike</span>}
-                {c.re_emerged && <span className="rounded-sm border border-primary/40 bg-primary/10 px-1.5 py-0.5 font-mono text-[9px] text-primary">↑ Re-emerging</span>}
+                <span className="rounded-full border border-border bg-surface px-1.5 py-0.5 font-mono text-xs text-muted-foreground">{c.article_count} articles</span>
+                {spike && <span className="rounded-full border border-destructive/40 bg-destructive/10 px-1.5 py-0.5 font-mono text-xs text-destructive">⚡ Active Spike</span>}
+                {c.re_emerged && <span className="rounded-full border border-primary/40 bg-primary/10 px-1.5 py-0.5 font-mono text-xs text-primary">↑ Re-emerging</span>}
               </button>
               {isOpen && (
                 <div className="border-t border-border">
                   {c.articles.map((a) => (
                     <a key={a.id} href={a.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 border-b border-border px-3 py-2 text-xs last:border-b-0 hover:bg-accent">
                       <span className="flex-1 truncate text-foreground">{a.title}</span>
-                      <span className="font-mono text-[10px] text-muted-foreground">{a.source}</span>
-                      <span className="font-mono text-[10px] text-muted-foreground">{a.posted_on}</span>
+                      <span className="font-mono text-xs text-muted-foreground">{a.source}</span>
+                      <span className="font-mono text-xs text-muted-foreground">{a.posted_on}</span>
                     </a>
                   ))}
                 </div>

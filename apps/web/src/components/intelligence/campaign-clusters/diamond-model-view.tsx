@@ -22,7 +22,7 @@ const TACTIC_ORDER = [
 ];
 
 function Chips({ items, color, limit }: { items: string[] | undefined; color: string; limit?: number }) {
-  if (!items || items.length === 0) return <span className="text-[9px] text-muted-foreground opacity-60">—</span>;
+  if (!items || items.length === 0) return <span className="text-xs text-muted-foreground opacity-60">—</span>;
   const shown = items.slice(0, limit ?? 5);
   const more = items.length > (limit ?? 5) ? items.length - (limit ?? 5) : 0;
   return (
@@ -31,13 +31,13 @@ function Chips({ items, color, limit }: { items: string[] | undefined; color: st
         <span
           key={i}
           title={v}
-          className="max-w-[120px] truncate rounded-sm border px-1 py-0.5 font-mono text-[8px]"
+          className="max-w-[120px] truncate rounded-full border px-1 py-0.5 font-mono text-xs"
           style={{ background: tint(color, 9), borderColor: tint(color, 27), color }}
         >
           {v}
         </span>
       ))}
-      {more > 0 && <span className="text-[8px] text-muted-foreground">+{more}</span>}
+      {more > 0 && <span className="text-xs text-muted-foreground">+{more}</span>}
     </div>
   );
 }
@@ -63,13 +63,13 @@ export function DiamondModelView({ clusterName, model }: { clusterName: string; 
 
   return (
     <div className="mb-2.5">
-      <div className="mb-2 flex flex-wrap items-center gap-2 font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
+      <div className="mb-2 flex flex-wrap items-center gap-2 font-mono text-xs tracking-[0.06em] text-muted-foreground uppercase">
         Diamond Model
-        <span className="rounded-sm border px-1.5 py-0.5 text-[9px] normal-case" style={{ background: tint(confColor, 9), borderColor: tint(confColor, 27), color: confColor }}>
+        <span className="rounded-full border px-1.5 py-0.5 text-xs normal-case" style={{ background: tint(confColor, 9), borderColor: tint(confColor, 27), color: confColor }}>
           conf: {meta.confidence}
         </span>
-        <span className="rounded-sm border border-border bg-surface px-1.5 py-0.5 text-[9px] text-muted-foreground normal-case">{meta.direction}</span>
-        <button type="button" onClick={() => setExpanded((e) => !e)} className="ml-auto rounded-sm border border-border px-1.5 py-0.5 text-[8px] text-muted-foreground normal-case">
+        <span className="rounded-full border border-border bg-surface px-1.5 py-0.5 text-xs text-muted-foreground normal-case">{meta.direction}</span>
+        <button type="button" onClick={() => setExpanded((e) => !e)} className="ml-auto rounded-full border border-border px-1.5 py-0.5 text-xs text-muted-foreground normal-case">
           {expanded ? "collapse" : "expand"}
         </button>
       </div>
@@ -77,50 +77,50 @@ export function DiamondModelView({ clusterName, model }: { clusterName: string; 
       <div className="grid grid-cols-3 gap-0 px-2">
         <div />
         <div className="min-h-[64px] rounded-t-md border border-warning/25 bg-warning/6 p-2">
-          <div className="mb-1 font-mono text-[9px] font-bold tracking-wide text-warning uppercase">▲ Adversary</div>
+          <div className="mb-1 font-mono text-xs font-bold tracking-wide text-warning uppercase">▲ Adversary</div>
           <Chips items={advItems} color="var(--severity-high)" limit={4} />
         </div>
         <div />
         <div className="min-h-[72px] rounded-l-md border border-tag-violet/30 border-r-0 bg-tag-violet/8 p-2">
-          <div className="mb-1 font-mono text-[9px] font-bold tracking-wide text-tag-violet uppercase">◀ Capability</div>
+          <div className="mb-1 font-mono text-xs font-bold tracking-wide text-tag-violet uppercase">◀ Capability</div>
           <Chips items={capItems} color="var(--tag-violet)" limit={4} />
         </div>
         <div className="flex min-h-[72px] items-center justify-center border border-border bg-surface p-1.5 text-center">
-          <span className="font-mono text-[9px] break-words text-muted-foreground">{clusterName.slice(0, 40)}</span>
+          <span className="font-mono text-xs break-words text-muted-foreground">{clusterName.slice(0, 40)}</span>
         </div>
         <div className="min-h-[72px] rounded-r-md border border-primary/25 border-l-0 bg-primary/6 p-2">
-          <div className="mb-1 font-mono text-[9px] font-bold tracking-wide text-primary uppercase">▶ Infrastructure</div>
+          <div className="mb-1 font-mono text-xs font-bold tracking-wide text-primary uppercase">▶ Infrastructure</div>
           <Chips items={allInfra} color="var(--info)" limit={4} />
         </div>
         <div />
         <div className="min-h-[64px] rounded-b-md border border-success/25 border-t-0 bg-success/6 p-2">
-          <div className="mb-1 font-mono text-[9px] font-bold tracking-wide text-success uppercase">▼ Victim</div>
+          <div className="mb-1 font-mono text-xs font-bold tracking-wide text-success uppercase">▼ Victim</div>
           <Chips items={vicItems} color="var(--success)" limit={4} />
         </div>
         <div />
       </div>
 
       {expanded && (
-        <div className="mt-2 grid grid-cols-2 gap-3 rounded-md border border-border bg-surface2 p-2">
+        <div className="mt-2 grid grid-cols-2 gap-3 rounded-2xl border border-border bg-surface shadow-sm2 p-2">
           <div>
-            <div className="mb-1.5 text-[10px] font-bold text-warning">Adversary</div>
+            <div className="mb-1.5 text-xs font-bold text-warning">Adversary</div>
             <FullSection title="Threat Actors" color="var(--severity-high)" items={adv.threat_actors} />
             <FullSection title="Actor Types" color="var(--severity-high)" items={adv.actor_types} />
             <FullSection title="Sponsoring Nations" color="var(--severity-high)" items={adv.sponsoring_nations} />
             {adv.sophistication && (
-              <div className="font-mono text-[9px] text-muted-foreground">
+              <div className="font-mono text-xs text-muted-foreground">
                 Sophistication: <span className="text-warning">{adv.sophistication}</span>
               </div>
             )}
           </div>
           <div>
-            <div className="mb-1.5 text-[10px] font-bold text-primary">Infrastructure</div>
+            <div className="mb-1.5 text-xs font-bold text-primary">Infrastructure</div>
             <FullSection title="Domains" color="var(--info)" items={inf.domains} />
             <FullSection title="IPs" color="var(--info)" items={inf.ips} />
             <FullSection title="URLs" color="var(--info)" items={inf.urls} />
           </div>
           <div>
-            <div className="mb-1.5 text-[10px] font-bold text-tag-violet">Capability</div>
+            <div className="mb-1.5 text-xs font-bold text-tag-violet">Capability</div>
             {TACTIC_ORDER.map((tactic) => {
               const techs = cap.attack_techniques[tactic];
               if (!techs || techs.length === 0) return null;
@@ -131,7 +131,7 @@ export function DiamondModelView({ clusterName, model }: { clusterName: string; 
             <FullSection title="CVEs Exploited" color="var(--tag-violet)" items={cap.cve_exploited} />
           </div>
           <div>
-            <div className="mb-1.5 text-[10px] font-bold text-success">Victim</div>
+            <div className="mb-1.5 text-xs font-bold text-success">Victim</div>
             <FullSection title="Industries" color="var(--success)" items={vic.industries} />
             <FullSection title="Countries" color="var(--success)" items={vic.countries} />
             <FullSection title="Org Types" color="var(--success)" items={vic.organization_types} />
@@ -146,10 +146,10 @@ function FullSection({ title, color, items }: { title: string; color: string; it
   if (!items || items.length === 0) return null;
   return (
     <div className="mb-2">
-      <div className="mb-1 font-mono text-[9px] tracking-wide text-muted-foreground uppercase">{title}</div>
+      <div className="mb-1 font-mono text-xs tracking-wide text-muted-foreground uppercase">{title}</div>
       <div className="flex flex-wrap gap-1">
         {items.map((v, i) => (
-          <span key={i} className="rounded-sm border px-1.5 py-0.5 font-mono text-[8px]" style={{ background: tint(color, 9), borderColor: tint(color, 27), color }}>
+          <span key={i} className="rounded-full border px-1.5 py-0.5 font-mono text-xs" style={{ background: tint(color, 9), borderColor: tint(color, 27), color }}>
             {v}
           </span>
         ))}

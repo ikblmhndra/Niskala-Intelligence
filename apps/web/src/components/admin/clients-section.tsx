@@ -84,16 +84,16 @@ export function ClientsSection() {
                     <div className="flex flex-wrap gap-1">
                       {c.countries.length ? (
                         c.countries.map((co) => (
-                          <Badge key={co} variant="outline" className="text-[9px] text-muted-foreground">
+                          <Badge key={co} variant="outline" className="text-xs text-muted-foreground">
                             {countryName(co)}
                           </Badge>
                         ))
                       ) : (
-                        <span className="text-[10px] text-muted-foreground">—</span>
+                        <span className="text-xs text-muted-foreground">—</span>
                       )}
                     </div>
                   </TableCell>
-                  <TableCell className="font-mono text-[10px] text-muted-foreground">
+                  <TableCell className="font-mono text-xs text-muted-foreground">
                     {c.created_at.split("T")[0]}
                   </TableCell>
                   <TableCell className="whitespace-nowrap">
@@ -235,7 +235,7 @@ function ClientForm({
       <div className="space-y-3">
         {mode === "add" && (
           <div className="space-y-1.5">
-            <Label className="font-mono text-[9px] text-muted-foreground uppercase">
+            <Label className="font-mono text-xs text-muted-foreground uppercase">
               Client ID <span className="normal-case opacity-70">(lowercase, a-z 0-9 _-)</span>
             </Label>
             <Input
@@ -247,11 +247,11 @@ function ClientForm({
           </div>
         )}
         <div className="space-y-1.5">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Display Name</Label>
+          <Label className="font-mono text-xs text-muted-foreground uppercase">Display Name</Label>
           <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Acme Corp" className="text-xs" />
         </div>
         <div className="space-y-1.5">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Countries</Label>
+          <Label className="font-mono text-xs text-muted-foreground uppercase">Countries</Label>
           <CountryMultiSelect value={countries} onChange={setCountries} />
         </div>
         {error && <p className="text-xs text-destructive">{error}</p>}
