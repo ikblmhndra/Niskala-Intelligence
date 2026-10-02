@@ -13,6 +13,7 @@ import { GeopoliticalPanel } from "@/components/intelligence/campaign-clusters/g
 import { ClusterPirDialog } from "@/components/intelligence/campaign-clusters/cluster-pir-dialog";
 import { ArticleByIdDialog } from "@/components/intelligence/campaign-clusters/article-by-id-dialog";
 import type { CampaignEntry, CampaignsResponse, CampaignTrend, MatchedPir } from "@/lib/api/loose-types";
+import { tint } from "@/lib/tint";
 
 type SortKey = "size" | "velocity" | "severity" | "first_seen" | "last_seen";
 const SORT_OPTIONS: { key: SortKey; label: string }[] = [
@@ -231,17 +232,17 @@ function CampaignRow({
         <td className="px-2 py-1.5 font-mono text-[10px] text-muted-foreground">{c.first_seen}</td>
         <td className="px-2 py-1.5 font-mono text-[10px] text-muted-foreground">{c.last_seen}</td>
         <td className="max-w-[160px] px-2 py-1.5">
-          <ChipList items={c.dominant_tas} color="#ffaa00" />
+          <ChipList items={c.dominant_tas} color="var(--severity-high)" />
         </td>
         <td className="max-w-[160px] px-2 py-1.5">
-          <ChipList items={c.dominant_industries} color="#2f81f7" />
+          <ChipList items={c.dominant_industries} color="var(--info)" />
         </td>
         <td className="max-w-[120px] px-2 py-1.5">
-          <ChipList items={c.dominant_countries} color="#58A6FF" />
+          <ChipList items={c.dominant_countries} color="var(--info)" />
         </td>
         <td className="max-w-[200px] px-2 py-1.5">
           <div className="flex flex-wrap items-center gap-1">
-            <ChipList items={c.attack_techniques.slice(0, 5)} color="#a78bdb" />
+            <ChipList items={c.attack_techniques.slice(0, 5)} color="var(--tag-violet)" />
             {c.kill_chain.completeness_label && <span className="font-mono text-[9px] text-muted-foreground">{c.kill_chain.completeness_score}%</span>}
           </div>
         </td>
@@ -267,7 +268,7 @@ function ChipList({ items, color }: { items: string[]; color: string }) {
   return (
     <div className="flex flex-wrap gap-1">
       {items.map((v) => (
-        <span key={v} className="rounded-sm border px-1.5 py-0.5 font-mono text-[9px]" style={{ background: `${color}18`, borderColor: `${color}44`, color }}>
+        <span key={v} className="rounded-sm border px-1.5 py-0.5 font-mono text-[9px]" style={{ background: tint(color, 9), borderColor: tint(color, 27), color }}>
           {v}
         </span>
       ))}

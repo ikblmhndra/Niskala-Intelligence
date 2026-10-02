@@ -16,7 +16,7 @@ function ClusterSparkline({ articles }: { articles: { posted_on: string }[] }) {
   if (dates.length < 2) return null;
   return (
     <svg width={64} height={12} className="mr-1.5 inline-block align-middle">
-      <line x1={2} y1={6} x2={62} y2={6} stroke="rgba(47,129,247,0.2)" strokeWidth={1} />
+      <line x1={2} y1={6} x2={62} y2={6} stroke="var(--border)" strokeWidth={1} />
       {dates.map((d, i) => {
         const min = dates[0];
         const max = dates[dates.length - 1];

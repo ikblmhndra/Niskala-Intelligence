@@ -26,10 +26,10 @@ import { addToQueue } from "@/lib/newsletter/queue";
 type Article = components["schemas"]["ArticleOut"];
 
 const TYPE_COLORS: Record<string, string> = {
-  apac: "#2F81F7",
-  global: "#58A6FF",
-  ransomware: "#DA3633",
-  indonesia: "#3DC9AF",
+  apac: "var(--info)",
+  global: "var(--info)",
+  ransomware: "var(--severity-critical)",
+  indonesia: "var(--success)",
 };
 
 const IOC_FIELD_LABEL: Record<string, string> = {
@@ -109,7 +109,7 @@ export function ArticleModal({ article: a, onOpenChange }: { article: Article | 
 
   if (!a) return null;
 
-  const dotColor = TYPE_COLORS[a.news_type] ?? "#8B949E";
+  const dotColor = TYPE_COLORS[a.news_type] ?? "var(--muted-foreground)";
   const victimCountries = a.victim_countries ?? [];
   const actorCountries = a.actor_countries ?? [];
   const mentionedCountries = a.mentioned_countries ?? [];

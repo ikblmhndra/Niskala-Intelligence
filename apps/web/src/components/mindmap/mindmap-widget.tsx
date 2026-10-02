@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { api } from "@/lib/api/client";
 import { loadMindmapColors } from "@/lib/mindmap/colors";
+import { useThemeKey } from "@/lib/chart-theme";
 import { renderMindmap } from "@/lib/mindmap/render";
 import { MindmapEditorDialog } from "@/components/mindmap/mindmap-editor-dialog";
 import type { MindmapDocResponse } from "@/lib/api/loose-types";
@@ -38,11 +39,13 @@ export function MindmapWidget({ featureType, docId, title }: MindmapWidgetProps)
     enabled: expanded,
   });
 
+  const themeKey = useThemeKey();
+
   useEffect(() => {
     if (!expanded || !query.data || !diagramRef.current) return;
     const colors = loadMindmapColors(featureType, docId);
     void renderMindmap(diagramRef.current, query.data.display_syntax || "", colors.nodeBg, colors.nodeFg);
-  }, [expanded, query.data, featureType, docId]);
+  }, [expanded, query.data, featureType, docId, themeKey]);
 
   return (
     <div className="mb-2.5">

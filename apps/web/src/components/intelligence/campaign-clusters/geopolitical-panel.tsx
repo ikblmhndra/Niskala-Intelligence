@@ -7,12 +7,12 @@ import { api } from "@/lib/api/client";
 import type { GeopoliticalSummary } from "@/lib/api/loose-types";
 
 const MOTIVATION_COLOR: Record<string, string> = {
-  espionage: "#a78bdb",
-  financial: "#ffaa00",
-  ransomware: "#ff4444",
-  hacktivism: "#34a853",
-  sabotage: "#ff6b6b",
-  unknown: "#555",
+  espionage: "var(--tag-violet)",
+  financial: "var(--severity-high)",
+  ransomware: "var(--severity-critical)",
+  hacktivism: "var(--success)",
+  sabotage: "var(--severity-critical)",
+  unknown: "var(--muted-foreground)",
 };
 
 /** Port "GEOPOLITICAL OVERVIEW" (`clusters.js:766-907`) -- panel
@@ -96,7 +96,7 @@ export function GeopoliticalPanel({ days }: { days: number }) {
                               <td className="border border-border/50 px-2 py-1 font-mono text-[10px] font-semibold whitespace-nowrap text-foreground">
                                 {nation}
                                 {entry.primary_motivations.slice(0, 1).map((m) => (
-                                  <span key={m} className="ml-1 rounded-sm border border-[#a78bdb]/40 bg-[#a78bdb]/20 px-1 py-0.5 font-mono text-[8px] text-[#a78bdb]">
+                                  <span key={m} className="ml-1 rounded-sm border border-tag-violet/40 bg-tag-violet/20 px-1 py-0.5 font-mono text-[8px] text-tag-violet">
                                     {m}
                                   </span>
                                 ))}
@@ -106,7 +106,7 @@ export function GeopoliticalPanel({ days }: { days: number }) {
                                 if (!count) return <td key={sector} className="border border-border/30 bg-surface2/30" />;
                                 const alpha = Math.round((count / maxCount) * 0.7 * 100) / 100 + 0.08;
                                 return (
-                                  <td key={sector} className="border border-destructive/25 text-center font-mono text-[10px] font-bold text-white" style={{ background: `rgba(218,54,51,${alpha})` }}>
+                                  <td key={sector} className="border border-destructive/25 text-center font-mono text-[10px] font-bold text-foreground" style={{ background: `color-mix(in srgb, var(--severity-critical) ${Math.round(alpha * 100)}%, transparent)` }}>
                                     {count}
                                   </td>
                                 );
@@ -125,7 +125,7 @@ export function GeopoliticalPanel({ days }: { days: number }) {
                   <div className="mb-1.5 text-[10px] font-bold tracking-[0.06em] text-muted-foreground">MOTIVATION BREAKDOWN</div>
                   {motEntries.map(([mot, cnt]) => {
                     const pct = Math.round((cnt / motTotal) * 100);
-                    const color = MOTIVATION_COLOR[mot] ?? "#888";
+                    const color = MOTIVATION_COLOR[mot] ?? "var(--muted-foreground)";
                     return (
                       <div key={mot} className="mb-0.5 flex items-center gap-1.5">
                         <span className="w-20 flex-shrink-0 font-mono text-[9px] text-muted-foreground">{mot}</span>

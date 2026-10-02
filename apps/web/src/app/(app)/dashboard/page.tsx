@@ -92,7 +92,7 @@ export default function DashboardPage() {
               <HorizontalBarChart
                 labels={dashboard.data.top_countries.map((x) => toTitleCase(x.name))}
                 data={dashboard.data.top_countries.map((x) => x.count)}
-                color="rgba(47,129,247,0.4)"
+                tone="primary"
               />
             </ChartCard>
             <ChartCard title="Articles by News Type" height={300}>
@@ -114,7 +114,7 @@ export default function DashboardPage() {
             <HorizontalBarChart
               labels={dashboard.data.top_threat_actors.map((x) => toTitleCase(x.name))}
               data={dashboard.data.top_threat_actors.map((x) => x.count)}
-              color="rgba(218,54,51,0.4)"
+              tone="critical"
             />
           </ChartCard>
 
@@ -123,14 +123,14 @@ export default function DashboardPage() {
               <HorizontalBarChart
                 labels={dashboard.data.top_industries.map((x) => toTitleCase(x.name))}
                 data={dashboard.data.top_industries.map((x) => x.count)}
-                color="rgba(227,179,65,0.4)"
+                tone="warning"
               />
             </ChartCard>
             <ChartCard title="Top MITRE ATT&CK TTPs" height={280}>
               <HorizontalBarChart
                 labels={dashboard.data.top_ttps.map((x) => toTitleCase(x.name))}
                 data={dashboard.data.top_ttps.map((x) => x.count)}
-                color="rgba(61,201,175,0.4)"
+                tone="success"
               />
             </ChartCard>
           </div>
@@ -152,7 +152,7 @@ export default function DashboardPage() {
               <HorizontalBarChart
                 labels={ta.data.top_in_news.map((x) => toTitleCase(x.name))}
                 data={ta.data.top_in_news.map((x) => x.count)}
-                color="rgba(61,201,175,0.4)"
+                tone="success"
               />
             ) : (
               <p className="flex h-full items-center justify-center text-xs text-muted-foreground">

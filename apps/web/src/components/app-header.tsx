@@ -6,7 +6,9 @@ import { usePathname } from "next/navigation";
 import { useAuth } from "@/components/providers/auth-provider";
 import { ChangelogDialog } from "@/components/changelog-dialog";
 import { ClientSwitcher } from "@/components/client-switcher";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { UserMenu } from "@/components/user-menu";
+import { PLATFORM_NAME } from "@/lib/brand";
 import { cn } from "@/lib/utils";
 
 /** 9 route Fase 8 (docs/PROGRESS.md) -- padanan 8 tab lama + `/newsletter`
@@ -41,9 +43,10 @@ export function AppHeader() {
   return (
     <header className="border-b border-border bg-surface">
       <div className="flex items-center justify-between px-4 py-2">
-        <span className="font-heading text-sm tracking-widest text-primary">CTI PLATFORM</span>
+        <span className="font-heading text-sm tracking-wide font-semibold text-primary">{PLATFORM_NAME}</span>
         <div className="flex items-center gap-2">
           <ChangelogDialog />
+          <ThemeToggle />
           {user && <ClientSwitcher user={user} />}
           <UserMenu />
         </div>

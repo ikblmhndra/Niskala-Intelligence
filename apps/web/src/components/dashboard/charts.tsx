@@ -15,6 +15,8 @@ import {
 } from "chart.js";
 import { Bar, Doughnut, Line } from "react-chartjs-2";
 
+import { useChartTheme, withAlpha } from "@/lib/chart-theme";
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -27,41 +29,21 @@ ChartJS.register(
   Legend,
 );
 
-/**
- * Warna literal (bukan CSS var) -- Chart.js render ke `<canvas>`, gak bisa
- * resolve `var(--x)` tanpa `getComputedStyle`. Hex sama persis dengan
- * `.dark` block di `globals.css` (app dark-only, gak ada toggle), jadi
- * chart dan UI di sekitarnya tetap konsisten. Port dari
- * `legacy/static/js/newsroom/dashboard.js`.
- */
-const BORDER = "#30363D";
-const TEXT_DIM = "#8B949E";
-const TEXT_BRIGHT = "#E6EDF3";
-const SURFACE = "#161B22";
-const CHART_COLORS = [
-  "#2F81F7",
-  "#58A6FF",
-  "#DA3633",
-  "#3DC9AF",
-  "#E3B341",
-  "#21262D",
-  "#fd79a8",
-  "#30363D",
-  "#55efc4",
-  "#21262D",
-];
-
+/** Warna dibaca dari token tema via `useChartTheme` (Chart.js render ke
+ * `<canvas>`, tidak bisa resolve `var(--x)`), jadi chart ikut light/dark.
+ * Port dari `legacy/static/js/newsroom/dashboard.js`. */
 ChartJS.defaults.font.family = "'IBM Plex Mono', monospace";
 ChartJS.defaults.font.size = 10;
-ChartJS.defaults.color = TEXT_DIM;
 
 interface HorizontalBarChartProps {
   labels: string[];
   data: number[];
-  color?: string;
+  tone?: "primary" | "critical" | "warning" | "success";
 }
 
-export function HorizontalBarChart({ labels, data, color }: HorizontalBarChartProps) {
+export function HorizontalBarChart({ labels, data, tone = "primary" }: HorizontalBarChartProps) {
+  const t = useChartTheme();
+  const color = t[tone];
   return (
     <Bar
       data={{
@@ -69,8 +51,8 @@ export function HorizontalBarChart({ labels, data, color }: HorizontalBarChartPr
         datasets: [
           {
             data,
-            backgroundColor: color ?? "rgba(47,129,247,0.25)",
-            borderColor: color ?? "#2F81F7",
+            backgroundColor: withAlpha(color, 0.4),
+            borderColor: color,
             borderWidth: 1,
             borderRadius: 2,
           },
@@ -89,8 +71,8 @@ export function HorizontalBarChart({ labels, data, color }: HorizontalBarChartPr
           },
         },
         scales: {
-          x: { grid: { color: BORDER }, ticks: { color: TEXT_DIM } },
-          y: { grid: { display: false }, ticks: { color: TEXT_BRIGHT, font: { size: 10 } } },
+          x: { grid: { color: t.border }, ticks: { color: t.textDim } },
+          y: { grid: { display: false }, ticks: { color: t.textBright, font: { size: 10 } } },
         },
       }}
     />
@@ -103,6 +85,7 @@ interface DoughnutChartProps {
 }
 
 export function DoughnutChart({ labels, data }: DoughnutChartProps) {
+  const t = useChartTheme();
   return (
     <Doughnut
       data={{
@@ -110,8 +93,8 @@ export function DoughnutChart({ labels, data }: DoughnutChartProps) {
         datasets: [
           {
             data,
-            backgroundColor: CHART_COLORS,
-            borderColor: SURFACE,
+            backgroundColor: t.series,
+            borderColor: t.surface,
             borderWidth: 2,
             hoverOffset: 6,
           },
@@ -121,7 +104,7 @@ export function DoughnutChart({ labels, data }: DoughnutChartProps) {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: { position: "right", labels: { color: TEXT_BRIGHT, padding: 12, font: { size: 10 } } },
+          legend: { position: "right", labels: { color: t.textBright, padding: 12, font: { size: 10 } } },
           tooltip: {
             callbacks: {
               label: (ctx: TooltipItem<"doughnut">) => ` ${ctx.label}: ${ctx.parsed} articles`,
@@ -133,21 +116,6 @@ export function DoughnutChart({ labels, data }: DoughnutChartProps) {
     />
   );
 }
-
-/** Palet 8 warna line/bar multi-series (`_PALETTE` di `exec.js`), dipakai
- * Grup F (`/exec`) buat chart sector/country/victim-country trend +
- * stacked news-type trend -- beda dari `CHART_COLORS` (doughnut) biar
- * garis-garis berdampingan gampang dibedain. */
-const SERIES_COLORS = [
-  "#2F81F7",
-  "#3DC9AF",
-  "#E3B341",
-  "#DA3633",
-  "#BC8CFF",
-  "#58A6FF",
-  "#fd79a8",
-  "#F0883E",
-];
 
 interface MultiLineSeries {
   label: string;
@@ -161,12 +129,13 @@ interface MultiLineChartProps {
 
 /** Beberapa line sekaligus 1 chart (sector/country/victim-country trend). */
 export function MultiLineChart({ labels, series }: MultiLineChartProps) {
+  const t = useChartTheme();
   return (
     <Line
       data={{
         labels,
         datasets: series.map((s, i) => {
-          const color = SERIES_COLORS[i % SERIES_COLORS.length];
+          const color = t.series[i % t.series.length];
           return {
             label: s.label,
             data: s.data,
@@ -182,12 +151,12 @@ export function MultiLineChart({ labels, series }: MultiLineChartProps) {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: { position: "bottom", labels: { color: TEXT_DIM, boxWidth: 10, font: { size: 9 } } },
+          legend: { position: "bottom", labels: { color: t.textDim, boxWidth: 10, font: { size: 9 } } },
           tooltip: { mode: "index", intersect: false },
         },
         scales: {
-          x: { grid: { color: BORDER }, ticks: { color: TEXT_DIM, maxTicksLimit: 12 } },
-          y: { grid: { color: BORDER }, ticks: { color: TEXT_DIM }, beginAtZero: true },
+          x: { grid: { color: t.border }, ticks: { color: t.textDim, maxTicksLimit: 12 } },
+          y: { grid: { color: t.border }, ticks: { color: t.textDim }, beginAtZero: true },
         },
       }}
     />
@@ -201,12 +170,13 @@ interface StackedBarChartProps {
 
 /** Bar stacked (news-type trend per bulan). */
 export function StackedBarChart({ labels, series }: StackedBarChartProps) {
+  const t = useChartTheme();
   return (
     <Bar
       data={{
         labels,
         datasets: series.map((s, i) => {
-          const color = SERIES_COLORS[i % SERIES_COLORS.length];
+          const color = t.series[i % t.series.length];
           return {
             label: s.label,
             data: s.data,
@@ -219,11 +189,11 @@ export function StackedBarChart({ labels, series }: StackedBarChartProps) {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: { position: "bottom", labels: { color: TEXT_DIM, boxWidth: 10, font: { size: 9 } } },
+          legend: { position: "bottom", labels: { color: t.textDim, boxWidth: 10, font: { size: 9 } } },
         },
         scales: {
-          x: { stacked: true, grid: { display: false }, ticks: { color: TEXT_DIM, maxTicksLimit: 12 } },
-          y: { stacked: true, grid: { color: BORDER }, ticks: { color: TEXT_DIM } },
+          x: { stacked: true, grid: { display: false }, ticks: { color: t.textDim, maxTicksLimit: 12 } },
+          y: { stacked: true, grid: { color: t.border }, ticks: { color: t.textDim } },
         },
       }}
     />
@@ -241,39 +211,31 @@ interface TAActivityTimelineChartProps {
  * series stacked+filled (Articles/Tweets/Ransom), dipakai Threat Actor
  * Room Grup G6. */
 export function TAActivityTimelineChart({ labels, articleCounts, tweetCounts, ransomCounts }: TAActivityTimelineChartProps) {
+  const t = useChartTheme();
   return (
     <Line
       data={{
         labels,
         datasets: [
-          { label: "Articles", data: articleCounts, borderColor: "rgba(47,129,247,.8)", backgroundColor: "rgba(47,129,247,.15)", fill: true, tension: 0.3, pointRadius: 2 },
-          { label: "Tweets", data: tweetCounts, borderColor: "rgba(0,191,255,.8)", backgroundColor: "rgba(0,191,255,.1)", fill: true, tension: 0.3, pointRadius: 2 },
-          { label: "Ransom", data: ransomCounts, borderColor: "rgba(218,54,51,.8)", backgroundColor: "rgba(218,54,51,.1)", fill: true, tension: 0.3, pointRadius: 2 },
+          { label: "Articles", data: articleCounts, borderColor: withAlpha(t.primary, 0.8), backgroundColor: withAlpha(t.primary, 0.15), fill: true, tension: 0.3, pointRadius: 2 },
+          { label: "Tweets", data: tweetCounts, borderColor: withAlpha(t.info, 0.8), backgroundColor: withAlpha(t.info, 0.1), fill: true, tension: 0.3, pointRadius: 2 },
+          { label: "Ransom", data: ransomCounts, borderColor: withAlpha(t.critical, 0.8), backgroundColor: withAlpha(t.critical, 0.1), fill: true, tension: 0.3, pointRadius: 2 },
         ],
       }}
       options={{
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: { position: "bottom", labels: { color: TEXT_DIM, boxWidth: 10, font: { size: 9 } } },
+          legend: { position: "bottom", labels: { color: t.textDim, boxWidth: 10, font: { size: 9 } } },
         },
         scales: {
-          x: { grid: { color: BORDER }, ticks: { color: TEXT_DIM, maxTicksLimit: 12, font: { size: 8 } } },
-          y: { grid: { color: BORDER }, ticks: { color: TEXT_DIM, font: { size: 9 } }, beginAtZero: true, stacked: true },
+          x: { grid: { color: t.border }, ticks: { color: t.textDim, maxTicksLimit: 12, font: { size: 8 } } },
+          y: { grid: { color: t.border }, ticks: { color: t.textDim, font: { size: 9 } }, beginAtZero: true, stacked: true },
         },
       }}
     />
   );
 }
-
-const GRADE_COLORS: Record<string, string> = {
-  A: "#3DC9AF",
-  B: "#58A6FF",
-  C: "#E3B341",
-  D: "#F0883E",
-  E: "#DA3633",
-  F: "#8B949E",
-};
 
 interface GradedDoughnutChartProps {
   counts: Record<string, number>;
@@ -282,6 +244,7 @@ interface GradedDoughnutChartProps {
 /** Doughnut Source Reliability Spread -- warna per grade A-F (bukan
  * palet siklik `CHART_COLORS`), F/grade gak dikenal fallback abu-abu. */
 export function GradedDoughnutChart({ counts }: GradedDoughnutChartProps) {
+  const t = useChartTheme();
   const grades = Object.keys(counts).sort();
   return (
     <Doughnut
@@ -290,8 +253,8 @@ export function GradedDoughnutChart({ counts }: GradedDoughnutChartProps) {
         datasets: [
           {
             data: grades.map((g) => counts[g]),
-            backgroundColor: grades.map((g) => GRADE_COLORS[g] ?? "#8B949E"),
-            borderColor: SURFACE,
+            backgroundColor: grades.map((g) => t.grades[g] ?? t.textDim),
+            borderColor: t.surface,
             borderWidth: 2,
             hoverOffset: 6,
           },
@@ -301,7 +264,7 @@ export function GradedDoughnutChart({ counts }: GradedDoughnutChartProps) {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: { position: "right", labels: { color: TEXT_BRIGHT, padding: 12, font: { size: 10 } } },
+          legend: { position: "right", labels: { color: t.textBright, padding: 12, font: { size: 10 } } },
         },
         cutout: "55%",
       }}
@@ -315,6 +278,7 @@ interface TimelineChartProps {
 }
 
 export function TimelineChart({ labels, data }: TimelineChartProps) {
+  const t = useChartTheme();
   return (
     <Line
       data={{
@@ -322,11 +286,11 @@ export function TimelineChart({ labels, data }: TimelineChartProps) {
         datasets: [
           {
             data,
-            borderColor: "#2F81F7",
-            backgroundColor: "rgba(47,129,247,0.06)",
+            borderColor: t.primary,
+            backgroundColor: withAlpha(t.primary, 0.06),
             borderWidth: 1.5,
             pointRadius: 2,
-            pointBackgroundColor: "#2F81F7",
+            pointBackgroundColor: t.primary,
             fill: true,
             tension: 0.3,
           },
@@ -344,8 +308,8 @@ export function TimelineChart({ labels, data }: TimelineChartProps) {
           },
         },
         scales: {
-          x: { grid: { color: BORDER }, ticks: { color: TEXT_DIM, maxTicksLimit: 12 } },
-          y: { grid: { color: BORDER }, ticks: { color: TEXT_DIM }, beginAtZero: true },
+          x: { grid: { color: t.border }, ticks: { color: t.textDim, maxTicksLimit: 12 } },
+          y: { grid: { color: t.border }, ticks: { color: t.textDim }, beginAtZero: true },
         },
       }}
     />

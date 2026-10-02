@@ -1,3 +1,5 @@
+import { tint } from "@/lib/tint";
+
 export interface IocChipStyle {
   label: string;
   bg: string;
@@ -10,26 +12,26 @@ export interface IocChipStyle {
  * sengaja dibedain per tipe buat scan cepat di tabel gede, sama
  * keputusan kayak heatmap MITRE Grup G3. */
 export const IOC_TYPE_STYLE: Record<string, IocChipStyle> = {
-  ip: { label: "IP", bg: "rgba(218,54,51,0.12)", border: "rgba(218,54,51,0.35)", color: "#da3633" },
-  domain: { label: "DOMAIN", bg: "rgba(227,179,65,0.12)", border: "rgba(227,179,65,0.35)", color: "#e3b341" },
-  url: { label: "URL", bg: "rgba(47,129,247,0.12)", border: "rgba(47,129,247,0.35)", color: "#2f81f7" },
-  url_with_path: { label: "URL+PATH", bg: "rgba(47,129,247,0.08)", border: "rgba(47,129,247,0.25)", color: "#2f81f7" },
-  email: { label: "EMAIL", bg: "rgba(88,166,255,0.12)", border: "rgba(88,166,255,0.35)", color: "#58A6FF" },
-  sha256: { label: "SHA256", bg: "rgba(83,52,131,0.2)", border: "rgba(83,52,131,0.4)", color: "#a78bdb" },
-  sha1: { label: "SHA1", bg: "rgba(83,52,131,0.15)", border: "rgba(83,52,131,0.3)", color: "#a78bdb" },
-  md5: { label: "MD5", bg: "rgba(83,52,131,0.15)", border: "rgba(83,52,131,0.3)", color: "#a78bdb" },
-  cve: { label: "CVE", bg: "rgba(52,168,83,0.12)", border: "rgba(52,168,83,0.35)", color: "#34a853" },
+  ip: { label: "IP", bg: tint("var(--severity-critical)", 12), border: tint("var(--severity-critical)", 35), color: "var(--severity-critical)" },
+  domain: { label: "DOMAIN", bg: tint("var(--severity-medium)", 12), border: tint("var(--severity-medium)", 35), color: "var(--severity-medium)" },
+  url: { label: "URL", bg: tint("var(--info)", 12), border: tint("var(--info)", 35), color: "var(--info)" },
+  url_with_path: { label: "URL+PATH", bg: tint("var(--info)", 8), border: tint("var(--info)", 25), color: "var(--info)" },
+  email: { label: "EMAIL", bg: tint("var(--info)", 12), border: tint("var(--info)", 35), color: "var(--info)" },
+  sha256: { label: "SHA256", bg: tint("var(--tag-violet)", 20), border: tint("var(--tag-violet)", 40), color: "var(--tag-violet)" },
+  sha1: { label: "SHA1", bg: tint("var(--tag-violet)", 15), border: tint("var(--tag-violet)", 30), color: "var(--tag-violet)" },
+  md5: { label: "MD5", bg: tint("var(--tag-violet)", 15), border: tint("var(--tag-violet)", 30), color: "var(--tag-violet)" },
+  cve: { label: "CVE", bg: tint("var(--success)", 12), border: tint("var(--success)", 35), color: "var(--success)" },
 };
 
 export function iocTypeStyle(type: string): IocChipStyle {
-  return IOC_TYPE_STYLE[type] ?? { label: type.toUpperCase(), bg: "rgba(255,255,255,0.05)", border: "rgba(255,255,255,0.15)", color: "var(--muted-foreground)" };
+  return IOC_TYPE_STYLE[type] ?? { label: type.toUpperCase(), bg: tint("var(--muted-foreground)", 5), border: tint("var(--muted-foreground)", 15), color: "var(--muted-foreground)" };
 }
 
 export const ACTIONABILITY_STYLE: Record<string, IocChipStyle> = {
-  block_now: { label: "BLOCK NOW", bg: "rgba(218,54,51,0.15)", border: "rgba(218,54,51,0.45)", color: "#da3633" },
-  investigate: { label: "INVESTIGATE", bg: "rgba(255,165,0,0.12)", border: "rgba(255,165,0,0.4)", color: "#ffaa00" },
-  monitor: { label: "MONITOR", bg: "rgba(227,179,65,0.12)", border: "rgba(227,179,65,0.35)", color: "#e3b341" },
-  archive: { label: "ARCHIVE", bg: "rgba(255,255,255,0.04)", border: "rgba(255,255,255,0.15)", color: "var(--muted-foreground)" },
+  block_now: { label: "BLOCK NOW", bg: tint("var(--severity-critical)", 15), border: tint("var(--severity-critical)", 45), color: "var(--severity-critical)" },
+  investigate: { label: "INVESTIGATE", bg: tint("var(--severity-high)", 12), border: tint("var(--severity-high)", 40), color: "var(--severity-high)" },
+  monitor: { label: "MONITOR", bg: tint("var(--severity-medium)", 12), border: tint("var(--severity-medium)", 35), color: "var(--severity-medium)" },
+  archive: { label: "ARCHIVE", bg: tint("var(--muted-foreground)", 4), border: tint("var(--muted-foreground)", 15), color: "var(--muted-foreground)" },
 };
 
 export function actionabilityStyle(label: string): IocChipStyle {
@@ -37,7 +39,7 @@ export function actionabilityStyle(label: string): IocChipStyle {
 }
 
 export function confidenceStyle(score: number): IocChipStyle {
-  if (score >= 75) return { label: String(score), bg: "rgba(52,168,83,0.15)", border: "rgba(52,168,83,0.4)", color: "#34a853" };
-  if (score >= 40) return { label: String(score), bg: "rgba(255,165,0,0.12)", border: "rgba(255,165,0,0.4)", color: "#ffaa00" };
-  return { label: String(score), bg: "rgba(255,255,255,0.05)", border: "rgba(255,255,255,0.15)", color: "var(--muted-foreground)" };
+  if (score >= 75) return { label: String(score), bg: tint("var(--success)", 15), border: tint("var(--success)", 40), color: "var(--success)" };
+  if (score >= 40) return { label: String(score), bg: tint("var(--severity-high)", 12), border: tint("var(--severity-high)", 40), color: "var(--severity-high)" };
+  return { label: String(score), bg: tint("var(--muted-foreground)", 5), border: tint("var(--muted-foreground)", 15), color: "var(--muted-foreground)" };
 }

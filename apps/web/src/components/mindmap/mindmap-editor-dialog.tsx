@@ -144,13 +144,13 @@ function MindmapEditorForm({
           <span className="font-mono text-[9px] text-muted-foreground">Node</span>
           <input
             type="color"
-            value={nodeBg || "#1f6feb"}
+            value={nodeBg || "#d0002f"}
             onChange={(e) => setNodeBg(e.target.value)}
             className={cn("h-[22px] w-[26px] cursor-pointer rounded-sm border border-border bg-transparent p-0.5", isAuto && "opacity-35")}
           />
           <button
             type="button"
-            onClick={() => setNodeBg(isAuto ? "#1f6feb" : null)}
+            onClick={() => setNodeBg(isAuto ? "#d0002f" : null)}
             title="Use level-based colors instead"
             className={cn(
               "rounded-sm border px-1.5 py-0.5 font-mono text-[8px]",

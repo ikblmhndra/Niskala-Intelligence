@@ -145,8 +145,8 @@ export function MitreHeatmapView() {
                         key={t.id}
                         className="min-w-[36px] border border-border px-1 py-1 text-center font-mono"
                         style={{
-                          background: intensity > 0 ? `rgba(47,129,247,${(intensity * 0.85 + 0.08).toFixed(2)})` : undefined,
-                          color: intensity > 0.5 ? "#0D1117" : intensity > 0 ? "var(--primary)" : undefined,
+                          background: intensity > 0 ? `color-mix(in srgb, var(--primary) ${Math.round(intensity * 85 + 8)}%, transparent)` : undefined,
+                          color: intensity > 0.75 ? "var(--primary-foreground)" : intensity > 0 ? "var(--foreground)" : undefined,
                           cursor: val > 0 ? "pointer" : undefined,
                         }}
                         title={`${row} × ${t.id}: ${val} articles`}
