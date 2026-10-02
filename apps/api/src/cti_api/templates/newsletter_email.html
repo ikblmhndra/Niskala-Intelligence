@@ -1,69 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CTI Newsletter — Week {{ week }}, {{ year }}</title>
-<style>
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; line-height: 1.6; color: #1a1a2e; background: #f0f2f5; margin: 0; padding: 20px; }
-  .wrapper { max-width: 720px; margin: 0 auto; }
-  .header { background: #0d1b2a; color: #fff; padding: 28px 32px; border-radius: 8px 8px 0 0; }
-  .header-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #00e5ff; margin-bottom: 6px; }
+{% extends "_base_email.html" %}
+{% block title %}{{ platform_name }} Newsletter — Week {{ week }}, {{ year }}{% endblock %}
+{% block styles %}
+    .wrapper { max-width: 720px; margin: 0 auto; }
+  .header { background: #430a23; color: #fff; padding: 28px 32px; border-radius: 8px 8px 0 0; }
+  .header-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #fbbfa1; margin-bottom: 6px; }
   .header-title { font-size: 22px; font-weight: 700; margin: 0 0 4px; }
-  .header-meta { font-size: 12px; color: #8899aa; }
+  .header-meta { font-size: 12px; color: #e6cfd6; }
   .body { background: #fff; padding: 0 32px 32px; border-radius: 0 0 8px 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
 
-  .section-header { padding: 24px 0 10px; border-bottom: 2px solid #e8ecf0; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+  .section-header { padding: 24px 0 10px; border-bottom: 2px solid #e8dacb; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
   .section-icon { width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
   .icon-highlight { background: #fff3cd; }
-  .icon-apac      { background: #d1ecf1; }
-  .icon-global    { background: #e2d9f3; }
+  .icon-apac      { background: #dcebf2; }
+  .icon-global    { background: #ebe3f5; }
   .icon-indonesia { background: #fde8e8; }
   .section-name { font-size: 13px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; }
   .label-highlight { color: #856404; }
-  .label-apac      { color: #0c5460; }
-  .label-global    { color: #4a2c7a; }
-  .label-indonesia { color: #842029; }
+  .label-apac      { color: #256a8a; }
+  .label-global    { color: #6b4a9e; }
+  .label-indonesia { color: #8a1c1c; }
 
   /* Highlight card — full width, prominent */
-  .highlight-card { background: linear-gradient(135deg, #0d1b2a 0%, #1a2e48 100%); border-radius: 8px; padding: 24px; margin-bottom: 8px; color: #fff; }
+  .highlight-card { background: linear-gradient(135deg, #430a23 0%, #5c1233 100%); border-radius: 8px; padding: 24px; margin-bottom: 8px; color: #fff; }
   .highlight-card .art-title { font-size: 17px; font-weight: 700; margin: 0 0 6px; }
-  .highlight-card .art-title a { color: #00e5ff; text-decoration: none; }
+  .highlight-card .art-title a { color: #fbbfa1; text-decoration: none; }
   .highlight-card .art-title a:hover { text-decoration: underline; }
-  .highlight-card .art-meta { font-size: 11px; color: #8899aa; margin-bottom: 14px; }
+  .highlight-card .art-meta { font-size: 11px; color: #e6cfd6; margin-bottom: 14px; }
   .highlight-card .key-points { list-style: none; padding: 0; margin: 0 0 14px; }
-  .highlight-card .key-points li { padding: 4px 0 4px 18px; position: relative; font-size: 13px; color: #c8d6e5; }
-  .highlight-card .key-points li::before { content: '▸'; position: absolute; left: 0; color: #00e5ff; }
-  .highlight-card .art-summary { font-size: 13px; color: #aabbc8; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px; }
+  .highlight-card .key-points li { padding: 4px 0 4px 18px; position: relative; font-size: 13px; color: #f2e8dd; }
+  .highlight-card .key-points li::before { content: '▸'; position: absolute; left: 0; color: #fbbfa1; }
+  .highlight-card .art-summary { font-size: 13px; color: #e6cfd6; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px; }
 
   /* Regular article cards */
-  .article-card { border: 1px solid #e8ecf0; border-radius: 6px; padding: 16px; margin-bottom: 10px; background: #fafbfc; }
+  .article-card { border: 1px solid #e8dacb; border-radius: 6px; padding: 16px; margin-bottom: 10px; background: #fbf6f1; }
   .article-card .art-title { font-size: 14px; font-weight: 600; margin: 0 0 4px; }
-  .article-card .art-title a { color: #0d1b2a; text-decoration: none; }
-  .article-card .art-title a:hover { color: #1976d2; text-decoration: underline; }
-  .article-card .art-meta { font-size: 11px; color: #6c757d; margin-bottom: 10px; }
+  .article-card .art-title a { color: #430a23; text-decoration: none; }
+  .article-card .art-title a:hover { color: #d0002f; text-decoration: underline; }
+  .article-card .art-meta { font-size: 11px; color: #6b4452; margin-bottom: 10px; }
   .article-card .key-points { list-style: none; padding: 0; margin: 0 0 10px; }
-  .article-card .key-points li { padding: 3px 0 3px 16px; position: relative; font-size: 12px; color: #444; }
-  .article-card .key-points li::before { content: '•'; position: absolute; left: 0; color: #1976d2; }
-  .article-card .art-summary { font-size: 12px; color: #555; border-top: 1px solid #e8ecf0; padding-top: 10px; }
+  .article-card .key-points li { padding: 3px 0 3px 16px; position: relative; font-size: 12px; color: #4a2a36; }
+  .article-card .key-points li::before { content: '•'; position: absolute; left: 0; color: #d0002f; }
+  .article-card .art-summary { font-size: 12px; color: #4a2a36; border-top: 1px solid #e8dacb; padding-top: 10px; }
 
   .tag { display: inline-block; padding: 2px 7px; border-radius: 3px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-right: 4px; margin-bottom: 4px; }
-  .tag-country  { background: #e3f2fd; color: #1565c0; }
-  .tag-industry { background: #e8f5e9; color: #2e7d32; }
-  .tag-actor    { background: #fce4ec; color: #880e4f; }
+  .tag-country  { background: #dcebf2; color: #256a8a; }
+  .tag-industry { background: #def2e5; color: #17703f; }
+  .tag-actor    { background: #fbe0e6; color: #8a0c2f; }
 
-  .footer { text-align: center; padding: 20px; font-size: 11px; color: #999; }
-  .footer strong { color: #666; }
-  .custom-intro { padding: 20px 0 0; font-size: 13px; color: #444; border-bottom: 1px solid #e8ecf0; margin-bottom: 4px; }
-  .analyst-note { background: #fffbe6; border-left: 3px solid #f59e0b; border-radius: 0 4px 4px 0; padding: 8px 12px; margin-top: 10px; font-size: 12px; color: #444; white-space: pre-wrap; }
+  .footer { text-align: center; padding: 20px; font-size: 11px; color: #6b4452; }
+  .footer strong { color: #6b4452; }
+  .custom-intro { padding: 20px 0 0; font-size: 13px; color: #4a2a36; border-bottom: 1px solid #e8dacb; margin-bottom: 4px; }
+  .analyst-note { background: #fffbe6; border-left: 3px solid #f59e0b; border-radius: 0 4px 4px 0; padding: 8px 12px; margin-top: 10px; font-size: 12px; color: #4a2a36; white-space: pre-wrap; }
   .analyst-note-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #b45309; margin-bottom: 4px; }
-</style>
-{% if custom_css %}<style>{{ custom_css | safe }}</style>{% endif %}
-</head>
-<body>
+{% endblock %}
+{% block head_extra %}{% if custom_css %}<style>{{ custom_css | safe }}</style>{% endif %}{% endblock %}
+{% block content %}
 <div class="wrapper">
   <div class="header">
-    <div class="header-label">Cyber Threat Intelligence</div>
+    <div class="header-label">{{ platform_name }}</div>
     <div class="header-title">Threat Intelligence Newsletter &mdash; Week {{ week }}, {{ year }}</div>
     <div class="header-meta">Generated {{ generated_at }}</div>
   </div>
@@ -98,7 +92,7 @@
       </div>
       {% endif %}
       {% if h.analyst_note %}
-      <div class="analyst-note" style="margin-top:14px;background:#fffbe6;border-left:3px solid #f59e0b;border-radius:0 4px 4px 0;padding:8px 12px;font-size:12px;color:#444;white-space:pre-wrap;">
+      <div class="analyst-note" style="margin-top:14px;background:#fffbe6;border-left:3px solid #f59e0b;border-radius:0 4px 4px 0;padding:8px 12px;font-size:12px;color:#4a2a36;white-space:pre-wrap;">
         <div class="analyst-note-label" style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#b45309;margin-bottom:4px;">Analyst Note</div>
         {{ h.analyst_note }}
       </div>
@@ -196,29 +190,29 @@
     {% endif %}
 
   {% if campaign_clusters %}
-  <div style="padding:24px 0 10px;border-bottom:2px solid #e8ecf0;margin-bottom:16px;display:flex;align-items:center;gap:10px;">
-    <div style="width:28px;height:28px;border-radius:6px;background:#e8f4fd;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">🎯</div>
-    <span style="font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#1565c0;">Campaign Clusters</span>
+  <div style="padding:24px 0 10px;border-bottom:2px solid #e8dacb;margin-bottom:16px;display:flex;align-items:center;gap:10px;">
+    <div style="width:28px;height:28px;border-radius:6px;background:#fbe0e6;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">🎯</div>
+    <span style="font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#256a8a;">Campaign Clusters</span>
   </div>
   {% for c in campaign_clusters %}
-  <div style="border:1px solid #e8ecf0;border-radius:6px;padding:14px 16px;margin-bottom:10px;background:#f7f9ff;">
-    <div style="font-size:13px;font-weight:700;color:#0d1b2a;margin-bottom:4px;">{{ c.name }}</div>
-    <div style="font-size:11px;color:#6c757d;margin-bottom:8px;">
+  <div style="border:1px solid #e8dacb;border-radius:6px;padding:14px 16px;margin-bottom:10px;background:#fbf6f1;">
+    <div style="font-size:13px;font-weight:700;color:#430a23;margin-bottom:4px;">{{ c.name }}</div>
+    <div style="font-size:11px;color:#6b4452;margin-bottom:8px;">
       {{ c.size }} articles &nbsp;·&nbsp; {{ c.first_seen }}{% if c.last_seen and c.last_seen != c.first_seen %} – {{ c.last_seen }}{% endif %}
     </div>
     {% if c.dominant_tas %}
     <div style="margin-bottom:6px;">
-      {% for ta in c.dominant_tas %}<span style="display:inline-block;padding:2px 7px;border-radius:3px;font-size:10px;font-weight:600;background:#fce4ec;color:#880e4f;margin-right:4px;margin-bottom:3px;">{{ ta }}</span>{% endfor %}
+      {% for ta in c.dominant_tas %}<span style="display:inline-block;padding:2px 7px;border-radius:3px;font-size:10px;font-weight:600;background:#fbe0e6;color:#8a0c2f;margin-right:4px;margin-bottom:3px;">{{ ta }}</span>{% endfor %}
     </div>
     {% endif %}
     {% if c.attack_techniques %}
     <div style="margin-bottom:6px;">
-      {% for ttp in c.attack_techniques %}<span style="display:inline-block;padding:2px 7px;border-radius:3px;font-size:10px;font-weight:600;background:#ede7f6;color:#4a148c;margin-right:4px;margin-bottom:3px;">{{ ttp }}</span>{% endfor %}
+      {% for ttp in c.attack_techniques %}<span style="display:inline-block;padding:2px 7px;border-radius:3px;font-size:10px;font-weight:600;background:#ebe3f5;color:#6b4a9e;margin-right:4px;margin-bottom:3px;">{{ ttp }}</span>{% endfor %}
     </div>
     {% endif %}
     {% if c.cve_ids %}
     <div>
-      {% for cve in c.cve_ids %}<span style="display:inline-block;padding:2px 7px;border-radius:3px;font-size:10px;font-weight:600;background:#e8f5e9;color:#1b5e20;margin-right:4px;margin-bottom:3px;">{{ cve }}</span>{% endfor %}
+      {% for cve in c.cve_ids %}<span style="display:inline-block;padding:2px 7px;border-radius:3px;font-size:10px;font-weight:600;background:#def2e5;color:#17703f;margin-right:4px;margin-bottom:3px;">{{ cve }}</span>{% endfor %}
     </div>
     {% endif %}
   </div>
@@ -231,10 +225,9 @@
     {% if custom_footer %}
     {{ custom_footer | safe }}
     {% else %}
-    <strong>CTI Platform</strong> &nbsp;·&nbsp; Cyber Threat Intelligence Newsletter &nbsp;·&nbsp; Week {{ week }}, {{ year }}<br>
+    <strong>{{ platform_name }}</strong> &nbsp;·&nbsp; Threat Intelligence Newsletter &nbsp;·&nbsp; Week {{ week }}, {{ year }}<br>
     Internal &mdash; Confidential
     {% endif %}
   </div>
 </div>
-</body>
-</html>
+{% endblock %}

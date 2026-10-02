@@ -23,7 +23,7 @@ from __future__ import annotations
 from functools import lru_cache
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, ValidationError, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -223,6 +223,9 @@ class WorkerSettings(_StrictModel):
     di-catch-up selama slot yang kelewat masih dalam jendela ini."""
 
 
+DEFAULT_PLATFORM_NAME = "Niskala Intelligence"
+
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -232,6 +235,8 @@ class Settings(BaseSettings):
     )
 
     service_name: str = "cti"
+    # Nama TAMPILAN (UI/email/STIX); identifier teknis `cti-*` sengaja tetap.
+    platform_name: str = DEFAULT_PLATFORM_NAME
     environment: Literal["dev", "staging", "prod"] = "dev"
     log_level: str = "INFO"
 
@@ -274,3 +279,12 @@ def get_settings() -> Settings:
     """Satu instance per proses. Testing: pakai `Settings(_env_file=None, **overrides)`
     langsung, jangan panggil fungsi ini (cache-nya lintas-test kalau dipanggil)."""
     return Settings()  # type: ignore[call-arg]  # nilai datang dari env/.env
+
+
+def platform_name() -> str:
+    """Nama tampilan platform. Settings lengkap (DB/auth) tidak selalu ada di
+    konteks render murni (unit test, tooling), jadi jatuh ke default."""
+    try:
+        return get_settings().platform_name
+    except ValidationError:
+        return DEFAULT_PLATFORM_NAME

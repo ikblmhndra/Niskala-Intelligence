@@ -26,6 +26,7 @@ from sqlalchemy.dialects.postgresql import insert as pg_insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from cti_core.attack_ttp import clean_attack_text
+from cti_core.config import platform_name
 from cti_core.db.models.attack import (
     AttackGroup,
     AttackMitigation,
@@ -1034,7 +1035,7 @@ class AsyncAttackQueryRepo:
         )
 
         return {
-            "name": "CTI Platform — ATT&CK DB",
+            "name": f"{platform_name()} — ATT&CK DB",
             "versions": {"attack": "16", "navigator": "4.5", "layer": "4.5"},
             "domain": nav_domain,
             "description": description,

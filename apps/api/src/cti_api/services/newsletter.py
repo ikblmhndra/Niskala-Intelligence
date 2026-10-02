@@ -25,6 +25,7 @@ import re
 from pathlib import Path
 from typing import Any
 
+from cti_core.config import platform_name
 from cti_core.db.models.article import Article
 from cti_core.db.repositories.article import AsyncArticleRepo
 from cti_core.db.repositories.cve import AsyncCveFalsePositiveRepo, AsyncCveTrackerRepo
@@ -418,7 +419,7 @@ async def build_newsletter_context(
 def render_newsletter_html(context: dict[str, Any]) -> str:
     env = Environment(loader=FileSystemLoader(str(_TEMPLATE_DIR)), autoescape=False)
     template = env.get_template(_NEWSLETTER_EMAIL_TEMPLATE)
-    return template.render(**context)
+    return template.render(platform_name=platform_name(), **context)
 
 
 # ── Persistence ───────────────────────────────────────────────────────────────

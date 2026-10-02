@@ -22,6 +22,7 @@ from typing import Any
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from cti_core.config import platform_name
 from cti_core.db.models.article import (
     Article,
     ArticleIndustry,
@@ -143,7 +144,8 @@ class AsyncMitreHeatmapRepo:
                 }
             )
 
-        label = f"CTI Platform — {'Threat Actor' if view == 'ta' else 'Industry'} View ({days}d)"
+        view_label = "Threat Actor" if view == "ta" else "Industry"
+        label = f"{platform_name()} — {view_label} View ({days}d)"
         return {
             "name": label,
             "versions": {"attack": "14", "navigator": "4.9", "layer": "4.5"},

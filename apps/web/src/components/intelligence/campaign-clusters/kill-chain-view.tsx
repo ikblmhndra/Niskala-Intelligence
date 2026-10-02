@@ -1,7 +1,8 @@
 import type { KillChain } from "@/lib/api/loose-types";
+import { tint } from "@/lib/tint";
 
-const LABEL_COLOR: Record<string, string> = { full_chain: "#ff6b6b", partial_chain: "#ffaa00", limited: "#888" };
-const RISK_COLOR: Record<string, string> = { critical: "#ff6b6b", high: "#ffaa00", medium: "#cccc00", low: "#888" };
+const LABEL_COLOR: Record<string, string> = { full_chain: "var(--severity-critical)", partial_chain: "var(--severity-high)", limited: "var(--muted-foreground)" };
+const RISK_COLOR: Record<string, string> = { critical: "var(--severity-critical)", high: "var(--severity-high)", medium: "var(--severity-medium)", low: "var(--muted-foreground)" };
 
 /** Port bagian Kill Chain di `_renderCampaignExpanded()` (`clusters.js:334-378`)
  * -- 12 fase MITRE kill-chain, segmen warna per-fase covered/enggak. */
@@ -14,7 +15,7 @@ export function KillChainView({ killChain: kc }: { killChain: KillChain }) {
     <div className="mb-2.5">
       <div className="mb-1.5 flex flex-wrap items-center gap-2 font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
         Kill Chain Coverage
-        <span className="rounded-sm border px-1.5 py-0.5 text-[9px] font-bold normal-case" style={{ background: `${labelColor}22`, borderColor: `${labelColor}55`, color: labelColor }}>
+        <span className="rounded-sm border px-1.5 py-0.5 text-[9px] font-bold normal-case" style={{ background: tint(labelColor, 13), borderColor: tint(labelColor, 33), color: labelColor }}>
           {kc.completeness_score}% — {kc.completeness_label.replace(/_/g, " ")}
         </span>
         <span className="text-[9px] normal-case" style={{ color: riskColor }}>
@@ -27,7 +28,7 @@ export function KillChainView({ killChain: kc }: { killChain: KillChain }) {
             key={p.phase}
             title={`${p.phase.replace(/_/g, " ")}${p.techniques.length ? "\n" + p.techniques.join("\n") : ""}`}
             className="h-3 flex-1 rounded-sm border"
-            style={{ background: p.covered ? labelColor : "rgba(100,100,100,0.2)", borderColor: p.covered ? labelColor : "rgba(100,100,100,0.3)", opacity: p.covered ? 0.85 : 0.3 }}
+            style={{ background: p.covered ? labelColor : tint("var(--muted-foreground)", 20), borderColor: p.covered ? labelColor : tint("var(--muted-foreground)", 30), opacity: p.covered ? 0.85 : 0.3 }}
           />
         ))}
       </div>
@@ -45,7 +46,7 @@ export function KillChainView({ killChain: kc }: { killChain: KillChain }) {
               <span className="w-[100px] flex-shrink-0 pt-px font-mono text-[9px] text-muted-foreground">{p.phase.replace(/_/g, " ")}</span>
               <div className="flex flex-wrap gap-1">
                 {p.techniques.map((t, i) => (
-                  <span key={i} className="rounded-sm border border-[#a78bdb]/30 bg-[#a78bdb]/15 px-1 py-0.5 font-mono text-[8px] text-[#a78bdb]">
+                  <span key={i} className="rounded-sm border border-tag-violet/30 bg-tag-violet/15 px-1 py-0.5 font-mono text-[8px] text-tag-violet">
                     {t}
                   </span>
                 ))}

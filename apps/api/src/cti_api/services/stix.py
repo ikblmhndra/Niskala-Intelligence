@@ -28,6 +28,7 @@ import uuid
 from datetime import UTC, datetime
 from typing import Any
 
+from cti_core.config import platform_name
 from cti_core.db.models.pir import PIRRequirement
 from cti_core.db.repositories.article import AsyncArticleRepo, all_country_codes
 from cti_core.db.repositories.ioc import AsyncIOCRepo
@@ -69,7 +70,7 @@ def _identity_object() -> dict[str, Any]:
         "spec_version": _SPEC,
         "created": ts,
         "modified": ts,
-        "name": "CTI Platform",
+        "name": platform_name(),
         "identity_class": "system",
     }
 
@@ -607,7 +608,7 @@ async def build_pir_stix_bundle(session: AsyncSession) -> dict[str, Any]:
                 coa_obj["id"],
                 identity_ref,
                 ts,
-                description="PIR managed by CTI Platform",
+                description=f"PIR managed by {platform_name()}",
             )
         )
 

@@ -51,8 +51,8 @@ export function SectorHeatmap({ d }: { d: ExecDashboardV2 }) {
                       key={cell.month}
                       className="px-1 py-1 text-center font-mono"
                       style={{
-                        background: `rgba(47,129,247,${(intensity * 0.7 + 0.05).toFixed(2)})`,
-                        color: intensity > 0.5 ? "#000" : undefined,
+                        background: `color-mix(in srgb, var(--primary) ${Math.round(intensity * 70 + 5)}%, transparent)`,
+                        color: intensity > 0.75 ? "var(--primary-foreground)" : undefined,
                         cursor: cell.count > 0 ? "pointer" : undefined,
                       }}
                       title={`${toTitleCase(row.sector)} · ${cell.month}: ${cell.count}${cell.count > 0 ? " — click to view articles" : ""}`}

@@ -5,18 +5,17 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Palet+font diekstrak dari `ScraperNewsWeb/templates/newsroom.html`'s
-   1627-baris <style> inline + `legacy/static/css/custom.css` -- lihat
-   docs/PROGRESS.md Fase 8 survei. App ini dark-only (`.dark` KELAS TETAP
-   nempel di <html>, lihat layout.tsx), jadi cuma blok `.dark` yang
-   kepake -- `:root` (light) DIBIARIN default shadcn, gak pernah aktif,
-   bukan lupa isi. */
+/* Brand "Niskala Intelligence": Privy Red / Heartful Burgundy / Clear Beige
+   (docs/ROADMAP.md #1). Light = `:root`, dark = `.dark` (kelas dipasang
+   next-themes di <html>). Pasangan fg/bg sudah diperiksa WCAG AA
+   (teks >=4.5:1, UI >=3:1). Warna SEVERITY (`--severity-*`) sengaja
+   terpisah dari brand supaya merah brand tidak terbaca sebagai "critical". */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-rajdhani);
+  --font-sans: var(--font-google-sans-flex);
   --font-mono: var(--font-ibm-plex-mono);
-  --font-heading: var(--font-share-tech-mono);
+  --font-heading: var(--font-google-sans-flex);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -63,71 +62,111 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-:root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --success: oklch(0.5 0.15 145);
-  --warning: oklch(0.8 0.15 85);
-  --surface: oklch(0.98 0 0);
-  --panel: oklch(0.95 0 0);
-  --radius: 0.375rem;
+@theme inline {
+  --color-severity-critical: var(--severity-critical);
+  --color-severity-high: var(--severity-high);
+  --color-severity-medium: var(--severity-medium);
+  --color-severity-low: var(--severity-low);
+  --color-info: var(--info);
+  --color-tag-violet: var(--tag-violet);
+  --color-chart-6: var(--chart-6);
+  --color-chart-7: var(--chart-7);
+  --color-chart-8: var(--chart-8);
 }
 
-/* Palet asli app lama (hex, port apa adanya -- bukan konversi oklch,
-   biar warnanya PERSIS sama, bisa dibandingin langsung ke screenshot
-   lama pas QA visual). */
-.dark {
-  --background: #0d1117; /* --bg lama */
-  --foreground: #e6edf3; /* --text/--text-bright lama */
-  --surface: #161b22; /* --surface lama -- card/popover */
-  --panel: #21262d; /* --color-card lama -- elevasi lebih tinggi (dropdown, nested panel) */
+:root {
+  --background: #f2e8dd; /* Clear Beige */
+  --foreground: #430a23; /* Heartful Burgundy */
+  --surface: #ffffff; /* card/popover */
+  --panel: #e8dacb; /* elevasi lebih tinggi / nested panel */
   --card: var(--surface);
   --card-foreground: var(--foreground);
   --popover: var(--surface);
   --popover-foreground: var(--foreground);
-  --primary: #2f81f7; /* --accent lama */
-  --primary-foreground: #e6edf3;
-  --secondary: #3dc9af; /* --green lama */
-  --secondary-foreground: #0d1117;
+  --primary: #d0002f; /* Privy Red, digelapkan sedikit dari #e60034 supaya teks merah di atas beige lulus AA */
+  --primary-foreground: #ffffff;
+  --secondary: #e8dacb;
+  --secondary-foreground: var(--foreground);
   --muted: var(--panel);
-  --muted-foreground: #8b949e; /* --text-dim lama */
-  --accent: var(--panel); /* hover/highlight halus -- BEDA dari --primary (itu "accent" biru lama) */
+  --muted-foreground: #6b4452;
+  --accent: var(--panel);
   --accent-foreground: var(--foreground);
-  --destructive: #da3633; /* --red lama */
-  --border: #30363d; /* --border lama */
-  --input: #30363d;
-  --ring: #6e7cff; /* --color-focus lama */
-  --success: #238636;
-  --warning: #e3b341; /* --orange lama */
-  --chart-1: #2f81f7;
-  --chart-2: #3dc9af;
-  --chart-3: #e3b341;
-  --chart-4: #da3633;
-  --chart-5: #6e7cff;
-  --sidebar: #161b22;
-  --sidebar-foreground: #e6edf3;
-  --sidebar-primary: #2f81f7;
-  --sidebar-primary-foreground: #e6edf3;
-  --sidebar-accent: #21262d;
-  --sidebar-accent-foreground: #e6edf3;
-  --sidebar-border: #30363d;
-  --sidebar-ring: #6e7cff;
+  --destructive: #b42318; /* oranye-merah, beda hue dari --primary */
+  --border: #c9b5a3;
+  --input: #c9b5a3;
+  --ring: #d0002f;
+  --success: #17703f;
+  --warning: #9a4a00;
+  --info: #256a8a;
+  --tag-violet: #6b4a9e;
+  --severity-critical: #b42318;
+  --severity-high: #b04a00;
+  --severity-medium: #7a5c00;
+  --severity-low: #17703f;
+  --chart-1: #d0002f;
+  --chart-2: #256a8a;
+  --chart-3: #17703f;
+  --chart-4: #b04a00;
+  --chart-5: #7a3a5a;
+  --chart-6: #5b6b1f;
+  --chart-7: #a0306f;
+  --chart-8: #4a5568;
+  --sidebar: var(--surface);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--panel);
+  --sidebar-accent-foreground: var(--foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
+  --radius: 0.75rem;
+}
+
+.dark {
+  --background: #2a0616;
+  --foreground: #f2e8dd;
+  --surface: #430a23; /* Heartful Burgundy */
+  --panel: #561633;
+  --card: var(--surface);
+  --card-foreground: var(--foreground);
+  --popover: var(--surface);
+  --popover-foreground: var(--foreground);
+  --primary: #ff4d6d;
+  --primary-foreground: #2a0616;
+  --secondary: #561633;
+  --secondary-foreground: var(--foreground);
+  --muted: var(--panel);
+  --muted-foreground: #cfb3bf;
+  --accent: var(--panel);
+  --accent-foreground: var(--foreground);
+  --destructive: #ff7a6e;
+  --border: #7a3550;
+  --input: #7a3550;
+  --ring: #ff4d6d;
+  --success: #76ce93;
+  --warning: #ffa164;
+  --info: #92bbd1;
+  --tag-violet: #c9b0f0;
+  --severity-critical: #ff8a7e;
+  --severity-high: #ffa164;
+  --severity-medium: #f5cf5a;
+  --severity-low: #76ce93;
+  --chart-1: #ff4d6d;
+  --chart-2: #92bbd1;
+  --chart-3: #76ce93;
+  --chart-4: #ffa164;
+  --chart-5: #fbbfa1;
+  --chart-6: #f5cf5a;
+  --chart-7: #e08fb5;
+  --chart-8: #b7a3c9;
+  --sidebar: var(--surface);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--panel);
+  --sidebar-accent-foreground: var(--foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
 }
 
 @layer base {
@@ -152,4 +191,16 @@
 ::-webkit-scrollbar-thumb {
   background: var(--panel);
   border-radius: 3px;
+}
+
+/* Animasi: hormati preferensi OS (roadmap #1, pedoman animasi). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

@@ -9,7 +9,7 @@ import { KillChainView } from "@/components/intelligence/campaign-clusters/kill-
 import { CvePriorityChip, LinkTypeBadge } from "@/components/intelligence/campaign-clusters/cluster-badges";
 import type { CampaignEntry, CampaignTrend, MatchedPir } from "@/lib/api/loose-types";
 
-const TREND_COLOR: Record<string, string> = { growing: "#ff4444", declining: "#34a853", dormant: "#555", stable: "#cccc00" };
+const TREND_COLOR: Record<string, string> = { growing: "var(--severity-critical)", declining: "var(--success)", dormant: "var(--muted-foreground)", stable: "var(--severity-medium)" };
 
 function TrendSparkline({ timeline, width, height }: { timeline: { date: string; count: number }[]; width: number; height: number }) {
   if (timeline.length < 2) return null;

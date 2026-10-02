@@ -1,7 +1,7 @@
 const SEVERITY_STYLE: Record<string, string> = {
   critical: "bg-destructive/18 border-destructive/50 text-destructive",
   high: "bg-warning/15 border-warning/45 text-warning",
-  medium: "bg-[#cccc00]/12 border-[#cccc00]/40 text-[#cccc00]",
+  medium: "bg-severity-medium/12 border-severity-medium/40 text-severity-medium",
   low: "bg-muted-foreground/15 border-muted-foreground/35 text-muted-foreground",
 };
 
@@ -31,7 +31,7 @@ export function VelocityBadge({ label, articlesPerDay }: { label: string; articl
       </span>
     );
   }
-  const color = label === "moderate" ? "bg-[#cccc00]" : "bg-muted-foreground/60";
+  const color = label === "moderate" ? "bg-severity-medium" : "bg-muted-foreground/60";
   return (
     <span className="ml-1 inline-flex items-center" title={`${label} — ${articlesPerDay.toFixed(1)}/day`}>
       <span className={`inline-block size-[7px] rounded-full ${color}`} />
@@ -42,7 +42,7 @@ export function VelocityBadge({ label, articlesPerDay }: { label: string; articl
 const TREND_ARROW: Record<string, string> = { growing: "↗", stable: "→", declining: "↘", dormant: "↓" };
 const TREND_COLOR: Record<string, string> = {
   growing: "text-destructive",
-  stable: "text-[#cccc00]",
+  stable: "text-severity-medium",
   declining: "text-success",
   dormant: "text-muted-foreground",
 };
@@ -70,7 +70,7 @@ export function KillChainBadge({ label, score }: { label: string; score: number 
 const LINK_TYPE_STYLE: Record<string, string> = {
   same_actor: "bg-destructive/12 border-destructive/40 text-destructive",
   shared_infra: "bg-warning/12 border-warning/35 text-warning",
-  similar_ttp: "bg-[#a78bdb]/15 border-[#a78bdb]/35 text-[#a78bdb]",
+  similar_ttp: "bg-tag-violet/15 border-tag-violet/35 text-tag-violet",
   related: "bg-muted-foreground/12 border-muted-foreground/30 text-muted-foreground",
 };
 const LINK_TYPE_LABEL: Record<string, string> = {
@@ -88,7 +88,7 @@ export function LinkTypeBadge({ type }: { type: string }) {
 const CVE_PRIO_STYLE: Record<string, string> = {
   critical_patch: "border-destructive/60 bg-destructive/8",
   high_priority: "border-warning/60 bg-warning/8",
-  medium: "border-[#cccc00]/50 bg-[#cccc00]/8",
+  medium: "border-severity-medium/50 bg-severity-medium/8",
 };
 
 export function CvePriorityChip({ cve, onClick }: { cve: { cve_id: string; cvss_score: number | null; priority_label: string | null; patch_urgency: string | null; in_tech_stack: boolean }; onClick: () => void }) {
@@ -100,7 +100,7 @@ export function CvePriorityChip({ cve, onClick }: { cve: { cve_id: string; cvss_
       title={`${cve.priority_label ?? ""}${cve.patch_urgency ? ` — patch: ${cve.patch_urgency}` : ""}`}
       className={`inline-flex items-center gap-0.5 rounded-sm border px-1.5 py-0.5 font-mono text-[9px] text-foreground ${cls}`}
     >
-      {cve.in_tech_stack && <span title="In your tech stack" className="text-[#ffcc00]">★</span>}
+      {cve.in_tech_stack && <span title="In your tech stack" className="text-severity-medium">★</span>}
       {cve.cve_id}
       {cve.cvss_score != null && <span className="opacity-75">{cve.cvss_score}</span>}
     </button>

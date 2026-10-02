@@ -1,27 +1,27 @@
-const LEVEL_COLORS = ["#e94560", "#f18f01", "#2e86ab", "#533483", "#1b7f5e", "#7b2d8b"];
-const DEFAULT_FG = "#ffffff";
+import { cssVar } from "@/lib/chart-theme";
 
-let initialized = false;
+// Fill node tetap gelap di kedua tema supaya teks putih (`DEFAULT_FG`) lulus AA.
+const LEVEL_COLORS = ["#d0002f", "#b04a00", "#256a8a", "#7a3a5a", "#17703f", "#430a23"];
+const DEFAULT_FG = "#ffffff";
 
 async function getMermaid() {
   const mermaid = (await import("mermaid")).default;
-  if (!initialized) {
-    mermaid.initialize({
-      startOnLoad: false,
-      theme: "dark",
-      themeVariables: {
-        darkMode: true,
-        background: "#0d1117",
-        mainBkg: "#161b22",
-        nodeBorder: "#30363d",
-        titleColor: "#e6edf3",
-        fontFamily: "'IBM Plex Mono', monospace",
-        fontSize: "12px",
-      },
-      mindmap: { padding: 16, useMaxWidth: true },
-    });
-    initialized = true;
-  }
+  const dark = document.documentElement.classList.contains("dark");
+  const v = cssVar;
+  mermaid.initialize({
+    startOnLoad: false,
+    theme: dark ? "dark" : "default",
+    themeVariables: {
+      darkMode: dark,
+      background: v("--background"),
+      mainBkg: v("--surface"),
+      nodeBorder: v("--border"),
+      titleColor: v("--foreground"),
+      fontFamily: "'IBM Plex Mono', monospace",
+      fontSize: "12px",
+    },
+    mindmap: { padding: 16, useMaxWidth: true },
+  });
   return mermaid;
 }
 
@@ -66,7 +66,7 @@ function injectColors(svgEl: SVGElement, nodeBg: string | null, nodeFg: string |
       color: ${fg} !important;
     }
     .edge, .edge path, .edge line {
-      stroke: #5a6a80 !important;
+      stroke: ${cssVar("--muted-foreground")} !important;
       stroke-opacity: 0.7;
       fill: none !important;
     }`;

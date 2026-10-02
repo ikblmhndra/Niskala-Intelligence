@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/components/providers/auth-provider";
+import { PLATFORM_NAME } from "@/lib/brand";
 
 function LoginForm() {
   const { login } = useAuth();
@@ -36,7 +37,7 @@ function LoginForm() {
       className="w-full max-w-sm space-y-6 rounded-lg border border-border bg-card p-8"
     >
       <div className="space-y-1 text-center">
-        <h1 className="font-heading text-2xl tracking-wide text-foreground">CTI Platform</h1>
+        <h1 className="font-heading text-2xl tracking-wide text-foreground">{PLATFORM_NAME}</h1>
         <p className="text-sm text-muted-foreground">Sign in to continue</p>
       </div>
 

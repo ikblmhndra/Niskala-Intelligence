@@ -1,10 +1,10 @@
 const STATUS_STYLE: Record<string, string> = {
   ok: "bg-primary/12 border-primary/40 text-primary",
   disabled: "bg-muted-foreground/12 border-muted-foreground/35 text-muted-foreground",
-  stale: "bg-[#cccc00]/12 border-[#cccc00]/40 text-[#cccc00]",
+  stale: "bg-severity-medium/12 border-severity-medium/40 text-severity-medium",
   dead: "bg-destructive/18 border-destructive/50 text-destructive",
   degraded: "bg-warning/15 border-warning/45 text-warning",
-  zero_yield: "bg-[#cccc00]/12 border-[#cccc00]/40 text-[#cccc00]",
+  zero_yield: "bg-severity-medium/12 border-severity-medium/40 text-severity-medium",
 };
 
 /** Pill status kesehatan scraper -- `cti_scraper.health.HealthStatus`
@@ -28,7 +28,7 @@ const RUN_STATUS_STYLE: Record<string, string> = {
   timeout: "text-destructive",
   backpressure: "text-warning",
   disabled: "text-muted-foreground",
-  running: "text-[#cccc00]",
+  running: "text-severity-medium",
 };
 
 /** Warna teks status run (`ScraperRun.status`) -- BUKAN pill kayak
