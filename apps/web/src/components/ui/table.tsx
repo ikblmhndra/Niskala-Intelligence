@@ -3,11 +3,11 @@
 import * as React from "react"
 import { cn } from "cn"
 
-function Table({ className, ...props }: React.ComponentProps<"table">) {
+function Table({ className, framed, ...props }: React.ComponentProps<"table"> & { framed?: boolean }) {
   return (
     <div
       data-slot="table-container"
-      className="relative w-full overflow-x-auto"
+      className={cn("relative w-full overflow-x-auto", framed && "rounded-2xl border border-border bg-surface p-2")}
     >
       <table
         data-slot="table"

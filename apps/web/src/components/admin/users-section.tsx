@@ -52,7 +52,7 @@ export function UsersSection() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-sm font-semibold text-muted-foreground">
+        <CardTitle className="text-base font-semibold text-foreground">
           Users
         </CardTitle>
       </CardHeader>
@@ -191,7 +191,7 @@ function AddUserForm() {
 
   return (
     <div>
-      <div className="mb-3 text-sm font-semibold text-muted-foreground">Add User</div>
+      <div className="mb-3 text-base font-semibold text-foreground">Add User</div>
       <div className="space-y-2.5">
         <div className="space-y-1.5">
           <Label className="text-sm font-medium text-muted-foreground">Username</Label>

@@ -138,7 +138,7 @@ export function MonitoredAccounts() {
       )}
       {accounts.data && accounts.data.length > 0 && (
         <>
-          <Table>
+          <Table framed>
             <TableHeader>
               <TableRow>
                 <TableHead>Handle</TableHead>

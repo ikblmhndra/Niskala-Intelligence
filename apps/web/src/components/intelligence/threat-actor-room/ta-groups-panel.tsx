@@ -165,7 +165,7 @@ export function TaGroupsPanel() {
 
       {query.data && (
         <>
-          <Table>
+          <Table framed>
             <TableHeader>
               <TableRow>
                 <TableHead className="w-10">#</TableHead>

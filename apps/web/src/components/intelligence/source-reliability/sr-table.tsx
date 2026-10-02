@@ -165,7 +165,7 @@ export function SrTable() {
           <p className="mb-2 font-mono text-xs text-muted-foreground">
             {total} source{total !== 1 ? "s" : ""} rated
           </p>
-          <Table>
+          <Table framed>
             <TableHeader>
               <TableRow>
                 {sortHeader("source_name", "Source")}

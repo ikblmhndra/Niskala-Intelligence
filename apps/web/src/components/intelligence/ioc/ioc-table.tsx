@@ -235,7 +235,7 @@ export function IocTable({ onSelect }: { onSelect: (target: IocTarget) => void }
 
       {listQuery.data && (
         <>
-          <Table>
+          <Table framed>
             <TableHeader>
               <TableRow>
                 <TableHead>Type</TableHead>

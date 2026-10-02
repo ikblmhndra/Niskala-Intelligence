@@ -68,7 +68,7 @@ export function PasswordPolicySection() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-sm font-semibold text-muted-foreground">
+        <CardTitle className="text-base font-semibold text-foreground">
           Password Policy
         </CardTitle>
       </CardHeader>

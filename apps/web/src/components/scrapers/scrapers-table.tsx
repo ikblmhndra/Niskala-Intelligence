@@ -208,7 +208,7 @@ export function ScrapersTable({
       {list.isPending && <Skeleton className="h-96 w-full" />}
       {list.isError && <p className="text-xs text-destructive">Failed to load scrapers.</p>}
       {list.data && (
-        <Table>
+        <Table framed>
           <TableHeader>
             <TableRow>
               <TableHead>ID</TableHead>

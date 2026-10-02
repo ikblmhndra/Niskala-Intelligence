@@ -166,7 +166,7 @@ export function TechStackPanel() {
       {listQuery.isError && <PanelError />}
       {listQuery.data && (
         <>
-          <Table>
+          <Table framed>
             <TableHeader>
               <TableRow>
                 <TableHead>Name</TableHead>

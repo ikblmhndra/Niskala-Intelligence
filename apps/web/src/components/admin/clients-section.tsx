@@ -52,7 +52,7 @@ export function ClientsSection() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-sm font-semibold text-muted-foreground">
+        <CardTitle className="text-base font-semibold text-foreground">
           Client Tenants
         </CardTitle>
         <CardAction>

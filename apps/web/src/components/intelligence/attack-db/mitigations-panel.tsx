@@ -85,7 +85,7 @@ export function MitigationsPanel() {
       {query.isError && <p className="py-6 text-center text-xs text-destructive">Error loading mitigations</p>}
       {query.data && (
         <>
-          <Table>
+          <Table framed>
             <TableHeader>
               <TableRow>
                 <TableHead>ID</TableHead>

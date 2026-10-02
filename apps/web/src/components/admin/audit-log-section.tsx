@@ -35,7 +35,7 @@ export function AuditLogSection() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-sm font-semibold text-muted-foreground">
+        <CardTitle className="text-base font-semibold text-foreground">
           Audit Log
         </CardTitle>
       </CardHeader>

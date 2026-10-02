@@ -172,7 +172,7 @@ export function PackagesPanel({ active }: { active: boolean }) {
       {listQuery.isError && <PanelError />}
       {listQuery.data && (
         <>
-          <Table>
+          <Table framed>
             <TableHeader>
               <TableRow>
                 <TableHead>Name</TableHead>

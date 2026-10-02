@@ -102,7 +102,7 @@ export function IocAllowlistPanel() {
       {query.isPending && <p className="py-4 text-center text-xs text-muted-foreground">Loading…</p>}
       {query.isError && <p className="py-4 text-center text-xs text-destructive">Failed to load allowlist.</p>}
       {query.data && (
-        <Table>
+        <Table framed>
           <TableHeader>
             <TableRow>
               <TableHead>Type</TableHead>

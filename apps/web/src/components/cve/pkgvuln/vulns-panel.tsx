@@ -188,7 +188,7 @@ export function VulnsPanel({ active }: { active: boolean }) {
       {listQuery.isError && <PanelError />}
       {listQuery.data && (
         <>
-          <Table>
+          <Table framed>
             <TableHeader>
               <TableRow>
                 <TableHead>Advisory</TableHead>
