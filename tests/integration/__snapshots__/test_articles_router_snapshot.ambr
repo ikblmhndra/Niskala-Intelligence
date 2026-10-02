@@ -1,11 +1,30 @@
 # serializer version: 1
 # name: test_article_dedup_groups
   dict({
-    'duplicates_suppressed': 0,
+    'duplicates_suppressed': 1,
     'groups': list([
+      dict({
+        '_dup_count': 2,
+        '_dup_sources': list([
+          'SourceA',
+        ]),
+        '_dup_urls': list([
+          'https://a.example/apt41-1',
+        ]),
+        'id': int,
+        'impacted_industries': list([
+        ]),
+        'news_type': '',
+        'posted_on': str,
+        'source': 'SourceB',
+        'threat_actors': list([
+        ]),
+        'title': 'Apt41 hits manufacturing sector hard!',
+        'url': 'https://b.example/apt41-1',
+      }),
     ]),
-    'total_articles': 0,
-    'total_groups': 0,
+    'total_articles': 2,
+    'total_groups': 1,
   })
 # ---
 # name: test_compute_article_confidence
