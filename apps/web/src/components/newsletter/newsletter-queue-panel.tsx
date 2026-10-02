@@ -39,7 +39,7 @@ export function NewsletterQueuePanel({ queue, paywallHints, onAssign, onRemove, 
   return (
     <div className="flex h-full flex-col">
       <div className="mb-3 flex items-center justify-between border-b border-border pb-3">
-        <div className="text-[13px] text-muted-foreground">Queued Articles</div>
+        <div className="text-base font-semibold text-foreground">Queued Articles</div>
         {queue.length > 0 && (
           <div className="flex items-center gap-2">
             <span className="font-mono text-xs text-primary">

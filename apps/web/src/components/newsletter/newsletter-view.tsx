@@ -224,7 +224,7 @@ export function NewsletterView() {
 
   return (
     <div className="grid gap-5 lg:grid-cols-[1fr_420px]">
-      <div className="rounded-lg border border-border bg-surface p-4">
+      <div className="rounded-2xl border border-border bg-surface p-5">
         <NewsletterQueuePanel
           queue={queue}
           paywallHints={hintsQuery.data ?? {}}
@@ -234,9 +234,9 @@ export function NewsletterView() {
         />
       </div>
 
-      <div className="rounded-lg border border-border bg-surface p-4">
+      <div className="rounded-2xl border border-border bg-surface p-5">
         <div className="mb-3 flex items-center justify-between border-b border-border pb-3">
-          <div className="text-[13px] text-muted-foreground">Newsletter Composer</div>
+          <div className="text-base font-semibold text-foreground">Newsletter Composer</div>
           <div className="flex gap-2">
             <Button variant="outline" size="sm" onClick={handlePreview}>
               Preview
