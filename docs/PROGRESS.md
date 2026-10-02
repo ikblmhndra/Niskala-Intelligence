@@ -5574,6 +5574,44 @@ check tiap perbaikan, 0 selamat. `ruff` + `mypy --strict` bersih. Unit+contract+
 - Waiver `cisa`: `all.xml` dibalas 403 WAF Akamai 19/19 run (BUKAN flaky -- dugaan lama salah); KEV tetap
   masuk lewat `cisa_kev`.
 
+### 10.J Deploy dari nol (2026-10-02) `[x]` skrip + README + latihan clean-room lokal; belum di host sungguhan
+
+Pemicu: user mau tahu apakah host baru "tinggal isi key". Jawaban awal: belum -- ada empat celah di jalur
+fresh deploy (lihat bawah). Semuanya ditutup dan dilatih dari salinan bersih repo di Docker lokal.
+
+**Celah yang ditemukan lewat pembacaan kode (bukan asumsi):**
+1. Admin pertama tidak ada di runbook; adanya `POST /api/auth/init` (terbuka selama belum ada user).
+2. Sinkron ATT&CK tidak ada di runbook (task periodik mengisinya sendiri, tapi telat).
+3. Seed `threat_actor_groups`/`monitored_people`/`ioc_allowlist_entries` membaca `legacy/dump/` (gitignored) --
+   host tanpa Mongo lama menjalankan platform dengan TA kosong. Tiga file `.bson` kecil (370 KB, data umum:
+   nama threat actor dari malpedia/ORKL/MITRE dll, demonym, 9 baris allowlist) kini dibundel di
+   `tools/seed/reference/`.
+4. Tidak ada README dan tidak ada satu perintah deploy.
+
+**Yang ditambahkan:** `tools/ops/fresh_deploy.sh` + `Makefile` (`make fresh-deploy`, `make fresh-status`),
+`README.md`, `tools/seed/reference/`, bagian 3.0 + baris di "Yang BELUM terbukti" pada `CUTOVER_RUNBOOK.md`.
+Skrip: cek prasyarat (placeholder `GANTI_INI`, password Postgres konsisten antara `.env` dan `stack.env`, bukan
+default `cti`) -> membangkitkan `AUTH__JWT_SECRET`/`AUTH__SESSION_SECRET_KEY` bila kosong -> build ->
+`check_secrets` -> postgres/redis/migrasi/api -> seed referensi -> admin (password acak ke
+`secrets/admin_password`, mode 600, tidak dicetak; body 422 tidak dicetak karena memuat input) -> ATT&CK ->
+worker -> beat TERAKHIR -> web + nginx. Idempoten, tidak pernah menghapus volume.
+
+**Dua keputusan teknis yang dibuktikan, bukan ditebak:** langkah cek-secret dan seed memakai
+`docker compose run` bukan `docker run --env-file`, karena yang terakhir tidak membuang komentar inline di
+`.env` (template punya baris `KEY=nilai   # komentar`).
+
+**Latihan (2026-10-02, Docker lokal arm64, 4 GB RAM, concurrency 1, secret dummy):** run 1 dari nol: build
+sukses, `check_secrets` gagal karena key dummy (LLM `ConnectError`, Telegram 404) dengan pesan yang benar.
+Run 2 `--skip-build --skip-secret-check`: 9 container healthy; DB `users 1` (admin/superadmin), `roles 3`,
+`clients 1`, `threat_actor_groups 3991`, `attack_techniques 943` (sama dengan staging), tepat satu `beat_leader`,
+0 traceback; login lewat nginx `200`, password salah `401`. Run 3 (ulang): seed `0 baru`, admin tidak dibuat
+ulang, hash password tidak berubah. Empat jalur gagal prasyarat dites. Stack latihan dibongkar (hanya project
+`ctirehearsal`).
+
+**Belum terbukti:** host Linux amd64 sungguhan; probe `check_secrets` dengan key asli; beban nyata /
+concurrency bawaan; scraper menembak dari IP host baru (census ulang); jalur `--skip-nginx` dan sertifikat
+sendiri; timer backup Postgres tidak dipasang skrip (sengaja, butuh systemd + keputusan lokasi off-host).
+
 **Konteks rencana (keputusan user 2026-09-30):** host staging ini kandidat PRODUKSI (dipakai internal
 kantor, TLS self-signed cukup), dan legacy TIDAK langsung dimatikan -- dibandingkan dulu. Ceklis
 bandingnya: `docs/PARALLEL_RUN_COMPARISON.md`. Banding baru bermakna SETELAH post-deploy di atas jalan.

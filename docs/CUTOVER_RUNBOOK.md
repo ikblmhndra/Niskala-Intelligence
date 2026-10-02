@@ -186,6 +186,22 @@ lagi Rundeck; sesudahnya platform baru sudah menulis data yang tidak ikut kembal
 | 12 | Buka platform baru ke pengguna | pastikan 80/443 host bebas (matikan nginx/proxy lama yang memegangnya), lalu `docker compose ... up -d nginx`; uji login dari **laptop lain** dan cek `audit_log` (3.1) | ~2 mnt |
 | 13 | Umumkan selesai; mulai **pantau 4 jam** (bagian 4) | | -- |
 
+### 3.0 Dua langkah yang tidak ada di tabel itu tapi wajib di database KOSONG
+
+Tabel di atas mengasumsikan database sudah pernah dipakai (staging). Di host yang benar-benar baru:
+
+- **Admin pertama**: `POST /api/auth/init` membuat superadmin pertama dan hanya jalan selama belum ada user
+  (409 sesudahnya; tanpa autentikasi, jadi panggil SEBELUM nginx dibuka ke jaringan). Tanpa ini tidak ada yang bisa
+  login untuk "membuat ulang user lewat UI" (langkah 6).
+- **Sinkron katalog ATT&CK** (tombol Sync di Intelligence > ATT&CK DB, atau
+  `AsyncAttackSyncRepo.sync_all_domains()` dari dalam container `api`). Task periodik `attack_sync_check`
+  akan mengisinya sendiri (status domain "never"), tapi lakukan SEBELUM beat supaya artikel pertama sudah
+  mendapat TTP yang dinormalisasi.
+
+Untuk deploy dari NOL tanpa stack lama, jangan susun tabel ini manual: `make fresh-deploy`
+(`tools/ops/fresh_deploy.sh`, langkah-langkahnya di `README.md`) mengerjakan keduanya otomatis, ditambah seed
+data referensi bawaan (`tools/seed/reference/`) sebagai pengganti dump Mongo untuk tiga tabel referensi.
+
 ### 3.1 Smoke test (langkah 10)
 
 ```bash
@@ -466,6 +482,7 @@ dipakai hanya kalau twitterapi.io memang tidak bisa. Pindah **manual**, per-scra
 | Rollback ke **stack lama** <5 menit di produksi | *belum dilatih* -- butuh Rundeck/host lama (user). `rundeck_schedule.py` hanya diuji dengan API palsu, belum ke Rundeck asli |
 | Restore penuh ke **DB live** | *belum dilatih* -- destruktif, butuh izin; guard-nya teruji unit + live (penolakan), langkah destruktifnya belum |
 | Census feed dari **IP produksi** | belum (egress staging beda) |
+| **Deploy dari nol** (`make fresh-deploy`) | terbukti 2026-10-02 di Docker lokal (arm64), clean-room dari salinan repo: build dari nol, seed 3991/30/9, admin dibuat, ATT&CK 943 teknik, login lewat nginx 200 (salah 401), tepat satu `beat_leader`, 0 traceback, dijalankan ulang tidak mengubah apa pun, 4 jalur gagal prasyarat. **Belum**: host Linux amd64 sungguhan, probe `check_secrets` dengan key asli (di latihan: secret dummy + `--skip-secret-check`; jalur gagalnya terbukti), beban nyata, scraper yang menembak dari IP host itu |
 | Beban produksi: `NLP_WORKER_CONCURRENCY` > 1 dengan LLM asli, volume asli | belum; bug concurrency baru muncul dengan LLM asli + paralel (pelajaran 10.B) |
 | nginx (compose) + sertifikat self-signed di **produksi** | teruji di staging (login, cookie `Secure`, redirect, sertifikat, `web` di-recreate) **termasuk klien eksternal**: login dari laptop lewat port yang di-publish tercatat di `audit_log` dengan IP laptop itu, bukan gateway Docker; + 44 test otomatis (`tests/edge`, 62 mutasi: 0 selamat). **Belum** dipasang di host produksi |
 | Backup Postgres: penjadwalan systemd dan salinan off-host | unit file siap, belum dipasang/diuji di host produksi |
