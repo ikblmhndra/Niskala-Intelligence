@@ -78,25 +78,25 @@
 }
 
 :root {
-  --background: #faf6f1; /* Clear Beige, dilapangkan supaya tidak datar */
+  --background: #f1e8dd; /* Clear Beige: cukup gelap supaya card putih terpisah jelas */
   --foreground: #2b0d19; /* Burgundy gelap */
   --surface: #ffffff; /* card/popover */
-  --panel: #f2e8dd; /* Clear Beige: panel/hover/nested */
+  --panel: #f7f0e8; /* panel/hover/nested */
   --card: var(--surface);
   --card-foreground: var(--foreground);
   --popover: var(--surface);
   --popover-foreground: var(--foreground);
   --primary: #d0002f; /* Privy Red, digelapkan sedikit dari #e60034 supaya teks merah di atas beige lulus AA */
   --primary-foreground: #ffffff;
-  --secondary: #f2e8dd;
+  --secondary: #f7f0e8;
   --secondary-foreground: var(--foreground);
   --muted: var(--panel);
   --muted-foreground: #6b4452;
   --accent: var(--panel);
   --accent-foreground: var(--foreground);
   --destructive: #b42318; /* oranye-merah, beda hue dari --primary */
-  --border: #e4d6c8;
-  --input: #e4d6c8;
+  --border: #d9c9b8;
+  --input: #d9c9b8;
   --ring: #d0002f;
   --success: #17703f;
   --warning: #9a4a00;
@@ -128,25 +128,25 @@
 }
 
 .dark {
-  --background: #150a10; /* hampir hitam, bernuansa burgundy: surface terbaca terpisah */
+  --background: #0f070b; /* hampir hitam, bernuansa burgundy: surface terbaca terpisah */
   --foreground: #f6ede4;
-  --surface: #221019;
-  --panel: #331a27;
+  --surface: #231320;
+  --panel: #33202f;
   --card: var(--surface);
   --card-foreground: var(--foreground);
   --popover: var(--surface);
   --popover-foreground: var(--foreground);
   --primary: #ff4d6d;
-  --primary-foreground: #150a10;
-  --secondary: #331a27;
+  --primary-foreground: #0f070b;
+  --secondary: #33202f;
   --secondary-foreground: var(--foreground);
   --muted: var(--panel);
   --muted-foreground: #bfa7b3;
   --accent: var(--panel);
   --accent-foreground: var(--foreground);
   --destructive: #ff7a6e;
-  --border: #47293a;
-  --input: #47293a;
+  --border: #55344a;
+  --input: #55344a;
   --ring: #ff4d6d;
   --success: #76ce93;
   --warning: #ffa164;
