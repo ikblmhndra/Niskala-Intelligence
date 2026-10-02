@@ -25,7 +25,7 @@ function RefLink({ onClick, children }: { onClick: () => void; children: React.R
 }
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
-  return <div className="mb-1.5 font-mono text-xs tracking-[0.08em] text-muted-foreground uppercase">{children}</div>;
+  return <div className="mb-1.5 text-sm font-semibold text-muted-foreground">{children}</div>;
 }
 
 /** Port `showTechniqueDetail()`/`showGroupDetail()`/`showSoftwareDetail()`

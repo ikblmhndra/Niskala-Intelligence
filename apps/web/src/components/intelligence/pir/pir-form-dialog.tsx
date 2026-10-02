@@ -183,7 +183,7 @@ export function PirFormDialog({ pir, open, onClose, onSaved }: PirFormDialogProp
           </div>
 
           <div className="border-t border-border pt-3">
-            <p className="mb-2 font-mono text-xs tracking-[0.08em] text-muted-foreground uppercase">Match Criteria</p>
+            <p className="mb-2 text-sm font-semibold text-muted-foreground">Match Criteria</p>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <MultiSelectField label="Threat Actors" options={toOptions(opts?.threat_actors ?? [])} selected={threatActors} onChange={setThreatActors} />
               <MultiSelectField label="Industries" options={toOptions(opts?.industries ?? [])} selected={industries} onChange={setIndustries} />

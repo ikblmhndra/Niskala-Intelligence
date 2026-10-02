@@ -268,7 +268,7 @@ function ScraperDetailForm({
 
       <div>
         <div className="mb-2 flex items-center justify-between">
-          <span className="font-mono text-xs tracking-wide text-muted-foreground uppercase">
+          <span className="text-sm font-semibold text-muted-foreground">
             Config override
           </span>
           {isAdmin && detail.config.updated_by && (
@@ -347,12 +347,12 @@ function ScraperDetailForm({
       </div>
 
       <div>
-        <div className="mb-2 font-mono text-xs tracking-wide text-muted-foreground uppercase">Recent Runs</div>
+        <div className="mb-2 text-sm font-semibold text-muted-foreground">Recent Runs</div>
         <ScraperRunsPanel scraperId={scraperId} />
       </div>
 
       <div>
-        <div className="mb-2 font-mono text-xs tracking-wide text-muted-foreground uppercase">Recent Items</div>
+        <div className="mb-2 text-sm font-semibold text-muted-foreground">Recent Items</div>
         <ScraperItemsPanel scraperId={scraperId} />
       </div>
 

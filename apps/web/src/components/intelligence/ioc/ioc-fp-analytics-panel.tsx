@@ -66,7 +66,7 @@ export function IocFpAnalyticsPanel() {
 
   return (
     <div>
-      <h3 className="mb-3 font-mono text-xs tracking-[0.08em] text-muted-foreground uppercase">FP Analytics</h3>
+      <h3 className="mb-3 text-sm font-semibold text-muted-foreground">FP Analytics</h3>
 
       {query.isPending && <p className="py-4 text-center text-xs text-muted-foreground">Loading…</p>}
       {query.isError && <p className="py-4 text-center text-xs text-destructive">Failed to load FP analytics.</p>}
@@ -75,17 +75,17 @@ export function IocFpAnalyticsPanel() {
         <>
           <div className="mb-5 grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
-              <div className="mb-2 font-mono text-xs tracking-[0.06em] text-muted-foreground uppercase">FP Rate by Source</div>
+              <div className="mb-2 text-sm font-semibold text-muted-foreground">FP Rate by Source</div>
               <FpBucketTable rows={bySource} nameHeader="Source" showTypeBadge={false} />
             </div>
             <div>
-              <div className="mb-2 font-mono text-xs tracking-[0.06em] text-muted-foreground uppercase">FP Rate by IOC Type</div>
+              <div className="mb-2 text-sm font-semibold text-muted-foreground">FP Rate by IOC Type</div>
               <FpBucketTable rows={byType} nameHeader="Type" showTypeBadge />
             </div>
           </div>
 
           <div className="mb-2 flex flex-wrap items-center gap-2.5">
-            <span className="font-mono text-xs tracking-[0.06em] text-muted-foreground uppercase">
+            <span className="text-sm font-semibold text-muted-foreground">
               Suggested Allowlist Entries ({suggestions.length})
             </span>
             {suggestions.length > 0 && (

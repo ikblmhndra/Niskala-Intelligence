@@ -124,7 +124,7 @@ export default function RecapPage() {
   return (
     <div className="pb-10">
       <div className="mb-4 flex flex-wrap items-center gap-2.5 border-b border-border pb-3">
-        <span className="font-mono text-xs tracking-[0.1em] text-muted-foreground uppercase">
+        <span className="text-sm font-semibold text-muted-foreground">
           Recap Date
         </span>
         <Input
@@ -147,7 +147,7 @@ export default function RecapPage() {
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-[240px_1fr]">
         <div className="max-h-[calc(100vh-220px)] overflow-y-auto rounded-2xl border border-border bg-surface shadow-sm p-2.5">
-          <div className="mb-2 border-b border-border pb-1.5 font-mono text-xs tracking-[0.1em] text-muted-foreground uppercase">
+          <div className="mb-2 border-b border-border pb-1.5 text-sm font-semibold text-muted-foreground">
             Recap History
           </div>
           {history.isPending && (

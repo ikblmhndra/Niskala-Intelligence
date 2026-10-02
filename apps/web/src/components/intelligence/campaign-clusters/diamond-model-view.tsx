@@ -63,7 +63,7 @@ export function DiamondModelView({ clusterName, model }: { clusterName: string; 
 
   return (
     <div className="mb-2.5">
-      <div className="mb-2 flex flex-wrap items-center gap-2 font-mono text-xs tracking-[0.06em] text-muted-foreground uppercase">
+      <div className="mb-2 flex flex-wrap items-center gap-2 text-sm font-semibold text-muted-foreground">
         Diamond Model
         <span className="rounded-full border px-1.5 py-0.5 text-xs normal-case" style={{ background: tint(confColor, 9), borderColor: tint(confColor, 27), color: confColor }}>
           conf: {meta.confidence}
@@ -89,7 +89,7 @@ export function DiamondModelView({ clusterName, model }: { clusterName: string; 
           <span className="font-mono text-xs break-words text-muted-foreground">{clusterName.slice(0, 40)}</span>
         </div>
         <div className="min-h-[72px] rounded-r-md border border-primary/25 border-l-0 bg-primary/6 p-2">
-          <div className="mb-1 font-mono text-xs font-bold tracking-wide text-primary uppercase">▶ Infrastructure</div>
+          <div className="mb-1 text-sm font-semibold font-bold text-primary">▶ Infrastructure</div>
           <Chips items={allInfra} color="var(--info)" limit={4} />
         </div>
         <div />
@@ -146,7 +146,7 @@ function FullSection({ title, color, items }: { title: string; color: string; it
   if (!items || items.length === 0) return null;
   return (
     <div className="mb-2">
-      <div className="mb-1 font-mono text-xs tracking-wide text-muted-foreground uppercase">{title}</div>
+      <div className="mb-1 text-sm font-semibold text-muted-foreground">{title}</div>
       <div className="flex flex-wrap gap-1">
         {items.map((v, i) => (
           <span key={i} className="rounded-full border px-1.5 py-0.5 font-mono text-xs" style={{ background: tint(color, 9), borderColor: tint(color, 27), color }}>

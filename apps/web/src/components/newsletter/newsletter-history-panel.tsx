@@ -45,7 +45,7 @@ export function NewsletterHistoryPanel({ refreshKey, onPreview, onResend, resend
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="flex w-full items-center gap-2 font-mono text-xs tracking-[0.1em] text-muted-foreground uppercase"
+        className="flex w-full items-center gap-2 text-sm font-semibold text-muted-foreground"
       >
         <span className={open ? "rotate-180 transition-transform" : "transition-transform"}>▲</span>
         Saved Newsletters

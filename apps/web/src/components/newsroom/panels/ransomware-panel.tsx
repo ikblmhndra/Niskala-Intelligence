@@ -118,7 +118,7 @@ export function RansomwarePanel({ onSelect }: { onSelect: (a: Article) => void }
       isRefreshing={victims.isFetching || articles.isFetching}
     >
       <div className="mb-3">
-        <div className="mb-1.5 border-b border-border pb-1 font-mono text-xs tracking-[0.08em] text-muted-foreground uppercase">
+        <div className="mb-1.5 border-b border-border pb-1 text-sm font-semibold text-muted-foreground">
           Live Victims — ransomware.live
         </div>
         <div className="mb-1.5 flex flex-wrap items-center gap-1.5">
@@ -144,7 +144,7 @@ export function RansomwarePanel({ onSelect }: { onSelect: (a: Article) => void }
             Filter
           </Button>
         </div>
-        <div className="grid grid-cols-[80px_1fr_76px_16px] gap-1 border-b border-border pb-1 font-mono text-xs tracking-wide text-muted-foreground uppercase">
+        <div className="grid grid-cols-[80px_1fr_76px_16px] gap-1 border-b border-border pb-1 text-sm font-semibold text-muted-foreground">
           <span>Group</span>
           <span>Victim / Industry</span>
           <span>Published / Disc.</span>
@@ -161,7 +161,7 @@ export function RansomwarePanel({ onSelect }: { onSelect: (a: Article) => void }
         </div>
       </div>
 
-      <div className="mb-1.5 border-t border-b border-border py-1 font-mono text-xs tracking-[0.08em] text-muted-foreground uppercase">
+      <div className="mb-1.5 border-t border-b border-border py-1 text-sm font-semibold text-muted-foreground">
         Related Articles
       </div>
       {articles.isPending && <PanelLoading />}

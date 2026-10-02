@@ -13,7 +13,7 @@ export function KillChainView({ killChain: kc }: { killChain: KillChain }) {
 
   return (
     <div className="mb-2.5">
-      <div className="mb-1.5 flex flex-wrap items-center gap-2 font-mono text-xs tracking-[0.06em] text-muted-foreground uppercase">
+      <div className="mb-1.5 flex flex-wrap items-center gap-2 text-sm font-semibold text-muted-foreground">
         Kill Chain Coverage
         <span className="rounded-full border px-1.5 py-0.5 text-xs font-bold normal-case" style={{ background: tint(labelColor, 13), borderColor: tint(labelColor, 33), color: labelColor }}>
           {kc.completeness_score}% — {kc.completeness_label.replace(/_/g, " ")}

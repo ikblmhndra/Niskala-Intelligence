@@ -54,31 +54,31 @@ export function ClusterPirDialog({ pir, onClose }: { pir: MatchedPir | null; onC
               <div className="grid gap-2.5">
                 {(pir.criteria.threat_actors?.length ?? 0) > 0 && (
                   <div>
-                    <div className="mb-1 font-mono text-xs tracking-[0.06em] text-muted-foreground uppercase">Threat Actors</div>
+                    <div className="mb-1 text-sm font-semibold text-muted-foreground">Threat Actors</div>
                     <Chips items={pir.criteria.threat_actors} />
                   </div>
                 )}
                 {(pir.criteria.industries?.length ?? 0) > 0 && (
                   <div>
-                    <div className="mb-1 font-mono text-xs tracking-[0.06em] text-muted-foreground uppercase">Industries</div>
+                    <div className="mb-1 text-sm font-semibold text-muted-foreground">Industries</div>
                     <Chips items={pir.criteria.industries} />
                   </div>
                 )}
                 {(pir.criteria.countries?.length ?? 0) > 0 && (
                   <div>
-                    <div className="mb-1 font-mono text-xs tracking-[0.06em] text-muted-foreground uppercase">Countries</div>
+                    <div className="mb-1 text-sm font-semibold text-muted-foreground">Countries</div>
                     <Chips items={pir.criteria.countries} />
                   </div>
                 )}
                 {(pir.criteria.keywords?.length ?? 0) > 0 && (
                   <div>
-                    <div className="mb-1 font-mono text-xs tracking-[0.06em] text-muted-foreground uppercase">Keywords</div>
+                    <div className="mb-1 text-sm font-semibold text-muted-foreground">Keywords</div>
                     <Chips items={pir.criteria.keywords} />
                   </div>
                 )}
                 {(pir.criteria.ttps?.length ?? 0) > 0 && (
                   <div>
-                    <div className="mb-1 font-mono text-xs tracking-[0.06em] text-muted-foreground uppercase">TTPs</div>
+                    <div className="mb-1 text-sm font-semibold text-muted-foreground">TTPs</div>
                     <Chips items={pir.criteria.ttps} />
                   </div>
                 )}

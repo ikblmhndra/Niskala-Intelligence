@@ -11,7 +11,7 @@ export function SpikeBanner({ d }: { d: ExecDashboardV2 }) {
   if (d.industry_spikes.length === 0) return null;
   return (
     <div className="mb-4 rounded-2xl border border-border bg-surface shadow-sm p-3">
-      <div className="mb-2 font-mono text-xs tracking-[0.08em] text-primary uppercase">
+      <div className="mb-2 text-sm font-semibold text-primary">
         <ZapIcon aria-hidden /> Anomaly Alerts — Sectors with statistically significant activity spikes
       </div>
       <div className="flex flex-wrap gap-2">
@@ -19,7 +19,7 @@ export function SpikeBanner({ d }: { d: ExecDashboardV2 }) {
           <div key={i} className="flex shrink-0 items-center gap-2.5 rounded-md border border-primary/25 bg-primary/5 px-3 py-1.5">
             <span className="text-base text-primary">⚡</span>
             <div>
-              <div className="font-mono text-xs text-primary uppercase">{toTitleCase(sp.entity)}</div>
+              <div className="text-sm font-semibold text-primary">{toTitleCase(sp.entity)}</div>
               <div className="font-mono text-xs text-muted-foreground">
                 z={sp.z_score} · {sp.count} incidents · {sp.date}
               </div>

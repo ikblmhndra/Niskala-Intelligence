@@ -43,7 +43,7 @@ export function HealthSummaryBar({
   return (
     <div className="mb-4 rounded-2xl border border-border bg-surface shadow-sm p-4">
       <div className="mb-3 flex items-center justify-between">
-        <div className="font-mono text-xs tracking-[0.1em] text-muted-foreground uppercase">
+        <div className="text-sm font-semibold text-muted-foreground">
           Fleet Health — {total} scraper
         </div>
         <div className="font-mono text-xs text-muted-foreground">
@@ -62,7 +62,7 @@ export function HealthSummaryBar({
 
       {problems.length > 0 && (
         <div className="mt-3 border-t border-border pt-3">
-          <div className="mb-1.5 font-mono text-xs tracking-wide text-muted-foreground uppercase">
+          <div className="mb-1.5 text-sm font-semibold text-muted-foreground">
             Needs attention ({problems.length})
           </div>
           <div className="flex flex-wrap gap-1.5">

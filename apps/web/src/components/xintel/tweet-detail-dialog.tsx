@@ -33,7 +33,7 @@ function MetaRow({
   if (!items || !items.length) return null;
   return (
     <div>
-      <div className="mb-1.5 font-mono text-xs tracking-[0.1em] text-muted-foreground uppercase">
+      <div className="mb-1.5 text-sm font-semibold text-muted-foreground">
         {label}
       </div>
       <div className="flex flex-wrap gap-1.5">
@@ -142,7 +142,7 @@ export function TweetDetailDialog({
 
         <div className="flex flex-col gap-3 pt-3.5">
           <div>
-            <div className="mb-1.5 font-mono text-xs tracking-[0.1em] text-muted-foreground uppercase">
+            <div className="mb-1.5 text-sm font-semibold text-muted-foreground">
               Signals
             </div>
             <div className="flex flex-wrap gap-1.5">
@@ -160,7 +160,7 @@ export function TweetDetailDialog({
 
           {t.confirmed_incident && (
             <div>
-              <div className="mb-1.5 font-mono text-xs tracking-[0.1em] text-muted-foreground uppercase">
+              <div className="mb-1.5 text-sm font-semibold text-muted-foreground">
                 Incident
               </div>
               <div className="flex flex-col gap-1 text-xs">
@@ -190,7 +190,7 @@ export function TweetDetailDialog({
 
           {t.confidence != null && (
             <div>
-              <div className="mb-1.5 font-mono text-xs tracking-[0.1em] text-muted-foreground uppercase">
+              <div className="mb-1.5 text-sm font-semibold text-muted-foreground">
                 LLM Cyber Relevance
               </div>
               <div className="text-xs text-muted-foreground">

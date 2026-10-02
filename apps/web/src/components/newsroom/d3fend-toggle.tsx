@@ -50,7 +50,7 @@ export function D3fendToggle({ ttpId }: { ttpId: string }) {
           )}
           {query.data && query.data.length > 0 && (
             <div>
-              <div className="mb-1.5 font-mono text-xs tracking-[0.08em] text-muted-foreground uppercase">
+              <div className="mb-1.5 text-sm font-semibold text-muted-foreground">
                 D3FEND Countermeasures
               </div>
               <div className="flex flex-wrap gap-1.5">

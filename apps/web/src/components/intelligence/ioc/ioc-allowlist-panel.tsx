@@ -67,7 +67,7 @@ export function IocAllowlistPanel() {
 
   return (
     <div>
-      <h3 className="mb-3 font-mono text-xs tracking-[0.08em] text-muted-foreground uppercase">IOC Allowlist</h3>
+      <h3 className="mb-3 text-sm font-semibold text-muted-foreground">IOC Allowlist</h3>
       <div className="mb-3 flex flex-wrap items-end gap-2">
         <div className="flex flex-col gap-1">
           <Label className="text-sm font-medium text-muted-foreground">Type</Label>

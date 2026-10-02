@@ -32,7 +32,7 @@ export function NewsletterTemplatePanel({ value, onChange }: Props) {
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="flex w-full items-center gap-2 font-mono text-xs tracking-[0.1em] text-primary uppercase"
+        className="flex w-full items-center gap-2 text-sm font-semibold text-primary"
       >
         <PaletteIcon aria-hidden /> Customize Template
         <span className="ml-auto text-xs text-muted-foreground">{open ? "▼ collapse" : "▶ expand"}</span>

@@ -161,15 +161,15 @@ export function IocDetailDialog({ target, onClose, onDeleted }: IocDetailDialogP
 
               <div className="mb-5 grid grid-cols-3 gap-3">
                 <div className="rounded-2xl border border-border bg-surface shadow-sm2 p-2.5">
-                  <div className="mb-1 text-xs tracking-[0.06em] text-muted-foreground uppercase">Seen Count</div>
+                  <div className="mb-1 text-sm font-semibold text-muted-foreground">Seen Count</div>
                   <div className="text-lg font-bold text-foreground">{ioc.seen_count || 1}</div>
                 </div>
                 <div className="rounded-2xl border border-border bg-surface shadow-sm2 p-2.5">
-                  <div className="mb-1 text-xs tracking-[0.06em] text-muted-foreground uppercase">First Seen</div>
+                  <div className="mb-1 text-sm font-semibold text-muted-foreground">First Seen</div>
                   <div className="text-[13px] text-foreground">{ioc.first_seen || "—"}</div>
                 </div>
                 <div className="rounded-2xl border border-border bg-surface shadow-sm2 p-2.5">
-                  <div className="mb-1 text-xs tracking-[0.06em] text-muted-foreground uppercase">Last Seen</div>
+                  <div className="mb-1 text-sm font-semibold text-muted-foreground">Last Seen</div>
                   <div className="text-[13px] text-foreground">{ioc.last_seen || "—"}</div>
                 </div>
               </div>
@@ -186,7 +186,7 @@ export function IocDetailDialog({ target, onClose, onDeleted }: IocDetailDialogP
 
               {providers.length > 0 && (
                 <div className="mb-4">
-                  <div className="mb-2 flex items-center gap-2 text-xs tracking-[0.06em] text-muted-foreground uppercase">
+                  <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-muted-foreground">
                     TIP Enrichment
                     {ioc.enrichment?.updated_at && <span className="text-xs normal-case">updated {ioc.enrichment.updated_at}</span>}
                   </div>
@@ -198,7 +198,7 @@ export function IocDetailDialog({ target, onClose, onDeleted }: IocDetailDialogP
                     return (
                       <div key={p.key} className="mb-2.5 rounded-2xl border border-border bg-surface shadow-sm2 p-3">
                         <div className="mb-2.5 flex items-center justify-between">
-                          <span className="text-xs tracking-[0.06em] text-muted-foreground uppercase">{p.name || p.key}</span>
+                          <span className="text-sm font-semibold text-muted-foreground">{p.name || p.key}</span>
                           <span className={`rounded-full border border-border bg-surface px-1.5 py-0.5 text-xs uppercase ${verdictColor(p.verdict)}`}>
                             {p.verdict || "unknown"}
                           </span>
@@ -250,7 +250,7 @@ export function IocDetailDialog({ target, onClose, onDeleted }: IocDetailDialogP
 
               <IocTaLinksSection links={taQuery.data?.threat_actors ?? []} taInput={taInput} setTaInput={setTaInput} onAdd={() => void addTa()} onRemove={(actor) => void removeTa(actor)} />
 
-              <div className="mb-2 text-xs tracking-[0.06em] text-muted-foreground uppercase">Linked Articles ({ioc.sources.length})</div>
+              <div className="mb-2 text-sm font-semibold text-muted-foreground">Linked Articles ({ioc.sources.length})</div>
               <div className="overflow-hidden rounded-md border border-border">
                 {ioc.sources.length === 0 ? (
                   <div className="p-3 text-[13px] text-muted-foreground">No source articles recorded.</div>
@@ -302,7 +302,7 @@ function IocTaLinksSection({
 }) {
   return (
     <div className="mb-4">
-      <div className="mb-2 text-xs tracking-[0.06em] text-muted-foreground uppercase">Linked Threat Actors ({links.length})</div>
+      <div className="mb-2 text-sm font-semibold text-muted-foreground">Linked Threat Actors ({links.length})</div>
       <div className="overflow-hidden rounded-md border border-border">
         {links.length === 0 ? (
           <div className="p-3 text-[13px] text-muted-foreground">No threat actors linked.</div>

@@ -92,7 +92,7 @@ export function SyncStatusCards() {
   return (
     <div className="mb-4 border-b border-border pb-4">
       <div className="mb-2 flex items-center justify-between">
-        <p className="font-mono text-xs tracking-[0.08em] text-muted-foreground uppercase">ATT&amp;CK Sync Status</p>
+        <p className="text-sm font-semibold text-muted-foreground">ATT&amp;CK Sync Status</p>
         <Button size="sm" variant="outline" disabled={syncingAll} onClick={() => void syncAll()}>
           {syncingAll ? "Syncing…" : "Sync All Domains"}
         </Button>

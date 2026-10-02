@@ -28,7 +28,7 @@ function Val({ v }: { v: string | null | undefined }) {
 function Kv({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <div className="mb-0.5 font-mono text-xs tracking-[0.05em] text-muted-foreground uppercase">{label}</div>
+      <div className="mb-0.5 text-sm font-semibold text-muted-foreground">{label}</div>
       <div className="text-xs">{children}</div>
     </div>
   );
@@ -48,7 +48,7 @@ function TagList({ items }: { items: string[] | undefined }) {
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="border-b border-border pb-4 last:border-none">
-      <div className="mb-2 font-mono text-xs tracking-[0.08em] text-primary uppercase">{title}</div>
+      <div className="mb-2 text-sm font-semibold text-primary">{title}</div>
       {children}
     </div>
   );
@@ -345,15 +345,15 @@ function ProfileBody({ profile: p }: { profile: TaProfile }) {
           </Kv>
         </div>
         <div className="mb-3">
-          <div className="mb-1 font-mono text-xs tracking-[0.05em] text-muted-foreground uppercase">Malware</div>
+          <div className="mb-1 text-sm font-semibold text-muted-foreground">Malware</div>
           <MalwareTable items={cap.known_malware} />
         </div>
         <div className="mb-3">
-          <div className="mb-1 font-mono text-xs tracking-[0.05em] text-muted-foreground uppercase">Exploited Vulnerabilities</div>
+          <div className="mb-1 text-sm font-semibold text-muted-foreground">Exploited Vulnerabilities</div>
           <VulnsTable items={cap.exploited_vulnerabilities} />
         </div>
         <div>
-          <div className="mb-1 font-mono text-xs tracking-[0.05em] text-muted-foreground uppercase">Attack Techniques (MITRE)</div>
+          <div className="mb-1 text-sm font-semibold text-muted-foreground">Attack Techniques (MITRE)</div>
           {ttpPhases.length === 0 ? (
             <span className="text-xs text-muted-foreground">None documented</span>
           ) : (
@@ -392,7 +392,7 @@ function ProfileBody({ profile: p }: { profile: TaProfile }) {
           </div>
         )}
         <div>
-          <div className="mb-1 font-mono text-xs tracking-[0.05em] text-muted-foreground uppercase">IOCs</div>
+          <div className="mb-1 text-sm font-semibold text-muted-foreground">IOCs</div>
           {!hasIocs ? (
             <span className="text-xs text-muted-foreground">None documented</span>
           ) : (
@@ -453,7 +453,7 @@ function ProfileBody({ profile: p }: { profile: TaProfile }) {
 
       <Section title="Detection & Defense">
         <div className="mb-3">
-          <div className="mb-1 font-mono text-xs tracking-[0.05em] text-muted-foreground uppercase">Detection Opportunities</div>
+          <div className="mb-1 text-sm font-semibold text-muted-foreground">Detection Opportunities</div>
           {(det.detection_opportunities?.length ?? 0) === 0 ? (
             <span className="text-xs text-muted-foreground">None documented</span>
           ) : (
@@ -480,7 +480,7 @@ function ProfileBody({ profile: p }: { profile: TaProfile }) {
           )}
         </div>
         <div>
-          <div className="mb-1 font-mono text-xs tracking-[0.05em] text-muted-foreground uppercase">Recommended Mitigations</div>
+          <div className="mb-1 text-sm font-semibold text-muted-foreground">Recommended Mitigations</div>
           {(det.recommended_mitigations?.length ?? 0) === 0 ? (
             <span className="text-xs text-muted-foreground">None documented</span>
           ) : (

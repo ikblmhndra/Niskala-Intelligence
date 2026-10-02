@@ -43,7 +43,7 @@ function CampaignTrendSection({ clusterId }: { clusterId: string }) {
 
   return (
     <div className="mb-2.5">
-      <div className="mb-1.5 flex flex-wrap items-center gap-2 font-mono text-xs tracking-[0.06em] text-muted-foreground uppercase">
+      <div className="mb-1.5 flex flex-wrap items-center gap-2 text-sm font-semibold text-muted-foreground">
         Campaign Trend
         <span className="rounded-full border border-border bg-surface px-1.5 py-0.5 text-xs normal-case" style={{ color }}>
           {trend.trend_direction}
@@ -94,7 +94,7 @@ export function CampaignExpandedPanel({
       <CampaignTrendSection clusterId={c.cluster_id} />
 
       <div className="mb-2.5">
-        <div className="mb-1.5 flex items-center gap-2 font-mono text-xs tracking-[0.06em] text-muted-foreground uppercase">
+        <div className="mb-1.5 flex items-center gap-2 text-sm font-semibold text-muted-foreground">
           Severity Breakdown
           <span className="rounded-full border px-1.5 py-0.5 text-xs font-bold normal-case border-border">{c.severity_label.toUpperCase()} {c.severity_score}</span>
         </div>
@@ -127,7 +127,7 @@ export function CampaignExpandedPanel({
 
       {c.matched_pirs.length > 0 && (
         <div className="mb-2.5">
-          <div className="mb-1.5 font-mono text-xs tracking-[0.06em] text-muted-foreground uppercase">Matched PIRs ({c.matched_pirs.length})</div>
+          <div className="mb-1.5 text-sm font-semibold text-muted-foreground">Matched PIRs ({c.matched_pirs.length})</div>
           <div className="overflow-hidden rounded-md border border-border">
             {c.matched_pirs.map((pir) => (
               <button key={pir.id} type="button" onClick={() => onOpenPir(pir)} className="flex w-full items-center gap-2 border-b border-border px-3 py-1.5 text-left last:border-b-0 hover:bg-accent">
@@ -140,7 +140,7 @@ export function CampaignExpandedPanel({
       )}
 
       <div className="mb-2.5">
-        <div className="mb-1.5 font-mono text-xs tracking-[0.06em] text-muted-foreground uppercase">Member Articles ({c.member_article_ids.length})</div>
+        <div className="mb-1.5 text-sm font-semibold text-muted-foreground">Member Articles ({c.member_article_ids.length})</div>
         <div className="max-h-[180px] overflow-y-auto rounded-md border border-border">
           {c.member_article_ids.length === 0 ? (
             <div className="p-2 font-mono text-xs text-muted-foreground">None</div>
@@ -156,7 +156,7 @@ export function CampaignExpandedPanel({
 
       {c.iocs.length > 0 && (
         <div className="mb-2.5">
-          <div className="mb-1.5 font-mono text-xs tracking-[0.06em] text-muted-foreground uppercase">IOCs ({c.iocs.length})</div>
+          <div className="mb-1.5 text-sm font-semibold text-muted-foreground">IOCs ({c.iocs.length})</div>
           <div className="flex flex-wrap gap-1">
             {c.iocs.slice(0, 20).map((ioc, i) => (
               <span key={i} title={ioc.type} className="rounded-full border border-destructive/25 bg-destructive/8 px-1.5 py-0.5 font-mono text-xs text-destructive">
@@ -169,7 +169,7 @@ export function CampaignExpandedPanel({
 
       {cvePrioList.length > 0 && (
         <div className="mb-2.5">
-          <div className="mb-1.5 font-mono text-xs tracking-[0.06em] text-muted-foreground uppercase">CVEs ({cvePrioList.length})</div>
+          <div className="mb-1.5 text-sm font-semibold text-muted-foreground">CVEs ({cvePrioList.length})</div>
           <div className="flex flex-wrap gap-1">
             {cvePrioList.slice(0, 20).map((cve) => (
               <CvePriorityChip
@@ -186,7 +186,7 @@ export function CampaignExpandedPanel({
 
       {c.related_campaigns.length > 0 && (
         <div className="mt-2.5">
-          <div className="mb-1.5 font-mono text-xs tracking-[0.06em] text-muted-foreground uppercase">Related Campaigns ({c.related_campaigns.length})</div>
+          <div className="mb-1.5 text-sm font-semibold text-muted-foreground">Related Campaigns ({c.related_campaigns.length})</div>
           <div className="overflow-hidden rounded-md border border-border">
             {c.related_campaigns.map((rc) => {
               const hints = [...rc.shared_elements.tas.slice(0, 2), ...rc.shared_elements.ttps.slice(0, 2), ...rc.shared_elements.iocs.slice(0, 1)].join(", ");

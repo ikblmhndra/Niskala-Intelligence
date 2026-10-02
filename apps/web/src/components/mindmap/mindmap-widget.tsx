@@ -51,7 +51,7 @@ export function MindmapWidget({ featureType, docId, title }: MindmapWidgetProps)
   return (
     <div className="mb-2.5">
       <div className="mb-1.5 flex items-center gap-2">
-        <span className="font-mono text-xs tracking-[0.06em] text-muted-foreground uppercase">Mind Map</span>
+        <span className="text-sm font-semibold text-muted-foreground">Mind Map</span>
         <button
           type="button"
           onClick={() => setExpanded((v) => !v)}

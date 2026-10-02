@@ -7,7 +7,7 @@ import type { RecapDoc } from "@/lib/api/loose-types";
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div className="mt-5 first:mt-0">
-      <div className="mb-2 border-b border-border pb-1 font-mono text-xs tracking-[0.12em] text-muted-foreground uppercase">
+      <div className="mb-2 border-b border-border pb-1 text-sm font-semibold text-muted-foreground">
         {title}
       </div>
       {children}
@@ -69,7 +69,7 @@ export function RecapView({ doc }: { doc: RecapDoc }) {
     <div>
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-border bg-gradient-to-br from-primary/5 to-primary/[0.04] px-4 py-3">
         <div>
-          <div className="mb-1 font-mono text-xs tracking-[0.12em] text-muted-foreground uppercase">
+          <div className="mb-1 text-sm font-semibold text-muted-foreground">
             Daily Recap · {doc.date}
           </div>
           <div className="text-sm leading-snug">{doc.headline || "(no headline)"}</div>
@@ -172,7 +172,7 @@ export function RecapView({ doc }: { doc: RecapDoc }) {
         </div>
         <p className="mb-2 text-sm leading-relaxed">{fcast.summary || "(no forecast)"}</p>
 
-        <div className="mb-1.5 font-mono text-xs tracking-[0.12em] text-muted-foreground uppercase">
+        <div className="mb-1.5 text-sm font-semibold text-muted-foreground">
           Likely Events ({(fcast.likely_events ?? []).length})
         </div>
         {fcast.likely_events?.length ? (
@@ -192,7 +192,7 @@ export function RecapView({ doc }: { doc: RecapDoc }) {
 
         {(fcast.watch_items ?? []).length > 0 && (
           <>
-            <div className="mt-3 mb-1.5 font-mono text-xs tracking-[0.12em] text-muted-foreground uppercase">
+            <div className="mt-3 mb-1.5 text-sm font-semibold text-muted-foreground">
               Watch Items
             </div>
             <ul className="list-disc space-y-1 pl-4 text-sm">
@@ -206,7 +206,7 @@ export function RecapView({ doc }: { doc: RecapDoc }) {
 
       {doc.raw_llm && (
         <details className="mt-4">
-          <summary className="cursor-pointer font-mono text-xs tracking-[0.1em] text-muted-foreground uppercase">
+          <summary className="cursor-pointer text-sm font-semibold text-muted-foreground">
             Raw LLM output (parse fallback)
           </summary>
           <pre className="mt-1.5 rounded-md border border-border p-2.5 text-[13px] whitespace-pre-wrap text-muted-foreground">

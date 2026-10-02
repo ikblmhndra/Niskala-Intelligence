@@ -185,7 +185,7 @@ function MindmapEditorForm({
 
       <div className="flex min-h-0 flex-1 gap-3">
         <div className="flex w-[340px] flex-shrink-0 flex-col gap-1">
-          <div className="font-mono text-xs tracking-[0.05em] text-muted-foreground uppercase">Mermaid Syntax</div>
+          <div className="text-sm font-semibold text-muted-foreground">Mermaid Syntax</div>
           <textarea
             value={syntax}
             onChange={(e) => setSyntax(e.target.value)}
@@ -194,7 +194,7 @@ function MindmapEditorForm({
           />
         </div>
         <div className="flex min-w-0 flex-1 flex-col gap-1">
-          <div className="font-mono text-xs tracking-[0.05em] text-muted-foreground uppercase">Preview</div>
+          <div className="text-sm font-semibold text-muted-foreground">Preview</div>
           <div ref={previewRef} className="flex flex-1 items-start justify-center overflow-auto rounded-2xl border border-border bg-surface shadow-sm2 p-4" />
         </div>
       </div>

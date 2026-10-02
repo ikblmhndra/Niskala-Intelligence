@@ -47,7 +47,7 @@ const IOC_FIELD_LABEL: Record<string, string> = {
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div>
-      <div className="mb-1.5 font-mono text-xs tracking-[0.1em] text-muted-foreground uppercase">{title}</div>
+      <div className="mb-1.5 text-sm font-semibold text-muted-foreground">{title}</div>
       {children}
     </div>
   );

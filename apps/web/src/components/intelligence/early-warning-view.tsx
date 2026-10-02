@@ -89,7 +89,7 @@ export function EarlyWarningView() {
 
       {[...sections.entries()].map(([cat, spikes]) => (
         <div key={cat} className="mb-4">
-          <div className="mb-1.5 font-mono text-xs tracking-[0.08em] text-muted-foreground uppercase">{cat} Spikes</div>
+          <div className="mb-1.5 text-sm font-semibold text-muted-foreground">{cat} Spikes</div>
           <div className="space-y-1.5">
             {spikes.map((s, i) => (
               <div key={i} className="flex flex-wrap items-center gap-2.5 rounded-2xl border border-border bg-surface shadow-sm px-3 py-1.5">
