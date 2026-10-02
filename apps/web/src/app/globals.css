@@ -78,25 +78,25 @@
 }
 
 :root {
-  --background: #f1e8dd; /* Clear Beige: cukup gelap supaya card putih terpisah jelas */
+  --background: #ffffff; /* halaman putih polos; card yang berwarna (beige) */
   --foreground: #2b0d19; /* Burgundy gelap */
-  --surface: #ffffff; /* card/popover */
-  --panel: #f7f0e8; /* panel/hover/nested */
+  --surface: #f6efe6; /* card/popover: Clear Beige */
+  --panel: #f0e7db; /* input/hover/nested di atas card maupun halaman */
   --card: var(--surface);
   --card-foreground: var(--foreground);
   --popover: var(--surface);
   --popover-foreground: var(--foreground);
   --primary: #d0002f; /* Privy Red, digelapkan sedikit dari #e60034 supaya teks merah di atas beige lulus AA */
   --primary-foreground: #ffffff;
-  --secondary: #f7f0e8;
+  --secondary: #f0e7db;
   --secondary-foreground: var(--foreground);
   --muted: var(--panel);
   --muted-foreground: #6b4452;
   --accent: var(--panel);
   --accent-foreground: var(--foreground);
   --destructive: #b42318; /* oranye-merah, beda hue dari --primary */
-  --border: #d9c9b8;
-  --input: #d9c9b8;
+  --border: #e3d6c6;
+  --input: #e3d6c6;
   --ring: #d0002f;
   --success: #17703f;
   --warning: #9a4a00;
@@ -106,11 +106,11 @@
   --severity-high: #b04a00;
   --severity-medium: #7a5c00;
   --severity-low: #17703f;
-  --chart-1: #d0002f;
-  --chart-2: #256a8a;
-  --chart-3: #17703f;
-  --chart-4: #b04a00;
-  --chart-5: #7a3a5a;
+  --chart-1: #256a8a;
+  --chart-2: #17703f;
+  --chart-3: #b04a00;
+  --chart-4: #7a3a5a;
+  --chart-5: #6b4a9e;
   --chart-6: #5b6b1f;
   --chart-7: #a0306f;
   --chart-8: #4a5568;
@@ -156,11 +156,11 @@
   --severity-high: #ffa164;
   --severity-medium: #f5cf5a;
   --severity-low: #76ce93;
-  --chart-1: #ff4d6d;
-  --chart-2: #92bbd1;
-  --chart-3: #76ce93;
-  --chart-4: #ffa164;
-  --chart-5: #fbbfa1;
+  --chart-1: #92bbd1;
+  --chart-2: #76ce93;
+  --chart-3: #ffa164;
+  --chart-4: #fbbfa1;
+  --chart-5: #c9b0f0;
   --chart-6: #f5cf5a;
   --chart-7: #e08fb5;
   --chart-8: #b7a3c9;

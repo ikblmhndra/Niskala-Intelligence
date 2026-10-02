@@ -5,8 +5,10 @@ import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api/client";
 import type { TaStats } from "@/lib/api/loose-types";
 import { ChartCard, DashboardSectionLabel, MapCard, StatBox } from "@/components/dashboard/stat-box";
+import { AttentionBand } from "@/components/dashboard/attention-band";
+import { BreakdownList } from "@/components/dashboard/breakdown-list";
 import { CountryMap } from "@/components/dashboard/country-map";
-import { DoughnutChart, HorizontalBarChart, TimelineChart } from "@/components/dashboard/charts";
+import { HorizontalBarChart, TimelineChart } from "@/components/dashboard/charts";
 import { Skeleton } from "@/components/ui/skeleton";
 
 function toTitleCase(s: string): string {
@@ -52,35 +54,35 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-1 pb-10">
-      {/* ── News Intelligence stat boxes ── */}
-      {dashboard.isPending && <StatGridSkeleton count={3} />}
+      <header className="mb-6">
+        <div className="text-sm text-muted-foreground">Ringkasan intelijen</div>
+        <h1 className="font-heading text-3xl font-extrabold tracking-tight text-foreground">Dashboard</h1>
+      </header>
+
+      <AttentionBand />
+
+      {/* ── KPI ── */}
+      {(dashboard.isPending || ta.isPending) && <StatGridSkeleton count={4} />}
       {dashboard.isError && <ErrorNote />}
-      {dashboard.data && (
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-          <StatBox label="Total Articles" value={dashboard.data.total_articles} sub="In database" />
+      {dashboard.data && ta.data && (
+        <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
           <StatBox
-            label="Countries Mentioned"
-            value={dashboard.data.total_countries}
-            sub="Unique geographies"
+            label="Total Articles"
+            value={dashboard.data.total_articles}
+            sub="In database"
+            spark={dashboard.data.timeline.map((x) => x.count)}
           />
+          <StatBox label="Countries Mentioned" value={dashboard.data.total_countries} sub="Unique geographies" />
           <StatBox
             label="Threat Actors Tracked"
             value={dashboard.data.total_threat_actors}
-            sub="Known groups & APTs"
+            sub={`${ta.data.total_groups.toLocaleString()} APT groups · ${ta.data.total_whitelisted} whitelisted`}
           />
-        </div>
-      )}
-
-      {/* ── Threat Actor Intelligence stat boxes ── */}
-      <DashboardSectionLabel>Threat Actor Intelligence</DashboardSectionLabel>
-      {ta.isPending && <StatGridSkeleton count={4} />}
-      {ta.isError && <ErrorNote />}
-      {ta.data && (
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          <StatBox label="Tracked APT Groups" value={ta.data.total_groups} sub="In Threat Actor Room" />
-          <StatBox label="Whitelisted Groups" value={ta.data.total_whitelisted} sub="Removed from tracking" />
-          <StatBox label="Manual Additions" value={ta.data.manual_count} sub="Manually tracked groups" />
-          <StatBox label="Covered in News" value={ta.data.in_news_count} sub="Tracked groups in articles" />
+          <StatBox
+            label="Covered in News"
+            value={ta.data.in_news_count}
+            sub={`${ta.data.manual_count} added manually`}
+          />
         </div>
       )}
 
@@ -92,12 +94,9 @@ export default function DashboardPage() {
             <MapCard title="Mentioned Countries">
               <CountryMap data={dashboard.data.country_counts} />
             </MapCard>
-            <ChartCard title="Articles by News Type" height={300}>
-              <DoughnutChart
-                labels={dashboard.data.by_news_type.map((x) => toTitleCase(x.name))}
-                data={dashboard.data.by_news_type.map((x) => x.count)}
-              />
-            </ChartCard>
+            <MapCard title="Articles by News Type">
+              <BreakdownList items={dashboard.data.by_news_type.map((x) => ({ label: toTitleCase(x.name), count: x.count }))} limit={9} />
+            </MapCard>
           </div>
 
           <ChartCard title="Articles Over Time" height={200}>
@@ -138,12 +137,9 @@ export default function DashboardPage() {
       <DashboardSectionLabel>Threat Actor Room — Charts</DashboardSectionLabel>
       {ta.data && (
         <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
-          <ChartCard title="APT Groups by Source" height={260}>
-            <DoughnutChart
-              labels={ta.data.by_source.map((x) => toTitleCase(x.name))}
-              data={ta.data.by_source.map((x) => x.count)}
-            />
-          </ChartCard>
+          <MapCard title="APT Groups by Source">
+            <BreakdownList items={ta.data.by_source.map((x) => ({ label: toTitleCase(x.name), count: x.count }))} />
+          </MapCard>
           <ChartCard title="Tracked APT Groups — News Mentions" height={260}>
             {ta.data.top_in_news.length ? (
               <HorizontalBarChart
