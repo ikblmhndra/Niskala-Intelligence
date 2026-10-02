@@ -699,6 +699,13 @@
             "title": "By News Type",
             "type": "array"
           },
+          "country_counts": {
+            "items": {
+              "$ref": "#/components/schemas/TopItem"
+            },
+            "title": "Country Counts",
+            "type": "array"
+          },
           "timeline": {
             "items": {
               "$ref": "#/components/schemas/TimelinePoint"
@@ -764,6 +771,7 @@
           "total_countries",
           "total_threat_actors",
           "top_countries",
+          "country_counts",
           "top_sources",
           "top_threat_actors",
           "top_industries",

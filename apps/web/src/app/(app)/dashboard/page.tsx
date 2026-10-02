@@ -4,7 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 
 import { api } from "@/lib/api/client";
 import type { TaStats } from "@/lib/api/loose-types";
-import { ChartCard, DashboardSectionLabel, StatBox } from "@/components/dashboard/stat-box";
+import { ChartCard, DashboardSectionLabel, MapCard, StatBox } from "@/components/dashboard/stat-box";
+import { CountryMap } from "@/components/dashboard/country-map";
 import { DoughnutChart, HorizontalBarChart, TimelineChart } from "@/components/dashboard/charts";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -88,13 +89,9 @@ export default function DashboardPage() {
       {dashboard.data && (
         <div className="space-y-3">
           <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
-            <ChartCard title="Top Mentioned Countries" height={300}>
-              <HorizontalBarChart
-                labels={dashboard.data.top_countries.map((x) => toTitleCase(x.name))}
-                data={dashboard.data.top_countries.map((x) => x.count)}
-                tone="info"
-              />
-            </ChartCard>
+            <MapCard title="Mentioned Countries">
+              <CountryMap data={dashboard.data.country_counts} />
+            </MapCard>
             <ChartCard title="Articles by News Type" height={300}>
               <DoughnutChart
                 labels={dashboard.data.by_news_type.map((x) => toTitleCase(x.name))}

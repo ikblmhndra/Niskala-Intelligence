@@ -1,5 +1,6 @@
 "use client";
 
+import { SectionIcon } from "@/components/newsletter/section-icon";
 import { TriangleAlertIcon, XIcon } from "lucide-react";
 import type { components } from "@/lib/api/schema";
 import { Badge } from "@/components/ui/badge";
@@ -106,7 +107,7 @@ export function NewsletterQueuePanel({ queue, paywallHints, onAssign, onRemove, 
                     <DropdownMenuContent align="end">
                       {SECTION_DEFS.map((s) => (
                         <DropdownMenuItem key={s.key} onClick={() => onAssign(s.key, a)}>
-                          {s.icon} {s.label}
+                          <SectionIcon section={s.key} /> {s.label}
                         </DropdownMenuItem>
                       ))}
                     </DropdownMenuContent>

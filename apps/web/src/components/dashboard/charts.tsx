@@ -15,7 +15,7 @@ import {
 } from "chart.js";
 import { Bar, Doughnut, Line } from "react-chartjs-2";
 
-import { cssVar, useChartTheme, withAlpha } from "@/lib/chart-theme";
+import { cssVar, useChartTheme, withAlpha, type ChartTheme } from "@/lib/chart-theme";
 
 ChartJS.register(
   CategoryScale,
@@ -38,6 +38,22 @@ if (typeof document !== "undefined") {
 }
 ChartJS.defaults.font.size = 12;
 
+function tooltipBase(t: ChartTheme) {
+  return {
+    backgroundColor: t.surface,
+    titleColor: t.textBright,
+    bodyColor: t.textDim,
+    borderColor: t.border,
+    borderWidth: 1,
+    padding: 10,
+    cornerRadius: 12,
+    boxPadding: 4,
+    usePointStyle: true,
+  };
+}
+
+const gridLine = (t: ChartTheme) => ({ color: withAlpha(t.border, 0.6), drawTicks: false });
+
 interface HorizontalBarChartProps {
   labels: string[];
   data: number[];
@@ -54,10 +70,11 @@ export function HorizontalBarChart({ labels, data, tone = "primary" }: Horizonta
         datasets: [
           {
             data,
-            backgroundColor: withAlpha(color, 0.75),
-            borderColor: color,
-            borderWidth: 1,
-            borderRadius: 2,
+            backgroundColor: color,
+            borderWidth: 0,
+            borderRadius: 999,
+            borderSkipped: false,
+            barThickness: 14,
           },
         ],
       }}
@@ -68,14 +85,15 @@ export function HorizontalBarChart({ labels, data, tone = "primary" }: Horizonta
         plugins: {
           legend: { display: false },
           tooltip: {
+            ...tooltipBase(t),
             callbacks: {
               label: (ctx: TooltipItem<"bar">) => ` ${ctx.parsed.x} articles`,
             },
           },
         },
         scales: {
-          x: { grid: { color: t.border }, ticks: { color: t.textDim } },
-          y: { grid: { display: false }, ticks: { color: t.textBright, font: { size: 12 } } },
+          x: { grid: gridLine(t), border: { display: false }, ticks: { color: t.textDim } },
+          y: { grid: { display: false }, border: { display: false }, ticks: { color: t.textBright, font: { size: 12 } } },
         },
       }}
     />
@@ -98,8 +116,9 @@ export function DoughnutChart({ labels, data }: DoughnutChartProps) {
             data,
             backgroundColor: t.series,
             borderColor: t.surface,
-            borderWidth: 2,
-            hoverOffset: 6,
+            borderWidth: 3,
+            borderRadius: 6,
+            hoverOffset: 8,
           },
         ],
       }}
@@ -107,14 +126,15 @@ export function DoughnutChart({ labels, data }: DoughnutChartProps) {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: { position: "right", labels: { color: t.textBright, padding: 12, font: { size: 12 } } },
+          legend: { position: "right", labels: { color: t.textBright, padding: 12, usePointStyle: true, pointStyle: "circle", font: { size: 12 } } },
           tooltip: {
+            ...tooltipBase(t),
             callbacks: {
               label: (ctx: TooltipItem<"doughnut">) => ` ${ctx.label}: ${ctx.parsed} articles`,
             },
           },
         },
-        cutout: "60%",
+        cutout: "72%",
       }}
     />
   );
@@ -146,7 +166,7 @@ export function MultiLineChart({ labels, series }: MultiLineChartProps) {
             backgroundColor: color,
             borderWidth: 1.5,
             pointRadius: 1.5,
-            tension: 0.3,
+            tension: 0.4,
           };
         }),
       }}
@@ -158,8 +178,8 @@ export function MultiLineChart({ labels, series }: MultiLineChartProps) {
           tooltip: { mode: "index", intersect: false },
         },
         scales: {
-          x: { grid: { color: t.border }, ticks: { color: t.textDim, maxTicksLimit: 12 } },
-          y: { grid: { color: t.border }, ticks: { color: t.textDim }, beginAtZero: true },
+          x: { grid: gridLine(t), ticks: { color: t.textDim, maxTicksLimit: 12 } },
+          y: { grid: gridLine(t), ticks: { color: t.textDim }, beginAtZero: true },
         },
       }}
     />
@@ -196,7 +216,7 @@ export function StackedBarChart({ labels, series }: StackedBarChartProps) {
         },
         scales: {
           x: { stacked: true, grid: { display: false }, ticks: { color: t.textDim, maxTicksLimit: 12 } },
-          y: { stacked: true, grid: { color: t.border }, ticks: { color: t.textDim } },
+          y: { stacked: true, grid: gridLine(t), ticks: { color: t.textDim } },
         },
       }}
     />
@@ -220,9 +240,9 @@ export function TAActivityTimelineChart({ labels, articleCounts, tweetCounts, ra
       data={{
         labels,
         datasets: [
-          { label: "Articles", data: articleCounts, borderColor: withAlpha(t.primary, 0.8), backgroundColor: withAlpha(t.primary, 0.15), fill: true, tension: 0.3, pointRadius: 2 },
-          { label: "Tweets", data: tweetCounts, borderColor: withAlpha(t.info, 0.8), backgroundColor: withAlpha(t.info, 0.1), fill: true, tension: 0.3, pointRadius: 2 },
-          { label: "Ransom", data: ransomCounts, borderColor: withAlpha(t.critical, 0.8), backgroundColor: withAlpha(t.critical, 0.1), fill: true, tension: 0.3, pointRadius: 2 },
+          { label: "Articles", data: articleCounts, borderColor: withAlpha(t.primary, 0.8), backgroundColor: withAlpha(t.primary, 0.15), fill: true, tension: 0.4, pointRadius: 2 },
+          { label: "Tweets", data: tweetCounts, borderColor: withAlpha(t.info, 0.8), backgroundColor: withAlpha(t.info, 0.1), fill: true, tension: 0.4, pointRadius: 2 },
+          { label: "Ransom", data: ransomCounts, borderColor: withAlpha(t.critical, 0.8), backgroundColor: withAlpha(t.critical, 0.1), fill: true, tension: 0.4, pointRadius: 2 },
         ],
       }}
       options={{
@@ -232,8 +252,8 @@ export function TAActivityTimelineChart({ labels, articleCounts, tweetCounts, ra
           legend: { position: "bottom", labels: { color: t.textDim, boxWidth: 10, font: { size: 12 } } },
         },
         scales: {
-          x: { grid: { color: t.border }, ticks: { color: t.textDim, maxTicksLimit: 12, font: { size: 12 } } },
-          y: { grid: { color: t.border }, ticks: { color: t.textDim, font: { size: 12 } }, beginAtZero: true, stacked: true },
+          x: { grid: gridLine(t), ticks: { color: t.textDim, maxTicksLimit: 12, font: { size: 12 } } },
+          y: { grid: gridLine(t), ticks: { color: t.textDim, font: { size: 12 } }, beginAtZero: true, stacked: true },
         },
       }}
     />
@@ -258,8 +278,9 @@ export function GradedDoughnutChart({ counts }: GradedDoughnutChartProps) {
             data: grades.map((g) => counts[g]),
             backgroundColor: grades.map((g) => t.grades[g] ?? t.textDim),
             borderColor: t.surface,
-            borderWidth: 2,
-            hoverOffset: 6,
+            borderWidth: 3,
+            borderRadius: 6,
+            hoverOffset: 8,
           },
         ],
       }}
@@ -267,9 +288,9 @@ export function GradedDoughnutChart({ counts }: GradedDoughnutChartProps) {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: { position: "right", labels: { color: t.textBright, padding: 12, font: { size: 12 } } },
+          legend: { position: "right", labels: { color: t.textBright, padding: 12, usePointStyle: true, pointStyle: "circle", font: { size: 12 } } },
         },
-        cutout: "55%",
+        cutout: "68%",
       }}
     />
   );
@@ -292,10 +313,11 @@ export function TimelineChart({ labels, data }: TimelineChartProps) {
             borderColor: t.primary,
             backgroundColor: withAlpha(t.primary, 0.06),
             borderWidth: 1.5,
-            pointRadius: 2,
+            pointRadius: 0,
+            pointHoverRadius: 5,
             pointBackgroundColor: t.primary,
             fill: true,
-            tension: 0.3,
+            tension: 0.4,
           },
         ],
       }}
@@ -311,8 +333,8 @@ export function TimelineChart({ labels, data }: TimelineChartProps) {
           },
         },
         scales: {
-          x: { grid: { color: t.border }, ticks: { color: t.textDim, maxTicksLimit: 12 } },
-          y: { grid: { color: t.border }, ticks: { color: t.textDim }, beginAtZero: true },
+          x: { grid: gridLine(t), ticks: { color: t.textDim, maxTicksLimit: 12 } },
+          y: { grid: gridLine(t), ticks: { color: t.textDim }, beginAtZero: true },
         },
       }}
     />

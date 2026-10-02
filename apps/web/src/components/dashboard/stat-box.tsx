@@ -57,3 +57,13 @@ export function ChartCard({
     </div>
   );
 }
+
+/** Kartu untuk konten berukuran bebas (peta, daftar) -- tanpa tinggi tetap. */
+export function MapCard({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <div className="rounded-2xl border border-border bg-surface p-5 shadow-sm">
+      <div className="mb-3 text-base font-semibold text-foreground">{title}</div>
+      {children}
+    </div>
+  );
+}

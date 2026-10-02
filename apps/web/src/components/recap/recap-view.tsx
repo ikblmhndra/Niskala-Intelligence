@@ -44,7 +44,7 @@ function Chips({ items }: { items?: string[] }) {
         <Badge
           key={v}
           variant="outline"
-          className="border-primary/40 bg-primary/10 font-mono text-[13px] text-primary"
+          className="border-primary/40 bg-primary/10 font-mono text-sm text-primary"
         >
           {v}
         </Badge>
@@ -100,7 +100,7 @@ export function RecapView({ doc }: { doc: RecapDoc }) {
                 <span className="font-medium">{s.title}</span>{" "}
                 <span className="font-mono text-xs text-muted-foreground">[{s.source || "?"}]</span>
                 {s.why_it_matters && (
-                  <div className="mt-0.5 text-xs text-muted-foreground">{s.why_it_matters}</div>
+                  <div className="mt-1 text-sm text-muted-foreground">{s.why_it_matters}</div>
                 )}
               </li>
             ))}
@@ -119,7 +119,7 @@ export function RecapView({ doc }: { doc: RecapDoc }) {
                 <Badge variant="outline" className="border-ring/40 bg-ring/10 font-mono text-xs text-ring">
                   {t.signal || "other"}
                 </Badge>
-                {t.summary && <div className="mt-0.5 text-xs">{t.summary}</div>}
+                {t.summary && <div className="mt-1 text-sm">{t.summary}</div>}
               </li>
             ))}
           </ul>
@@ -146,7 +146,7 @@ export function RecapView({ doc }: { doc: RecapDoc }) {
                   · {c.article_count ?? 0} articles
                 </span>
                 {c.why_it_matters && (
-                  <div className="mt-0.5 text-xs text-muted-foreground">{c.why_it_matters}</div>
+                  <div className="mt-1 text-sm text-muted-foreground">{c.why_it_matters}</div>
                 )}
               </li>
             ))}
@@ -167,7 +167,7 @@ export function RecapView({ doc }: { doc: RecapDoc }) {
       )}
 
       <div className="mt-6 rounded-md border border-warning/40 bg-warning/[0.04] px-4 py-3">
-        <div className="mb-2 font-mono text-[13px] tracking-[0.12em] text-warning uppercase">
+        <div className="mb-2 font-mono text-sm tracking-[0.12em] text-warning uppercase">
           ▲ Forecast · Next 1-3 Days
         </div>
         <p className="mb-2 text-sm leading-relaxed">{fcast.summary || "(no forecast)"}</p>
@@ -180,7 +180,7 @@ export function RecapView({ doc }: { doc: RecapDoc }) {
             {fcast.likely_events.map((e, i) => (
               <li key={i}>
                 <span className="font-medium">{e.event}</span> <ConfidenceBadge confidence={e.confidence} />
-                <div className="mt-0.5 text-xs text-muted-foreground">
+                <div className="mt-1 text-sm text-muted-foreground">
                   <span className="font-mono text-xs uppercase">Basis:</span> {e.basis}
                 </div>
               </li>
@@ -209,7 +209,7 @@ export function RecapView({ doc }: { doc: RecapDoc }) {
           <summary className="cursor-pointer text-sm font-semibold text-muted-foreground">
             Raw LLM output (parse fallback)
           </summary>
-          <pre className="mt-1.5 rounded-md border border-border p-2.5 text-[13px] whitespace-pre-wrap text-muted-foreground">
+          <pre className="mt-1.5 rounded-md border border-border p-2.5 text-sm whitespace-pre-wrap text-muted-foreground">
             {doc.raw_llm}
           </pre>
         </details>

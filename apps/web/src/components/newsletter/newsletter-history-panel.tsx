@@ -1,5 +1,6 @@
 "use client";
 
+import { SectionIcon } from "@/components/newsletter/section-icon";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
@@ -80,11 +81,13 @@ export function NewsletterHistoryPanel({ refreshKey, onPreview, onResend, resend
                   </div>
                   {highlightTitle && (
                     <div className="mt-1.5 truncate text-[13px] text-foreground" title={highlightTitle}>
-                      ⭐ {highlightTitle}
+                      <SectionIcon section="highlight" className="mr-1 inline" /> {highlightTitle}
                     </div>
                   )}
                   <div className="mt-1.5 font-mono text-xs text-muted-foreground">
-                    🌏 {apacLen} &nbsp; 🌐 {globalLen} &nbsp; 🇮🇩 {indonesiaLen}
+                    <span className="mr-3 inline-flex items-center gap-1"><SectionIcon section="apac" /> {apacLen}</span>
+                    <span className="mr-3 inline-flex items-center gap-1"><SectionIcon section="global_news" /> {globalLen}</span>
+                    <span className="inline-flex items-center gap-1"><SectionIcon section="indonesia" /> {indonesiaLen}</span>
                   </div>
                   <div className="mt-2 flex gap-1.5">
                     <Button variant="outline" size="sm" className="h-6 flex-1 px-2 text-xs" onClick={() => onPreview(n.id, n.week, n.year)}>

@@ -26,7 +26,7 @@ export function TweetCard({ tweet: t, onClick }: { tweet: Tweet; onClick: () => 
   return (
     <div
       onClick={onClick}
-      className="flex cursor-pointer gap-2.5 rounded-2xl border border-border bg-surface shadow-sm p-3 transition-colors hover:border-ring/50"
+      className="flex cursor-pointer gap-3 rounded-2xl border border-border bg-surface p-5 shadow-sm transition-colors hover:border-ring/50"
     >
       <Avatar className="size-9 shrink-0">
         <AvatarImage src={t.author_avatar || undefined} alt={t.author_username} />
@@ -47,7 +47,7 @@ export function TweetCard({ tweet: t, onClick }: { tweet: Tweet; onClick: () => 
                 key={url}
                 src={url}
                 alt=""
-                className="h-[60px] w-auto cursor-pointer rounded border border-border object-cover"
+                className="h-[72px] w-auto cursor-pointer rounded-xl border border-border object-cover"
                 onClick={(e) => {
                   e.stopPropagation();
                   window.open(t.url, "_blank");

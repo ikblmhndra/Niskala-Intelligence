@@ -1,5 +1,6 @@
 "use client";
 
+import { SectionIcon } from "@/components/newsletter/section-icon";
 import type { components } from "@/lib/api/schema";
 import { Textarea } from "@/components/ui/textarea";
 import { SECTION_MAX, type ComposerState, type SectionKey } from "@/components/newsletter/types";
@@ -7,11 +8,11 @@ import { cn } from "@/lib/utils";
 
 type Article = components["schemas"]["ArticleOut"];
 
-const SECTION_DISPLAY: { key: SectionKey; label: string; icon: string; colorClass: string }[] = [
-  { key: "highlight", label: "Highlight of the Week", icon: "⭐", colorClass: "text-warning" },
-  { key: "apac", label: "APAC Threats", icon: "🌏", colorClass: "text-primary" },
-  { key: "global_news", label: "Global Threats", icon: "🌐", colorClass: "text-purple-400" },
-  { key: "indonesia", label: "Indonesia (optional)", icon: "🇮🇩", colorClass: "text-destructive" },
+const SECTION_DISPLAY: { key: SectionKey; label: string; colorClass: string }[] = [
+  { key: "highlight", label: "Highlight of the Week", colorClass: "text-warning" },
+  { key: "apac", label: "APAC Threats", colorClass: "text-primary" },
+  { key: "global_news", label: "Global Threats", colorClass: "text-tag-violet" },
+  { key: "indonesia", label: "Indonesia (optional)", colorClass: "text-destructive" },
 ];
 
 interface Props {
@@ -36,8 +37,8 @@ export function NewsletterComposerSections({ state, onRemove, onNoteChange }: Pr
                 def.colorClass,
               )}
             >
-              <span>
-                {def.icon} {def.label}
+              <span className="flex items-center gap-2">
+                <SectionIcon section={def.key} /> {def.label}
               </span>
               <span className="text-muted-foreground">
                 {items.length} / {max}

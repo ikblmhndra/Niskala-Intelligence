@@ -60,7 +60,8 @@ async def _fetch_dashboard_stats(
     total_sources = await repo.distinct_source_count(**filters)
     total_countries = await repo.unique_country_count(**filters)
     total_threat_actors = await repo.unique_threat_actor_count(**filters)
-    top_countries = await repo.top_countries(limit=10, **filters)
+    country_counts = await repo.top_countries(limit=300, **filters)
+    top_countries = country_counts[:10]
     top_sources = await repo.top_sources(limit=10, **filters)
     top_actors = await repo.top_threat_actors(limit=10, **filters)
     top_industries = await repo.top_industries(limit=10, **filters)
@@ -74,6 +75,7 @@ async def _fetch_dashboard_stats(
         "total_countries": total_countries,
         "total_threat_actors": total_threat_actors,
         "top_countries": [{"name": c, "count": cnt} for c, cnt in top_countries],
+        "country_counts": [{"name": c, "count": cnt} for c, cnt in country_counts],
         "top_sources": [{"name": s, "count": cnt} for s, cnt in top_sources],
         "top_threat_actors": [{"name": a, "count": cnt} for a, cnt in top_actors],
         "top_industries": [{"name": i, "count": cnt} for i, cnt in top_industries],
