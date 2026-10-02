@@ -1,14 +1,18 @@
-"""Prodaft -- hasil migrasi otomatis dari `ScraperNews/prodraftThreat.py`
-(codemod Fase 4, family XPath runtime="browser"). Cek
-`migration_report.json` buat detail ekstraksi. WAJIB lewat `dry-run` +
-`verify` sebelum `enable` -- lihat docs/ADDING_A_SCRAPER.md.
-"""
+"""Prodaft -- selector diganti ke pola href (census staging 2026-10-01, Fase 10.D). Host kanonik `www.prodaft.com`; artikel di `/blog/<slug>` (halaman daftarnya `/blogs`).
+
+XPath absolut lama gak match lagi. Sekarang `link_card_xpaths` (lihat `_links.py`) -- yang dipegang
+cuma pola href artikel, bukan posisi div ke-N. `wait_for`: halaman dirender di klien, tanpa menunggu
+anchor artikel muncul `page.content()` ambil HTML sebelum daftar ada."""
 
 from __future__ import annotations
 
 from cti_scraper.base import ScraperMeta
 from cti_scraper.families.xpath import XPathScraper
 from cti_scraper.schedule import spread
+
+from cti_scrapers.feeds._links import link_card_xpaths
+
+_TITLE, _LINK = link_card_xpaths("starts-with(@href, '/blog/')")
 
 
 class Prodraft(XPathScraper):
@@ -18,11 +22,14 @@ class Prodraft(XPathScraper):
         schedule=spread("45 * * * *", "prodraft"),
         runtime="browser",
         rate_limit="6/minute",
-        max_items=4,
+        max_items=6,
         tags=("migrated",),
         legacy_label="NEW ARTICLE FROM PRODAFT",
         legacy_script="prodraftThreat",
     )
-    url = "https://prodaft.com/blogs"
-    title_xpath = "/html/body/main/div[2]/section[2]/div[2]/div[{i}]/div[1]/h4/text()"
-    link_xpath = "/html/body/main/div[2]/section[2]/div[2]/div[{i}]/div[1]/h4/@href"
+    url = "https://www.prodaft.com/blogs"
+    base_url = "https://www.prodaft.com"
+    indexed = False
+    wait_for = "a[href^='/blog/']"
+    title_xpath = _TITLE
+    link_xpath = _LINK

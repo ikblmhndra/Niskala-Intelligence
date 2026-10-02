@@ -34,8 +34,11 @@ from cti_scraper.base import BaseScraper, ScrapeContext, ScraperMeta
 from cti_scraper.items import CvePocItem
 from cti_scraper.schedule import spread
 
+from cti_scrapers.feeds._pacing import get_waiting
+
 _SEARCH_URL = "https://api.github.com/search/repositories"
 _MITRE_URL = "https://cveawg.mitre.org/api/cve"
+
 
 _CVE_ID_RE = re.compile(r"(cve-\d{4}-\d+)")
 
@@ -57,7 +60,7 @@ def _poc_type(name: str, desc: str) -> str:
 
 def _mitre_vendor_product(ctx: ScrapeContext, cve_id: str) -> tuple[str, str]:
     try:
-        data = ctx.http.get(f"{_MITRE_URL}/{cve_id.upper()}").json()
+        data = get_waiting(ctx, f"{_MITRE_URL}/{cve_id.upper()}").json()
     except Exception:  # MITRE kadang balikin bentuk gak terduga -- gak fatal di sini
         return "Unknown", "Unknown"
 
@@ -118,7 +121,7 @@ class GithubPocMonitor(BaseScraper):
                 url = (
                     f"{_SEARCH_URL}?q=cve-{year}-*&sort=updated&order=desc&per_page=50&page={page}"
                 )
-                items = ctx.http.get(url).json().get("items", [])
+                items = get_waiting(ctx, url).json().get("items", [])
                 if not items:
                     break
                 results.extend(items)
@@ -160,7 +163,7 @@ class GithubPocMonitor(BaseScraper):
                 f"{_SEARCH_URL}?q={cve_id}+in:name,description"
                 "&sort=updated&order=desc&per_page=10&page=1"
             )
-            items = ctx.http.get(url).json().get("items", [])
+            items = get_waiting(ctx, url).json().get("items", [])
 
             for result in items:
                 if result.get("fork"):

@@ -57,13 +57,14 @@ from typing import Any
 from cti_enrich.stages.classify import ClassifyResult, OpenAIQuotaExhausted, classify
 from cti_enrich.stages.score import ScoreResult, score_with_lists
 from cti_scraper.base import BaseScraper, ScrapeContext, ScraperMeta
+from cti_scraper.errors import ParseError
 from cti_scraper.items import TweetItem
 from cti_scraper.ratelimit import parse_rate
-from cti_scraper.schedule import spread
 
 from cti_scrapers.collectors import _twitterapi
 
 _MAX_PAGES_PER_ACCOUNT = 3
+_ACCOUNT_WIDE_ERRORS = frozenset({401, 402, 403})
 _FIRST_RUN_WINDOW = timedelta(hours=3)
 
 
@@ -93,6 +94,12 @@ def _fetch_tweets_for_account(
         if next_cursor:
             params["cursor"] = next_cursor
         resp = _twitterapi._get_with_backoff(ctx, params)
+        if resp.status_code in _ACCOUNT_WIDE_ERRORS:
+            # 401/402/403 = key ditolak / kredit habis: berlaku ke SEMUA akun, bukan satu akun.
+            # Staging 2026-10-01: kredit twitterapi.io habis, 18 akun x 15 menit di-`break` diam-diam
+            # di bawah -> 262 run/hari berstatus `empty` tanpa satu pesan error (kelihatan "gak ada
+            # tweet baru"). Gagal keras, sama kayak `tweet_alerts_*`/`trending_cve` (`ParseError`).
+            raise ParseError(f"twitterapi.io HTTP {resp.status_code}: {resp.text[:200]}")
         if resp.status_code != 200:
             # Port cek eksplisit `monitorX.py:280-281` -- `ScraperHttpClient`
             # gak auto-raise di 4xx (cuma 429/5xx, lihat http.py), dan
@@ -170,7 +177,10 @@ class MonitorX(BaseScraper):
     meta = ScraperMeta(
         id="monitor_x",
         source="X/Twitter Intel Monitor",
-        schedule=spread("*/15 * * * *", "monitor_x"),
+        # Rundeck asli: `0/3` jam (`docs/legacy/rundeck-jobs-map.json`). Dulu `*/15` -- 12x lebih sering,
+        # kredit twitterapi.io (dibagi 4 scraper) habis ~3 jam sesudah kunci baru (staging 2026-10-01).
+        # Menit 8 = offset hasil `spread()` lama, supaya gak numpuk bareng trending_cve (:00/:15/...).
+        schedule="8 */3 * * *",
         rate_limit="10/minute",  # SAMA dengan tweet_alerts_1h/30m + trending_cve -- domain dibagi
         max_items=200,
         credential="twitter",

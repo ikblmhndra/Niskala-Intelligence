@@ -7,9 +7,11 @@ baru SEHAT SENDIRIAN -- queue depth, error log, resource) -- dokumen ini ngecek 
 ngasilin **output yang konsisten sama legacy** buat sumber yang sama di periode yang sama. Dua-duanya
 dipakai bareng, bukan pengganti satu sama lain.
 
-> **Status prasyarat (2026-10-01):** fix QA 10.H (`docs/PROGRESS.md`) sudah ke-merge di `origin/main`
-> tapi BELUM ke-deploy ke staging -- jadi §0 di bawah belum bisa dicentang dan banding belum boleh
-> dimulai. Sebelum itu, banding TA/Risk Matrix/TTP pasti menyesatkan.
+> **Status prasyarat (2026-10-01):** fix QA 10.H (`docs/PROGRESS.md`) sudah ke-merge DAN sudah
+> ke-deploy ke staging (~08:40 UTC, DB `c3a7e9d1f2b4`, `threat_actor_groups` 3995, beat + watchdog
+> aktif). Prasyarat yang tersisa di §0: data/kredensial uji dibersihkan, keputusan aturan TTP, dan
+> kredit twitterapi.io. Banding TTP khususnya perlu hati-hati -- remap staging menghasilkan beberapa
+> label janggal (lihat `PROGRESS.md` 10.H, "Kualitas remap TTP").
 
 ---
 
@@ -32,9 +34,10 @@ dipakai bareng, bukan pengganti satu sama lain.
 - [ ] Sepakati **zona waktu** pembanding -- platform baru jalan UTC (beat), legacy kemungkinan
       jalan jam lokal server (cek `date` di host legacy). Salah asumsi = "beda 1 hari" yang keliatan
       kayak bug tapi cuma offset jam.
-- [ ] **Fix QA 10.H sudah ke-deploy + post-deploy dijalankan** (lihat `docs/PROGRESS.md` 10.H). Tanpa
-      ini banding TA/Risk Matrix/PIR/TTP gak ada artinya: per 2026-10-01 `threat_actor_groups` di
-      staging KOSONG (dropdown TA kosong, PIR berbasis TA 0 artikel) dan TTP belum dinormalisasi.
+- [x] **Fix QA 10.H sudah ke-deploy + post-deploy dijalankan** -- DIPENUHI di staging 2026-10-01
+      ~08:40 UTC (lihat `docs/PROGRESS.md` 10.H). Cek ulang tiap kali host di-deploy ulang atau
+      dipindah: tanpa ini banding TA/Risk Matrix/PIR/TTP gak ada artinya (sebelum deploy
+      `threat_actor_groups` KOSONG: dropdown TA kosong, PIR berbasis TA 0 artikel, TTP belum dinormalisasi).
       ```bash
       PSQL="docker compose --env-file docker/stack.env --profile app exec -T postgres psql -U cti -d cti -tAc"
       $PSQL "SELECT version_num FROM alembic_version"      # harus c3a7e9d1f2b4 (atau lebih baru)
@@ -87,8 +90,22 @@ docker compose --env-file docker/stack.env --profile app exec -T postgres \
       (cek `/scrapers` dashboard buat status live-nya).
 - [ ] Scraper yang di platform baru statusnya `enabled=False`/dropped/diparkir (trellix,
       vxMalwareDefenseThreat, emailnewsThreat, cyborgHuntingIdea -- lihat `docs/PROGRESS.md`
-      10.1c) **WAJAR nol di platform baru, non-nol di legacy** -- itu bukan bug, udah jadi
-      keputusan sadar. Jangan dihitung sebagai gap.
+      10.1c; plus 5 waiver census 10.I: `blackberry`, `koisec`, `google`, `cisa`, `nquiring_minds`)
+      **WAJAR nol di platform baru, non-nol di legacy** -- itu bukan bug, udah jadi keputusan
+      sadar. Jangan dihitung sebagai gap.
+- [ ] **Scope SENGAJA beda dari legacy** (census 10.I, 2026-10-01) -- jumlah artikel per hari boleh
+      beda, itu bukan scraper hilang:
+      - `cloudflare`: dulu laporan resource-hub, sekarang tag `security` di blog.
+      - `intel471`: dulu whitepaper, sekarang blog (dan **belum stabil**: Vercel 429 -- nol artikel di
+        sini = cek status run dulu, bukan otomatis bug).
+      - `huntress`, `sysdig`, `cymru`: feed SELURUH blog, tanpa filter kategori lama.
+      - `sans`: SEMUA white paper, bukan cuma focus-area yang dulu.
+      - `landth`: domain jadi `depi.security` (sumber diberi label "Depi (dulu L&H)"); artikel lama
+        ada di host berbeda, jadi jangan dicocokkan lewat URL.
+      - `sentinel`, `crowdstrike`: taksonomi kategori baru (kategori lama sudah tidak ada di situsnya).
+      - `monitor_x`: sekarang gagal keras kalau kredit twitterapi.io habis; legacy diam-diam kosong.
+        Jadwal 2026-10-02 disamakan dgn legacy (tiap 3 jam, `8 */3 * * *`); sebelumnya `*/15`, jadi
+        data tweet sebelum tanggal itu lebih rapat dari legacy -- jangan dibandingkan per jam.
 - [ ] **Perbedaan data yang DIKETAHUI dari QA staging 2026-10-01** (laporan B, `docs/PROGRESS.md`
       10.H) -- catat sebagai kategori sendiri, jangan dikira scraper hilang:
       - Judul artikel masih berupa **nama file** (`2026-09-28-AgtaBackup-RAT-Campaign.txt`, dst) dari

@@ -76,12 +76,16 @@ off-host) punya panduan langkah-per-langkah di `docs/PROD_PREP.md`** -- kerjakan
       perbaikan pacing 10.G2) + `ecrime` (timeout) + `cybersecnews`/`exploitdb`/`threatmon` (dulu
       "XML tak valid" -- kemungkinan halaman blokir/CAPTCHA yang keliru diparsing sebagai feed).
       **18 XPath tak cocok PERSIS SAMA** sebelum/sesudah -- ini genuinely selector situs berubah,
-      bukan IP, dan butuh perbaikan kode per scraper. **Perbaikan selector dimulai 2026-09-30**:
-      `doyensec` + `trustwave` FIXED (lihat `docs/PROGRESS.md`), `cisa` dikonfirmasi flaky (gak
-      diubah), `google`/`nquiring_minds`/`sysdig` dikonfirmasi BUKAN gampang (site migration, butuh
-      keputusan/waiver). 18 XPath belum disurvei. Sisa yang belum diperbaiki tetap butuh **waiver
-      tertulis** (gate 10.D) sampai diperbaiki. **Belum diulang dari IP PRODUKSI SUNGGUHAN** -- staging sekarang cukup
-      dipercaya (WARP mati), tapi produksi tetap boleh dites ulang kalau egress-nya beda lagi.
+      bukan IP, dan butuh perbaikan kode per scraper. **Diperbaiki 2026-09-30 s/d 2026-10-01** (rincian
+      `docs/PROGRESS.md` 10.I, tabel akar masalah `docs/KNOWN_BROKEN.md`): 9 scraper pindah ke
+      `RSSScraper`, 8 pakai `link_card_xpaths`, filter kategori `sentinel`/`crowdstrike` diperbarui,
+      `github_poc_monitor`/`new_cve` sekarang menunggu jendela rate-limit, `monitor_x` gagal keras saat
+      kredit habis. **5 WAIVER tertulis** (`enabled=False`): `blackberry`, `koisec`, `google`, `cisa`
+      (WAF Akamai 403, tidak dilewati), `nquiring_minds`. Sisa: `intel471` belum stabil (Vercel 429), 5
+      scraper flaky sesekali (retry beat). Scraper yang di-waive tampil `disabled` di health sweep.
+      **Belum diulang dari IP PRODUKSI SUNGGUHAN** -- staging sekarang cukup dipercaya (WARP mati),
+      tapi produksi tetap boleh dites ulang kalau egress-nya beda lagi. **Health sweep sesudah semalam penuh
+      (2026-10-02):** ok 85 / disabled 5 / zero_yield 2 (sah) / degraded 4 (semua Twitter, kredit habis).
 - [ ] **Backup Mongo < 24 jam** + sudah dites restore (user; dump lama = satu-satunya arsip historis).
 - [ ] **Snapshot stack lama** (lihat 2.3) sudah diambil -- tanpa itu rollback ke stack lama tidak bisa
       dijamin <5 menit.
@@ -181,6 +185,22 @@ lagi Rundeck; sesudahnya platform baru sudah menulis data yang tidak ikut kembal
 | 11 | Smoke test | Lihat 3.1 | ~5 mnt |
 | 12 | Buka platform baru ke pengguna | pastikan 80/443 host bebas (matikan nginx/proxy lama yang memegangnya), lalu `docker compose ... up -d nginx`; uji login dari **laptop lain** dan cek `audit_log` (3.1) | ~2 mnt |
 | 13 | Umumkan selesai; mulai **pantau 4 jam** (bagian 4) | | -- |
+
+### 3.0 Dua langkah yang tidak ada di tabel itu tapi wajib di database KOSONG
+
+Tabel di atas mengasumsikan database sudah pernah dipakai (staging). Di host yang benar-benar baru:
+
+- **Admin pertama**: `POST /api/auth/init` membuat superadmin pertama dan hanya jalan selama belum ada user
+  (409 sesudahnya; tanpa autentikasi, jadi panggil SEBELUM nginx dibuka ke jaringan). Tanpa ini tidak ada yang bisa
+  login untuk "membuat ulang user lewat UI" (langkah 6).
+- **Sinkron katalog ATT&CK** (tombol Sync di Intelligence > ATT&CK DB, atau
+  `AsyncAttackSyncRepo.sync_all_domains()` dari dalam container `api`). Task periodik `attack_sync_check`
+  akan mengisinya sendiri (status domain "never"), tapi lakukan SEBELUM beat supaya artikel pertama sudah
+  mendapat TTP yang dinormalisasi.
+
+Untuk deploy dari NOL tanpa stack lama, jangan susun tabel ini manual: `make fresh-deploy`
+(`tools/ops/fresh_deploy.sh`, langkah-langkahnya di `README.md`) mengerjakan keduanya otomatis, ditambah seed
+data referensi bawaan (`tools/seed/reference/`) sebagai pengganti dump Mongo untuk tiga tabel referensi.
 
 ### 3.1 Smoke test (langkah 10)
 
@@ -441,7 +461,7 @@ dipakai hanya kalau twitterapi.io memang tidak bisa. Pindah **manual**, per-scra
 | Scraper `dead` sesudah beat baru nyala | run terakhir lama (dari sebelum) | wajar sampai slot cron berikutnya |
 | Setelah worker mati lama, sekali nyala terjadi lonjakan run | tick beat menumpuk | sudah diatasi: tick scrape kedaluwarsa 1 interval (`expires`) |
 | Digest health datang terus-menerus | tidak ada dedupe, masalah masih ada | perbaiki masalahnya, atau tambahkan dedupe |
-| `monitor_x` (tab X Intel) `fetch_error`/`rate_limited`, terus `degraded` | twitterapi.io **free tier** ~1 request/5-6 dtk untuk seluruh key, dibagi 4 scraper (`monitor_x`+`tweet_alerts_1h`+`tweet_alerts_30m`+`trending_cve`) yang semua mukul domain sama | **2026-09-30**: diperbaiki -- `rate_limit` ke-4 scraper disamakan jadi `10/minute` (sebelumnya `monitor_x` beda sendiri, `15/minute`, melanggar invarian domain-dibagi-rata `cti_scraper.ratelimit`), jeda PROAKTIF `window_s/capacity` (6 dtk) di antara AKUN (bukan cuma reaktif sesudah kena limit), dan `_get_with_backoff` sekarang menunggu jendela reset kalau BUDGET LOKAL kita sendiri (bukan cuma 429 server) yang habis duluan. **Belum dibuktikan live/staging** -- cuma teruji unit dengan HTTP tiruan; kalau masih `rate_limited`/`degraded` di produksi, opsi lama masih berlaku: key twitterapi.io berbayar, atau redesign satu query OR per run (kehilangan `since_id` per akun) |
+| `monitor_x` (tab X Intel) `fetch_error`/`rate_limited`, terus `degraded` | twitterapi.io **free tier** ~1 request/5-6 dtk untuk seluruh key, dibagi 4 scraper (`monitor_x`+`tweet_alerts_1h`+`tweet_alerts_30m`+`trending_cve`) yang semua mukul domain sama | **2026-09-30**: diperbaiki -- `rate_limit` ke-4 scraper disamakan jadi `10/minute` (sebelumnya `monitor_x` beda sendiri, `15/minute`, melanggar invarian domain-dibagi-rata `cti_scraper.ratelimit`), jeda PROAKTIF `window_s/capacity` (6 dtk) di antara AKUN (bukan cuma reaktif sesudah kena limit), dan `_get_with_backoff` sekarang menunggu jendela reset kalau BUDGET LOKAL kita sendiri (bukan cuma 429 server) yang habis duluan. **Terbukti live di staging 2026-10-01** (kunci twitterapi.io baru): `monitor_x` `ok` 385 dtk / 30 item (sebelumnya `empty` ~108 dtk tanpa pesan error karena kredit habis), `tweet_alerts_30m`/`trending_cve` `ok`; sejak itu 401/402/403 gagal keras (`parse_error` dengan pesan HTTP-nya). **Kredit kunci baru itu habis lagi dalam ~3 jam** (402 mulai 14:53 UTC; 120 run gagal semalam, 4 scraper `degraded`) -- jangan pasang kunci berkredit kecil di produksi; hitung dulu kebutuhan kredit empat scraper yang berbagi saldo itu. **Penyebabnya: default `monitor_x` `*/15` padahal legacy tiap 3 jam -- sudah dibetulkan ke `8 */3 * * *` 2026-10-02** (cadence ke-4 scraper Twitter sekarang dikunci test ke legacy). Kalau masih `rate_limited`/`degraded` di produksi, opsi lama masih berlaku: key twitterapi.io berbayar, atau redesign satu query OR per run (kehilangan `since_id` per akun) |
 | `new_cve` status `rate_limited` | batas 60/menit domain MITRE terlewati (banyak kandidat CVE) | wajar sesekali; kalau menetap, kandidat > 60/run: naikkan `rate_limit` scraper via /scrapers atau kurangi cakupan techstack |
 | `alembic current` di image lama gagal | DB di revisi yang tak dikenal image itu | jalankan dengan image yang lebih baru / `rollback.py` |
 
@@ -462,6 +482,7 @@ dipakai hanya kalau twitterapi.io memang tidak bisa. Pindah **manual**, per-scra
 | Rollback ke **stack lama** <5 menit di produksi | *belum dilatih* -- butuh Rundeck/host lama (user). `rundeck_schedule.py` hanya diuji dengan API palsu, belum ke Rundeck asli |
 | Restore penuh ke **DB live** | *belum dilatih* -- destruktif, butuh izin; guard-nya teruji unit + live (penolakan), langkah destruktifnya belum |
 | Census feed dari **IP produksi** | belum (egress staging beda) |
+| **Deploy dari nol** (`make fresh-deploy`) | terbukti 2026-10-02 di Docker lokal (arm64), clean-room dari salinan repo: build dari nol, seed 3991/30/9, admin dibuat, ATT&CK 943 teknik, login lewat nginx 200 (salah 401), tepat satu `beat_leader`, 0 traceback, dijalankan ulang tidak mengubah apa pun, 4 jalur gagal prasyarat. **Belum**: host Linux amd64 sungguhan, probe `check_secrets` dengan key asli (di latihan: secret dummy + `--skip-secret-check`; jalur gagalnya terbukti), beban nyata, scraper yang menembak dari IP host itu |
 | Beban produksi: `NLP_WORKER_CONCURRENCY` > 1 dengan LLM asli, volume asli | belum; bug concurrency baru muncul dengan LLM asli + paralel (pelajaran 10.B) |
 | nginx (compose) + sertifikat self-signed di **produksi** | teruji di staging (login, cookie `Secure`, redirect, sertifikat, `web` di-recreate) **termasuk klien eksternal**: login dari laptop lewat port yang di-publish tercatat di `audit_log` dengan IP laptop itu, bukan gateway Docker; + 44 test otomatis (`tests/edge`, 62 mutasi: 0 selamat). **Belum** dipasang di host produksi |
 | Backup Postgres: penjadwalan systemd dan salinan off-host | unit file siap, belum dipasang/diuji di host produksi |

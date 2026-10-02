@@ -1,29 +1,30 @@
-"""Intel471 -- hasil migrasi otomatis dari `ScraperNews/intel471Threat.py`
-(codemod Fase 4, family XPath runtime="browser"). Cek
-`migration_report.json` buat detail ekstraksi. WAJIB lewat `dry-run` +
-`verify` sebelum `enable` -- lihat docs/ADDING_A_SCRAPER.md.
-"""
+"""Intel 471 -- diganti ke RSS blog (census staging 2026-10-01, Fase 10.D). XPath absolut lama untuk
+`/resources/whitepapers` gak match lagi. **Scope BERUBAH**: whitepaper gak punya feed; yang dipantau
+sekarang blog (`/blog/feed`, 50 item), yang justru output CTI utama mereka. Konsekuensinya whitepaper
+baru TIDAK lagi ke-alert lewat scraper ini (jarang terbit). `max_items=10`: feed memuat 50 item.
+
+**Belum terbukti stabil (2026-10-01):** situsnya di balik Vercel dan membalas HTTP 429 (tanpa
+`Retry-After`) setelah beberapa request berturut-turut, dari DUA IP berbeda (Mac dev dan host staging);
+request pertama berhasil (50 item). Polling per jam jauh lebih jarang dari probe saat investigasi, jadi
+mungkin aman -- tapi kalau 429 menetap di staging/produksi, ini kandidat waiver (proteksi mereka, gak
+dicoba dilewatin), bukan diperbaiki dengan menaikkan frekuensi atau ganti User-Agent."""
 
 from __future__ import annotations
 
 from cti_scraper.base import ScraperMeta
-from cti_scraper.families.xpath import XPathScraper
+from cti_scraper.families.rss import RSSScraper
 from cti_scraper.schedule import spread
 
 
-class Intel471(XPathScraper):
+class Intel471(RSSScraper):
     meta = ScraperMeta(
         id="intel471",
         source="Intel471",
         schedule=spread("0 * * * *", "intel471"),
-        runtime="browser",
-        rate_limit="6/minute",
-        max_items=4,
+        max_items=10,
         tags=("migrated",),
         legacy_label="NEW ARTICLE/PAPER FROM INTEL471",
         legacy_script="intel471Threat",
     )
-    url = "https://intel471.com/resources/whitepapers"
-    title_xpath = "/html/body/main/div[2]/div/div[2]/a[{i}]/article/div[2]/div[2]/h3"
-    link_xpath = "/html/body/main/div[2]/div/div[2]/a[{i}]"
-    base_url = "https://www.intel471.com"
+    feeds = ("https://www.intel471.com/blog/feed",)
+    date_path = None  # scraper lama pakai waktu-scrape, bukan tanggal artikel asli

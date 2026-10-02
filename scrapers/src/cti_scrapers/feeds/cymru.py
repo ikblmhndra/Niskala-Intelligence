@@ -1,29 +1,23 @@
-"""Cymru -- hasil migrasi otomatis dari `ScraperNews/cymruThreat.py`
-(codemod Fase 4, family XPath runtime="browser"). Cek
-`migration_report.json` buat detail ekstraksi. WAJIB lewat `dry-run` +
-`verify` sebelum `enable` -- lihat docs/ADDING_A_SCRAPER.md.
-"""
+"""Team Cymru -- diganti ke RSS (census staging 2026-10-01, Fase 10.D). Halaman
+`/categories/threat-research` sekarang 404 (situs pindah ke koleksi Webflow `post`), jadi XPath absolut
+lama gak punya apa-apa buat dicocokkan. Feed koleksi itu: `/post/rss.xml`. Scope = SEMUA post blog,
+bukan cuma kategori threat-research (feed-nya gak dipecah per kategori)."""
 
 from __future__ import annotations
 
 from cti_scraper.base import ScraperMeta
-from cti_scraper.families.xpath import XPathScraper
+from cti_scraper.families.rss import RSSScraper
 from cti_scraper.schedule import spread
 
 
-class Cymru(XPathScraper):
+class Cymru(RSSScraper):
     meta = ScraperMeta(
         id="cymru",
         source="Cymru",
         schedule=spread("47 * * * *", "cymru"),
-        runtime="browser",
-        rate_limit="6/minute",
-        max_items=4,
         tags=("migrated",),
         legacy_label="NEW ARTICLE FROM CYMRU",
         legacy_script="cymruThreat",
     )
-    url = "https://www.team-cymru.com/categories/threat-research"
-    title_xpath = "/html/body/main/section[2]/div/div/div/div/div[2]/div/div/div[{i}]/div/div/a/h2"
-    link_xpath = "/html/body/main/section[2]/div/div/div/div/div[2]/div/div/div[{i}]/div/div/a"
-    base_url = "https://www.team-cymru.com"
+    feeds = ("https://www.team-cymru.com/post/rss.xml",)
+    date_path = None  # scraper lama pakai waktu-scrape, bukan tanggal artikel asli

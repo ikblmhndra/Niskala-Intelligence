@@ -1,29 +1,25 @@
-"""Cloudflare -- hasil migrasi otomatis dari `ScraperNews/cloudflareThreat.py`
-(codemod Fase 4, family XPath runtime="browser"). Cek
-`migration_report.json` buat detail ekstraksi. WAJIB lewat `dry-run` +
-`verify` sebelum `enable` -- lihat docs/ADDING_A_SCRAPER.md.
-"""
+"""Cloudflare -- diganti ke RSS blog (census staging 2026-10-01, Fase 10.D). Halaman
+`resource-hub/?resourcetype=Report` (laporan berkala, mis. DDoS threat report) gak match XPath absolut
+lama lagi. **Scope BERUBAH**: laporan-laporan itu jarang terbit dan gak punya feed sendiri, jadi
+diganti feed tag `security` di blog Cloudflare (Ghost, 20 post terbaru) -- yang di dalamnya juga
+memuat ringkasan laporan threat/DDoS mereka. Kalau laporan resource-hub memang wajib dipantau
+terpisah, itu butuh scraper XPath baru, bukan ganti URL."""
 
 from __future__ import annotations
 
 from cti_scraper.base import ScraperMeta
-from cti_scraper.families.xpath import XPathScraper
+from cti_scraper.families.rss import RSSScraper
 from cti_scraper.schedule import spread
 
 
-class Cloudflare(XPathScraper):
+class Cloudflare(RSSScraper):
     meta = ScraperMeta(
         id="cloudflare",
         source="Cloudflare",
         schedule=spread("1 * * * *", "cloudflare"),
-        runtime="browser",
-        rate_limit="6/minute",
-        max_items=4,
         tags=("migrated",),
         legacy_label="NEW ARTICLE FROM CLOUDFLARE",
         legacy_script="cloudflareThreat",
     )
-    url = "https://www.cloudflare.com/resource-hub/?resourcetype=Report"
-    title_xpath = "/html/body/div[1]/div[1]/div/div[4]/div[2]/div/div[3]/div[1]/div[{i}]/div/h4"
-    link_xpath = "/html/body/div[1]/div[1]/div/div[4]/div[2]/div/div[3]/div[1]/div[{i}]/div/a"
-    base_url = "https://www.cloudflare.com"
+    feeds = ("https://blog.cloudflare.com/tag/security/rss/",)
+    date_path = None  # scraper lama pakai waktu-scrape, bukan tanggal artikel asli

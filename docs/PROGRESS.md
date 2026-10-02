@@ -5389,7 +5389,7 @@ Yang cuma bisa dikerjain user (butuh akses prod): rotasi secret di
 sistem asal (BotFather/Graylog/Mongo/Devo/Rundeck), `mongodump` final,
 matiin Rundeck + systemd lama, provisioning VM, narik `techstackLibrary`.
 
-### 10.H QA UI staging + fix (2026-10-01) `[~]` kode ke-merge, BELUM ke-deploy
+### 10.H QA UI staging + fix (2026-10-01) `[x]` ke-merge DAN ke-deploy ke staging (sisa terbuka di bawah)
 
 Dikerjakan di DUA sesi terpisah setelah commit Fase 10 (`a92e7ea`), keduanya sudah di `origin/main`.
 Checkout lokal utama masih di `a92e7ea` -- `git pull` dulu sebelum lanjut apa pun.
@@ -5429,32 +5429,53 @@ log = gateway docker) itu efek SSH tunnel, bukan regresi -- bukti 10.G2 dari lap
    (yang gagal itu tadi); PR #2 di basis `a92e7ea` = 1891 lulus / 3 skip. **Suite penuh di `main`
    gabungan (#1 + #2) BELUM dijalankan ulang.**
 
-**Status deploy staging (dicek read-only 2026-10-01):** revisi DB masih `a10e5c0de002` -- migrasi
-`c3a7e9d1f2b4` belum jalan, jadi semua fix di atas BELUM aktif di staging (termasuk watchdog: kalau
-beat mati lagi sekarang, tetap diam-diam). `~/cti-platform-stg` itu file-sync, BUKAN git checkout
-(langkah "tarik main" di runbook gak berlaku di sana), image ditag `:stg`. Belum ada backup Postgres
-(`/var/backups/cti` gak ada). Draf `qa-report/stg_postdeploy.sh` (sync -> preflight -> backup -> build
--> up -> seed -> backfill -> remap-ttp -> finish, tiap tahap dry-run tanpa `--apply`) **belum pernah
-dijalankan dan belum ke-commit**; nama project/dir/env di dalamnya asumsi, bukan dibaca dari
-`stg_build.sh`.
+**Status deploy staging -- DI-DEPLOY 2026-10-01 ~08:30-08:40 UTC (atas permintaan user, dijalankan
+manual per tahap, bukan lewat draf `stg_postdeploy.sh`):** sebelum deploy, DB `a10e5c0de002`, image
+`:stg` berumur 4 hari, dan kode di `~/cti-platform-stg` ternyata SUDAH identik dgn `HEAD` (rsync
+`--checksum` dry-run: cuma 2 dokumen yang beda -- sync kode sudah dilakukan sebelumnya).
+`~/cti-platform-stg` itu file-sync, BUKAN git checkout (langkah "tarik main" di runbook gak berlaku).
+Urutan yang dijalankan:
+1. Backup Postgres (`pg_backup.py`, 7,1 MB) -> `~/backups/cti-stg/cti-20261001T083207Z.dump`; backup
+   kedua tepat sebelum remap TTP (`...T083840Z.dump`). `verify` sengaja gak dijalankan (DROP DB scratch
+   rawan diblok classifier mass-delete).
+2. Tag image lama `:prev` (api/worker/worker-nlp/web) buat rollback -- `:prev` lama (Sep) sudah gak ada.
+3. Build `stg_build.sh` (4 image, ~2,5 menit, semua exit 0); dicek image berisi `beat_watchdog`,
+   `scheduler`, `attack_ttp`, `backfill`, dan migrasi `c3a7e9d1f2b4`. Disk 34 GB -> 25 GB bebas (83%).
+4. `up -d`: migrasi `a10e5c0de002 -> c3a7e9d1f2b4` jalan, 9 container healthy.
+5. Seed `fase10_reference_data.py`: dry-run lalu sungguhan -- `threat_actor_groups` +3993 (total
+   3995), `monitored_people` +30, `ioc_allowlist_entries` +9, tabel lain 0 baru (idempoten). **Dump
+   subset staging gak punya `groups.bson`/`apac-people.bson`/`ioc_allowlist.bson`** -- ketiganya dicopy
+   dari dump penuh `~/backups/mongo-cti/20260930T120307Z` ke `legacy/dump/` (BUKAN `users.bson`).
+6. Backfill (`cti_enrich.backfill`): 334 artikel, +28 baris TA di 26 artikel, +94 negara `mentioned`
+   di 65 artikel.
+7. Sync ATT&CK dijalankan server-side lewat `AsyncAttackSyncRepo.sync_all_domains()` (repo yang sama dgn
+   tombol Sync di UI, TANPA baris audit log `attack_sync` karena gak lewat route API): enterprise 709
+   teknik, katalog total 943 teknik / 193 revoked.
+8. `remap_article_ttps`: dry-run lalu sungguhan -- 171 artikel berubah, `article_ttps` 781 -> 699 baris;
+   teks asli LLM tersimpan di `extracted_id`/`extracted_name` (699/699 baris terisi).
+9. Restart `api`.
 
-**Urutan post-deploy (belum dijalankan):** backup Postgres -> kirim kode + build `:stg` (catat tag
-lama buat rollback, jangan `CTI_TAG=<lama> up -d` mentah, lihat runbook 7.1) -> `up -d` (migrate) ->
-`fase10_reference_data.py --dry-run` lalu sungguhan (harap ~3991 `threat_actor_groups` baru) ->
-`python -m cti_enrich.backfill --dry-run` lalu sungguhan -> sync ulang ATT&CK dari UI -> 
-`tools/ops/remap_article_ttps.py --dry-run` lalu sungguhan -> restart `api` (cache Risk Matrix 15 menit).
+**Hasil verifikasi (SESUDAH deploy, 08:39-08:40 UTC):** heartbeat beat segar (`age_s` 3, `state=ok`),
+96 scraper semuanya punya `next_run_at`, 37 run dalam 15 menit semuanya `trigger=beat`; watchdog
+`beat_watchdog_started` di 3 container worker; log 15 menit tanpa ERROR/Traceback; PIR options 13
+threat actor (tadinya 0); Risk Matrix 18 sel (tadinya 0, sama utk period 30 & 90); MITRE heatmap 13
+baris x 20 TTP. Health scraper: 63 ok / 27 degraded / 5 zero_yield / 1 stale -- yang `degraded`
+didominasi kelompok XPath lama dari census 10.D (abnormalsecurity, aquasec, blackberry, cis, cloudflare,
+cymru, ...), bukan efek deploy ini.
+
 `remap_article_ttps` cuma perlu buat DB yang SUDAH punya artikel lama (staging); DB hasil cutover
 bersih seharusnya gak butuh karena `persist` sudah menormalisasi artikel baru -- ini kesimpulan dari
-diff, belum dibuktikan.
+diff, belum dibuktikan. Draf `qa-report/stg_postdeploy.sh` TIDAK dipakai (masih belum dijalankan, belum
+ke-commit, dan sudah usang karena sync-nya sudah dilakukan).
 
 **Runbook:** `docs/CUTOVER_RUNBOOK.md` sudah di-update di PR #1 (langkah 6 sekarang ngisi
 `threat_actor_groups`, bagian 3.2a backfill, catatan hypercare soal beat yang gak nyala sendiri +
 catch-up). Dokumen ini (`PROGRESS.md`) sebelumnya TIDAK ikut di-update -- ini catatannya.
 
 **Belum ditangani / terbuka:**
-- `monitor_x`: twitterapi.io balikin HTTP 402 "Credits is not enough" -> top up kredit; 402 juga
-  belum diklasifikasi terpisah dari `rate_limited` (cek 2026-10-01: `_twitterapi.py` gak punya
-  penanganan 402; yang ada cuma di `_x_official.py`).
+- ~~`monitor_x`: twitterapi.io balikin HTTP 402 "Credits is not enough"~~ -- **kelar 2026-10-01**
+  (lihat 10.I): kunci diganti user, 402 terverifikasi hilang, dan 401/402/403 sekarang gagal keras
+  (`ParseError`) alih-alih run `empty` tanpa pesan.
 - Newsletter tersimpan dobel (A BUG-06): tombol sudah di-disable saat pending di frontend, dugaan gap
   idempotency di backend `/api/newsletter/draft-email`.
 - Early Warning default 30 hari gak nangkep spike besar (D5); sisa bug Medium/Low di laporan QA
@@ -5463,8 +5484,133 @@ catch-up). Dokumen ini (`PROGRESS.md`) sebelumnya TIDAK ikut di-update -- ini ca
 - **Keputusan reviewer MITRE belum dikonfirmasi user:** entri TTP bernama taktik dibuang (T1547
   "Persistence" hilang); kalau ID dan nama bentrok, NAMA yang dipakai (T1518.001 "System Service
   Discovery" jadi T1007).
+- **Kualitas remap TTP -- ada hasil janggal di dry-run/apply staging 2026-10-01** (dinilai dari contoh
+  yang tercetak, BUKAN audit penuh 171 artikel): nama karangan LLM + ID valid diganti nama kanonik ID
+  itu, jadi maknanya bisa ngaco -- `T1593.003 'Prompt Injection'` -> `'Code Repositories'`,
+  `T1598.003 'Prompt Injection'` -> `'Spearphishing Link'`; nama yang cocok teknik domain LAIN menang
+  -- `T1059.001 'Code Injection'` -> `T1631.001 'Ptrace System Calls'` (teknik Mobile, di artikel soal
+  ekstensi browser). Sisi bagusnya: duplikat ID/nama (mis. `T1548` x3, `T1110` "Credential Dumping")
+  terkoreksi. Teks asli ada di `extracted_id`/`extracted_name`, jadi aturan bisa diubah dan dijalankan
+  ulang tanpa kehilangan input LLM-nya. Perlu keputusan user: terima apa adanya, atau perketat aturan
+  (mis. buang entri yang namanya gak ada di katalog alih-alih relabel).
 - Rotasi password `stg-admin` (dan sisa kredensial dev dari Fase 9) -- wajib sebelum host ini dianggap
   prod.
+
+### 10.I Census scraper: perbaikan + waiver (2026-10-01) `[~]` kode + deploy stg beres + siklus semalam terukur; sisa: kredit twitterapi.io
+
+Pemicu: census staging 10.D (30 dari 92 scraper non-ok di census pertama; 18 di antaranya XPath absolut
+yang lapuk SEMUA sekaligus). Dikerjakan setelah user ganti kunci twitterapi.io. Tabel akar masalah per
+scraper (terverifikasi, bukan tebakan) ada di `docs/KNOWN_BROKEN.md` bagian "Update 2026-10-01".
+
+**Hasil (39 baris di tabel itu):** 27 diperbaiki/pulih (termasuk `doyensec`/`trustwave` dari putaran
+sebelumnya dan 3 scraper Twitter yang cuma butuh kredit), 5 di-**WAIVER** (`enabled=False` + paragraf
+WAIVER di docstring: `blackberry`, `koisec`, `google`, `cisa`, `nquiring_minds`), 2 `empty` ternyata sah
+(`mitre_github`, `techstack_pypi`), 5 flaky sesekali dibiarkan ke retry backoff beat (`asec_ahn`, `bizone`,
+`exploitdb`, `resecurity`, `techstack_npm`).
+
+**Pola perbaikan:**
+1. **9 scraper XPath -> `RSSScraper`** (situs ternyata punya feed resmi, ketemu probe path umum):
+   `aquasec`, `groupib`, `huntress`, `landth` (domain jadi `depi.security`), `sysdig` (feed berisi host
+   `webflow.sysdig.com`, ditulis ulang lewat `xml_fixups`), `cymru`, `cloudflare`, `intel471`, `k7security`.
+2. **8 scraper tanpa RSS -> `link_card_xpaths`** (`feeds/_links.py`: dipegang POLA HREF artikel + panjang teks
+   link, bukan posisi div ke-N): `abnormalsecurity`, `huntio`, `prodraft`, `sans`, `splunk`, `proofpoint`,
+   `cis`, `dragos`.
+3. **Filter kategori basi**: `sentinel` (10/10 item terbuang, kategori lama gak ada) dan `crowdstrike`
+   (kategori diganti nama situsnya; kesimpulan Fase 0.5 "filter sah" ternyata BASI).
+4. **Pacing**: `github_poc_monitor` (~100 request/run vs budget 30/menit, 76 run 0 sukses) dan `new_cve`
+   (22 dari 44 run mati `rate_limited`) sekarang MENUNGGU jendela reset (`feeds/_pacing.py::get_waiting`,
+   maks 5x) alih-alih langsung gagal. Override DB 10/menit di staging dihapus lewat
+   `POST /api/scraper/{id}/reset-config` (ter-audit).
+5. **`monitor_x`**: HTTP 401/402/403 dari twitterapi.io sekarang `ParseError` (loud); dulu `break` per akun
+   dan run tercatat `empty` tanpa jejak -- itulah kenapa kredit habis gak ketahuan.
+6. **Health sweep**: scraper yang di-waive di KODE (`meta.enabled=False`) tetap dihitung `degraded` lalu
+   `dead` selamanya (health cuma baca baris config DB). Sekarang aturannya sama dengan beat: config menang,
+   kalau gak ada baris config baru `meta.enabled`. Tanpa ini 5 waiver akan nyepam digest Telegram.
+   Di-deploy ke staging 2026-10-01 ~12:50 UTC (api/worker/worker-nlp di-rebuild); sesudahnya 5 waiver
+   tampil `disabled` di sweep.
+
+**Bukti live dari staging (setelah deploy):** `dry-run` status `ok` untuk 18 scraper yang diperbaiki
+(aquasec 10, groupib 10, huntress 10, landth 19, sysdig 10, cymru 50, cloudflare 20, k7security 10,
+abnormalsecurity 6, huntio 6, prodraft 6, sans 6, splunk 6, proofpoint 4, cis 6, dragos 6, sentinel 10,
+crowdstrike 3). Run manual: `new_cve` ok (33 item, 102 dtk); `github_poc_monitor` ok (666 dtk -- 10 kali
+menunggu jendela ~70 dtk, lalu selesai tanpa gagal; 6 item, 2 baru). Beat sudah menembak ulang sebagian
+scraper dengan kode baru: `cis`, `crowdstrike`, `huntress`, `sans`, `sentinel`, `sysdig` semuanya `ok`. `monitor_x` (beat 12:38 UTC, kunci baru) `ok` 385 dtk / 30 item -- sebelumnya `empty` ~108 dtk tanpa pesan
+karena kredit habis; `tweet_alerts_30m` dan `trending_cve` juga `ok`.
+Sisanya belum kebagian slot cron sejak deploy -- run terakhir mereka masih `parse_error` LAMA.
+
+**Test:** 5 file baru (`test_census_rss_conversions`, `test_census_link_card_scrapers`, `test_request_pacing`,
+`test_monitor_x_account_wide_errors`, `test_census_category_filters`) + `test_health_code_disabled`; mutation
+check tiap perbaikan, 0 selamat. `ruff` + `mypy --strict` bersih. Unit+contract+package: 1254 lulus.
+
+**Yang BELUM terbukti / catatan jujur:**
+- **`intel471` belum stabil:** Vercel membalas 429 setelah beberapa request berturut-turut dari dua IP
+  berbeda (dry-run staging: `fetch_error` HTTP 429). Proteksinya TIDAK dicoba dilewatin. Kalau 429 menetap
+  di polling per jam, jadi kandidat waiver.
+- **Health sweep SESUDAH semalam penuh (diukur 2026-10-02 05:27 UTC, beat Up 17 jam):** `ok` 85,
+  `disabled` 5 (waiver), `zero_yield` 2, `degraded` 4. Semua scraper hasil perbaikan `ok` di run terakhir
+  -- termasuk `intel471` (12 dari 12 run `ok` dalam 12 jam; 429 Vercel yang tadinya dikhawatirkan tidak
+  muncul dari egress staging, tapi itu belum jaminan di produksi). 12 jam terakhir: 1052 run `ok`, 24
+  `empty`, 17 `fetch_error` (flaky yang memang dipantau: `techstack_npm` 6, `resecurity` 6, `exploitdb` 3,
+  `proofpoint` 1, `techstack_go` 1), 120 `parse_error` -- SEMUANYA Twitter, lihat poin berikutnya.
+  `zero_yield` 2 = `mitre_github` + `techstack_pypi`, keduanya `empty` yang SAH (tabel KNOWN_BROKEN) tapi
+  akan terus tampil di digest; belum diputuskan mau dibiarkan atau di-mute.
+- **KREDIT twitterapi.io HABIS LAGI** (kunci baru mulai ~12:00 UTC 1 Okt; `monitor_x` run `ok` terakhir
+  14:38, 402 mulai 14:53 -> ~3 jam). Sejak itu 120 run gagal KERAS (`monitor_x` 48, `trending_cve` 48,
+  `tweet_alerts_30m` 12, `tweet_alerts_1h` 12) dengan pesan `HTTP 402` -- ini perubahan 10.I bekerja
+  (dulu `empty` diam-diam), dan 4 scraper itu tampil `degraded` di digest. BUKAN bug kode: empat scraper
+  berbagi satu kunci/saldo dan `monitor_x` saja menarik 18-30 tweet per 15 menit.
+- **Frekuensi diturunkan (keputusan user 2026-10-02)** -- akar masalahnya ketemu: Rundeck asli menjalankan
+  `monitorX` tiap **3 jam** (`0/3`), tapi default platform (Fase 5) `*/15` = 12x lebih sering. Tiga scraper
+  Twitter lain sudah sama dgn legacy (`trending_cve` 15 mnt, `tweet_alerts_1h`/`30m` per jam; dicek via
+  `expected_interval`). Default KODE `monitor_x` diganti `8 */3 * * *` (menit 8 = offset lama, gak numpuk
+  dgn scraper Twitter lain di bucket `10/minute`); tes baru `test_twitter_schedules_match_legacy` mengunci
+  cadence ke-4 scraper ke angka legacy (6 mutasi, 0 selamat). Di-deploy ke staging 2026-10-02 ~05:36 UTC;
+  `GET /api/scraper` menunjukkan `schedule=8 */3 * * *`, `next_run_at=06:08`. Tidak ada override jadwal di
+  DB (cuma `max_items=50` di `monitor_x` dan `100` di `new_cve` -- sisa override manual, belum diaudit).
+  **Saldo twitterapi.io tetap 0 sampai di-top up**: ini cuma mengurangi laju pemakaian berikutnya, tidak
+  memulihkan 4 scraper yang `degraded`.
+- **Scope artikel BERUBAH** untuk beberapa scraper (jumlah vs legacy sengaja beda): lihat
+  `docs/PARALLEL_RUN_COMPARISON.md` §1 -- jangan dihitung sebagai gap.
+- Waiver `cisa`: `all.xml` dibalas 403 WAF Akamai 19/19 run (BUKAN flaky -- dugaan lama salah); KEV tetap
+  masuk lewat `cisa_kev`.
+
+### 10.J Deploy dari nol (2026-10-02) `[x]` skrip + README + latihan clean-room lokal; belum di host sungguhan
+
+Pemicu: user mau tahu apakah host baru "tinggal isi key". Jawaban awal: belum -- ada empat celah di jalur
+fresh deploy (lihat bawah). Semuanya ditutup dan dilatih dari salinan bersih repo di Docker lokal.
+
+**Celah yang ditemukan lewat pembacaan kode (bukan asumsi):**
+1. Admin pertama tidak ada di runbook; adanya `POST /api/auth/init` (terbuka selama belum ada user).
+2. Sinkron ATT&CK tidak ada di runbook (task periodik mengisinya sendiri, tapi telat).
+3. Seed `threat_actor_groups`/`monitored_people`/`ioc_allowlist_entries` membaca `legacy/dump/` (gitignored) --
+   host tanpa Mongo lama menjalankan platform dengan TA kosong. Tiga file `.bson` kecil (370 KB, data umum:
+   nama threat actor dari malpedia/ORKL/MITRE dll, demonym, 9 baris allowlist) kini dibundel di
+   `tools/seed/reference/`.
+4. Tidak ada README dan tidak ada satu perintah deploy.
+
+**Yang ditambahkan:** `tools/ops/fresh_deploy.sh` + `Makefile` (`make fresh-deploy`, `make fresh-status`),
+`README.md`, `tools/seed/reference/`, bagian 3.0 + baris di "Yang BELUM terbukti" pada `CUTOVER_RUNBOOK.md`.
+Skrip: cek prasyarat (placeholder `GANTI_INI`, password Postgres konsisten antara `.env` dan `stack.env`, bukan
+default `cti`) -> membangkitkan `AUTH__JWT_SECRET`/`AUTH__SESSION_SECRET_KEY` bila kosong -> build ->
+`check_secrets` -> postgres/redis/migrasi/api -> seed referensi -> admin (password acak ke
+`secrets/admin_password`, mode 600, tidak dicetak; body 422 tidak dicetak karena memuat input) -> ATT&CK ->
+worker -> beat TERAKHIR -> web + nginx. Idempoten, tidak pernah menghapus volume.
+
+**Dua keputusan teknis yang dibuktikan, bukan ditebak:** langkah cek-secret dan seed memakai
+`docker compose run` bukan `docker run --env-file`, karena yang terakhir tidak membuang komentar inline di
+`.env` (template punya baris `KEY=nilai   # komentar`).
+
+**Latihan (2026-10-02, Docker lokal arm64, 4 GB RAM, concurrency 1, secret dummy):** run 1 dari nol: build
+sukses, `check_secrets` gagal karena key dummy (LLM `ConnectError`, Telegram 404) dengan pesan yang benar.
+Run 2 `--skip-build --skip-secret-check`: 9 container healthy; DB `users 1` (admin/superadmin), `roles 3`,
+`clients 1`, `threat_actor_groups 3991`, `attack_techniques 943` (sama dengan staging), tepat satu `beat_leader`,
+0 traceback; login lewat nginx `200`, password salah `401`. Run 3 (ulang): seed `0 baru`, admin tidak dibuat
+ulang, hash password tidak berubah. Empat jalur gagal prasyarat dites. Stack latihan dibongkar (hanya project
+`ctirehearsal`).
+
+**Belum terbukti:** host Linux amd64 sungguhan; probe `check_secrets` dengan key asli; beban nyata /
+concurrency bawaan; scraper menembak dari IP host baru (census ulang); jalur `--skip-nginx` dan sertifikat
+sendiri; timer backup Postgres tidak dipasang skrip (sengaja, butuh systemd + keputusan lokasi off-host).
 
 **Konteks rencana (keputusan user 2026-09-30):** host staging ini kandidat PRODUKSI (dipakai internal
 kantor, TLS self-signed cukup), dan legacy TIDAK langsung dimatikan -- dibandingkan dulu. Ceklis
@@ -5646,7 +5792,7 @@ bandingnya: `docs/PARALLEL_RUN_COMPARISON.md`. Banding baru bermakna SETELAH pos
 
 **Checklist cutover — semua wajib hijau:**
 - [x] `static/` ke-commit (29 file di `legacy/static/`); "dilayani container web" N/A -- web sekarang Next.js, `static/` cuma spesifikasi perilaku (keputusan survei 2026-09-26)
-- [ ] Tiap scraper live punya golden test hijau **atau** waiver tertulis
+- [~] Tiap scraper live punya golden test hijau **atau** waiver tertulis -- 2026-10-01 (10.I): census staging dikerjakan, 5 waiver tertulis (docstring + `KNOWN_BROKEN.md`), 18 scraper diperbaiki terbukti `dry-run ok` DAN `ok` sepanjang semalam di beat (health 2026-10-02: ok 85 / disabled 5 / zero_yield 2 sah / degraded 4). **Tinggal:** 4 scraper Twitter `degraded` karena kredit twitterapi.io habis lagi (butuh top up/keputusan user, bukan bug), `intel471` baru stabil dari egress staging, dan census ulang dari IP produksi bila egress-nya beda
 - [x] Semua secret dirotasi, `gitleaks` bersih, gak ada secret di layer image -- rotasi 15 secret
       legacy **didelegasikan ke tim ops user 2026-09-30** (13 awal + 2 ketemu susulan investigasi
       10.1c); `gitleaks` **diverifikasi teknis** hari yang sama (history 61 commit + 1.168 file
@@ -5679,10 +5825,10 @@ bandingnya: `docs/PARALLEL_RUN_COMPARISON.md`. Banding baru bermakna SETELAH pos
       produksi lama yang jadi target asli dokumen -- membuktikan mekanismenya benar, bukan
       pengganti drill produksi.
 - [ ] Stack lama bisa dinyalakan lagi <5 menit (sudah dilatih) -- 10.G: prosedur + alat (`rundeck_schedule.py`, runbook 7.3) SIAP, latihan di produksi BELUM (butuh Rundeck/host lama)
-- [x] Health sweep terbukti bisa deteksi scraper mati (tes di staging) -- 10.G: beat asli + thread `scraper_health`; `worker-browser` dimatikan -> `dead` di digest, pulih -> `ok`. **Catatan 2026-10-01 (10.H):** terbukti buat SCRAPER mati, BUKAN beat mati (97 jam gak ketahuan); watchdog beat ada di PR #1 tapi belum ke-deploy
+- [x] Health sweep terbukti bisa deteksi scraper mati (tes di staging) -- 10.G: beat asli + thread `scraper_health`; `worker-browser` dimatikan -> `dead` di digest, pulih -> `ok`. **Catatan 2026-10-01 (10.H):** terbukti buat SCRAPER mati, BUKAN beat mati (97 jam gak ketahuan); watchdog beat ada di PR #1 dan SUDAH ke-deploy ke staging 2026-10-01 (aktif di 3 container worker, heartbeat `ok`)
 - [x] Beat terverifikasi singleton (10.1d) -- 10.A: test Redis asli + 2 proses live
-- [ ] Data referensi ter-seed -- staging: `threat_actor_groups` masih KOSONG sampai post-deploy 10.H jalan
-- [ ] Fix QA (10.H) ke-deploy ke staging + post-deploy dijalankan & diverifikasi (revisi DB `c3a7e9d1f2b4`, `threat_actor_groups` ~3991, backfill, remap TTP, watchdog beat aktif)
+- [ ] Data referensi ter-seed -- staging SUDAH (2026-10-01: `threat_actor_groups` 3995, `monitored_people` 30, `ioc_allowlist_entries` 9); yang tersisa di item ini cuma seed PRODUKSI (10.1)
+- [x] Fix QA (10.H) ke-deploy ke staging + post-deploy dijalankan & diverifikasi (revisi DB `c3a7e9d1f2b4`, `threat_actor_groups` 3995, backfill, remap TTP, watchdog beat aktif) -- 2026-10-01, detail di 10.H
 - [ ] Data uji & kredensial uji di host kandidat prod dibersihkan (TA whitelist `testactor`/`testing`, password `stg-admin` + sisa kredensial dev Fase 9)
 - [ ] Banding paralel legacy vs platform baru lolos kriteria `docs/PARALLEL_RUN_COMPARISON.md` §7 (minimal 1 minggu, hijau 3 hari berturut-turut) -- baru boleh mulai setelah item deploy di atas beres
 
