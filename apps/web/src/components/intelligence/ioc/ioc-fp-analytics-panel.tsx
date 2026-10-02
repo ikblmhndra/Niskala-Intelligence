@@ -17,7 +17,7 @@ function FpBar({ rate }: { rate: number }) {
   const textColor = pct >= 50 ? "text-destructive" : pct >= 25 ? "text-warning" : "text-success";
   return (
     <div className="flex items-center gap-2">
-      <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-surface2">
+      <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-background">
         <div className={`h-full ${color}`} style={{ width: `${pct}%` }} />
       </div>
       <span className={`min-w-[34px] font-mono text-xs ${textColor}`}>{pct}%</span>

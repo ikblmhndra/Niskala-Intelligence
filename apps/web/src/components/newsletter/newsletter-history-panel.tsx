@@ -72,7 +72,7 @@ export function NewsletterHistoryPanel({ refreshKey, onPreview, onResend, resend
               const indonesiaLen = sections?.indonesia?.length ?? 0;
               const highlightTitle = sections?.highlight?.title;
               return (
-                <div key={n.id} className="rounded-2xl border border-border bg-surface shadow-sm2 p-3">
+                <div key={n.id} className="rounded-xl border border-border bg-background p-3">
                   <div className="font-mono text-[13px] text-primary">
                     Week {n.week}, {n.year}
                   </div>

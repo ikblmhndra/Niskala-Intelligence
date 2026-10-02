@@ -58,7 +58,7 @@ export function NewsletterComposerSections({ state, onRemove, onNoteChange }: Pr
                   );
                 }
                 return (
-                  <div key={art.id} className="rounded-2xl border border-border bg-surface shadow-sm2 p-2.5">
+                  <div key={art.id} className="rounded-xl border border-border bg-background p-2.5">
                     <div className="flex items-start justify-between gap-2">
                       <div className="min-w-0">
                         <div className="text-xs font-semibold text-foreground">{art.title}</div>

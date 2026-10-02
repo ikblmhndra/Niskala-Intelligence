@@ -101,7 +101,7 @@ export function DiamondModelView({ clusterName, model }: { clusterName: string; 
       </div>
 
       {expanded && (
-        <div className="mt-2 grid grid-cols-2 gap-3 rounded-2xl border border-border bg-surface shadow-sm2 p-2">
+        <div className="mt-2 grid grid-cols-2 gap-3 rounded-xl border border-border bg-background p-2">
           <div>
             <div className="mb-1.5 text-xs font-bold text-warning">Adversary</div>
             <FullSection title="Threat Actors" color="var(--severity-high)" items={adv.threat_actors} />

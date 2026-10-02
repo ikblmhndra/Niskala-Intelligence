@@ -40,7 +40,7 @@ export function KillChainView({ killChain: kc }: { killChain: KillChain }) {
         ))}
       </div>
       {covered.length > 0 && (
-        <div className="rounded-2xl border border-border bg-surface shadow-sm2 p-2">
+        <div className="rounded-xl border border-border bg-background p-2">
           {covered.map((p) => (
             <div key={p.phase} className="flex items-start gap-1.5 py-0.5">
               <span className="w-[100px] flex-shrink-0 pt-px font-mono text-xs text-muted-foreground">{p.phase.replace(/_/g, " ")}</span>

@@ -191,7 +191,7 @@ export function TaGroupsPanel() {
                     <TableCell className="text-xs text-foreground">{g.name}</TableCell>
                     <TableCell className="font-mono text-xs text-muted-foreground">{g.added_date}</TableCell>
                     <TableCell>
-                      <span className="rounded-full border border-border bg-surface2 px-1.5 py-0.5 font-mono text-xs text-muted-foreground">{g.source}</span>
+                      <span className="rounded-full border border-border bg-background px-1.5 py-0.5 font-mono text-xs text-muted-foreground">{g.source}</span>
                     </TableCell>
                     <TableCell className="text-right whitespace-nowrap">
                       <button

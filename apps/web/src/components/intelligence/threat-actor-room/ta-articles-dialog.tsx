@@ -54,7 +54,7 @@ export function TaArticlesDialog({ actorName, onClose }: { actorName: string | n
 
         <div className="space-y-2">
           {query.data?.articles.map((a) => (
-            <div key={a.id} className="rounded-2xl border border-border bg-surface shadow-sm2 p-2.5">
+            <div key={a.id} className="rounded-xl border border-border bg-background p-2.5">
               <a href={a.url} target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-foreground hover:underline">
                 {a.title}
               </a>

@@ -137,7 +137,7 @@ function MindmapEditorForm({
     <div className="flex min-h-0 flex-1 flex-col gap-3">
       <div className="flex flex-shrink-0 flex-wrap items-center gap-2.5 pr-8">
         <span className="font-mono text-xs text-foreground">{title || `${featureType}/${docId}`}</span>
-        <span className="rounded-full border border-border bg-surface2 px-1.5 py-0.5 font-mono text-xs text-muted-foreground">
+        <span className="rounded-full border border-border bg-background px-1.5 py-0.5 font-mono text-xs text-muted-foreground">
           Mind Map Editor
         </span>
 
@@ -195,7 +195,7 @@ function MindmapEditorForm({
         </div>
         <div className="flex min-w-0 flex-1 flex-col gap-1">
           <div className="text-sm font-semibold text-muted-foreground">Preview</div>
-          <div ref={previewRef} className="flex flex-1 items-start justify-center overflow-auto rounded-2xl border border-border bg-surface shadow-sm2 p-4" />
+          <div ref={previewRef} className="flex flex-1 items-start justify-center overflow-auto rounded-2xl border border-border bg-surface  p-4" />
         </div>
       </div>
     </div>

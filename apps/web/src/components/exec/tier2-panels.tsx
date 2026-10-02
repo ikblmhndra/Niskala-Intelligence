@@ -10,7 +10,7 @@ function toTitleCase(s: string): string {
 export function SpikeBanner({ d }: { d: ExecDashboardV2 }) {
   if (d.industry_spikes.length === 0) return null;
   return (
-    <div className="mb-4 rounded-2xl border border-border bg-surface shadow-sm p-3">
+    <div className="mb-4 rounded-xl border border-border bg-background p-3">
       <div className="mb-2 text-sm font-semibold text-primary">
         <ZapIcon aria-hidden /> Anomaly Alerts — Sectors with statistically significant activity spikes
       </div>

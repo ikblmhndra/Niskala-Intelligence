@@ -118,7 +118,7 @@ export function PirList() {
           ];
           const pct = Math.min(100, Math.round((p.coverage_count / maxCov) * 100));
           return (
-            <div key={p.id} className="flex items-start gap-3 rounded-2xl border border-border bg-surface shadow-sm p-3">
+            <div key={p.id} className="flex items-start gap-3 rounded-xl border border-border bg-background p-3">
               <Badge variant="outline" className={cn("shrink-0 font-mono text-xs", PRIORITY_CLASS[p.priority])}>
                 {p.priority}
               </Badge>

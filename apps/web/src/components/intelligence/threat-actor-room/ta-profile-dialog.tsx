@@ -18,7 +18,7 @@ const DORMANCY_STYLE: Record<string, { icon: string; color: string }> = {
 };
 
 function Tag({ children }: { children: React.ReactNode }) {
-  return <span className="mr-1.5 mb-1 inline-block rounded-full border border-border bg-surface2 px-1.5 py-0.5 font-mono text-xs text-foreground">{children}</span>;
+  return <span className="mr-1.5 mb-1 inline-block rounded-full border border-border bg-background px-1.5 py-0.5 font-mono text-xs text-foreground">{children}</span>;
 }
 
 function Val({ v }: { v: string | null | undefined }) {

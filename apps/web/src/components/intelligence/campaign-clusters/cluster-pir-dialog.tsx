@@ -49,7 +49,7 @@ export function ClusterPirDialog({ pir, onClose }: { pir: MatchedPir | null; onC
                 <DialogTitle className="text-base">{pir.title}</DialogTitle>
               </DialogHeader>
 
-              {pir.description && <p className="rounded-2xl border border-border bg-surface shadow-sm2 p-2.5 text-xs leading-relaxed text-foreground">{pir.description}</p>}
+              {pir.description && <p className="rounded-xl border border-border bg-background p-2.5 text-xs leading-relaxed text-foreground">{pir.description}</p>}
 
               <div className="grid gap-2.5">
                 {(pir.criteria.threat_actors?.length ?? 0) > 0 && (

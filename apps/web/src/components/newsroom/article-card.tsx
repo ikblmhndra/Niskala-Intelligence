@@ -28,7 +28,7 @@ export function ArticleCard({ article: a, onClick }: { article: Article; onClick
   return (
     <div
       onClick={onClick}
-      className="cursor-pointer rounded-2xl border border-border bg-surface shadow-sm px-3 py-2.5 transition-colors hover:border-ring/50"
+      className="cursor-pointer rounded-xl border border-border bg-background px-3 py-2.5 transition-colors hover:border-ring/50"
     >
       <div className="text-sm leading-snug text-foreground">{a.title}</div>
       <div className="mt-1.5 flex flex-wrap items-center gap-1.5">

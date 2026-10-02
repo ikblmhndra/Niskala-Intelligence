@@ -53,7 +53,7 @@ export function HealthSummaryBar({
 
       <div className="flex flex-wrap gap-2">
         {STATUS_ORDER.filter((s) => counts[s]).map((s) => (
-          <div key={s} className="flex items-center gap-1.5 rounded-full border border-border bg-surface2 px-2 py-1">
+          <div key={s} className="flex items-center gap-1.5 rounded-full border border-border bg-background px-2 py-1">
             <StatusBadge status={s} />
             <span className="font-mono text-xs text-foreground">{counts[s]}</span>
           </div>
@@ -71,7 +71,7 @@ export function HealthSummaryBar({
                 key={p.id}
                 type="button"
                 onClick={() => onSelectProblem(p.id, p.status)}
-                className="flex items-center gap-1.5 rounded-full border border-border bg-surface2 px-2 py-1 text-left transition-colors hover:border-primary/40"
+                className="flex items-center gap-1.5 rounded-full border border-border bg-background px-2 py-1 text-left transition-colors hover:border-primary/40"
                 title={p.last_status ? `last run: ${p.last_status}` : "never run"}
               >
                 <StatusBadge status={p.status} />

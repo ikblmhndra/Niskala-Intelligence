@@ -101,7 +101,7 @@ export function SyncStatusCards() {
       {query.isError && <p className="text-xs text-destructive">Failed to load sync status</p>}
       <div className="flex flex-wrap gap-3">
         {query.data?.map((d) => (
-          <div key={d.domain_key} className="min-w-[220px] flex-1 rounded-2xl border border-border bg-surface shadow-sm2 p-3">
+          <div key={d.domain_key} className="min-w-[220px] flex-1 rounded-xl border border-border bg-background p-3">
             <div className="mb-2 flex items-center justify-between">
               <span className="font-mono text-xs font-bold text-foreground">{d.label || d.domain_key}</span>
               <Button

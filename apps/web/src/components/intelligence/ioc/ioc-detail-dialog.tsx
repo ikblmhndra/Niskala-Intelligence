@@ -154,21 +154,21 @@ export function IocDetailDialog({ target, onClose, onDeleted }: IocDetailDialogP
               </div>
 
               {ioc.recommended_action && (
-                <div className="mb-3.5 rounded-2xl border border-border bg-surface shadow-sm2 px-2.5 py-1.5 text-xs text-foreground">
+                <div className="mb-3.5 rounded-xl border border-border bg-background px-2.5 py-1.5 text-xs text-foreground">
                   <ZapIcon aria-hidden /> {ioc.recommended_action}
                 </div>
               )}
 
               <div className="mb-5 grid grid-cols-3 gap-3">
-                <div className="rounded-2xl border border-border bg-surface shadow-sm2 p-2.5">
+                <div className="rounded-xl border border-border bg-background p-2.5">
                   <div className="mb-1 text-sm font-semibold text-muted-foreground">Seen Count</div>
                   <div className="text-lg font-bold text-foreground">{ioc.seen_count || 1}</div>
                 </div>
-                <div className="rounded-2xl border border-border bg-surface shadow-sm2 p-2.5">
+                <div className="rounded-xl border border-border bg-background p-2.5">
                   <div className="mb-1 text-sm font-semibold text-muted-foreground">First Seen</div>
                   <div className="text-[13px] text-foreground">{ioc.first_seen || "—"}</div>
                 </div>
-                <div className="rounded-2xl border border-border bg-surface shadow-sm2 p-2.5">
+                <div className="rounded-xl border border-border bg-background p-2.5">
                   <div className="mb-1 text-sm font-semibold text-muted-foreground">Last Seen</div>
                   <div className="text-[13px] text-foreground">{ioc.last_seen || "—"}</div>
                 </div>
@@ -196,7 +196,7 @@ export function IocDetailDialog({ target, onClose, onDeleted }: IocDetailDialogP
                     const raw = p.raw ?? {};
                     const rawKeys = Object.keys(raw).filter((k) => raw[k] !== null && raw[k] !== "");
                     return (
-                      <div key={p.key} className="mb-2.5 rounded-2xl border border-border bg-surface shadow-sm2 p-3">
+                      <div key={p.key} className="mb-2.5 rounded-xl border border-border bg-background p-3">
                         <div className="mb-2.5 flex items-center justify-between">
                           <span className="text-sm font-semibold text-muted-foreground">{p.name || p.key}</span>
                           <span className={`rounded-full border border-border bg-surface px-1.5 py-0.5 text-xs uppercase ${verdictColor(p.verdict)}`}>

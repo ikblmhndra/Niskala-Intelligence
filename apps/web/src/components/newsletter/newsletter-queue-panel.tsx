@@ -63,7 +63,7 @@ export function NewsletterQueuePanel({ queue, paywallHints, onAssign, onRemove, 
           const countries = [...(a.victim_countries ?? []), ...(a.mentioned_countries ?? [])].slice(0, 3);
           const actors = (a.threat_actors ?? []).slice(0, 2);
           return (
-            <div key={a._id} className="rounded-2xl border border-border bg-surface shadow-sm p-2.5">
+            <div key={a._id} className="rounded-xl border border-border bg-background p-2.5">
               <div className="flex items-start gap-2">
                 <div className="min-w-0 flex-1">
                   <div className="text-xs font-semibold text-foreground">{a.title}</div>

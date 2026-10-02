@@ -76,7 +76,7 @@ export function FilteredView() {
         {query.data && query.data.items.length > 0 && (
           <div className="flex flex-col gap-1.5">
             {query.data.items.map((a) => (
-              <div key={a.id} className="flex items-start gap-2.5 rounded-2xl border border-border bg-surface shadow-sm p-2.5">
+              <div key={a.id} className="flex items-start gap-2.5 rounded-xl border border-border bg-background p-2.5">
                 <div className="min-w-0 flex-1">
                   <a
                     href={a.url}

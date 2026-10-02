@@ -247,7 +247,7 @@ function WatchlistCard({
   onUnwatch: () => void;
 }) {
   return (
-    <div className="rounded-2xl border border-border bg-surface shadow-sm2 p-3">
+    <div className="rounded-xl border border-border bg-background p-3">
       <div className="mb-1.5 flex flex-wrap items-center gap-2">
         <span className="text-sm font-semibold text-foreground">{item.name}</span>
         <span className={`rounded-full border border-border bg-surface px-1.5 py-0.5 font-mono text-xs ${dormancyColor}`}>

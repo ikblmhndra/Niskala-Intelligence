@@ -53,7 +53,7 @@ function CampaignTrendSection({ clusterId }: { clusterId: string }) {
         </span>
         {trend.predicted_peak && <span className="text-xs text-muted-foreground normal-case">est. peak {trend.predicted_peak}</span>}
       </div>
-      <div className="flex items-center gap-2.5 rounded-2xl border border-border bg-surface shadow-sm2 px-2.5 py-1.5">
+      <div className="flex items-center gap-2.5 rounded-xl border border-border bg-background px-2.5 py-1.5">
         <TrendSparkline timeline={trend.timeline} width={200} height={32} />
         <span className="font-mono text-xs text-muted-foreground">
           {trend.timeline[0]?.date} → {trend.timeline[trend.timeline.length - 1]?.date}
@@ -90,7 +90,7 @@ export function CampaignExpandedPanel({
   const cvePrioList = c.prioritized_cves.length > 0 ? c.prioritized_cves : c.cve_ids.map((id) => ({ cve_id: id, priority_score: 0, priority_label: null, patch_urgency: null, cvss_score: null, in_tech_stack: false, severity: null, cisa_kev: false, poc_available: false, actively_exploited: false }));
 
   return (
-    <div className="border-t border-border bg-surface2/40 p-4">
+    <div className="border-t border-border bg-background/40 p-4">
       <CampaignTrendSection clusterId={c.cluster_id} />
 
       <div className="mb-2.5">
@@ -98,7 +98,7 @@ export function CampaignExpandedPanel({
           Severity Breakdown
           <span className="rounded-full border px-1.5 py-0.5 text-xs font-bold normal-case border-border">{c.severity_label.toUpperCase()} {c.severity_score}</span>
         </div>
-        <div className="rounded-2xl border border-border bg-surface shadow-sm p-2.5">
+        <div className="rounded-xl border border-border bg-background p-2.5">
           {(
             [
               ["TA Sophistication", bd.ta_sophistication, bd.raw.ta_sophistication, "30%"],

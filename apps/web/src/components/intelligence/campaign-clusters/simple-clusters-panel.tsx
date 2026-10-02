@@ -128,7 +128,7 @@ export function SimpleClustersPanel() {
           const isOpen = expanded[c.cluster_id];
           const spike = matchesSpike(c.cluster_name, c.articles);
           return (
-            <div key={c.cluster_id} className="rounded-2xl border border-border bg-surface shadow-sm2">
+            <div key={c.cluster_id} className="rounded-xl border border-border bg-background">
               <button
                 type="button"
                 onClick={() => setExpanded((e) => ({ ...e, [c.cluster_id]: !e[c.cluster_id] }))}

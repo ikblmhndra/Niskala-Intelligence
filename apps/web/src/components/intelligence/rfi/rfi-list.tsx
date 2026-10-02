@@ -102,7 +102,7 @@ export function RfiList() {
 
       <div className="space-y-3">
         {rfis.map((r) => (
-          <div key={r.id} className="flex items-start gap-3 rounded-2xl border border-border bg-surface shadow-sm p-3">
+          <div key={r.id} className="flex items-start gap-3 rounded-xl border border-border bg-background p-3">
             <Badge variant="outline" className={cn("w-24 shrink-0 justify-center font-mono text-xs", STATUS_CLASS[r.status])}>
               {STATUS_LABEL[r.status] ?? r.status.toUpperCase()}
             </Badge>

@@ -103,7 +103,7 @@ export function GeopoliticalPanel({ days }: { days: number }) {
                               </td>
                               {sectors.map((sector) => {
                                 const count = entry.targeted_sectors.filter((x) => x === sector).length;
-                                if (!count) return <td key={sector} className="border border-border/30 bg-surface2/30" />;
+                                if (!count) return <td key={sector} className="border border-border/30 bg-background/30" />;
                                 const alpha = Math.round((count / maxCount) * 0.7 * 100) / 100 + 0.08;
                                 return (
                                   <td key={sector} className="border border-destructive/25 text-center font-mono text-xs font-bold text-foreground" style={{ background: `color-mix(in srgb, var(--severity-critical) ${Math.round(alpha * 100)}%, transparent)` }}>
@@ -129,7 +129,7 @@ export function GeopoliticalPanel({ days }: { days: number }) {
                     return (
                       <div key={mot} className="mb-0.5 flex items-center gap-1.5">
                         <span className="w-20 flex-shrink-0 font-mono text-xs text-muted-foreground">{mot}</span>
-                        <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-surface2">
+                        <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-background">
                           <div className="h-full rounded-full opacity-80" style={{ width: `${pct}%`, background: color }} />
                         </div>
                         <span className="w-7 flex-shrink-0 text-right font-mono text-xs text-muted-foreground">{cnt}</span>

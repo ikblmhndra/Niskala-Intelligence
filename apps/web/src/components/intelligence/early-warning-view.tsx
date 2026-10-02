@@ -92,7 +92,7 @@ export function EarlyWarningView() {
           <div className="mb-1.5 text-sm font-semibold text-muted-foreground">{cat} Spikes</div>
           <div className="space-y-1.5">
             {spikes.map((s, i) => (
-              <div key={i} className="flex flex-wrap items-center gap-2.5 rounded-2xl border border-border bg-surface shadow-sm px-3 py-1.5">
+              <div key={i} className="flex flex-wrap items-center gap-2.5 rounded-xl border border-border bg-background px-3 py-1.5">
                 <span className="min-w-[100px] font-mono text-xs text-foreground">{s.entity || "Overall"}</span>
                 <span className="font-mono text-xs text-muted-foreground">date: {s.date}</span>
                 <span className="font-mono text-xs text-muted-foreground">
