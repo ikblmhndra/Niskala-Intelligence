@@ -3,6 +3,7 @@
 
 help:
 	@echo "make fresh-deploy [ARGS='--skip-build --skip-nginx']  deploy dari nol di host ini (idempoten)"
+	@echo "make fresh-deploy ARGS='--restore-from /path/cti-<UTC>.dump'  isi DB dari backup (hanya DB kosong)"
 	@echo "make fresh-status                                     status container stack"
 
 fresh-deploy:

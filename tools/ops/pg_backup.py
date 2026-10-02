@@ -45,6 +45,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Protocol
 
+_UTC = datetime.timezone.utc  # noqa: UP017 -- jalan di python3 HOST (>= 3.9); `datetime.UTC` baru ada di 3.11
+
 DEFAULT_PG_EXEC = "docker compose exec -T postgres"
 NAME_RE = re.compile(r"^cti-(\d{8}T\d{6}Z)\.dump$")
 SCRATCH_DB = "cti_restore_check"
@@ -118,14 +120,14 @@ class Target:
 
 
 def backup_name(now: datetime.datetime) -> str:
-    return "cti-" + now.astimezone(datetime.UTC).strftime("%Y%m%dT%H%M%SZ") + ".dump"
+    return "cti-" + now.astimezone(_UTC).strftime("%Y%m%dT%H%M%SZ") + ".dump"
 
 
 def parse_backup_time(name: str) -> datetime.datetime | None:
     m = NAME_RE.match(name)
     if not m:
         return None
-    return datetime.datetime.strptime(m.group(1), "%Y%m%dT%H%M%SZ").replace(tzinfo=datetime.UTC)
+    return datetime.datetime.strptime(m.group(1), "%Y%m%dT%H%M%SZ").replace(tzinfo=_UTC)
 
 
 def select_prunable(
@@ -380,7 +382,7 @@ def main(argv: Sequence[str] | None = None, *, executor: Executor | None = None)
     args = parser.parse_args(argv)
     ex = executor or SubprocessExecutor()
     target = _target(args)
-    now = datetime.datetime.now(datetime.UTC)
+    now = datetime.datetime.now(_UTC)
 
     try:
         if args.command == "backup":

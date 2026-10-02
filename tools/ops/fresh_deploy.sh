@@ -10,8 +10,13 @@
 #   0 cek prasyarat  1 build image  2 cek secret (probe live, baca-doang)  3 postgres+redis+migrasi+api
 #   4 seed data referensi bawaan  5 admin pertama (auth/init)  6 sinkron katalog ATT&CK
 #   7 worker  8 beat TERAKHIR  9 web + nginx  -> ringkasan
+# Dengan --restore-from, restore dijalankan di langkah 3, SESUDAH postgres+redis naik dan SEBELUM api
+# (api menarik migrasi, jadi dump dari revisi lebih lama otomatis dinaikkan ke head).
 #
 # Opsi:  --skip-build  --skip-secret-check  --skip-nginx  -h|--help
+#        --restore-from <dump>  isi database dari backup `pg_backup.py` (mis. dari staging) alih-alih DB kosong;
+#                               hanya jalan di DB KOSONG, menolak (dan tidak menyentuh apa pun) kalau sudah berisi
+#        --replace-db           (dengan --restore-from) TIMPA database yang sudah berisi -- DESTRUKTIF, minta konfirmasi
 # Env:   ADMIN_USER (default "admin")  CTI_ENV_FILE (default .env)  CTI_STACK_ENV (default docker/stack.env)
 #        COMPOSE_PROJECT_NAME (mis. untuk latihan di mesin yang sudah punya stack lain)
 #
@@ -25,17 +30,24 @@ ENV_FILE="${CTI_ENV_FILE:-.env}"
 STACK_ENV="${CTI_STACK_ENV:-docker/stack.env}"
 ADMIN_USER="${ADMIN_USER:-admin}"
 ADMIN_PW_FILE="secrets/admin_password"
-SKIP_BUILD=0 SKIP_SECRET_CHECK=0 SKIP_NGINX=0
+SKIP_BUILD=0 SKIP_SECRET_CHECK=0 SKIP_NGINX=0 RESTORE_FROM="" REPLACE_DB=0
 
-for arg in "$@"; do
-  case "$arg" in
+while [ $# -gt 0 ]; do
+  case "$1" in
     --skip-build) SKIP_BUILD=1 ;;
     --skip-secret-check) SKIP_SECRET_CHECK=1 ;;
     --skip-nginx) SKIP_NGINX=1 ;;
-    -h|--help) sed -n '2,20p' "$0"; exit 0 ;;
-    *) echo "opsi tidak dikenal: $arg (lihat --help)" >&2; exit 2 ;;
+    --replace-db) REPLACE_DB=1 ;;
+    --restore-from)
+      [ $# -ge 2 ] || { echo "--restore-from butuh path berkas dump" >&2; exit 2; }
+      RESTORE_FROM="$2"; shift ;;
+    --restore-from=*) RESTORE_FROM="${1#*=}" ;;
+    -h|--help) awk 'NR > 1 && /^#/ { print; next } NR > 1 { exit }' "$0"; exit 0 ;;
+    *) echo "opsi tidak dikenal: $1 (lihat --help)" >&2; exit 2 ;;
   esac
+  shift
 done
+[ "$REPLACE_DB" -eq 0 ] || [ -n "$RESTORE_FROM" ] || { echo "--replace-db hanya bermakna bersama --restore-from" >&2; exit 2; }
 
 say() { printf '\n==> %s\n' "$*"; }
 warn() { printf '  [PERINGATAN] %s\n' "$*" >&2; }
@@ -52,7 +64,8 @@ say "0/9 cek prasyarat"
 command -v docker >/dev/null || die "docker tidak ditemukan"
 docker compose version >/dev/null 2>&1 || die "plugin 'docker compose' tidak ditemukan"
 docker info >/dev/null 2>&1 || die "daemon docker tidak jalan / user ini tidak boleh memakainya"
-command -v python3 >/dev/null || die "python3 dibutuhkan (generator password + pengecekan env)"
+command -v python3 >/dev/null || die "python3 dibutuhkan (generator password, pengecekan env, pg_backup.py)"
+python3 -c 'import sys; sys.exit(sys.version_info < (3, 9))' || die "python3 >= 3.9 dibutuhkan (ditemukan: $(python3 --version 2>&1))"
 
 if [ ! -f "$ENV_FILE" ]; then
   cp .env.prod.template "$ENV_FILE"; chmod 600 "$ENV_FILE"
@@ -107,6 +120,23 @@ sys.exit(1 if bad or not want else 0)
 PY
 echo "  ok: docker, env aplikasi terisi, password Postgres konsisten"
 
+if [ -n "$RESTORE_FROM" ]; then
+  [ -f "$RESTORE_FROM" ] && [ -r "$RESTORE_FROM" ] || die "berkas dump tidak ditemukan/terbaca: $RESTORE_FROM"
+  RESTORE_FROM="$(cd "$(dirname "$RESTORE_FROM")" && pwd)/$(basename "$RESTORE_FROM")"
+  if [ -f "$RESTORE_FROM.sha256" ]; then
+    echo "  ok: dump $(basename "$RESTORE_FROM") ($(du -h "$RESTORE_FROM" | cut -f1)); checksum akan dicek saat restore"
+  else
+    warn "tidak ada $(basename "$RESTORE_FROM").sha256 di sebelahnya -- integritas berkas tidak bisa dicek"
+  fi
+  if [ "$REPLACE_DB" -eq 1 ]; then
+    warn "--replace-db: database yang ada SEKARANG akan DIHAPUS lalu diisi dari dump."
+    if [ -t 0 ]; then
+      read -r -p "  Ketik 'timpa' untuk melanjutkan: " ans
+      [ "$ans" = "timpa" ] || die "dibatalkan."
+    fi
+  fi
+fi
+
 TAG="$(stack_var CTI_TAG)"; TAG="${TAG:-latest}"
 API_PORT="$(stack_var API_PORT)"; API_PORT="${API_PORT:-8000}"
 
@@ -146,10 +176,30 @@ else
        (key opsional yang kosong tidak masalah; LLM dan Telegram wajib). Lanjutkan paksa: --skip-secret-check."
 fi
 
-say "3/9 postgres + redis, migrasi skema, api"
+say "3/9 postgres + redis$([ -z "$RESTORE_FROM" ] || echo ', restore database'), migrasi skema, api"
+if [ "$REPLACE_DB" -eq 1 ]; then  # DROP DATABASE memutus koneksi: hentikan semua penulis dulu
+  dc stop beat worker worker-browser worker-nlp web nginx api >/dev/null 2>&1 || true
+fi
 dc up -d postgres redis
 wait_ready postgres; wait_ready redis
-dc up -d api            # menarik service `migrate` (one-shot, alembic upgrade head) lebih dulu
+PG_USER="$(stack_var POSTGRES_USER)"; PG_USER="${PG_USER:-cti}"
+PG_DB="$(stack_var POSTGRES_DB)"; PG_DB="${PG_DB:-cti}"
+if [ -n "$RESTORE_FROM" ]; then
+  echo "  restore $(basename "$RESTORE_FROM") -> database '$PG_DB'"
+  restore_args=(--file "$RESTORE_FROM" --to-db "$PG_DB" --force-live)
+  [ "$REPLACE_DB" -eq 0 ] || restore_args+=(--replace)
+  python3 tools/ops/pg_backup.py \
+    --pg-exec "docker compose --env-file $STACK_ENV --profile app exec -T postgres" \
+    --user "$PG_USER" --db "$PG_DB" restore "${restore_args[@]}" \
+    || die "restore gagal -- database TIDAK diubah kalau pesannya 'sudah berisi' atau 'checksum'. Untuk host yang
+       sudah berisi data: jalankan ulang TANPA --restore-from, atau (menghapus semua data) tambahkan --replace-db."
+fi
+dc up -d api || {      # menarik service `migrate` (one-shot, alembic upgrade head) lebih dulu
+  warn "migrasi/api gagal naik. 20 baris log migrate:"
+  dc logs --no-color --tail 20 migrate >&2 || true
+  die "migrasi gagal. Kalau pesannya \"Can't locate revision\": database (mis. hasil --restore-from) berasal dari kode
+       yang LEBIH BARU dari checkout ini -- pakai kode yang sama atau lebih baru dari yang membuat dump."
+}
 wait_ready api
 
 say "4/9 seed data referensi bawaan (threat actor, demonym, allowlist IOC)"
@@ -199,7 +249,7 @@ rc=$?
 set -e
 case "$rc" in
   0) mv "$NEWPW" "$ADMIN_PW_FILE"; echo "  admin '$ADMIN_USER' dibuat; password ada di $ADMIN_PW_FILE (mode 600)" ;;
-  3) rm -f "$NEWPW"; echo "  sudah ada user di database -- admin tidak dibuat ulang (file password lama, kalau ada, tidak disentuh)" ;;
+  3) rm -f "$NEWPW"; echo "  sudah ada user di database$([ -z "$RESTORE_FROM" ] || echo ' (dari backup)') -- admin tidak dibuat ulang (file password lama, kalau ada, tidak disentuh)" ;;
   *) rm -f "$NEWPW"; die "pembuatan admin gagal (kode $rc)." ;;
 esac
 
@@ -234,8 +284,9 @@ say "8/9 beat -- penembak jadwal, SENGAJA terakhir"
 dc up -d beat
 wait_ready beat 60
 sleep 5
-leaders="$(dc logs --no-color beat 2>&1 | grep -c 'beat_leader' || true)"
-[ "$leaders" -eq 1 ] || warn "baris beat_leader di log = $leaders (harus tepat 1). Periksa: docker compose logs beat"
+beat_cid="$(dc ps -q beat | head -1)"  # hanya sejak start TERAKHIR: log lama (restart/rerun) tetap tersimpan
+leaders="$(docker logs --since "$(docker inspect -f '{{.State.StartedAt}}' "$beat_cid")" "$beat_cid" 2>&1 | grep -c 'beat_leader' || true)"
+[ "$leaders" -eq 1 ] || warn "baris beat_leader di log sejak start = $leaders (harus tepat 1). Periksa: docker compose logs beat"
 
 say "9/9 web$([ "$SKIP_NGINX" -eq 1 ] || echo ' + nginx')"
 dc up -d web
@@ -252,11 +303,23 @@ dc ps --format 'table {{.Service}}\t{{.Status}}'
 cat <<EOF
 
 Buka   : https://${HOSTS%%,*}$([ "$HTTPS_PORT" = 443 ] || echo ":$HTTPS_PORT")   (sertifikat self-signed: browser akan memperingatkan)
-Login  : user '$ADMIN_USER', password di $ADMIN_PW_FILE  -> ganti lewat UI, lalu hapus file itu
+$(if [ -n "$RESTORE_FROM" ]; then
+  echo "Login  : pakai user dari backup (password lama; TIDAK dibuat admin baru):"
+  dc exec -T postgres psql -U "$PG_USER" -d "$PG_DB" -tA -c "select '           ' || username || ' (' || role_name || ')' from users order by 1" || true
+else
+  echo "Login  : user '$ADMIN_USER', password di $ADMIN_PW_FILE  -> ganti lewat UI, lalu hapus file itu"
+fi)
 Health : curl -fs http://127.0.0.1:${API_PORT}/healthz
 
+$([ -z "$RESTORE_FROM" ] || cat <<'WARN'
+Backup membawa APA ADANYA: user + password lama, data uji (mis. TA whitelist), dan override scraper
+(`scraper_config`: jadwal/max_items). Ganti password dan bersihkan data uji sebelum dipakai produksi.
+Redis tidak ikut backup (isinya sementara); dedup scraper ada di Postgres, jadi tidak ada banjir "cold start".
+
+WARN
+)
 Yang MASIH harus diisi manual lewat UI (tanpa ini beberapa scraper sengaja idle):
   - client + negara, user lain, techstack (tanpa ini new_cve kosong), akun X yang dipantau (tanpa ini monitor_x idle)
 Dianjurkan sebelum dipakai: pasang timer backup Postgres (docs/PROD_PREP.md, docker/ops/cti-pg-backup.*).
-Scraper pertama kali jalan = mode "cold start": maks 5 item per scraper. Detail: README.md dan docs/CUTOVER_RUNBOOK.md.
+Pada DB kosong, scraper pertama kali jalan dengan mode "cold start": maks 5 item per scraper. Detail: README.md dan docs/CUTOVER_RUNBOOK.md.
 EOF

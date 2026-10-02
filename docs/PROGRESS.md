@@ -5608,6 +5608,22 @@ Run 2 `--skip-build --skip-secret-check`: 9 container healthy; DB `users 1` (adm
 ulang, hash password tidak berubah. Empat jalur gagal prasyarat dites. Stack latihan dibongkar (hanya project
 `ctirehearsal`).
 
+**Tambahan 2026-10-02 -- `--restore-from <dump>` / `--replace-db`** (deploy memakai DB dari backup
+`pg_backup.py`, mis. staging): restore di langkah 3, sesudah postgres+redis dan SEBELUM api (migrasi menaikkan dump
+berrevisi lama). Hanya di DB KOSONG; `--replace-db` menimpa (destruktif, menghentikan semua service dulu, minta
+ketikan `timpa` kalau interaktif). Admin baru tidak dibuat, login pakai user dari backup (username dicetak).
+Dilatih di Docker lokal, 7 skenario: (T1) berkas tidak ada -> berhenti di prasyarat; (T2) dump rusak -> `checksum
+TIDAK cocok`, DB tetap kosong; (T3) restore normal -> baris penanda unik ikut pulih, login dengan password LAMA 200,
+seed `0 baru / 3991 sudah ada`, hash file password tidak berubah; (T4) restore ulang ke DB berisi -> DITOLAK, data
+utuh; (T5) `--replace-db` -> penanda sesudah-restore hilang (ditimpa), penanda dump kembali, stack naik lagi; (T6) dump
+revisi lama (`a10e5c0de002`, dibuat lewat `alembic downgrade`) -> otomatis naik ke `c3a7e9d1f2b4`, kolom baru ada,
+login 200; (T7) dump berrevisi tak dikenal -> migrasi gagal dengan pesan penjelasan + log migrate.
+**Dua temuan dari latihan itu, sudah diperbaiki:** `pg_backup.py` memakai `datetime.UTC` (python >= 3.11) sehingga
+GAGAL di python3 host yang lebih tua (python3 Mac 3.9; Ubuntu 22.04 punya 3.10) -> diganti `datetime.timezone.utc`,
+4 tool host (`pg_backup`, `notify_telegram`, `rundeck_schedule`, `rollback`) dites `--help` di 3.9, skrip deploy kini
+mensyaratkan python3 >= 3.9; dan peringatan palsu "beat_leader = 2" pada rerun (log beat menumpuk lintas restart)
+-> dihitung sejak start terakhir.
+
 **Belum terbukti:** host Linux amd64 sungguhan; probe `check_secrets` dengan key asli; beban nyata /
 concurrency bawaan; scraper menembak dari IP host baru (census ulang); jalur `--skip-nginx` dan sertifikat
 sendiri; timer backup Postgres tidak dipasang skrip (sengaja, butuh systemd + keputusan lokasi off-host).

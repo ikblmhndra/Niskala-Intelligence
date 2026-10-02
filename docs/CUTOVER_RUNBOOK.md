@@ -344,6 +344,8 @@ python3 tools/ops/pg_backup.py --pg-exec "$PG" prune   --dir /var/backups/cti --
 - **Retensi**: 14 hari, dan 3 backup terbaru **selalu** dipertahankan (backup yang berhenti jalan tidak
   menghabiskan stok). Umur dihitung dari NAMA berkas, bukan mtime.
 - **Off-host**: salin ke luar mesin (rsync/rclone) -- belum diotomasi; backup di disk yang sama bukan backup.
+- **Pindah host dengan DB dari backup**: `make fresh-deploy ARGS='--restore-from <dump>'` (README.md, bagian
+  "Deploy memakai DB dari backup"). `pg_backup.py` jalan di python3 HOST >= 3.9.
 - **Verifikasi mingguan**: `verify` me-restore dump ke DB scratch, membandingkan `alembic_version` dan jumlah
   baris tabel kunci dengan DB live, lalu DROP scratch. Dump yang tak pernah dites restore belum backup.
 - **Pengaman `restore`**: menolak DB live kecuali `--force-live`; menolak DB yang sudah berisi kecuali

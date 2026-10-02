@@ -21,7 +21,7 @@ menghapus volume atau data.
 
 ### Prasyarat
 
-- Linux dengan **Docker + plugin `docker compose`**, `python3`, `curl`, `git`.
+- Linux dengan **Docker + plugin `docker compose`**, `python3` (>= 3.9), `curl`, `git`.
 - Akses keluar internet: registry image (base image, PyPI saat seed), `raw.githubusercontent.com`/GitHub
   (katalog ATT&CK), situs sumber scraper, endpoint LLM, `api.telegram.org`.
 - Disk lapang untuk image (~6 GB; build di staging memakai ~9 GB termasuk cache) dan RAM untuk `worker-nlp`
@@ -91,6 +91,36 @@ allowlist IOC). 6. Admin pertama lewat `POST /api/auth/init`, password acak ditu
 4. Pasang timer backup Postgres (`docs/PROD_PREP.md`, `docker/ops/cti-pg-backup.*`) dan jalankan satu kali
    `verify`. Belum ada backup terjadwal secara bawaan.
 5. Pantau: `docs/CUTOVER_RUNBOOK.md` bagian 4 (jam pertama), 5 (minggu pertama), 9 (troubleshooting).
+
+### Deploy memakai DB dari backup (mis. pindah dari staging)
+
+Untuk host baru yang database-nya mau diisi dari backup `tools/ops/pg_backup.py`, bukan DB kosong:
+
+```bash
+# di host lama: buat backup (dump + .sha256, mode 600) lalu verifikasi
+PG="docker compose --env-file docker/stack.env --profile app exec -T postgres"
+python3 tools/ops/pg_backup.py --pg-exec "$PG" backup --dir ~/backups
+python3 tools/ops/pg_backup.py --pg-exec "$PG" verify --file ~/backups/cti-<UTC>.dump
+
+# salin dump DAN .sha256-nya ke host baru (dump berisi hash password: jangan lewat kanal terbuka)
+scp ~/backups/cti-<UTC>.dump* user@host-baru:/path/aman/
+
+# di host baru, setelah .env dan docker/stack.env diisi:
+make fresh-deploy ARGS='--restore-from /path/aman/cti-<UTC>.dump'
+```
+
+- Restore berjalan di langkah 3, sesudah Postgres naik dan **sebelum** API. Dump dari revisi migrasi yang
+  lebih lama otomatis dinaikkan ke versi terbaru saat API start. Dump dari revisi yang LEBIH BARU dari kode
+  ditolak oleh migrasi (jalankan kode yang sama atau lebih baru dari yang membuat dump).
+- Hanya jalan di database **kosong**. Kalau sudah berisi, skrip berhenti tanpa mengubah apa pun. Menimpa
+  database yang ada: tambahkan `--replace-db` (menghapus semua data; minta ketikan `timpa` kalau dijalankan
+  interaktif).
+- Admin baru **tidak** dibuat: login dengan user dari backup. Skrip mencetak daftar username-nya.
+- Yang ikut terbawa apa adanya: password lama, data uji, dan override scraper (`scraper_config`: jadwal,
+  `max_items`). Ganti password dan bersihkan data uji sebelum dipakai produksi.
+- Dedup scraper (`scraper_seen`) ada di Postgres dan ikut, jadi tidak ada banjir item "cold start". Redis
+  tidak ikut backup (isinya sementara).
+- Password Postgres di host baru bebas berbeda dari host lama: backup tidak membawa role/password database.
 
 ### Reset total (menghapus SEMUA data)
 
