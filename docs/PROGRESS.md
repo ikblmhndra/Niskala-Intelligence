@@ -5624,6 +5624,31 @@ GAGAL di python3 host yang lebih tua (python3 Mac 3.9; Ubuntu 22.04 punya 3.10) 
 mensyaratkan python3 >= 3.9; dan peringatan palsu "beat_leader = 2" pada rerun (log beat menumpuk lintas restart)
 -> dihitung sejak start terakhir.
 
+**Alert GitHub PoC + visibilitas thread Telegram (2026-10-02):** audit alert legacy vs baru (100 job aktif Rundeck)
+menemukan SATU gap nyata: `githubPOCMonitor` mengirim `send_alert_poc` ke thread `github_exploit`, platform baru
+tidak mengirim apa pun (scraper hanya menulis `cve_tracker.pocs`). Sekarang `github_poc_monitor` menyertakan
+`NoticeItem` topik **`github_poc`** (topik ke-21 di `TELEGRAM__THREAD_IDS`, ditambahkan ke `.env.example` dan
+`.env.prod.template`) untuk repo baru dari pencarian broad -- fase targeted tetap hanya menyimpan, sama seperti
+legacy. Beda dari legacy, sengaja: sekali per repo (alert "UPDATED" per SHA dihapus), hanya repo <= 3 hari (tanpa
+ini deploy ke DB yang sudah berisi membanjiri channel dengan PoC lama; di DB kosong cold-start cap 5 tetap
+berlaku karena `NoticeItem` kena cap), semua teks luar di-`html.escape`, field panjang dipotong. 15 test, 15
+mutasi 0 selamat. Dua beda perilaku lain yang ditemukan audit TIDAK diubah: `blackorbird`/`unit42_github` (legacy
+kirim langsung ke thread report; sekarang `ArticleItem` lewat NLP, topik mengikuti klasifikasi) -- belum dicek
+dengan data nyata. **Topik `feed_twitter` (2026-10-02, permintaan user -- topik ke-22):** tweet "umum" (yang tidak masuk kategori
+khusus) dulu dibagi ke `global`/`apac`/`apac_indo`/`apt`, thread yang DIBAGI dengan alert artikel; sekarang
+semuanya ke `feed_twitter` (`tweet_routing.FEED_TOPIC`). Kategori khusus (`zero_day`, `data_breach*`,
+`vendor_report`, `ot`, `tech_stack`, `tech_stack_unrelated`) TIDAK berubah, termasuk aturan "dua topik" (`ot` +
+umum). Field `news_type`/`mentioned_group` di `TweetRoutingInput` dan `_generic_topic` dihapus (tak lagi
+mempengaruhi topik; riwayat git bila mau kembali). 7 test scraper + 19 test routing diperbarui, 11 mutasi 0
+selamat. **Efek samping:** kunci dedup notice tweet berubah `<id>:global` -> `<id>:feed_twitter`, jadi tweet yang
+masih di jendela pencarian saat deploy pertama bisa terkirim ulang sekali. `monitor_x` (X Intel) tetap TIDAK
+mengirim Telegram (legacy juga tidak). Semua topik mendarat di satu thread kalau `thread_id`-nya 0 -- itu
+konfigurasi, bukan bug. `check_secrets.py` kini punya cek
+offline `telegram_threads` (NOTE bila semua 0 / sebagian 0 / berbagi id; tidak menggagalkan exit code), 6 test, 7
+mutasi 0 selamat. `test_alert_topics` kini juga menjaga `.env.prod.template` identik dengan `.env.example`.
+
+**`GRAPH__CC` multi-alamat (2026-10-02):** kode hanya memecah dengan koma, jadi `a@x.com;b@x.com` (format Outlook) terkirim sebagai SATU alamat rusak dan Graph menolak draft. `cti_alerts.mailer.split_addresses` kini menerima koma ATAU titik koma (campuran boleh, spasi/entri kosong diabaikan); 11 test, 4 mutasi 0 selamat; komentar di kedua template env diperbarui.
+
 **Belum terbukti:** host Linux amd64 sungguhan; probe `check_secrets` dengan key asli; beban nyata /
 concurrency bawaan; scraper menembak dari IP host baru (census ulang); jalur `--skip-nginx` dan sertifikat
 sendiri; timer backup Postgres tidak dipasang skrip (sengaja, butuh systemd + keputusan lokasi off-host).

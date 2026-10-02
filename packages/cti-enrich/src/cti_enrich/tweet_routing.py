@@ -10,6 +10,12 @@ satunya. Urutan `elif` WAJIB persis ini.
 
 Hasil: daftar topik (0, 1, atau 2). Dua topik = cabang terakhir yang mengirim ke `ot` DAN
 ke topik generik (perilaku asli: `send_alert_ot` lalu `send_alert` tetap jalan).
+
+DEVIASI dari legacy (2026-10-02, permintaan user): tweet "umum" -- yang tidak masuk kategori khusus
+(zero_day, data_breach, vendor_report, ot, tech_stack, tech_stack_unrelated) -- dulu dibagi ke
+`global`/`apac`/`apac_indo`/`apt`, thread yang DIBAGI dengan alert artikel. Sekarang semuanya ke
+`feed_twitter` (`FEED_TOPIC`), thread khusus Twitter. Kategori khusus TIDAK berubah. Membalik ke
+legacy: git history (`_generic_topic` + field `news_type`/`mentioned_group`).
 """
 
 from __future__ import annotations
@@ -32,13 +38,13 @@ _OT_KEYWORDS = [
 _RE_INDONESIA = re.compile(r"\bindonesia[n]?\b")
 _FLAG_INDONESIA = "🇮🇩"
 
+FEED_TOPIC = "feed_twitter"
+"""Kunci `TELEGRAM__THREAD_IDS` untuk tweet umum (lihat DEVIASI di docstring modul)."""
+
 
 @dataclass(frozen=True)
 class TweetRoutingInput:
     msg_data: str
-    news_type: str
-    """"global" | "apac" -- dari `apac_indicator` (negara/tokoh APAC disebut)."""
-    mentioned_group: list[str]
     cve_list: list[str]
     related_tech_status: bool
     report_status: bool
@@ -52,18 +58,9 @@ def _is_indonesia(text: str) -> bool:
     return bool(_RE_INDONESIA.search(low)) or _FLAG_INDONESIA in low
 
 
-def _generic_topic(news_type: str, has_group: bool, msg_data: str) -> str:
-    """Port `telegramAlert._send_alert` (global / apac / apt)."""
-    if not has_group and news_type == "global":
-        return "global"
-    if news_type == "apac":
-        return "apac_indo" if _is_indonesia(msg_data) else "apac"
-    return "apt"
-
-
 def route_tweet(inp: TweetRoutingInput) -> list[str]:
     low = inp.msg_data.lower()
-    generic = _generic_topic(inp.news_type, bool(inp.mentioned_group), inp.msg_data)
+    generic = FEED_TOPIC
 
     if inp.zero_day_list:
         return ["zero_day"]

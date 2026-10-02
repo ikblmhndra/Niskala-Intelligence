@@ -317,8 +317,8 @@ def test_tweet_alerts_works_end_to_end_on_the_official_api() -> None:
     [n] = list(TweetAlerts1h().fetch(ctx))
 
     assert (n.topic, n.key) == (
-        "global",
-        "2:global",
+        "feed_twitter",
+        "2:feed_twitter",
     )  # kunci = id tweet, sama seperti twitterapi.io
     assert "NEW TWEET FROM BLACKORBIRD" in n.text
     assert "New backdoor   &amp; more" in n.text  # `&amp;` sekali, bukan `&amp;amp;`

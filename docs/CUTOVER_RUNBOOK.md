@@ -53,10 +53,19 @@ off-host) punya panduan langkah-per-langkah di `docs/PROD_PREP.md`** -- kerjakan
       sudah dicabut. Di host tanpa `uv`: `docker run --rm --env-file .env -v "$PWD/tools:/tools:ro"
       cti-worker:$CTI_TAG python /tools/ops/check_secrets.py`.
 - [ ] `.env` prod lengkap. Yang paling sering terlupa:
-  - `TELEGRAM__THREAD_IDS` memuat **semua 20 topik**: `global apac apac_indo apt ot zero_day
+  - `TELEGRAM__THREAD_IDS` memuat **semua 22 topik**: `global apac apac_indo apt ot zero_day
     data_breach data_breach_indo vendor_report tech_stack tech_stack_unrelated best_practice darkweb
-    pir scraper_health notd debug library_advisory logbook top_ta`. Topik yang dipakai kode tapi tak
-    ada di sini = `UnknownAlertTopic` (kegagalan keras, bukan diam-diam salah channel).
+    pir scraper_health notd debug library_advisory logbook top_ta github_poc feed_twitter`. Topik yang dipakai kode
+    tapi tak ada di sini = `UnknownAlertTopic` (kegagalan keras, bukan diam-diam salah channel).
+    **`github_poc` dan `feed_twitter` baru (2026-10-02)**: env yang dibuat sebelum itu belum punya --
+    tambahkan, kalau tidak alert PoC GitHub / tweet umum gagal tiap run (data PoC-nya tetap tersimpan).
+    `feed_twitter` = thread khusus tweet "umum" (dulu `global`/`apac`/`apac_indo`/`apt`); tweet kategori
+    khusus tetap ke `zero_day`/`data_breach*`/`vendor_report`/`ot`/`tech_stack*`. Kunci dedup notice tweet
+    berubah (`<id>:global` -> `<id>:feed_twitter`): tweet yang masih di jendela pencarian saat deploy
+    pertama bisa terkirim ulang SEKALI ke `feed_twitter`. `thread_id` 0 = tanpa thread (masuk chat
+    utama): kalau SEMUA 0, semua topik menumpuk di satu tempat. `check_secrets.py` memberi NOTE
+    (`telegram_threads`). Cara dapat `thread_id`: klik kanan topik > Copy Link, angka terakhir pada
+    `https://t.me/c/<chat>/<thread_id>`; chat harus grup forum (Topics aktif).
   - `TWITTER__API_KEY` (twitterapi.io = sumber Twitter UTAMA). `X__BEARER_TOKEN` hanya kalau
     cadangan X resmi mau disiapkan -- **satu underscore** antara `BEARER` dan `TOKEN`; nama salah =
     container gagal start (`extra="forbid"`).

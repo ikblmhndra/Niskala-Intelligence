@@ -57,7 +57,7 @@ Opsi: `make fresh-deploy ARGS='--skip-build'` (image sudah dibangun), `--skip-se
 | Key di `.env` | Status | Catatan |
 |---|---|---|
 | `LLM__API_KEY`, `LLM__URL`, `LLM__MODEL` | **wajib** | endpoint kompatibel OpenAI; diuji `GET /models` (tanpa generate) |
-| `TELEGRAM__BOT_TOKEN`, `TELEGRAM__CHAT_ID`, `TELEGRAM__THREAD_IDS` | **wajib** | diuji `getMe`/`getChat` (tidak mengirim pesan) |
+| `TELEGRAM__BOT_TOKEN`, `TELEGRAM__CHAT_ID`, `TELEGRAM__THREAD_IDS` | **wajib** | diuji `getMe`/`getChat` (tidak mengirim pesan). `THREAD_IDS` = 22 topik (termasuk `github_poc` dan `feed_twitter`, thread khusus tweet umum); `thread_id` 0 = masuk chat utama, jadi isi id masing-masing topik (Copy Link pada topik di Telegram, angka terakhir) kalau mau terpisah. `check_secrets` memberi NOTE kalau masih menumpuk |
 | `NVD__API_KEY` | opsional | tanpa key kena batas publik NVD yang jauh lebih kecil |
 | `GITHUB__TOKEN` | opsional | scraper GitHub (PoC, TTP) memakainya |
 | `TWITTER__API_KEY` | opsional | twitterapi.io, dipakai 4 scraper Twitter yang **berbagi satu saldo kredit** (lihat `docs/CUTOVER_RUNBOOK.md` bagian 8) |

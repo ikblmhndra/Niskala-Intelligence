@@ -74,6 +74,7 @@ def test_all_valid_keys_report_ok_and_exit_zero() -> None:
     assert {r.name: r.status for r in results} == {
         "llm": "OK",
         "telegram": "OK",
+        "telegram_threads": "NOTE",  # `make_settings()` tidak mengisi thread_ids
         "nvd": "OK",
         "github": "OK",
         "twitter": "OK",
@@ -212,3 +213,56 @@ def test_the_x_bearer_is_redacted_even_if_a_response_echoes_it_back() -> None:
     res = {r.name: r for r in cs.run_checks(make_settings(), only=["x"])}["x"]
 
     assert X_BEARER not in res.detail and "***" in res.detail
+
+
+# --- thread Telegram -------------------------------------------------------------------------
+
+
+def _threads(ids: dict[str, int]) -> cs.Result:
+    tg = TelegramSettings(bot_token=TG_TOKEN, chat_id="-100123", thread_ids=ids)
+    return cs.check_telegram_threads(make_settings(telegram=tg), timeout=1)
+
+
+def test_threads_semua_nol_diberi_note_menumpuk_di_satu_tempat() -> None:
+    res = _threads({"global": 0, "apt": 0, "ot": 0})
+
+    assert res.status == "NOTE"
+    assert "SEMUA 3 topik" in res.detail
+
+
+def test_threads_sebagian_nol_menyebut_topik_yang_masih_nol() -> None:
+    res = _threads({"global": 11, "apt": 0, "ot": 12, "darkweb": 0})
+
+    assert res.status == "NOTE"
+    assert "2 topik masih 0" in res.detail
+    assert "apt, darkweb" in res.detail
+    assert "berbagi" not in res.detail  # beberapa topik sama-sama 0 bukan "berbagi thread"
+
+
+def test_threads_berbagi_id_disebut() -> None:
+    res = _threads({"global": 11, "apt": 11, "ot": 12})
+
+    assert res.status == "NOTE"
+    assert "berbagi thread: 11: apt, global" in res.detail
+
+
+def test_threads_semua_berbeda_ok() -> None:
+    res = _threads({"global": 11, "apt": 12, "ot": 13})
+
+    assert (res.status, "3 topik") == ("OK", "3 topik")
+    assert "berbeda-beda" in res.detail
+
+
+def test_threads_kosong_diberi_note() -> None:
+    assert _threads({}).status == "NOTE"
+
+
+def test_threads_note_tidak_menggagalkan_exit_code_dan_ikut_di_run_checks() -> None:
+    tg = TelegramSettings(bot_token=TG_TOKEN, chat_id="-100123", thread_ids={"global": 0})
+    with respx.mock(assert_all_called=False) as mock:
+        mock_all_ok(mock)
+        results = cs.run_checks(make_settings(telegram=tg))
+
+    by_name = {r.name: r for r in results}
+    assert by_name["telegram_threads"].status == "NOTE"
+    assert cs.exit_code(results) == 0

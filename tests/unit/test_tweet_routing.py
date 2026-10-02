@@ -12,7 +12,7 @@ from cti_enrich.tweet_routing import TweetRoutingInput, route_tweet
 
 def inp(msg: str = "biasa saja", **over: object) -> TweetRoutingInput:
     base = {
-        "msg_data": msg, "news_type": "global", "mentioned_group": [], "cve_list": [],
+        "msg_data": msg, "cve_list": [],
         "related_tech_status": False, "report_status": False, "ot_status": False,
         "databreach_list": [], "zero_day_list": [],
     }  # fmt: skip
@@ -54,8 +54,7 @@ def test_cascade_order_report_then_ot_then_tech_stack_then_unrelated_cve(flags, 
 def test_hashtag_and_phrase_rules() -> None:
     assert route_tweet(inp("Fresh #ThreatReport out now")) == ["vendor_report"]
     assert route_tweet(inp("Ransomware Alert: acme")) == []
-    assert route_tweet(inp("New hacktivist alliance formed")) == ["global"]
-    assert route_tweet(inp("New hacktivist alliance formed", mentioned_group=["apt1"])) == ["apt"]
+    assert route_tweet(inp("New hacktivist alliance formed")) == ["feed_twitter"]
 
 
 def test_vulnerability_wording_is_unrelated_tech_stack_and_skips_the_ot_check() -> None:
@@ -64,21 +63,40 @@ def test_vulnerability_wording_is_unrelated_tech_stack_and_skips_the_ot_check() 
     assert route_tweet(inp(msg)) == ["tech_stack_unrelated"]  # tidak juga ke `ot`
 
 
-def test_ot_keyword_sends_to_ot_and_ALSO_to_the_generic_topic() -> None:
-    """Perilaku asli: `send_alert_ot(...)` lalu `send_alert(...)` tetap jalan."""
-    assert route_tweet(inp("Attack on critical infrastructure")) == ["ot", "global"]
-    assert route_tweet(inp("critical infrastructure", news_type="apac")) == ["ot", "apac"]
+def test_ot_keyword_sends_to_ot_and_ALSO_to_the_feed_topic() -> None:
+    """Perilaku asli: `send_alert_ot(...)` lalu `send_alert(...)` tetap jalan -- topik "umum"-nya
+    sekarang `feed_twitter` (bukan global/apac)."""
+    assert route_tweet(inp("Attack on critical infrastructure")) == ["ot", "feed_twitter"]
 
 
 @pytest.mark.parametrize(
-    ("news_type", "group", "msg", "expected"),
-    [
-        ("global", [], "halo", "global"),
-        ("global", ["apt41"], "halo", "apt"),  # ada grup -> kanal APT
-        ("apac", [], "halo", "apac"),
-        ("apac", ["apt41"], "halo", "apac"),  # apac menang atas grup
-        ("apac", [], "Indonesia diserang", "apac_indo"),
-    ],
+    "msg",
+    ["halo", "Indonesia diserang", "APT41 campaign targets Japan", "🇮🇩 breaking"],
 )
-def test_generic_topic_by_news_type_and_group(news_type, group, msg, expected) -> None:
-    assert route_tweet(inp(msg, news_type=news_type, mentioned_group=group)) == [expected]
+def test_tweet_umum_selalu_ke_feed_twitter_tidak_lagi_global_apac_apt(msg: str) -> None:
+    """Dulu dibagi global/apac/apac_indo/apt (thread bersama alert artikel); sekarang satu thread
+    khusus Twitter, apa pun negara/grup yang disebut."""
+    assert route_tweet(inp(msg)) == ["feed_twitter"]
+
+
+def test_kategori_khusus_tidak_ikut_pindah_ke_feed_twitter() -> None:
+    cases = {
+        "zero_day": ["zero_day"],
+        "databreach": ["data_breach"],
+        "report": ["vendor_report"],
+        "ot": ["ot"],
+        "tech": ["tech_stack"],
+        "cve": ["tech_stack_unrelated"],
+    }
+    flags = {
+        "zero_day": {"zero_day_list": ["x"]},
+        "databreach": {"databreach_list": ["x"]},
+        "report": {"report_status": True},
+        "ot": {"ot_status": True},
+        "tech": {"related_tech_status": True},
+        "cve": {"cve_list": ["CVE-2026-1"]},
+    }
+    for name, expected in cases.items():
+        got = route_tweet(inp(**flags[name]))
+        assert got == expected, name
+        assert "feed_twitter" not in got, name

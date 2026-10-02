@@ -21,17 +21,26 @@ Bandingkan sama script lama:
   Di-set match limit ASLI GitHub Search API (30/menit terautentikasi,
   BEDA dari REST biasa 5000/jam) -- lebih ketat dari limit scraper GitHub
   lain (`blackorbird.py` dkk, yang cuma mukul endpoint REST biasa).
-- Telegram alert (`send_alert_poc`) -- di luar scope scraper.
+- Telegram alert (`send_alert_poc`): SEKARANG ada (2026-10-02), sebagai `NoticeItem` topik `github_poc`
+  yang menyertai `CvePocItem` -- HANYA dari pencarian broad (legacy: cuma fase 1 yang mengirim; fase 2
+  menulis DB saja). Beda dari legacy, sengaja: (1) sekali per repo -- alert "UPDATED CVE POC" (tiap SHA
+  baru) dihapus; (2) hanya repo yang dibuat <= `_ALERT_MAX_AGE` (3 hari) -- tanpa ini deploy ke DB yang
+  sudah berisi (dedup `NoticeItem` baru, repo lama belum "seen") membanjiri channel dengan PoC lama;
+  (3) semua teks dari luar di-`html.escape` (legacy: satu `<` di deskripsi repo membuat Telegram menolak
+  pesan). Sink `NoticeItem` tidak menelan kegagalan: kirim gagal -> item di-retry run berikutnya,
+  sementara `CvePocItem`-nya tetap tersimpan.
 """
 
 from __future__ import annotations
 
+import html
 import re
 from collections.abc import Iterator
-from datetime import timedelta
+from datetime import datetime, timedelta
+from typing import Any
 
 from cti_scraper.base import BaseScraper, ScrapeContext, ScraperMeta
-from cti_scraper.items import CvePocItem
+from cti_scraper.items import CvePocItem, NoticeItem
 from cti_scraper.schedule import spread
 
 from cti_scrapers.feeds._pacing import get_waiting
@@ -52,6 +61,58 @@ _WHITELIST_URLS = frozenset(
         "https://github.com/Taonauz/Anydesk-Exploit-CVE-2025-12654-RCE-Builder",
     }
 )
+
+
+_ALERT_MAX_AGE = timedelta(days=3)
+"""Repo yang dibuat lebih lama dari ini TIDAK di-alert (tetap disimpan ke `cve_tracker.pocs`)."""
+_WIB = timedelta(hours=7)
+_DESC_MAX = 500
+_AFFECTED_MAX = 800
+"""Batas karakter field panjang: `NoticeItem` > 4096 karakter ditolak sink (scraper yang memotong)."""
+
+
+def _clip(text: str, limit: int) -> str:
+    return text if len(text) <= limit else text[: limit - 1] + "…"
+
+
+def _poc_notice(
+    result: dict[str, Any], *, cve_id: str, vendor: str, affected: str, now: datetime
+) -> NoticeItem | None:
+    """Alert Telegram untuk SATU repo PoC baru (port `send_alert_poc` fase 1 legacy), atau `None`
+    kalau repo-nya terlalu lama / `created_at`-nya tidak terbaca (umur tak bisa dinilai)."""
+    try:
+        created = datetime.strptime(result["created_at"], "%Y-%m-%dT%H:%M:%SZ")
+    except (KeyError, TypeError, ValueError):
+        return None
+    if now - created > _ALERT_MAX_AGE:
+        return None
+
+    esc = html.escape
+    repo_url = result["html_url"]
+    name = result["name"]
+    posted = (created + _WIB).strftime("%H:%M:%S %d-%m-%Y")
+    text = (
+        "\n        === <b>NEW CVE POC ON GITHUB</b> ===\n"
+        f"<b>Posted On</b>: {posted}\n"
+        f"<b>CVE</b>: {esc(cve_id.upper())}\n"
+        "<b>Repo</b>:\n"
+        f"    <b>Name</b>: {esc(name)} POC for {esc(vendor)}\n"
+        f"    <b>Owner</b>: {esc(result['owner']['login'])}\n"
+        f"    <b>Description</b>: {esc(_clip(result.get('description') or '', _DESC_MAX))}\n"
+        f"    <b>Language</b>: {esc(result.get('language') or '-')}\n"
+        f"<b>Affected CVE Product Version</b>: {esc(_clip(affected, _AFFECTED_MAX))}\n"
+        f'<b>Github Link</b>: <a href="{esc(repo_url)}">Link</a>'
+    )
+    return NoticeItem(
+        topic="github_poc",
+        text=text,
+        # Awalan "alert:" WAJIB: `CvePocItem.dedup_key()` = "<cve>:<url>" di namespace scraper_id yang
+        # sama -- key identik membuat salah satunya dibuang sebagai duplikat.
+        key=f"alert:{cve_id}:{repo_url}",
+        title=f"{cve_id.upper()} POC: {name}",
+        url=repo_url,
+        posted_on=created.date(),
+    )
 
 
 def _poc_type(name: str, desc: str) -> str:
@@ -95,12 +156,13 @@ class GithubPocMonitor(BaseScraper):
         legacy_script="githubPOCMonitor",
     )
 
-    def fetch(self, ctx: ScrapeContext) -> Iterator[CvePocItem]:
+    def fetch(self, ctx: ScrapeContext) -> Iterator[CvePocItem | NoticeItem]:
         found = 0
         for item in self._broad_search(ctx):
-            if found >= self.meta.max_items:
-                return
-            found += 1
+            if isinstance(item, CvePocItem):  # `NoticeItem` pasangannya tidak ikut dihitung
+                if found >= self.meta.max_items:
+                    return
+                found += 1
             yield item
         for item in self._targeted_search(ctx):
             if found >= self.meta.max_items:
@@ -108,7 +170,7 @@ class GithubPocMonitor(BaseScraper):
             found += 1
             yield item
 
-    def _broad_search(self, ctx: ScrapeContext) -> Iterator[CvePocItem]:
+    def _broad_search(self, ctx: ScrapeContext) -> Iterator[CvePocItem | NoticeItem]:
         tech_list: list[str] = ctx.reference["techstack"]
         if not tech_list:
             return
@@ -153,6 +215,11 @@ class GithubPocMonitor(BaseScraper):
                     source=result["owner"]["login"],
                     poc_type=_poc_type(repo_name, repo_desc),
                 )
+                notice = _poc_notice(
+                    result, cve_id=cve_id, vendor=vendor, affected=affected_prod, now=ctx.now
+                )
+                if notice is not None:
+                    yield notice
 
     def _targeted_search(self, ctx: ScrapeContext) -> Iterator[CvePocItem]:
         for entry in ctx.reference["true_positive_cves"]:

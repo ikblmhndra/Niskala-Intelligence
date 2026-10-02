@@ -171,12 +171,9 @@ class TweetAlertScraper(BaseScraper):
         if not verdict.related_cyber:
             return
 
-        apac = bool(scan.mentioned_countries or scan.mentioned_apac_people)
         topics = route_tweet(
             TweetRoutingInput(
                 msg_data=message,
-                news_type="apac" if apac else "global",
-                mentioned_group=scan.mentioned_group,
                 cve_list=scan.cve_list_title,
                 # Kode lama: `related_tech_status` tweet HANYA dari `checkCVE` (vendor CVE
                 # cocok tech stack), dan cuma dihitung di cabang tanpa grup/negara.

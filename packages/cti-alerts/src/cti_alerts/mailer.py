@@ -30,6 +30,8 @@ sini, bukan `AsyncClient`, konsisten sama itu."""
 
 from __future__ import annotations
 
+import re
+
 import httpx
 import msal
 from cti_core.config import GraphSettings, get_settings
@@ -41,6 +43,14 @@ class GraphAuthError(Exception):
 
 class GraphSendError(Exception):
     """Graph API nolak permintaan kirim/draft email."""
+
+
+def split_addresses(raw: str) -> list[str]:
+    """Daftar alamat email dari satu string env (`GRAPH__CC`). Pemisah koma ATAU titik koma
+    (`;` = format Outlook; tanpa ini `a@x.com;b@x.com` terkirim sebagai SATU alamat rusak dan
+    Graph menolak pembuatan draft). Spasi/baris baru di sekitarnya diabaikan, entri kosong
+    dibuang."""
+    return [addr.strip() for addr in re.split(r"[;,]", raw) if addr.strip()]
 
 
 def create_graph_draft(
@@ -63,11 +73,7 @@ def create_graph_draft(
             f"Gagal dapetin Azure access token: {resp.get('error_description', resp)}"
         )
 
-    cc_list = [
-        {"emailAddress": {"address": addr.strip()}}
-        for addr in settings.cc.split(",")
-        if addr.strip()
-    ]
+    cc_list = [{"emailAddress": {"address": addr}} for addr in split_addresses(settings.cc)]
     payload = {
         "subject": subject,
         "body": {"contentType": "html", "content": html_content},

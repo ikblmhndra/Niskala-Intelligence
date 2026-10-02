@@ -90,7 +90,7 @@ def test_an_api_error_is_a_visible_parse_error_not_silence() -> None:
 # --- filter & pesan --------------------------------------------------------------------
 
 
-def test_a_plain_cyber_tweet_becomes_a_global_alert_with_wib_time_and_clean_text() -> None:
+def test_a_plain_cyber_tweet_becomes_a_feed_twitter_alert_with_wib_time_and_clean_text() -> None:
     t = tweet(1, "New backdoor found https://t.co/abc123 in the wild\nsecond line <b>x</b>")
     t["entities"] = {
         "urls": [
@@ -101,7 +101,7 @@ def test_a_plain_cyber_tweet_becomes_a_global_alert_with_wib_time_and_clean_text
 
     [n] = run(TweetAlerts1h, Api([t]))
 
-    assert (n.topic, n.key) == ("global", "1:global")
+    assert (n.topic, n.key) == ("feed_twitter", "1:feed_twitter")
     assert "=== <b>NEW TWEET FROM BLACKORBIRD</b> ===" in n.text
     assert "New backdoor found   in the wild second line &lt;b&gt;x&lt;/b&gt;" in n.text
     assert "<b>Posted On</b> : 17:00:00 on 2026-09-26" in n.text  # 10:00 UTC + 7
@@ -172,14 +172,20 @@ def test_topic_follows_the_signals_in_the_tweet() -> None:
 
     topics = {n.key.split(":")[0]: n.topic for n in run(TweetAlerts1h, Api(tweets))}
 
-    assert topics == {"1": "zero_day", "2": "tech_stack_unrelated", "3": "apt", "4": "apac_indo"}
+    # tweet 3 (grup APT) dan 4 (Indonesia) dulu ke `apt`/`apac_indo`; kini tweet umum = satu feed.
+    assert topics == {
+        "1": "zero_day",
+        "2": "tech_stack_unrelated",
+        "3": "feed_twitter",
+        "4": "feed_twitter",
+    }
 
 
 def test_a_tweet_routed_to_two_topics_becomes_two_notices_with_distinct_keys() -> None:
     [a, b] = run(TweetAlerts1h, Api([tweet(1, "Attack on critical infrastructure today")]))
 
-    assert (a.topic, b.topic) == ("ot", "global")
-    assert (a.key, b.key) == ("1:ot", "1:global")
+    assert (a.topic, b.topic) == ("ot", "feed_twitter")
+    assert (a.key, b.key) == ("1:ot", "1:feed_twitter")
 
 
 def test_a_cve_related_to_the_tech_stack_goes_to_tech_stack(
@@ -207,7 +213,7 @@ def test_a_failing_llm_skips_only_that_tweet_so_it_is_retried_next_run(
 
     items = run(TweetAlerts1h, Api([tweet(1, "boom"), tweet(2, "sehat")]))
 
-    assert [i.key for i in items] == ["2:global"]
+    assert [i.key for i in items] == ["2:feed_twitter"]
 
 
 def test_exhausted_llm_quota_stops_the_run(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -224,9 +230,9 @@ def test_notices_come_oldest_first_and_respect_the_per_run_cap() -> None:
     tweets = [tweet(n, f"tweet {n}") for n in (30, 10, 20)]
 
     assert [i.key for i in run(TweetAlerts1h, Api(tweets))] == [
-        "10:global",
-        "20:global",
-        "30:global",
+        "10:feed_twitter",
+        "20:feed_twitter",
+        "30:feed_twitter",
     ]
     many = [tweet(n, f"tweet {n}") for n in range(1, 100)]
     assert len(run(TweetAlerts1h, Api(many))) == TweetAlerts1h.meta.max_items == 40
@@ -301,7 +307,7 @@ def test_a_429_on_page_two_waits_and_retries_instead_of_failing_the_whole_run(no
 
     items = run(TweetAlerts1h, api)
 
-    assert [i.key for i in items] == ["1:global", "2:global"]  # kedua halaman terbaca
+    assert [i.key for i in items] == ["1:feed_twitter", "2:feed_twitter"]  # kedua halaman terbaca
     assert api.calls == ["p1", "p2", "p2", "p2"]
     assert no_sleep == [6.0, 6.0]
 

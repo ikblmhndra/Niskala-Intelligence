@@ -24,14 +24,26 @@ EXPECTED = {
                         "best_practice"},
     "sink/alert lain": {"darkweb", "pir", "scraper_health"},
     "Fase 10.E": {"notd", "debug", "library_advisory", "logbook", "top_ta"},
+    "github PoC (2026-10-02)": {"github_poc"},
+    "feed Twitter (2026-10-02)": {"feed_twitter"},
 }  # fmt: skip
 
 
-def env_topics() -> set[str]:
-    for line in (ROOT / ".env.example").read_text().splitlines():
+def _topics_in(filename: str) -> set[str]:
+    for line in (ROOT / filename).read_text().splitlines():
         if line.startswith("TELEGRAM__THREAD_IDS="):
             return set(json.loads(line.split("=", 1)[1]))
-    raise AssertionError("TELEGRAM__THREAD_IDS tidak ada di .env.example")
+    raise AssertionError(f"TELEGRAM__THREAD_IDS tidak ada di {filename}")
+
+
+def env_topics() -> set[str]:
+    return _topics_in(".env.example")
+
+
+def test_prod_template_declares_exactly_the_same_topics_as_env_example() -> None:
+    """Template produksi yang ketinggalan satu topik = `UnknownAlertTopic` di hari pertama prod
+    (terjadi: `github_poc` ditambahkan ke satu file saja akan lolos tanpa test ini)."""
+    assert _topics_in(".env.prod.template") == env_topics()
 
 
 def test_every_expected_topic_is_declared_in_env_example() -> None:
@@ -67,10 +79,8 @@ def test_topic_literals_passed_to_alert_functions_are_all_declared() -> None:
 
 
 def test_topics_returned_by_tweet_routing_are_declared() -> None:
-    source = inspect.getsource(tweet_routing.route_tweet) + inspect.getsource(
-        tweet_routing._generic_topic
-    )
-    tokens = {t for t in re.findall(r'"([a-z_]+)"', source)}
+    source = inspect.getsource(tweet_routing.route_tweet)
+    tokens = {t for t in re.findall(r'"([a-z_]+)"', source)} | {tweet_routing.FEED_TOPIC}
 
     assert tokens - env_topics() == set()
-    assert {"zero_day", "data_breach_indo", "vendor_report", "apac_indo"} <= tokens
+    assert {"zero_day", "data_breach_indo", "vendor_report", "feed_twitter"} <= tokens

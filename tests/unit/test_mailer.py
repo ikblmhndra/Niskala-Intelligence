@@ -8,7 +8,12 @@ from __future__ import annotations
 from unittest.mock import MagicMock, patch
 
 import pytest
-from cti_alerts.mailer import GraphAuthError, GraphSendError, create_graph_draft
+from cti_alerts.mailer import (
+    GraphAuthError,
+    GraphSendError,
+    create_graph_draft,
+    split_addresses,
+)
 from cti_core.config import GraphSettings
 
 _SETTINGS = GraphSettings(
@@ -89,3 +94,46 @@ def test_empty_cc_produces_empty_recipient_list() -> None:
         create_graph_draft("<html/>", "subject", settings=settings)
 
     assert mock_post.call_args.kwargs["json"]["ccRecipients"] == []
+
+
+@pytest.mark.parametrize(
+    ("raw", "expected"),
+    [
+        ("a@x.com", ["a@x.com"]),
+        ("a@x.com,b@x.com", ["a@x.com", "b@x.com"]),
+        ("a@x.com, b@x.com", ["a@x.com", "b@x.com"]),
+        ("a@x.com;b@x.com", ["a@x.com", "b@x.com"]),  # format Outlook
+        ("a@x.com; b@x.com ; c@x.com", ["a@x.com", "b@x.com", "c@x.com"]),
+        ("a@x.com, b@x.com; c@x.com", ["a@x.com", "b@x.com", "c@x.com"]),  # campuran
+        ("a@x.com;", ["a@x.com"]),  # pemisah di ujung
+        (" ;, a@x.com ,; ", ["a@x.com"]),
+        ("", []),
+        ("   ", []),
+    ],
+)
+def test_split_addresses_accepts_comma_and_semicolon(raw: str, expected: list[str]) -> None:
+    assert split_addresses(raw) == expected
+
+
+def test_semicolon_separated_cc_becomes_separate_recipients() -> None:
+    settings = GraphSettings(
+        tenant_id="t",
+        client_id="c",
+        client_secret="s",
+        sender="cti@example.com",
+        cc="user@domain.com;user2@domain.com",
+    )
+    mock_resp = MagicMock(status_code=201)
+    mock_resp.json.return_value = {"id": "msg-1"}
+    with (
+        patch(
+            "cti_alerts.mailer.msal.ConfidentialClientApplication", return_value=_mock_msal_app()
+        ),
+        patch("cti_alerts.mailer.httpx.post", return_value=mock_resp) as mock_post,
+    ):
+        create_graph_draft("<html/>", "subject", settings=settings)
+
+    assert mock_post.call_args.kwargs["json"]["ccRecipients"] == [
+        {"emailAddress": {"address": "user@domain.com"}},
+        {"emailAddress": {"address": "user2@domain.com"}},
+    ]
