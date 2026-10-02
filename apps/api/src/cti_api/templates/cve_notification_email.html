@@ -1,19 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CVE Notification</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
+{% extends "_base_email.html" %}
+{% block title %}CVE Notification — {{ platform_name }}{% endblock %}
+{% block styles %}
+        body { max-width: 800px; margin: 0 auto; }
         .email-container {
             background-color: #ffffff;
             border-radius: 8px;
@@ -21,19 +9,19 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         .header {
-            border-bottom: 3px solid #d32f2f;
+            border-bottom: 3px solid #d0002f;
             padding-bottom: 15px;
             margin-bottom: 25px;
         }
         .subject {
             font-size: 18px;
             font-weight: bold;
-            color: #d32f2f;
+            color: #d0002f;
             margin-bottom: 15px;
         }
         .metadata {
             font-size: 14px;
-            color: #666;
+            color: #6b4452;
             margin-bottom: 20px;
         }
         .metadata-row {
@@ -48,8 +36,8 @@
         .section-title {
             font-size: 16px;
             font-weight: bold;
-            color: #1976d2;
-            border-bottom: 2px solid #e3f2fd;
+            color: #d0002f;
+            border-bottom: 2px solid #dcebf2;
             padding-bottom: 8px;
             margin-bottom: 15px;
         }
@@ -62,9 +50,9 @@
             text-transform: uppercase;
         }
         .severity-critical { background-color: #b71c1c; color: white; }
-        .severity-high     { background-color: #d32f2f; color: white; }
+        .severity-high     { background-color: #c62828; color: white; }
         .severity-medium   { background-color: #f57c00; color: white; }
-        .severity-low      { background-color: #fbc02d; color: #333;  }
+        .severity-low      { background-color: #fbc02d; color: #430a23;  }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -72,7 +60,7 @@
             font-size: 14px;
         }
         th {
-            background-color: #1976d2;
+            background-color: #d0002f;
             color: white;
             padding: 12px;
             text-align: left;
@@ -80,12 +68,12 @@
         }
         td {
             padding: 12px;
-            border-bottom: 1px solid #e0e0e0;
+            border-bottom: 1px solid #e8dacb;
         }
-        tr:hover { background-color: #f5f5f5; }
+        tr:hover { background-color: #f2e8dd; }
         .info-box {
-            background-color: #e3f2fd;
-            border-left: 4px solid #1976d2;
+            background-color: #e6f0f5;
+            border-left: 4px solid #256a8a;
             padding: 15px;
             margin: 15px 0;
             border-radius: 4px;
@@ -99,7 +87,7 @@
         }
         .alert-box {
             background-color: #ffebee;
-            border-left: 4px solid #d32f2f;
+            border-left: 4px solid #c62828;
             padding: 15px;
             margin: 15px 0;
             border-radius: 4px;
@@ -110,14 +98,14 @@
         .footer {
             margin-top: 30px;
             padding-top: 20px;
-            border-top: 2px solid #e0e0e0;
+            border-top: 2px solid #e8dacb;
             font-size: 14px;
-            color: #666;
+            color: #6b4452;
         }
         .signature { margin-top: 25px; }
-        .signature-name { font-weight: bold; color: #333; }
+        .signature-name { font-weight: bold; color: #430a23; }
         .contact-info {
-            background-color: #f5f5f5;
+            background-color: #f2e8dd;
             padding: 15px;
             border-radius: 4px;
             margin: 15px 0;
@@ -126,28 +114,36 @@
         .button {
             display: inline-block;
             padding: 10px 20px;
-            background-color: #1976d2;
+            background-color: #d0002f;
             color: white;
             text-decoration: none;
             border-radius: 4px;
             font-weight: 600;
             margin: 10px 10px 10px 0;
         }
-        .button:hover { background-color: #1565c0; }
-        a { color: #1976d2; text-decoration: none; }
+        .button:hover { background-color: #256a8a; }
+        a { color: #d0002f; text-decoration: none; }
         a:hover { text-decoration: underline; }
         .classification {
             text-align: center;
             font-size: 12px;
-            color: #999;
+            color: #6b4452;
             margin-top: 20px;
             padding-top: 15px;
-            border-top: 1px solid #e0e0e0;
+            border-top: 1px solid #e8dacb;
         }
-    </style>
-</head>
-<body>
+            .brand-bar {
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #d0002f;
+            margin-bottom: 18px;
+        }
+{% endblock %}
+{% block content %}
     <div class="email-container">
+        <div class="brand-bar">{{ platform_name }}</div>
         <div class="greeting">
             Hi Owner,
         </div>
@@ -264,5 +260,4 @@
             <strong>Tracking ID:</strong> {{ tracking_id }} | <strong>Classification:</strong> {{ classification }}
         </div>
     </div>
-</body>
-</html>
+{% endblock %}
