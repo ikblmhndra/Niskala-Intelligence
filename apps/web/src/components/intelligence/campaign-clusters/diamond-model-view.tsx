@@ -53,10 +53,10 @@ export function DiamondModelView({ clusterName, model }: { clusterName: string; 
   const vic = model.victim;
   const meta = model.meta;
 
-  const advItems = [...adv.threat_actors.slice(0, 3), ...adv.sponsoring_nations.map((n) => `🌐 ${n}`), ...(adv.sophistication ? [`Soph: ${adv.sophistication}`] : [])];
+  const advItems = [...adv.threat_actors.slice(0, 3), ...adv.sponsoring_nations.map((n) => `${n}`), ...(adv.sophistication ? [`Soph: ${adv.sophistication}`] : [])];
   const allInfra = [...inf.domains, ...inf.ips, ...inf.urls];
   const allTechs = Object.values(cap.attack_techniques).flat();
-  const capItems = [...allTechs.slice(0, 3), ...cap.malware.slice(0, 2).map((m) => `🦠 ${m}`), ...cap.tools.slice(0, 1).map((t) => `🔧 ${t}`), ...cap.cve_exploited.slice(0, 2)];
+  const capItems = [...allTechs.slice(0, 3), ...cap.malware.slice(0, 2).map((m) => `${m}`), ...cap.tools.slice(0, 1).map((t) => `🔧 ${t}`), ...cap.cve_exploited.slice(0, 2)];
   const vicItems = [...vic.industries, ...vic.countries, ...vic.organization_types.slice(0, 2)];
 
   const confColor = meta.confidence === "high" ? "var(--success)" : meta.confidence === "medium" ? "var(--severity-medium)" : "var(--muted-foreground)";

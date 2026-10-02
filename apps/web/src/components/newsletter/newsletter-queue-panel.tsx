@@ -1,5 +1,6 @@
 "use client";
 
+import { TriangleAlertIcon, XIcon } from "lucide-react";
 import type { components } from "@/lib/api/schema";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -90,7 +91,7 @@ export function NewsletterQueuePanel({ queue, paywallHints, onAssign, onRemove, 
                         className="border-warning/40 bg-warning/10 text-xs text-warning"
                         title="Paywall detected — summary will use metadata"
                       >
-                        ⚠ Paywall
+                        <TriangleAlertIcon aria-hidden /> Paywall
                       </Badge>
                     )}
                   </div>
@@ -116,7 +117,7 @@ export function NewsletterQueuePanel({ queue, paywallHints, onAssign, onRemove, 
                     title="Remove from queue"
                     className="font-mono text-xs text-muted-foreground transition-colors hover:text-destructive"
                   >
-                    ✕
+                    <XIcon aria-hidden />
                   </button>
                 </div>
               </div>

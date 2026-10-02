@@ -1,5 +1,6 @@
 "use client";
 
+import { LinkIcon, PencilIcon, RefreshCwIcon, XIcon } from "lucide-react";
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -163,7 +164,7 @@ export function PackagesPanel({ active }: { active: boolean }) {
           ⬆ Import Lockfile
         </Button>
         <Button size="sm" variant="outline" disabled={scanning !== null} onClick={() => void scanAll()}>
-          {scanning === "all" ? "⏳ Scanning…" : "⟳ Scan All"}
+          {scanning === "all" ? "Scanning…" : "Scan All"}
         </Button>
       </div>
 
@@ -234,7 +235,7 @@ export function PackagesPanel({ active }: { active: boolean }) {
                   <TableCell>
                     <div className="flex items-center gap-1">
                       <Button size="sm" variant="outline" className="h-6 px-1.5 text-xs" onClick={() => setEditTarget(p)}>
-                        ✎
+                        <PencilIcon aria-hidden />
                       </Button>
                       <Button
                         size="sm"
@@ -243,7 +244,7 @@ export function PackagesPanel({ active }: { active: boolean }) {
                         disabled={scanning === p.id}
                         onClick={() => void scanOne(p.id)}
                       >
-                        ⟳
+                        <RefreshCwIcon aria-hidden />
                       </Button>
                       <Button
                         size="sm"
@@ -252,7 +253,7 @@ export function PackagesPanel({ active }: { active: boolean }) {
                         disabled={resolving === p.id}
                         onClick={() => void resolveDeps(p.id)}
                       >
-                        ⛓
+                        <LinkIcon aria-hidden />
                       </Button>
                       <Button
                         size="sm"
@@ -260,7 +261,7 @@ export function PackagesPanel({ active }: { active: boolean }) {
                         className="h-6 px-1.5 text-xs"
                         onClick={() => setRemoveTarget({ id: p.id, name: p.name })}
                       >
-                        ✕
+                        <XIcon aria-hidden />
                       </Button>
                     </div>
                   </TableCell>

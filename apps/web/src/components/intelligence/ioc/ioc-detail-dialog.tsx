@@ -1,5 +1,6 @@
 "use client";
 
+import { Trash2Icon, XIcon, ZapIcon } from "lucide-react";
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -148,13 +149,13 @@ export function IocDetailDialog({ target, onClose, onDeleted }: IocDetailDialogP
                   className="ml-auto h-6 border-destructive/40 px-2 text-xs text-destructive"
                   onClick={() => setConfirmDelete(true)}
                 >
-                  🗑 Delete IOC
+                  <Trash2Icon aria-hidden /> Delete IOC
                 </Button>
               </div>
 
               {ioc.recommended_action && (
                 <div className="mb-3.5 rounded-2xl border border-border bg-surface shadow-sm2 px-2.5 py-1.5 text-xs text-foreground">
-                  ⚡ {ioc.recommended_action}
+                  <ZapIcon aria-hidden /> {ioc.recommended_action}
                 </div>
               )}
 
@@ -326,7 +327,7 @@ function IocTaLinksSection({
                   )}
                   {isManual && (
                     <button type="button" onClick={() => onRemove(ta.name)} className="ml-2 text-[13px] text-muted-foreground hover:text-destructive">
-                      ✕
+                      <XIcon aria-hidden />
                     </button>
                   )}
                   <span className="ml-auto text-xs text-muted-foreground">

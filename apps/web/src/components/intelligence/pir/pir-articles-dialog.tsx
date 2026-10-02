@@ -1,5 +1,6 @@
 "use client";
 
+import { CheckIcon, StickyNoteIcon } from "lucide-react";
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -81,11 +82,11 @@ export function PirArticlesDialog({ pir, onClose }: PirArticlesDialogProps) {
                   <div className="flex shrink-0 items-center gap-1">
                     {a.has_note && (
                       <Badge variant="outline" className="text-success text-xs">
-                        ✓ NOTED
+                        <CheckIcon aria-hidden /> NOTED
                       </Badge>
                     )}
                     <Button size="sm" variant="outline" className="h-6 px-1.5 text-xs" onClick={() => setNoteArticle(a)}>
-                      📝 Note
+                      <StickyNoteIcon aria-hidden /> Note
                     </Button>
                   </div>
                 </div>

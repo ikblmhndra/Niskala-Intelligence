@@ -1,5 +1,6 @@
 "use client";
 
+import { RefreshCwIcon, SaveIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -100,7 +101,7 @@ function MindmapEditorForm({
         body: { syntax },
       });
       if (error) throw new Error(JSON.stringify(error));
-      setStatus("✓ Saved");
+      setStatus("Saved");
       await queryClient.invalidateQueries({ queryKey: ["mindmap", "doc", featureType, docId] });
     } catch (e) {
       setStatus(`Save error: ${(e as Error).message}`);
@@ -120,7 +121,7 @@ function MindmapEditorForm({
       if (error) throw new Error(JSON.stringify(error));
       const d = data as unknown as MindmapDocResponse;
       setSyntax(d.display_syntax || "");
-      setStatus("✓ Regenerated");
+      setStatus("Regenerated");
       await queryClient.invalidateQueries({ queryKey: ["mindmap", "doc", featureType, docId] });
     } catch (e) {
       setStatus(`Regen error: ${(e as Error).message}`);
@@ -173,10 +174,10 @@ function MindmapEditorForm({
 
         <div className="ml-auto flex gap-1.5">
           <Button size="sm" variant="outline" className="h-7 px-2.5 text-xs" disabled={regenerating} onClick={() => void regenerate()}>
-            ⟳ Regenerate
+            <RefreshCwIcon aria-hidden /> Regenerate
           </Button>
           <Button size="sm" className="h-7 px-2.5 text-xs" disabled={saving} onClick={() => void save()}>
-            💾 Save
+            <SaveIcon aria-hidden /> Save
           </Button>
         </div>
       </div>

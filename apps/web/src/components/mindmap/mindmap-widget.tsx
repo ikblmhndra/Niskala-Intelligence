@@ -1,5 +1,6 @@
 "use client";
 
+import { PencilIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
@@ -63,7 +64,7 @@ export function MindmapWidget({ featureType, docId, title }: MindmapWidgetProps)
           onClick={() => setEditorOpen(true)}
           className="rounded-full border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground"
         >
-          ✎ Edit Mindmap
+          <PencilIcon aria-hidden /> Edit Mindmap
         </button>
       </div>
 

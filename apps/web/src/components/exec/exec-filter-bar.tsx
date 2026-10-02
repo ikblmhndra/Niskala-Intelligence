@@ -1,6 +1,6 @@
 "use client";
 
-import { DownloadIcon } from "lucide-react";
+import { CheckIcon, DownloadIcon, SaveIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -114,18 +114,18 @@ export function ExecFilterBar({
       <div className="ml-auto flex items-end gap-2">
         {watchlistSaved ? (
           <Button size="sm" variant="outline" className="text-success" onClick={onClearWatchlist}>
-            ✓ View saved
+            <CheckIcon aria-hidden /> View saved
           </Button>
         ) : (
           <Button size="sm" variant="outline" onClick={onSaveWatchlist}>
-            💾 Save view
+            <SaveIcon aria-hidden /> Save view
           </Button>
         )}
         <Button size="sm" variant="outline" disabled={exportDisabled} onClick={onExportCsv}>
           <DownloadIcon /> Export CSV
         </Button>
         <Button size="sm" disabled={briefPending} onClick={onGenerateBrief}>
-          {briefPending ? "⟳ Generating…" : "✦ Generate Brief"}
+          {briefPending ? "Generating…" : "Generate Brief"}
         </Button>
       </div>
     </div>

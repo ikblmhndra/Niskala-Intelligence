@@ -246,7 +246,7 @@ function ScraperDetailForm({
 
       <div className="flex flex-wrap gap-2 border-y border-border py-3">
         <Button size="sm" variant="outline" disabled={!isAdmin} onClick={() => triggerMutation.mutate()}>
-          {triggerMutation.isPending ? "Triggering…" : "⟳ Trigger"}
+          {triggerMutation.isPending ? "Triggering…" : "Trigger"}
         </Button>
         <Button size="sm" variant="outline" disabled={!isAdmin} onClick={() => dryRunMutation.mutate()}>
           {dryRunMutation.isPending ? "Running…" : "▷ Dry-run"}

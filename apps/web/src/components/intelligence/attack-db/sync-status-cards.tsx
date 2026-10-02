@@ -94,7 +94,7 @@ export function SyncStatusCards() {
       <div className="mb-2 flex items-center justify-between">
         <p className="font-mono text-xs tracking-[0.08em] text-muted-foreground uppercase">ATT&amp;CK Sync Status</p>
         <Button size="sm" variant="outline" disabled={syncingAll} onClick={() => void syncAll()}>
-          {syncingAll ? "⟳ Syncing…" : "⟳ Sync All Domains"}
+          {syncingAll ? "Syncing…" : "Sync All Domains"}
         </Button>
       </div>
       {query.isPending && <p className="text-xs text-muted-foreground">Loading sync status…</p>}
@@ -121,7 +121,7 @@ export function SyncStatusCards() {
               <div className="mb-1 font-mono text-xs text-warning">
                 {d.phase === "downloading" && d.bytes_downloaded
                   ? `↓ downloading ${(d.bytes_downloaded / 1024 / 1024).toFixed(1)}MB${d.bytes_total ? ` / ${(d.bytes_total / 1024 / 1024).toFixed(0)}MB` : ""} ${d.download_pct ?? ""}`
-                  : `⟳ ${d.phase}`}
+                  : `${d.phase}`}
               </div>
             )}
             <div className="font-mono text-xs leading-relaxed text-muted-foreground">

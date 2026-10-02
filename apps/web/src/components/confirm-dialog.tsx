@@ -1,5 +1,6 @@
 "use client";
 
+import { TriangleAlertIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -48,7 +49,7 @@ export function ConfirmDialog({
         </DialogHeader>
         {warning && (
           <p className="rounded-md border border-warning/40 bg-warning/10 px-3 py-2 font-mono text-xs text-warning">
-            ⚠ {warning}
+            <TriangleAlertIcon aria-hidden /> {warning}
           </p>
         )}
         <DialogFooter>

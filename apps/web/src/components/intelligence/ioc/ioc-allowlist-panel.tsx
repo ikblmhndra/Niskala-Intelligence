@@ -1,5 +1,6 @@
 "use client";
 
+import { XIcon } from "lucide-react";
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -131,7 +132,7 @@ export function IocAllowlistPanel() {
                 <TableCell className="font-mono text-xs text-muted-foreground">{e.added_at.slice(0, 10)}</TableCell>
                 <TableCell className="text-center">
                   <button type="button" onClick={() => void remove(e.id)} className="text-xs text-muted-foreground hover:text-destructive">
-                    ✕
+                    <XIcon aria-hidden />
                   </button>
                 </TableCell>
               </TableRow>

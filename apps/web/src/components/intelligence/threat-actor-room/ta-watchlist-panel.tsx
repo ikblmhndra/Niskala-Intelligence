@@ -1,5 +1,6 @@
 "use client";
 
+import { EyeIcon, XIcon } from "lucide-react";
 import { useState } from "react";
 import { useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -22,9 +23,9 @@ type TAWatchlistListResponse = components["schemas"]["TAWatchlistListResponse"];
 
 const PAGE_SIZE_OPTIONS = [25, 50, 100];
 const DORMANCY_STYLE: Record<string, { icon: string; color: string }> = {
-  ACTIVE: { icon: "🟢", color: "text-success" },
-  DORMANT: { icon: "🟡", color: "text-warning" },
-  RESURGENT: { icon: "🔴", color: "text-destructive" },
+  ACTIVE: { icon: "●", color: "text-success" },
+  DORMANT: { icon: "●", color: "text-warning" },
+  RESURGENT: { icon: "●", color: "text-destructive" },
 };
 
 /** Port bagian "TA WATCHLIST MANAGEMENT" (`ta.js:365-825`) -- card grid
@@ -212,7 +213,7 @@ export function TaWatchlistPanel() {
         onOpenChange={(open) => !open && setUnwatchTarget(null)}
         title="Remove from Watchlist"
         description={unwatchTarget ? `Remove "${unwatchTarget}" from the watchlist?` : undefined}
-        confirmLabel="✕ Remove"
+        confirmLabel="Remove"
         onConfirm={() => unwatchTarget && void unwatch(unwatchTarget)}
       />
 
@@ -256,20 +257,20 @@ function WatchlistCard({
       <div className="mb-2 flex items-center gap-2 font-mono text-xs text-muted-foreground">
         <span>Added: {item.added_date || "—"}</span>
         <span className={`rounded-full border px-1.5 py-0.5 ${hasProfile ? "border-success/40 bg-success/10 text-success" : "border-border text-muted-foreground"}`}>
-          {hasProfile ? "✓ PROFILE" : "NO PROFILE"}
+          {hasProfile ? "PROFILE" : "NO PROFILE"}
         </span>
       </div>
       <div className="mb-2 flex flex-wrap gap-1.5">
         <Button size="sm" variant="outline" className="h-6 px-2 text-xs" disabled={generating} onClick={onGenerate}>
-          {generating ? "⏳ Generating…" : "⚡ AI Generate"}
+          {generating ? "Generating…" : "AI Generate"}
         </Button>
         {hasProfile && (
           <Button size="sm" variant="outline" className="h-6 px-2 text-xs" onClick={onViewProfile}>
-            👁 View Profile
+            <EyeIcon aria-hidden /> View Profile
           </Button>
         )}
         <Button size="sm" variant="outline" className="ml-auto h-6 px-2 text-xs text-destructive" onClick={onUnwatch}>
-          ✕
+          <XIcon aria-hidden />
         </Button>
       </div>
       <button
@@ -278,7 +279,7 @@ function WatchlistCard({
         onClick={onOpenArticles}
         className="mb-2 w-full rounded-full border border-border bg-surface px-2 py-1 font-mono text-xs text-foreground disabled:opacity-40"
       >
-        {articleTotal > 0 ? `📰 ${articleTotal} Article${articleTotal !== 1 ? "s" : ""}` : "📰 No Articles"}
+        {articleTotal > 0 ? `${articleTotal} Article${articleTotal !== 1 ? "s" : ""}` : "No Articles"}
       </button>
       <MindmapWidget featureType="threat_actor" docId={item.name} title={item.name} />
     </div>

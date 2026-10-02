@@ -113,7 +113,7 @@ export function SimpleClustersPanel() {
           Show single-source
         </label>
         <Button size="sm" onClick={generate} disabled={query.isFetching}>
-          {query.isFetching ? "Clustering…" : "⟳ Generate"}
+          {query.isFetching ? "Clustering…" : "Generate"}
         </Button>
         {query.data && <span className="ml-auto font-mono text-[13px] text-muted-foreground">{clusters.length} news cluster(s) found</span>}
       </div>

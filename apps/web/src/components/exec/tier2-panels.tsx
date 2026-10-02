@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { ZapIcon } from "lucide-react";
 import type { ExecDashboardV2 } from "@/lib/api/loose-types";
 
 function toTitleCase(s: string): string {
@@ -11,7 +12,7 @@ export function SpikeBanner({ d }: { d: ExecDashboardV2 }) {
   return (
     <div className="mb-4 rounded-2xl border border-border bg-surface shadow-sm p-3">
       <div className="mb-2 font-mono text-xs tracking-[0.08em] text-primary uppercase">
-        ⚡ Anomaly Alerts — Sectors with statistically significant activity spikes
+        <ZapIcon aria-hidden /> Anomaly Alerts — Sectors with statistically significant activity spikes
       </div>
       <div className="flex flex-wrap gap-2">
         {d.industry_spikes.map((sp, i) => (
@@ -82,7 +83,7 @@ export function TaVelocity({ d }: { d: ExecDashboardV2 }) {
         const isRising = ta.velocity_pct > 0;
         const isNew = ta.avg_prev === 0;
         const colorClass = isNew ? "text-success" : isRising ? "text-destructive" : "text-muted-foreground";
-        const arrow = isNew ? "★" : isRising ? "▲" : "▼";
+        const arrow = isNew ? "" : isRising ? "▲" : "▼";
         const label = isNew ? "NEW" : `${isRising ? "+" : ""}${ta.velocity_pct}%`;
         return (
           <div key={ta.actor} className="flex items-center gap-2.5">

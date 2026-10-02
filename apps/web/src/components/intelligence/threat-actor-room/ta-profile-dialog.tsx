@@ -12,9 +12,9 @@ import { MindmapWidget } from "@/components/mindmap/mindmap-widget";
 import type { TaExploitedVuln, TaKnownMalware, TaProfile, TaProfileResponse, TaTimeline } from "@/lib/api/loose-types";
 
 const DORMANCY_STYLE: Record<string, { icon: string; color: string }> = {
-  ACTIVE: { icon: "🟢", color: "text-success" },
-  DORMANT: { icon: "🟡", color: "text-warning" },
-  RESURGENT: { icon: "🔴", color: "text-destructive" },
+  ACTIVE: { icon: "●", color: "text-success" },
+  DORMANT: { icon: "●", color: "text-warning" },
+  RESURGENT: { icon: "●", color: "text-destructive" },
 };
 
 function Tag({ children }: { children: React.ReactNode }) {
@@ -113,7 +113,7 @@ export function TaProfileDialog({ actorName, onClose }: { actorName: string | nu
           <div className="flex flex-wrap items-center gap-2">
             <DialogTitle className="font-mono text-sm">{actorName}</DialogTitle>
             <Button size="sm" variant="outline" className="ml-auto h-6 px-2 text-xs" disabled={regenerating} onClick={() => void regenerate()}>
-              {regenerating ? "⏳ Regenerating…" : "⟳ Regenerate"}
+              {regenerating ? "Regenerating…" : "Regenerate"}
             </Button>
           </div>
           {profile && <MetaChips profile={profile} />}

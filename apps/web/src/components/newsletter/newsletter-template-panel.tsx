@@ -1,5 +1,6 @@
 "use client";
 
+import { PaletteIcon } from "lucide-react";
 import { useState } from "react";
 
 import { Checkbox } from "@/components/ui/checkbox";
@@ -33,7 +34,7 @@ export function NewsletterTemplatePanel({ value, onChange }: Props) {
         onClick={() => setOpen((o) => !o)}
         className="flex w-full items-center gap-2 font-mono text-xs tracking-[0.1em] text-primary uppercase"
       >
-        🎨 Customize Template
+        <PaletteIcon aria-hidden /> Customize Template
         <span className="ml-auto text-xs text-muted-foreground">{open ? "▼ collapse" : "▶ expand"}</span>
       </button>
       {open && (

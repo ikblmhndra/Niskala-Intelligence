@@ -65,7 +65,7 @@ export function GeopoliticalPanel({ days }: { days: number }) {
                       const isInc = a.includes("increased") || a.includes("converging") || a.includes("New threat");
                       return (
                         <div key={i} className={`rounded-md border px-2.5 py-1.5 font-mono text-[13px] text-foreground ${isInc ? "border-destructive/40 bg-destructive/12" : "border-warning/35 bg-warning/10"}`}>
-                          {isInc ? "⚠" : "ℹ"} {a}
+                          {isInc ? "" : ""} {a}
                         </div>
                       );
                     })}

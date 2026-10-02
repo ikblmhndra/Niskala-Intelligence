@@ -85,7 +85,7 @@ export function ScraperItemsPanel({ scraperId }: { scraperId: string }) {
                 </TableCell>
                 <TableCell>
                   <span className={`font-mono text-xs ${it.accepted ? "text-primary" : "text-muted-foreground"}`}>
-                    {it.accepted ? "✓" : "✕"}
+                    {it.accepted ? "" : ""}
                   </span>
                 </TableCell>
                 <TableCell className="font-mono text-xs text-muted-foreground">{it.reason ?? "—"}</TableCell>

@@ -1,5 +1,6 @@
 "use client";
 
+import { ShieldIcon } from "lucide-react";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
@@ -36,7 +37,7 @@ export function D3fendToggle({ ttpId }: { ttpId: string }) {
   return (
     <>
       <Button size="sm" variant="outline" onClick={() => setOpen((o) => !o)}>
-        🛡 Defenses
+        <ShieldIcon aria-hidden /> Defenses
       </Button>
       {open && (
         <div className="mt-1.5 rounded-md border border-border bg-muted/30 p-2">

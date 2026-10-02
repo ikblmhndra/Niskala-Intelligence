@@ -1,5 +1,6 @@
 "use client";
 
+import { ThumbsDownIcon, ThumbsUpIcon } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
@@ -115,7 +116,7 @@ export function FpQueue({ d }: { d: ExecDashboardV2 }) {
                     title="Mark as true positive"
                     onClick={() => void vote(ioc.id, "tp")}
                   >
-                    👍
+                    <ThumbsUpIcon aria-hidden />
                   </Button>
                   <Button
                     size="sm"
@@ -125,7 +126,7 @@ export function FpQueue({ d }: { d: ExecDashboardV2 }) {
                     title="Mark as false positive"
                     onClick={() => void vote(ioc.id, "fp")}
                   >
-                    👎
+                    <ThumbsDownIcon aria-hidden />
                   </Button>
                 </div>
               </TableCell>

@@ -1,5 +1,6 @@
 "use client";
 
+import { LinkIcon } from "lucide-react";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -137,10 +138,10 @@ export function DepsModal({ pkgId, onClose, onResolved }: DepsModalProps) {
 
             <div className="mt-3 flex justify-end gap-2">
               <Button size="sm" variant="outline" disabled={rescanning} onClick={() => void rescan(false)}>
-                ⛓ Re-resolve
+                <LinkIcon aria-hidden /> Re-resolve
               </Button>
               <Button size="sm" variant="outline" disabled={rescanning} onClick={() => void rescan(true)}>
-                ⛓ Re-resolve + scan transitive
+                <LinkIcon aria-hidden /> Re-resolve + scan transitive
               </Button>
             </div>
           </>

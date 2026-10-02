@@ -1,5 +1,6 @@
 "use client";
 
+import { XIcon } from "lucide-react";
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -208,7 +209,7 @@ export function TaGroupsPanel() {
                         onClick={() => setRemoveTarget(g)}
                         className="rounded-full border border-destructive/35 bg-destructive/10 px-1.5 py-0.5 font-mono text-xs text-destructive"
                       >
-                        ✕ REMOVE
+                        <XIcon aria-hidden /> REMOVE
                       </button>
                     </TableCell>
                   </TableRow>
@@ -228,7 +229,7 @@ export function TaGroupsPanel() {
         title="Remove Threat Actor"
         description={removeTarget ? `Remove "${removeTarget.name}" from threat actor tracking?` : undefined}
         warning="This group will be whitelisted and cannot be re-added."
-        confirmLabel="✕ Remove"
+        confirmLabel="Remove"
         onConfirm={() => removeTarget && void removeGroup(removeTarget)}
       />
     </div>

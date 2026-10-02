@@ -127,7 +127,7 @@ export function ArticleModal({ article: a, onOpenChange }: { article: Article | 
 
   function handleQueue() {
     const result = addToQueue(a!);
-    setQueueLabel(result === "already" ? "✓ Already queued" : "✓ Queued");
+    setQueueLabel(result === "already" ? "Already queued" : "Queued");
     setTimeout(() => setQueueLabel("+ Newsletter"), 1500);
   }
 

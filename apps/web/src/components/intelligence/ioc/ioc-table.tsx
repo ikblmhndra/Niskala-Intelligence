@@ -1,5 +1,6 @@
 "use client";
 
+import { ThumbsDownIcon, ThumbsUpIcon } from "lucide-react";
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -280,7 +281,7 @@ export function IocTable({ onSelect }: { onSelect: (target: IocTarget) => void }
                       title="True Positive"
                       className={cn("rounded-full border border-success/35 bg-success/10 px-1.5 py-0.5 text-[13px] text-success", feedbackPending === ioc.id && "opacity-50")}
                     >
-                      👍
+                      <ThumbsUpIcon aria-hidden />
                     </button>
                     <button
                       type="button"
@@ -289,7 +290,7 @@ export function IocTable({ onSelect }: { onSelect: (target: IocTarget) => void }
                       title="False Positive"
                       className={cn("ml-1 rounded-full border border-destructive/35 bg-destructive/10 px-1.5 py-0.5 text-[13px] text-destructive", feedbackPending === ioc.id && "opacity-50")}
                     >
-                      👎
+                      <ThumbsDownIcon aria-hidden />
                     </button>
                   </TableCell>
                 </TableRow>

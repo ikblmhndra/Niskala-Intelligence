@@ -92,7 +92,7 @@ export function TweetDetailDialog({
 
   function handleQueue() {
     const result = queueForNewsletter(t);
-    setQueueLabel(result === "already" ? "✓ Already queued" : "✓ Queued");
+    setQueueLabel(result === "already" ? "Already queued" : "Queued");
     setTimeout(() => setQueueLabel("+ Newsletter"), 1500);
   }
 

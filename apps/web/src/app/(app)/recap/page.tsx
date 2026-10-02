@@ -1,5 +1,6 @@
 "use client";
 
+import { RefreshCwIcon } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -139,7 +140,7 @@ export default function RecapPage() {
           ↻ Generate
         </Button>
         <Button size="sm" variant="outline" onClick={() => setConfirm({ force: true })}>
-          ⟳ Force Regen
+          <RefreshCwIcon aria-hidden /> Force Regen
         </Button>
         <span className={`ml-auto font-mono text-xs ${statusColor}`}>{status.text}</span>
       </div>
