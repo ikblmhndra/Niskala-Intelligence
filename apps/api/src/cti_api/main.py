@@ -94,7 +94,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
 
 def create_app() -> FastAPI:
     settings = get_settings()
-    app = FastAPI(title="CTI Platform API", version=__version__, lifespan=lifespan)
+    app = FastAPI(title=f"{settings.platform_name} API", version=__version__, lifespan=lifespan)
 
     origins = [o.strip() for o in settings.cors_origins.split(",") if o.strip()]
     app.add_middleware(
