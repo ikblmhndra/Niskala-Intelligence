@@ -42,6 +42,8 @@ from cti_scraper.errors import ParseError, ScraperError
 from cti_scraper.items import CveItem, Item
 from cti_scraper.schedule import spread
 
+from cti_scrapers.feeds._pacing import get_waiting
+
 _NVD_URL = "https://services.nvd.nist.gov/rest/json/cves/2.0"
 _TENABLE_URL = "https://www.tenable.com/cve/search"
 _MITRE_URL = "https://cveawg.mitre.org/api/cve"
@@ -130,7 +132,7 @@ class NewCve(BaseScraper):
                 f"{_NVD_URL}?keywordSearch={tech_enc}"
                 f"&pubStartDate={start_str}%2B07:00&pubEndDate={now_str}%2B07:00"
             )
-            data = ctx.http.get(url).json()
+            data = get_waiting(ctx, url).json()
 
             for cve in data.get("vulnerabilities", []):
                 cve_id = cve["cve"]["id"]
@@ -164,7 +166,7 @@ class NewCve(BaseScraper):
                 f"{_TENABLE_URL}?q={tech_enc}+AND+publication_date%3A"
                 f"%28%5B{start_str}+TO+{now_str}%5D%29&sort=newest&page=1"
             )
-            resp = ctx.http.get(url)
+            resp = get_waiting(ctx, url)
             tree = lxml.html.fromstring(resp.content)
 
             for i in range(1, 7):
@@ -197,7 +199,7 @@ class NewCve(BaseScraper):
 
     def _mitre_detail(self, ctx: ScrapeContext, cand: dict[str, str]) -> dict[str, Any] | None:
         try:
-            data = ctx.http.get(f"{_MITRE_URL}/{cand['id']}").json()
+            data = get_waiting(ctx, f"{_MITRE_URL}/{cand['id']}").json()
         except ScraperError:
             # `RateLimited` / `TransientFetchError` dari `ctx.http` sudah diklasifikasi framework
             # (status run `rate_limited` / `fetch_error`, bisa dicoba lagi). Dibungkus jadi

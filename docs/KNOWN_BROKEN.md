@@ -290,27 +290,38 @@ Satu udah kebukti **sah**: `crowdstrikeThreat` nyaring kategori
 `"Counter Adversary Operations"` — feed-nya punya 1 item hari itu, cuma gak
 lolos filter. Bukan bug. `threatActorTrendGraylog` juga kemungkinan sah (baca
 `supportFile/ThreatActorName.txt` yang bisa aja lagi kosong).
+**KOREKSI 2026-10-01:** kesimpulan `crowdstrikeThreat` "sah" itu BASI -- kategorinya sudah diganti
+nama oleh situsnya dan sekarang SEMUA item terbuang filter (lihat tabel di bawah).
 
-**Update 2026-09-30 (census staging, WARP dimatikan):** 6 dari 16 ini sekarang udah dicek --
-dihapus dari daftar "belum dicek" di bawah, hasilnya:
+**Update 2026-10-01 -- SEMUA yang ada di daftar "belum dicek" di atas sudah dicek dan ditangani**
+(census staging + probe langsung ke situs, Fase 10.D; detail di `docs/PROGRESS.md` 10.D). Tabel di
+bawah menggantikan versi 2026-09-30. Hasil akhir per scraper:
 
-- `doyensecThreat` -- **Diperbaiki** (bug migrasi Fase 4: feed Atom, tapi codemod nge-generate
-  default `RSSScraper` yang RSS-shaped). Lihat `scrapers/src/cti_scrapers/feeds/doyensec.py` +
-  `tests/unit/test_census_selector_fixes.py`.
-- `trustwaveThreat` -- **Diperbaiki** (rebrand jadi LevelBlue, URL feed lama 301 ke stub yang
-  sengaja dikosongkan). Lihat `.../feeds/trustwave.py` + test yang sama.
-- `huntressThreat` -- **Diselamatkan** (lihat bagian atas dokumen ini, sudah lama, list ini
-  ketinggalan sinkron) -- `.../feeds/huntress.py`.
-- `anyrunTrendThreat` -- **Sengaja gak diport** (lihat bagian atas dokumen ini, sudah lama, list
-  ini ketinggalan sinkron) -- incomplete dari awal, butuh keputusan produk.
-- `googleThreat`, `nquiringMindsThreat`, `sysdigThreat` -- **Ditriase, BUKAN gampang, belum
-  diperbaiki**: blog TAG Google dibubarkan/ganti scope, `nquiringMindsThreat` situsnya pindah CMS
-  tanpa jejak URL lama, `sysdigThreat` 404 di redirect target. Butuh investigasi manual lebih
-  dalam atau keputusan waiver dari user -- JANGAN re-investigasi dari nol, triase-nya udah ada di
-  `docs/PROGRESS.md` (bagian census 10.D).
+| Scraper | Akar masalah (terverifikasi) | Tindakan | Status |
+|---|---|---|---|
+| `doyensec` | Bug migrasi Fase 4: feed Atom tapi codemod bikin `RSSScraper` default RSS | `item_path`/`link_attr` Atom | Diperbaiki |
+| `trustwave` | Rebrand LevelBlue; URL lama 301 ke stub sengaja dikosongkan | URL feed baru | Diperbaiki |
+| `aquasec`, `groupib`, `huntress`, `landth` (jadi Depi), `sysdig`, `cymru`, `cloudflare`, `intel471`, `k7security` | XPath absolut lapuk; situs ternyata punya feed RSS resmi (ketemu probe path umum) | Diganti `RSSScraper` | Diperbaiki (lihat catatan scope) |
+| `abnormalsecurity`, `huntio`, `prodraft`, `sans`, `splunk`, `proofpoint`, `cis`, `dragos` | XPath absolut lapuk, situs hidup tapi gak punya RSS | `link_card_xpaths` (pola href, bukan posisi div) | Diperbaiki |
+| `sentinel` | Filter kategori warisan script lama ("From the Front Lines") gak ada lagi di feed: 10/10 item dibuang | Kategori baru ditambah | Diperbaiki |
+| `crowdstrike` | Kategori "Counter Adversary Operations" diganti nama jadi "Threat Hunting & Intel" -- kesimpulan Fase 0.5 "filter sah" BASI | Nama baru ditambah | Diperbaiki |
+| `github_poc_monitor` | ~100 request/run vs budget 30/menit tanpa logika menunggu (+ override DB staging 10/menit): 76 run 0 sukses | `get_waiting` (tunggu jendela reset) + override dihapus | Diperbaiki |
+| `new_cve` | Sama: 22 dari 44 run mati `rate_limited` di MITRE/NVD/Tenable | `get_waiting` | Diperbaiki |
+| `monitor_x` | Kredit twitterapi.io habis (402) tapi run `empty` TANPA pesan error (`break` per akun) | 401/402/403 gagal keras (`ParseError`) -- terbukti: 120 run semalam gagal dengan pesan `HTTP 402` | Kode diperbaiki; **kredit habis LAGI** sejak 2026-10-01 14:53 UTC (~3 jam sesudah kunci baru); jadwal diturunkan dari `*/15` ke tiap 3 jam = cadence legacy (2026-10-02) |
+| `trending_cve`, `tweet_alerts_*` | Kredit twitterapi.io habis (402), saldo dibagi 4 scraper | Pulih sebentar sesudah kunci baru, lalu 402 lagi | **Menunggu top up / keputusan frekuensi** |
+| `blackberry` | URL lama redirect ke blog komunikasi aman (marketing), bukan CTI | `enabled=False` | **WAIVER** |
+| `koisec` | `koi.security` & `koi.ai` redirect ke halaman produk Palo Alto | `enabled=False` | **WAIVER** |
+| `google` | Feed TAG 404; pengganti = feed seluruh blog Google | `enabled=False` (`google_cloud`/`mandiant` sudah liput) | **WAIVER** |
+| `cisa` | `all.xml` dibalas 403 WAF Akamai 19/19 run -- BUKAN flaky (dugaan lama salah) | `enabled=False`, bot-protection gak dilewatin (KEV tetap lewat `cisa_kev`) | **WAIVER** |
+| `nquiring_minds` | Feed lama 404; feed baru isinya postingan template, bukan CTI | `enabled=False` | **WAIVER** |
+| `mitre_github`, `techstack_pypi` | `empty` itu SAH: mitre hanya nembak commit rilis "Update with ATT&CK vNN.N" (<=7 hari, rilis 2x/tahun); 5 versi terbaru `requests`/`selenium`/`pandas` memang 0 advisory di deps.dev | Tidak ada | Sah |
+| `asec_ahn`, `bizone`, `exploitdb`, `resecurity`, `techstack_npm` | Flaky sesekali (3-11 gagal dari ~20-30 run/24 jam: 429, timeout, HTTP 522, koneksi putus), bukan sistematis | Tidak diubah -- ditutup retry backoff beat (PR #1) | Dipantau |
 
-Sisanya BENERAN belum dicek: `abnormalsecurityThreat`, `aquasecThreat`,
-`dragosThreat`, `blackberryThreat`, `huntioThreat`, `splunkThreat`,
-`koisecThreat`, `proofpointThreat`, `sansThreat` -- 9 dari 18 XPath yang gagal
-di census staging 2026-09-30, belum disurvei satu-satu sama sekali (parkir
-atas permintaan user, lihat `docs/PROGRESS.md`).
+**Catatan scope yang BERUBAH** (jumlah artikel vs legacy sengaja beda, bukan gap -- lihat
+`docs/PARALLEL_RUN_COMPARISON.md` §1): `cloudflare` (laporan resource-hub -> tag `security` blog),
+`intel471` (whitepaper -> blog), `huntress`/`sysdig`/`cymru` (feed seluruh blog, tanpa filter kategori lama), `sans` (SEMUA white paper, bukan cuma focus-area yang dulu), `landth` (domain jadi
+`depi.security`, artikel lama beda host), `sentinel`/`crowdstrike` (taksonomi kategori baru).
+
+**`intel471` baru stabil dari egress staging:** situsnya (Vercel) membalas 429 setelah beberapa request
+berturut-turut dari dua IP berbeda saat dry-run berulang; tapi di beat per jam semalam 12 dari 12 run `ok`
+(2026-10-02). Kalau 429 muncul di produksi, jadi kandidat waiver -- proteksi mereka, gak dicoba dilewatin.

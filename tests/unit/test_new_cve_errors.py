@@ -7,6 +7,7 @@ from __future__ import annotations
 import httpx
 import pytest
 from cti_scraper.errors import ParseError, RateLimited, TransientFetchError
+from cti_scrapers.feeds import _pacing as pacing
 from cti_scrapers.feeds.new_cve import NewCve
 
 from tests.unit.scraper_helpers import json_response, make_ctx
@@ -19,7 +20,12 @@ def detail(handler):
     return NewCve()._mitre_detail(ctx, CAND)
 
 
-def test_a_rate_limited_domain_stays_rate_limited_not_a_parse_error() -> None:
+def test_a_rate_limited_domain_stays_rate_limited_not_a_parse_error(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    # `get_waiting` menunggu jendela reset (maks `RATE_RETRIES` kali) sebelum menyerah dan
+    # meneruskan `RateLimited` -- jangan tidur beneran di test.
+    monkeypatch.setattr(pacing.time, "sleep", lambda _s: None)
     ctx = make_ctx(NewCve, lambda r: json_response({}))
 
     def throttled(url: str, **kw: object) -> httpx.Response:

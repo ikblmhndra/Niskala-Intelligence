@@ -1,34 +1,24 @@
-"""L&T -- ditulis manual (codemod Fase 4 nolak nge-generate otomatis).
-`ScraperNews/landthThreat.py` asli pakai variabel loop `recent_count`
-(bukan `i` langsung) buat placeholder XPath -- extractor sengaja gak mau
-nebak nama variabel counter (lihat `tools/codemod/extract.py` docstring:
-"kenali bentuk KANONIK secara presisi ... JANGAN nebak"), jadi ini
-ditinjau & ditulis manual, bukan diakalin di kodemod buat satu file.
-Perilakunya sama persis: `recent_count` mulai dari 1, naik 1 tiap
-iterasi `range(1, 4)` -- identik `{i}`.
-"""
+"""Depi (dulu L&H / landh.tech) -- diganti ke RSS (census staging 2026-10-01, Fase 10.D). Perusahaannya
+rebrand: `landh.tech/blog/` sekarang menampilkan halaman "Depi" dan XPath absolut lama gak match.
+Blog yang aktif ada di `depi.security`, dengan feed RSS resmi (diiklankan lewat
+`<link rel="alternate">`, 19 post riset keamanan). URL artikel lama (`landh.tech/...`) beda host dari
+artikel baru -- gak ada tumpang-tindih dedup, artikel lama gak bakal ke-alert ulang."""
 
 from __future__ import annotations
 
 from cti_scraper.base import ScraperMeta
-from cti_scraper.families.xpath import XPathScraper
+from cti_scraper.families.rss import RSSScraper
 from cti_scraper.schedule import spread
 
-_CARD = "/html/body/div/div/div[4]/section/div[2]/div[2]/div/div/section/div/article[{i}]"
 
-
-class Landth(XPathScraper):
+class Landth(RSSScraper):
     meta = ScraperMeta(
         id="landth",
-        source="L&T",
+        source="Depi (dulu L&H)",
         schedule=spread("16 * * * *", "landth"),
-        runtime="light",
-        max_items=3,  # scraper lama: range(1, 4) -> 3 kartu
         tags=("migrated",),
         legacy_label="NEW RECENT ARTICLE FROM LANDTH",
         legacy_script="landthThreat",
     )
-    url = "https://www.landh.tech/blog/"
-    title_xpath = f"{_CARD}/a/section[2]/div[2]/h3/text()"
-    link_xpath = f"{_CARD}/a/@href"
-    base_url = "https://www.landh.tech"
+    feeds = ("https://depi.security/rss.xml",)
+    date_path = None  # scraper lama pakai waktu-scrape, bukan tanggal artikel asli

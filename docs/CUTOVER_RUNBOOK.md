@@ -76,12 +76,16 @@ off-host) punya panduan langkah-per-langkah di `docs/PROD_PREP.md`** -- kerjakan
       perbaikan pacing 10.G2) + `ecrime` (timeout) + `cybersecnews`/`exploitdb`/`threatmon` (dulu
       "XML tak valid" -- kemungkinan halaman blokir/CAPTCHA yang keliru diparsing sebagai feed).
       **18 XPath tak cocok PERSIS SAMA** sebelum/sesudah -- ini genuinely selector situs berubah,
-      bukan IP, dan butuh perbaikan kode per scraper. **Perbaikan selector dimulai 2026-09-30**:
-      `doyensec` + `trustwave` FIXED (lihat `docs/PROGRESS.md`), `cisa` dikonfirmasi flaky (gak
-      diubah), `google`/`nquiring_minds`/`sysdig` dikonfirmasi BUKAN gampang (site migration, butuh
-      keputusan/waiver). 18 XPath belum disurvei. Sisa yang belum diperbaiki tetap butuh **waiver
-      tertulis** (gate 10.D) sampai diperbaiki. **Belum diulang dari IP PRODUKSI SUNGGUHAN** -- staging sekarang cukup
-      dipercaya (WARP mati), tapi produksi tetap boleh dites ulang kalau egress-nya beda lagi.
+      bukan IP, dan butuh perbaikan kode per scraper. **Diperbaiki 2026-09-30 s/d 2026-10-01** (rincian
+      `docs/PROGRESS.md` 10.I, tabel akar masalah `docs/KNOWN_BROKEN.md`): 9 scraper pindah ke
+      `RSSScraper`, 8 pakai `link_card_xpaths`, filter kategori `sentinel`/`crowdstrike` diperbarui,
+      `github_poc_monitor`/`new_cve` sekarang menunggu jendela rate-limit, `monitor_x` gagal keras saat
+      kredit habis. **5 WAIVER tertulis** (`enabled=False`): `blackberry`, `koisec`, `google`, `cisa`
+      (WAF Akamai 403, tidak dilewati), `nquiring_minds`. Sisa: `intel471` belum stabil (Vercel 429), 5
+      scraper flaky sesekali (retry beat). Scraper yang di-waive tampil `disabled` di health sweep.
+      **Belum diulang dari IP PRODUKSI SUNGGUHAN** -- staging sekarang cukup dipercaya (WARP mati),
+      tapi produksi tetap boleh dites ulang kalau egress-nya beda lagi. **Health sweep sesudah semalam penuh
+      (2026-10-02):** ok 85 / disabled 5 / zero_yield 2 (sah) / degraded 4 (semua Twitter, kredit habis).
 - [ ] **Backup Mongo < 24 jam** + sudah dites restore (user; dump lama = satu-satunya arsip historis).
 - [ ] **Snapshot stack lama** (lihat 2.3) sudah diambil -- tanpa itu rollback ke stack lama tidak bisa
       dijamin <5 menit.
@@ -441,7 +445,7 @@ dipakai hanya kalau twitterapi.io memang tidak bisa. Pindah **manual**, per-scra
 | Scraper `dead` sesudah beat baru nyala | run terakhir lama (dari sebelum) | wajar sampai slot cron berikutnya |
 | Setelah worker mati lama, sekali nyala terjadi lonjakan run | tick beat menumpuk | sudah diatasi: tick scrape kedaluwarsa 1 interval (`expires`) |
 | Digest health datang terus-menerus | tidak ada dedupe, masalah masih ada | perbaiki masalahnya, atau tambahkan dedupe |
-| `monitor_x` (tab X Intel) `fetch_error`/`rate_limited`, terus `degraded` | twitterapi.io **free tier** ~1 request/5-6 dtk untuk seluruh key, dibagi 4 scraper (`monitor_x`+`tweet_alerts_1h`+`tweet_alerts_30m`+`trending_cve`) yang semua mukul domain sama | **2026-09-30**: diperbaiki -- `rate_limit` ke-4 scraper disamakan jadi `10/minute` (sebelumnya `monitor_x` beda sendiri, `15/minute`, melanggar invarian domain-dibagi-rata `cti_scraper.ratelimit`), jeda PROAKTIF `window_s/capacity` (6 dtk) di antara AKUN (bukan cuma reaktif sesudah kena limit), dan `_get_with_backoff` sekarang menunggu jendela reset kalau BUDGET LOKAL kita sendiri (bukan cuma 429 server) yang habis duluan. **Belum dibuktikan live/staging** -- cuma teruji unit dengan HTTP tiruan; kalau masih `rate_limited`/`degraded` di produksi, opsi lama masih berlaku: key twitterapi.io berbayar, atau redesign satu query OR per run (kehilangan `since_id` per akun) |
+| `monitor_x` (tab X Intel) `fetch_error`/`rate_limited`, terus `degraded` | twitterapi.io **free tier** ~1 request/5-6 dtk untuk seluruh key, dibagi 4 scraper (`monitor_x`+`tweet_alerts_1h`+`tweet_alerts_30m`+`trending_cve`) yang semua mukul domain sama | **2026-09-30**: diperbaiki -- `rate_limit` ke-4 scraper disamakan jadi `10/minute` (sebelumnya `monitor_x` beda sendiri, `15/minute`, melanggar invarian domain-dibagi-rata `cti_scraper.ratelimit`), jeda PROAKTIF `window_s/capacity` (6 dtk) di antara AKUN (bukan cuma reaktif sesudah kena limit), dan `_get_with_backoff` sekarang menunggu jendela reset kalau BUDGET LOKAL kita sendiri (bukan cuma 429 server) yang habis duluan. **Terbukti live di staging 2026-10-01** (kunci twitterapi.io baru): `monitor_x` `ok` 385 dtk / 30 item (sebelumnya `empty` ~108 dtk tanpa pesan error karena kredit habis), `tweet_alerts_30m`/`trending_cve` `ok`; sejak itu 401/402/403 gagal keras (`parse_error` dengan pesan HTTP-nya). **Kredit kunci baru itu habis lagi dalam ~3 jam** (402 mulai 14:53 UTC; 120 run gagal semalam, 4 scraper `degraded`) -- jangan pasang kunci berkredit kecil di produksi; hitung dulu kebutuhan kredit empat scraper yang berbagi saldo itu. **Penyebabnya: default `monitor_x` `*/15` padahal legacy tiap 3 jam -- sudah dibetulkan ke `8 */3 * * *` 2026-10-02** (cadence ke-4 scraper Twitter sekarang dikunci test ke legacy). Kalau masih `rate_limited`/`degraded` di produksi, opsi lama masih berlaku: key twitterapi.io berbayar, atau redesign satu query OR per run (kehilangan `since_id` per akun) |
 | `new_cve` status `rate_limited` | batas 60/menit domain MITRE terlewati (banyak kandidat CVE) | wajar sesekali; kalau menetap, kandidat > 60/run: naikkan `rate_limit` scraper via /scrapers atau kurangi cakupan techstack |
 | `alembic current` di image lama gagal | DB di revisi yang tak dikenal image itu | jalankan dengan image yang lebih baru / `rollback.py` |
 

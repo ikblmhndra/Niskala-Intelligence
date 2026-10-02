@@ -7,6 +7,9 @@ asli:
    biasa, jadi gak bisa diekspresiin lewat field deklaratif yang ada).
 2. Skip item yang URL-nya ngandung "news-events/ics-advisories/" (cuma mau
    cybersecurity advisories umum, bukan ICS-specific).
+
+**WAIVER 2026-10-01 (census staging, Fase 10.D) -- `enabled=False`.** `all.xml` dibalas HTTP 403 "Access Denied" (WAF Akamai) untuk klien kita, konsisten 19/19 run per 24 jam -- BUKAN flaky seperti dugaan awal (dulu dikira cuma XML rusak sesekali). Proteksi bot gak dicoba dilewatin; kalau mau dipantau, perlu jalur yang memang disediakan CISA. Advisory paling penting (KEV) tetap dipantau scraper `cisa_kev`.
+Diaktifkan lagi kalau sumbernya balik/ada jalur baru -- lihat `docs/KNOWN_BROKEN.md`.
 """
 
 from __future__ import annotations
@@ -35,6 +38,7 @@ class Cisa(RSSScraper):
         id="cisa",
         source="CISA",
         schedule=spread("1 * * * *", "cisa"),
+        enabled=False,  # waiver 10.D, lihat docstring
         tags=("migrated",),
         legacy_label="NEW CYBERSECURITY ADVISORIES FROM CISA",
         legacy_script="cisaThreat",

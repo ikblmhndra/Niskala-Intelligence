@@ -2,6 +2,9 @@
 (codemod Fase 4, family XPath runtime="browser"). Cek
 `migration_report.json` buat detail ekstraksi. WAJIB lewat `dry-run` +
 `verify` sebelum `enable` -- lihat docs/ADDING_A_SCRAPER.md.
+
+**WAIVER 2026-10-01 (census staging, Fase 10.D) -- `enabled=False`.** URL lama (`blogs.blackberry.com/en/category/research-and-intelligence`) sekarang redirect ke `www.blackberry.com/en/secure-communications/insights/blog` -- isinya blog komunikasi aman (marketing: "Sovereign Communications Procurement", dst), BUKAN riset/intelijen ancaman. Gak ada feed RSS. Gak ada yang bisa dipantau di sini lagi.
+Diaktifkan lagi kalau sumbernya balik/ada jalur baru -- lihat `docs/KNOWN_BROKEN.md`.
 """
 
 from __future__ import annotations
@@ -19,6 +22,7 @@ class Blackberry(XPathScraper):
         runtime="browser",
         rate_limit="6/minute",
         max_items=4,
+        enabled=False,  # waiver 10.D, lihat docstring
         tags=("migrated",),
         legacy_label="NEW ARTICLE FROM NAME",
         legacy_script="blackberryThreat",

@@ -1,28 +1,23 @@
-"""Aquasec -- hasil migrasi otomatis dari `ScraperNews/aquasecThreat.py`
-(codemod Fase 4, family XPath runtime="browser"). Cek
-`migration_report.json` buat detail ekstraksi. WAJIB lewat `dry-run` +
-`verify` sebelum `enable` -- lihat docs/ADDING_A_SCRAPER.md.
-"""
+"""Aquasec -- diganti ke RSS (census staging 2026-10-01, Fase 10.D). XPath absolut lama
+(`.../div[{i}]/a/div[1]/...`) sudah gak match apa pun setelah situs di-redesign, dan situsnya gak
+mengiklankan feed lewat `<link rel="alternate">` -- URL feed WordPress-nya ketemu dari probe path umum.
+`/feed/` memuat 10 post terbaru, scope sama dengan halaman `/blog/` yang dulu di-scrape."""
 
 from __future__ import annotations
 
 from cti_scraper.base import ScraperMeta
-from cti_scraper.families.xpath import XPathScraper
+from cti_scraper.families.rss import RSSScraper
 from cti_scraper.schedule import spread
 
 
-class Aquasec(XPathScraper):
+class Aquasec(RSSScraper):
     meta = ScraperMeta(
         id="aquasec",
         source="Aquasec",
         schedule=spread("45 * * * *", "aquasec"),
-        runtime="browser",
-        rate_limit="6/minute",
-        max_items=4,
         tags=("migrated",),
         legacy_label="NEW ARTICLE FROM AQUASEC",
         legacy_script="aquasecThreat",
     )
-    url = "https://www.aquasec.com/blog/"
-    title_xpath = "/html/body/div/div[2]/div[1]/div/div[4]/div/div/div[{i}]/a/div[1]/div/div/div[2]"
-    link_xpath = "/html/body/div/div[2]/div[1]/div/div[4]/div/div/div[{i}]/a"
+    feeds = ("https://www.aquasec.com/feed/",)
+    date_path = None  # scraper lama pakai waktu-scrape, bukan tanggal artikel asli

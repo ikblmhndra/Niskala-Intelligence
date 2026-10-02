@@ -12,8 +12,9 @@ tanpa itu scraper yang SENGAJA dimatiin operator bakal salah keklasifikasi
 selagi `enabled=False`, beat skip dia total dari schedule -- lihat
 `cti_worker.beat._scraper_configs()`):
 
-  disabled   -- `ScraperConfig.enabled=False`. Bukan masalah, operator
-                yang minta.
+  disabled   -- `ScraperConfig.enabled=False`, atau (kalau scraper itu gak punya baris config)
+                `ScraperMeta.enabled=False` di kode -- aturan yang sama dgn beat. Bukan masalah,
+                operator/waiver yang minta.
   stale      -- gak pernah ada `ScraperRun` sama sekali buat scraper ini.
   dead       -- run terakhir `started_at` lebih dari 3x interval jadwal
                 yang diharapkan -- "scraper yang dimatiin (infra-nya,
@@ -88,7 +89,12 @@ def compute_health(
     """`recent_runs` HARUS urut `started_at` DESC (run terbaru duluan) --
     caller yang jamin (`AsyncScraperRunRepo.list_recent_by_scraper()`/
     versi sync-nya)."""
-    if config is not None and not config.enabled:
+    # Aturan SAMA dengan `cti_worker.beat` (`config.enabled if config is not None else
+    # meta.enabled`): scraper yang dimatikan di KODE (`meta.enabled=False`, mis. waiver census
+    # 2026-10-01) gak pernah dijadwalkan beat, jadi tanpa ini dia nongol `degraded` lalu `dead`
+    # selamanya di sweep + digest Telegram padahal gak ada yang salah.
+    enabled = config.enabled if config is not None else meta.enabled
+    if not enabled:
         return "disabled"
 
     if not recent_runs:
