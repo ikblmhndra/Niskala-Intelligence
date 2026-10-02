@@ -36,6 +36,9 @@ tools/salvage/fixture_context.json
 # cache/build output graphify (AST cache 26M+, regenerable via `graphify update .`)
 graphify-out/
 .vscode/
+qa-report/
+.claude/skills/
+.claude/worktree/
 
 # CATATAN: legacy/static/ SENGAJA tidak di-ignore.
 # Direktori itu ke-gitignore di repo lama dan cuma ada di satu host produksi;
