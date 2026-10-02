@@ -3379,6 +3379,8 @@ export interface components {
         DashboardStats: {
             /** By News Type */
             by_news_type: components["schemas"]["TopItem"][];
+            /** Country Counts */
+            country_counts: components["schemas"]["TopItem"][];
             /** Timeline */
             timeline: components["schemas"]["TimelinePoint"][];
             /** Top Countries */

@@ -35,7 +35,7 @@ export function AuditLogSection() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="font-mono text-xs tracking-wide text-muted-foreground uppercase">
+        <CardTitle className="text-base font-semibold text-foreground">
           Audit Log
         </CardTitle>
       </CardHeader>
@@ -73,7 +73,7 @@ export function AuditLogSection() {
             </SelectContent>
           </Select>
           {log.data && (
-            <span className="ml-auto font-mono text-[10px] text-muted-foreground">
+            <span className="ml-auto font-mono text-xs text-muted-foreground">
               {log.data.total} entries
             </span>
           )}
@@ -104,7 +104,7 @@ export function AuditLogSection() {
                 )}
                 {log.data.logs.map((l, i) => (
                   <TableRow key={i}>
-                    <TableCell className="font-mono text-[10px] text-muted-foreground">
+                    <TableCell className="font-mono text-xs text-muted-foreground">
                       {l.timestamp.replace("T", " ").split(".")[0]}
                     </TableCell>
                     <TableCell className="font-mono text-xs text-primary">{l.user}</TableCell>
@@ -112,10 +112,10 @@ export function AuditLogSection() {
                     <TableCell className="max-w-[140px] truncate text-xs text-muted-foreground">
                       {l.target_id || "—"}
                     </TableCell>
-                    <TableCell className="max-w-[180px] truncate font-mono text-[10px] text-muted-foreground">
+                    <TableCell className="max-w-[180px] truncate font-mono text-xs text-muted-foreground">
                       {l.detail && Object.keys(l.detail).length ? JSON.stringify(l.detail) : "—"}
                     </TableCell>
-                    <TableCell className="font-mono text-[10px] text-muted-foreground">{l.ip}</TableCell>
+                    <TableCell className="font-mono text-xs text-muted-foreground">{l.ip}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

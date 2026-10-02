@@ -12,23 +12,23 @@ const RISK_FORMULA_TITLE =
 /** Port Sector Risk Matrix + peer benchmark (`exec.js:135-167`). */
 export function SectorRiskMatrix({ d }: { d: ExecDashboardV2 }) {
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 rounded-2xl border border-border bg-surface p-5 shadow-sm">
       {d.sector_risk_scores.map((sr) => {
         const tier = riskTier(sr.risk_score);
         const bench = sectorPeerBenchmark(d.sector_trend, sr.sector);
         return (
           <div key={sr.sector} className="flex items-center gap-2.5" title={RISK_FORMULA_TITLE}>
-            <div className="min-w-[140px] truncate font-mono text-[10px] text-foreground">{toTitleCase(sr.sector)}</div>
+            <div className="min-w-[140px] truncate font-mono text-xs text-foreground">{toTitleCase(sr.sector)}</div>
             <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
               <div
                 className={cn("h-full rounded-full", tier.colorClass.replace("text-", "bg-"))}
                 style={{ width: `${sr.risk_score}%` }}
               />
             </div>
-            <div className={cn("min-w-[28px] text-right font-mono text-[10px]", tier.colorClass)}>{sr.risk_score}</div>
+            <div className={cn("min-w-[28px] text-right font-mono text-xs", tier.colorClass)}>{sr.risk_score}</div>
             <div
               className={cn(
-                "min-w-[32px] rounded px-1.5 py-0.5 text-center font-mono text-[8px]",
+                "min-w-[32px] rounded px-1.5 py-0.5 text-center font-mono text-xs",
                 tier.colorClass,
                 tier.colorClass.replace("text-", "bg-") + "/15",
               )}
@@ -36,7 +36,7 @@ export function SectorRiskMatrix({ d }: { d: ExecDashboardV2 }) {
               {tier.label}
             </div>
             <div
-              className={cn("min-w-[64px] text-right font-mono text-[8px]", bench.colorClass)}
+              className={cn("min-w-[64px] text-right font-mono text-xs", bench.colorClass)}
               title="Peer Benchmark: share of total incidents vs avg sector share"
             >
               {bench.text}

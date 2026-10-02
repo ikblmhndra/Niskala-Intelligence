@@ -7,7 +7,7 @@ import type { RecapDoc } from "@/lib/api/loose-types";
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div className="mt-5 first:mt-0">
-      <div className="mb-2 border-b border-border pb-1 font-mono text-[10px] tracking-[0.12em] text-muted-foreground uppercase">
+      <div className="mb-2 border-b border-border pb-1 text-sm font-semibold text-muted-foreground">
         {title}
       </div>
       {children}
@@ -29,7 +29,7 @@ function ConfidenceBadge({ confidence }: { confidence?: string }) {
   return (
     <Badge
       variant="outline"
-      className={cn("font-mono text-[9px] uppercase", styles[c] ?? styles.low)}
+      className={cn("font-mono text-xs uppercase", styles[c] ?? styles.low)}
     >
       {c}
     </Badge>
@@ -44,7 +44,7 @@ function Chips({ items }: { items?: string[] }) {
         <Badge
           key={v}
           variant="outline"
-          className="border-primary/40 bg-primary/10 font-mono text-[11px] text-primary"
+          className="border-primary/40 bg-primary/10 font-mono text-sm text-primary"
         >
           {v}
         </Badge>
@@ -69,12 +69,12 @@ export function RecapView({ doc }: { doc: RecapDoc }) {
     <div>
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-border bg-gradient-to-br from-primary/5 to-primary/[0.04] px-4 py-3">
         <div>
-          <div className="mb-1 font-mono text-[10px] tracking-[0.12em] text-muted-foreground uppercase">
+          <div className="mb-1 text-sm font-semibold text-muted-foreground">
             Daily Recap · {doc.date}
           </div>
           <div className="text-sm leading-snug">{doc.headline || "(no headline)"}</div>
         </div>
-        <div className="text-right font-mono text-[10px] text-muted-foreground">
+        <div className="text-right font-mono text-xs text-muted-foreground">
           <div>
             {counts.articles ?? 0} articles · {counts.tweets ?? 0} tweets
           </div>
@@ -98,9 +98,9 @@ export function RecapView({ doc }: { doc: RecapDoc }) {
             {recap.top_stories.map((s, i) => (
               <li key={i}>
                 <span className="font-medium">{s.title}</span>{" "}
-                <span className="font-mono text-[10px] text-muted-foreground">[{s.source || "?"}]</span>
+                <span className="font-mono text-xs text-muted-foreground">[{s.source || "?"}]</span>
                 {s.why_it_matters && (
-                  <div className="mt-0.5 text-xs text-muted-foreground">{s.why_it_matters}</div>
+                  <div className="mt-1 text-sm text-muted-foreground">{s.why_it_matters}</div>
                 )}
               </li>
             ))}
@@ -116,10 +116,10 @@ export function RecapView({ doc }: { doc: RecapDoc }) {
             {recap.top_tweets.map((t, i) => (
               <li key={i}>
                 <span className="font-medium">@{t.author || "?"}</span>{" "}
-                <Badge variant="outline" className="border-ring/40 bg-ring/10 font-mono text-[9px] text-ring">
+                <Badge variant="outline" className="border-ring/40 bg-ring/10 font-mono text-xs text-ring">
                   {t.signal || "other"}
                 </Badge>
-                {t.summary && <div className="mt-0.5 text-xs">{t.summary}</div>}
+                {t.summary && <div className="mt-1 text-sm">{t.summary}</div>}
               </li>
             ))}
           </ul>
@@ -142,11 +142,11 @@ export function RecapView({ doc }: { doc: RecapDoc }) {
             {recap.active_campaigns.map((c, i) => (
               <li key={i}>
                 <span className="font-medium">{c.theme || "(unlabeled)"}</span>{" "}
-                <span className="font-mono text-[10px] text-muted-foreground">
+                <span className="font-mono text-xs text-muted-foreground">
                   · {c.article_count ?? 0} articles
                 </span>
                 {c.why_it_matters && (
-                  <div className="mt-0.5 text-xs text-muted-foreground">{c.why_it_matters}</div>
+                  <div className="mt-1 text-sm text-muted-foreground">{c.why_it_matters}</div>
                 )}
               </li>
             ))}
@@ -167,12 +167,12 @@ export function RecapView({ doc }: { doc: RecapDoc }) {
       )}
 
       <div className="mt-6 rounded-md border border-warning/40 bg-warning/[0.04] px-4 py-3">
-        <div className="mb-2 font-mono text-[11px] tracking-[0.12em] text-warning uppercase">
+        <div className="mb-2 font-mono text-sm tracking-[0.12em] text-warning uppercase">
           ▲ Forecast · Next 1-3 Days
         </div>
         <p className="mb-2 text-sm leading-relaxed">{fcast.summary || "(no forecast)"}</p>
 
-        <div className="mb-1.5 font-mono text-[10px] tracking-[0.12em] text-muted-foreground uppercase">
+        <div className="mb-1.5 text-sm font-semibold text-muted-foreground">
           Likely Events ({(fcast.likely_events ?? []).length})
         </div>
         {fcast.likely_events?.length ? (
@@ -180,8 +180,8 @@ export function RecapView({ doc }: { doc: RecapDoc }) {
             {fcast.likely_events.map((e, i) => (
               <li key={i}>
                 <span className="font-medium">{e.event}</span> <ConfidenceBadge confidence={e.confidence} />
-                <div className="mt-0.5 text-xs text-muted-foreground">
-                  <span className="font-mono text-[10px] uppercase">Basis:</span> {e.basis}
+                <div className="mt-1 text-sm text-muted-foreground">
+                  <span className="font-mono text-xs uppercase">Basis:</span> {e.basis}
                 </div>
               </li>
             ))}
@@ -192,7 +192,7 @@ export function RecapView({ doc }: { doc: RecapDoc }) {
 
         {(fcast.watch_items ?? []).length > 0 && (
           <>
-            <div className="mt-3 mb-1.5 font-mono text-[10px] tracking-[0.12em] text-muted-foreground uppercase">
+            <div className="mt-3 mb-1.5 text-sm font-semibold text-muted-foreground">
               Watch Items
             </div>
             <ul className="list-disc space-y-1 pl-4 text-sm">
@@ -206,10 +206,10 @@ export function RecapView({ doc }: { doc: RecapDoc }) {
 
       {doc.raw_llm && (
         <details className="mt-4">
-          <summary className="cursor-pointer font-mono text-[10px] tracking-[0.1em] text-muted-foreground uppercase">
+          <summary className="cursor-pointer text-sm font-semibold text-muted-foreground">
             Raw LLM output (parse fallback)
           </summary>
-          <pre className="mt-1.5 rounded-md border border-border p-2.5 text-[11px] whitespace-pre-wrap text-muted-foreground">
+          <pre className="mt-1.5 rounded-md border border-border p-2.5 text-sm whitespace-pre-wrap text-muted-foreground">
             {doc.raw_llm}
           </pre>
         </details>

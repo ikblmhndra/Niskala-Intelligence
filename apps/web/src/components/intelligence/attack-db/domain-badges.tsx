@@ -17,7 +17,7 @@ export function DomainBadges({ domains }: { domains: string[] }) {
   return (
     <>
       {domains.map((d) => (
-        <Badge key={d} variant="outline" className={`mr-1 text-[9px] ${DOMAIN_CLASS[d] ?? "text-muted-foreground"}`}>
+        <Badge key={d} variant="outline" className={`mr-1 text-xs ${DOMAIN_CLASS[d] ?? "text-muted-foreground"}`}>
           {DOMAIN_LABELS[d] ?? d}
         </Badge>
       ))}

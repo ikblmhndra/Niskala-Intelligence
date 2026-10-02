@@ -149,7 +149,7 @@ export function SrEntryDialog({ mode, entry, open, onClose, onSaved }: SrEntryDi
         </DialogHeader>
         <div className="space-y-3">
           <div className="relative flex flex-col gap-1">
-            <Label className="font-mono text-[9px] text-muted-foreground uppercase">Source Name</Label>
+            <Label className="text-sm font-medium text-muted-foreground">Source Name</Label>
             <Input
               ref={inputRef}
               value={source}
@@ -191,13 +191,13 @@ export function SrEntryDialog({ mode, entry, open, onClose, onSaved }: SrEntryDi
           </div>
 
           <div className="flex flex-col gap-1">
-            <Label className="font-mono text-[9px] text-muted-foreground uppercase">Analyst Name</Label>
+            <Label className="text-sm font-medium text-muted-foreground">Analyst Name</Label>
             <Input value={analyst} onChange={(e) => setAnalyst(e.target.value)} className="text-xs" />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div className="flex flex-col gap-1">
-              <Label className="font-mono text-[9px] text-muted-foreground uppercase">Reliability Grade</Label>
+              <Label className="text-sm font-medium text-muted-foreground">Reliability Grade</Label>
               <select value={grade} onChange={(e) => setGrade(e.target.value)} className={nativeSelectClass()}>
                 <option value="">— Select —</option>
                 {Object.entries(reliabilityLabels).map(([g, label]) => (
@@ -208,7 +208,7 @@ export function SrEntryDialog({ mode, entry, open, onClose, onSaved }: SrEntryDi
               </select>
             </div>
             <div className="flex flex-col gap-1">
-              <Label className="font-mono text-[9px] text-muted-foreground uppercase">Credibility Code</Label>
+              <Label className="text-sm font-medium text-muted-foreground">Credibility Code</Label>
               <select value={code} onChange={(e) => setCode(e.target.value)} className={nativeSelectClass()}>
                 <option value="">— Select —</option>
                 {Object.entries(credibilityLabels).map(([c, label]) => (
@@ -233,7 +233,7 @@ export function SrEntryDialog({ mode, entry, open, onClose, onSaved }: SrEntryDi
           )}
 
           <div className="flex flex-col gap-1">
-            <Label className="font-mono text-[9px] text-muted-foreground uppercase">Notes</Label>
+            <Label className="text-sm font-medium text-muted-foreground">Notes</Label>
             <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={2} className="text-xs" />
           </div>
 

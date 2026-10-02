@@ -1,5 +1,6 @@
 "use client";
 
+import { LinkIcon, PencilIcon, RefreshCwIcon, XIcon } from "lucide-react";
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -134,15 +135,15 @@ export function PackagesPanel({ active }: { active: boolean }) {
     <div>
       <div className="mb-3 flex flex-wrap items-end gap-2 border-b border-border pb-3">
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Name</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Name</Label>
           <Input placeholder="e.g. lodash" value={name} onChange={(e) => setName(e.target.value)} className="w-40 font-mono text-xs" />
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Version</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Version</Label>
           <Input placeholder="optional" value={version} onChange={(e) => setVersion(e.target.value)} className="w-28 font-mono text-xs" />
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Ecosystem</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Ecosystem</Label>
           <Select value={ecosystem} onValueChange={(v) => v && setEcosystem(v)}>
             <SelectTrigger size="sm" className="w-32 font-mono text-xs">
               <SelectValue />
@@ -163,7 +164,7 @@ export function PackagesPanel({ active }: { active: boolean }) {
           ⬆ Import Lockfile
         </Button>
         <Button size="sm" variant="outline" disabled={scanning !== null} onClick={() => void scanAll()}>
-          {scanning === "all" ? "⏳ Scanning…" : "⟳ Scan All"}
+          {scanning === "all" ? "Scanning…" : "Scan All"}
         </Button>
       </div>
 
@@ -171,7 +172,7 @@ export function PackagesPanel({ active }: { active: boolean }) {
       {listQuery.isError && <PanelError />}
       {listQuery.data && (
         <>
-          <Table>
+          <Table framed>
             <TableHeader>
               <TableRow>
                 <TableHead>Name</TableHead>
@@ -197,25 +198,25 @@ export function PackagesPanel({ active }: { active: boolean }) {
                 <TableRow key={p.id}>
                   <TableCell className="font-mono text-xs">{p.name}</TableCell>
                   <TableCell>
-                    <Badge variant="outline" className="text-[10px]">
+                    <Badge variant="outline" className="text-xs">
                       {p.ecosystem}
                     </Badge>
                   </TableCell>
-                  <TableCell className="font-mono text-[11px] text-muted-foreground">
+                  <TableCell className="font-mono text-[13px] text-muted-foreground">
                     {p.version || "any"}
                     {p.latest_version && p.latest_version !== p.version && (
-                      <span className="ml-1 text-[10px] text-primary">→ {p.latest_version}</span>
+                      <span className="ml-1 text-xs text-primary">→ {p.latest_version}</span>
                     )}
                   </TableCell>
-                  <TableCell className="font-mono text-[11px]">
+                  <TableCell className="font-mono text-[13px]">
                     {p.critical_count > 0 && <span className="text-destructive">C{p.critical_count} </span>}
                     {p.high_count > 0 && <span className="text-warning">H{p.high_count} </span>}
                     {p.medium_count > 0 && <span className="text-primary">M{p.medium_count} </span>}
                     {p.low_count > 0 && <span className="text-muted-foreground">L{p.low_count}</span>}
                     {p.vuln_count === 0 && <span className="text-muted-foreground">—</span>}
                   </TableCell>
-                  <TableCell className="text-[11px]">{p.highest_severity}</TableCell>
-                  <TableCell className="text-[11px]">
+                  <TableCell className="text-[13px]">{p.highest_severity}</TableCell>
+                  <TableCell className="text-[13px]">
                     {p.dep_resolved_at ? (
                       <button className="text-primary underline-offset-2 hover:underline" onClick={() => setDepsTarget(p.id)}>
                         {p.dep_direct_count}+{p.dep_indirect_count}
@@ -226,41 +227,41 @@ export function PackagesPanel({ active }: { active: boolean }) {
                     )}
                   </TableCell>
                   <TableCell>
-                    <Badge variant="outline" className="text-[10px]">
+                    <Badge variant="outline" className="text-xs">
                       {p.source}
                     </Badge>
                   </TableCell>
-                  <TableCell className="font-mono text-[11px] text-muted-foreground">{p.last_scan?.slice(0, 10) || "—"}</TableCell>
+                  <TableCell className="font-mono text-[13px] text-muted-foreground">{p.last_scan?.slice(0, 10) || "—"}</TableCell>
                   <TableCell>
                     <div className="flex items-center gap-1">
-                      <Button size="sm" variant="outline" className="h-6 px-1.5 text-[10px]" onClick={() => setEditTarget(p)}>
-                        ✎
+                      <Button size="sm" variant="outline" className="h-6 px-1.5 text-xs" onClick={() => setEditTarget(p)}>
+                        <PencilIcon aria-hidden />
                       </Button>
                       <Button
                         size="sm"
                         variant="outline"
-                        className="h-6 px-1.5 text-[10px]"
+                        className="h-6 px-1.5 text-xs"
                         disabled={scanning === p.id}
                         onClick={() => void scanOne(p.id)}
                       >
-                        ⟳
+                        <RefreshCwIcon aria-hidden />
                       </Button>
                       <Button
                         size="sm"
                         variant="outline"
-                        className="h-6 px-1.5 text-[10px]"
+                        className="h-6 px-1.5 text-xs"
                         disabled={resolving === p.id}
                         onClick={() => void resolveDeps(p.id)}
                       >
-                        ⛓
+                        <LinkIcon aria-hidden />
                       </Button>
                       <Button
                         size="sm"
                         variant="destructive"
-                        className="h-6 px-1.5 text-[10px]"
+                        className="h-6 px-1.5 text-xs"
                         onClick={() => setRemoveTarget({ id: p.id, name: p.name })}
                       >
-                        ✕
+                        <XIcon aria-hidden />
                       </Button>
                     </div>
                   </TableCell>

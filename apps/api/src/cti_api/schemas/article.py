@@ -66,6 +66,8 @@ class DashboardStats(BaseModel):
     total_countries: int
     total_threat_actors: int
     top_countries: list[TopItem]
+    # Semua negara (bukan cuma top-10) -- dipakai peta dunia di dashboard.
+    country_counts: list[TopItem]
     top_sources: list[TopItem]
     top_threat_actors: list[TopItem]
     top_industries: list[TopItem]

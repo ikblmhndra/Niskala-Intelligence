@@ -54,11 +54,11 @@ export function TaArticlesDialog({ actorName, onClose }: { actorName: string | n
 
         <div className="space-y-2">
           {query.data?.articles.map((a) => (
-            <div key={a.id} className="rounded-md border border-border bg-surface2 p-2.5">
+            <div key={a.id} className="rounded-xl border border-border bg-background p-2.5">
               <a href={a.url} target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-foreground hover:underline">
                 {a.title}
               </a>
-              <div className="mt-1 font-mono text-[10px] text-muted-foreground">
+              <div className="mt-1 font-mono text-xs text-muted-foreground">
                 {[a.source, a.posted_on, a.news_type].filter(Boolean).join(" · ")}
               </div>
             </div>

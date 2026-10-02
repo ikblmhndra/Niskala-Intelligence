@@ -109,7 +109,7 @@ export function SrTable() {
     <div>
       <div className="mb-4 flex flex-wrap items-end gap-2 border-b border-border pb-3">
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Search</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Search</Label>
           <Input
             placeholder="Source name…"
             value={search}
@@ -121,7 +121,7 @@ export function SrTable() {
           />
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Grade</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Grade</Label>
           <Select
             items={{ [ALL]: "All Grades", ...Object.fromEntries(GRADES.map((g) => [g, g])) }}
             value={grade || ALL}
@@ -162,10 +162,10 @@ export function SrTable() {
 
       {listQuery.data && (
         <>
-          <p className="mb-2 font-mono text-[10px] text-muted-foreground">
+          <p className="mb-2 font-mono text-xs text-muted-foreground">
             {total} source{total !== 1 ? "s" : ""} rated
           </p>
-          <Table>
+          <Table framed>
             <TableHeader>
               <TableRow>
                 {sortHeader("source_name", "Source")}
@@ -191,28 +191,28 @@ export function SrTable() {
                   <TableCell className="text-xs">{e.source_name}</TableCell>
                   <TableCell className="text-xs text-muted-foreground">{e.analyst_name}</TableCell>
                   <TableCell>
-                    <Badge variant="outline" className={cn("font-mono text-[11px]", GRADE_BADGE_CLASS[e.reliability_grade])} title={e.admiralty_code}>
+                    <Badge variant="outline" className={cn("font-mono text-[13px]", GRADE_BADGE_CLASS[e.reliability_grade])} title={e.admiralty_code}>
                       {e.admiralty_code}
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    <Badge variant="outline" className={cn("text-[11px]", GRADE_BADGE_CLASS[e.reliability_grade])}>
+                    <Badge variant="outline" className={cn("text-[13px]", GRADE_BADGE_CLASS[e.reliability_grade])}>
                       {e.reliability_grade}
                     </Badge>
                   </TableCell>
                   <TableCell className="font-mono text-xs text-muted-foreground">{e.credibility_code}</TableCell>
-                  <TableCell className="max-w-[200px] truncate text-[11px] text-muted-foreground" title={e.notes}>
+                  <TableCell className="max-w-[200px] truncate text-[13px] text-muted-foreground" title={e.notes}>
                     {e.notes || "—"}
                   </TableCell>
-                  <TableCell className="font-mono text-[11px] text-muted-foreground">
+                  <TableCell className="font-mono text-[13px] text-muted-foreground">
                     {e.last_updated || e.added_date}
                   </TableCell>
                   <TableCell>
                     <div className="flex gap-1">
-                      <Button size="sm" variant="outline" className="h-6 px-1.5 text-[10px]" onClick={() => setEditEntry(e)}>
+                      <Button size="sm" variant="outline" className="h-6 px-1.5 text-xs" onClick={() => setEditEntry(e)}>
                         Edit
                       </Button>
-                      <Button size="sm" variant="destructive" className="h-6 px-1.5 text-[10px]" onClick={() => setRemoveTarget(e)}>
+                      <Button size="sm" variant="destructive" className="h-6 px-1.5 text-xs" onClick={() => setRemoveTarget(e)}>
                         Remove
                       </Button>
                     </div>

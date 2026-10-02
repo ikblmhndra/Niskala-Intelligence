@@ -87,7 +87,7 @@ export function PirList() {
   return (
     <div>
       <div className="mb-4 flex items-center justify-between border-b border-border pb-3">
-        <p className="font-mono text-[10px] text-muted-foreground">{pirs.length} PIR{pirs.length !== 1 ? "s" : ""} defined</p>
+        <p className="font-mono text-xs text-muted-foreground">{pirs.length} PIR{pirs.length !== 1 ? "s" : ""} defined</p>
         <Button
           size="sm"
           onClick={() => {
@@ -118,8 +118,8 @@ export function PirList() {
           ];
           const pct = Math.min(100, Math.round((p.coverage_count / maxCov) * 100));
           return (
-            <div key={p.id} className="flex items-start gap-3 rounded-md border border-border bg-surface p-3">
-              <Badge variant="outline" className={cn("shrink-0 font-mono text-[10px]", PRIORITY_CLASS[p.priority])}>
+            <div key={p.id} className="flex items-start gap-3 rounded-xl border border-border bg-background p-3">
+              <Badge variant="outline" className={cn("shrink-0 font-mono text-xs", PRIORITY_CLASS[p.priority])}>
                 {p.priority}
               </Badge>
               <div className="min-w-0 flex-1">
@@ -128,7 +128,7 @@ export function PirList() {
                   {p.is_gap && (
                     <Badge
                       variant="destructive"
-                      className="text-[9px]"
+                      className="text-xs"
                       title="This PIR matched articles historically but has no matches in the last 14 days — active collection gap."
                     >
                       COVERAGE GAP
@@ -139,13 +139,13 @@ export function PirList() {
                 {tags.length > 0 && (
                   <div className="mt-1.5 flex flex-wrap gap-1">
                     {tags.map((t, i) => (
-                      <span key={i} className="rounded bg-muted px-1.5 py-0.5 font-mono text-[9px] text-muted-foreground">
+                      <span key={i} className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs text-muted-foreground">
                         {t}
                       </span>
                     ))}
                   </div>
                 )}
-                <div className="mt-1.5 flex flex-wrap gap-3 font-mono text-[10px] text-muted-foreground">
+                <div className="mt-1.5 flex flex-wrap gap-3 font-mono text-xs text-muted-foreground">
                   {p.owner && <span>Owner: {p.owner}</span>}
                   {p.start_date && <span>From: {p.start_date}</span>}
                   {p.end_date && <span>Until: {p.end_date}</span>}
@@ -156,24 +156,24 @@ export function PirList() {
               </div>
               <div className="w-24 shrink-0 text-center">
                 <div className="font-mono text-lg font-bold text-foreground">{p.coverage_count.toLocaleString()}</div>
-                <div className="font-mono text-[9px] text-muted-foreground uppercase">articles</div>
+                <div className="text-sm font-medium text-muted-foreground">articles</div>
                 <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-muted">
                   <div className="h-full rounded-full bg-primary" style={{ width: `${pct}%` }} />
                 </div>
               </div>
               <div className="flex shrink-0 flex-col gap-1">
                 {p.coverage_count > 0 && (
-                  <Button size="sm" variant="outline" className="h-6 px-2 text-[10px]" onClick={() => setViewTarget(p)}>
+                  <Button size="sm" variant="outline" className="h-6 px-2 text-xs" onClick={() => setViewTarget(p)}>
                     View {p.coverage_count.toLocaleString()}
                   </Button>
                 )}
-                <Button size="sm" variant="outline" className="h-6 px-2 text-[10px]" disabled={exporting === p.id} onClick={() => void exportDocx(p)}>
+                <Button size="sm" variant="outline" className="h-6 px-2 text-xs" disabled={exporting === p.id} onClick={() => void exportDocx(p)}>
                   {exporting === p.id ? "…" : "Export"}
                 </Button>
-                <Button size="sm" variant="outline" className="h-6 px-2 text-[10px]" onClick={() => setEditTarget(p)}>
+                <Button size="sm" variant="outline" className="h-6 px-2 text-xs" onClick={() => setEditTarget(p)}>
                   Edit
                 </Button>
-                <Button size="sm" variant="destructive" className="h-6 px-2 text-[10px]" onClick={() => setRemoveTarget(p)}>
+                <Button size="sm" variant="destructive" className="h-6 px-2 text-xs" onClick={() => setRemoveTarget(p)}>
                   Del
                 </Button>
               </div>

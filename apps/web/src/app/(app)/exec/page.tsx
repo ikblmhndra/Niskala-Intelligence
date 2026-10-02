@@ -146,19 +146,19 @@ export default function ExecDashboardPage() {
 
           <DashboardSectionLabel>Secondary Signals</DashboardSectionLabel>
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-            <div className="rounded-md border border-border bg-surface p-3">
+            <div className="rounded-xl border border-border bg-background p-3">
               <div className="mb-2 font-mono text-xs text-muted-foreground">Top TTPs</div>
               <TtpList d={d} />
             </div>
-            <div className="rounded-md border border-border bg-surface p-3">
+            <div className="rounded-xl border border-border bg-background p-3">
               <div className="mb-2 font-mono text-xs text-muted-foreground">Threat Actor Velocity</div>
               <TaVelocity d={d} />
             </div>
-            <div className="rounded-md border border-border bg-surface p-3">
+            <div className="rounded-xl border border-border bg-background p-3">
               <div className="mb-2 font-mono text-xs text-muted-foreground">Sector Co-occurrence</div>
               <SectorCooccurrence d={d} />
             </div>
-            <div className="rounded-md border border-border bg-surface p-3">
+            <div className="rounded-xl border border-border bg-background p-3">
               <div className="mb-2 font-mono text-xs text-muted-foreground">Sector × Actor Matrix</div>
               <SectorActorMatrix d={d} />
             </div>
@@ -169,19 +169,19 @@ export default function ExecDashboardPage() {
               <DashboardSectionLabel>Role View — {d.view_config.role.toUpperCase()}</DashboardSectionLabel>
               <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
                 {d.view_config.sections.cluster_list && (
-                  <div className="rounded-md border border-border bg-surface p-3">
+                  <div className="rounded-xl border border-border bg-background p-3">
                     <div className="mb-2 font-mono text-xs text-muted-foreground">Recent Campaign Clusters</div>
                     <ClusterList d={d} />
                   </div>
                 )}
                 {d.view_config.sections.fp_feedback_queue && (
-                  <div className="rounded-md border border-border bg-surface p-3">
+                  <div className="rounded-xl border border-border bg-background p-3">
                     <div className="mb-2 font-mono text-xs text-muted-foreground">IOC False-Positive Queue</div>
                     <FpQueue d={d} />
                   </div>
                 )}
                 {d.view_config.sections.critical_cve_feed && (
-                  <div className="rounded-md border border-border bg-surface p-3 lg:col-span-2">
+                  <div className="rounded-xl border border-border bg-background p-3 lg:col-span-2">
                     <div className="mb-2 font-mono text-xs text-muted-foreground">Critical CVE Feed</div>
                     <CriticalCveFeed d={d} />
                   </div>

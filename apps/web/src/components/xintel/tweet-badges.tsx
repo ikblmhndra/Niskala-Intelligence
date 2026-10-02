@@ -11,14 +11,14 @@ export function TweetBadges({ tweet: t, limit = 99 }: { tweet: Tweet; limit?: nu
 
   if (t.apac_indicator) {
     badges.push(
-      <Badge key="apac" variant="outline" className="border-primary/30 bg-primary/10 text-[9px] text-primary">
+      <Badge key="apac" variant="outline" className="border-primary/30 bg-primary/10 text-xs text-primary">
         APAC
       </Badge>,
     );
   }
   if (t.ot_status) {
     badges.push(
-      <Badge key="ot" variant="outline" className="border-warning/30 bg-warning/10 text-[9px] text-warning">
+      <Badge key="ot" variant="outline" className="border-warning/30 bg-warning/10 text-xs text-warning">
         OT
       </Badge>,
     );
@@ -28,7 +28,7 @@ export function TweetBadges({ tweet: t, limit = 99 }: { tweet: Tweet; limit?: nu
       <Badge
         key="confirmed"
         variant="outline"
-        className="border-destructive/30 bg-destructive/10 text-[9px] text-destructive"
+        className="border-destructive/30 bg-destructive/10 text-xs text-destructive"
       >
         CONFIRMED
       </Badge>,
@@ -36,7 +36,7 @@ export function TweetBadges({ tweet: t, limit = 99 }: { tweet: Tweet; limit?: nu
   }
   if (t.report_status) {
     badges.push(
-      <Badge key="report" variant="outline" className="border-ring/20 bg-ring/10 text-[9px] text-ring">
+      <Badge key="report" variant="outline" className="border-ring/20 bg-ring/10 text-xs text-ring">
         REPORT
       </Badge>,
     );
@@ -46,7 +46,7 @@ export function TweetBadges({ tweet: t, limit = 99 }: { tweet: Tweet; limit?: nu
       <Badge
         key="0day"
         variant="outline"
-        className="border-destructive/40 bg-destructive/15 text-[9px] font-bold text-destructive"
+        className="border-destructive/40 bg-destructive/15 text-xs font-bold text-destructive"
       >
         0-DAY
       </Badge>,
@@ -57,7 +57,7 @@ export function TweetBadges({ tweet: t, limit = 99 }: { tweet: Tweet; limit?: nu
       <Badge
         key={`cve-${cve}`}
         variant="outline"
-        className="border-destructive/20 bg-destructive/10 font-mono text-[9px] text-destructive"
+        className="border-destructive/20 bg-destructive/10 font-mono text-xs text-destructive"
       >
         {cve.toUpperCase()}
       </Badge>,
@@ -65,7 +65,7 @@ export function TweetBadges({ tweet: t, limit = 99 }: { tweet: Tweet; limit?: nu
   );
   (t.mentioned_group ?? []).slice(0, limit).forEach((g) =>
     badges.push(
-      <Badge key={`grp-${g}`} variant="outline" className="text-[9px] text-muted-foreground">
+      <Badge key={`grp-${g}`} variant="outline" className="text-xs text-muted-foreground">
         {g}
       </Badge>,
     ),

@@ -10,13 +10,20 @@ Isi tiap item: **apa** yang diminta, **keadaan sekarang** (fakta dari repo/stagi
 
 | # | Item | Butuh dari user | Bergantung pada |
 |---|---|---|---|
-| 1 | Rebranding nama platform + UI (colorplate, typography, animation) | aset brand | -- |
-| 2 | Rebranding template `newsletter_email` dan `cve_notification_email` | (aset yang sama dengan #1) | #1 |
+| 1 | Rebranding nama platform + UI (colorplate, typography, animation) -- **SELESAI 2026-10-02, sisa logo SVG** | aset brand | -- |
+| 2 | Rebranding template `newsletter_email` dan `cve_notification_email` -- **kode selesai 2026-10-02, verifikasi klien email belum** | (aset yang sama dengan #1) | #1 |
 | 3 | Tombol "Populate now" di CVE Tracker (semua / hanya yang baru ditambahkan) | keputusan kecil (lihat item) | -- |
 
 ---
 
 ## 1. Rebranding nama platform dan UI
+
+> **Status 2026-10-02 -- dikerjakan** (PR #3 dan #4). Nama tampilan **Niskala Intelligence** (satu konstanta
+> `apps/web/src/lib/brand.ts` + setelan `platform_name` di `cti_core.config`); tema light dan dark
+> (`globals.css`, token terpisah untuk severity, kontras dicek AA); font Google Sans Flex; `prefers-reduced-motion`;
+> sidebar, dashboard + peta dunia, semua tab dan dialog utama dicek di staging. Identifier teknis (`cti-platform`,
+> `cti_*`, image) sengaja tetap. **Sisa**: logo SVG (header masih huruf "N" + teks), dan `grep` nama lama di
+> prompt LLM ("Cyber Threat Intelligence" sebagai istilah umum) sengaja dibiarkan.
 
 **Diminta**: ganti nama platform dan tampilan UI -- *colorplate*, *typography*, *animation* -- sesuai
 aset yang akan diberikan user.
@@ -54,6 +61,12 @@ teks-latar memenuhi WCAG AA di tema yang dipakai; screenshot tiap tab dilampirka
 ---
 
 ## 2. Rebranding template email
+
+> **Status 2026-10-02 -- kode selesai, verifikasi belum**: `templates/_base_email.html` (Jinja `extends`) dipakai
+> kedua email; palet brand, hex saja, font stack cadangan, `platform_name` dari setelan. **Belum**: dikirim lewat
+> Graph ke akun uji dan dicek di Outlook desktop/web, Gmail, mobile (kriteria "Selesai bila" di bawah). Catatan:
+> preview newsletter di staging masih gagal dengan `500: Expecting value` dari sisi server (diduga konfigurasi LLM
+> di `.env`), terpisah dari template ini.
 
 **Diminta**: template `newsletter_email` dan `cve_notification_email` mengikuti hasil item 1.
 

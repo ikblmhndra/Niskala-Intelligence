@@ -37,6 +37,8 @@
   dict({
     'by_news_type': list([
     ]),
+    'country_counts': list([
+    ]),
     'timeline': list([
       dict({
         'count': 1,

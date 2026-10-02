@@ -27,7 +27,7 @@ export function SectorHeatmap({ d }: { d: ExecDashboardV2 }) {
   return (
     <>
       <div className="overflow-x-auto">
-        <table className="w-full border-collapse text-[10px]">
+        <table className="w-full border-collapse text-xs">
           <thead>
             <tr>
               <th />
@@ -112,7 +112,7 @@ function DrillModal({ drill, onClose }: { drill: { sector: string; month: string
               <a href={a.url} target="_blank" rel="noopener noreferrer" className="font-medium text-foreground hover:underline">
                 {a.title}
               </a>
-              <div className="mt-1 flex flex-wrap gap-2 font-mono text-[9px] text-muted-foreground">
+              <div className="mt-1 flex flex-wrap gap-2 font-mono text-xs text-muted-foreground">
                 <span>{a.posted_on}</span>
                 <span>{a.source}</span>
                 {a.news_type && <span className="text-primary">{a.news_type}</span>}

@@ -42,7 +42,7 @@ export function GroupsPanel({ onSelect }: { onSelect: (target: DetailTarget) => 
     <div>
       <div className="mb-3 flex flex-wrap items-end gap-2">
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Search</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Search</Label>
           <Input
             placeholder="Group name…"
             value={search}
@@ -54,7 +54,7 @@ export function GroupsPanel({ onSelect }: { onSelect: (target: DetailTarget) => 
           />
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Domain</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Domain</Label>
           <Select
             items={{ [ALL]: "All Domains", ...Object.fromEntries(DOMAINS.map((d) => [d, DOMAIN_LABELS[d]])) }}
             value={domain || ALL}
@@ -84,7 +84,7 @@ export function GroupsPanel({ onSelect }: { onSelect: (target: DetailTarget) => 
       {query.isError && <p className="py-6 text-center text-xs text-destructive">Error loading groups</p>}
       {query.data && (
         <>
-          <Table>
+          <Table framed>
             <TableHeader>
               <TableRow>
                 <TableHead>ID</TableHead>
@@ -103,9 +103,9 @@ export function GroupsPanel({ onSelect }: { onSelect: (target: DetailTarget) => 
               )}
               {query.data.groups.map((g) => (
                 <TableRow key={g.group_id} className="cursor-pointer" onClick={() => onSelect({ kind: "group", id: g.group_id })}>
-                  <TableCell className="font-mono text-[11px] text-primary whitespace-nowrap">{g.group_id}</TableCell>
+                  <TableCell className="font-mono text-[13px] text-primary whitespace-nowrap">{g.group_id}</TableCell>
                   <TableCell className="text-xs">{g.name}</TableCell>
-                  <TableCell className="font-mono text-[10px] text-muted-foreground">{g.aliases.slice(0, 3).join(", ")}</TableCell>
+                  <TableCell className="font-mono text-xs text-muted-foreground">{g.aliases.slice(0, 3).join(", ")}</TableCell>
                   <TableCell>
                     <DomainBadges domains={g.domains} />
                   </TableCell>

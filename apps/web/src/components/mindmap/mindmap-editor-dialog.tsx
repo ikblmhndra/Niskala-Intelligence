@@ -1,5 +1,6 @@
 "use client";
 
+import { RefreshCwIcon, SaveIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -100,7 +101,7 @@ function MindmapEditorForm({
         body: { syntax },
       });
       if (error) throw new Error(JSON.stringify(error));
-      setStatus("✓ Saved");
+      setStatus("Saved");
       await queryClient.invalidateQueries({ queryKey: ["mindmap", "doc", featureType, docId] });
     } catch (e) {
       setStatus(`Save error: ${(e as Error).message}`);
@@ -120,7 +121,7 @@ function MindmapEditorForm({
       if (error) throw new Error(JSON.stringify(error));
       const d = data as unknown as MindmapDocResponse;
       setSyntax(d.display_syntax || "");
-      setStatus("✓ Regenerated");
+      setStatus("Regenerated");
       await queryClient.invalidateQueries({ queryKey: ["mindmap", "doc", featureType, docId] });
     } catch (e) {
       setStatus(`Regen error: ${(e as Error).message}`);
@@ -136,24 +137,24 @@ function MindmapEditorForm({
     <div className="flex min-h-0 flex-1 flex-col gap-3">
       <div className="flex flex-shrink-0 flex-wrap items-center gap-2.5 pr-8">
         <span className="font-mono text-xs text-foreground">{title || `${featureType}/${docId}`}</span>
-        <span className="rounded-sm border border-border bg-surface2 px-1.5 py-0.5 font-mono text-[9px] text-muted-foreground">
+        <span className="rounded-full border border-border bg-background px-1.5 py-0.5 font-mono text-xs text-muted-foreground">
           Mind Map Editor
         </span>
 
         <div className="ml-2 flex items-center gap-1.5" title="Node background color">
-          <span className="font-mono text-[9px] text-muted-foreground">Node</span>
+          <span className="font-mono text-xs text-muted-foreground">Node</span>
           <input
             type="color"
             value={nodeBg || "#d0002f"}
             onChange={(e) => setNodeBg(e.target.value)}
-            className={cn("h-[22px] w-[26px] cursor-pointer rounded-sm border border-border bg-transparent p-0.5", isAuto && "opacity-35")}
+            className={cn("h-[22px] w-[26px] cursor-pointer rounded-full border border-border bg-transparent p-0.5", isAuto && "opacity-35")}
           />
           <button
             type="button"
             onClick={() => setNodeBg(isAuto ? "#d0002f" : null)}
             title="Use level-based colors instead"
             className={cn(
-              "rounded-sm border px-1.5 py-0.5 font-mono text-[8px]",
+              "rounded-full border px-1.5 py-0.5 font-mono text-xs",
               isAuto ? "border-primary/40 bg-primary/12 text-primary" : "border-border text-muted-foreground",
             )}
           >
@@ -162,39 +163,39 @@ function MindmapEditorForm({
         </div>
 
         <div className="flex items-center gap-1.5" title="Font color">
-          <span className="font-mono text-[9px] text-muted-foreground">Font</span>
+          <span className="font-mono text-xs text-muted-foreground">Font</span>
           <input
             type="color"
             value={nodeFg}
             onChange={(e) => setNodeFg(e.target.value)}
-            className="h-[22px] w-[26px] cursor-pointer rounded-sm border border-border bg-transparent p-0.5"
+            className="h-[22px] w-[26px] cursor-pointer rounded-full border border-border bg-transparent p-0.5"
           />
         </div>
 
         <div className="ml-auto flex gap-1.5">
-          <Button size="sm" variant="outline" className="h-7 px-2.5 text-[10px]" disabled={regenerating} onClick={() => void regenerate()}>
-            ⟳ Regenerate
+          <Button size="sm" variant="outline" className="h-7 px-2.5 text-xs" disabled={regenerating} onClick={() => void regenerate()}>
+            <RefreshCwIcon aria-hidden /> Regenerate
           </Button>
-          <Button size="sm" className="h-7 px-2.5 text-[10px]" disabled={saving} onClick={() => void save()}>
-            💾 Save
+          <Button size="sm" className="h-7 px-2.5 text-xs" disabled={saving} onClick={() => void save()}>
+            <SaveIcon aria-hidden /> Save
           </Button>
         </div>
       </div>
-      {status && <div className="flex-shrink-0 font-mono text-[9px] text-muted-foreground">{status}</div>}
+      {status && <div className="flex-shrink-0 font-mono text-xs text-muted-foreground">{status}</div>}
 
       <div className="flex min-h-0 flex-1 gap-3">
         <div className="flex w-[340px] flex-shrink-0 flex-col gap-1">
-          <div className="font-mono text-[9px] tracking-[0.05em] text-muted-foreground uppercase">Mermaid Syntax</div>
+          <div className="text-sm font-semibold text-muted-foreground">Mermaid Syntax</div>
           <textarea
             value={syntax}
             onChange={(e) => setSyntax(e.target.value)}
             spellCheck={false}
-            className="flex-1 resize-none rounded-md border border-border bg-surface p-2.5 font-mono text-[11px] leading-relaxed text-foreground outline-none"
+            className="flex-1 resize-none rounded-2xl border border-border bg-surface shadow-sm p-2.5 font-mono text-[13px] leading-relaxed text-foreground outline-none"
           />
         </div>
         <div className="flex min-w-0 flex-1 flex-col gap-1">
-          <div className="font-mono text-[9px] tracking-[0.05em] text-muted-foreground uppercase">Preview</div>
-          <div ref={previewRef} className="flex flex-1 items-start justify-center overflow-auto rounded-md border border-border bg-surface2 p-4" />
+          <div className="text-sm font-semibold text-muted-foreground">Preview</div>
+          <div ref={previewRef} className="flex flex-1 items-start justify-center overflow-auto rounded-2xl border border-border bg-surface  p-4" />
         </div>
       </div>
     </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import { DownloadIcon } from "lucide-react";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
@@ -67,7 +68,7 @@ export function MitreHeatmapView() {
     <div>
       <div className="mb-4 flex flex-wrap items-end gap-3 border-b border-border pb-3">
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">View</Label>
+          <Label className="text-sm font-medium text-muted-foreground">View</Label>
           <Select value={view} onValueChange={(v) => v && setView(v as "ta" | "industry")}>
             <SelectTrigger size="sm" className="w-36 font-mono text-xs">
               <SelectValue />
@@ -82,7 +83,7 @@ export function MitreHeatmapView() {
           </Select>
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Period</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Period</Label>
           <Select value={String(days)} onValueChange={(v) => v && setDays(Number(v))}>
             <SelectTrigger size="sm" className="w-28 font-mono text-xs">
               <SelectValue />
@@ -98,7 +99,7 @@ export function MitreHeatmapView() {
         </div>
         <div className="ml-auto flex gap-2">
           <Button size="sm" variant="outline" disabled={exporting} onClick={() => void downloadLayer()}>
-            ⬇ Download Layer
+            <DownloadIcon /> Download Layer
           </Button>
           <Button size="sm" variant="outline" onClick={openNavigator}>
             ⧉ Open in Navigator
@@ -113,8 +114,8 @@ export function MitreHeatmapView() {
       )}
 
       {d && d.rows.length > 0 && d.ttps.length > 0 && (
-        <div className="overflow-x-auto">
-          <table className="border-collapse text-[10px]">
+        <div className="overflow-x-auto rounded-2xl border border-border bg-surface p-4">
+          <table className="border-collapse text-xs">
             <thead>
               <tr>
                 <th className="border border-border bg-surface px-2 py-1.5 text-left text-muted-foreground">

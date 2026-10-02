@@ -33,7 +33,7 @@ function MetaRow({
   if (!items || !items.length) return null;
   return (
     <div>
-      <div className="mb-1.5 font-mono text-[10px] tracking-[0.1em] text-muted-foreground uppercase">
+      <div className="mb-1.5 text-sm font-semibold text-muted-foreground">
         {label}
       </div>
       <div className="flex flex-wrap gap-1.5">
@@ -92,7 +92,7 @@ export function TweetDetailDialog({
 
   function handleQueue() {
     const result = queueForNewsletter(t);
-    setQueueLabel(result === "already" ? "✓ Already queued" : "✓ Queued");
+    setQueueLabel(result === "already" ? "Already queued" : "Queued");
     setTimeout(() => setQueueLabel("+ Newsletter"), 1500);
   }
 
@@ -142,7 +142,7 @@ export function TweetDetailDialog({
 
         <div className="flex flex-col gap-3 pt-3.5">
           <div>
-            <div className="mb-1.5 font-mono text-[10px] tracking-[0.1em] text-muted-foreground uppercase">
+            <div className="mb-1.5 text-sm font-semibold text-muted-foreground">
               Signals
             </div>
             <div className="flex flex-wrap gap-1.5">
@@ -160,7 +160,7 @@ export function TweetDetailDialog({
 
           {t.confirmed_incident && (
             <div>
-              <div className="mb-1.5 font-mono text-[10px] tracking-[0.1em] text-muted-foreground uppercase">
+              <div className="mb-1.5 text-sm font-semibold text-muted-foreground">
                 Incident
               </div>
               <div className="flex flex-col gap-1 text-xs">
@@ -173,7 +173,7 @@ export function TweetDetailDialog({
                   <div className="flex flex-wrap items-center gap-1">
                     <span className="text-muted-foreground">Indicators:</span>
                     {t.incident_indicators!.map((i) => (
-                      <Badge key={i} variant="outline" className="text-[9px]">
+                      <Badge key={i} variant="outline" className="text-xs">
                         {i}
                       </Badge>
                     ))}
@@ -190,7 +190,7 @@ export function TweetDetailDialog({
 
           {t.confidence != null && (
             <div>
-              <div className="mb-1.5 font-mono text-[10px] tracking-[0.1em] text-muted-foreground uppercase">
+              <div className="mb-1.5 text-sm font-semibold text-muted-foreground">
                 LLM Cyber Relevance
               </div>
               <div className="text-xs text-muted-foreground">
@@ -199,7 +199,7 @@ export function TweetDetailDialog({
             </div>
           )}
 
-          <div className="border-t border-border pt-2 font-mono text-[10px] text-muted-foreground">
+          <div className="border-t border-border pt-2 font-mono text-xs text-muted-foreground">
             fetched_at: {t.fetched_at ? `${t.fetched_at.slice(0, 19).replace("T", " ")} UTC` : "—"} · tweet_id:{" "}
             {t.tweet_id || "—"}
           </div>

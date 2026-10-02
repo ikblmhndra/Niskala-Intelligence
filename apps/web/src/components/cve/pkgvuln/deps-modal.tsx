@@ -1,5 +1,6 @@
 "use client";
 
+import { LinkIcon } from "lucide-react";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -90,22 +91,22 @@ export function DepsModal({ pkgId, onClose, onResolved }: DepsModalProps) {
             {tab === "deps" ? (
               <div className="space-y-3">
                 <div>
-                  <div className="mb-1 font-mono text-[10px] text-muted-foreground uppercase">Direct ({direct.length})</div>
+                  <div className="mb-1 text-sm font-medium text-muted-foreground">Direct ({direct.length})</div>
                   <div className="flex flex-wrap gap-1.5">
                     {direct.map((dep, i) => (
-                      <Badge key={i} variant="outline" className="font-mono text-[10px]">
+                      <Badge key={i} variant="outline" className="font-mono text-xs">
                         {dep.name}@{dep.version}
                       </Badge>
                     ))}
                   </div>
                 </div>
                 <div>
-                  <div className="mb-1 font-mono text-[10px] text-muted-foreground uppercase">
+                  <div className="mb-1 text-sm font-medium text-muted-foreground">
                     Indirect ({indirect.length})
                   </div>
                   <div className="flex max-h-48 flex-wrap gap-1.5 overflow-y-auto">
                     {indirect.map((dep, i) => (
-                      <Badge key={i} variant="outline" className="font-mono text-[10px] opacity-75">
+                      <Badge key={i} variant="outline" className="font-mono text-xs opacity-75">
                         {dep.name}@{dep.version}
                       </Badge>
                     ))}
@@ -118,14 +119,14 @@ export function DepsModal({ pkgId, onClose, onResolved }: DepsModalProps) {
                   <p className="text-xs text-muted-foreground">No OSSF Scorecard data available for this package.</p>
                 ) : (
                   <>
-                    <p className="font-mono text-[11px] text-muted-foreground">
+                    <p className="font-mono text-[13px] text-muted-foreground">
                       {d.scorecard_project} · {d.scorecard_date}
                     </p>
                     {checks.map((c, i) => (
                       <div key={i} className="flex items-start justify-between gap-3 border-b border-border/60 py-1.5 text-xs">
                         <div>
                           <div className="font-medium">{c.name}</div>
-                          <div className="text-[10px] text-muted-foreground">{c.reason}</div>
+                          <div className="text-xs text-muted-foreground">{c.reason}</div>
                         </div>
                         <span className="font-mono text-warning">{c.score ?? "—"}</span>
                       </div>
@@ -137,10 +138,10 @@ export function DepsModal({ pkgId, onClose, onResolved }: DepsModalProps) {
 
             <div className="mt-3 flex justify-end gap-2">
               <Button size="sm" variant="outline" disabled={rescanning} onClick={() => void rescan(false)}>
-                ⛓ Re-resolve
+                <LinkIcon aria-hidden /> Re-resolve
               </Button>
               <Button size="sm" variant="outline" disabled={rescanning} onClick={() => void rescan(true)}>
-                ⛓ Re-resolve + scan transitive
+                <LinkIcon aria-hidden /> Re-resolve + scan transitive
               </Button>
             </div>
           </>

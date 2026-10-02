@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-import { AppHeader } from "@/components/app-header";
+import { AppSidebar, AppTopbar } from "@/components/app-header";
 import { useAuth } from "@/components/providers/auth-provider";
 
 /** Shell buat SEMUA route ber-auth (9 route Fase 8) -- `proxy.ts` udah
@@ -26,9 +26,12 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <AppHeader />
-      <main className="flex-1 p-4">{children}</main>
+    <div className="flex min-h-screen">
+      <AppSidebar />
+      <div className="flex min-w-0 flex-1 flex-col">
+        <AppTopbar />
+        <main className="mx-auto w-full max-w-[1600px] flex-1 p-4 sm:p-8">{children}</main>
+      </div>
     </div>
   );
 }

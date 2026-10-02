@@ -95,7 +95,7 @@ export function TtpDrillDialog({ target, onClose }: TtpDrillDialogProps) {
               className="block rounded-md border-b border-border px-3 py-2.5 hover:bg-muted/50"
             >
               <div className="text-xs leading-snug text-foreground">{a.title}</div>
-              <div className="mt-1 font-mono text-[10px] text-muted-foreground">
+              <div className="mt-1 font-mono text-xs text-muted-foreground">
                 {a.posted_on} · {a.source}
               </div>
             </a>
@@ -104,7 +104,7 @@ export function TtpDrillDialog({ target, onClose }: TtpDrillDialogProps) {
 
         {query.data && total > 0 && (
           <div className="mt-2 flex items-center justify-between">
-            <span className="font-mono text-[10px] text-muted-foreground">{total.toLocaleString()} article(s)</span>
+            <span className="font-mono text-xs text-muted-foreground">{total.toLocaleString()} article(s)</span>
             <SimplePager page={page} totalPages={totalPages} onPageChange={setPage} />
           </div>
         )}

@@ -1,5 +1,6 @@
 "use client";
 
+import { ShieldIcon } from "lucide-react";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
@@ -36,7 +37,7 @@ export function D3fendToggle({ ttpId }: { ttpId: string }) {
   return (
     <>
       <Button size="sm" variant="outline" onClick={() => setOpen((o) => !o)}>
-        🛡 Defenses
+        <ShieldIcon aria-hidden /> Defenses
       </Button>
       {open && (
         <div className="mt-1.5 rounded-md border border-border bg-muted/30 p-2">
@@ -49,7 +50,7 @@ export function D3fendToggle({ ttpId }: { ttpId: string }) {
           )}
           {query.data && query.data.length > 0 && (
             <div>
-              <div className="mb-1.5 font-mono text-[9px] tracking-[0.08em] text-muted-foreground uppercase">
+              <div className="mb-1.5 text-sm font-semibold text-muted-foreground">
                 D3FEND Countermeasures
               </div>
               <div className="flex flex-wrap gap-1.5">
@@ -60,7 +61,7 @@ export function D3fendToggle({ ttpId }: { ttpId: string }) {
                     target="_blank"
                     rel="noopener noreferrer"
                     title={m.artifact}
-                    className="rounded border border-secondary/30 bg-secondary/10 px-2 py-0.5 font-mono text-[10px] text-secondary no-underline"
+                    className="rounded border border-secondary/30 bg-secondary/10 px-2 py-0.5 font-mono text-xs text-secondary no-underline"
                   >
                     {m.name}
                   </a>

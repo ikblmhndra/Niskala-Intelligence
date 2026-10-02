@@ -52,7 +52,7 @@ export function UsersSection() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="font-mono text-xs tracking-wide text-muted-foreground uppercase">
+        <CardTitle className="text-base font-semibold text-foreground">
           Users
         </CardTitle>
       </CardHeader>
@@ -77,23 +77,23 @@ export function UsersSection() {
                   <TableRow key={u.username}>
                     <TableCell className="font-mono text-xs text-foreground">{u.username}</TableCell>
                     <TableCell>
-                      <Badge variant="outline" className={`font-mono text-[9px] ${roleBadgeClass(u.role)}`}>
+                      <Badge variant="outline" className={`font-mono text-xs ${roleBadgeClass(u.role)}`}>
                         {u.role}
                       </Badge>
                     </TableCell>
                     <TableCell>
                       <div className="flex flex-wrap gap-1">
                         {(u.client_ids.length ? u.client_ids : ["default"]).map((c) => (
-                          <Badge key={c} variant="outline" className="font-mono text-[9px] text-muted-foreground">
+                          <Badge key={c} variant="outline" className="font-mono text-xs text-muted-foreground">
                             {c}
                           </Badge>
                         ))}
                       </div>
                     </TableCell>
-                    <TableCell className="font-mono text-[10px] text-muted-foreground">
+                    <TableCell className="font-mono text-xs text-muted-foreground">
                       {u.created_at.split("T")[0]}
                     </TableCell>
-                    <TableCell className="font-mono text-[10px] text-muted-foreground">
+                    <TableCell className="font-mono text-xs text-muted-foreground">
                       {u.last_sign_in ? u.last_sign_in.replace("T", " ").split(".")[0] : "—"}
                     </TableCell>
                     <TableCell>
@@ -191,14 +191,14 @@ function AddUserForm() {
 
   return (
     <div>
-      <div className="mb-3 font-mono text-[9px] tracking-wide text-muted-foreground uppercase">Add User</div>
+      <div className="mb-3 text-base font-semibold text-foreground">Add User</div>
       <div className="space-y-2.5">
         <div className="space-y-1.5">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Username</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Username</Label>
           <Input value={username} onChange={(e) => setUsername(e.target.value)} className="font-mono text-xs" />
         </div>
         <div className="space-y-1.5">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">
+          <Label className="text-sm font-medium text-muted-foreground">
             Password <span className="normal-case opacity-70">({policyHint(policy)})</span>
           </Label>
           <Input
@@ -209,7 +209,7 @@ function AddUserForm() {
           />
         </div>
         <div className="space-y-1.5">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Role</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Role</Label>
           <Select value={role} onValueChange={(v) => v && setRole(v)}>
             <SelectTrigger className="w-full font-mono text-xs">
               <SelectValue />
@@ -224,7 +224,7 @@ function AddUserForm() {
           </Select>
         </div>
         <div className="space-y-1.5">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">
+          <Label className="text-sm font-medium text-muted-foreground">
             Client(s) <span className="normal-case opacity-70">comma-separated</span>
           </Label>
           <Input value={clientIds} onChange={(e) => setClientIds(e.target.value)} className="font-mono text-xs" />
@@ -288,7 +288,7 @@ function ResetPasswordDialog({
           User: <span className="text-foreground">{target?.username}</span>
         </p>
         <div className="space-y-1.5">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">
+          <Label className="text-sm font-medium text-muted-foreground">
             New Password <span className="normal-case opacity-70">({policyHint(policy)})</span>
           </Label>
           <Input type="password" value={pw} onChange={(e) => setPw(e.target.value)} className="font-mono text-xs" />
@@ -451,7 +451,7 @@ function EditClientsForm({ target, onClose }: { target: AdminUser; onClose: () =
           <label key={c.client_id} className="flex cursor-pointer items-center gap-2 py-0.5 text-xs">
             <Checkbox checked={selected.has(c.client_id)} onCheckedChange={() => toggle(c.client_id)} />
             <span className="text-foreground">{c.name}</span>
-            <span className="font-mono text-[9px] text-muted-foreground">{c.client_id}</span>
+            <span className="font-mono text-xs text-muted-foreground">{c.client_id}</span>
           </label>
         ))}
       </div>

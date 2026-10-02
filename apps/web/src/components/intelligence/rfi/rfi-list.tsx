@@ -92,7 +92,7 @@ export function RfiList() {
         </Button>
       </div>
 
-      <p className="mb-2 font-mono text-[10px] text-muted-foreground">{query.data?.total ?? 0} RFIs</p>
+      <p className="mb-2 font-mono text-xs text-muted-foreground">{query.data?.total ?? 0} RFIs</p>
 
       {query.isPending && <p className="py-8 text-center text-xs text-muted-foreground">Loading…</p>}
       {query.isError && <p className="py-8 text-center text-xs text-destructive">Error loading RFIs.</p>}
@@ -102,8 +102,8 @@ export function RfiList() {
 
       <div className="space-y-3">
         {rfis.map((r) => (
-          <div key={r.id} className="flex items-start gap-3 rounded-md border border-border bg-surface p-3">
-            <Badge variant="outline" className={cn("w-24 shrink-0 justify-center font-mono text-[10px]", STATUS_CLASS[r.status])}>
+          <div key={r.id} className="flex items-start gap-3 rounded-xl border border-border bg-background p-3">
+            <Badge variant="outline" className={cn("w-24 shrink-0 justify-center font-mono text-xs", STATUS_CLASS[r.status])}>
               {STATUS_LABEL[r.status] ?? r.status.toUpperCase()}
             </Badge>
             <div className="min-w-0 flex-1">
@@ -114,20 +114,20 @@ export function RfiList() {
                   {r.response.length > 120 ? "…" : ""}
                 </p>
               )}
-              <div className="mt-1.5 flex flex-wrap gap-3 font-mono text-[10px] text-muted-foreground">
+              <div className="mt-1.5 flex flex-wrap gap-3 font-mono text-xs text-muted-foreground">
                 <span>From: {r.requester}</span>
                 {r.due_date && <span>Due: {r.due_date}</span>}
                 {r.created_at && <span>Created: {r.created_at.slice(0, 10)}</span>}
                 {r.linked_pir != null && (
-                  <span className="rounded bg-muted px-1.5 py-0.5 text-[9px]">PIR #{r.linked_pir}</span>
+                  <span className="rounded bg-muted px-1.5 py-0.5 text-xs">PIR #{r.linked_pir}</span>
                 )}
               </div>
             </div>
             <div className="flex shrink-0 flex-col gap-1">
-              <Button size="sm" variant="outline" className="h-6 px-2 text-[10px]" onClick={() => setEditTarget(r)}>
+              <Button size="sm" variant="outline" className="h-6 px-2 text-xs" onClick={() => setEditTarget(r)}>
                 Edit
               </Button>
-              <Button size="sm" variant="destructive" className="h-6 px-2 text-[10px]" onClick={() => setRemoveTarget(r)}>
+              <Button size="sm" variant="destructive" className="h-6 px-2 text-xs" onClick={() => setRemoveTarget(r)}>
                 Del
               </Button>
             </div>

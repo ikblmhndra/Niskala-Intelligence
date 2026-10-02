@@ -23,14 +23,14 @@ export function RecapHistory({ items, selectedDate, onSelect }: RecapHistoryProp
             key={it.date}
             onClick={() => onSelect(it.date)}
             className={cn(
-              "rounded-md border px-2 py-1.5 text-left font-mono text-[11px] transition-colors",
+              "rounded-md border px-2 py-1.5 text-left font-mono text-[13px] transition-colors",
               active
                 ? "border-primary/50 bg-primary/10"
                 : "border-border hover:bg-accent",
             )}
           >
             <div className={active ? "text-primary" : "text-foreground"}>{it.date}</div>
-            <div className="mt-0.5 text-[10px] text-muted-foreground">
+            <div className="mt-0.5 text-xs text-muted-foreground">
               {c.articles ?? 0}a · {c.tweets ?? 0}t · {c.cves ?? 0}c
             </div>
           </button>

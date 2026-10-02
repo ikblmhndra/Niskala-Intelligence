@@ -80,7 +80,7 @@ export function LockfileImportDialog({ open, onOpenChange, onImported }: Lockfil
                 {result.skipped}
               </p>
               {result.packages.length > 0 && (
-                <div className="mt-2 max-h-40 space-y-0.5 overflow-y-auto font-mono text-[10px] text-muted-foreground">
+                <div className="mt-2 max-h-40 space-y-0.5 overflow-y-auto font-mono text-xs text-muted-foreground">
                   {result.packages.slice(0, 20).map((raw, i) => {
                     const p = raw as { name?: string; ecosystem?: string; version?: string };
                     return (
@@ -92,7 +92,7 @@ export function LockfileImportDialog({ open, onOpenChange, onImported }: Lockfil
                 </div>
               )}
               {result.errors.length > 0 && (
-                <div className="mt-2 space-y-0.5 text-[10px] text-destructive">
+                <div className="mt-2 space-y-0.5 text-xs text-destructive">
                   {result.errors.slice(0, 5).map((e, i) => (
                     <div key={i}>{e}</div>
                   ))}

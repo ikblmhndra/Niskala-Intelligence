@@ -1,5 +1,6 @@
 "use client";
 
+import { PaletteIcon } from "lucide-react";
 import { useState } from "react";
 
 import { Checkbox } from "@/components/ui/checkbox";
@@ -31,42 +32,42 @@ export function NewsletterTemplatePanel({ value, onChange }: Props) {
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="flex w-full items-center gap-2 font-mono text-[10px] tracking-[0.1em] text-primary uppercase"
+        className="flex w-full items-center gap-2 text-sm font-semibold text-primary"
       >
-        🎨 Customize Template
-        <span className="ml-auto text-[9px] text-muted-foreground">{open ? "▼ collapse" : "▶ expand"}</span>
+        <PaletteIcon aria-hidden /> Customize Template
+        <span className="ml-auto text-xs text-muted-foreground">{open ? "▼ collapse" : "▶ expand"}</span>
       </button>
       {open && (
         <div className="mt-3 space-y-3">
           <div>
-            <Label className="mb-1 block font-mono text-[9px] text-muted-foreground uppercase">Custom CSS — whole email</Label>
+            <Label className="mb-1 block text-sm font-medium text-muted-foreground">Custom CSS — whole email</Label>
             <Textarea
               value={value.customCss}
               onChange={(e) => set("customCss", e.target.value)}
               placeholder="/* Override any styles, e.g.: .header { background: #1a1a1a; } */"
-              className="h-20 resize-y font-mono text-[10px]"
+              className="h-20 resize-y font-mono text-xs"
             />
           </div>
           <div>
-            <Label className="mb-1 block font-mono text-[9px] text-muted-foreground uppercase">
+            <Label className="mb-1 block text-sm font-medium text-muted-foreground">
               Custom Intro — injected at top of email body (HTML allowed)
             </Label>
             <Textarea
               value={value.customIntro}
               onChange={(e) => set("customIntro", e.target.value)}
               placeholder="<p>This week's newsletter covers...</p>"
-              className="h-14 resize-y font-mono text-[10px]"
+              className="h-14 resize-y font-mono text-xs"
             />
           </div>
           <div>
-            <Label className="mb-1 block font-mono text-[9px] text-muted-foreground uppercase">
+            <Label className="mb-1 block text-sm font-medium text-muted-foreground">
               Custom Footer — replaces default footer (HTML allowed)
             </Label>
             <Textarea
               value={value.customFooter}
               onChange={(e) => set("customFooter", e.target.value)}
               placeholder="<p>CTI Team &middot; Internal &mdash; Confidential</p>"
-              className="h-14 resize-y font-mono text-[10px]"
+              className="h-14 resize-y font-mono text-xs"
             />
           </div>
           <div className="flex flex-wrap items-center gap-3">
@@ -74,7 +75,7 @@ export function NewsletterTemplatePanel({ value, onChange }: Props) {
               <Checkbox checked={value.includeClusters} onCheckedChange={(v) => set("includeClusters", v === true)} />
               Include Top Campaign Clusters section
             </label>
-            <span className="font-mono text-[10px] text-muted-foreground">Lookback:</span>
+            <span className="font-mono text-xs text-muted-foreground">Lookback:</span>
             <Select
               items={CLUSTER_DAYS_ITEMS}
               value={String(value.clusterDays)}

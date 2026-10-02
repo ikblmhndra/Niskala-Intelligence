@@ -98,7 +98,7 @@ export function VulnsPanel({ active }: { active: boolean }) {
     <div>
       <div className="mb-3 flex flex-wrap items-end gap-2 border-b border-border pb-3">
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Search</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Search</Label>
           <Input
             placeholder="Advisory, CVE, summary…"
             value={search}
@@ -110,7 +110,7 @@ export function VulnsPanel({ active }: { active: boolean }) {
           />
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Severity</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Severity</Label>
           <Select
             items={{ [ALL]: "All Severities", ...Object.fromEntries(SEVERITIES.map((s) => [s, s])) }}
             value={severity || ALL}
@@ -135,7 +135,7 @@ export function VulnsPanel({ active }: { active: boolean }) {
           </Select>
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Package</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Package</Label>
           <Select
             items={{ [ALL]: "All Packages", ...Object.fromEntries((packagesQuery.data ?? []).map((p) => [p, p])) }}
             value={packageName || ALL}
@@ -188,7 +188,7 @@ export function VulnsPanel({ active }: { active: boolean }) {
       {listQuery.isError && <PanelError />}
       {listQuery.data && (
         <>
-          <Table>
+          <Table framed>
             <TableHeader>
               <TableRow>
                 <TableHead>Advisory</TableHead>
@@ -212,31 +212,31 @@ export function VulnsPanel({ active }: { active: boolean }) {
               )}
               {listQuery.data.items.map((v) => (
                 <TableRow key={v.id} className="cursor-pointer" onClick={() => setSelected(v)}>
-                  <TableCell className="font-mono text-[11px]">
+                  <TableCell className="font-mono text-[13px]">
                     {v.advisory_id}
-                    {v.aliases.length > 0 && <div className="text-[10px] text-muted-foreground">{v.aliases.join(", ")}</div>}
+                    {v.aliases.length > 0 && <div className="text-xs text-muted-foreground">{v.aliases.join(", ")}</div>}
                   </TableCell>
                   <TableCell className="font-mono text-xs">
                     {v.package_name}
                     {v.pinned_version && <span className="text-muted-foreground">@{v.pinned_version}</span>}
                   </TableCell>
                   <TableCell className="max-w-[240px] truncate text-xs">{v.summary || "—"}</TableCell>
-                  <TableCell className={cn("text-[11px] font-semibold", severityColorClass(v.adjusted_severity || v.severity))}>
+                  <TableCell className={cn("text-[13px] font-semibold", severityColorClass(v.adjusted_severity || v.severity))}>
                     {v.adjusted_severity || v.severity}
                   </TableCell>
                   <TableCell className="font-mono text-xs" onClick={(e) => e.stopPropagation()}>
                     {v.adjusted_score?.toFixed(1) ?? "—"}
                     {v.kev && (
-                      <Badge variant="destructive" className="ml-1 text-[9px]">
+                      <Badge variant="destructive" className="ml-1 text-xs">
                         KEV
                       </Badge>
                     )}
                   </TableCell>
-                  <TableCell className={cn("font-mono text-[11px]", v.epss_score != null ? epssColorClass(v.epss_score) : "text-muted-foreground")}>
+                  <TableCell className={cn("font-mono text-[13px]", v.epss_score != null ? epssColorClass(v.epss_score) : "text-muted-foreground")}>
                     {v.epss_score != null ? `${(v.epss_score * 100).toFixed(2)}%` : "—"}
                   </TableCell>
-                  <TableCell className="font-mono text-[11px] text-muted-foreground">{v.published?.slice(0, 10) || "—"}</TableCell>
-                  <TableCell className="font-mono text-[11px] text-primary">{v.fixed_version || "—"}</TableCell>
+                  <TableCell className="font-mono text-[13px] text-muted-foreground">{v.published?.slice(0, 10) || "—"}</TableCell>
+                  <TableCell className="font-mono text-[13px] text-primary">{v.fixed_version || "—"}</TableCell>
                   <TableCell onClick={(e) => e.stopPropagation()}>
                     <Checkbox checked={v.acknowledged} onCheckedChange={() => void toggleAck(v.id)} />
                   </TableCell>

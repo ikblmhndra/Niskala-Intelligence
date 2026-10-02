@@ -1,5 +1,6 @@
 "use client";
 
+import { CheckIcon, DownloadIcon, SaveIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -52,7 +53,7 @@ export function ExecFilterBar({
   return (
     <div className="mb-4 flex flex-wrap items-end gap-2 border-b border-border pb-3">
       <div className="flex flex-col gap-1">
-        <Label className="font-mono text-[9px] text-muted-foreground uppercase">Period</Label>
+        <Label className="text-sm font-medium text-muted-foreground">Period</Label>
         <Select
           items={selectItems(EXEC_DAY_OPTIONS)}
           value={String(filters.days)}
@@ -81,7 +82,7 @@ export function ExecFilterBar({
 
       {isAdmin && (
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Role preview</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Role preview</Label>
           <Select
             items={{ [ROLE_ALL]: "— none —", ...selectItems(EXEC_ROLE_PREVIEW_OPTIONS) }}
             value={filters.rolePreview || ROLE_ALL}
@@ -105,7 +106,7 @@ export function ExecFilterBar({
       )}
 
       {viewRole && (
-        <Badge variant="outline" className="mb-1.5 font-mono text-[10px]">
+        <Badge variant="outline" className="mb-1.5 font-mono text-xs">
           View: {viewRole.toUpperCase()}
         </Badge>
       )}
@@ -113,18 +114,18 @@ export function ExecFilterBar({
       <div className="ml-auto flex items-end gap-2">
         {watchlistSaved ? (
           <Button size="sm" variant="outline" className="text-success" onClick={onClearWatchlist}>
-            ✓ View saved
+            <CheckIcon aria-hidden /> View saved
           </Button>
         ) : (
           <Button size="sm" variant="outline" onClick={onSaveWatchlist}>
-            💾 Save view
+            <SaveIcon aria-hidden /> Save view
           </Button>
         )}
         <Button size="sm" variant="outline" disabled={exportDisabled} onClick={onExportCsv}>
-          ⬇ Export CSV
+          <DownloadIcon /> Export CSV
         </Button>
         <Button size="sm" disabled={briefPending} onClick={onGenerateBrief}>
-          {briefPending ? "⟳ Generating…" : "✦ Generate Brief"}
+          {briefPending ? "Generating…" : "Generate Brief"}
         </Button>
       </div>
     </div>

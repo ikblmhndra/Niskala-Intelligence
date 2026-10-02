@@ -1,5 +1,6 @@
 "use client";
 
+import { CheckIcon, StickyNoteIcon } from "lucide-react";
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -73,23 +74,23 @@ export function PirArticlesDialog({ pir, onClose }: PirArticlesDialogProps) {
 
           <div className="space-y-2">
             {query.data?.articles.map((a) => (
-              <div key={a.id} className="rounded-md border border-border bg-surface2 p-2.5">
+              <div key={a.id} className="rounded-xl border border-border bg-background p-2.5">
                 <div className="flex items-start justify-between gap-2">
                   <a href={a.url} target="_blank" rel="noopener noreferrer" className="flex-1 text-sm font-semibold text-foreground hover:underline">
                     {a.title}
                   </a>
                   <div className="flex shrink-0 items-center gap-1">
                     {a.has_note && (
-                      <Badge variant="outline" className="text-success text-[9px]">
-                        ✓ NOTED
+                      <Badge variant="outline" className="text-success text-xs">
+                        <CheckIcon aria-hidden /> NOTED
                       </Badge>
                     )}
-                    <Button size="sm" variant="outline" className="h-6 px-1.5 text-[10px]" onClick={() => setNoteArticle(a)}>
-                      📝 Note
+                    <Button size="sm" variant="outline" className="h-6 px-1.5 text-xs" onClick={() => setNoteArticle(a)}>
+                      <StickyNoteIcon aria-hidden /> Note
                     </Button>
                   </div>
                 </div>
-                <div className="mt-1 font-mono text-[10px] text-muted-foreground">
+                <div className="mt-1 font-mono text-xs text-muted-foreground">
                   {[a.source, a.posted_on, a.news_type].filter(Boolean).join(" · ")}
                 </div>
               </div>
@@ -202,13 +203,13 @@ function NoteForm({
   const [analyst, setAnalyst] = useState(initialAnalyst);
   return (
     <div className="space-y-3">
-      {updatedAt && <p className="font-mono text-[10px] text-muted-foreground">Last saved: {updatedAt.slice(0, 16).replace("T", " ")}</p>}
+      {updatedAt && <p className="font-mono text-xs text-muted-foreground">Last saved: {updatedAt.slice(0, 16).replace("T", " ")}</p>}
       <div className="flex flex-col gap-1">
-        <Label className="font-mono text-[9px] text-muted-foreground uppercase">Analyst</Label>
+        <Label className="text-sm font-medium text-muted-foreground">Analyst</Label>
         <Input value={analyst} onChange={(e) => setAnalyst(e.target.value)} className="text-xs" />
       </div>
       <div className="flex flex-col gap-1">
-        <Label className="font-mono text-[9px] text-muted-foreground uppercase">Note</Label>
+        <Label className="text-sm font-medium text-muted-foreground">Note</Label>
         <Textarea value={note} onChange={(e) => setNote(e.target.value)} rows={4} className="text-xs" />
       </div>
       <div className="flex justify-end gap-2">

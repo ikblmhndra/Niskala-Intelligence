@@ -3,7 +3,7 @@ import { actionabilityStyle, confidenceStyle, iocTypeStyle } from "@/lib/intelli
 function Chip({ label, bg, border, color }: { label: string; bg: string; border: string; color: string }) {
   return (
     <span
-      className="rounded-sm border px-1.5 py-0.5 font-mono text-[9px]"
+      className="rounded-full border px-1.5 py-0.5 font-mono text-xs"
       style={{ background: bg, borderColor: border, color }}
     >
       {label}

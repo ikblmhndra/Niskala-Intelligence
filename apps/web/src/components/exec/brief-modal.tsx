@@ -25,7 +25,7 @@ export function ExecBriefModal({ brief, days, onOpenChange }: ExecBriefModalProp
         <DialogHeader>
           <DialogTitle>Executive Brief</DialogTitle>
           {brief && (
-            <p className="font-mono text-[10px] text-muted-foreground">
+            <p className="font-mono text-xs text-muted-foreground">
               Generated: {new Date(brief.generated_at).toLocaleString()} · Period: {days} days
             </p>
           )}

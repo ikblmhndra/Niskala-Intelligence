@@ -53,7 +53,7 @@ export function EarlyWarningView() {
     <div>
       <div className="mb-4 flex flex-wrap items-end gap-3 border-b border-border pb-3">
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Lookback days</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Lookback days</Label>
           <Input
             type="number"
             min={14}
@@ -64,7 +64,7 @@ export function EarlyWarningView() {
           />
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Z-score threshold</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Z-score threshold</Label>
           <Input
             type="number"
             min={1.5}
@@ -75,7 +75,7 @@ export function EarlyWarningView() {
             className="w-24 font-mono text-xs"
           />
         </div>
-        <span className="mb-1.5 font-mono text-[10px] text-muted-foreground">{allSpikes.length} anomalies</span>
+        <span className="mb-1.5 font-mono text-xs text-muted-foreground">{allSpikes.length} anomalies</span>
       </div>
 
       {query.isPending && <p className="py-8 text-center font-mono text-xs text-muted-foreground">Analyzing signals…</p>}
@@ -89,20 +89,20 @@ export function EarlyWarningView() {
 
       {[...sections.entries()].map(([cat, spikes]) => (
         <div key={cat} className="mb-4">
-          <div className="mb-1.5 font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">{cat} Spikes</div>
+          <div className="mb-1.5 text-sm font-semibold text-muted-foreground">{cat} Spikes</div>
           <div className="space-y-1.5">
             {spikes.map((s, i) => (
-              <div key={i} className="flex flex-wrap items-center gap-2.5 rounded-md border border-border bg-surface px-3 py-1.5">
+              <div key={i} className="flex flex-wrap items-center gap-2.5 rounded-xl border border-border bg-background px-3 py-1.5">
                 <span className="min-w-[100px] font-mono text-xs text-foreground">{s.entity || "Overall"}</span>
-                <span className="font-mono text-[10px] text-muted-foreground">date: {s.date}</span>
-                <span className="font-mono text-[10px] text-muted-foreground">
+                <span className="font-mono text-xs text-muted-foreground">date: {s.date}</span>
+                <span className="font-mono text-xs text-muted-foreground">
                   count: <strong className="text-foreground">{s.count}</strong>
                 </span>
-                <span className="font-mono text-[10px] text-muted-foreground">baseline: {s.baseline_mean}/day</span>
-                <Badge variant={s.severity === "high" ? "destructive" : "outline"} className="text-[9px]">
+                <span className="font-mono text-xs text-muted-foreground">baseline: {s.baseline_mean}/day</span>
+                <Badge variant={s.severity === "high" ? "destructive" : "outline"} className="text-xs">
                   {s.severity.toUpperCase()}
                 </Badge>
-                <span className={cn("font-mono text-[10px]", s.severity === "high" ? "text-destructive" : "text-primary")}>
+                <span className={cn("font-mono text-xs", s.severity === "high" ? "text-destructive" : "text-primary")}>
                   z={s.z_score}σ
                 </span>
               </div>

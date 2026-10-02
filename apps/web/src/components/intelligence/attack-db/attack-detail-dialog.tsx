@@ -25,7 +25,7 @@ function RefLink({ onClick, children }: { onClick: () => void; children: React.R
 }
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
-  return <div className="mb-1.5 font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">{children}</div>;
+  return <div className="mb-1.5 text-sm font-semibold text-muted-foreground">{children}</div>;
 }
 
 /** Port `showTechniqueDetail()`/`showGroupDetail()`/`showSoftwareDetail()`
@@ -106,18 +106,18 @@ function TechniqueDetail({ t, onNavigate }: { t: AttackTechniqueDetail; onNaviga
     <div className="font-mono text-xs">
       <div className="mb-3 flex flex-wrap items-start gap-3">
         <div>
-          <div className="text-[11px] text-primary">{t.attack_id}</div>
+          <div className="text-[13px] text-primary">{t.attack_id}</div>
           <div className="mt-0.5 text-base font-bold text-foreground">{t.name}</div>
-          <div className="mt-1 text-[10px] text-muted-foreground">
+          <div className="mt-1 text-xs text-muted-foreground">
             {t.tactics.join(" · ")} <DomainBadges domains={t.domains} />
           </div>
         </div>
-        <a href={t.url} target="_blank" rel="noopener noreferrer" className="ml-auto text-[10px] text-primary">
+        <a href={t.url} target="_blank" rel="noopener noreferrer" className="ml-auto text-xs text-primary">
           MITRE ↗
         </a>
       </div>
-      <div className="mb-3.5 max-h-44 overflow-y-auto text-[11px] leading-relaxed text-foreground">{t.description}</div>
-      {t.platforms.length > 0 && <div className="mb-2.5 text-[10px] text-muted-foreground">Platforms: {t.platforms.join(", ")}</div>}
+      <div className="mb-3.5 max-h-44 overflow-y-auto text-[13px] leading-relaxed text-foreground">{t.description}</div>
+      {t.platforms.length > 0 && <div className="mb-2.5 text-xs text-muted-foreground">Platforms: {t.platforms.join(", ")}</div>}
       {t.sub_techniques.length > 0 && (
         <div className="mb-3">
           <SectionLabel>Sub-techniques ({t.sub_techniques.length})</SectionLabel>
@@ -136,7 +136,7 @@ function TechniqueDetail({ t, onNavigate }: { t: AttackTechniqueDetail; onNaviga
           t.mitigations.map((m) => (
             <div key={m.mitigation_id} className="mb-1.5">
               <span className="text-primary">{m.mitigation_id}</span> {m.name}
-              <div className="text-[10px] text-muted-foreground">{m.description}</div>
+              <div className="text-xs text-muted-foreground">{m.description}</div>
             </div>
           ))
         )}
@@ -174,23 +174,23 @@ function GroupDetail({ g, onNavigate }: { g: AttackGroupDetail; onNavigate: (tar
     <div className="font-mono text-xs">
       <div className="mb-3 flex flex-wrap items-start gap-3">
         <div>
-          <div className="text-[11px] text-primary">{g.group_id}</div>
+          <div className="text-[13px] text-primary">{g.group_id}</div>
           <div className="mt-0.5 text-base font-bold text-foreground">{g.name}</div>
-          {g.aliases.length > 0 && <div className="mt-0.5 text-[10px] text-muted-foreground">aka {g.aliases.slice(0, 5).join(", ")}</div>}
+          {g.aliases.length > 0 && <div className="mt-0.5 text-xs text-muted-foreground">aka {g.aliases.slice(0, 5).join(", ")}</div>}
           <div className="mt-1">
             <DomainBadges domains={g.domains} />
           </div>
         </div>
         <div className="ml-auto flex items-center gap-2">
-          <Button size="sm" variant="outline" className="h-6 px-2 text-[10px]" onClick={() => openNavigatorForGroup(g.group_id)}>
+          <Button size="sm" variant="outline" className="h-6 px-2 text-xs" onClick={() => openNavigatorForGroup(g.group_id)}>
             ⧉ Navigator
           </Button>
-          <a href={g.url} target="_blank" rel="noopener noreferrer" className="text-[10px] text-primary">
+          <a href={g.url} target="_blank" rel="noopener noreferrer" className="text-xs text-primary">
             MITRE ↗
           </a>
         </div>
       </div>
-      <div className="mb-3.5 max-h-40 overflow-y-auto text-[11px] leading-relaxed text-foreground">{g.description}</div>
+      <div className="mb-3.5 max-h-40 overflow-y-auto text-[13px] leading-relaxed text-foreground">{g.description}</div>
       <div className="mb-3">
         <SectionLabel>Techniques used ({g.techniques.length})</SectionLabel>
         <div className="max-h-36 overflow-y-auto">
@@ -226,9 +226,9 @@ function SoftwareDetail({ s, onNavigate }: { s: AttackSoftwareDetail; onNavigate
     <div className="font-mono text-xs">
       <div className="mb-3 flex flex-wrap items-start gap-3">
         <div>
-          <div className="text-[11px] text-primary">{s.software_id}</div>
+          <div className="text-[13px] text-primary">{s.software_id}</div>
           <div className="mt-0.5 text-base font-bold text-foreground">{s.name}</div>
-          <div className="mt-1 text-[10px]">
+          <div className="mt-1 text-xs">
             <span
               className={`mr-1.5 rounded px-1.5 py-0.5 ${s.software_type === "malware" ? "bg-destructive/15 text-destructive" : "bg-primary/15 text-primary"}`}
             >
@@ -237,11 +237,11 @@ function SoftwareDetail({ s, onNavigate }: { s: AttackSoftwareDetail; onNavigate
             <DomainBadges domains={s.domains} />
           </div>
         </div>
-        <a href={s.url} target="_blank" rel="noopener noreferrer" className="ml-auto text-[10px] text-primary">
+        <a href={s.url} target="_blank" rel="noopener noreferrer" className="ml-auto text-xs text-primary">
           MITRE ↗
         </a>
       </div>
-      <div className="mb-3.5 max-h-40 overflow-y-auto text-[11px] leading-relaxed text-foreground">{s.description}</div>
+      <div className="mb-3.5 max-h-40 overflow-y-auto text-[13px] leading-relaxed text-foreground">{s.description}</div>
       <div className="mb-3">
         <SectionLabel>Used by groups ({s.groups.length})</SectionLabel>
         {s.groups.length === 0 ? (

@@ -33,9 +33,9 @@ export function VulnDetailModal({ vuln, onClose }: VulnDetailModalProps) {
               {vuln.adjusted_severity || vuln.severity}
             </span>
             {vuln.cvss_score != null && <span className="font-mono">CVSS {vuln.cvss_score.toFixed(1)}</span>}
-            {vuln.kev && <Badge variant="destructive" className="text-[10px]">KEV</Badge>}
+            {vuln.kev && <Badge variant="destructive" className="text-xs">KEV</Badge>}
             {vuln.epss_score != null && (
-              <Badge variant="outline" className={cn("text-[10px]", epssColorClass(vuln.epss_score))}>
+              <Badge variant="outline" className={cn("text-xs", epssColorClass(vuln.epss_score))}>
                 EPSS {(vuln.epss_score * 100).toFixed(2)}%
                 {vuln.epss_percentile != null ? ` · ${Math.round(vuln.epss_percentile * 100)}th pct` : ""}
               </Badge>
@@ -85,7 +85,7 @@ export function VulnDetailModal({ vuln, onClose }: VulnDetailModalProps) {
 function Row({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <div className="font-mono text-[9px] text-muted-foreground uppercase">{label}</div>
+      <div className="text-sm font-medium text-muted-foreground">{label}</div>
       <div className="mt-0.5 leading-relaxed">{children}</div>
     </div>
   );

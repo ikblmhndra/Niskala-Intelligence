@@ -12,11 +12,11 @@ export const SECTION_MAX: Record<SectionKey, number> = {
   indonesia: 5,
 };
 
-export const SECTION_DEFS: { key: SectionKey; label: string; icon: string }[] = [
-  { key: "highlight", label: "Highlight", icon: "⭐" },
-  { key: "apac", label: "APAC", icon: "🌏" },
-  { key: "global_news", label: "Global", icon: "🌐" },
-  { key: "indonesia", label: "Indonesia", icon: "🇮🇩" },
+export const SECTION_DEFS: { key: SectionKey; label: string }[] = [
+  { key: "highlight", label: "Highlight" },
+  { key: "apac", label: "APAC" },
+  { key: "global_news", label: "Global" },
+  { key: "indonesia", label: "Indonesia" },
 ];
 
 export interface ComposerState {

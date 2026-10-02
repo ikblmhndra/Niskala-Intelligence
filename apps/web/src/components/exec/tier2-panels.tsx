@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { ZapIcon } from "lucide-react";
 import type { ExecDashboardV2 } from "@/lib/api/loose-types";
 
 function toTitleCase(s: string): string {
@@ -9,23 +10,23 @@ function toTitleCase(s: string): string {
 export function SpikeBanner({ d }: { d: ExecDashboardV2 }) {
   if (d.industry_spikes.length === 0) return null;
   return (
-    <div className="mb-4 rounded-md border border-border bg-surface p-3">
-      <div className="mb-2 font-mono text-[10px] tracking-[0.08em] text-primary uppercase">
-        ⚡ Anomaly Alerts — Sectors with statistically significant activity spikes
+    <div className="mb-4 rounded-xl border border-border bg-background p-3">
+      <div className="mb-2 text-sm font-semibold text-primary">
+        <ZapIcon aria-hidden /> Anomaly Alerts — Sectors with statistically significant activity spikes
       </div>
       <div className="flex flex-wrap gap-2">
         {d.industry_spikes.map((sp, i) => (
           <div key={i} className="flex shrink-0 items-center gap-2.5 rounded-md border border-primary/25 bg-primary/5 px-3 py-1.5">
             <span className="text-base text-primary">⚡</span>
             <div>
-              <div className="font-mono text-[10px] text-primary uppercase">{toTitleCase(sp.entity)}</div>
-              <div className="font-mono text-[9px] text-muted-foreground">
+              <div className="text-sm font-semibold text-primary">{toTitleCase(sp.entity)}</div>
+              <div className="font-mono text-xs text-muted-foreground">
                 z={sp.z_score} · {sp.count} incidents · {sp.date}
               </div>
             </div>
             <span
               className={cn(
-                "rounded px-1.5 py-0.5 text-[9px]",
+                "rounded px-1.5 py-0.5 text-xs",
                 sp.severity === "high" ? "bg-destructive/20 text-destructive" : "bg-primary/20 text-primary",
               )}
             >
@@ -41,7 +42,7 @@ export function SpikeBanner({ d }: { d: ExecDashboardV2 }) {
 /** Port Top TTPs (`exec.js:350-370`). */
 export function TtpList({ d }: { d: ExecDashboardV2 }) {
   if (d.top_ttps.length === 0) {
-    return <p className="py-2 font-mono text-[10px] text-muted-foreground">No TTP data for this period</p>;
+    return <p className="py-2 font-mono text-xs text-muted-foreground">No TTP data for this period</p>;
   }
   const maxTtp = d.top_ttps[0]?.count || 1;
   return (
@@ -55,16 +56,16 @@ export function TtpList({ d }: { d: ExecDashboardV2 }) {
           beda konten. */}
       {d.top_ttps.map((t, i) => (
         <div key={`${t.id}::${t.name}::${i}`} className="flex items-center gap-2">
-          <div className="min-w-[70px] font-mono text-[9px] text-primary" title={t.id}>
+          <div className="min-w-[70px] font-mono text-xs text-primary" title={t.id}>
             {t.id}
           </div>
-          <div className="flex-1 truncate font-mono text-[9px] text-muted-foreground" title={t.name}>
+          <div className="flex-1 truncate font-mono text-xs text-muted-foreground" title={t.name}>
             {t.name}
           </div>
           <div className="h-1.5 w-20 shrink-0 overflow-hidden rounded-full bg-muted">
             <div className="h-full rounded-full bg-primary/50" style={{ width: `${Math.round((t.count / maxTtp) * 100)}%` }} />
           </div>
-          <span className="min-w-[24px] text-right font-mono text-[9px] text-muted-foreground">{t.count}</span>
+          <span className="min-w-[24px] text-right font-mono text-xs text-muted-foreground">{t.count}</span>
         </div>
       ))}
     </div>
@@ -74,7 +75,7 @@ export function TtpList({ d }: { d: ExecDashboardV2 }) {
 /** Port TA Velocity (`exec.js:372-392`). */
 export function TaVelocity({ d }: { d: ExecDashboardV2 }) {
   if (d.ta_velocity.length === 0) {
-    return <p className="py-2 font-mono text-[10px] text-muted-foreground">No TA data</p>;
+    return <p className="py-2 font-mono text-xs text-muted-foreground">No TA data</p>;
   }
   return (
     <div className="space-y-1.5">
@@ -82,17 +83,17 @@ export function TaVelocity({ d }: { d: ExecDashboardV2 }) {
         const isRising = ta.velocity_pct > 0;
         const isNew = ta.avg_prev === 0;
         const colorClass = isNew ? "text-success" : isRising ? "text-destructive" : "text-muted-foreground";
-        const arrow = isNew ? "★" : isRising ? "▲" : "▼";
+        const arrow = isNew ? "" : isRising ? "▲" : "▼";
         const label = isNew ? "NEW" : `${isRising ? "+" : ""}${ta.velocity_pct}%`;
         return (
           <div key={ta.actor} className="flex items-center gap-2.5">
-            <div className="min-w-[140px] truncate font-mono text-[10px] text-foreground" title={ta.actor}>
+            <div className="min-w-[140px] truncate font-mono text-xs text-foreground" title={ta.actor}>
               {toTitleCase(ta.actor)}
             </div>
-            <div className={cn("min-w-[48px] font-mono text-[10px]", colorClass)}>
+            <div className={cn("min-w-[48px] font-mono text-xs", colorClass)}>
               {arrow} {label}
             </div>
-            <div className="font-mono text-[9px] text-muted-foreground">
+            <div className="font-mono text-xs text-muted-foreground">
               last: {ta.last_month} · avg: {ta.avg_prev}
             </div>
           </div>
@@ -105,7 +106,7 @@ export function TaVelocity({ d }: { d: ExecDashboardV2 }) {
 /** Port Sector Co-occurrence (`exec.js:450-469`). */
 export function SectorCooccurrence({ d }: { d: ExecDashboardV2 }) {
   if (d.sector_cooccurrence.length === 0) {
-    return <p className="font-mono text-[10px] text-muted-foreground">No co-targeting data</p>;
+    return <p className="font-mono text-xs text-muted-foreground">No co-targeting data</p>;
   }
   const maxCo = d.sector_cooccurrence[0]?.count || 1;
   return (
@@ -113,7 +114,7 @@ export function SectorCooccurrence({ d }: { d: ExecDashboardV2 }) {
       {d.sector_cooccurrence.map((co, i) => (
         <div key={i} className="flex items-center gap-2">
           <div
-            className="flex-1 truncate font-mono text-[9px] text-foreground"
+            className="flex-1 truncate font-mono text-xs text-foreground"
             title={`${toTitleCase(co.sector_a)} ↔ ${toTitleCase(co.sector_b)}`}
           >
             {toTitleCase(co.sector_a)} <span className="text-primary">↔</span> {toTitleCase(co.sector_b)}
@@ -121,7 +122,7 @@ export function SectorCooccurrence({ d }: { d: ExecDashboardV2 }) {
           <div className="h-1.5 w-15 shrink-0 overflow-hidden rounded-full bg-muted">
             <div className="h-full rounded-full bg-primary/50" style={{ width: `${Math.round((co.count / maxCo) * 100)}%` }} />
           </div>
-          <span className="min-w-[20px] text-right font-mono text-[9px] text-muted-foreground">{co.count}</span>
+          <span className="min-w-[20px] text-right font-mono text-xs text-muted-foreground">{co.count}</span>
         </div>
       ))}
     </div>

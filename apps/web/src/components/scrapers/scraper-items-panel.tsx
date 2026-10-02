@@ -84,12 +84,12 @@ export function ScraperItemsPanel({ scraperId }: { scraperId: string }) {
                   </a>
                 </TableCell>
                 <TableCell>
-                  <span className={`font-mono text-[10px] ${it.accepted ? "text-primary" : "text-muted-foreground"}`}>
-                    {it.accepted ? "✓" : "✕"}
+                  <span className={`font-mono text-xs ${it.accepted ? "text-primary" : "text-muted-foreground"}`}>
+                    {it.accepted ? "" : ""}
                   </span>
                 </TableCell>
-                <TableCell className="font-mono text-[10px] text-muted-foreground">{it.reason ?? "—"}</TableCell>
-                <TableCell className="font-mono text-[10px] text-muted-foreground">
+                <TableCell className="font-mono text-xs text-muted-foreground">{it.reason ?? "—"}</TableCell>
+                <TableCell className="font-mono text-xs text-muted-foreground">
                   {it.run_at.replace("T", " ").split(".")[0]}
                 </TableCell>
               </TableRow>

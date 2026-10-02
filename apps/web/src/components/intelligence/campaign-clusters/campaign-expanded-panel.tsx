@@ -43,19 +43,19 @@ function CampaignTrendSection({ clusterId }: { clusterId: string }) {
 
   return (
     <div className="mb-2.5">
-      <div className="mb-1.5 flex flex-wrap items-center gap-2 font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
+      <div className="mb-1.5 flex flex-wrap items-center gap-2 text-sm font-semibold text-muted-foreground">
         Campaign Trend
-        <span className="rounded-sm border border-border bg-surface px-1.5 py-0.5 text-[9px] normal-case" style={{ color }}>
+        <span className="rounded-full border border-border bg-surface px-1.5 py-0.5 text-xs normal-case" style={{ color }}>
           {trend.trend_direction}
         </span>
-        <span className="text-[9px] normal-case" style={{ color }}>
+        <span className="text-xs normal-case" style={{ color }}>
           {gr} 7d
         </span>
-        {trend.predicted_peak && <span className="text-[9px] text-muted-foreground normal-case">est. peak {trend.predicted_peak}</span>}
+        {trend.predicted_peak && <span className="text-xs text-muted-foreground normal-case">est. peak {trend.predicted_peak}</span>}
       </div>
-      <div className="flex items-center gap-2.5 rounded-md border border-border bg-surface2 px-2.5 py-1.5">
+      <div className="flex items-center gap-2.5 rounded-xl border border-border bg-background px-2.5 py-1.5">
         <TrendSparkline timeline={trend.timeline} width={200} height={32} />
-        <span className="font-mono text-[9px] text-muted-foreground">
+        <span className="font-mono text-xs text-muted-foreground">
           {trend.timeline[0]?.date} → {trend.timeline[trend.timeline.length - 1]?.date}
         </span>
       </div>
@@ -90,15 +90,15 @@ export function CampaignExpandedPanel({
   const cvePrioList = c.prioritized_cves.length > 0 ? c.prioritized_cves : c.cve_ids.map((id) => ({ cve_id: id, priority_score: 0, priority_label: null, patch_urgency: null, cvss_score: null, in_tech_stack: false, severity: null, cisa_kev: false, poc_available: false, actively_exploited: false }));
 
   return (
-    <div className="border-t border-border bg-surface2/40 p-4">
+    <div className="border-t border-border bg-background/40 p-4">
       <CampaignTrendSection clusterId={c.cluster_id} />
 
       <div className="mb-2.5">
-        <div className="mb-1.5 flex items-center gap-2 font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
+        <div className="mb-1.5 flex items-center gap-2 text-sm font-semibold text-muted-foreground">
           Severity Breakdown
-          <span className="rounded-sm border px-1.5 py-0.5 text-[9px] font-bold normal-case border-border">{c.severity_label.toUpperCase()} {c.severity_score}</span>
+          <span className="rounded-full border px-1.5 py-0.5 text-xs font-bold normal-case border-border">{c.severity_label.toUpperCase()} {c.severity_score}</span>
         </div>
-        <div className="rounded-md border border-border bg-surface p-2.5">
+        <div className="rounded-xl border border-border bg-background p-2.5">
           {(
             [
               ["TA Sophistication", bd.ta_sophistication, bd.raw.ta_sophistication, "30%"],
@@ -108,12 +108,12 @@ export function CampaignExpandedPanel({
               ["Source Quality", bd.source_quality, bd.raw.source_quality, "15%"],
             ] as [string, number, number, string][]
           ).map(([name, contrib, raw, weight]) => (
-            <div key={name} className="flex items-center gap-2 py-0.5 font-mono text-[10px]">
+            <div key={name} className="flex items-center gap-2 py-0.5 font-mono text-xs">
               <span className="w-[130px] flex-shrink-0 text-muted-foreground">
                 {name} ({weight})
               </span>
-              <div className="h-1 flex-1 rounded-sm bg-white/8">
-                <div className="h-full rounded-sm bg-primary" style={{ width: `${Math.round(raw)}%` }} />
+              <div className="h-1 flex-1 rounded-full bg-white/8">
+                <div className="h-full rounded-full bg-primary" style={{ width: `${Math.round(raw)}%` }} />
               </div>
               <span className="w-8 text-right text-foreground">{raw}</span>
               <span className="w-9 text-right text-muted-foreground">+{contrib}</span>
@@ -127,11 +127,11 @@ export function CampaignExpandedPanel({
 
       {c.matched_pirs.length > 0 && (
         <div className="mb-2.5">
-          <div className="mb-1.5 font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">Matched PIRs ({c.matched_pirs.length})</div>
+          <div className="mb-1.5 text-sm font-semibold text-muted-foreground">Matched PIRs ({c.matched_pirs.length})</div>
           <div className="overflow-hidden rounded-md border border-border">
             {c.matched_pirs.map((pir) => (
               <button key={pir.id} type="button" onClick={() => onOpenPir(pir)} className="flex w-full items-center gap-2 border-b border-border px-3 py-1.5 text-left last:border-b-0 hover:bg-accent">
-                <span className="flex-shrink-0 rounded-sm border border-destructive/30 bg-destructive/10 px-1.5 py-0.5 font-mono text-[9px] text-destructive">PIR</span>
+                <span className="flex-shrink-0 rounded-full border border-destructive/30 bg-destructive/10 px-1.5 py-0.5 font-mono text-xs text-destructive">PIR</span>
                 <span className="text-xs text-foreground">{pir.title}</span>
               </button>
             ))}
@@ -140,10 +140,10 @@ export function CampaignExpandedPanel({
       )}
 
       <div className="mb-2.5">
-        <div className="mb-1.5 font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">Member Articles ({c.member_article_ids.length})</div>
+        <div className="mb-1.5 text-sm font-semibold text-muted-foreground">Member Articles ({c.member_article_ids.length})</div>
         <div className="max-h-[180px] overflow-y-auto rounded-md border border-border">
           {c.member_article_ids.length === 0 ? (
-            <div className="p-2 font-mono text-[10px] text-muted-foreground">None</div>
+            <div className="p-2 font-mono text-xs text-muted-foreground">None</div>
           ) : (
             c.member_article_ids.map((aid, i) => (
               <button key={aid} type="button" onClick={() => onOpenArticle(aid)} className="block w-full border-b border-border px-3 py-1.5 text-left text-xs text-primary last:border-b-0 hover:bg-accent">
@@ -156,10 +156,10 @@ export function CampaignExpandedPanel({
 
       {c.iocs.length > 0 && (
         <div className="mb-2.5">
-          <div className="mb-1.5 font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">IOCs ({c.iocs.length})</div>
+          <div className="mb-1.5 text-sm font-semibold text-muted-foreground">IOCs ({c.iocs.length})</div>
           <div className="flex flex-wrap gap-1">
             {c.iocs.slice(0, 20).map((ioc, i) => (
-              <span key={i} title={ioc.type} className="rounded-sm border border-destructive/25 bg-destructive/8 px-1.5 py-0.5 font-mono text-[9px] text-destructive">
+              <span key={i} title={ioc.type} className="rounded-full border border-destructive/25 bg-destructive/8 px-1.5 py-0.5 font-mono text-xs text-destructive">
                 {ioc.value}
               </span>
             ))}
@@ -169,7 +169,7 @@ export function CampaignExpandedPanel({
 
       {cvePrioList.length > 0 && (
         <div className="mb-2.5">
-          <div className="mb-1.5 font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">CVEs ({cvePrioList.length})</div>
+          <div className="mb-1.5 text-sm font-semibold text-muted-foreground">CVEs ({cvePrioList.length})</div>
           <div className="flex flex-wrap gap-1">
             {cvePrioList.slice(0, 20).map((cve) => (
               <CvePriorityChip
@@ -186,7 +186,7 @@ export function CampaignExpandedPanel({
 
       {c.related_campaigns.length > 0 && (
         <div className="mt-2.5">
-          <div className="mb-1.5 font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">Related Campaigns ({c.related_campaigns.length})</div>
+          <div className="mb-1.5 text-sm font-semibold text-muted-foreground">Related Campaigns ({c.related_campaigns.length})</div>
           <div className="overflow-hidden rounded-md border border-border">
             {c.related_campaigns.map((rc) => {
               const hints = [...rc.shared_elements.tas.slice(0, 2), ...rc.shared_elements.ttps.slice(0, 2), ...rc.shared_elements.iocs.slice(0, 1)].join(", ");
@@ -194,8 +194,8 @@ export function CampaignExpandedPanel({
                 <button key={rc.cluster_id} type="button" onClick={() => onJumpToCampaign(rc.cluster_id)} className="flex w-full items-center gap-2 border-b border-border px-3 py-1.5 text-left last:border-b-0 hover:bg-accent">
                   <LinkTypeBadge type={rc.link_type} />
                   <span className="min-w-0 flex-1 truncate text-xs text-foreground">{rc.cluster_name}</span>
-                  <span className="flex-shrink-0 font-mono text-[9px] text-muted-foreground">{rc.link_score}</span>
-                  {hints && <span title={hints} className="max-w-[200px] flex-shrink-0 truncate font-mono text-[9px] text-muted-foreground">↳ {hints}</span>}
+                  <span className="flex-shrink-0 font-mono text-xs text-muted-foreground">{rc.link_score}</span>
+                  {hints && <span title={hints} className="max-w-[200px] flex-shrink-0 truncate font-mono text-xs text-muted-foreground">↳ {hints}</span>}
                 </button>
               );
             })}

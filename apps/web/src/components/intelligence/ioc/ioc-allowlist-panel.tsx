@@ -1,5 +1,6 @@
 "use client";
 
+import { XIcon } from "lucide-react";
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -66,10 +67,10 @@ export function IocAllowlistPanel() {
 
   return (
     <div>
-      <h3 className="mb-3 font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">IOC Allowlist</h3>
+      <h3 className="mb-3 text-sm font-semibold text-muted-foreground">IOC Allowlist</h3>
       <div className="mb-3 flex flex-wrap items-end gap-2">
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Type</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Type</Label>
           <Select items={TYPE_LABEL} value={type} onValueChange={(v) => v && setType(v)}>
             <SelectTrigger size="sm" className="w-36 font-mono text-xs">
               <SelectValue />
@@ -84,7 +85,7 @@ export function IocAllowlistPanel() {
           </Select>
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Value</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Value</Label>
           <Input
             placeholder="e.g. example.com"
             value={value}
@@ -101,7 +102,7 @@ export function IocAllowlistPanel() {
       {query.isPending && <p className="py-4 text-center text-xs text-muted-foreground">Loading…</p>}
       {query.isError && <p className="py-4 text-center text-xs text-destructive">Failed to load allowlist.</p>}
       {query.data && (
-        <Table>
+        <Table framed>
           <TableHeader>
             <TableRow>
               <TableHead>Type</TableHead>
@@ -122,16 +123,16 @@ export function IocAllowlistPanel() {
             {query.data.entries.map((e) => (
               <TableRow key={e.id}>
                 <TableCell>
-                  <span className="rounded-sm border border-primary/25 bg-primary/10 px-1.5 py-0.5 font-mono text-[9px] text-primary">
+                  <span className="rounded-full border border-primary/25 bg-primary/10 px-1.5 py-0.5 font-mono text-xs text-primary">
                     {TYPE_LABEL[e.type] || e.type}
                   </span>
                 </TableCell>
                 <TableCell className="font-mono text-xs text-foreground">{e.value}</TableCell>
-                <TableCell className="font-mono text-[10px] text-muted-foreground">{e.added_by || "—"}</TableCell>
-                <TableCell className="font-mono text-[10px] text-muted-foreground">{e.added_at.slice(0, 10)}</TableCell>
+                <TableCell className="font-mono text-xs text-muted-foreground">{e.added_by || "—"}</TableCell>
+                <TableCell className="font-mono text-xs text-muted-foreground">{e.added_at.slice(0, 10)}</TableCell>
                 <TableCell className="text-center">
                   <button type="button" onClick={() => void remove(e.id)} className="text-xs text-muted-foreground hover:text-destructive">
-                    ✕
+                    <XIcon aria-hidden />
                   </button>
                 </TableCell>
               </TableRow>

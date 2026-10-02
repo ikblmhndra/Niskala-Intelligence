@@ -50,8 +50,8 @@ export function ThreatActorRoomView() {
             type="button"
             onClick={() => setTab(t.value)}
             className={cn(
-              "rounded-md border px-3 py-1.5 font-mono text-xs tracking-wide transition-colors",
-              tab === t.value ? "border-primary/40 bg-primary/10 text-primary" : "border-border text-muted-foreground hover:bg-accent",
+              "rounded-full border px-4 py-2 text-sm font-medium transition-colors duration-200",
+              tab === t.value ? "border-primary/30 bg-primary/10 text-primary" : "border-border bg-surface text-muted-foreground hover:bg-muted hover:text-foreground",
             )}
           >
             {t.label}
@@ -68,8 +68,8 @@ export function ThreatActorRoomView() {
 
 function StatCard({ label, value }: { label: string; value: number }) {
   return (
-    <div className="rounded-md border border-border bg-surface2 px-3 py-2">
-      <div className="font-mono text-[9px] tracking-[0.06em] text-muted-foreground uppercase">{label}</div>
+    <div className="rounded-xl border border-border bg-background px-3 py-2">
+      <div className="text-sm font-semibold text-muted-foreground">{label}</div>
       <div className="text-lg font-bold text-foreground">{value}</div>
     </div>
   );

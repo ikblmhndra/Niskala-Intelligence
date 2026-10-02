@@ -11,9 +11,9 @@ import type { RiskMatrixResponse } from "@/lib/api/loose-types";
 
 function riskTierClass(score: number): { bg: string; text: string } {
   if (score <= 25) return { bg: "bg-success/20", text: "text-success" };
-  if (score <= 50) return { bg: "bg-primary/20", text: "text-primary" };
+  if (score <= 50) return { bg: "bg-info/20", text: "text-info" };
   if (score <= 75) return { bg: "bg-warning/25", text: "text-warning" };
-  return { bg: "bg-destructive/25", text: "text-destructive" };
+  return { bg: "bg-severity-critical/25", text: "text-severity-critical" };
 }
 
 /** Port `risk_matrix.js` (90 baris) -- matriks Industry × Country, skor
@@ -48,7 +48,7 @@ export function RiskMatrixView() {
     <div>
       <div className="mb-4 flex flex-wrap items-end gap-3 border-b border-border pb-3">
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Period (days)</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Period (days)</Label>
           <Input
             type="number"
             min={7}
@@ -59,7 +59,7 @@ export function RiskMatrixView() {
           />
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Compare period (days)</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Compare period (days)</Label>
           <Input
             type="number"
             min={7}
@@ -70,7 +70,7 @@ export function RiskMatrixView() {
           />
         </div>
         <div className="flex flex-col gap-1">
-          <Label className="font-mono text-[9px] text-muted-foreground uppercase">Min risk score</Label>
+          <Label className="text-sm font-medium text-muted-foreground">Min risk score</Label>
           <Input
             type="number"
             min={0}
@@ -89,7 +89,7 @@ export function RiskMatrixView() {
 
       {d && (
         <>
-          <p className="mb-3 font-mono text-[10px] text-muted-foreground">
+          <p className="mb-3 font-mono text-xs text-muted-foreground">
             Generated {d.generated_at} — {filtered.length} cells across {visIndustries.length} industries ×{" "}
             {visCountries.length} countries
           </p>
@@ -98,8 +98,8 @@ export function RiskMatrixView() {
               No cells meet the minimum risk score filter.
             </p>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="border-collapse text-[10px]">
+            <div className="overflow-x-auto rounded-2xl border border-border bg-surface p-4 shadow-sm">
+              <table className="w-full border-collapse text-sm">
                 <thead>
                   <tr>
                     <th className="border border-border bg-surface px-2 py-1.5 text-muted-foreground">
@@ -133,7 +133,7 @@ export function RiskMatrixView() {
                         return (
                           <td
                             key={cty}
-                            className={cn("min-w-[48px] border border-border px-1.5 py-1 text-center font-mono text-[11px] font-bold", tier.bg, tier.text)}
+                            className={cn("min-w-[48px] border border-border px-1.5 py-1 text-center font-mono text-[13px] font-bold", tier.bg, tier.text)}
                             title={`${ind} × ${cty}\nRisk: ${cell.risk_score} ${cell.trend}\nNow: ${cell.current_count} articles | Prev: ${cell.previous_count}\nTop actors: ${actors}`}
                           >
                             {cell.risk_score}

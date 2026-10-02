@@ -92,39 +92,39 @@ export function SyncStatusCards() {
   return (
     <div className="mb-4 border-b border-border pb-4">
       <div className="mb-2 flex items-center justify-between">
-        <p className="font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">ATT&amp;CK Sync Status</p>
+        <p className="text-sm font-semibold text-muted-foreground">ATT&amp;CK Sync Status</p>
         <Button size="sm" variant="outline" disabled={syncingAll} onClick={() => void syncAll()}>
-          {syncingAll ? "⟳ Syncing…" : "⟳ Sync All Domains"}
+          {syncingAll ? "Syncing…" : "Sync All Domains"}
         </Button>
       </div>
       {query.isPending && <p className="text-xs text-muted-foreground">Loading sync status…</p>}
       {query.isError && <p className="text-xs text-destructive">Failed to load sync status</p>}
       <div className="flex flex-wrap gap-3">
         {query.data?.map((d) => (
-          <div key={d.domain_key} className="min-w-[220px] flex-1 rounded-md border border-border bg-surface2 p-3">
+          <div key={d.domain_key} className="min-w-[220px] flex-1 rounded-xl border border-border bg-background p-3">
             <div className="mb-2 flex items-center justify-between">
               <span className="font-mono text-xs font-bold text-foreground">{d.label || d.domain_key}</span>
               <Button
                 size="sm"
                 variant="outline"
-                className="h-6 px-2 text-[10px]"
+                className="h-6 px-2 text-xs"
                 disabled={syncingDomain === d.domain_key}
                 onClick={() => void syncDomain(d.domain_key)}
               >
                 Sync
               </Button>
             </div>
-            <div className={cn("mb-1.5 font-mono text-[10px]", STATUS_COLOR[d.status] ?? "text-muted-foreground")}>
+            <div className={cn("mb-1.5 font-mono text-xs", STATUS_COLOR[d.status] ?? "text-muted-foreground")}>
               ● {d.status.toUpperCase()} · {d.version ? `v${d.version}` : "—"}
             </div>
             {d.status === "syncing" && d.phase && (
-              <div className="mb-1 font-mono text-[9px] text-warning">
+              <div className="mb-1 font-mono text-xs text-warning">
                 {d.phase === "downloading" && d.bytes_downloaded
                   ? `↓ downloading ${(d.bytes_downloaded / 1024 / 1024).toFixed(1)}MB${d.bytes_total ? ` / ${(d.bytes_total / 1024 / 1024).toFixed(0)}MB` : ""} ${d.download_pct ?? ""}`
-                  : `⟳ ${d.phase}`}
+                  : `${d.phase}`}
               </div>
             )}
-            <div className="font-mono text-[10px] leading-relaxed text-muted-foreground">
+            <div className="font-mono text-xs leading-relaxed text-muted-foreground">
               MITRE updated: {d.mitre_modified ? new Date(d.mitre_modified).toLocaleDateString() : "—"}
               <br />
               Last sync: {d.last_sync ? new Date(d.last_sync).toLocaleDateString() : "Never"}

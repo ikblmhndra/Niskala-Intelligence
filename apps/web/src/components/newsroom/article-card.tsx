@@ -28,12 +28,12 @@ export function ArticleCard({ article: a, onClick }: { article: Article; onClick
   return (
     <div
       onClick={onClick}
-      className="cursor-pointer rounded-md border border-border bg-surface px-3 py-2.5 transition-colors hover:border-ring/50"
+      className="cursor-pointer rounded-xl border border-border bg-background px-3 py-2.5 transition-colors hover:border-ring/50"
     >
       <div className="text-sm leading-snug text-foreground">{a.title}</div>
       <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
         {tags.map((t) => (
-          <Badge key={t} variant="outline" className="text-[9px] text-muted-foreground">
+          <Badge key={t} variant="outline" className="text-xs text-muted-foreground">
             {t}
           </Badge>
         ))}
@@ -41,13 +41,13 @@ export function ArticleCard({ article: a, onClick }: { article: Article; onClick
           <Badge
             variant="outline"
             title={`${iocCount} indicator(s) of compromise extracted`}
-            className="border-warning/30 bg-warning/10 font-mono text-[9px] text-warning"
+            className="border-warning/30 bg-warning/10 font-mono text-xs text-warning"
           >
             IOC:{iocCount}
           </Badge>
         )}
-        <span className="ml-auto text-[10px] text-muted-foreground">{timeAgo(a.posted_on)}</span>
-        <span className="font-mono text-[10px] text-muted-foreground">{a.source}</span>
+        <span className="ml-auto text-xs text-muted-foreground">{timeAgo(a.posted_on)}</span>
+        <span className="font-mono text-xs text-muted-foreground">{a.source}</span>
       </div>
     </div>
   );

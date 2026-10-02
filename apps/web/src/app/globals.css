@@ -14,7 +14,8 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-google-sans-flex);
-  --font-mono: var(--font-ibm-plex-mono);
+  --font-mono: var(--font-google-sans-flex);
+  --font-code: var(--font-ibm-plex-mono);
   --font-heading: var(--font-google-sans-flex);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -72,28 +73,30 @@
   --color-chart-6: var(--chart-6);
   --color-chart-7: var(--chart-7);
   --color-chart-8: var(--chart-8);
+  --color-chart-9: var(--chart-9);
+  --color-chart-10: var(--chart-10);
 }
 
 :root {
-  --background: #f2e8dd; /* Clear Beige */
-  --foreground: #430a23; /* Heartful Burgundy */
-  --surface: #ffffff; /* card/popover */
-  --panel: #e8dacb; /* elevasi lebih tinggi / nested panel */
+  --background: #ffffff; /* halaman putih polos; card yang berwarna (beige) */
+  --foreground: #2b0d19; /* Burgundy gelap */
+  --surface: #f6efe6; /* card/popover: Clear Beige */
+  --panel: #f0e7db; /* input/hover/nested di atas card maupun halaman */
   --card: var(--surface);
   --card-foreground: var(--foreground);
   --popover: var(--surface);
   --popover-foreground: var(--foreground);
   --primary: #d0002f; /* Privy Red, digelapkan sedikit dari #e60034 supaya teks merah di atas beige lulus AA */
   --primary-foreground: #ffffff;
-  --secondary: #e8dacb;
+  --secondary: #f0e7db;
   --secondary-foreground: var(--foreground);
   --muted: var(--panel);
   --muted-foreground: #6b4452;
   --accent: var(--panel);
   --accent-foreground: var(--foreground);
   --destructive: #b42318; /* oranye-merah, beda hue dari --primary */
-  --border: #c9b5a3;
-  --input: #c9b5a3;
+  --border: #e3d6c6;
+  --input: #e3d6c6;
   --ring: #d0002f;
   --success: #17703f;
   --warning: #9a4a00;
@@ -103,14 +106,16 @@
   --severity-high: #b04a00;
   --severity-medium: #7a5c00;
   --severity-low: #17703f;
-  --chart-1: #d0002f;
-  --chart-2: #256a8a;
-  --chart-3: #17703f;
-  --chart-4: #b04a00;
-  --chart-5: #7a3a5a;
+  --chart-1: #256a8a;
+  --chart-2: #17703f;
+  --chart-3: #b04a00;
+  --chart-4: #7a3a5a;
+  --chart-5: #6b4a9e;
   --chart-6: #5b6b1f;
   --chart-7: #a0306f;
   --chart-8: #4a5568;
+  --chart-9: #0f766e;
+  --chart-10: #9a6b00;
   --sidebar: var(--surface);
   --sidebar-foreground: var(--foreground);
   --sidebar-primary: var(--primary);
@@ -123,25 +128,25 @@
 }
 
 .dark {
-  --background: #2a0616;
-  --foreground: #f2e8dd;
-  --surface: #430a23; /* Heartful Burgundy */
-  --panel: #561633;
+  --background: #0f070b; /* hampir hitam, bernuansa burgundy: surface terbaca terpisah */
+  --foreground: #f6ede4;
+  --surface: #231320;
+  --panel: #33202f;
   --card: var(--surface);
   --card-foreground: var(--foreground);
   --popover: var(--surface);
   --popover-foreground: var(--foreground);
   --primary: #ff4d6d;
-  --primary-foreground: #2a0616;
-  --secondary: #561633;
+  --primary-foreground: #0f070b;
+  --secondary: #33202f;
   --secondary-foreground: var(--foreground);
   --muted: var(--panel);
-  --muted-foreground: #cfb3bf;
+  --muted-foreground: #bfa7b3;
   --accent: var(--panel);
   --accent-foreground: var(--foreground);
   --destructive: #ff7a6e;
-  --border: #7a3550;
-  --input: #7a3550;
+  --border: #55344a;
+  --input: #55344a;
   --ring: #ff4d6d;
   --success: #76ce93;
   --warning: #ffa164;
@@ -151,14 +156,16 @@
   --severity-high: #ffa164;
   --severity-medium: #f5cf5a;
   --severity-low: #76ce93;
-  --chart-1: #ff4d6d;
-  --chart-2: #92bbd1;
-  --chart-3: #76ce93;
-  --chart-4: #ffa164;
-  --chart-5: #fbbfa1;
+  --chart-1: #92bbd1;
+  --chart-2: #76ce93;
+  --chart-3: #ffa164;
+  --chart-4: #fbbfa1;
+  --chart-5: #c9b0f0;
   --chart-6: #f5cf5a;
   --chart-7: #e08fb5;
   --chart-8: #b7a3c9;
+  --chart-9: #5eead4;
+  --chart-10: #fde68a;
   --sidebar: var(--surface);
   --sidebar-foreground: var(--foreground);
   --sidebar-primary: var(--primary);
@@ -178,6 +185,25 @@
   }
   html {
     @apply font-sans;
+    font-feature-settings: "tnum" 1;
+  }
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  [role="tab"],
+  summary,
+  select {
+    cursor: pointer;
+  }
+  h1, h2, h3 {
+    letter-spacing: -0.01em;
+  }
+  /* Ikon lucide sebaris teks (badge/span) ikut ukuran font; di dalam Button utilitas `size-*` menang. */
+  svg.lucide {
+    width: 1.1em;
+    height: 1.1em;
+    display: inline-block;
+    vertical-align: -0.15em;
+    flex-shrink: 0;
   }
 }
 

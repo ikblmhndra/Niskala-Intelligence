@@ -1,5 +1,6 @@
 "use client";
 
+import { SectionIcon } from "@/components/newsletter/section-icon";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
@@ -45,14 +46,14 @@ export function NewsletterHistoryPanel({ refreshKey, onPreview, onResend, resend
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="flex w-full items-center gap-2 font-mono text-[10px] tracking-[0.1em] text-muted-foreground uppercase"
+        className="flex w-full items-center gap-2 text-sm font-semibold text-muted-foreground"
       >
         <span className={open ? "rotate-180 transition-transform" : "transition-transform"}>▲</span>
         Saved Newsletters
         {query.data && (
-          <span className="rounded-sm bg-primary/10 px-1.5 py-0.5 text-[9px] text-primary">{query.data.total}</span>
+          <span className="rounded-full bg-primary/10 px-1.5 py-0.5 text-xs text-primary">{query.data.total}</span>
         )}
-        <span className="ml-auto text-[9px] text-muted-foreground">{open ? "▼ collapse" : "▶ expand"}</span>
+        <span className="ml-auto text-xs text-muted-foreground">{open ? "▼ collapse" : "▶ expand"}</span>
       </button>
 
       {open && (
@@ -71,29 +72,31 @@ export function NewsletterHistoryPanel({ refreshKey, onPreview, onResend, resend
               const indonesiaLen = sections?.indonesia?.length ?? 0;
               const highlightTitle = sections?.highlight?.title;
               return (
-                <div key={n.id} className="rounded-md border border-border bg-surface2 p-3">
-                  <div className="font-mono text-[11px] text-primary">
+                <div key={n.id} className="rounded-xl border border-border bg-background p-3">
+                  <div className="font-mono text-[13px] text-primary">
                     Week {n.week}, {n.year}
                   </div>
-                  <div className="mt-0.5 font-mono text-[9px] text-muted-foreground">
+                  <div className="mt-0.5 font-mono text-xs text-muted-foreground">
                     {n.generated_at} · by {n.created_by}
                   </div>
                   {highlightTitle && (
-                    <div className="mt-1.5 truncate text-[11px] text-foreground" title={highlightTitle}>
-                      ⭐ {highlightTitle}
+                    <div className="mt-1.5 truncate text-[13px] text-foreground" title={highlightTitle}>
+                      <SectionIcon section="highlight" className="mr-1 inline" /> {highlightTitle}
                     </div>
                   )}
-                  <div className="mt-1.5 font-mono text-[10px] text-muted-foreground">
-                    🌏 {apacLen} &nbsp; 🌐 {globalLen} &nbsp; 🇮🇩 {indonesiaLen}
+                  <div className="mt-1.5 font-mono text-xs text-muted-foreground">
+                    <span className="mr-3 inline-flex items-center gap-1"><SectionIcon section="apac" /> {apacLen}</span>
+                    <span className="mr-3 inline-flex items-center gap-1"><SectionIcon section="global_news" /> {globalLen}</span>
+                    <span className="inline-flex items-center gap-1"><SectionIcon section="indonesia" /> {indonesiaLen}</span>
                   </div>
                   <div className="mt-2 flex gap-1.5">
-                    <Button variant="outline" size="sm" className="h-6 flex-1 px-2 text-[10px]" onClick={() => onPreview(n.id, n.week, n.year)}>
+                    <Button variant="outline" size="sm" className="h-6 flex-1 px-2 text-xs" onClick={() => onPreview(n.id, n.week, n.year)}>
                       Preview
                     </Button>
                     <Button
                       variant="outline"
                       size="sm"
-                      className="h-6 flex-1 px-2 text-[10px]"
+                      className="h-6 flex-1 px-2 text-xs"
                       disabled={resendingId === n.id}
                       onClick={() => onResend(n.id, n.week, n.year)}
                     >

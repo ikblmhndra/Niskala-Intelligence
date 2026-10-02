@@ -48,7 +48,7 @@ export function GeopoliticalPanel({ days }: { days: number }) {
 
   return (
     <div className="mb-4 rounded-md border border-border">
-      <button type="button" onClick={() => setOpen((o) => !o)} className="w-full px-3 py-2 text-left font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
+      <button type="button" onClick={() => setOpen((o) => !o)} className="w-full px-3 py-2 text-left font-mono text-xs tracking-[0.06em] text-muted-foreground uppercase">
         {open ? "▾" : "▸"} Geopolitical Overview
       </button>
       {open && (
@@ -59,13 +59,13 @@ export function GeopoliticalPanel({ days }: { days: number }) {
             <>
               {d.geopolitical_alerts.length > 0 && (
                 <div className="mb-3.5">
-                  <div className="mb-1.5 text-[10px] font-bold tracking-[0.06em] text-muted-foreground">ALERTS</div>
+                  <div className="mb-1.5 text-xs font-bold tracking-[0.06em] text-muted-foreground">ALERTS</div>
                   <div className="flex flex-col gap-1">
                     {d.geopolitical_alerts.map((a, i) => {
                       const isInc = a.includes("increased") || a.includes("converging") || a.includes("New threat");
                       return (
-                        <div key={i} className={`rounded-md border px-2.5 py-1.5 font-mono text-[11px] text-foreground ${isInc ? "border-destructive/40 bg-destructive/12" : "border-warning/35 bg-warning/10"}`}>
-                          {isInc ? "⚠" : "ℹ"} {a}
+                        <div key={i} className={`rounded-md border px-2.5 py-1.5 font-mono text-[13px] text-foreground ${isInc ? "border-destructive/40 bg-destructive/12" : "border-warning/35 bg-warning/10"}`}>
+                          {isInc ? "" : ""} {a}
                         </div>
                       );
                     })}
@@ -75,14 +75,14 @@ export function GeopoliticalPanel({ days }: { days: number }) {
 
               {nations.length > 0 && sectors.length > 0 && (
                 <div className="mb-3.5">
-                  <div className="mb-1.5 text-[10px] font-bold tracking-[0.06em] text-muted-foreground">NATION → SECTOR HEATMAP</div>
+                  <div className="mb-1.5 text-xs font-bold tracking-[0.06em] text-muted-foreground">NATION → SECTOR HEATMAP</div>
                   <div className="overflow-x-auto">
-                    <table className="border-collapse text-[10px]">
+                    <table className="border-collapse text-xs">
                       <thead>
                         <tr>
-                          <th className="border border-border/50 px-2 py-1 text-left font-mono text-[9px] text-muted-foreground">Nation</th>
+                          <th className="border border-border/50 px-2 py-1 text-left font-mono text-xs text-muted-foreground">Nation</th>
                           {sectors.map((s) => (
-                            <th key={s} title={s} className="max-w-[80px] truncate border border-border/50 px-1.5 py-1 text-center font-mono text-[9px] text-muted-foreground">
+                            <th key={s} title={s} className="max-w-[80px] truncate border border-border/50 px-1.5 py-1 text-center font-mono text-xs text-muted-foreground">
                               {s.length > 12 ? `${s.slice(0, 11)}…` : s}
                             </th>
                           ))}
@@ -93,20 +93,20 @@ export function GeopoliticalPanel({ days }: { days: number }) {
                           const entry = d.nation_state_activity[nation];
                           return (
                             <tr key={nation}>
-                              <td className="border border-border/50 px-2 py-1 font-mono text-[10px] font-semibold whitespace-nowrap text-foreground">
+                              <td className="border border-border/50 px-2 py-1 font-mono text-xs font-semibold whitespace-nowrap text-foreground">
                                 {nation}
                                 {entry.primary_motivations.slice(0, 1).map((m) => (
-                                  <span key={m} className="ml-1 rounded-sm border border-tag-violet/40 bg-tag-violet/20 px-1 py-0.5 font-mono text-[8px] text-tag-violet">
+                                  <span key={m} className="ml-1 rounded-full border border-tag-violet/40 bg-tag-violet/20 px-1 py-0.5 font-mono text-xs text-tag-violet">
                                     {m}
                                   </span>
                                 ))}
                               </td>
                               {sectors.map((sector) => {
                                 const count = entry.targeted_sectors.filter((x) => x === sector).length;
-                                if (!count) return <td key={sector} className="border border-border/30 bg-surface2/30" />;
+                                if (!count) return <td key={sector} className="border border-border/30 bg-background/30" />;
                                 const alpha = Math.round((count / maxCount) * 0.7 * 100) / 100 + 0.08;
                                 return (
-                                  <td key={sector} className="border border-destructive/25 text-center font-mono text-[10px] font-bold text-foreground" style={{ background: `color-mix(in srgb, var(--severity-critical) ${Math.round(alpha * 100)}%, transparent)` }}>
+                                  <td key={sector} className="border border-destructive/25 text-center font-mono text-xs font-bold text-foreground" style={{ background: `color-mix(in srgb, var(--severity-critical) ${Math.round(alpha * 100)}%, transparent)` }}>
                                     {count}
                                   </td>
                                 );
@@ -122,24 +122,24 @@ export function GeopoliticalPanel({ days }: { days: number }) {
 
               {motEntries.length > 0 && (
                 <div className="mb-1">
-                  <div className="mb-1.5 text-[10px] font-bold tracking-[0.06em] text-muted-foreground">MOTIVATION BREAKDOWN</div>
+                  <div className="mb-1.5 text-xs font-bold tracking-[0.06em] text-muted-foreground">MOTIVATION BREAKDOWN</div>
                   {motEntries.map(([mot, cnt]) => {
                     const pct = Math.round((cnt / motTotal) * 100);
                     const color = MOTIVATION_COLOR[mot] ?? "var(--muted-foreground)";
                     return (
                       <div key={mot} className="mb-0.5 flex items-center gap-1.5">
-                        <span className="w-20 flex-shrink-0 font-mono text-[9px] text-muted-foreground">{mot}</span>
-                        <div className="h-2.5 flex-1 overflow-hidden rounded-sm bg-surface2">
-                          <div className="h-full rounded-sm opacity-80" style={{ width: `${pct}%`, background: color }} />
+                        <span className="w-20 flex-shrink-0 font-mono text-xs text-muted-foreground">{mot}</span>
+                        <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-background">
+                          <div className="h-full rounded-full opacity-80" style={{ width: `${pct}%`, background: color }} />
                         </div>
-                        <span className="w-7 flex-shrink-0 text-right font-mono text-[9px] text-muted-foreground">{cnt}</span>
+                        <span className="w-7 flex-shrink-0 text-right font-mono text-xs text-muted-foreground">{cnt}</span>
                       </div>
                     );
                   })}
                 </div>
               )}
 
-              <div className="mt-1 text-right font-mono text-[9px] text-muted-foreground">
+              <div className="mt-1 text-right font-mono text-xs text-muted-foreground">
                 {d.campaign_count} campaigns · {d.days}d window
               </div>
             </>

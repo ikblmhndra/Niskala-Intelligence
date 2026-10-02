@@ -28,11 +28,11 @@ function VictimRow({ v }: { v: Victim }) {
         <div className="truncate text-foreground" title={v.victim}>
           {v.victim}
         </div>
-        <div className="truncate text-[10px] text-muted-foreground" title={v.industry ?? undefined}>
+        <div className="truncate text-xs text-muted-foreground" title={v.industry ?? undefined}>
           {v.industry}
         </div>
       </div>
-      <div className="font-mono text-[10px] text-muted-foreground">
+      <div className="font-mono text-xs text-muted-foreground">
         <div title="Published">{(v.published ?? "").slice(0, 10)}</div>
         <div className="opacity-60" title="Discovered">
           {(v.discovered ?? "").slice(0, 10)}
@@ -118,7 +118,7 @@ export function RansomwarePanel({ onSelect }: { onSelect: (a: Article) => void }
       isRefreshing={victims.isFetching || articles.isFetching}
     >
       <div className="mb-3">
-        <div className="mb-1.5 border-b border-border pb-1 font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
+        <div className="mb-1.5 border-b border-border pb-1 text-sm font-semibold text-muted-foreground">
           Live Victims — ransomware.live
         </div>
         <div className="mb-1.5 flex flex-wrap items-center gap-1.5">
@@ -126,25 +126,25 @@ export function RansomwarePanel({ onSelect }: { onSelect: (a: Article) => void }
             placeholder="Group…"
             value={group}
             onChange={(e) => setGroup(e.target.value)}
-            className="w-24 font-mono text-[11px]"
+            className="w-24 font-mono text-[13px]"
           />
           <Input
             placeholder="Country…"
             value={country}
             onChange={(e) => setCountry(e.target.value)}
-            className="w-24 font-mono text-[11px]"
+            className="w-24 font-mono text-[13px]"
           />
           <Input
             placeholder="Industry…"
             value={industry}
             onChange={(e) => setIndustry(e.target.value)}
-            className="w-28 font-mono text-[11px]"
+            className="w-28 font-mono text-[13px]"
           />
           <Button size="sm" onClick={applyVictimFilter}>
             Filter
           </Button>
         </div>
-        <div className="grid grid-cols-[80px_1fr_76px_16px] gap-1 border-b border-border pb-1 font-mono text-[9px] tracking-wide text-muted-foreground uppercase">
+        <div className="grid grid-cols-[80px_1fr_76px_16px] gap-1 border-b border-border pb-1 text-sm font-semibold text-muted-foreground">
           <span>Group</span>
           <span>Victim / Industry</span>
           <span>Published / Disc.</span>
@@ -161,7 +161,7 @@ export function RansomwarePanel({ onSelect }: { onSelect: (a: Article) => void }
         </div>
       </div>
 
-      <div className="mb-1.5 border-t border-b border-border py-1 font-mono text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
+      <div className="mb-1.5 border-t border-b border-border py-1 text-sm font-semibold text-muted-foreground">
         Related Articles
       </div>
       {articles.isPending && <PanelLoading />}
